@@ -22,7 +22,8 @@ ref:
 	make pdf1now
 
 bib:
-	bibtex ${BASENAME}
+	#bibtex ${BASENAME}
+	tmp
 
 pdf:
 	make pdf1now >/dev/null &
@@ -58,4 +59,9 @@ ps2pdf:ps
 
 dvi2pdf2:
 	dvipdf "${BASENAME}.dvi"
+
+clean:
+	makefile_clean.sh *.aux *.bbl *.blg *.out *.log
+
+
 

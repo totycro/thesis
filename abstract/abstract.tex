@@ -17,6 +17,7 @@
 \usepackage[english]{babel}
 
 \usepackage{enumerate}
+\usepackage{paralist}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,backgrounds,graphs,%
 matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
@@ -37,8 +38,8 @@ positioning,fit,calc,decorations.text,shadows%
 %\usepackage{alltt}
 
 %\usepackage[doublespacing]{setspace}
-%\usepackage[onehalfspacing]{setspace}
-\usepackage[singlespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
 \usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{comment}
@@ -54,18 +55,19 @@ positioning,fit,calc,decorations.text,shadows%
 
 \usepackage{graphicx}
 
-%\usepackage[square]{natbib} % \cite ; square|round etc.
-\usepackage[numbers,square]{natbib}
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
 %\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
 
 %\bibliographystyle{plain}
-%\bibliographystyle{alpha}
+\bibliographystyle{alpha}
 %\bibliographystyle{alphadin}
 %\bibliographystyle{dinat}
 %\bibliographystyle{chicago}
 %\bibliographystyle{plainnat}
 
-%\bibdata{bib.bib}
+\bibdata{bib.bib}
 
 \renewcommand*{\partformat}{\partname\ \thepart\ -}
 \let\partheadmidvskip\
@@ -88,9 +90,9 @@ positioning,fit,calc,decorations.text,shadows%
 }
 
 \subject{Master Thesis Proposal}
-\title{The Interpolation Theorem in First Order Logic with Equality}
-\author{Bernhard Mallinger \\
-Advisor: Privatdoz.\ Dipl.-Ing.\ Dr.techn.\ Stefan Hetzl}
+\title{Interpolation in First Order Logic with Equality}
+\author{Bernhard Mallinger \medskip \\
+Advisor: Ass.Prof.\ Stefan Hetzl}
 %\date{13. November 2007}
 
 %\usepackage{fancyhdr}
@@ -122,27 +124,60 @@ numbers=left
 \newcommand{\myt}[1]{\ensuremath{\;\text{ #1 }\;}}
 \newcommand{\myts}[1]{\ensuremath{\text{ #1 }}}
 
-\setlength{\parindent}{0em}
-		\newcommand{\betared}{\ensuremath{\mapsto_\beta}}
-		\newcommand{\alphared}{\ensuremath{\mapsto_\alpha}}
-		\newcommand{\betaclos}{\ensuremath{\rightarrow_\beta}}
-		\newcommand{\alphaclos}{\ensuremath{\rightarrow_\alpha}}
-		\newcommand{\alphabetaclos}{\ensuremath{\rightarrow_{\alpha\beta}}}
+%\setlength{\parindent}{0em}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
 
 
 \begin{document}
 
 \maketitle
 
-\section{Problem statement}
+\section{Motivation and problem statement}
 
-\section{Expected results}
+After decades of continued research, the area of software verification still lacks effective procedures to determine invariants of loops, which are essential for reasoning about real world programs and proving their correctness.
+In the last years, the idea of applying Craig interpolation in order to calculate invariants enjoyed increasing popularity after successful applications, for instance in \cite{McMillan03}.
+
+For practical applicabilty, often relatively weak formalisms such as propositional logic or equational logic with uninterpreted function symbols are employed.
+However for first-order logic with equality, no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{Craig57}.
+
+
+% importance of interpolation in CS-applications (esp. last ~15 years)
+
+
+\begin{comment}
+Software verification
+Model checking
+Derive invariants
+interpolation by its nature diregards all but the predicates releant to a certain property
+can be used for predicate refinement in cegar
+
+often restricted to weaker logics, application to more powerful formalisms such as fol with equality is relevant 
+\end{comment}
+
+\section{Aim of the work}
 
 \section{Methodology and approach}
 
 \section{State of the art}
 
+\begin{thm}[Interpolation]
+	Let $A$ and $B$ be sets of first-order sentences such that $A \cup B$ is refutable. 
+	Then there exists an interpolant $I$ such that
+	\begin{compactenum}
+		\item $A \limpl I$ is valid 
+		\item $I \land B$ is unsatisfiable
+		\item the non-logical symbols of $I$ are only those that appear in both $A$ and $B$.
+	\end{compactenum}
+\end{thm}
+
 \section{Relation to Computational Intelligence}
 
+result is old but central to math logic
+
+\nocite{*} % display all entries of bib-file
+
+\bibliography{bib}
 
 \end{document}
