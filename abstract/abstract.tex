@@ -135,15 +135,21 @@ numbers=left
 \maketitle
 
 \section{Motivation and problem statement}
+\label{motivation}
 
-After decades of continued research, the area of software verification still lacks effective procedures to determine invariants of loops, which are essential for reasoning about real world programs and proving their correctness.
-In the last years, the idea of applying Craig interpolation in order to calculate invariants enjoyed increasing popularity after successful applications, for instance in \cite{McMillan03}.
+After decades of continued research, the area of software verification still lacks effective methods for reasoning about real world programs, which is necessary to prove vital safety or liveness properties.
+Major advances in the form the emergence of symbolic model checking and bounded model checking have ameliorated the situation. But in dealing with loops, the highly non-trivial but at the same time essential problem of discovering loop invariants still remains a challenging task. 
+In recent years, the approach of applying Craig interpolation in order to calculate invariants enjoyed increasing popularity, especially after successful applications for instance in \cite{McMillan03}.
+
+The Interpolation theorem is a long known basic result of mathematical logic.
+Interpolants lay bare certain relations between formulas or sets of formulas by describing it in a concise way. 
+Given a logical specification of transitions in a program, they can be used to describe reachable states.
+This process is fully analytic in the sense that interpolants can efficiently be calculated from proofs.
+Leveraging the tremendous progress of automatic deduction systems in the last decades, obtaining the required proofs is feasible.
+
 
 For practical applicabilty, often relatively weak formalisms such as propositional logic or equational logic with uninterpreted function symbols are employed.
-However for first-order logic with equality, no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{Craig57}.
-
-
-% importance of interpolation in CS-applications (esp. last ~15 years)
+However for first-order logic with equality, no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{craig57linear}.
 
 
 \begin{comment}
@@ -158,9 +164,26 @@ often restricted to weaker logics, application to more powerful formalisms such 
 
 \section{Aim of the work}
 
+This thesis aims to work towards finding an algorithm to calculate interpolants in first-order logic in the presence of equality.
+Currently no procedures of practical applicability are known for this logic,  
+This should be accomplished by either improving existing solutions such as the aforementioned procedure by Craig or exploring a nouveau approach.
+
+Furthermore, a comprehensive account of existing techniques and results will be presented.
+This includes different proofs of interpolation results with a focus on constructive proofs which give rise to concrete algorithms.
+Non-constructive methods, especially of a model theoretic nature, will be treated to meet theoretical curiosity and to put the algorithm in a perspective and give a broader picture.
+In this spirit, further corollaries and also applications of the interpolation theorem will be presented.
+
+
 \section{Methodology and approach}
 
+As the problem at hand is a well-defined mathematical task, standard mathematical methodology applies.
+
+Determined by the results in the development of an algorithm, an implementation is deemed scientifically valuable but most likely beyond the scope of this thesis.
+
+
 \section{State of the art}
+
+Current research and application is based on the fundumental result by Craig \cite{craig57linear}, here given in a formulation for resolution calculus:
 
 \begin{thm}[Interpolation]
 	Let $A$ and $B$ be sets of first-order sentences such that $A \cup B$ is refutable. 
@@ -172,9 +195,37 @@ often restricted to weaker logics, application to more powerful formalisms such 
 	\end{compactenum}
 \end{thm}
 
-\section{Relation to Computational Intelligence}
+This result has been proven in different formalisms using different syntactic methods (cf.~\cite{craig57linear}; \cite{takeuti1987proof}; \cite{krajivcek1997interpolation}; \cite{Pudlak97}), but also via semantic, model theoretic means (cf.\ \cite{shoenfield1967mathematical}, section~5.2; \cite{chang1990model}, theorem~2.2.20).
+To this end, the interpolation theorem can be seen as a corollary Robinson's joint consistency theorem, but even further, latter can also be proven from the former. 
+This suggest a close relation between one the one hand the proof-theoretic and on the other hand the model-theoretic view.
 
-result is old but central to math logic
+Another major corollary of the interpolation theorem is given by Beth in form of the definability theorem, which shows the the notions of implicit and explicit definition coincide. In sloppy terms, an implicit definitions refers to a definition by usage in a formula. This can be made explicit by means of interpolation.
+
+
+\subsection{Interpolation algorithms}
+
+Constructive proofs of the interpolation theorem directly give rise to algorithms for computing interpolants. For instance in \cite{takeuti1987proof}, the well known Maehara lemma is used in the proof, which forms an efficient procedure for extracting interpolants from first-order LK proofs, but fails in the presence of equality.
+
+
+
+
+
+\section{Relevance to the curriculum of Computational Intelligence}
+
+Logic as core machinery of computer science is featured prominently in the curriculum of Computational Intelligence in the mandatory module ``Logic and Computability'' as well as the module ``Logic, Mathematics, and Theoretical Computer Science'', but also frequently appears in theoretic foundations of other areas. 
+
+The logic used in this thesis, first-order logic with equality, is without any doubt one of the most common and useful ones; the interpolation theorem is hereby a celebrated result.
+As argued in section \ref{motivation}, advancements in this field have direct consequences for the area of formal verification, which is also featured in the curriculum.
+
+The following courses possess a direct relation to the topic of this thesis: 
+
+\begin{itemize}
+	\item Formal Methods in Computer Science
+	\item Proof Theory 1 
+	\item Logic and Computability 
+	\item Advanced Mathematical Logic 
+\end{itemize}
+
 
 \nocite{*} % display all entries of bib-file
 

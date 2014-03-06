@@ -23,7 +23,7 @@ ref:
 
 bib:
 	#bibtex ${BASENAME}
-	tmp
+	bibtex tmp
 
 pdf:
 	make pdf1now >/dev/null &
