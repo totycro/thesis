@@ -25,9 +25,9 @@ positioning,fit,calc,decorations.text,shadows%
 }
 
 
-\input{/home/totycro/stud/latex-common/latex_header.tex}
+\input{latex_header.tex}
 
-\usepackage{bussproofs}
+%\usepackage{bussproof}
 
 %\usepackage{vaucanson-g}
 \usepackage{amssymb}
@@ -125,6 +125,9 @@ numbers=left
 \newcommand{\myts}[1]{\ensuremath{\text{ #1 }}}
 
 %\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
 
 \theoremstyle{definition}
 \newtheorem{thm}{Theorem}
@@ -148,7 +151,7 @@ This process is fully analytic in the sense that interpolants can efficiently be
 Leveraging the tremendous progress of automatic deduction systems in the last decades, obtaining the required proofs is feasible.
 
 
-For practical applicabilty, often relatively weak formalisms such as propositional logic or equational logic with uninterpreted function symbols are employed.
+For practical applicability, often relatively weak formalisms such as propositional logic or equational logic with uninterpreted function symbols are employed.
 However for first-order logic with equality, no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{craig57linear}.
 
 
@@ -156,7 +159,7 @@ However for first-order logic with equality, no efficient algorithms for computi
 Software verification
 Model checking
 Derive invariants
-interpolation by its nature diregards all but the predicates releant to a certain property
+interpolation by its nature disregards all but the predicates relevant to a certain property
 can be used for predicate refinement in cegar
 
 often restricted to weaker logics, application to more powerful formalisms such as fol with equality is relevant 
@@ -166,7 +169,7 @@ often restricted to weaker logics, application to more powerful formalisms such 
 
 This thesis aims to work towards finding an algorithm to calculate interpolants in first-order logic in the presence of equality.
 Currently no procedures of practical applicability are known for this logic,  
-This should be accomplished by either improving existing solutions such as the aforementioned procedure by Craig or exploring a nouveau approach.
+This should be accomplished by either improving existing solutions such as the aforementioned procedure by Craig or exploring a novel approach.
 
 Furthermore, a comprehensive account of existing techniques and results will be presented.
 This includes different proofs of interpolation results with a focus on constructive proofs which give rise to concrete algorithms.
@@ -183,7 +186,7 @@ Determined by the results in the development of an algorithm, an implementation 
 
 \section{State of the art}
 
-Current research and application is based on the fundumental result by Craig \cite{craig57linear}, here given in a formulation for resolution calculus:
+Current research and application is based on the fundamental result by Craig \cite{craig57linear}, here given in a formulation for resolution calculus:
 
 \begin{thm}[Interpolation]
 	Let $A$ and $B$ be sets of first-order sentences such that $A \cup B$ is refutable. 
