@@ -152,8 +152,12 @@ Interpolants lay bare certain logical relations between formulas or sets of form
 This process is fully analytic in the sense that interpolants can efficiently be calculated from proofs.
 Leveraging the tremendous progress of automatic deduction systems in the last decades, obtaining the required proofs is feasible.
 
-For practical applicability, often relatively weak formalisms such as propositional logic or equational logic with uninterpreted function symbols are employed.
-However for first-order logic with equality, TODO no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{craig57linear}.
+For practical applicability, often relatively weak formalisms such as propositional logic or equational logic with uninterpreted function symbols are studied. 
+
+
+%TODO no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{craig57linear}.
+
+%However for first-order logic with equality, TODO no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{craig57linear}.
 
 
 \begin{comment}
@@ -168,22 +172,28 @@ often restricted to weaker logics, application to more powerful formalisms such 
 
 \section{Aim of the work}
 
-TODO
-This thesis aims to work towards finding an algorithm to calculate interpolants in first-order logic in the presence of equality.
-Currently no procedures of practical applicability are known for this logic,  
-This should be accomplished by either improving existing solutions such as the aforementioned procedure by Craig or exploring a novel approach.
+%TODO
+%This thesis aims to work towards finding an algorithm to calculate interpolants in first-order logic in the presence of equality.
+%Currently no procedures of practical applicability are known for this logic,  
+%This should be accomplished by either improving existing solutions such as the aforementioned procedure by Craig or exploring a novel approach.
 
-Furthermore, a comprehensive account of existing techniques and results will be presented.
-This includes different proofs of interpolation results with a focus on constructive proofs which give rise to concrete algorithms.
-Non-constructive methods, especially of a model theoretic nature, will be treated in order to form a theoretical baseline and to put the algorithm in perspective.
+This thesis aims at giving comprehensive account of existing techniques and results with respect to interpolation in full first order logic with equality from an algorithmic perspective.
+This includes different proofs of interpolation results with a focus on constructive proofs which give rise to concrete and implementation-ready procedures for finding interpolants.
+These algorithms, as listed in \ref{algos}, will be presented, analysed and compared. 
+
+Dependant on these findings, improvements or extensions of these algorithms will be investigated.
+More concretely, developing an efficient interpolation algorithm for LK and extending existing approaches without equality to include equality are among the research interests.
+
+Non-constructive methods, especially of a model theoretic nature, will be treated in order to form a theoretical baseline and to give a broader picture.
 In this spirit, further corollaries and also applications of the interpolation theorem will be presented.
+
 
 
 \section{Methodology and approach}
 
 As the problem at hand is a well-defined mathematical task, standard mathematical methodology applies.
 
-Determined by the results in the development of an algorithm, an implementation is deemed scientifically valuable but most likely beyond the scope of this thesis.
+Determined by the results in the investigations, implementations of the algorithms are deemed scientifically valuable but most likely beyond the scope of this thesis.
 
 
 \section{State of the art}
@@ -210,14 +220,21 @@ The non-trivial direction of this theorem states that implicit definitions can b
 
 
 \subsection{Interpolation algorithms}
+\label{algos}
 
-Constructive proofs of the interpolation theorem directly give rise to algorithms for computing interpolants. For instance in \cite{takeuti1987proof}, the well known Maehara lemma is used in the proof, which forms an efficient procedure for extracting interpolants from first-order LK proofs, but fails in the presence of equality.
+Constructive proofs of the interpolation theorem directly give rise to algorithms for computing interpolants.
+For instance in \cite{takeuti1987proof}, the well known Maehara lemma is used in the proof, which forms an efficient procedure for extracting interpolants from first-order LK proofs but does not consider equality and function symbols.
+It is unknown to the author whether the approach can be generalized to include
 
-TODO: Huang
+\cite{Huang95} describes an algorithm for first order logic with equality in the resolution calculus. In a two stage approach, an initially constructed relational interpolant is later stripped of non-common constant and function symbols by overbinding them.
+\cite{Pudlak97} and \cite{krajivcek1997interpolation} independently propose similar approaches, whereas both are restricted to propositional logic.
 
-TODO: HKP
+In \cite{baaz2011methods}, also a two step approach is proposed for first order logic without equality.
+The interesting difference to \cite{Huang95} lies in the proof method:
+While in the latter the overbinding in the second stage only works for the kind of interpolants which have been constructed in the first stage of this very algorithm, the method of \cite{baaz2011methods} argues about correctness of the overbinding based directly on the properties of relational interpolants.
+This more flexible and powerful approach appears to fail in the presence of equality.
 
-TODO: McMillan
+Another noteworthy and in fact one of the first interpolation algorithms of empirical relevance was introduced in \cite{McMillan03}.
 
 
 
