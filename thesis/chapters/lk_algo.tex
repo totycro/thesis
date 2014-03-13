@@ -1,0 +1,258 @@
+
+
+\newcommand{\seq}{\vdash} % the sequent sign
+\newcommand{\impl}{\supset} %logical connectives: implies, not, and, or
+\renewcommand{\lnot}{\neg}
+\renewcommand{\land}{\wedge}
+\renewcommand{\lor}{\vee}
+
+
+\newcommand{\UnaryInfCm}[1]{\UnaryInfC{$#1$}}
+\newcommand{\BinaryInfCm}[1]{\BinaryInfC{$#1$}}
+\newcommand{\RightLabelm}[1]{\RightLabel{$#1$}}
+\newcommand{\AxiomCm}[1]{\AxiomC{$#1$}}
+\newcommand{\mt}[1]{\textnormal{#1}}
+
+\subsubsection*{Axioms}
+
+\begin{prooftree}
+\AxiomCm{}
+\RightLabelm{(\mt{Identity Axiom})}
+\UnaryInfCm{\Gamma, A \seq \Delta, A}
+\end{prooftree}
+Interpolant: $A$
+
+\begin{prooftree}
+\AxiomCm{}
+\RightLabelm{(\mt{Reflexivity Axiom})}
+\UnaryInfCm{\Gamma \seq \Delta, t = t}
+\end{prooftree}
+Interpolant: $\top$
+
+\subsubsection*{Cut}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, A}
+  \AxiomCm{\Sigma, A \seq \Pi}
+  \RightLabelm{(\mt{cut})}
+  \BinaryInfCm{\Gamma, \Sigma \seq \Delta, \Pi}
+  \end{prooftree}
+Interpolant: TODO
+
+\subsubsection*{Structural rules}
+
+EASY
+
+\begin{multicols}{2}
+
+  \subsubsection*{Left rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta}
+  \RightLabelm{(\mt{w:l})}
+  \UnaryInfCm{\Gamma, A \seq \Delta}
+  \end{prooftree}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, A, A \seq \Delta}
+  \RightLabelm{(\mt{c:l})}
+  \UnaryInfCm{\Gamma, A \seq \Delta}
+  \end{prooftree}
+
+  \subsubsection*{Right rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta}
+  \RightLabelm{(\mt{w:r})}
+  \UnaryInfCm{\Gamma \seq \Delta, A}
+  \end{prooftree}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, A, A}
+  \RightLabelm{(\mt{c:r})}
+  \UnaryInfCm{\Gamma \seq \Delta, A}
+  \end{prooftree}
+
+\end{multicols}
+
+
+
+\subsubsection*{Propositional rules}
+
+\begin{multicols}{2}
+
+  \subsubsection*{Left rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, A \seq \Delta}
+  \RightLabelm{(\land\mt{l}_1)}
+  \UnaryInfCm{\Gamma, A \land B \seq \Delta}
+  \end{prooftree}
+Interpolant: $I_1$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, B \seq \Delta}
+  \RightLabelm{(\land\mt{l}_2)}
+  \UnaryInfCm{\Gamma, A \land B \seq \Delta}
+  \end{prooftree}
+Interpolant: $I_1$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, A \seq \Delta}
+  \AxiomCm{\Sigma, B \seq \Pi}
+  \RightLabelm{(\lor\mt{:l})}
+  \BinaryInfCm{\Gamma, \Sigma, A \lor B \seq \Delta, \Pi}
+  \end{prooftree}
+Interpolant: $I_1 \lor I_2$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, A}
+  \RightLabelm{(\lnot\mt{:l})}
+  \UnaryInfCm{\Gamma, \neg A \seq \Delta}
+  \end{prooftree}
+Interpolant: $I_1$ (considering proper coloring (global view))
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, A}
+  \AxiomCm{\Sigma, B \seq \Pi}
+  \RightLabelm{(\impl\mt{:l})}
+  \BinaryInfCm{\Gamma, \Sigma, A \impl B \seq \Delta, \Pi}
+  \end{prooftree}
+Interpolant: $I_1 \lor I_2$ (again with global view)
+
+
+
+  \subsubsection*{Right rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, A}
+  \AxiomCm{\Sigma \seq \Pi, B}
+  \RightLabelm{(\land\mt{:r})}
+  \BinaryInfCm{\Gamma, \Sigma \seq \Delta, \Pi, A \land B}
+  \end{prooftree}
+Interpolant: $I_1 \land I_2$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, A}
+  \RightLabelm{(\lor\mt{:r}_1)}
+  \UnaryInfCm{\Gamma \seq \Delta, A \lor B}
+  \end{prooftree}
+Interpolant: $I_1$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, B}
+  \RightLabelm{(\lor\mt{:r}_2)}
+  \UnaryInfCm{\Gamma \seq \Delta, A \lor B}
+  \end{prooftree}
+Interpolant: $I_1$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, A\seq \Delta}
+  \RightLabelm{(\lnot\mt{:r})}
+  \UnaryInfCm{\Gamma \seq \Delta, \neg A}
+  \end{prooftree}
+Interpolant: $I_1$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, A \seq B, \Delta}
+  \RightLabelm{(\impl\mt{:r})}
+  \UnaryInfCm{\Gamma \seq A \impl B, \Delta}
+  \end{prooftree}
+Interpolant: $I_1 (global view)$
+
+\end{multicols}
+
+\subsubsection*{Quantification roles}
+
+\begin{multicols}{2}
+
+  \subsubsection*{Left rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, A[t/x] \seq \Delta}
+  \RightLabelm{(\forall\mt{:l})}
+  \UnaryInfCm{\Gamma, \forall x A \seq \Delta}
+  \end{prooftree}
+Interpolant: $I_1$
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma, A[y/x] \seq \Delta}
+  \RightLabelm{(\exists\mt{:l})}
+  \UnaryInfCm{\Gamma, \exists x A \seq \Delta}
+  \end{prooftree}
+Interpolant: $I_1$, possibly overbinding eigenvar
+
+  \subsubsection*{Right rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq A[y/x] \Delta}
+  \RightLabelm{(\forall\mt{:r})}
+  \UnaryInfCm{\Gamma \seq \forall x A, \Delta}
+  \end{prooftree}
+Interpolant: $I_1$, possibly overbinding eigenvar
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq A[t/x] \Delta}
+  \RightLabelm{(\exists\mt{:r})}
+  \UnaryInfCm{\Gamma \seq \exists x A, \Delta}
+  \end{prooftree}
+Interpolant: $I_1$
+
+\end{multicols}
+
+The variable $y$ must not occur free in $\Gamma$ or $\Delta$. The term $t$ must avoid variable capture, i.e. it must not contain free occurrences of variables bound in $A$.
+
+
+\subsubsection*{Equational rules}
+
+\begin{multicols}{2}
+
+  \subsubsection*{Left rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, s=t}
+  \AxiomCm{\Sigma, A[T/s] \seq \Pi}
+  \RightLabelm{(\mt{=:l}_1)}
+  \BinaryInfCm{\Gamma, \Sigma, A[T/t] \seq \Delta, \Pi}
+  \end{prooftree}
+Interpolant: $I = I_12$.
+Proof of first implication:
+Supp $M \models LHS$. Then $M \models I_1$
+
+Proof of 2nd implication:
+Supp $M \models I$.
+As $M \models I_1$, $M \models \Delta \lor s=t$. If $M \models \Delta$, we are done. Otw $M \models s=t$. 
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, s=t}
+  \AxiomCm{\Sigma, A[T/t] \seq \Pi}
+  \RightLabelm{(\mt{=:l}_2)}
+  \BinaryInfCm{\Gamma, \Sigma, A[T/s] \seq \Delta, \Pi}
+  \end{prooftree}
+	symmetric
+
+  \subsubsection*{Right rules}
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, s=t}
+  \AxiomCm{\Sigma \seq \Pi, A[T/s]}
+  \RightLabelm{(\mt{=:r}_1)}
+  \BinaryInfCm{\Gamma, \Sigma \seq \Delta, \Pi, A[T/t]}
+  \end{prooftree}
+Interpolant: $I = I_1 \land I_2$.
+Proof of 2nd implications:
+Supp $M \models I$. If $M \models \Pi$, we are done. Otherwise $M \models A[T/s]$. 
+If $M \models \Delta$, we are done. Otherwise $M \models s=t$. But then $M \models A[T/t]$.
+
+  \begin{prooftree}
+  \AxiomCm{\Gamma \seq \Delta, s=t}
+  \AxiomCm{\Sigma, \seq \Pi, A[T/t]}
+  \RightLabelm{(\mt{=:r}_2)}
+  \BinaryInfCm{\Gamma, \Sigma \seq \Delta, \Pi, A[T/s]}
+  \end{prooftree}
+	symmetric
+
+\end{multicols}
+
+
+
