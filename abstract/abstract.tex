@@ -125,12 +125,14 @@ numbers=left
 \newcommand{\myts}[1]{\ensuremath{\text{ #1 }}}
 
 %\setlength{\parindent}{0em}
-%\usepackage{thmtools} % actually already in latex_header.tex ...
+\usepackage{thmtools} % actually already in latex_header.tex ... % sometimes commented out 
 
 \usepackage{amsthm}
 
-\theoremstyle{definition}
-\newtheorem{thm}{Theorem}
+%\theoremstyle{definition}
+%\newtheorem{thm}{Theorem}
+\declaretheorem[qed=$\dagger$,title=Theorem]{thm}
+%\declaretheorem[title=Theorem,shaded]{thm}
 
 
 \begin{document}
@@ -210,7 +212,7 @@ Current research and application is rooted in the fundamental result by Craig (\
 	\begin{compactenum}
 		\item $ A \limpl I$ is valid 
 		\item $I \land B$ is unsatisfiable
-		\item the non-logical symbols of $I$ are only those that appear in both $A$ and $B$.
+		\item the non-logical symbols of $I$ are only those that appear in both $A$ and $B$. \qedhere
 	\end{compactenum}
 \end{thm}
 \end{samepage}
