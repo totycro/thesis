@@ -188,7 +188,7 @@ Interpolants:
 	\BinaryInfCm{ (\lnot Q(u) \land g(u) = u) \lor (\top \land g(u) \neq u) }
 
 	\RightLabelm{\theta_3}
-	\BinaryInfCm{ (\lnot P(f(c)) \land R(d)) \spa \lor ( P(f(c)) \land (\lnot Q(f(c)) \land g(f(c)) = f(c)) \spa \lor g(f(c)) \neq f(c) )}
+	\BinaryInfCm{ (\lnot P(f(c)) \land R(d)) \spa \lor ( P(f(c)) \land ((\lnot Q(f(c)) \land g(f(c)) = f(c)) \spa \lor g(f(c)) \neq f(c) ))}
 \end{prooftree}
 \bigskip
 
@@ -221,15 +221,14 @@ Relative interpolant properties:
 
 	Proof: Either $\lnot P(f(c))$, then $R(d)$.
 	\newline Otw. either $g(f(c)) \neq f(c)$.
-	\newline Otw. $\lnot Q(f(c))$ anyway. & &
+	\newline Otw. also $\lnot Q(f(c))$. & &
 
 	$\Pi \proves \lnot \theta_3$  
 
 	\small
 	Proof:
 	\newline$\lnot (\lnot P(fc) \land R(d)) \spa \lor ( P(fc) \land (\lnot Q(fc) \land     g(fc) = fc) \spa \lor g(fc) \neq fc )$ 
-	\newline $ \equiv (P(fc) \lor \lnot R(d)) \spa \land
-	( \lnot P(fc) \lor (Q(fc) \lor  g(fc) \neq fc) \spa \land g(fc) = fc )$ 
+	\newline $ \equiv (P(fc) \lor \lnot R(d)) \spa \land ( \lnot P(fc) \lor (Q(fc) \lor  g(fc) \neq fc) \spa \land g(fc) = fc )$ 
 
 	Have $g(fc) = fc$ and $\lnot R(d)$, so remaining:
 	$ \lnot P(fc) \lor Q(fc) $. Get by axiom and unification with $g(u) = u$.
@@ -240,11 +239,61 @@ Relative interpolant properties:
 	\hline 
 \end{tabularx}
 
-
 $ \Sigma = \{ R(z) \lor P(f(c)), \lnot Q(y),  \} $
 
 $ \Pi = \{ g(u) = u, \lnot P(g(v)) \lor Q(v), \lnot R(d) \}$
+\medskip
 
+
+Propositional refutation tree (no non-trivial unifiers):
+\begin{prooftree}
+	\AxiomCm{\sig{R(d) \lor P(f(c))}}
+	\AxiomCm{\p{\lnot R(d)}}
+	\BinaryInfCm{P(f(c))}
+
+	\AxiomCm{\p{\lnot P(g(f(c))) \lor Q(f(c))}}
+	\AxiomCm{\sig{\lnot Q(f(c))}}
+	\BinaryInfCm{\lnot P(g(f(c)))}
+
+	\AxiomCm{\p{g(f(c)) = f(c)}}
+	\BinaryInfCm{\lnot P(f(c))}
+
+	\BinaryInfCm{\square}
+\end{prooftree}
+\bigskip
+
+Lifting:
+\medskip
+
+terms: $g(f(c)), f(c), d$
+
+max $\Pi$-terms: $\{g(f(c)), d\} \sim \{x_1, x_2\}$
+
+max $\Sigma$-terms: $\{f(c)\} \sim \{x_3\}$
+\medskip
+
+$\overline{(\lnot P(f(c)) \land R(d)) \spa \lor ( P(f(c)) \land ((\lnot Q(f(c)) \land g(f(c)) = f(c)) \spa \lor g(f(c)) \neq f(c) ))}(x_1, x_2)$
+
+$ \Lra (\lnot P(f(c)) \land R(x_2) \spa \lor ( P(f(c)) \land ((\lnot Q(f(c)) \land x_1 = f(c)) \spa \lor x_1 \neq f(c) ))$
+\medskip
+
+By Lemma 12, $\Sigma \entails \overline{\theta_3}$ (proof from above still goes through).
+
+ %$\lnot \theta_3  \equiv (P(fc) \lor \lnot R(d)) \spa \land ( \lnot P(fc) \lor (Q(fc) \lor  g(fc) \neq fc) \spa \land g(fc) = fc )$
+
+$\hat{\theta}(x_3) =
+(\lnot P(x_3) \land R(x_2)) \spa \lor ( P(x_3) \land ((\lnot Q(x_3) \land x_1 = x_3) \spa \lor x_1 \neq x_3 ) )$
+
+$\theta = \forall x_1 \forall x_2 \exists x_3 (\lnot P(x_3) \land R(x_2)) \spa \lor ( P(x_3) \land ((\lnot Q(x_3) \land x_1 = x_3) \spa \lor x_1 \neq x_3 ) ) $
+
+$\lnot \theta = 
+\exists x_1 \exists x_2 \forall x_3 (P(x_3) \lor \lnot R(x_2)) \spa \land ( \lnot P(x_3) \lor ((Q(x_3) \lor x_1 \neq x_3) \spa \land x_1 = x_3 )) $
+
+
+$\Ra \Sigma \proves \theta; \Pi \proves \lnot \theta$
+
+
+TODO: $\Pi \proves \lnot \theta$ does not hold, $\exists x_1 \forall x_3 x_1 = x_3$
 
 
 \end{document}
