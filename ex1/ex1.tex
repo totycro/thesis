@@ -1,7 +1,8 @@
 \documentclass[,%fontsize=11pt,%
 			paper=a4,% 
+			landscape,
 			%DIV12, % mehr text pro seite als defaultyyp
-			DIV12,
+			DIV18,
 			%DIV=calc,%
 			%twoside=false,%
 			liststotoc,
@@ -135,17 +136,22 @@ numbers=left
 \usepackage{tikz-qtree}
 
 \begin{document}
-$ \Sigma = \{ R(z) \lor \exists x P(f(x)), \lnot Q(x),  \} $
+$ \Sigma' = \{ R(z) \lor \exists x P(f(x)), \lnot Q(x),  \} $
 
-$ \Pi = \{ \forall y\,g(y) = y, \forall y \lnot P(g(y)) \lor Q(y), \lnot R(d) \}$
+$ \Pi' = \{ \forall y\,g(y) = y, \forall y \lnot P(g(y)) \lor Q(y), \lnot R(d) \}$
 
-$ \sk(\Sigma) = \{ R(z) \lor P(f(c)), \lnot Q(y),  \} $
+$ \Sigma = \sk(\Sigma') = \{ R(z) \lor P(f(c)), \lnot Q(y),  \} $
 
-$ \sk(\Pi) = \{ g(u) = u, \lnot P(g(v)) \lor Q(v), \lnot R(d) \}$
+$ \Pi = \sk(\Pi') = \{ g(u) = u, \lnot P(g(v)) \lor Q(v), \lnot R(d) \}$
+
+$ L(\Sigma) = \{ R, P, Q, f, z, x, c\}$
+
+$ L(\Pi) = \{ R, P, Q, g, u, v, d\}$
 
 \newcommand{\sig}[1]{{#1}_\Sigma}
 \newcommand{\p}[1]{{#1}_\Pi}
 
+Refutation:
 \begin{prooftree}
 	\AxiomCm{\sig{R(z) \lor P(f(c))}}
 	\AxiomCm{\p{\lnot R(d)}}
@@ -165,6 +171,79 @@ $ \sk(\Pi) = \{ g(u) = u, \lnot P(g(v)) \lor Q(v), \lnot R(d) \}$
 	\BinaryInfCm{\square}
 \end{prooftree}
 
+Interpolants:
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\RightLabelm{\theta_0}
+	\BinaryInfCm{ (\lnot R(d) \land \bot) \lor (R(d) \land \top) \equiv R(d) }
+
+	\AxiomCm{\top}
+	\AxiomCm{\bot}
+	\RightLabelm{\theta_1}
+	\BinaryInfCm{ (\lnot Q(y) \land \top) \lor (Q(y) \land \top) \equiv \lnot Q(y) }
+
+	\AxiomCm{\top}
+	\RightLabelm{\theta_2}
+	\BinaryInfCm{ (\lnot Q(u) \land g(u) = u) \lor (\top \land g(u) \neq u) }
+
+	\RightLabelm{\theta_3}
+	\BinaryInfCm{ (\lnot P(f(c)) \land R(d)) \spa \lor ( P(f(c)) \land (\lnot Q(f(c)) \land g(f(c)) = f(c)) \spa \lor g(f(c)) \neq f(c) )}
+\end{prooftree}
+\bigskip
+
+
+Relative interpolant properties:
+\medskip
+
+\begin{tabularx}{\textwidth}{|cp{0em}Xp{0em}X|}
+	\hline
+	$\theta_0:$ &  &
+	$\Sigma \proves R(d) \lor P(f(c))$ & &
+	$\Pi \proves \lnot R(d) \lor P(f(c))$ \\
+	\hline
+
+	$\theta_1:$ &  &
+	$\Sigma \proves \lnot Q(y) \lor \lnot P(g(y))$ & &
+	$\Pi \proves Q(y) \lor \lnot P(g(y)) $ \\
+	\hline
+
+
+	$\theta_2:$ &  &
+	$\Sigma \proves (\lnot Q(u) \land g(u) = u) \lor g(u) \neq u \spa \lor \lnot P(u) $ & &
+	$\Pi \proves \lnot( (\lnot Q(u) \land g(u) = u) \lor g(u) \neq u) \spa \lor \lnot P(u)$\newline  
+	$\Pi \proves ((Q(u) \lor g(u) \neq u) \land g(u) = u) \spa \lor \lnot P(u)$ 
+	\\
+	\hline
+
+	$\theta_3:$ &  &
+	$\Sigma \proves \theta_3$ 
+
+	Proof: Either $\lnot P(f(c))$, then $R(d)$.
+	\newline Otw. either $g(f(c)) \neq f(c)$.
+	\newline Otw. $\lnot Q(f(c))$ anyway. & &
+
+	$\Pi \proves \lnot \theta_3$  
+
+	\small
+	Proof:
+	\newline$\lnot (\lnot P(fc) \land R(d)) \spa \lor ( P(fc) \land (\lnot Q(fc) \land     g(fc) = fc) \spa \lor g(fc) \neq fc )$ 
+	\newline $ \equiv (P(fc) \lor \lnot R(d)) \spa \land
+	( \lnot P(fc) \lor (Q(fc) \lor  g(fc) \neq fc) \spa \land g(fc) = fc )$ 
+
+	Have $g(fc) = fc$ and $\lnot R(d)$, so remaining:
+	$ \lnot P(fc) \lor Q(fc) $. Get by axiom and unification with $g(u) = u$.
+
+	
+
+	\\
+	\hline 
+\end{tabularx}
+
+
+$ \Sigma = \{ R(z) \lor P(f(c)), \lnot Q(y),  \} $
+
+$ \Pi = \{ g(u) = u, \lnot P(g(v)) \lor Q(v), \lnot R(d) \}$
 
 
 
