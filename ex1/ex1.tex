@@ -274,7 +274,7 @@ max $\Sigma$-terms: $\{f(c)\} \sim \{x_3\}$
 
 $\overline{(\lnot P(f(c)) \land R(d)) \spa \lor ( P(f(c)) \land ((\lnot Q(f(c)) \land g(f(c)) = f(c)) \spa \lor g(f(c)) \neq f(c) ))}(x_1, x_2)$
 
-$ \Lra (\lnot P(f(c)) \land R(x_2) \spa \lor ( P(f(c)) \land ((\lnot Q(f(c)) \land x_1 = f(c)) \spa \lor x_1 \neq f(c) ))$
+$ \Lra \lnot P(f(c)) \land R(x_2) \spa \lor ( P(f(c)) \land ((\lnot Q(f(c)) \land x_1 = f(c)) \spa \lor x_1 \neq f(c) ))$
 \medskip
 
 By Lemma 12, $\Sigma \entails \overline{\theta_3}$ (proof from above still goes through).
@@ -284,17 +284,88 @@ By Lemma 12, $\Sigma \entails \overline{\theta_3}$ (proof from above still goes 
 $\hat{\theta}(x_3) =
 (\lnot P(x_3) \land R(x_2)) \spa \lor ( P(x_3) \land ((\lnot Q(x_3) \land x_1 = x_3) \spa \lor x_1 \neq x_3 ) )$
 
-$\theta = \forall x_1 \forall x_2 \exists x_3 (\lnot P(x_3) \land R(x_2)) \spa \lor ( P(x_3) \land ((\lnot Q(x_3) \land x_1 = x_3) \spa \lor x_1 \neq x_3 ) ) $
 
-$\lnot \theta = 
-\exists x_1 \exists x_2 \forall x_3 (P(x_3) \lor \lnot R(x_2)) \spa \land ( \lnot P(x_3) \lor ((Q(x_3) \lor x_1 \neq x_3) \spa \land x_1 = x_3 )) $
+quantifiers according to order: $|d| < |f(c)| < |g(f(c))| $
+
+$\theta = \forall x_2 \exists x_3 \forall x_1 (\lnot P(x_3) \land R(x_2)) \spa \lor ( P(x_3) \land (\lnot Q(x_3)  \lor x_1 \neq x_3 ) ) $
+
+$\lnot \theta = \exists x_2 \forall x_3 \exists x_1 (P(x_3) \lor \lnot R(x_2)) \spa \land ( \lnot P(x_3) \lor (Q(x_3)  \land x_1 = x_3 )) $
 
 
 $\Ra \Sigma \proves \theta; \Pi \proves \lnot \theta$
 
 
-TODO: $\Pi \proves \lnot \theta$ does not hold, $\exists x_1 \forall x_3 x_1 = x_3$
+\clearpage
+Example 2:
 
+$ \Sigma = \{ P(c), \lnot P(d) \}$
+
+$ \Pi = \{ P(d) \lor g(u) = u, \lnot P(g(x)) \}$
+
+Refutation:
+\begin{prooftree}
+	\AxiomCm{\p{P(d) \lor g(u) = u}}
+	\AxiomCm{\sig{\lnot P(d) }}
+	\BinaryInfCm{g(u) = u}
+
+	\AxiomCm{\p{\lnot P(g(x)}}
+	\RightLabelm{u \mapsto x}
+	\BinaryInfCm{\lnot P(x)}
+
+	\AxiomCm{\sig{P(c)}}
+
+	\RightLabelm{x \mapsto c}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+Relative interpolants:
+\begin{prooftree}
+	\AxiomCm{\top}
+	\AxiomCm{\bot}
+
+	\BinaryInfCm{ (\lnot P(d) \land \top) \lor (P(d) \land \bot) \equiv \lnot P(d)}
+
+	\AxiomCm{\top}
+	\RightLabelm{u \mapsto x}
+	\BinaryInfCm{ (g(x) = x \land \top ) \lor (g(x) \neq x \land \lnot P(d))}
+
+	\AxiomCm{\bot}
+
+	\RightLabelm{x \mapsto c}
+\BinaryInfCm{ (\lnot P(c) \land \bot) \lor P(c) \land (g(c) = c  \lor (g(c) \neq c \land \lnot P(d))) }
+\end{prooftree}
+
+ $\theta = P(c) \land (g(c) = c  \lor \lnot P(d))$
+
+ $\lnot \theta = \lnot P(c) \lor ( g(c) \neq c \land P(d)) $
+
+terms: $ g(c), c, d$
+
+max $\Pi$-terms: $ g(c) $
+
+max $\Sigma$-terms: $ c $
+
+ordered by length {\huge ASCENDING}: $\{ c, g(c) \}$
+
+$\overline \theta (x_2) = 
+P(c) \land (x_2 = c  \lor \lnot P(d))$
+
+$\hat \theta (x_1) =  
+P(x_1) \land (x_2 = x_1  \lor \lnot P(d))$
+
+$ \Sigma \proves 
+\exists x_1 \forall x_2 P(x_1) \land (x_2 = x_1  \lor \lnot P(d))$
+
+$ \Pi \proves \lnot 
+\exists x_1 \forall x_2 P(x_1) \land (x_2 = x_1  \lor \lnot P(d))$
+
+$ \Pi \proves 
+\forall x_1 \exists x_2 \lnot P(x_1) \lor (x_2 \neq x_1  \land P(d))$
+
+
+\bigskip
+
+
+A possible interpolant: $ \lnot P(d) \land \exists x P(x) $
 
 \end{document}
-
