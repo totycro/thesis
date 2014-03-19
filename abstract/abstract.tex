@@ -1,7 +1,7 @@
 \documentclass[,%fontsize=11pt,%
 			paper=a4,% 
 			%DIV12, % mehr text pro seite als defaultyyp
-			DIV11, % defaulttyp
+			DIV11,
 			%DIV=calc,%
 			%twoside=false,%
 			liststotoc,
@@ -142,17 +142,8 @@ numbers=left
 \section{Motivation and problem statement}
 \label{motivation}
 
-After decades of continued research, the area of software verification still lacks effective methods for reasoning about real world programs, which is necessary to prove vital safety or liveness properties.
-The emergence of symbolic model checking and bounded model checking constitute considerable advances.
-Here, the set of reachable states of a program are described by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
-However for actually finding suitable abstractions, sophisticated methods are required.
 
-Furthermore, in dealing with programs with loops with an a priori unknown number of iterations, it is necessary to infer loop invariants in order to be able to give a meaningful guarantee of the state of the program afterwards. Finding such an invariant still is a highly non-trivial problem.
-
-In recent years, the approach of applying Craig interpolation to solve both of these problems enjoyed increasing popularity, especially after successful applications for instance in \cite{McMillan03} for use in abstraction or \cite{weissenbacher2010} for use in loop invariant generation.
-
-The Interpolation theorem is a long known basic result of mathematical logic.
-Interpolants lay bare certain logical relations between formulas or sets of formulas in a concise way. 
+The interpolation theorem is a long known basic result of mathematical logic (cf.~ \cite{craig57linear}).  Interpolants lay bare certain logical relations between formulas or sets of formulas in a concise way. 
 This process is fully analytic in the sense that interpolants can efficiently be calculated from proofs of the relations of the formulas.
 Leveraging the tremendous progress of automatic deduction systems in the last decades, obtaining the required proofs is feasible.
 
@@ -182,11 +173,11 @@ often restricted to weaker logics, application to more powerful formalisms such 
 %Currently no procedures of practical applicability are known for this logic,  
 %This should be accomplished by either improving existing solutions such as the aforementioned procedure by Craig or exploring a novel approach.
 
-This thesis aims at giving comprehensive account of existing techniques and results with respect to interpolation in full first order logic with equality.
+This thesis aims at giving comprehensive account of existing techniques and results with respect to interpolation in \textbf{full first order logic with equality}.
 This includes different proofs of interpolation results with a focus on constructive proofs which give rise to concrete and implementation-ready algorithms for finding interpolants.
 These algorithms, as listed in \S~\ref{algos}, will be presented, analysed and compared. 
 
-Dependant on the respective findings, improvements or extensions of these algorithms will be investigated.
+Depending on the respective findings, improvements or extensions of these algorithms will be investigated.
 More concretely, developing an efficient interpolation algorithm for LK and extending existing approaches without equality to include equality are among the central research interests.
 
 Non-constructive methods, especially of a model theoretic nature, will be treated in order to form a theoretical baseline and to give a broader picture.
@@ -212,18 +203,21 @@ Current research and application is rooted in the fundamental result by Craig (\
 	\begin{compactenum}
 		\item $ A \limpl I$ is valid 
 		\item $I \land B$ is unsatisfiable
-		\item the non-logical symbols of $I$ are only those that appear in both $A$ and $B$. \qedhere
+		\item the non-logical symbols of $I$ are only those that occur in both $A$ and $B$. \qedhere
 	\end{compactenum}
 \end{thm}
 \end{samepage}
 
-This basic result has been proven in different formalisms using different syntactic methods (cf.~e.g.~\cite{craig57linear}; \cite{takeuti1987proof}; \cite{krajivcek1997interpolation}; \cite{Pudlak97}), but also via semantic, model theoretic means (cf.~e.g.~\cite[section 5.2]{shoenfield1967mathematical}; \cite[theorem~2.2.20]{chang1990model}).
-To this end, the interpolation theorem can be seen as a corollary Robinson's joint consistency theorem, but even more, latter can also be proven from the former. 
+This basic result has been proven in different formalisms using different syntactic methods (cf.~e.g.~\cite{craig57linear}; \cite{takeuti1987proof}), but also via semantic, model theoretic means (cf.~e.g.~\cite[section 5.2]{shoenfield1967mathematical}; \cite[theorem~2.2.20]{chang1990model}).
+In this respect, Robinson's joint consistency theorem is equivalent to the interpolation theorem.
+%
+%To this end, the interpolation theorem can be seen as a corollary Robinson's joint consistency theorem, but even more, latter can also be proven from the former. 
+%
 This suggest a close relation between one the one hand the proof-theoretic and on the other hand the model-theoretic view.
 
-Another major corollary of the interpolation theorem is given by Beth in form of the definability theorem, which shows that the notions of implicit and explicit definability coincide.
+A major corollary of the interpolation theorem is given by Beth in form of the definability theorem, which shows that the notions of implicit and explicit definability coincide in first order logic.
 In shallow terms, an implicit definitions refers to a definition by usage in a formula, whereas an explicit definition gives a definition in terms of another formula.
-The non-trivial direction of this theorem states that implicit definitions can be converted into explicit ones and can be proved by using the an interpolant as explicit definition.
+The non-trivial direction of this theorem states that implicit definitions can be converted into explicit ones and can be proved by using an interpolant as explicit definition.
 
 
 \subsection{Interpolation algorithms}
@@ -235,17 +229,37 @@ It is unknown to the author whether the approach can be generalized to handle eq
 
 \cite{Huang95} describes an algorithm for extracting interpolants from proofs from first order resolution calculus with equality.
 In a two stage approach, an initially constructed relational interpolant is later stripped of non-common constant and function symbols by overbinding them.
-\cite{Pudlak97} and \cite{krajivcek1997interpolation} independently propose similar approaches, whereas both are restricted to propositional logic.
 
 In \cite{baaz2011methods}, also a two step approach is proposed for first order logic without equality.
 The interesting difference to \cite{Huang95} lies in the proof method:
 While in the latter the overbinding in the second stage only works for the kind of interpolants which have been constructed in the first stage of this very algorithm, the method of \cite{baaz2011methods} argues about correctness of the overbinding based directly on the properties of relational interpolants.
 This works for any interpolant and is therefore a more flexible and powerful approach.
 
+
+\subsection{Applications of interpolation}
+
+In the area of software verification, deriving logical information about program states is essential for reasoning about real world programs.
+For instance in model checking, the set of reachable states of a program is described by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
+In \cite{McMillan03}, the idea of using interpolation for finding suitable abstractions was proposed and successfully applied, which subsequently sparked further research interest. 
+
+Furthermore, in dealing with programs with loops with an a priori unknown number of iterations, it is necessary to infer loop invariants in order to be able to give a meaningful guarantee of the state of the program afterwards.
+In \cite{weissenbacher2010}, these invariants are deduced by means of interpolation.
+
+In contrast to this practical applications, interpolation also serves theoretical aspirations: In \cite{Pudlak97} as well as in \cite{krajivcek1997interpolation}, interpolation is employed in the process of proving lower bounds of the length of proofs of propositional proof systems.
+
+
+\begin{comment}
+After decades of continued research, the area of software verification still lacks effective methods for reasoning about real world programs, which is necessary to prove vital safety or liveness properties.
+The emergence of symbolic model checking and bounded model checking constitute considerable advances.
+Here, the set of reachable states of a program are described by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
+However for actually finding suitable abstractions, sophisticated methods are required.
+
+
+In recent years, the approach of applying Craig interpolation to solve both of these problems enjoyed increasing popularity, especially after successful applications for instance in \cite{McMillan03} for use in abstraction or \cite{weissenbacher2010} for use in loop invariant generation.
+
+
 Another noteworthy and in fact one of the first interpolation algorithms of practical interest was introduced in \cite{McMillan03}, where it was also embedded in a model checking procedure.
-
-
-
+\end{comment}
 
 \section{Relevance to the curriculum of Computational Intelligence}
 

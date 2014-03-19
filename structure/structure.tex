@@ -142,6 +142,12 @@ numbers=left
 	\item related work (quantifier free, local proofs, propositional)
 \end{itemize}
 
+\subsection{Possible TODOs}
+\begin{itemize}
+	\item LK-algorithm with equality
+	\item LK-algorithm with grey cuts
+\end{itemize}
+
 \section{Intro/Motivation}
 
 	vague description
@@ -153,7 +159,7 @@ numbers=left
 
 		idea of construction from proofs
 
-		relation of interpolant length to min proof length (pudlak97)
+		interpolation in HOL (gegenbeispiel?)
 	\subsubsection{Problem of equality}
 		equality in interpolant necessary
 
@@ -164,8 +170,13 @@ numbers=left
 
 		auch von Henzinger. Abstractions from proofs
 
+		relation of interpolant length to min proof length (pudlak97)
+
 
 \section{Constructive Proofs/Algorithms for interpolation w.r.t. how they (can) handle equality}
+
+	\subsection{Resolution}
+	\subsubsection{Interpolation is skolemisation-invariant}
 	\subsection{Reduction to FOL without equality (Craig)}
 		not practical, but proves the basic result
 	\subsection{Overbinding during interpolant extraction as in Takeuti}
@@ -181,7 +192,7 @@ numbers=left
 		present full paper
 		
 
-\section{Further results}
+\section{Further results -- theory}
 	\subsection{Semantic proofs -- model theoretic perspective}
 		shoenfield, chang/keisler
 
@@ -190,10 +201,11 @@ numbers=left
 
 	\subsection{Beth definability}
 
-	\subsection{Interpolation is skolemisation-invariant}
 
 	\subsection{Lyndon}
-	also motohashi, fujiwara
+	also henkin, oberschelp, motohashi, fujiwara
+
+	possibly add as strengthenings right after craigs result?
 
 
 \end{document}
