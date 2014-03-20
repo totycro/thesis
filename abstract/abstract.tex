@@ -1,7 +1,7 @@
 \documentclass[,%fontsize=11pt,%
 			paper=a4,% 
 			%DIV12, % mehr text pro seite als defaultyyp
-			DIV11,
+			DIV10,
 			%DIV=calc,%
 			%twoside=false,%
 			liststotoc,
@@ -127,7 +127,7 @@ numbers=left
 %\setlength{\parindent}{0em}
 
 
-\theoremstyle{definition}
+%\theoremstyle{definition}
 %\newtheorem{thm}{Theorem}
 \declaretheorem[qed=$\dagger$,title=Theorem]{thm}
 %\declaretheoremstyle[qed=\qedsymbol]{thmstyle}
@@ -143,7 +143,7 @@ numbers=left
 \label{motivation}
 
 
-The interpolation theorem is a long known basic result of mathematical logic (cf.~ \cite{craig57linear}).  Interpolants lay bare certain logical relations between formulas or sets of formulas in a concise way. 
+The interpolation theorem is a long known basic result of mathematical logic \cite{craig57linear}.  Interpolants lay bare certain logical relations between formulas or sets of formulas in a concise way. 
 This process is fully analytic in the sense that interpolants can efficiently be calculated from proofs of the relations of the formulas.
 Leveraging the tremendous progress of automatic deduction systems in the last decades, obtaining the required proofs is feasible.
 
@@ -198,7 +198,7 @@ Current research and application is rooted in the fundamental result by Craig (\
 
 \begin{samepage}
 \begin{thm}[Interpolation]
-	Let $A$ and $B$ be first-order sentences such that $A \land B$ is refutable. 
+	Let $A$ and $B$ be first-order sentences such that $ A \land B $ is refutable. 
 	Then there exists an interpolant $I$ such that \nopagebreak[4]
 	\begin{compactenum}
 		\item $ A \limpl I$ is valid 
@@ -237,6 +237,7 @@ This works for any interpolant and is therefore a more flexible and powerful app
 
 
 \subsection{Applications of interpolation}
+\label{application}
 
 In the area of software verification, deriving logical information about program states is essential for reasoning about real world programs.
 For instance in model checking, the set of reachable states of a program is described by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
@@ -266,7 +267,7 @@ Another noteworthy and in fact one of the first interpolation algorithms of prac
 Logic as core machinery of computer science is featured prominently in the curriculum of Computational Intelligence, first and foremost in the mandatory module ``Logic and Computability'' as well as the module ``Logic, Mathematics, and Theoretical Computer Science'', but also as essential theoretic foundations of other modules. 
 
 The logic used in this thesis, first-order logic with equality, clearly is among the most common and useful ones; the interpolation theorem is hereby a celebrated result.
-As argued in \S~\ref{motivation}, advancements in this field have direct consequences for the area of formal verification, which is also featured in the curriculum.
+As argued in \S~\ref{application}, advancements in this field have direct consequences for the area of formal verification, which is also featured in the curriculum.
 
 The following courses possess the most direct relation to the topic of this thesis: 
 \begin{itemize}

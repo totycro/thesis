@@ -6,8 +6,25 @@
 \usepackage[T1]{fontenc}
 \usepackage[english,ngerman]{babel}
 
+% in conflict with beamer:
+\usepackage{paralist} % compactenum
+
 
 \input{../latex_header.tex}
+
+% customisation 
+% section numbers for subsections:
+\setsecnumdepth{subsection}
+
+%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
+\newcommand{\thmqed}{$\triangle$} % for thms without proof
+\newcommand{\propqed}{$\triangle$} % for props without proof
+\declaretheorem[title=Theorem,parent=chapter]{thm}
+\declaretheorem[title=Proposition,parent=chapter]{prop}
+\declaretheorem[title=Definition,style=definition,qed=$\triangle$,parent=chapter]{defi}
+\declaretheorem[title=Example,style=definition,qed=$\triangle$,parent=chapter]{exa}
+
+
 
 \usepackage{TUINFDA}
 
@@ -51,6 +68,8 @@
 % define custom macros for specific formats or names
 \newcommand{\uml}[1]{\texttt{#1}}
 \newcommand{\cd}{\textsf{Class Diagram}}
+
+
 
 \begin{document}
 
@@ -104,7 +123,7 @@
 % uncomment to set document language to german (results in "Inhaltsverzeichnis", "Kapitel", "Abbildung", etc. instead of "Contents", "Chapter", and "Figure"), otherwise the document's language is english
 %\selectlanguage{ngerman}
 
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 
 \cleardoublepage
 \pagestyle{numberCorner}
@@ -145,6 +164,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{comment}
+
+
+\chapter{Introduction}
+\input{chapters/interpolation}
 
 \chapter{Constructive Proofs}
 \input{chapters/proofs}

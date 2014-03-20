@@ -104,12 +104,20 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\spa}[1]{\spaced{#1}}
 \newcommand{\spas}[1]{\;{#1}\;}
 
-\newcommand{\sk}{\ensuremath{\text{sk}}}
-\newcommand{\mgu}{\ensuremath{\text{mgu}}}
+% functions
+\newcommand{\sk}{\ensuremath{\mathrm{sk}}}
+\newcommand{\mgu}{\ensuremath{\mathrm{mgu}}}
+\newcommand{\Fun}{\ensuremath{\mathrm{Fun}}}
+\newcommand{\Pred}{\ensuremath{\mathrm{Pred}}}
 
+
+\newcommand{\UICm}[1]{\UnaryInfCm{#1}}
 \newcommand{\UnaryInfCm}[1]{\UnaryInfC{$#1$}}
+\newcommand{\BICm}[1]{\BinaryInfCm{#1}}
 \newcommand{\BinaryInfCm}[1]{\BinaryInfC{$#1$}}
 \newcommand{\RightLabelm}[1]{\RightLabel{$#1$}}
+\newcommand{\LeftLabelm}[1]{\LeftLabel{$#1$}}
+\newcommand{\AXCm}[1]{\AxiomCm{#1}}
 \newcommand{\AxiomCm}[1]{\AxiomC{$#1$}}
 \newcommand{\mt}[1]{\textnormal{#1}}
 
@@ -122,7 +130,7 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\setelements}[2]{\ensuremath{\{#1_1,\:#1_2\:,\dotsc,\:#1_{#2}\}}}
 \newcommand{\pathelements}[2]{\ensuremath{ (#1_1,\:#1_2\:,\dotsc,\:#1_{#2}) }}
 
-\newcommand{\defiemph}[1]{\textbf{#1}}
+\newcommand{\defiemph}[1]{\emph{#1}}
 
 \newcommand{\setofbases}{\ensuremath{\mathcal{B}}}
 \newcommand{\setofcircuits}{\ensuremath{\mathcal{C}}}
