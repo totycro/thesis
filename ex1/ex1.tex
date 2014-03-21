@@ -368,4 +368,225 @@ $ \Pi \proves
 
 A possible interpolant: $ \lnot P(d) \land \exists x P(x) $
 
+\clearpage
+Example 2 (Craig translation):
+
+$ \Sigma = \{ P(c), \lnot P(d) \}$
+
+$ \Pi = \{ P(d) \lor g(u) = u, \lnot P(g(x)) \}$
+
+
+$ T(\Sigma) = \{\forall x\;x=x \} \cup \{ \forall x \forall y\;x=y \limpl P(x) \limpl P(y) \} \cup \Sigma $
+\begin{flalign*}
+	T(\Pi) = & \{\forall x\;x=x \} ~ \cup & \\
+					 & \{ \forall x \forall y\;x=y \limpl P(x) \limpl P(y),
+\forall x_1 \forall x_2 \forall y_1 \forall y_2\;x_1=y_1 \limpl x_2=y_2 \limpl x_1 = x_2 \limpl y_1=y_2,
+\forall x_1 \forall x_2 \forall y_1 \forall y_2\;x_1=y_1 \limpl x_2=y_2 \limpl G(x_1,x_2) \limpl G(y_1,y_2)
+\} ~\cup \\
+				 & \{ P(d) \lor (\exists z G(u, z) \land (\forall y G(u, y) \limpl z=y) \land z = u), \lnot P(g(x))\}
+\end{flalign*}
+
+\clearpage
+
+\begin{multicols}{2}
+Example 3 Bonacina/Johannson:
+
+$\Sigma = \{ A \lor B, \lnot C \}$
+
+$\Pi = \{ \lnot A \lor C, \lnot B \}$
+
+\begin{prooftree}
+	\AxiomCm{\sig{A\lor B }}
+	\AxiomCm{\p{\lnot A\lor C }}
+	\BinaryInfCm{B\lor C}
+	\AxiomCm{\sig{\lnot C }}
+	\BinaryInfCm{B}
+	\AxiomCm{\p{\lnot B }}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+
+Bon/Joh:
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{ (A \lor \bot ) \land \top \equiv A}
+	\AxiomCm{\bot}
+	\BinaryInfCm{ A \land ( \lnot C \lor \bot) \equiv A \land \lnot C }
+	\AxiomCm{\top}
+	\BinaryInfCm{ (B \lor (A \land \lnot C)) \land \top }
+\end{prooftree}
+
+Huang:
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{ (\lnot A \land \bot) \lor (A \land \top) \equiv A  }
+	\AxiomCm{\bot}
+	\BinaryInfCm{ (\lnot C \land A) \lor (C \land \bot) \equiv \lnot C \land A}
+	\AxiomCm{\top}
+	\BinaryInfCm{ ( \lnot B \land (\lnot C \land A)) \lor (B \land  \top)}
+\end{prooftree}
+
+-> logically equivalent
+
+\bigskip
+~
+\bigskip
+
+Example 3B Bonacina/Johannson:
+
+$\Sigma = \{ A \lor B, \lnot C, \lnot D \}$
+
+$\Pi = \{ \lnot A \lor C, \lnot B \lor D \}$
+
+\begin{prooftree}
+	\AxiomCm{\sig{A\lor B }}
+	\AxiomCm{\p{\lnot A\lor C }}
+	\BinaryInfCm{B\lor C}
+	\AxiomCm{\sig{\lnot C }}
+	\BinaryInfCm{B}
+
+	\AxiomCm{\sig{\lnot D }}
+	\AxiomCm{\p{\lnot B \lor D }}
+	\BinaryInfCm{{\lnot B }}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+
+Bon/Joh:
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{ (A \lor \bot ) \land \top \equiv A}
+	\AxiomCm{\bot}
+	\BinaryInfCm{ A \land ( \lnot C \lor \bot) \equiv A \land \lnot C }
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{ \top \land (\lnot D \lor \bot) \equiv \lnot D }
+	\BinaryInfCm{ (B \lor (A \land \lnot C )) \land \lnot D  } %(B \lor (A \land \lnot C)) \land \top }
+\end{prooftree}
+
+Huang:
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{ (\lnot A \land \bot) \lor (A \land \top) \equiv A  }
+	\AxiomCm{\bot}
+	\BinaryInfCm{ (\lnot C \land A) \lor (C \land \bot) \equiv \lnot C \land A}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{ (\lnot D \land \top) \lor (D \land \bot) \equiv \lnot D }
+	\BinaryInfCm{ (\lnot B \land \lnot C \land A) \lor (B \land \lnot D)   } % ( \lnot B \land (\lnot C \land A)) \lor (B \land  \top)}
+\end{prooftree}
+
+-> not logically equivalent
+\end{multicols}
+
+\clearpage
+
+Example 4: Paramodulation special case in Huang
+
+$\Sigma = \{ c=d, \lnot C(x) \}$
+
+$\Pi = \{ P(f(c)) \lor Q(f(c)) \lor C(f(c), \lnot P(f(d), \lnot Q(f(d)) \}$
+
+\begin{prooftree}
+	\AxiomCm{\p{P(f(c)) \lor Q(f(c))\lor C(f(c))}}
+	\AxiomCm{\sig{\lnot C(x)}}
+	\BinaryInfCm{P(f(c)) \lor Q(f(c))}
+	\AxiomCm{\sig{c=d}}
+	\BinaryInfCm{P(f(d) \lor Q(f(d))}
+	\AxiomCm{\p{\lnot P(f(d))}}
+	\BinaryInfCm{Q(f(d))}
+	\AxiomCm{\p{\lnot Q(f(d))}}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\top}
+	\AxiomCm{\bot}
+	\BinaryInfCm{\lnot C(f(c))}
+	\AxiomCm{\bot}
+	\BinaryInfCm{ (c=d \land \lnot C(f(c))) \lor (c\neq d \land \bot) \lor (c=d \land f(c)\neq f(d) \equiv (c=d \land \lnot C(f(c))) \lor (c=d \land f(c)\neq f(d))  }
+	\AxiomCm{\top}
+	\BinaryInfCm{ (c=d \land \lnot C(f(c)) \lor (c=d \land f(c)\neq f(d)) \land \top }
+	\AxiomCm{\top}
+	\BinaryInfCm{ (c=d \land \lnot C) \lor (c=d \land f(c)\neq f(d)) \land \top }
+\end{prooftree}
+
+$	(c=d \land \lnot C(f(c))) \lor (c=d \land f(c)\neq f(d)) $
+
+max $\Pi$-terms: $f(c), f(d)$
+
+$\theta^* = \forall x_1 \forall x_2
+	(c=d \land \lnot C(x_1)) \lor (c=d \land x_1\neq x_2) $
+
+	$\Ra \Sigma \proves \theta^*; \Pi \proves \lnot \theta^*$
+
+	\bigskip
+
+
+
+\begin{comment} FIRST TRY
+$\Sigma = \{ \lnot P(d), \lnot Q(d), \lnot C  \} $
+
+$\Pi = \{ P(f(c)) \lor Q(f(c)) \lor C, c=d  \} $
+
+\begin{prooftree}
+	\AxiomCm{\p{P(f(c)) \lor Q(f(c))\lor C}}
+	\AxiomCm{\sig{\lnot C}}
+	\BinaryInfCm{P(f(c)) \lor Q(f(c)) }
+	\AxiomCm{\p{f(c)=d}}
+	\BinaryInfCm{\p{P(d) \lor Q(d)}}
+
+	\AxiomCm{\sig{\lnot P(d)}}
+	\BinaryInfCm{Q(d)}
+	\AxiomCm{\sig{\lnot Q(d)}}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+
+\begin{prooftree}
+	\AxiomCm{\top}
+	\AxiomCm{\bot}
+	\BinaryInfCm{ (\lnot C \land \top) \lor (C \land \bot) \equiv \lnot C}
+	\AxiomCm{\top}
+	\BinaryInfCm{ ( f(c)=d \land \lnot C ) \lor ( f(c)\neq d \land \top ) \lor (f(c)=d \land f(c) \neq f(d)) }
+
+	\AxiomCm{\bot}
+	\BinaryInfCm{ (\lnot P(d) \land ( f(c)=d \land \lnot C ) \lor ( f(c)\neq d \land \top ) \lor (f(c)=d \land f(c) \neq f(d))) \lor (P(d) \land \bot) }
+	\AxiomCm{\bot}
+	\BinaryInfCm{ (\lnot Q(d) \land (\lnot P(d) \land ( f(c)=d \land \lnot C ) \lor ( f(c)\neq d \land \top ) \lor (f(c)=d \land f(c) \neq f(d)))) \lor (Q(d) \land \bot)}
+\end{prooftree}
+
+	$\lnot Q(d) \land \lnot P(d) \land ( ( f(c)=d \land \lnot C ) \lor ( f(c)\neq d \land \top ) \lor (f(c)=d \land f(c) \neq f(d)) )$
+
+
+
+
+
+less interesting, also deprecated data:
+\begin{prooftree}
+
+	\AxiomCm{\p{f(c)=d}}
+	\AxiomCm{\sig{\lnot P(d)}}
+
+	\BinaryInfCm{\lnot P(c)}
+
+	\AxiomCm{\sig{\lnot Q(d)}}
+	\AxiomCm{\p{f(c)=d}}
+
+	\BinaryInfCm{\lnot Q(c)}
+
+	\AxiomCm{\p{P(c) \lor Q(c)}}
+
+	\BinaryInfCm{P(c)}
+
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\end{comment}
+
+
 \end{document}

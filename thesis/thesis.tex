@@ -6,19 +6,39 @@
 \usepackage[T1]{fontenc}
 \usepackage[english,ngerman]{babel}
 
-% in conflict with beamer:
-\usepackage{paralist} % compactenum
-
 
 \input{../latex_header.tex}
 
-% customisation 
+% in conflict with beamer:
+\usepackage{paralist} % compactenum
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
 % section numbers for subsections:
 \setsecnumdepth{subsection}
 
+
 %\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
-\newcommand{\thmqed}{$\triangle$} % for thms without proof
-\newcommand{\propqed}{$\triangle$} % for props without proof
+\newcommand{\thmqed}{$\square$} % for thms without proof
+\newcommand{\propqed}{$\square$} % for props without proof
 \declaretheorem[title=Theorem,parent=chapter]{thm}
 \declaretheorem[title=Proposition,parent=chapter]{prop}
 \declaretheorem[title=Definition,style=definition,qed=$\triangle$,parent=chapter]{defi}
@@ -177,7 +197,7 @@
 
 \appendix
 
-\bibliographystyle{plain}
-\bibliography{references}
+\nocite{*}
+\bibliography{bib}
 
 \end{document}
