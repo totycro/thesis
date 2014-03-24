@@ -485,7 +485,7 @@ Huang:
 
 \clearpage
 
-Example 4: Paramodulation special case in Huang
+Example 4: Paramodulation special case in Huang (not sure if this try was successful)
 
 $\Sigma = \{ c=d, \lnot C(x) \}$
 
@@ -587,6 +587,121 @@ less interesting, also deprecated data:
 \end{prooftree}
 
 \end{comment}
+
+\clearpage 
+
+Example 5: cases for one pass overbinding algo
+
+want to have step in between where only one of the ``critical'' terms appears in the interpolant and a decision on the order is forced
+
+\begin{prooftree} 
+	\AxiomCm{\sig{P(y_1, y_2)}}
+
+	\AxiomCm{\sig{Q(\alpha)}}
+
+	\AxiomCm{\p{\lnot Q(z) \lor \lnot P(z, \beta)}}
+
+	\RightLabelm{z\mapsto \alpha}
+	\BinaryInfCm{\lnot{P(\alpha, \beta)}}
+
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree} 
+	\AxiomCm{\bot}
+
+	\AxiomCm{\bot}
+
+	\AxiomCm{\top}
+
+	\RightLabelm{z\mapsto \alpha}
+	\BinaryInfCm{Q(\alpha)^\circ }
+
+	\BinaryInfCm{P(\alpha, \beta) \land Q(\alpha)}
+\end{prooftree}
+
+$\Ra$ need to overbind $\alpha$ first, no matter which order would be assigned later
+
+NOTE: $b$ might be $f(a)$, i.e. we don't know a priori at which level it is and how many smaller or larger terms will be added.
+
+Let $\alpha = b$, $\beta = g(z)$. 
+
+$\theta^* = \exists x_1 \forall x_2 P(x_1, x_2) \land Q(x_1)$
+
+$\lnot \theta^* = \forall x_1 \exists x_2 \lnot P(x_1, x_2) \lor \lnot Q(x_1)$
+
+
+$\theta^{\circ{}*} = \exists x_1 Q(x_1)$
+
+\medskip
+
+Let $\alpha = g(x)$, $\beta = b$.
+
+$\theta^* = \exists x_1 \forall x_2 P(x_1, x_2) \land Q(x_1)$
+
+$\lnot \theta^* = \forall x_1 \exists x_2 \lnot P(x_1, x_2) \lor \lnot Q(x_1)$
+
+$\theta^{\circ{}*} = \exists x_1 Q(x_1)$
+\medskip
+
+{
+	\huge
+
+	$\Ra$ works -- is order only relevant when it comes to equality? c.f. Ex 2
+}
+
+
+
+\clearpage
+Example 5b: overbinding with equality
+
+for arbitrary a, b:
+
+$\Sigma = \{P(a), a=b\}$
+
+$\Pi = \{\lnot P(b)\}$
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(a)}}
+	\AxiomCm{\sig{a=b}}
+	\BinaryInfCm{P(b)}
+
+	\AxiomCm{\p{\lnot P(b)}}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\bot}
+	\BinaryInfCm{\bot}
+
+	\AxiomCm{\top}
+	\BinaryInfCm{P(b)}
+\end{prooftree}
+
+\bigskip
+
+OR
+\bigskip
+
+\begin{prooftree}
+	\AxiomCm{\sig{f(a)=g(b)}}
+	\AxiomCm{\p{\lnot P(b)}}
+	\BinaryInfCm{\lnot P(a)}
+
+	\AxiomCm{\sig{P(a)}}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{a=b}
+
+	\AxiomCm{\bot}
+	\BinaryInfCm{ (P(a) \land a=b) }
+\end{prooftree}
+
 
 
 \end{document}

@@ -95,6 +95,16 @@
 
 \captionnamefont{\bfseries}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   PARTIAL COMPILATION OPTIONS    %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifdefined\secproofsonly 
+\selectlanguage{english}
+	\input{chapters/proofs}
+\else
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%   FRONTMATTER    %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -157,34 +167,7 @@
 \pagenumbering{arabic}
 \pagestyle{numberCorner}
 
-\begin{comment}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Introduction}
-\label{ch:intro}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/introduction}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Typographic Design}
-\label{ch:typo}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/design}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Bibliographic Issues}
-\label{ch:bibliographic}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/bibliographic}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% BACKMATTER %%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\end{comment}
-
 
 \chapter{Introduction}
 \input{chapters/interpolation}
@@ -192,12 +175,14 @@
 \chapter{Constructive Proofs}
 \input{chapters/proofs}
 
-\chapter{Notes}
-\input{chapters/lk_algo}
+%\chapter{Notes}
+%\input{chapters/lk_algo}
 
 \appendix
 
 \nocite{*}
 \bibliography{bib}
+
+\fi
 
 \end{document}
