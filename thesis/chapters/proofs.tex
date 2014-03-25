@@ -1,0 +1,540 @@
+
+
+\section{Resolution}
+
+Resolution calculus, in the formulation as given here, is a sound and complete calculus for first order logic with equality.
+Due to the simplicity of its rules, it is widely used in the area of automated deduction.
+
+\begin{defi}
+	A \defiemph{clause} is a finite set of literals.
+	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a number of resolution rule applications (cf.~figure~\ref{fig:resolution}) starting from clauses in $\Gamma$ which results in the empty clause.
+\end{defi}
+
+
+\begin{thm}
+	A clause set $\Gamma$ is unsatisfiable if and only if there is resolution refutation of $\Gamma$.
+\end{thm}
+\begin{proof}
+	See \cite{Rob65}.
+\end{proof}
+
+Clauses will usually be denoted by $C$ or $D$, literals by $l$.
+
+\begin{figure}[htbp]
+	\begin{prooftree}
+		\LeftLabel{\textit{Resolution:}\quad}
+		\AxiomCm{ C \lor l }
+		\AxiomCm{ D \lor \lnot l' }
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{ (C \lor D)\sigma }
+	\end{prooftree}
+
+	\begin{prooftree}
+		\LeftLabel{\textit{Factorisation:}\quad}
+		\AxiomCm{ C \lor l \lor l' }
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\UnaryInfCm{ (C \lor l)\sigma }
+	\end{prooftree}
+
+	\begin{prooftree}
+		\LeftLabel{\textit{Paramodulation:}\quad}
+		\AxiomCm{ C \lor s=t }
+		\AxiomCm{ D[r] }
+		\RightLabel{$\quad \sigma = \mgu(s, r)$}
+		\BinaryInfCm{ (C \lor D[t])\sigma }
+	\end{prooftree}
+
+	\caption{The rules of resolution calculus}
+	\label{fig:resolution}
+\end{figure}
+
+
+
+
+\subsection{Interpolation and Skolemisation}
+
+In order to apply resolution to arbitrary first-order formulas, they have to be converted to clauses first.
+This process is composed of a CNF-transformation as well as a skolemisation to remove existential quantifiers.
+The CNF-transformation clearly has no influence on the interpolant as no symbols are added or removed and the resulting formula is logically equivalent.
+\todo{not the case for tseitin-style}
+Skolemisation on the other hand does introduce new symbols and is only satisfiablity-preserving. As we will now see, this does not affect the interpolants.
+
+\begin{defi}
+	Let $V_{\exists x}$ be the set of universally bound variables in the scope of the occurrence of $\exists x$.
+	The skolemisation of a formula $A$, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
+	In case $V_{\exists x}$ is empty, $\exists x$ is replaced by a new Skolem constant symbol $c$.
+
+	The skolemisation of a set of formulas $\Phi$ is defined to be $\sk(\Phi) = \{ \sk(A) \mid A \in \Phi \}$
+\end{defi}
+
+
+\begin{prop}
+	Let $\Gamma \cup \Delta$ be unsatisfiable.
+	Then $I$ is an interpolant for $\Gamma \cup \Delta$ if and only if it is an interpolant for $\sk(\Gamma) \cup \sk(\Delta)$. 
+\end{prop}
+
+\begin{proof}
+	Since $\sk(\cdot)$ adds new symbols to both $\Gamma$ and $\Delta$, $I$ does not contain any of them as they are not contained in $L(\sk(\Gamma)) \intersect L(\sk(\Delta))$.
+	%otherwise $L(I) \subseteq L(\sk(\Gamma)) \intersect L(\sk(\Delta))$ would not hold. 
+	Therefore condition \ref{int_3} of theorem \ref{thm:interpolation} is satisfied in both directions.
+
+	Since for a set of formulas $\Phi$, each model of $\Phi$ can be extended to a model of $\sk(\Phi)$ and every model of $\sk(\Phi)$ is a witness for the satisfiability of $\Phi$, $\Phi \entails I$ iff $\sk(\Phi) \entails I$.
+	Hence conditions \ref{int_1} and \ref{int_2} of theorem \ref{thm:interpolation} remain satisfied for $I$ as well.
+\end{proof}
+
+
+
+\section{Reduction to first order logic without equality}
+
+%$ \Gamma, \Delta \proves \bot $.
+%Hence exists $I$ such that $ \Gamma \proves I$, $\Delta \proves \lnot I$ and $L(I) \subseteq L(\Gamma) \intersect L(\Delta) $.
+
+Let $A$ be a first order formula.
+
+Let $U(E)$ be the conjunction of all $\forall \bar x \exists y F_i(\bar x, y) \land (\forall z F_i(\bar x, z) \limpl z = y)$ for $f_i \in \Fun(E)$.
+
+Let $E'$ be inductively defined as follows: If $E$ does not contains an occurrence of a function symbol, let $E' = E$.
+Otherwise let $f_i$ be a maximal occurrence of a function symbol and $A$ be the atom in which it occurs. Then $A$ is of the form $P(s_1, \ldots, s_{j-1}, f_i(\bar t), s_{j+1}, \ldots s_n)$.
+Let $E_F$ be $E$ where $A$ is replaced by $\exists y F_i(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_n)])$ and $E' = E_F'$.
+%$E' = (E[ B / \exists y F_i(\bar t, y) \land A(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_n)])'$.
+
+Clearly $E \entails_= A$ iff $U(E) \land  E' \entails_= A$.
+
+%Let $I(P)$ denote $\forall x_1, \ldots, x_n, y_1, \ldots, y_n\; x_1 = y_1 \limpl \ldots \limpl x_n = y_n \limpl P(\bar x) \limpl P(\bar y)$, where $n$ is the arity of $P$.
+Let $I(E)$ denote a conjunction between $\forall x \; x=x$ and for all $P \in\Pred(E)$, $\forall \bar x, \bar y\; x_1~=~y_1 \limpl \ldots \limpl x_n = y_n \limpl P(\bar x) \limpl P(\bar y)$, where $n$ is the arity of $P$.
+If $U(E) \land E' \entails_= A$,
+also $I(E) \land U(E) \land E' \entails A$. 
+
+%$\forall x \; x=x \land \bigwedge_{P \in \Pred(E)} I(P) \land  \bigwedge_{f_i \in \Fun(E)} U(F_i) \limpl  E'$ by $T(E)$. 
+
+As $E \entails_= A$ iff $I(E) \land U(E) \land (E) \entails A$, $E$ is unsatisfiable iff $I(E) \land U(E) \land E'$ is.
+Note that this does not rely on equality and contains no function symbols. Hence by the interpolation theorem for first order logic without equality\todo{how to state?}, there is an interpolant for $\left(\bigcup_{A\in \Gamma} I(A) \land U(A) \land A\right) \cup \left(\bigcup_{A\in \Delta} I(A) \land U(A) \land A\right) $ for unsatisfiable $\Gamma \cup \Delta$.
+Since the equality axioms added via $I$ ensure a valid interpretation of the equality symbol and the $F_i$ can be translated back\todo{more verbose and precise}\ to $f_i$ in a natural way (as guaranteed by the $U$), the interpolant we receive is also an interpolant for $\Gamma \cup \Delta$.
+Note that by adding the axiom of reflexivity to both $\Gamma$ and $\Delta$, it is contained in the intersection of the languages and hence is allowed to appear in the interpolant, which is required. 
+
+
+\section{WT: Interpolation extraction in one pass}
+
+easy for constants, just as in huang but in one pass
+
+terms can grow unpredictably, order cannot be determined during pass
+
+possible without equality?
+
+\section{WT: Interpolation extraction in two passes}
+
+\subsection{huang proof revisited}
+
+\subsubsection{propositional part}
+
+Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of $\square$ from $\Gamma \cup \Delta$. Then $\PI$ is a function that returns a relative interpolant w.r.t. the current clause. 
+
+\begin{defi}
+	$\theta$ is a \defiemph{relative propositional interpolant} with respect to a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$ if 
+	\label{def:rel_prop_interpol}
+	\begin{compactenum}
+		\item $\Gamma \entails \theta \lor C$
+			\label{rel_prop_interpol_cond1}
+		\item $\Delta \entails \lnot \theta \lor C$
+			\label{rel_prop_interpol_cond2}
+		\item $\Pred(\theta) \subseteq (\Pred(\Gamma) \intersect \Pred(\Delta)) \cup \{\top, \bot\} $.
+			\label{rel_prop_interpol_cond_lang}
+			\qedhere
+	\end{compactenum}
+\end{defi}
+
+The third condition will sometimes be referred to as \emph{language restriction}.
+It is easy to see that a relative propositional interpolant with respect to $\square$ is a propositional interpolant, i.e.~it is an interpolant without the language restriction on constant, variable and function symbols.
+
+We proceed by defining a procedure $\PI$ which extracts relative interpolants from a resolution refutation.
+
+\begin{defi}
+	\defiemph{$\PI$} is defined as follows:
+	\label{def:PI}
+\begin{itemize}
+	\item[Base case.]
+		If $C \in \Gamma$, $\PI(C) = \bot$. 
+		If otherwise $C \in \Delta$, $\Delta(C) = \top$. 
+	\item[Resolution.]
+		Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
+
+%	\begin{prooftree}
+%		\AxiomCm{C_1: D \lor l}
+%		\AxiomCm{C_2: E \lor \lnot l'}
+%		\RightLabelm{\quad l\sigma = l'\sigma}
+%		\BinaryInfCm{C: (D\lor E)\sigma}
+%	\end{prooftree}
+		%\todo{write as prooftree? (not necessary, but nicer)}
+		If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
+	%$\PI(C)$ is defined according to this case distinction:
+		\begin{enumerate}
+			\item If $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$: $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
+			\item If $\Pred(l) \in L(\Delta) \setminus L(\Gamma)$: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
+			\item If $\Pred(l) \in L(\Gamma) \intersect L(\Delta)$: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
+		\end{enumerate}
+
+	\item[Factorisation.]
+		If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
+
+	\item[Paramodulation.]
+		If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D[r]$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined as follows: 
+		\begin{enumerate}
+			\item
+			\item
+			\item Otherwise: $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$
+		\end{enumerate}
+\end{itemize}
+\end{defi}
+
+
+\begin{prop}
+	Let $C$ be a clause of a resolution refutation.
+	Then $\PI(C)$ is a relative propositional interpolant with respect to $C$. 
+\end{prop}
+\begin{proof}
+	Proof by induction on the number of rule applications including the following strenghtenings:
+	$\Gamma \entails \PI(C) \lor C_\Gamma$ and
+	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $L(\Phi)$. They clearly imply conditions \ref{rel_prop_interpol_cond1} and \ref{rel_prop_interpol_cond2} of definition \ref{def:rel_prop_interpol}. 
+
+\begin{itemize}
+	\item[Base case.]
+	Suppose no rules were applied. We distinguish two possible cases:
+	\begin{enumerate}
+		\item $C \in \Gamma$.
+			Then $\PI(C) = \bot$. Clearly $\Gamma \entails \bot \lor C_\Gamma$ as $C_\Gamma = C \in \Gamma$, $\Delta \entails \lnot \bot \lor C_\Delta$ and $\bot$ satisfies the restriction on the language.
+
+		\item $C \in \Delta$.
+			Then $\PI(C) = \top$. Clearly $\Gamma \entails \top \lor C_\Gamma$, $\Delta \entails \lnot \top \lor C_\Delta$ as $C_\Delta = C \in \Delta$ and $\top$ satisfies the restriction on the language.
+	\end{enumerate}
+
+	Suppose the property holds for $n$ rule applications.
+	We show that it holds for $n+1$ applications by considering the last one:
+
+\item[Resolution.]
+	Suppose the last rule application is an instance of resolution. Then it is of the form:
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad l\sigma = l'\sigma}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	By the induction hypothesis, we can assume that:
+
+	$\Gamma \entails \PI(C_1) \lor (D\lor l)_\Gamma$
+
+	$\Delta \entails \lnot \PI(C_1) \lor (D\lor l)_\Delta$
+
+	$\Gamma \entails \PI(C_2) \lor (E\lor \lnot l')_\Gamma$
+
+	$\Delta \entails \lnot \PI(C_2) \lor (E\lor \lnot l')_\Delta$
+
+		We consider the respective cases from definition \ref{def:PI}:
+
+			\begin{enumerate}
+				\item $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$:
+					\label{huang_proof_prop_case_1}
+					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
+
+					As $\Pred(l) \in L(\Gamma)$,
+					$\Gamma \entails (\PI(C_1) \lor D_\Gamma\lor l)\sigma$
+					as well as $\Gamma \entails (\PI(C_2) \lor E_\Gamma\lor \lnot l')\sigma$.
+					By a resolution step, we get $\Gamma \entails (\PI(C_1) \lor \PI(C_2))\sigma \lor ((D \lor E)\sigma)_\Gamma$.
+
+					Furthermore, as $\Pred(l) \not\in L(\PI)$, 
+					$\Delta \entails (\lnot\PI(C_1) \lor D_\Delta)\sigma$
+					as well as $\Delta \entails (\lnot\PI(C_2) \lor E_\Delta)\sigma$.
+					Hence it certainly holds that $\Delta \entails (\lnot \PI(C_1) \lor \lnot\PI(C_2))\sigma \lor (D \lor E)\sigma_\Delta$.
+
+					The language restriction clearly remains satisfied as no nonlogical symbols are added.
+
+				\item $\Pred(l) \in L(\Delta) \setminus L(\Gamma)$: 
+					\label{huang_proof_prop_case_2}
+					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
+
+					As $\Pred(l) \not\in L(\Gamma)$,
+					$\Gamma \entails (\PI(C_1) \lor D_\Gamma)\sigma$
+					as well as $\Gamma \entails (\PI(C_2) \lor E_\Gamma)\sigma$.
+					Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D_\Gamma$ and $M \cancel \entails E_\Gamma$. Then $M \entails \PI(C_1) \land \PI(C_2)$.
+					Hence 
+					$\Gamma \entails (\PI(C_1) \land \PI(C_2))\sigma \lor ((D \lor E)\sigma)_\Gamma$.
+
+					Furthermore due to $\Pred(l) \in L(\Delta)$,
+					$\Delta \entails (\lnot\PI(C_1) \lor D_\Delta \lor l)\sigma$
+					as well as $\Delta \entails (\lnot\PI(C_2) \lor E_\Delta \lor \lnot l')\sigma$.
+					By a resolution step, we get $\Delta \entails (\lnot\PI(C_1) \lor \lnot\PI(C_2))\sigma \lor (D_\Delta \lor E_\Delta)\sigma $
+					and hence 
+					$\Delta \entails \lnot (\PI(C_1) \land \PI(C_2))\sigma \lor (D_\Delta \lor E_\Delta)\sigma $.
+
+					The language restriction again remains intact.
+
+				\item $\Pred(l) \in L(\Delta) \intersect L(\Gamma)$:
+					Then $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
+
+					First, we have to show that 
+					$ \Gamma \entails [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma \lor ((D \lor E)\sigma)_\Gamma$.
+					Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D_\Gamma$ and $\Gamma \cancel \entails E$. Otherwise we are done.
+					The induction assumtion hence simplifies to $M \entails \PI(C_1) \lor l$ and $M \entails \PI(C_2) \lor \lnot l'$ respectively.
+					As $l\sigma = l'\sigma$, by a case distinction argument on the truth value of $l\sigma$, we get that either $M \entails (l \land \PI(C_2))\sigma$ or $M \entails  (\lnot l' \land \PI(C_1))\sigma$.
+
+
+					Second, we show that 
+					$\Delta \entails ((l \lor \lnot \PI(C_1)) \land (\lnot l' \lor \lnot \PI(C_2)))\sigma \lor ((D \lor E)\sigma)_\Delta$.
+					Suppose again that in a model $M$ of $\Delta$, $M \cancel \entails D_\Delta$ and $\Gamma \cancel \entails E_\Delta$. 
+					Then the required statement follows from the induction hypothesis.
+					
+					The language condition remains satisfied as only the common literal $l$ is added to the relative interpolant.
+
+
+			\end{enumerate}
+
+		\item[Factorisation.]	
+			Suppose the last rule application is an instance of factorisation. Then it is of the form:
+			\begin{prooftree}
+				\AxiomCm{C_1: l \lor l' \lor D}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\UnaryInfCm{C_1: (l \lor D)\sigma}
+			\end{prooftree}
+
+			Then the propositional interpolant $\PI(C)$ is defined as $\PI(C_1)$.
+			By the induction hypothesis, we have:
+
+			$\Gamma \entails \PI(C_1) \lor (l \lor l' \lor D)_\Gamma$
+
+			$\Delta \entails \PI(C_1) \lor (l \lor l' \lor D)_\Delta$
+
+			It is easy to see that then also:
+
+			$\Gamma \entails (\PI(C_1)\lor (l \lor D)_\Gamma)\sigma$
+
+			$\Delta \entails (\PI(C_1)\sigma \lor (l \lor D)_\Delta)\sigma$
+
+			The restriction on the language trivially remains intract.
+			
+
+		\item[Paramodulation.]	
+			Suppose the last rule application is an instance of paramodulation. Then it is of the form:
+
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor s=t}
+				\AxiomCm{C_2: E[r]}
+				\RightLabel{$\quad \sigma = \mgu(s, r)$}
+				\BinaryInfCm{C: (D \lor E[t])\sigma}
+			\end{prooftree}
+
+			By the induction hypothesis, we have:
+
+			$\Gamma \entails \PI(C_1) \lor (D\lor s=t)_\Gamma$
+
+			$\Delta \entails \lnot \PI(C_1) \lor (D\lor s=t)_\Delta$
+
+			$\Gamma \entails \PI(C_2) \lor (E[r])_\Gamma$
+
+			$\Delta \entails \lnot \PI(C_2) \lor (E[r])_\Delta$
+
+			in the third case..:
+			\todo{other cases}
+			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
+			
+			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E[t]\sigma$. Otherwise we are done.
+			Furthermore, assume that $M \entails (s=t)\sigma$. Then $M \cancel \entails E[r]\sigma$, but then necessarily $M \entails \PI(C_2)\sigma$. \\
+			On the other hand, suppose $M \entails (s\neq t)\sigma$. As also $M \cancel \entails D\sigma$, $M \entails \PI(C_1)\sigma$.
+			Consequently, $M \entails [(s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))]\sigma \lor [(D \lor E)_\Gamma]\sigma$
+
+			By an analogous argument, we get $\Delta \entails [(s=t \land \lnot \PI(C_2)) \lor (s\neq t \land \lnot \PI(C_1))]\sigma \lor [(D \lor E)_\Delta]\sigma$,
+			which implies
+			$\Delta \entails [( s\neq t \lor \lnot \PI(C_2)) \land (s = t \lor \lnot \PI(C_1))]\sigma \lor ((D \lor E)_\Delta)\sigma $
+
+			%By a similar case distinction for a model $M$ of $\Delta$ and assuming that $M \cancel \entails D_\Delta$ and $M \cancel \entails E_\Delta$, we get that if $M \entails (s=t)\sigma$, $M \entails \lnot P$, which implies
+
+			The language restriction again remains satisfied as the only predicate, that is added to the interpolant, is $=$.
+			\qedhere
+	\end{itemize}
+
+	proof that we are allowed to overbind
+
+	TODO: define procedure
+
+	TODO: proof
+
+	\end{proof}
+
+
+	\subsubsection{overbinding}
+
+	Algorithm (input: propositional interpolant $\theta$):
+	\begin{enumerate}
+		\item Let $t_1, \ldots, t_n$ be the maximal occurrences of noncommon terms in $\theta$. Order $t_i$ ascendingly by term size. 
+		\item Let $\theta^*$ be $\theta$ with maximal occurrences of $\Delta$-terms $r_1, \ldots, r_k$ replaced by fresh variables $x_1, \ldots, x_k$ and maximal occurrences of $\Gamma$-terms $s_1, \ldots, s_{n-k}$ by fresh variables $x_{k+1}, \ldots, x_{n}$
+		\item Return $Q_1 x_1, \ldots Q_n x_n \theta^*$, where $Q_i$ is $\forall$ if $t_i$ is a $\Delta$-term and $\exists$ otherwise.
+	\end{enumerate}
+
+	Language condition easily established. To prove:
+
+	$\Gamma \entails Q_1 x_1, \ldots Q_n x_n \theta^*$
+
+	$\Delta \entails \lnot Q_1 x_1, \ldots Q_n x_n \theta^*$
+
+	We know that $\theta$ works, just the terms are missing.
+
+	\clearpage
+	Attempt without $P_P$:
+
+
+	\begin{defi}
+		\label{def:overline}
+		Overline as in paper, replace $\Delta$-terms $t_1, \ldots, t_k$ by respective fresh variables in parenthesis
+	\end{defi}
+
+	\begin{lemma}
+		\label{lemma:overline}
+		$(\overline{C\sigma}(x_1, \ldots, x_n))$ reduces to
+		$(\overline{C}(x_1, \ldots, x_n))\sigma'$, where $\sigma' = \sigma[t_1 / x_1]\ldots[t_n / x_n]$.
+
+		$(\overline{C}(x_1, \ldots, x_n))\sigma$ reduces to
+		$(\overline{C\sigma'}(x_1, \ldots, x_n))$ if $\sigma$ does not change any of $x_1, \ldots, x_n$ or any of $t_1, \ldots, t_n$.\qedhere
+
+		\todo[inline]{it would work to fix substitutions of $x_i$ by substituting $t_i$ for that instead, as long as the result isn't another $t_i$, but this isn't actually relevant here.}
+		
+	\end{lemma}
+
+	\begin{prop}
+		$\Gamma = \overline{\Gamma}(x_1, \ldots, x_n)$.
+	\end{prop}
+
+	\begin{thm} $ \Gamma \entails \overline{(\PI(C) \lor C)}(x_1, \ldots, x_n) $.
+	\end{thm}
+
+	\begin{proof}
+	By induction on the resultion refutation.
+
+	Base case:
+	Either $C \in \Gamma$, then it does not contain $\Delta$-terms.
+	Otherwise $C \in \Delta$ and $\PI(C) = \top$.
+
+	Induction step:
+	\begin{description}
+		\item{Resolution.}
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor l}
+				\AxiomCm{C_2: E \lor \lnot l'}
+				\RightLabelm{\quad l\sigma = l'\sigma}
+				\BinaryInfCm{C: (D\lor E)\sigma}
+			\end{prooftree}
+
+			By the induction hypothesis, we can assume that:
+
+			$\Gamma \entails \overline{\PI(C_1) \lor (D\lor l)}(x_1, \ldots, x_n)$
+
+			$\Gamma \entails \overline{\PI(C_2) \lor (E\lor \lnot l')}(x_{1}, \ldots, x_n)$
+
+			\begin{enumerate}
+				\item $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$:
+					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
+
+					We show that $\Gamma \entails \overline{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
+					This is by lemma \ref{lemma:overline} with $\sigma'$ as in the lemma equivalent to
+					$\Gamma \entails \overline{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)}(x_1, \ldots, x_n)\sigma' $.
+
+					By Lemma 11 (Huang) and the induction hypothesis,
+
+					$\Gamma \entails \overline{\PI(C_1)} \lor \overline{D} \lor \overline l$
+
+					$\Gamma \entails \overline{\PI(C_2)} \lor \overline{E} \lor \overline{\lnot l'}$
+
+					As $l\sigma = l'\sigma$, $\overline{l\sigma} = \overline{l'\sigma}$.
+
+					Hence $\Gamma \entails \overline{\PI(C_1)} \lor \overline{D} \lor \overline{\PI(C_2)} \lor \overline{E}$
+					and again by Lemma 11 (Huang), 
+					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}$.
+
+					Also
+					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}\sigma$.
+					As $ t_1, \ldots, t_n $ do not appear in $\overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}$ and these are the only variables where $\sigma$ and $\sigma'$ differs, we get that 
+					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}\sigma'$.
+
+
+				\item $\Pred(l) \in L(\Delta) \setminus L(\Gamma)$:
+					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
+
+					We show that $\Gamma \entails \overline{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
+					By lemma \ref{lemma:overline} with $\sigma'$ as in the lemma,
+					$\Gamma \entails \overline{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)}(x_1, \ldots, x_n) \sigma'$.
+
+					TODO
+
+
+			\end{enumerate}
+
+		\item{Paramodulation.}
+
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor s=t}
+				\AxiomCm{C_2: E[r]}
+				\RightLabel{$\quad \sigma = \mgu(s, r)$}
+				\BinaryInfCm{C: (D \lor E[t])\sigma}
+			\end{prooftree}
+
+			By the induction hypothesis, we have:
+
+			$\Gamma \entails \overline{\PI(C_1) \lor (D\lor s=t)}$
+
+			$\Gamma \entails \overline{\PI(C_2) \lor (E[r])}$
+
+
+
+	easy case:
+			$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$
+
+			to show:
+			$\Gamma \entails \overline{ [ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) ]\sigma} $
+
+			by lemma \ref{lemma:overline} for $\sigma'$ as in lemma, 
+			$\Gamma \entails \overline{ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) }\sigma' $
+
+			by lemma 11 (huang)
+			$\Gamma \entails [((\overline{s}=\overline{t} \land \overline{\PI(C_2)} ) \lor (\overline{s\neq t} \land \overline{\PI(C_1)})) \lor (\overline{D} \lor \overline{E[t]}) ]\sigma' $
+
+			reformulate:
+			$\Gamma \entails ((\overline{s}=\overline{t}\sigma' \land \overline{\PI(C_2)}\sigma' ) \lor (\overline{s}\neq \overline{t}\sigma' \land \overline{\PI(C_1)}\sigma')) \lor (\overline{D}\sigma' \lor \overline{E[t]}\sigma') $
+
+			Given: $s\sigma = r\sigma$, hence also $\overline{s\sigma} = \overline{r\sigma}$ and $\overline{s}\sigma' = \overline{r}\sigma'$
+
+			Suppose $M \entails \Gamma$ and $M \not \entails (\overline{D}\sigma' \lor \overline{E[t]}\sigma') $.
+
+			Suppose $M \entails \overline{s}\sigma' = \overline{t}\sigma'$.
+
+			By induction hypothesis, 
+			$\Gamma \entails \overline{\PI(C_2)}\sigma' \lor \overline{(E[r])}\sigma'$.
+
+		However by assumption $\Gamma \not \entails \overline{E[t]}\sigma'$.
+
+		Hence $\Gamma \not \entails \overline{E[s]}\sigma'$, and
+		$\Gamma \not \entails \overline{E[r]}\sigma'$. Therefore $\Gamma \entails \overline{\PI(C_2)}\sigma'$
+
+
+		Suppose on the other hand $M \entails \overline{s}\sigma' \neq \overline{t}\sigma'$.
+
+		By the induction hypothesis, 
+		$M \entails \overline{\PI(C_1)}\sigma' \lor (\overline{D}\sigma'\lor (\overline{s}=\overline{t})\sigma')$,
+		hence then $M \entails \overline{\PI(C_1)}\sigma'$.
+
+		Consequently, 
+		$M \entails (\overline{s}\sigma' \neq \overline{t}\sigma' \land \overline{\PI(C_1)}\sigma') \lor (\overline{s}\sigma' = \overline{t}\sigma' \land \overline{\PI(C_2)}\sigma')$.
+
+		By lemma 11 (huang), 
+		$M \entails \overline{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma'$.
+
+		Hence 
+		$\Gamma \entails \overline{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma' \lor (\overline{D} \lor \overline{E[t]})\sigma') $.
+
+
+\end{description}
+\end{proof}
+
+
+
+
+
+
+

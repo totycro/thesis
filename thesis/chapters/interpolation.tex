@@ -1,0 +1,24 @@
+\section{Preliminaries}
+
+The language of a first-order formula $A$ is denoted by $L(A)$ and contains all predicate, constant, function and free variable symbols that occur in $A$.
+These are also referred to as the \emph{non-logical symbols} of $A$.
+
+\section{Craig Interpolation}
+
+
+\begin{samepage}
+	\begin{thm}[Interpolation]
+		\label{thm:interpolation}
+		Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \cup \Delta $ is unsatisfiable.
+		Then there exists a first-order formula $I$, called interpolant, such that \nopagebreak[4]
+		\begin{compactenum}
+		\item $ \Gamma \entails I$ \label{int_1}
+		\item $ \Delta \entails \lnot I$  \label{int_2}
+		\item $ L(I) \subseteq L(\Gamma) \intersect L(\Delta)$.  \label{int_3}
+			\thmqed
+		\end{compactenum}
+	\end{thm}
+\end{samepage}
+
+In the context of interpolation, every non-logical symbol is assigned a color which indicates the its origin(s). 
+A non-logical symbol is said to be \emph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \emph{grey} in case it occurs in both $\Gamma$ and $\Delta$.
