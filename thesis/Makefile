@@ -8,7 +8,8 @@ LANG="en" # of tex file
 # pdf
 
 #first: pdf
-first: proofs
+#first: proofs
+first: content
 
 all: everything
 
@@ -39,6 +40,8 @@ spell:
 proofs:
 	make TEXFILE="\\\\def\\\\secproofsonly{}\\\\input{${TEXFILE}}" pdf1now
 
+content:
+	make TEXFILE="\\\\def\\\\contentonly{}\\\\input{${TEXFILE}}" pdf1now
 
 
 

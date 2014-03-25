@@ -107,6 +107,23 @@
 	\input{chapters/proofs}
 \else
 
+\ifdefined\contentonly 
+\selectlanguage{english}
+
+
+\chapter{Introduction}
+\input{chapters/interpolation}
+
+\chapter{Constructive Proofs}
+\input{chapters/proofs}
+
+
+\nocite{*}
+\bibliography{bib}
+
+
+\else 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%   FRONTMATTER    %%%%%%%%%%%%%%%%%%%%

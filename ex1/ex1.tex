@@ -485,8 +485,103 @@ Huang:
 
 \clearpage
 
-Example 4: Paramodulation special case in Huang (not sure if this try was successful)
+Example 4: Paramodulation special case in Huang 
 
+\begin{prooftree}
+	\AxiomCm{\sig{P(x) \lor \lnot Q(x)}}
+	\AxiomCm{\p{Q(h(r))}}
+	\BinaryInfCm{P(h(r))}
+
+	\AxiomCm{\p{s = t}}
+	\RightLabelm{r\mapsto s}
+	\BinaryInfCm{P(h(s))}
+
+	\AxiomCm{\p{\lnot P(h(s))}}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{\lnot Q(h(r))}
+		
+	\AxiomCm{\top}
+	\BinaryInfCm{ (s=t \land \lnot Q(h(t))) \lor (s\neq t) \lor (s=t \land h(s) \neq h(t)) }
+
+	\AxiomCm{\top}
+	\BinaryInfCm{ (\lnot P(h(s)) \land (s=t \land \lnot Q(h(t))) \lor (s\neq t) \lor (s=t \land h(s) \neq h(t)) ) \lor P(h(s)) }
+
+\end{prooftree}
+
+$\Sigma = \{ P(x) \lor \lnot Q(x) \} $
+
+$\Pi = \{ \lnot P(h(s)), Q(h(r)), s = t \} $
+\bigskip
+
+	$ ((s=t \land \lnot Q(h(t))) \lor (s\neq t) \lor (s=t \land h(s) \neq h(t)) ) \lor P(h(s)) $
+
+	$\theta =  \lnot Q(h(t)) \lor (s\neq t) \lor ( s=t \land  h(s) \neq h(t)) \lor P(h(s)) $
+
+	$\lnot \theta =  Q(h(t)) \land (s = t) \land ( s \neq t \lor h(s) = h(t)) \land \lnot  P(h(s)) $
+
+	$\theta^* = \forall x_1 \forall x_2 \forall x_3 \forall x_4 \lnot Q(x_2) \lor (x_3 \neq x_4) \lor (x_3 = x_4 \land  x_1 \neq x_2) \lor P(x_1) $
+
+	$\lnot \theta^* = \exists x_1 \exists x_2 \exists x_3 \exists x_4 Q(x_2) \land (x_3 = x_4) \land (x_3 \neq x_4 \lor x_1 = x_2) \land \lnot P(x_1) $
+
+	\clearpage
+
+Example 4b: Paramodulation special case in Huang 
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(x) \lor \lnot Q(x)}}
+	\AxiomCm{\p{Q(h(t))}}
+	\BinaryInfCm{P(h(t))}
+
+	\AxiomCm{\sig{s = t}}
+	\BinaryInfCm{P(h(s))}
+
+	\AxiomCm{\sig{\lnot P(x) \lor Q(x)}}
+	\AxiomCm{\p{\lnot Q(h(s))}}
+	\BinaryInfCm{\lnot P(h(s))}
+
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{\lnot Q(h(t))}
+
+	\AxiomCm{\bot}
+	\BinaryInfCm{ ((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t) }
+
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\BinaryInfCm{Q(h(s))}
+
+	\BinaryInfCm{ (\lnot P(h(s)) \land ((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor (P(h(s) \land Q(h(s))) )  }
+
+\end{prooftree}
+
+
+
+$\Sigma = \{ P(x) \lor \lnot Q(x), \lnot P(x) \lor Q(x), s=t \}  \quad{\color{grey}//~P(x) \lra Q(x) }$
+
+$\Pi = \{ \lnot Q(h(s)), Q(h(t)) \} $
+\bigskip
+
+
+$ \theta = (\lnot P(h(s)) \land ((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor (P(h(s) \land Q(h(s))) ) $
+
+$\lnot \theta = (P(h(s)) \lor ((s\neq t) \lor Q(h(t))) \land (s\neq t \lor h(s) = h(t)) ) \land (\lnot P(h(s) \lor \lnot Q(h(s))) ) $
+
+
+$ \theta^* = \forall x_1 \forall x_2 (\lnot P(x_1) \land ((s=t) \land \lnot Q(x_2)) \lor (s=t \land x_1 \neq x_2)) \lor (P(x_1) \land Q(x_1) ) $
+
+$ \lnot \theta^* = \exists x_1 \exists x_2
+(P(x_1) \lor ((s\neq t) \lor Q(x_2)) \land (s\neq t \lor x_1 = x_2) ) \land (\lnot P(x_1) \lor \lnot Q(x_2) ) $
+
+\begin{comment}
 $\Sigma = \{ c=d, \lnot C(x) \}$
 
 $\Pi = \{ P(f(c)) \lor Q(f(c)) \lor C(f(c), \lnot P(f(d), \lnot Q(f(d)) \}$
@@ -525,6 +620,7 @@ $\theta^* = \forall x_1 \forall x_2
 	$\Ra \Sigma \proves \theta^*; \Pi \proves \lnot \theta^*$
 
 	\bigskip
+\end{comment}
 
 
 
@@ -661,10 +757,9 @@ Prop Interpolant: $P(a, g(a)$
 
 Interpolant: $\forall x_1 \exists x_2 P(x_1, x_2)$
 
--> does this also happen in multiple steps such that overbinding in one step isn't possible?
+\bigskip
 
--> unification replaces all dependent quantifiers at once?
-
+Example 5b': order matters, construction in multiple steps:
 
 \begin{prooftree}
 	\AxiomCm{\sig{P(u, v, f(u, v)) \lor Q(u)}  }
@@ -728,7 +823,7 @@ OR
 \bigskip
 
 \begin{prooftree}
-	\AxiomCm{\sig{f(a)=g(b)}}
+	\AxiomCm{\sig{a=b}}
 	\AxiomCm{\p{\lnot P(b)}}
 	\BinaryInfCm{\lnot P(a)}
 
