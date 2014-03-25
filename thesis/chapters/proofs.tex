@@ -150,12 +150,12 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 \begin{defi}
 	\defiemph{$\PI$} is defined as follows:
-	\label{def:PI}
 \begin{itemize}
 	\item[Base case.]
 		If $C \in \Gamma$, $\PI(C) = \bot$. 
 		If otherwise $C \in \Delta$, $\Delta(C) = \top$. 
 	\item[Resolution.]
+	\label{def:PI_resolution}
 		Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
 
 %	\begin{prooftree}
@@ -168,7 +168,7 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 		If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
 	%$\PI(C)$ is defined according to this case distinction:
 		\begin{enumerate}
-			\item If $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$: $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
+			\item If $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$:\todo{change to "is $\Gamma$-colored?"} $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
 			\item If $\Pred(l) \in L(\Delta) \setminus L(\Gamma)$: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
 			\item If $\Pred(l) \in L(\Gamma) \intersect L(\Delta)$: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
 		\end{enumerate}
@@ -177,11 +177,21 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 		If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
 
 	\item[Paramodulation.]
-		If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D[r]$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined as follows: 
+		If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D[r]$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following case distinction:
 		\begin{enumerate}
-			\item
-			\item
-			\item Otherwise: $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$
+			\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D[r]$ and $h(r)$ occurs more than once in $D[r] \lor \PI(D[r])$:
+				\label{def:PI_paramod_1}
+				\newline
+				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h(s) \neq h(t))$ 
+			\item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D[r]$ and $h(r)$ occurs more than once in $D[r] \lor \PI(D[r])$:
+				\label{def:PI_paramod_2}
+				\newline
+				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h(s) = h(t))$ 
+			\item Otherwise:
+				\label{def:PI_paramod_3}
+				\newline
+				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
+
 		\end{enumerate}
 \end{itemize}
 \end{defi}
@@ -229,7 +239,7 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 	$\Delta \entails \lnot \PI(C_2) \lor (E\lor \lnot l')_\Delta$
 
-		We consider the respective cases from definition \ref{def:PI}:
+		We consider the respective cases from definition \ref{def:PI_resolution}:
 
 			\begin{enumerate}
 				\item $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$:
@@ -332,8 +342,8 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 			$\Delta \entails \lnot \PI(C_2) \lor (E[r])_\Delta$
 
-			in the third case..:
-			\todo{other cases}
+			First, we show that $\PI(C)$ as constructed in case \ref{def:PI_paramod_3} of the definition is a relative propositional interpolant in any of these cases:
+
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
 			
 			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E[t]\sigma$. Otherwise we are done.
@@ -348,6 +358,17 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 			%By a similar case distinction for a model $M$ of $\Delta$ and assuming that $M \cancel \entails D_\Delta$ and $M \cancel \entails E_\Delta$, we get that if $M \entails (s=t)\sigma$, $M \entails \lnot P$, which implies
 
 			The language restriction again remains satisfied as the only predicate, that is added to the interpolant, is $=$.
+
+			This concludes the argumentation for case \ref{def:PI_paramod_3}. 
+
+			The interpolant of case \ref{def:PI_paramod_1} differs only by an additional formula added via a disjunction and hence condition \ref{rel_prop_interpol_cond1} of definition \ref{def:rel_prop_interpol} holds by the above reasoning.
+			As the adjoined formula is a contradiction, its negation is valid which in combination with the above reasoning establishes condition \ref{rel_prop_interpol_cond2}.
+			Since no new predicated are added, the language condition remains intact. 
+
+			The situation in case \ref{def:PI_paramod_2} is somewhat symmetric: 
+			As a tautology is added to the interpolant with respect to case \ref{def:PI_paramod_1}, condition \ref{rel_prop_interpol_cond1} is satisfied by the above reasoning.
+			For condition \ref{rel_prop_interpol_cond2}, consider that the negated interpolant of case \ref{def:PI_paramod_1} implies the negated interpolant of this case.
+			The language condition again remains intact.
 			\qedhere
 	\end{itemize}
 
