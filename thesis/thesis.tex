@@ -40,9 +40,12 @@
 \newcommand{\thmqed}{$\square$} % for thms without proof
 \newcommand{\propqed}{$\square$} % for props without proof
 \declaretheorem[title=Theorem,parent=chapter]{thm}
-\declaretheorem[title=Proposition,parent=chapter]{prop}
-\declaretheorem[title=Definition,style=definition,qed=$\triangle$,parent=chapter]{defi}
-\declaretheorem[title=Example,style=definition,qed=$\triangle$,parent=chapter]{exa}
+\declaretheorem[title=Proposition,sibling=thm]{prop}
+%\declaretheorem[title=Lemma,parent=chapter]{lemma}
+\declaretheorem[sibling=thm]{lemma}
+\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
+%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
+\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
 
 
 

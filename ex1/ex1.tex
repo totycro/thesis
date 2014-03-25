@@ -332,7 +332,7 @@ Relative interpolants:
 	\AxiomCm{\bot}
 
 	\RightLabelm{x \mapsto c}
-\BinaryInfCm{ (\lnot P(c) \land \bot) \lor P(c) \land (g(c) = c  \lor (g(c) \neq c \land \lnot P(d))) }
+	\BinaryInfCm{ (\lnot P(c) \land \bot) \lor (P(c) \land (g(c) = c  \lor (g(c) \neq c \land \lnot P(d)))) }
 \end{prooftree}
 
  $\theta = P(c) \land (g(c) = c  \lor \lnot P(d))$
@@ -644,16 +644,59 @@ $\lnot \theta^* = \forall x_1 \exists x_2 \lnot P(x_1, x_2) \lor \lnot Q(x_1)$
 $\theta^{\circ{}*} = \exists x_1 Q(x_1)$
 \medskip
 
-{
-	\huge
 
-	$\Ra$ works -- is order only relevant when it comes to equality? c.f. Ex 2
-}
+$\Ra$ works (need not change quantifier order like this, but here, no predicate has parameters which depend on each other)
+
+\clearpage
+Example 5b: no equality, but quantifier order still matters
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(u, g(u))} }
+	\AxiomCm{\p{\lnot P(a, x)} }
+	\RightLabelm{u\mapsto a, x\mapsto g(a)}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+Prop Interpolant: $P(a, g(a)$
+
+Interpolant: $\forall x_1 \exists x_2 P(x_1, x_2)$
+
+-> does this also happen in multiple steps such that overbinding in one step isn't possible?
+
+-> unification replaces all dependent quantifiers at once?
+
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(u, v, f(u, v)) \lor Q(u)}  }
+	\AxiomCm{\p{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{P(a, v, f(a, v))}
+
+	\AxiomCm{\p{\lnot P(x, b, y)} }
+	\RightLabelm{x\mapsto a, v\mapsto b, y\mapsto f(a, b) }
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{Q(a)}
+
+	\AxiomCm{\top}
+	\RightLabelm{x\mapsto a, v\mapsto b, y\mapsto f(a, b) }
+	\BinaryInfCm{ P(a, b, f(a, b)) \lor (\lnot P(a, b, f(a, b)) \land Q(a) )}
+\end{prooftree}
+
+Hence: $ P(a, b, f(a, b)) \lor Q(a) $
+
+Interpolant:
+$ \forall x_1 \forall x_2 \exists x_3 P(x_1, x_2, x_3) \lor Q(x_1) $
 
 
 
 \clearpage
-Example 5b: overbinding with equality
+Example 5c: overbinding with equality
 
 for arbitrary a, b:
 
