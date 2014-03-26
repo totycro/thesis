@@ -799,63 +799,116 @@ Example 5b': order matters, construction in multiple steps:
 	\BinaryInfCm{ P(a, b, f(a, b)) \lor (\lnot P(a, b, f(a, b)) \land Q(a) )}
 \end{prooftree}
 
-Hence: $ P(a, b, f(a, b)) \lor Q(a) $
+Non-trivial interpolants:
 
-Interpolant:
+$\forall x_1 Q(x_1)$
+
 $ \forall x_1 \forall x_2 \exists x_3 P(x_1, x_2, x_3) \lor Q(x_1) $
+
+\bigskip
+
+Example 5b'': 5b' with different resolution order
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(u, v, f(u, v)) \lor Q(u)}  }
+	\AxiomCm{\p{\lnot P(x, b, y)} }
+
+	\RightLabelm{x\mapsto u, v\mapsto b, y \mapsto f(u, b)}
+	\BinaryInfCm{Q(u)}
+
+	\AxiomCm{\p{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{\square}
+
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+
+	\RightLabelm{x\mapsto u, v\mapsto b, y \mapsto f(u, b)}
+	\BinaryInfCm{P(u, b, f(u, b))}
+
+	\AxiomCm{\top}
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{  P(a, b, f(a, b)) \lor Q(a)}
+\end{prooftree}
+
+Non-trivial interpolants:
+
+$\forall x_2 \exists x_3 P(u, x_2, x_3)$
+
+$\forall x_1 \forall x_2 \exists x_3 ( P(x_1, x_2, x_3) \lor Q(x_1) )$
 
 
 
 \clearpage
-Example 5c: overbinding with equality
+Example 5c: example with $\exists \forall$ necessarily in interpolant
 
-for arbitrary a, b:
-
-$\Sigma = \{P(a), a=b\}$
-
-$\Pi = \{\lnot P(b)\}$
+$\Ra$ as shown in Huang, swap $\Sigma$ and $\Pi$ from 5b'
 
 \begin{prooftree}
-	\AxiomCm{\sig{P(a)}}
-	\AxiomCm{\sig{a=b}}
-	\BinaryInfCm{P(b)}
+	\AxiomCm{\p{P(u, v, f(u, v)) \lor Q(u)}  }
+	\AxiomCm{\sig{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{P(a, v, f(a, v))}
 
-	\AxiomCm{\p{\lnot P(b)}}
+	\AxiomCm{\sig{\lnot P(x, b, y)} }
+	\RightLabelm{x\mapsto a, v\mapsto b, y\mapsto f(a, b) }
 	\BinaryInfCm{\square}
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomCm{\bot}
-	\AxiomCm{\bot}
-	\BinaryInfCm{\bot}
-
 	\AxiomCm{\top}
-	\BinaryInfCm{P(b)}
+	\AxiomCm{\bot}
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{\lnot Q(a)}
+
+	\AxiomCm{\bot}
+	\RightLabelm{x\mapsto a, v\mapsto b, y\mapsto f(a, b) }
+	\BinaryInfCm{ \lnot P(a, b, f(a,b)) \land \lnot Q(a)}
 \end{prooftree}
 
+Non-trivial interpolants:
+
+$\exists x_1 Q(x_1)$
+
+$ \exists x_1 \exists x_2 \forall x_3 (\lnot P(x_1, x_2, x_3) \land \lnot Q(x_1) ) $
+
 \bigskip
 
-OR
-\bigskip
+$\Ra$ similar for 5b''
 
 \begin{prooftree}
-	\AxiomCm{\sig{a=b}}
-	\AxiomCm{\p{\lnot P(b)}}
-	\BinaryInfCm{\lnot P(a)}
+	\AxiomCm{\p{P(u, v, f(u, v)) \lor Q(u)}  }
+	\AxiomCm{\sig{\lnot P(x, b, y)} }
 
-	\AxiomCm{\sig{P(a)}}
+	\RightLabelm{x\mapsto u, v\mapsto b, y \mapsto f(u, b)}
+	\BinaryInfCm{Q(u)}
+
+	\AxiomCm{\sig{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
 	\BinaryInfCm{\square}
+
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomCm{\bot}
 	\AxiomCm{\top}
-	\BinaryInfCm{a=b}
+	\AxiomCm{\bot}
+
+	\RightLabelm{x\mapsto u, v\mapsto b, y \mapsto f(u, b)}
+	\BinaryInfCm{\lnot P(u, b, f(u, b))}
 
 	\AxiomCm{\bot}
-	\BinaryInfCm{ (P(a) \land a=b) }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{ \lnot Q(a) \land \lnot P(a, b, f(a, b)) }
 \end{prooftree}
 
+Non-trival interpolants:
+
+$\exists x_2 \forall x_3 \lnot (P(u, x_2, x_3))$
+
+$\exists x_1 \exists x_2 \forall x_3 (\lnot Q(x_1) \land \lnot (P( x_2, x_3))) $
 
 
 \end{document}

@@ -420,6 +420,9 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 	\begin{prop}
 		$\Gamma = \overline{\Gamma}(x_1, \ldots, x_n)$.
 	\end{prop}
+	\begin{proof}
+		By definition, $\Delta$-terms only appear in $\Delta$ and not in $\Gamma$. 
+	\end{proof}
 
 	\begin{thm} $ \Gamma \entails \overline{(\PI(C) \lor C)}(x_1, \ldots, x_n) $.
 	\end{thm}
@@ -508,6 +511,8 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 			to show:
 			$\Gamma \entails \overline{ [ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) ]\sigma} $
 
+			proof idea: either $s=t$, then also $\PI(C_2)$, or else $s\neq t$, but then also $\PI(C_1)$
+
 			by lemma \ref{lemma:overline} for $\sigma'$ as in lemma, 
 			$\Gamma \entails \overline{ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) }\sigma' $
 
@@ -515,21 +520,21 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 			$\Gamma \entails [((\overline{s}=\overline{t} \land \overline{\PI(C_2)} ) \lor (\overline{s\neq t} \land \overline{\PI(C_1)})) \lor (\overline{D} \lor \overline{E[t]}) ]\sigma' $
 
 			reformulate:
-			$\Gamma \entails ((\overline{s}=\overline{t}\sigma' \land \overline{\PI(C_2)}\sigma' ) \lor (\overline{s}\neq \overline{t}\sigma' \land \overline{\PI(C_1)}\sigma')) \lor (\overline{D}\sigma' \lor \overline{E[t]}\sigma') $
+			$\Gamma \entails ((\overline{s}\sigma'=\overline{t}\sigma' \land \overline{\PI(C_2)}\sigma' ) \lor (\overline{s}\sigma'\neq \overline{t}\sigma' \land \overline{\PI(C_1)}\sigma')) \lor (\overline{D}\sigma' \lor \overline{E[t]}\sigma') $
 
-			Given: $s\sigma = r\sigma$, hence also $\overline{s\sigma} = \overline{r\sigma}$ and $\overline{s}\sigma' = \overline{r}\sigma'$
+			By the rule: $s\sigma = r\sigma$, hence also $\overline{s\sigma} = \overline{r\sigma}$ and $\overline{s}\sigma' = \overline{r}\sigma'$ REALLY TRUE? -- think so\dots
 
 			Suppose $M \entails \Gamma$ and $M \not \entails (\overline{D}\sigma' \lor \overline{E[t]}\sigma') $.
 
 			Suppose $M \entails \overline{s}\sigma' = \overline{t}\sigma'$.
 
-			By induction hypothesis, 
+			By induction hypothesis (and lemma 11 (huang) and adding the substitution $\sigma'$), 
 			$\Gamma \entails \overline{\PI(C_2)}\sigma' \lor \overline{(E[r])}\sigma'$.
 
 		However by assumption $\Gamma \not \entails \overline{E[t]}\sigma'$.
 
 		Hence $\Gamma \not \entails \overline{E[s]}\sigma'$, and
-		$\Gamma \not \entails \overline{E[r]}\sigma'$. Therefore $\Gamma \entails \overline{\PI(C_2)}\sigma'$
+		$\Gamma \not \entails \overline{E[r]}\sigma'$. Therefore $\Gamma \entails \overline{\PI(C_2)}\sigma'$.
 
 
 		Suppose on the other hand $M \entails \overline{s}\sigma' \neq \overline{t}\sigma'$.
@@ -546,6 +551,8 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 		Hence 
 		$\Gamma \entails \overline{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma' \lor (\overline{D} \lor \overline{E[t]})\sigma') $.
+
+		IS THIS REALLY WHAT I NEED TO SHOW?
 
 
 \end{description}
