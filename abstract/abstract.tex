@@ -189,7 +189,7 @@ In this spirit, further corollaries and also applications of the interpolation t
 
 As the problem at hand is a well-defined mathematical task, standard mathematical methodology applies.
 
-Determined by the results in the investigations, implementations of the algorithms are deemed scientifically valuable but most likely beyond the scope of this thesis.
+Implementations of the algorithms are deemed scientifically valuable but most likely beyond the scope of this thesis.
 
 
 \section{State of the art}
@@ -198,7 +198,7 @@ Current research and application is rooted in the fundamental result by Craig (\
 
 \begin{samepage}
 \begin{thm}[Interpolation]
-	Let $A$ and $B$ be first-order sentences such that $ A \land B $ is refutable. 
+	Let $A$ and $B$ be first-order sentences such that $ A \land B $ is unsatisfiable. 
 	Then there exists an interpolant $I$ such that \nopagebreak[4]
 	\begin{compactenum}
 		\item $ A \limpl I$ is valid 
@@ -240,7 +240,8 @@ This works for any interpolant and is therefore a more flexible and powerful app
 \label{application}
 
 In the area of software verification, deriving logical information about program states is essential for reasoning about real world programs.
-For instance in model checking, the set of reachable states of a program is described by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
+For instance in model checking, the set of reachable states of a program is described by overapproximations computed from interpolants.
+%by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
 In \cite{McMillan03}, the idea of using interpolation for finding suitable abstractions was proposed and successfully applied, which subsequently sparked further research interest. 
 
 Furthermore, in dealing with programs with loops with an a priori unknown number of iterations, it is necessary to infer loop invariants in order to be able to give a meaningful guarantee of the state of the program afterwards.
@@ -278,7 +279,7 @@ The following courses possess the most direct relation to the topic of this thes
 \end{itemize}
 
 
-\nocite{*} % display all entries of bib-file
+%\nocite{*} % display all entries of bib-file
 
 \bibliography{bib}
 
