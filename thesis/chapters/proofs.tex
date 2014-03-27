@@ -563,16 +563,165 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 \subsection{final step of huang's proof}
 
 \begin{thm}
-	$Q_1 z_1 \ldots Q_n z_n \theta^*(z_1, \ldots, z_n)$ is a craig interpolant.
+	$Q_1 z_1 \ldots Q_n z_n \PI(\square)^*(z_1, \ldots, z_n)$ is a craig interpolant (order as in huang).
 \end{thm}
 \begin{proof}
-	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$
+	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
+
+	The terms in $\overline{PI(\square)}$ are either among the $x_i$, $1 \leq i \leq n$ or grey terms or $\Gamma$-terms.
+	Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
+	Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.\todo{basically only need the $x_j$}{}
+	Note that the $\Delta$-terms, which are replaced by the $x_{i_1}, \ldots, x_{i_{n_x}}$ are of strictly smaller size than $t$ as they are ``strict'' subterms of $t$.
+
+	In $\PI(\square)^*$, $t$ will be replaced by some $z_j$, which is existentially quantified.
+	For this $z_j$, $t$ is a witness as due to the quantifier ordering, all the $x_{i_1}, \ldots, x_{i_{n_x}}$ will be quantified before the existential quantification of $z_j$.
+	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n \PI(\square)^*(z_1, \ldots, z_n)$
+
 \end{proof}
 
 
 
 
+\begin{conj}
+	Suppose every variable occurs only once in $\Gamma \cup \Delta$.
+	Then the order of the quantifiers for $\PI(\square)^*$ does not matter.
+\end{conj}
+
+%\begin{proof}
+%	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
+%	As these are just universal quantifiers, the order does not matter.
+%
+%	%Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
+%	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.
+%\end{proof}
+
+The subterm-relation is reflexive.
+
+\begin{defi}
+	Let $C$ be a clause in $\Gamma \cup \Delta$. 
+
+	A maximal term $s$ of $C$ is said to be \defiemph{smaller} than a maximal term $t$ of $C$ if a subterm of $s$ occurs in $t$ and $s$ is of smaller length than $t$.
+	\label{def:order}
+\end{defi}
+
+
+\subsection{Half-baked approaches}
+
+\begin{defi}
+	Direct interpolation extraction.
+
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	$Q_1 z_1 \ldots Q_{n_1} z_{n_1} \PI(C_1)^*(z_1, \ldots, z_{n_1})$
+
+	$Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})$
+
+
+\end{defi}
+
+\begin{conj}
+	$Q_1 z_1 \ldots Q_n z_n \PI(\square)^*(z_1, \ldots, z_n)$,
+	with the $z_i$ ordered by the terms they replace with ordering defined as in \ref{def:order}, is a craig interpolant.
+\end{conj}
+\begin{proof}
+
+	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
+
+	The terms in $\overline{PI(\square)}$ are either among the $x_i$, $1 \leq i \leq n$ or grey terms or $\Gamma$-terms.
+
+	Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
+	Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.
+
+\end{proof}
+
+
+\begin{prop}
+	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \PI(C)^*(z_1, \ldots, z_n)  \lor C$, quantifiers ordered as in \ref{def:order}, is a craig interpolant.
+\end{prop}
+
+\begin{proof}
+
+	proof, only for $\square$:
+
+	We know that $\Gamma \entails \overline{\PI(\square)}(x_1, \ldots, x_{n})$.
+	It still contains the respective maximal $\Gamma$-terms.
+
+	\bigskip
+
+	{
+		OTHER ATTEMPT:
+
+	Induction.
+
+	Base case: simple.
+
+	Suppose Resolution.
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	$\Gamma \entails Q_1 z_1 \ldots Q_{n_1} z_{n_1} \PI(C_1)^*(z_1, \ldots, z_{n_1})  \lor D \lor l$
+
+	$\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l'$
+
+	to show:
+	$\Gamma \entails Q_1 z_1 \ldots Q_{n} z_{n} \PI(C)^*(z_1, \ldots, z_{n})  \lor (D \lor E)\sigma$
+
+	Note that every term that is colored and in $C$ has been introduced by the substitution $\sigma$, as otherwise it would occur in both $\Gamma$ and $\Delta$.\todo{not true if $C_1$ and $C_2$ both from same set.}
+
+	Note that it occurs in either $l$ or $l'$, but not in both.
+
+	Let $t$ be a colored term in $\PI(C)$, which has just been added
+	W.l.o.g.\ let it occur in $l$, i.e.\ in $C_1$.
 
 
 
+	Case distinction:
+
+	\begin{description}
+		\item [$t$ is $\Gamma$-colored.]
+			Then $\sigma$ replaces variables $y_1, \ldots, y_k$ in $E \lor \lnot l'$ with terms that contain~$t$.
+
+			By the induction hypothesis, $\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l'$.
+
+			Hence $\Gamma \entails (Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l' ) \sigma$.
+
+			Also $\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} (\PI(C_2)^*(z_1, \ldots, z_{n_2})\sigma)  \lor E\sigma \lor \lnot l'\sigma$.
+
+			Similarily,
+			$\Gamma \entails Q_1 z_1 \ldots Q_{n_1} z_{n_1} (\PI(C_1)^*(z_1, \ldots, z_{n_1})\sigma)  \lor D\sigma \lor l\sigma$
+
+			$\Gamma \entails Q_1 z_1 \ldots Q_{n} z_{n} ( (\lnot l \land \PI(C_2)) \lor (l \land \PI(C_1))) ^*(z_1, \ldots, z_{n})\sigma)  \lor D\sigma \lor l\sigma$
+
+			$l$ basically is the only new thing ($l\sigma = l'\sigma$).
+
+			Either $l$ does not contain any subterms of other terms, then it does not depend on anything and $l$ serves as witness for itself.
+
+			Otherwise it does depend on other terms and we have to make sure that that term is available.
+			Depending on another term means that it uses information that is only available from another term,
+			i.e.~it contains a subterm of another term. but then that subterm is quantified over before the variable that replaces $t$ is, so it works out.
+
+
+		\item [$t$ is $\Delta$-colored.]
+			Then it is replaced by a universally quantified variable.
+			But it ``was already universally quantified'' in the induction hypothesis.
+			There, it was some free variable, because that's the only thing that can be substituted, but even with this free var, it worked out.
+
+
+			%When proving $\Gamma \entails Q_1 z_1 \ldots Q_{n} z_{n} \PI(C)^*(z_1, \ldots, z_{n}$, it will be replaced by an existentially quantified variable, which is ok since $t$ is the witness.
+			
+
+		\end{description}
+
+	}
+
+\end{proof}
 
