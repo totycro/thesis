@@ -322,7 +322,6 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 		\item[Paramodulation.]	
 			Suppose the last rule application is an instance of paramodulation. Then it is of the form:
-
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
 				\AxiomCm{C_2: E[r]}
@@ -424,8 +423,9 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 		By definition, $\Delta$-terms only appear in $\Delta$ and not in $\Gamma$. 
 	\end{proof}
 
-	\begin{thm} $ \Gamma \entails \overline{(\PI(C) \lor C)}(x_1, \ldots, x_n) $.
-	\end{thm}
+	\begin{lemma} $ \Gamma \entails \overline{(\PI(C) \lor C)}(x_1, \ldots, x_n) $.
+		\label{lemma:gamma_entails_interpolant}
+	\end{lemma}
 
 	\begin{proof}
 	By induction on the resultion refutation.
@@ -557,6 +557,18 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 \end{description}
 \end{proof}
+
+
+
+\subsection{final step of huang's proof}
+
+\begin{thm}
+	$Q_1 z_1 \ldots Q_n z_n \theta^*(z_1, \ldots, z_n)$ is a craig interpolant.
+\end{thm}
+\begin{proof}
+	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$
+\end{proof}
+
 
 
 
