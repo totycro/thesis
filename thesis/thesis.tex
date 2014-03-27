@@ -97,6 +97,21 @@
 \newcommand{\cd}{\textsf{Class Diagram}}
 
 
+\newcommand{\content}{
+\chapter{Introduction}
+\input{chapters/interpolation}
+
+\chapter{The Resolution Calculus}
+\input{chapters/resolution.tex}
+
+\chapter{Constructive Proofs}
+\input{chapters/proofs}
+
+
+
+
+}
+
 
 \begin{document}
 
@@ -114,18 +129,13 @@
 \ifdefined\contentonly 
 \selectlanguage{english}
 
+
 \tableofcontents
 
-\chapter{Introduction}
-\input{chapters/interpolation}
-
-\chapter{Constructive Proofs}
-\input{chapters/proofs}
-
+\content
 
 \nocite{*}
 \bibliography{bib}
-
 
 \else 
 
@@ -194,11 +204,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Introduction}
-\input{chapters/interpolation}
-
-\chapter{Constructive Proofs}
-\input{chapters/proofs}
+\content
 
 %\chapter{Notes}
 %\input{chapters/lk_algo}

@@ -1,0 +1,85 @@
+
+
+\section{Resolution}
+
+Resolution calculus, in the formulation as given here, is a sound and complete calculus for first order logic with equality.
+Due to the simplicity of its rules, it is widely used in the area of automated deduction.
+
+\begin{defi}
+	A \defiemph{clause} is a finite set of literals.
+	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a number of resolution rule applications (cf.~figure~\ref{fig:resolution}) starting from clauses in $\Gamma$ which results in the empty clause.
+\end{defi}
+
+
+\begin{thm}
+	A clause set $\Gamma$ is unsatisfiable if and only if there is resolution refutation of $\Gamma$.
+\end{thm}
+\begin{proof}
+	See \cite{Rob65}.
+\end{proof}
+
+Clauses will usually be denoted by $C$ or $D$, literals by $l$.
+
+\begin{figure}[htbp]
+	\begin{prooftree}
+		\LeftLabel{\textit{Resolution:}\quad}
+		\AxiomCm{ C \lor l }
+		\AxiomCm{ D \lor \lnot l' }
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{ (C \lor D)\sigma }
+	\end{prooftree}
+
+	\begin{prooftree}
+		\LeftLabel{\textit{Factorisation:}\quad}
+		\AxiomCm{ C \lor l \lor l' }
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\UnaryInfCm{ (C \lor l)\sigma }
+	\end{prooftree}
+
+	\begin{prooftree}
+		\LeftLabel{\textit{Paramodulation:}\quad}
+		\AxiomCm{ C \lor s=t }
+		\AxiomCm{ D[r] }
+		\RightLabel{$\quad \sigma = \mgu(s, r)$}
+		\BinaryInfCm{ (C \lor D[t])\sigma }
+	\end{prooftree}
+
+	\caption{The rules of resolution calculus}
+	\label{fig:resolution}
+\end{figure}
+
+
+
+
+\subsection{Interpolation and Skolemisation}
+
+In order to apply resolution to arbitrary first-order formulas, they have to be converted to clauses first.
+This process is composed of a CNF-transformation as well as a skolemisation to remove existential quantifiers.
+The CNF-transformation clearly has no influence on the interpolant as no symbols are added or removed and the resulting formula is logically equivalent.
+\todo{not the case for tseitin-style}
+Skolemisation on the other hand does introduce new symbols and is only satisfiablity-preserving. As we will now see, this does not affect the interpolants.
+
+\begin{defi}
+	Let $V_{\exists x}$ be the set of universally bound variables in the scope of the occurrence of $\exists x$.
+	The skolemisation of a formula $A$, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
+	In case $V_{\exists x}$ is empty, $\exists x$ is replaced by a new Skolem constant symbol $c$.
+
+	The skolemisation of a set of formulas $\Phi$ is defined to be $\sk(\Phi) = \{ \sk(A) \mid A \in \Phi \}$
+\end{defi}
+
+
+\begin{prop}
+	Let $\Gamma \cup \Delta$ be unsatisfiable.
+	Then $I$ is an interpolant for $\Gamma \cup \Delta$ if and only if it is an interpolant for $\sk(\Gamma) \cup \sk(\Delta)$. 
+\end{prop}
+
+\begin{proof}
+	Since $\sk(\cdot)$ adds new symbols to both $\Gamma$ and $\Delta$, $I$ does not contain any of them as they are not contained in $L(\sk(\Gamma)) \intersect L(\sk(\Delta))$.
+	%otherwise $L(I) \subseteq L(\sk(\Gamma)) \intersect L(\sk(\Delta))$ would not hold. 
+	Therefore condition \ref{int_3} of theorem \ref{thm:interpolation} is satisfied in both directions.
+
+	Since for a set of formulas $\Phi$, each model of $\Phi$ can be extended to a model of $\sk(\Phi)$ and every model of $\sk(\Phi)$ is a witness for the satisfiability of $\Phi$, $\Phi \entails I$ iff $\sk(\Phi) \entails I$.
+	Hence conditions \ref{int_1} and \ref{int_2} of theorem \ref{thm:interpolation} remain satisfied for $I$ as well.
+\end{proof}
+
+
