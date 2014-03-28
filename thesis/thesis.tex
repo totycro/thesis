@@ -35,6 +35,8 @@
 % section numbers for subsections:
 \setsecnumdepth{subsection}
 
+% subsections also in toc
+\setcounter{tocdepth}{2}
 
 %\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
 \newcommand{\thmqed}{$\square$} % for thms without proof
@@ -187,8 +189,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % uncomment to set document language to german (results in "Inhaltsverzeichnis", "Kapitel", "Abbildung", etc. instead of "Contents", "Chapter", and "Figure"), otherwise the document's language is english
 %\selectlanguage{ngerman}
-
-\setcounter{tocdepth}{2}
 
 \cleardoublepage
 \pagestyle{numberCorner}

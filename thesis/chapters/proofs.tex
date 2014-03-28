@@ -1,89 +1,4 @@
 
-
-\section{Resolution}
-
-Resolution calculus, in the formulation as given here, is a sound and complete calculus for first order logic with equality.
-Due to the simplicity of its rules, it is widely used in the area of automated deduction.
-
-\begin{defi}
-	A \defiemph{clause} is a finite set of literals.
-	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a number of resolution rule applications (cf.~figure~\ref{fig:resolution}) starting from clauses in $\Gamma$ which results in the empty clause.
-\end{defi}
-
-
-\begin{thm}
-	A clause set $\Gamma$ is unsatisfiable if and only if there is resolution refutation of $\Gamma$.
-\end{thm}
-\begin{proof}
-	See \cite{Rob65}.
-\end{proof}
-
-Clauses will usually be denoted by $C$ or $D$, literals by $l$.
-
-\begin{figure}[htbp]
-	\begin{prooftree}
-		\LeftLabel{\textit{Resolution:}\quad}
-		\AxiomCm{ C \lor l }
-		\AxiomCm{ D \lor \lnot l' }
-		\RightLabelm{\quad \sigma = \mgu(l, l')}
-		\BinaryInfCm{ (C \lor D)\sigma }
-	\end{prooftree}
-
-	\begin{prooftree}
-		\LeftLabel{\textit{Factorisation:}\quad}
-		\AxiomCm{ C \lor l \lor l' }
-		\RightLabelm{\quad \sigma = \mgu(l, l')}
-		\UnaryInfCm{ (C \lor l)\sigma }
-	\end{prooftree}
-
-	\begin{prooftree}
-		\LeftLabel{\textit{Paramodulation:}\quad}
-		\AxiomCm{ C \lor s=t }
-		\AxiomCm{ D[r] }
-		\RightLabel{$\quad \sigma = \mgu(s, r)$}
-		\BinaryInfCm{ (C \lor D[t])\sigma }
-	\end{prooftree}
-
-	\caption{The rules of resolution calculus}
-	\label{fig:resolution}
-\end{figure}
-
-
-
-
-\subsection{Interpolation and Skolemisation}
-
-In order to apply resolution to arbitrary first-order formulas, they have to be converted to clauses first.
-This process is composed of a CNF-transformation as well as a skolemisation to remove existential quantifiers.
-The CNF-transformation clearly has no influence on the interpolant as no symbols are added or removed and the resulting formula is logically equivalent.
-\todo{not the case for tseitin-style}
-Skolemisation on the other hand does introduce new symbols and is only satisfiablity-preserving. As we will now see, this does not affect the interpolants.
-
-\begin{defi}
-	Let $V_{\exists x}$ be the set of universally bound variables in the scope of the occurrence of $\exists x$.
-	The skolemisation of a formula $A$, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
-	In case $V_{\exists x}$ is empty, $\exists x$ is replaced by a new Skolem constant symbol $c$.
-
-	The skolemisation of a set of formulas $\Phi$ is defined to be $\sk(\Phi) = \{ \sk(A) \mid A \in \Phi \}$
-\end{defi}
-
-
-\begin{prop}
-	Let $\Gamma \cup \Delta$ be unsatisfiable.
-	Then $I$ is an interpolant for $\Gamma \cup \Delta$ if and only if it is an interpolant for $\sk(\Gamma) \cup \sk(\Delta)$. 
-\end{prop}
-
-\begin{proof}
-	Since $\sk(\cdot)$ adds new symbols to both $\Gamma$ and $\Delta$, $I$ does not contain any of them as they are not contained in $L(\sk(\Gamma)) \intersect L(\sk(\Delta))$.
-	%otherwise $L(I) \subseteq L(\sk(\Gamma)) \intersect L(\sk(\Delta))$ would not hold. 
-	Therefore condition \ref{int_3} of theorem \ref{thm:interpolation} is satisfied in both directions.
-
-	Since for a set of formulas $\Phi$, each model of $\Phi$ can be extended to a model of $\sk(\Phi)$ and every model of $\sk(\Phi)$ is a witness for the satisfiability of $\Phi$, $\Phi \entails I$ iff $\sk(\Phi) \entails I$.
-	Hence conditions \ref{int_1} and \ref{int_2} of theorem \ref{thm:interpolation} remain satisfied for $I$ as well.
-\end{proof}
-
-
-
 \section{Reduction to first order logic without equality}
 
 %$ \Gamma, \Delta \proves \bot $.
@@ -598,10 +513,13 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 The subterm-relation is reflexive.
 
 \begin{defi}
-	Let $C$ be a clause in $\Gamma \cup \Delta$. 
+	%Let $C$ be a clause in $\Gamma \cup \Delta$. 
 
-	A maximal term $s$ of $C$ is said to be \defiemph{smaller} than a maximal term $t$ of $C$ if a subterm of $s$ occurs in $t$ and $s$ is of smaller length than $t$.
+	%A maximal term $s$ of $C$ is said to be \defiemph{smaller} than a maximal term $t$ of $C$ if a subterm of $s$ occurs in $t$ and $s$ is of smaller length than $t$.
 	\label{def:order}
+
+
+	Let $s$ be a term that is in $\PI(C)$ but not in any predecessor $\PI(C_i)$, $i \in \{1,2\}$. $s$ is smaller than a term $t$ in $\PI(C)$ if $s$ is of strictly smaller length than $t$ and there is a subterm in $s$ which also occurs in $t$.
 \end{defi}
 
 
@@ -610,17 +528,74 @@ The subterm-relation is reflexive.
 \begin{defi}
 	Direct interpolation extraction.
 
-	\begin{prooftree}
-		\AxiomCm{C_1: D \lor l}
-		\AxiomCm{C_2: E \lor \lnot l'}
-		\RightLabelm{\quad \sigma = \mgu(l, l')}
-		\BinaryInfCm{C: (D\lor E)\sigma}
-	\end{prooftree}
+	This version of overline and star does NOT overbind variables! If they happen to be in the final interpolant, just overbind them somehow, but not early. these are the only terms that can ``change their color.''
 
-	$Q_1 z_1 \ldots Q_{n_1} z_{n_1} \PI(C_1)^*(z_1, \ldots, z_{n_1})$
+	Convention w.r.t. a clause $C$ which has been derived from $C_1$ and $C_2$:
+	$\bar Q_n = Q_1 z_1 \ldots Q_n z_n$, such that the $z_i$ correspond to the maximal terms $t_i$ in $\PI(C)$. Same terms must be overbound by same variable, see 101a for counterexample to per-occurrence-overbinding.
+	The $z_i$ are ordered such that
+	\begin{compactenum}
+	\item the orderings in the $Q_{n_1}$ and $Q_{n_2}$ are respected (no circlular relations can occur in combination with merging as a term is only smaller than another term if it is smaller in length as well, which excludes cycles) 
+		\item as well as ordering constraints of terms newly introduced in $\PI(C)$ (i.e.~those that were not present in $\PI(C_1)$ and $\PI(C_2)$). 
+	\end{compactenum}
+	Basically, use merge sort.
 
-	$Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})$
 
+	\begin{itemize}
+		\item[Resolution.]~
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor l}
+				\AxiomCm{C_2: E \lor \lnot l'}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\BinaryInfCm{C: (D\lor E)\sigma}
+			\end{prooftree}
+
+			$\bar Q_{n_1} \PI(C_1)^*$
+
+			$\bar Q_{n_2} \PI(C_2)^* $
+
+			\begin{enumerate}
+				\item $l$ and $l'$ $\Gamma$-colored:
+
+					$\PI(C) \equiv (\PI(C_1) \lor \PI(C_2))\sigma $
+
+					$\PI(C)^* \equiv (\PI(C_1)^* \lor \PI(C_2)^*)\sigma $ (just replace maximal terms)
+
+					intended meaning of $\sigma$: to change the free variables still in the $\PI(C_i)$
+
+					Let $t_1, \ldots, t_{n_1}$ be terms overbound in $\PI(C_1)$ and
+					$s_1, \ldots, s_{n_2}$ terms overbound in $\PI(C_2)$.
+
+					$\{ z_1, \ldots, z_n \} = \{t_1, \ldots, t_{n_1}\} \sigma \cup \{s_1, \ldots, s_{n_2}\} \sigma$ $\quad$ // common terms are merged
+
+					order relations as in $C_1, C_2$
+
+					$\bar Q_n \PI(C)^* \equiv \bar Q_n ( \PI(C_1)^* \lor \PI(C_2)^*) $
+
+				\item $l$ and $l'$ $\Delta$-colored:
+
+					similar to first case
+
+				\item $l$ and $l'$ grey:
+
+					$\PI(C) \equiv [(\lnot l' \land \PI(C_1)) \lor (l \land \PI(C_2)) ] \sigma $
+
+					$\PI(C)^* \equiv [ (\lnot l'^* \land \PI(C_1)^*) \lor (l^* \land \PI(C_2)^*) ] \sigma $
+
+					Let $t_1, \ldots, t_{n_1}$ be terms overbound in $\PI(C_1)$,
+					$s_1, \ldots, s_{n_2}$ terms overbound in $\PI(C_2)$ and $r_1, \ldots, r_{n_3}$ be the maximal colored terms of $l\sigma$ and $l'\sigma$ (need to apply $\sigma$ here because we there might be grey variables replaced by colored terms) 
+
+					$\{ z_1, \ldots, z_n \} = \{t_1, \ldots, t_{n_1}\} \sigma \cup \{s_1, \ldots, s_{n_2}\} \sigma \cup \{r_1, \ldots, r_{n_3}\}$
+
+					order relations as in $C_1, C_2$ plus:
+
+					If $r_i$ is smaller in length than $t_j$ ($s_j$) and a subterm of $r_i$ occurs in $t_j$ ($s_j$), then $r_i$ is smaller than $t_j$ ($s_j$).
+
+					$\bar Q_n \PI(C)^* \equiv \bar Q_n  [ (\lnot l'^* \land \PI(C_1)^*) \lor (l^* \land \PI(C_2)^*) ] \sigma$
+
+					TODO: check this. also: do we now have to sort all the time, such that it isn't actually an improvement?
+
+			\end{enumerate}
+	\end{itemize}
 
 \end{defi}
 
@@ -646,15 +621,7 @@ The subterm-relation is reflexive.
 
 \begin{proof}
 
-	proof, only for $\square$:
 
-	We know that $\Gamma \entails \overline{\PI(\square)}(x_1, \ldots, x_{n})$.
-	It still contains the respective maximal $\Gamma$-terms.
-
-	\bigskip
-
-	{
-		OTHER ATTEMPT:
 
 	Induction.
 
@@ -668,16 +635,15 @@ The subterm-relation is reflexive.
 		\BinaryInfCm{C: (D\lor E)\sigma}
 	\end{prooftree}
 
-	$\Gamma \entails Q_1 z_1 \ldots Q_{n_1} z_{n_1} \PI(C_1)^*(z_1, \ldots, z_{n_1})  \lor D \lor l$
+	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
 
-	$\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l'$
+	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l'$
 
 	to show:
-	$\Gamma \entails Q_1 z_1 \ldots Q_{n} z_{n} \PI(C)^*(z_1, \ldots, z_{n})  \lor (D \lor E)\sigma$
+	$\Gamma \entails \bar Q_n \PI(C)^* \sigma \lor (D \lor E)\sigma$
 
-	Note that every term that is colored and in $C$ has been introduced by the substitution $\sigma$, as otherwise it would occur in both $\Gamma$ and $\Delta$.\todo{not true if $C_1$ and $C_2$ both from same set.}
 
-	Note that it occurs in either $l$ or $l'$, but not in both.
+	Note that a term newly introduced in $\PI(C)$ occurs in either $l$ or $l'$, but not in both.
 
 	Let $t$ be a colored term in $\PI(C)$, which has just been added
 	W.l.o.g.\ let it occur in $l$, i.e.\ in $C_1$.
@@ -686,8 +652,39 @@ The subterm-relation is reflexive.
 
 	Case distinction:
 
+			~
+
+			\begin{enumerate}
+					\item Suppose $l, l'$ are from $\Gamma$ alone:
+
+			By induction hypothesis:
+
+			$\Gamma \entails ( \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l )\sigma$
+
+			$\Gamma \entails (\bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l')\sigma$
+
+			By resolution:
+
+			$\Gamma \entails (\bar Q_{n_1} \PI(C_1)^*\lor \bar Q_{n_2} \PI(C_2)^*)\sigma  \lor (D \lor E )\sigma$
+
+			
 	\begin{description}
-		\item [$t$ is $\Gamma$-colored.]
+		\item [Suppose $t$ is $\Gamma$-colored.] ~
+
+			Then it will be replaced by $x_i$ and existentially quantified.
+			It appears in either $\PI(C_1)$ or $\PI(C_2)$.
+
+			$t$ is a witness for $x_i$ because it contains subterms $t_1, \ldots, t_n$. If they are overbound as well, they are so before $t$ and are available here.
+
+			TODO: derive properties using examples 103 or so
+
+
+		\end{description}
+
+	\end{enumerate}
+			\clearpage
+
+			{ \color{gray}
 			Then $\sigma$ replaces variables $y_1, \ldots, y_k$ in $E \lor \lnot l'$ with terms that contain~$t$.
 
 			By the induction hypothesis, $\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l'$.
@@ -719,9 +716,28 @@ The subterm-relation is reflexive.
 			%When proving $\Gamma \entails Q_1 z_1 \ldots Q_{n} z_{n} \PI(C)^*(z_1, \ldots, z_{n}$, it will be replaced by an existentially quantified variable, which is ok since $t$ is the witness.
 			
 
-		\end{description}
 
 	}
-
 \end{proof}
 
+\begin{prop}
+
+	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
+	A variable occurs in one of the $x_i$ if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $x_i$ can be unified with $z_i$ and $y_i$ such that there is still a variable at that location.
+
+	This means that either the term structure above the variable is the same in the original clauses or there are some variables. Intended meaning: the original clauses prove at least the $x_i$, i.e.~are at least as or more general.
+	\medskip
+
+	Special case for outermost variables:
+
+	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
+	An $x_i$ is a variable if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $y_i$ and $z_i$ are variables.
+\end{prop}
+
+need more narrow version: clauses do appear in parent clauses in derivation.
+
+
+
+\begin{prop}
+	Suppose in a partial interpolant, there are two maximal terms $t_1$ and $t_2$ such that w.l.o.g.~$t_1$ is smaller (as defined in \ref{def:order}) than $t_2$. Then it the final interpolant, an overbinding can be defined where the variable corresponding to $t_1$ is quantified over before the variable corresponding to $t_2$ is.
+\end{prop}

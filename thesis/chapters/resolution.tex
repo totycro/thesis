@@ -6,8 +6,8 @@ Resolution calculus, in the formulation as given here, is a sound and complete c
 Due to the simplicity of its rules, it is widely used in the area of automated deduction.
 
 \begin{defi}
-	A \defiemph{clause} is a finite set of literals.
-	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a number of resolution rule applications (cf.~figure~\ref{fig:resolution}) starting from clauses in $\Gamma$ which results in the empty clause.
+	A \defiemph{clause} is a finite set of literals. The empty clause will be denoted by $\square$.
+	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a derivation of $\square$ consisting of applications of resolution rules (cf.~figure~\ref{fig:resolution}) starting from clauses in $\Gamma$.
 \end{defi}
 
 
@@ -49,22 +49,42 @@ Clauses will usually be denoted by $C$ or $D$, literals by $l$.
 \end{figure}
 
 
+\section{Resolution and Interpolation}
+
+
+In order to apply resolution to arbitrary first-order formulas, they have to be converted to clauses first.
+This usally makes use of intermediate normal forms which are defined as follows:
+
+\begin{defi}
+	A formula is in \defiemph{Negation Normal Form (NNF)} if negations appear only directly in front of atoms.
+	A formula is in \defiemph{Conjunctive Normal Form (CNF)} if it is a conjunction of disjunctions of literals.
+\end{defi}
+
+In this context, the conjuncts of a formula in CNF are interpreted as clauses.
+A well-established procedure for the translation to CNF is comprised of the following steps:
+
+\begin{enumerate}
+		\item NNF-Transformation \label{step_nnf_trans}
+		\item Skolemisation \label{step_skolem_trans}
+		\item CNF-Transformation \label{step_cnf_trans}
+\end{enumerate}
+
+Step \ref{step_nnf_trans} can be achieved by solely pushing the negation inwards in order to receive an equivalent formula. This clearly has no effect on the interpolants.
+Step \ref{step_skolem_trans} and \ref{step_cnf_trans} on the other hand do not produce equivalent formulas as they introduce new symbols.
+In this section, we will show that they nonetheless do preserve the set of interpolants.
+This fact is vital for the use of resolution-based methods for interpolant computation of arbitrary formulas.
 
 
 \subsection{Interpolation and Skolemisation}
 
-In order to apply resolution to arbitrary first-order formulas, they have to be converted to clauses first.
-This process is composed of a CNF-transformation as well as a skolemisation to remove existential quantifiers.
-The CNF-transformation clearly has no influence on the interpolant as no symbols are added or removed and the resulting formula is logically equivalent.
-\todo{not the case for tseitin-style}
-Skolemisation on the other hand does introduce new symbols and is only satisfiablity-preserving. As we will now see, this does not affect the interpolants.
+Skolemisation is a procedure for replacing existential quantifiers with Skolem terms:
 
 \begin{defi}
-	Let $V_{\exists x}$ be the set of universally bound variables in the scope of the occurrence of $\exists x$.
-	The skolemisation of a formula $A$, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
-	In case $V_{\exists x}$ is empty, $\exists x$ is replaced by a new Skolem constant symbol $c$.
+	Let $V_{\exists x}$ be the set of universally bound variables in the scope of the occurrence of $\exists x$ in a formula.
+	The skolemisation of a formula $A$ in NNF, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by a term $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
+	In case $V_{\exists x}$ is empty, the occurrence of $\exists x$ is replaced by a new Skolem constant symbol $c$.
 
-	The skolemisation of a set of formulas $\Phi$ is defined to be $\sk(\Phi) = \{ \sk(A) \mid A \in \Phi \}$
+	The skolemisation of a set of formulas $\Phi$ is defined to be $\sk(\Phi) = \{ \sk(A) \mid A \in \Phi \}$.
 \end{defi}
 
 
@@ -74,12 +94,62 @@ Skolemisation on the other hand does introduce new symbols and is only satisfiab
 \end{prop}
 
 \begin{proof}
-	Since $\sk(\cdot)$ adds new symbols to both $\Gamma$ and $\Delta$, $I$ does not contain any of them as they are not contained in $L(\sk(\Gamma)) \intersect L(\sk(\Delta))$.
-	%otherwise $L(I) \subseteq L(\sk(\Gamma)) \intersect L(\sk(\Delta))$ would not hold. 
+	Since $\sk(\cdot)$ adds fresh symbols to both $\Gamma$ and $\Delta$ individually,
+	none of them are containd in $L(\sk(\Gamma)) \intersect L(\sk(\Delta))$.
 	Therefore condition \ref{int_3} of theorem \ref{thm:interpolation} is satisfied in both directions.
 
-	Since for a set of formulas $\Phi$, each model of $\Phi$ can be extended to a model of $\sk(\Phi)$ and every model of $\sk(\Phi)$ is a witness for the satisfiability of $\Phi$, $\Phi \entails I$ iff $\sk(\Phi) \entails I$.
+	As for any set of formulas $\Phi$, each model of $\Phi$ can be extended to a model of $\sk(\Phi)$ and every model of $\sk(\Phi)$ is a witness for the satisfiability of $\Phi$, $\Phi \entails I$ iff $\sk(\Phi) \entails I$.
 	Hence conditions \ref{int_1} and \ref{int_2} of theorem \ref{thm:interpolation} remain satisfied for $I$ as well.
 \end{proof}
 
+
+\subsection{Interpolation and structure-preserving Normal Form Transformation}
+
+A common method for transforming a skolemised formula $A$ into CNF by preserving their structure is defined as follows:
+
+\begin{defi}
+For every occurrence of a subformula $B$ of $A$, we introduce a new atom $L_B$. 
+For each of them, we create a defining clause:
+\todo{does it suffice to not treat universal quantifiers specifically here? (subterms have free variables; possibly need to mention to just pull universal quantifiers outwards to get prenex form and drop quantifiers)}
+
+\begin{itemize}
+	\item[If $B$ is atomic:]~
+
+	$D_B: (\lnot B \lor L_B) \land (B \lor \lnot L_B)  $
+	\item[If $B$ is $\lnot G$:]~
+
+	$D_B: (L_B \lor L_G) \land (\lnot L_B \lor \lnot L_G)  $
+	\item[If $B$ is $G \land H$:]~
+
+		$D_B: (\lnot L_B \lor L_G) \land (\lnot L_B \lor L_H) \land (L_B \lor \lnot L_G \lor \lnot L_H)  $
+	\item[If $B$ is $G \lor H$:]~
+
+		$D_B: (L_B \lor \lnot L_G) \land (L_B \lor \lnot L_H) \land (\lnot L_B \lor L_G \lor L_H)  $
+	\item[If $B$ is $G \limpl H$:]~
+
+		$D_B: (L_B \lor L_G) \land (L_B \lor \lnot L_H) \land (\lnot L_B \lor \lnot L_G \lor L_H)  $
+	\item[If $B$ is $\forall x G$:]~
+
+		$D_B: \forall x (\lnot L_B \lor L_G) \land \forall x(L_B \lor \lnot L_G)$
+\end{itemize}
+
+Let \defiemph{$\delta(A)$} be defined as $\bigwedge_{B \in \Sigma(A)} D_B \land L_A$, where $\Sigma(A)$ denotes the set of occurrences of subformulas of $A$.
+\end{defi}
+
+\begin{prop}
+	\label{prop:definitional_form}
+	Let $A$ be a formula. Then $\sk(A)$ is unsatisfiable if and only if $\delta(\sk(A))$ is unsatisfiable.
+\end{prop}
+
+\begin{prop}
+	Let $\sk(\Gamma) \cup \sk(\Delta)$ be unsatisfiable.
+	Then $I$ is an interpolant for \mbox{$\sk(\Gamma) \cup \sk(\Delta)$} if and only if 
+	$I$ is an interpolant for $\delta(\sk(\Gamma)) \cup \delta(\sk(\Delta))$.
+\end{prop}
+\begin{proof}
+	As $\sk(\Gamma)$ and $\sk(\Delta)$ share no occurrence of a subformula, the set of new atoms which are introduced in $\delta(\sk(\Gamma))$ and $\delta(\sk(\Delta))$ respectively are disjoint.
+	This establishes condition \ref{int_3} of theorem \ref{thm:interpolation} in both directions.
+
+Using proposition \ref{prop:definitional_form}, condition \ref{int_1} and \ref{int_2} of theorem \ref{thm:interpolation} are immediate.
+\end{proof}
 
