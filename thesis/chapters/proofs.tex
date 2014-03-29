@@ -1,33 +1,4 @@
 
-\section{Reduction to first order logic without equality}
-
-%$ \Gamma, \Delta \proves \bot $.
-%Hence exists $I$ such that $ \Gamma \proves I$, $\Delta \proves \lnot I$ and $L(I) \subseteq L(\Gamma) \intersect L(\Delta) $.
-
-Let $A$ be a first order formula.
-
-Let $U(E)$ be the conjunction of all $\forall \bar x \exists y F_i(\bar x, y) \land (\forall z F_i(\bar x, z) \limpl z = y)$ for $f_i \in \Fun(E)$.
-
-Let $E'$ be inductively defined as follows: If $E$ does not contains an occurrence of a function symbol, let $E' = E$.
-Otherwise let $f_i$ be a maximal occurrence of a function symbol and $A$ be the atom in which it occurs. Then $A$ is of the form $P(s_1, \ldots, s_{j-1}, f_i(\bar t), s_{j+1}, \ldots s_n)$.
-Let $E_F$ be $E$ where $A$ is replaced by $\exists y F_i(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_n)])$ and $E' = E_F'$.
-%$E' = (E[ B / \exists y F_i(\bar t, y) \land A(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_n)])'$.
-
-Clearly $E \entails_= A$ iff $U(E) \land  E' \entails_= A$.
-
-%Let $I(P)$ denote $\forall x_1, \ldots, x_n, y_1, \ldots, y_n\; x_1 = y_1 \limpl \ldots \limpl x_n = y_n \limpl P(\bar x) \limpl P(\bar y)$, where $n$ is the arity of $P$.
-Let $I(E)$ denote a conjunction between $\forall x \; x=x$ and for all $P \in\Pred(E)$, $\forall \bar x, \bar y\; x_1~=~y_1 \limpl \ldots \limpl x_n = y_n \limpl P(\bar x) \limpl P(\bar y)$, where $n$ is the arity of $P$.
-If $U(E) \land E' \entails_= A$,
-also $I(E) \land U(E) \land E' \entails A$. 
-
-%$\forall x \; x=x \land \bigwedge_{P \in \Pred(E)} I(P) \land  \bigwedge_{f_i \in \Fun(E)} U(F_i) \limpl  E'$ by $T(E)$. 
-
-As $E \entails_= A$ iff $I(E) \land U(E) \land (E) \entails A$, $E$ is unsatisfiable iff $I(E) \land U(E) \land E'$ is.
-Note that this does not rely on equality and contains no function symbols. Hence by the interpolation theorem for first order logic without equality\todo{how to state?}, there is an interpolant for $\left(\bigcup_{A\in \Gamma} I(A) \land U(A) \land A\right) \cup \left(\bigcup_{A\in \Delta} I(A) \land U(A) \land A\right) $ for unsatisfiable $\Gamma \cup \Delta$.
-Since the equality axioms added via $I$ ensure a valid interpretation of the equality symbol and the $F_i$ can be translated back\todo{more verbose and precise}\ to $f_i$ in a natural way (as guaranteed by the $U$), the interpolant we receive is also an interpolant for $\Gamma \cup \Delta$.
-Note that by adding the axiom of reflexivity to both $\Gamma$ and $\Delta$, it is contained in the intersection of the languages and hence is allowed to appear in the interpolant, which is required. 
-
-
 \section{WT: Interpolation extraction in one pass}
 
 easy for constants, just as in huang but in one pass
@@ -588,11 +559,16 @@ The subterm-relation is reflexive.
 
 					order relations as in $C_1, C_2$ plus:
 
-					If $r_i$ is smaller in length than $t_j$ ($s_j$) and a subterm of $r_i$ occurs in $t_j$ ($s_j$), then $r_i$ is smaller than $t_j$ ($s_j$).
+					\begin{itemize}[+]
+						\item If $r_i$ is smaller in length than $t_j$ ($s_j$) and a subterm of $r_i$ occurs in $t_j$ ($s_j$), then $r_i$ is smaller than $t_j$ ($s_j$).
+
+						\item If $r_i$ is larger in length than $t_j$ ($s_j$) and a subterm of $t_j$ ($s_j$) occurs in $r_i$, then $r_i$ is larger than $t_j$ ($s_j$).
+
+						\item If $z_i\sigma \neq z_i$, we have to potentially add new dependencies (cf. 102b). TODO: check only $t_j$ if change in $s_j$ and similar?
+					\end{itemize}
 
 					$\bar Q_n \PI(C)^* \equiv \bar Q_n  [ (\lnot l'^* \land \PI(C_1)^*) \lor (l^* \land \PI(C_2)^*) ] \sigma$
 
-					TODO: check this. also: do we now have to sort all the time, such that it isn't actually an improvement?
 
 			\end{enumerate}
 	\end{itemize}

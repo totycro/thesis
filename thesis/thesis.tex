@@ -106,9 +106,11 @@
 \chapter{The Resolution Calculus}
 \input{chapters/resolution.tex}
 
-\chapter{Constructive Proofs}
-\input{chapters/proofs}
+\chapter{Proof by Reduction}
+\input{chapters/reduction}
 
+\chapter{Proofs}
+\input{chapters/proofs}
 
 
 
@@ -124,22 +126,24 @@
 %%%   PARTIAL COMPILATION OPTIONS    %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifdefined\secproofsonly 
-\selectlanguage{english}
+
+	\selectlanguage{english}
 	\input{chapters/proofs}
+
 \else
 
-\ifdefined\contentonly 
-\selectlanguage{english}
+	\ifdefined\contentonly 
+	\selectlanguage{english}
+	
+	
+	\tableofcontents
+	
+	\content
+	
+	\nocite{*}
+	\bibliography{bib}
 
-
-\tableofcontents
-
-\content
-
-\nocite{*}
-\bibliography{bib}
-
-\else 
+	\else 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -214,6 +218,7 @@
 \nocite{*}
 \bibliography{bib}
 
+\fi
 \fi
 
 \end{document}
