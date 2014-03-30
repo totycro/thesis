@@ -487,19 +487,25 @@ The subterm-relation is reflexive.
 	%Let $C$ be a clause in $\Gamma \cup \Delta$. 
 
 	%A maximal term $s$ of $C$ is said to be \defiemph{smaller} than a maximal term $t$ of $C$ if a subterm of $s$ occurs in $t$ and $s$ is of smaller length than $t$.
-	\label{def:order}
 
 
+	(OLD)
 	Let $s$ be a term that is in $\PI(C)$ but not in any predecessor $\PI(C_i)$, $i \in \{1,2\}$. $s$ is smaller than a term $t$ in $\PI(C)$ if $s$ is of strictly smaller length than $t$ and there is a subterm in $s$ which also occurs in $t$.
 \end{defi}
 
+\begin{defi}
+	\label{def:order}
+	(NEW)
+	A term $s$ is smaller than a term $t$ if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
+
+\end{defi}
 
 \subsection{Half-baked approaches}
 
 \begin{defi}
 	Direct interpolation extraction.
 
-	This version of overline and star does NOT overbind variables! If they happen to be in the final interpolant, just overbind them somehow, but not early. these are the only terms that can ``change their color.''
+	This version of overline and star does NOT overbind variables! If they happen to be in the final interpolant, just overbind them somehow, but not earlier. This is ok as the interpolant only contains variables if both corresponding atoms in $\Gamma$ and $\Delta$ do. Variables are the only terms in the interpolant that can ``change their color'', so we don't know a priori if there are constraints on the quantifier to overbind them with.
 
 	Convention w.r.t. a clause $C$ which has been derived from $C_1$ and $C_2$:
 	$\bar Q_n = Q_1 z_1 \ldots Q_n z_n$, such that the $z_i$ correspond to the maximal terms $t_i$ in $\PI(C)$. Same terms must be overbound by same variable, see 101a for counterexample to per-occurrence-overbinding.
@@ -508,7 +514,7 @@ The subterm-relation is reflexive.
 	\item the orderings in the $Q_{n_1}$ and $Q_{n_2}$ are respected (no circlular relations can occur in combination with merging as a term is only smaller than another term if it is smaller in length as well, which excludes cycles) 
 		\item as well as ordering constraints of terms newly introduced in $\PI(C)$ (i.e.~those that were not present in $\PI(C_1)$ and $\PI(C_2)$). 
 	\end{compactenum}
-	Basically, use merge sort.
+	Basically, track dependencies and define actual order later.
 
 
 	\begin{itemize}
