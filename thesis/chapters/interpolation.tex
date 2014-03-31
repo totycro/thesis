@@ -1,9 +1,13 @@
 \section{Preliminaries}
 
-The language of a first-order formula $A$ is denoted by $L(A)$ and contains all predicate, constant, function and free variable symbols that occur in $A$.
+The language of a first-order formula $A$ is denoted by $\Lang(A)$ and contains all predicate, constant, function and free variable symbols that occur in $A$.
 These are also referred to as the \emph{non-logical symbols} of $A$.
 
-An occurrence of term is called \emph{maximal} if it does not occur as subterm of another term.
+An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
+
+$\bar x$ denotes $x_1, \ldots, x_n$.
+
+
 
 \section{Craig Interpolation}
 
@@ -16,7 +20,7 @@ An occurrence of term is called \emph{maximal} if it does not occur as subterm o
 		\begin{compactenum}
 		\item $ \Gamma \entails I$ \label{int_1}
 		\item $ \Delta \entails \lnot I$  \label{int_2}
-		\item $ L(I) \subseteq L(\Gamma) \intersect L(\Delta)$.  \label{int_3}
+		\item $ \Lang(I) \subseteq \Lang(\Gamma) \intersect \Lang(\Delta)$.  \label{int_3}
 			\thmqed
 		\end{compactenum}
 	\end{thm}

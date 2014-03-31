@@ -1,16 +1,95 @@
 
-\section{Reduction to first order logic without equality}
+Instead of proving the result from first principles, we can here reduce the problem of finding interpolants for first-order logic with equality to first-order logic \emph{without} equality, where it is simpler to give an appropriate algorithm.
+
+The general layout of this approach is the following:
+From two sets $\Gamma$ and $\Delta$ where $\Gamma \cup \Delta$ is unsatisfiable, we compute $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate equality it via axioms.
+In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that their behaviour is compatible to the one of functions.
+Now an interpolant of $\Gamma'$ and $\Delta'$ can be derived with an algorithm that is only capable of handling predicate symbols, as all other symbols have been removed.
+Since the additional axioms ensure that the newly added predicate symbols mimic equality and functions respectively, we will see that their occurrences in the interpolant can be translated back to first-order logic with equality in the language of $\Gamma$ and $\Delta$, thereby yielding the originally desired interpolant.
+
+
+$\Gamma \entails I$
+
+$\Delta \entails \lnot I$
+
+$\Lang(I) \subseteq \Lang(\Gamma) \cap \Lang(\Delta)$
+
+to show:
+
+- can find $I'$ such that $I'$ is interpolant between $\Gamma'$ and $\Delta'$.
+
+- $\Phi' \entails I'$ implies $\Phi \entails I$ ($\Phi', \lnot I' \entails \bot $ implies $\Phi, \lnot I \entails \bot$)
+
+
+\section{Reduction to first-order logic without equality}
+
+As we shall see in this section, first-order formulas with equality can be transformed into first-order formulas without equality in a way that is satisfiability-preserving, which is sufficient for our purposes.
+
+First we define the axioms which allow for simulation of equality and functions in first order logic without equality and function symbols:
+
+\begin{defi}
+	For first-order formulas $A$ and a fresh predicate symbol $E$, we define:\nopagebreak
+	\begin{align*}
+		\FAX(A) \defeq{} &\bigwedge_{f \in \FS(A)}  \forall \bar x \exists y (F_f(\bar x, y) \land (\forall z (F_f(\bar x, z) \limpl E(z, y)))) \\
+%		\EAX(A) \defeq{} & \forall x \; x=x~\land  \\
+%																		 & \begin{aligned} \bigwedge_{\substack{P \in\PS(A)\cup\\ \{F_i\mid f_i\in \FS(A)\}}} &\forall x_1 \ldots \forall x_{\ar(P)} \forall y_1 \ldots \forall y_{\ar(P)} \\
+%																 & (( x_1~=~y_1 \land \ldots \land x_{\ar(P)} = y_{\ar(P)}) \limpl  \\
+%																 &  (P(x_1, \ldots, x_{\ar(P)}) \Lra P(y_1, \ldots, y_{\ar(P)}) ) ) \end{aligned} 
+		\EAX(A) \defeq{} & \forall x E(x,x)\land  \\
+																		 & \begin{aligned} \bigwedge_{\substack{P \in\PS(A)\cup\{E\}\cup\\ \{F_f\mid f\in \FS(A)\}}} &\forall x_1 \ldots \forall x_{\ar(P)} \forall y_1 \ldots \forall y_{\ar(P)} \\
+																		 & (( E(x_1,y_1) \land \ldots \land E(x_{\ar(P)},  y_{\ar(P)})) \limpl  \\
+																 &  (P(x_1, \ldots, x_{\ar(P)}) \Lra P(y_1, \ldots, y_{\ar(P)}) ) ) \end{aligned} 
+\end{align*}
+For sets of first-order formulas $\Phi$ and $h \in \{\FAX, \EAX\}$, $h(\Phi) = \bigcup_{A\in \Phi} h(A)$ .
+%$\FAX$ and $\EAX$ generalise to sets of formulas by elementwise application.
+\end{defi}
+
+\begin{defi}
+	Let $A$ be a first-order formula. Then $\Trans(A)$ is the result of applying the following algorithm to $A$:
+	\begin{compactenum}
+	\item Replace every occurrence of $t=s$ in $A$ by $E(t, s)$
+	\item As long as there is an occurrence of a function symbol $f$ in $A$:
+
+		Let $B$ be the atom in which $f$ occurs.
+		\newline Then $B$ is of the form $P(s_1, \ldots, s_{j-1}, f_i(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
+		\newline Replace $B$ in $A$ by $\exists y F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m)$ for a variable $y$ which does not occur free in $B$.
+		\qedhere
+	\end{compactenum}
+
+\end{defi}
+
+
+\begin{prop}
+	$\Phi$ is satisfiable if and only if $\FAX(\Phi) \cup \EAX(\Phi) \cup \Phi'$ is satisfiable.
+\end{prop}
+\begin{proof}
+	Suppose $\Phi$ is satisfiable.
+	Let $M$ be a model of $\Phi$.
+	We show that $\FAX(\Phi) \cup \EAX(\Phi) \cup \Phi'$ is satisfiable by extending $M$ to satisfy this formula.
+
+	TODO
+
+	For the other direction, suppose $\FAX(\Phi) \cup \EAX(\Phi) \cup \Phi'$ is satisfiable. We again extend a model $M$ of this formula to a model of $\Phi$.
+
+	TODO
+\end{proof}
+
+
+%$\Lang(\Gamma') = \Lang(\Gamma) \cup {E} \cup \{ F_i \mid f_i \in \FS(\Gamma)\}  \setminus \{=\} $ and 
+
+
+\subsection{Notes}
 
 %$ \Gamma, \Delta \proves \bot $.
-%Hence exists $I$ such that $ \Gamma \proves I$, $\Delta \proves \lnot I$ and $L(I) \subseteq L(\Gamma) \intersect L(\Delta) $.
+%Hence exists $I$ such that $ \Gamma \proves I$, $\Delta \proves \lnot I$ and $\Lang(I) \subseteq \Lang(\Gamma) \intersect \Lang(\Delta) $.
 
-Let $A$ be a first order formula.
+Let $A$ be a first-order formula.
 
 Let $U(E)$ be the conjunction of all $\forall \bar x \exists y F_i(\bar x, y) \land (\forall z F_i(\bar x, z) \limpl z = y)$ for $f_i \in \Fun(E)$.
 
 Let $E'$ be inductively defined as follows: If $E$ does not contains an occurrence of a function symbol, let $E' = E$.
 Otherwise let $f_i$ be a maximal occurrence of a function symbol and $A$ be the atom in which it occurs. Then $A$ is of the form $P(s_1, \ldots, s_{j-1}, f_i(\bar t), s_{j+1}, \ldots s_n)$.
-Let $E_F$ be $E$ where $A$ is replaced by $\exists y F_i(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_n)])$ and $E' = E_F'$.
+Let $E_F$ be $E$ where $A$ is replaced by $\exists y F_i(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_n)$ and $E' = E_F'$.
 %$E' = (E[ B / \exists y F_i(\bar t, y) \land A(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_n)])'$.
 
 Clearly $E \entails_= A$ iff $U(E) \land  E' \entails_= A$.
@@ -23,7 +102,7 @@ also $I(E) \land U(E) \land E' \entails A$.
 %$\forall x \; x=x \land \bigwedge_{P \in \Pred(E)} I(P) \land  \bigwedge_{f_i \in \Fun(E)} U(F_i) \limpl  E'$ by $T(E)$. 
 
 As $E \entails_= A$ iff $I(E) \land U(E) \land (E) \entails A$, $E$ is unsatisfiable iff $I(E) \land U(E) \land E'$ is.
-Note that this does not rely on equality and contains no function symbols. Hence by the interpolation theorem for first order logic without equality\todo{how to state?}, there is an interpolant for $\left(\bigcup_{A\in \Gamma} I(A) \land U(A) \land A\right) \cup \left(\bigcup_{A\in \Delta} I(A) \land U(A) \land A\right) $ for unsatisfiable $\Gamma \cup \Delta$.
+Note that this does not rely on equality and contains no function symbols. Hence by the interpolation theorem for first-order logic without equality\todo{how to state?}, there is an interpolant for $\left(\bigcup_{A\in \Gamma} I(A) \land U(A) \land A\right) \cup \left(\bigcup_{A\in \Delta} I(A) \land U(A) \land A\right) $ for unsatisfiable $\Gamma \cup \Delta$.
 Since the equality axioms added via $I$ ensure a valid interpretation of the equality symbol and the $F_i$ can be translated back\todo{more verbose and precise}\ to $f_i$ in a natural way (as guaranteed by the $U$), the interpolant we receive is also an interpolant for $\Gamma \cup \Delta$.
 Note that by adding the axiom of reflexivity to both $\Gamma$ and $\Delta$, it is contained in the intersection of the languages and hence is allowed to appear in the interpolant, which is required. 
 

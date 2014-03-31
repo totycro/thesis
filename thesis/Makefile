@@ -8,8 +8,8 @@ LANG="en" # of tex file
 # pdf
 
 #first: pdf
-first: proofs
-#first: content
+#first: proofs
+first: content
 
 all: everything
 

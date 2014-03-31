@@ -11,10 +11,10 @@ terms can grow unpredictably, order cannot be determined during pass
 
 \subsubsection{propositional part}
 
-Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of $\square$ from $\Gamma \cup \Delta$. Then $\PI$ is a function that returns a relative interpolant w.r.t. the current clause. 
+Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of $\square$ from $\Gamma \cup \Delta$. Then $\PI$ is a function that returns a interpolant w.r.t. the current clause. 
 
 \begin{defi}
-	$\theta$ is a \defiemph{relative propositional interpolant} with respect to a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$ if 
+	$\theta$ is a \defiemph{propositional interpolant} with respect to a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$ if 
 	\label{def:rel_prop_interpol}
 	\begin{compactenum}
 		\item $\Gamma \entails \theta \lor C$
@@ -28,9 +28,9 @@ Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of $\square$ fro
 \end{defi}
 
 The third condition will sometimes be referred to as \emph{language restriction}.
-It is easy to see that a relative propositional interpolant with respect to $\square$ is a propositional interpolant\todo{add this to the definition, i.e.~possible define rel prop interpol from prop interpol}, i.e.~it is an interpolant without the language restriction on constant, variable and function symbols.
+It is easy to see that a propositional interpolant with respect to $\square$ is a propositional interpolant\todo{add this to the definition, i.e.~possible define rel prop interpol from prop interpol}, i.e.~it is an interpolant without the language restriction on constant, variable and function symbols.
 
-We proceed by defining a procedure $\PI$ which extracts relative interpolants from a resolution refutation.
+We proceed by defining a procedure $\PI$ which extracts interpolants from a resolution refutation.
 
 \begin{defi}
 	\defiemph{$\PI$} is defined as follows:
@@ -52,9 +52,9 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 		If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
 	%$\PI(C)$ is defined according to this case distinction:
 		\begin{enumerate}
-			\item If $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$:\todo{change to "is $\Gamma$-colored?"} $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
-			\item If $\Pred(l) \in L(\Delta) \setminus L(\Gamma)$: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
-			\item If $\Pred(l) \in L(\Gamma) \intersect L(\Delta)$: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
+			\item If $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:\todo{change to "is $\Gamma$-colored?"} $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
+			\item If $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
+			\item If $\Pred(l) \in \Lang(\Gamma) \intersect \Lang(\Delta)$: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
 		\end{enumerate}
 
 	\item[Factorisation.]
@@ -83,12 +83,12 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 \begin{prop}
 	Let $C$ be a clause of a resolution refutation.
-	Then $\PI(C)$ is a relative propositional interpolant with respect to $C$. 
+	Then $\PI(C)$ is a propositional interpolant with respect to $C$. 
 \end{prop}
 \begin{proof}
 	Proof by induction on the number of rule applications including the following strenghtenings:
 	$\Gamma \entails \PI(C) \lor C_\Gamma$ and
-	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $L(\Phi)$. They clearly imply conditions \ref{rel_prop_interpol_cond1} and \ref{rel_prop_interpol_cond2} of definition \ref{def:rel_prop_interpol}. 
+	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $\Lang(\Phi)$. They clearly imply conditions \ref{rel_prop_interpol_cond1} and \ref{rel_prop_interpol_cond2} of definition \ref{def:rel_prop_interpol}. 
 
 \begin{itemize}
 	\item[Base case.]
@@ -126,34 +126,34 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 		We consider the respective cases from definition \ref{def:PI_resolution}:
 
 			\begin{enumerate}
-				\item $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$:
+				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
 					\label{huang_proof_prop_case_1}
 					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
 
-					As $\Pred(l) \in L(\Gamma)$,
+					As $\Pred(l) \in \Lang(\Gamma)$,
 					$\Gamma \entails (\PI(C_1) \lor D_\Gamma\lor l)\sigma$
 					as well as $\Gamma \entails (\PI(C_2) \lor E_\Gamma\lor \lnot l')\sigma$.
 					By a resolution step, we get $\Gamma \entails (\PI(C_1) \lor \PI(C_2))\sigma \lor ((D \lor E)\sigma)_\Gamma$.
 
-					Furthermore, as $\Pred(l) \not\in L(\PI)$, 
+					Furthermore, as $\Pred(l) \not\in \Lang(\PI)$, 
 					$\Delta \entails (\lnot\PI(C_1) \lor D_\Delta)\sigma$
 					as well as $\Delta \entails (\lnot\PI(C_2) \lor E_\Delta)\sigma$.
 					Hence it certainly holds that $\Delta \entails (\lnot \PI(C_1) \lor \lnot\PI(C_2))\sigma \lor (D \lor E)\sigma_\Delta$.
 
 					The language restriction clearly remains satisfied as no nonlogical symbols are added.
 
-				\item $\Pred(l) \in L(\Delta) \setminus L(\Gamma)$: 
+				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$: 
 					\label{huang_proof_prop_case_2}
 					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
 
-					As $\Pred(l) \not\in L(\Gamma)$,
+					As $\Pred(l) \not\in \Lang(\Gamma)$,
 					$\Gamma \entails (\PI(C_1) \lor D_\Gamma)\sigma$
 					as well as $\Gamma \entails (\PI(C_2) \lor E_\Gamma)\sigma$.
 					Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D_\Gamma$ and $M \cancel \entails E_\Gamma$. Then $M \entails \PI(C_1) \land \PI(C_2)$.
 					Hence 
 					$\Gamma \entails (\PI(C_1) \land \PI(C_2))\sigma \lor ((D \lor E)\sigma)_\Gamma$.
 
-					Furthermore due to $\Pred(l) \in L(\Delta)$,
+					Furthermore due to $\Pred(l) \in \Lang(\Delta)$,
 					$\Delta \entails (\lnot\PI(C_1) \lor D_\Delta \lor l)\sigma$
 					as well as $\Delta \entails (\lnot\PI(C_2) \lor E_\Delta \lor \lnot l')\sigma$.
 					By a resolution step, we get $\Delta \entails (\lnot\PI(C_1) \lor \lnot\PI(C_2))\sigma \lor (D_\Delta \lor E_\Delta)\sigma $
@@ -162,7 +162,7 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 					The language restriction again remains intact.
 
-				\item $\Pred(l) \in L(\Delta) \intersect L(\Gamma)$:
+				\item $\Pred(l) \in \Lang(\Delta) \intersect \Lang(\Gamma)$:
 					Then $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
 
 					First, we have to show that 
@@ -177,7 +177,7 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 					Suppose again that in a model $M$ of $\Delta$, $M \cancel \entails D_\Delta$ and $\Gamma \cancel \entails E_\Delta$. 
 					Then the required statement follows from the induction hypothesis.
 					
-					The language condition remains satisfied as only the common literal $l$ is added to the relative interpolant.
+					The language condition remains satisfied as only the common literal $l$ is added to the interpolant.
 
 
 			\end{enumerate}
@@ -225,7 +225,7 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 
 			$\Delta \entails \lnot \PI(C_2) \lor (E[r])_\Delta$
 
-			First, we show that $\PI(C)$ as constructed in case \ref{def:PI_paramod_3} of the definition is a relative propositional interpolant in any of these cases:
+			First, we show that $\PI(C)$ as constructed in case \ref{def:PI_paramod_3} of the definition is a propositional interpolant in any of these cases:
 
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
 			
@@ -337,7 +337,7 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 			$\Gamma \entails \overline{\PI(C_2) \lor (E\lor \lnot l')}(x_{1}, \ldots, x_n)$
 
 			\begin{enumerate}
-				\item $\Pred(l) \in L(\Gamma) \setminus L(\Delta)$:
+				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
 					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
 
 					We show that $\Gamma \entails \overline{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
@@ -362,7 +362,7 @@ We proceed by defining a procedure $\PI$ which extracts relative interpolants fr
 					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}\sigma'$.
 
 
-				\item $\Pred(l) \in L(\Delta) \setminus L(\Gamma)$:
+				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$:
 					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
 
 					We show that $\Gamma \entails \overline{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
