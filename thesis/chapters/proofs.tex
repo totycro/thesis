@@ -496,7 +496,12 @@ The subterm-relation is reflexive.
 \begin{defi}
 	\label{def:order}
 	(NEW)
-	A term $s$ is smaller than a term $t$ if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
+	%A term $s$ is smaller than a term $t$ if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
+
+	Let $C$ be a clause.
+
+	A maximal term $s$ of $C$ is smaller than a maximal term $t$ of $C$ if $s$ is a variable and occurs in $t$, but $s\neq t$. 
+	%if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
 
 \end{defi}
 
@@ -539,6 +544,8 @@ The subterm-relation is reflexive.
 
 					intended meaning of $\sigma$: to change the free variables still in the $\PI(C_i)$
 
+					TODO: basically do nothing here since no new atoms (revisit after mixed colored case has been dealt with)
+
 					Let $t_1, \ldots, t_{n_1}$ be terms overbound in $\PI(C_1)$ and
 					$s_1, \ldots, s_{n_2}$ terms overbound in $\PI(C_2)$.
 
@@ -556,24 +563,42 @@ The subterm-relation is reflexive.
 
 					$\PI(C) \equiv [(\lnot l' \land \PI(C_1)) \lor (l \land \PI(C_2)) ] \sigma $
 
-					$\PI(C)^* \equiv [ (\lnot l'^* \land \PI(C_1)^*) \lor (l^* \land \PI(C_2)^*) ] \sigma $
+					$\PI(C)^* \equiv ( [ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma ) ^* $
+					
+					// just replace any atoms, note that vars are exempt
 
-					Let $t_1, \ldots, t_{n_1}$ be terms overbound in $\PI(C_1)$,
-					$s_1, \ldots, s_{n_2}$ terms overbound in $\PI(C_2)$ and $r_1, \ldots, r_{n_3}$ be the maximal colored terms of $l\sigma$ and $l'\sigma$ (need to apply $\sigma$ here because we there might be grey variables replaced by colored terms) 
-
-					$\{ z_1, \ldots, z_n \} = \{t_1, \ldots, t_{n_1}\} \sigma \cup \{s_1, \ldots, s_{n_2}\} \sigma \cup \{r_1, \ldots, r_{n_3}\}$
+					// need to star at the end again for terms introduced by sigma
 
 					order relations as in $C_1, C_2$ plus:
 
-					\begin{itemize}[+]
-						\item If $r_i$ is smaller in length than $t_j$ ($s_j$) and a subterm of $r_i$ occurs in $t_j$ ($s_j$), then $r_i$ is smaller than $t_j$ ($s_j$).
+					Let $C'$ and $C''$ be the clauses in $\Gamma \cup \Delta$ where $l$ and $l'$ originate.
+					
+					If in $C'$ ($C''$) a maximal term $s$ of $l$ ($l''$) is smaller than a maximal term $t$ of the same clause, and $x_i$ replaces $s$ and $x_j$ replaces $t$ in $\PI(C)^*$, then $x_i < x_j$.
 
-						\item If $r_i$ is larger in length than $t_j$ ($s_j$) and a subterm of $t_j$ ($s_j$) occurs in $r_i$, then $r_i$ is larger than $t_j$ ($s_j$).
+					%\begin{itemize}[+]
+					%\end{itemize}
 
-						\item If $z_i\sigma \neq z_i$, we have to potentially add new dependencies (cf. 102b). TODO: check only $t_j$ if change in $s_j$ and similar?
-					\end{itemize}
 
-					$\bar Q_n \PI(C)^* \equiv \bar Q_n  [ (\lnot l'^* \land \PI(C_1)^*) \lor (l^* \land \PI(C_2)^*) ] \sigma$
+						Let $t_1, \ldots, t_{n_1}$ be the maximal colored terms in $\PI(C_1)$
+						and $s_1, \ldots, s_{n_2}$ the maximal colored terms in $\PI(C_2)$,
+
+						Let $r_1, \ldots, r_{n_3}$ be the maximal colored terms in $[ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma$
+
+						// this way, we catch all colored terms in the new atoms + every term that becomes colored due to $\sigma$ changing a var.
+
+
+						$\{ z_1, \ldots, z_{n_1} \} = \{t_1, \ldots, t_{n_1}\} $
+
+						$\{ z_{n_1}, \ldots, z_{n_1+n_2} \} = \{s_1, \ldots, s_{n_2}\} $
+
+						$\{ z_{n_1+n_2}, \ldots, z_{n_1+n_2+n_3} \} = \{r_1, \ldots, r_{n_3}\} $
+
+						$\bar Q_n \sim $ $z_i$ ordered according to constraints and with quantifier. 
+
+						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
+
+						$\bar Q_n \overline{\PI(C)} \equiv \bar Q_n  \overline{[ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma}$
+
 
 
 			\end{enumerate}
@@ -596,16 +621,144 @@ The subterm-relation is reflexive.
 
 \end{proof}
 
+\clearpage
+\begin{prop}
+	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \overline{\PI(C)}(z_1, \ldots, z_n)  \lor C$, quantifiers ordered as in \ref{def:order}, is a craig interpolant.
+\end{prop}
 
+\begin{proof}
+
+	\color{red}
+	Induction.
+
+Suppose Resolution.
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
+
+	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l'$
+
+	to show:
+	$\Gamma \entails \bar Q_n \PI(C)^* \lor (D \lor E)\sigma$
+
+
+			$\Gamma \entails ( \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l )\sigma$
+
+			$\Gamma \entails (\bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l')\sigma$
+
+			By resolution:
+
+			$\Gamma \entails (\bar Q_{n_1} \PI(C_1)^*\lor \bar Q_{n_2} \PI(C_2)^*)\sigma  \lor (D \lor E )\sigma$
+
+
+			\begin{enumerate}
+					\item Suppose $l, l'$ are from $\Gamma$ alone:
+						TODO
+
+
+					\item Suppose $l$ and $l'$ are colored with different colors and w.l.o.g~$l$ is $\Gamma$-colored and $l'$ is $\Delta$-colored.
+
+						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
+
+						Adapt Huang proof to this, need to consider quantifiers:
+
+						If $\Gamma \cancel \entails D \sigma$ and 
+						$\Gamma \cancel \entails E \sigma$ (else we are done), then  
+
+						$\Gamma \entails [ (\lnot l' \land \bar Q_{n_1} \PI(C_1)^*) \lor (l \land \bar Q_{n_2} \PI(C_2)^*) ] \sigma$
+
+						As $\bar Q_{n_1}$ and $\bar Q_{n_2}$ disjoint and their variables do not appear in $l$ or $l'$,
+
+						$\Gamma \entails (\bar Q_{n_1} \bar Q_{n_2} [ (\lnot l' \land  \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] ) \sigma$
+
+						Consider the maximal terms of this expression which are $\Gamma$-colored.
+
+						Either they only have grey subterms, then if they are existentially quantified, we can just use it as witness as the terms aren't replaced.
+
+						Otherwise they contain at least a $\Gamma$-colored subterm. (TODO: proof $\overline \theta$)
+
+
+				\end{enumerate}
+				\end{proof}
+
+
+
+\clearpage
 \begin{prop}
 	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \PI(C)^*(z_1, \ldots, z_n)  \lor C$, quantifiers ordered as in \ref{def:order}, is a craig interpolant.
 \end{prop}
 
 \begin{proof}
 
-
-
 	Induction.
+
+Suppose Resolution.
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
+
+	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l'$
+
+	to show:
+	$\Gamma \entails \bar Q_n \PI(C)^* \lor (D \lor E)\sigma$
+
+
+			$\Gamma \entails ( \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l )\sigma$
+
+			$\Gamma \entails (\bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l')\sigma$
+
+			By resolution:
+
+			$\Gamma \entails (\bar Q_{n_1} \PI(C_1)^*\lor \bar Q_{n_2} \PI(C_2)^*)\sigma  \lor (D \lor E )\sigma$
+
+
+			\begin{enumerate}
+					\item Suppose $l, l'$ are from $\Gamma$ alone:
+						TODO
+
+
+					\item Suppose $l$ and $l'$ are colored with different colors and w.l.o.g~$l$ is $\Gamma$-colored and $l'$ is $\Delta$-colored.
+
+						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
+
+						Adapt Huang proof to this, need to consider quantifiers:
+
+						If $\Gamma \cancel \entails D \sigma$ and 
+						$\Gamma \cancel \entails E \sigma$ (else we are done), then  
+
+						$\Gamma \entails [ (\lnot l' \land \bar Q_{n_1} \PI(C_1)^*) \lor (l \land \bar Q_{n_2} \PI(C_2)^*) ] \sigma$
+
+						As $\bar Q_{n_1}$ and $\bar Q_{n_2}$ disjoint and their variables do not appear in $l$ or $l'$,
+
+						$\Gamma \entails (\bar Q_{n_1} \bar Q_{n_2} [ (\lnot l' \land  \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] ) \sigma$
+
+						Consider the maximal terms of this expression which are $\Gamma$-colored.
+
+						Either they only have grey subterms, then if they are existentially quantified, we can just use it as witness as the terms aren't replaced.
+
+						Otherwise they contain at least a $\Gamma$-colored subterm. (TODO: proof $\overline \theta$)
+
+
+
+
+
+
+			\end{enumerate}
+
+			\clearpage
+
+	{ \color{gray}
+
 
 	Base case: simple.
 
@@ -664,9 +817,11 @@ The subterm-relation is reflexive.
 		\end{description}
 
 	\end{enumerate}
-			\clearpage
+	}
 
 			{ \color{gray}
+				OTHER TRY: 
+
 			Then $\sigma$ replaces variables $y_1, \ldots, y_k$ in $E \lor \lnot l'$ with terms that contain~$t$.
 
 			By the induction hypothesis, $\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l'$.
