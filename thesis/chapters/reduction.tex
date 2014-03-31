@@ -6,8 +6,7 @@ From two sets $\Gamma$ and $\Delta$ where $\Gamma \cup \Delta$ is unsatisfiable,
 In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that their behaviour is compatible to the one of functions.
 Now an interpolant of $\Gamma'$ and $\Delta'$ can be derived with an algorithm that is only capable of handling predicate symbols, as all other symbols have been removed.
 Since the additional axioms ensure that the newly added predicate symbols mimic equality and functions respectively, we will see that their occurrences in the interpolant can be translated back to first-order logic with equality in the language of $\Gamma$ and $\Delta$, thereby yielding the originally desired interpolant.
-
-
+\todo{
 $\Gamma \entails I$
 
 $\Delta \entails \lnot I$
@@ -19,6 +18,7 @@ to show:
 - can find $I'$ such that $I'$ is interpolant between $\Gamma'$ and $\Delta'$.
 
 - $\Phi' \entails I'$ implies $\Phi \entails I$ ($\Phi', \lnot I' \entails \bot $ implies $\Phi, \lnot I \entails \bot$)
+}
 
 
 \section{Reduction to first-order logic without equality}
@@ -40,42 +40,59 @@ First we define the axioms which allow for simulation of equality and functions 
 																		 & (( E(x_1,y_1) \land \ldots \land E(x_{\ar(P)},  y_{\ar(P)})) \limpl  \\
 																 &  (P(x_1, \ldots, x_{\ar(P)}) \Lra P(y_1, \ldots, y_{\ar(P)}) ) ) \end{aligned} 
 \end{align*}
-For sets of first-order formulas $\Phi$ and $h \in \{\FAX, \EAX\}$, $h(\Phi) = \bigcup_{A\in \Phi} h(A)$ .
+For sets of first-order formulas $\Phi$ and $h \in \{\FAX, \EAX\}$, $h(\Phi) \defeq \bigcup_{A\in \Phi} h(A)$ .
 %$\FAX$ and $\EAX$ generalise to sets of formulas by elementwise application.
 \end{defi}
 
 \begin{defi}
+	\label{def:trans}
 	Let $A$ be a first-order formula. Then $\Trans(A)$ is the result of applying the following algorithm to $A$:
 	\begin{compactenum}
 	\item Replace every occurrence of $t=s$ in $A$ by $E(t, s)$
+	\label{def:trans_step1}
 	\item As long as there is an occurrence of a function symbol $f$ in $A$:
+	\label{def:trans_step2}
 
 		Let $B$ be the atom in which $f$ occurs.
-		\newline Then $B$ is of the form $P(s_1, \ldots, s_{j-1}, f_i(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
+		\newline Then $B$ is of the form $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
 		\newline Replace $B$ in $A$ by $\exists y F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m)$ for a variable $y$ which does not occur free in $B$.
-		\qedhere
 	\end{compactenum}
 
+	For sets of first-order formulas $\Phi$, $\Trans(\Phi) \defeq \bigcup_{A\in\Phi} \Trans(A)$.
 \end{defi}
+
+The inversion of this transformation will be denoted by $\TransInv$.
 
 
 \begin{prop}
-	$\Phi$ is satisfiable if and only if $\FAX(\Phi) \cup \EAX(\Phi) \cup \Phi'$ is satisfiable.
+	$\Phi$ is satisfiable if and only if $\FAX(\Phi) \cup \EAX(\Phi) \cup \Trans(\Phi)$ is satisfiable.
 \end{prop}
 \begin{proof}
 	Suppose $\Phi$ is satisfiable.
 	Let $M$ be a model of $\Phi$.
-	We show that $\FAX(\Phi) \cup \EAX(\Phi) \cup \Phi'$ is satisfiable by extending $M$ to satisfy this formula.
+	We show that $\FAX(\Phi) \cup \EAX(\Phi) \cup \Trans(\Phi)$ is satisfiable by extending $M$ to satisfy this formula.
 
-	TODO
+	First, let $M \entails E(x, y)$ if and only if $M \entails x = y$.
+	By reflexivity of equality, it follows that $M \entails \forall x E(x, x)$ and since equality of all arguments implies the same truth value for predicates, we get that $M$ is a model of $\EAX(A)$.
 
-	For the other direction, suppose $\FAX(\Phi) \cup \EAX(\Phi) \cup \Phi'$ is satisfiable. We again extend a model $M$ of this formula to a model of $\Phi$.
+	Second, let $M \entails F_f(\bar x, y)$ if and only if $M \entails f(\bar x) = y$ for all $f \in \FS(A)$. 
+	Since $M$ is a model of $A$, it maps $f$ to a function, which returns a unique result for every combination of parameters.
+	Hence $M$ is also a model of $\FAX(A)$.
+
+	By the above definition of $E$ in $M$, step $\ref{def:trans_step1}$ of the algorithm in definition \ref{def:trans} yields a formula that is satisfied by $M$.
+	For step \ref{def:trans_step2}, suppose $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
+	Let $y$ such that $M \entails f(\bar t)=y$.
+	By our definition of $F$ under $M$, $M\entails F(\bar t, y)$ with this unique $y$.
+	Hence $\exists y F(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, \allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
+
+
+	For the other direction, suppose $\FAX(\Phi) \cup \EAX(\Phi) \cup \Trans(\Phi)$ is satisfiable. We again extend a model $M$ of this formula to a model of $\Phi$.
 
 	TODO
 \end{proof}
 
 
-%$\Lang(\Gamma') = \Lang(\Gamma) \cup {E} \cup \{ F_i \mid f_i \in \FS(\Gamma)\}  \setminus \{=\} $ and 
+%$\Lang(\Gamma') = \Lang(\Gamma) \cup {E} \cup \{ F \mid f \in \FS(\Gamma)\}  \setminus \{=\} $ and 
 
 
 \subsection{Notes}

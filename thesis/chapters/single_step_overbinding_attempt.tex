@@ -411,7 +411,7 @@ Suppose Resolution.
 			\begin{enumerate}
 				\item Build propositional interpolant using $\PI(C_i)^*$, $i\in \{1,2\}$, i.e.~use ancestor $\PI$ without colored terms.
 				\item If ancestors of atom added to $\PI(C)$ had arrows, merge them to atom in $\PI(C)$ (i.e.~arrows starting in and leading to this atom).
-				\item Replace colored terms in $\PI(C)$ with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
+				\item Replace colored terms in $\PI(C)$ (from new atom and unifier applied to $\PI(C_i)^*$) with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
 				\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right.
 			\end{enumerate}
 \end{enumerate}
