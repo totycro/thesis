@@ -99,6 +99,14 @@
 \newcommand{\cd}{\textsf{Class Diagram}}
 
 
+\newcommand{\proofcontent}{
+\chapter{Proofs}
+\input{chapters/proofs}
+
+\chapter{Overbinding in one step}
+\input{chapters/single_step_overbinding_attempt}
+}
+
 \newcommand{\content}{
 \chapter{Introduction}
 \input{chapters/interpolation}
@@ -109,9 +117,7 @@
 \chapter{Proof by Reduction}
 \input{chapters/reduction}
 
-\chapter{Proofs}
-\input{chapters/proofs}
-
+\proofcontent
 
 
 }
@@ -128,7 +134,7 @@
 \ifdefined\secproofsonly 
 
 	\selectlanguage{english}
-	\input{chapters/proofs}
+	\proofcontent
 
 \else
 

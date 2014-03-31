@@ -1,0 +1,411 @@
+
+\begin{conj}
+	Suppose every variable occurs only once in $\Gamma \cup \Delta$.
+	Then the order of the quantifiers for $\PI(\square)^*$ does not matter.
+\end{conj}
+
+%\begin{proof}
+%	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
+%	As these are just universal quantifiers, the order does not matter.
+%
+%	%Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
+%	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.
+%\end{proof}
+
+The subterm-relation is reflexive.
+
+\begin{defi}
+	%Let $C$ be a clause in $\Gamma \cup \Delta$. 
+
+	%A maximal term $s$ of $C$ is said to be \defiemph{smaller} than a maximal term $t$ of $C$ if a subterm of $s$ occurs in $t$ and $s$ is of smaller length than $t$.
+
+
+	(OLD)
+	Let $s$ be a term that is in $\PI(C)$ but not in any predecessor $\PI(C_i)$, $i \in \{1,2\}$. $s$ is smaller than a term $t$ in $\PI(C)$ if $s$ is of strictly smaller length than $t$ and there is a subterm in $s$ which also occurs in $t$.
+\end{defi}
+
+\begin{defi}
+	\label{def:order}
+	(NEW)
+	%A term $s$ is smaller than a term $t$ if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
+
+	Let $C$ be a clause.
+
+	A maximal term $s$ of $C$ is smaller than a maximal term $t$ of $C$ if $s$ is a variable and occurs in $t$, but $s\neq t$. 
+	%if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
+
+\end{defi}
+
+\subsection{Half-baked approaches}
+
+\begin{defi}
+	Direct interpolation extraction.
+
+	This version of overline and star does NOT overbind variables! If they happen to be in the final interpolant, just overbind them somehow, but not earlier. This is ok as the interpolant only contains variables if both corresponding atoms in $\Gamma$ and $\Delta$ do. Variables are the only terms in the interpolant that can ``change their color'', so we don't know a priori if there are constraints on the quantifier to overbind them with.
+
+	Convention w.r.t. a clause $C$ which has been derived from $C_1$ and $C_2$:
+	$\bar Q_n = Q_1 z_1 \ldots Q_n z_n$, such that the $z_i$ correspond to the maximal terms $t_i$ in $\PI(C)$. Same terms must be overbound by same variable, see 101a for counterexample to per-occurrence-overbinding.
+	The $z_i$ are ordered such that
+	\begin{compactenum}
+	\item the orderings in the $Q_{n_1}$ and $Q_{n_2}$ are respected (no circlular relations can occur in combination with merging as a term is only smaller than another term if it is smaller in length as well, which excludes cycles) 
+		\item as well as ordering constraints of terms newly introduced in $\PI(C)$ (i.e.~those that were not present in $\PI(C_1)$ and $\PI(C_2)$). 
+	\end{compactenum}
+	Basically, track dependencies and define actual order later.
+
+
+	\begin{itemize}
+		\item[Resolution.]~
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor l}
+				\AxiomCm{C_2: E \lor \lnot l'}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\BinaryInfCm{C: (D\lor E)\sigma}
+			\end{prooftree}
+
+			$\bar Q_{n_1} \PI(C_1)^*$
+
+			$\bar Q_{n_2} \PI(C_2)^* $
+
+			\begin{enumerate}
+				\item $l$ and $l'$ $\Gamma$-colored:
+
+					$\PI(C) \equiv (\PI(C_1) \lor \PI(C_2))\sigma $
+
+					$\PI(C)^* \equiv (\PI(C_1)^* \lor \PI(C_2)^*)\sigma $ (just replace maximal terms)
+
+					intended meaning of $\sigma$: to change the free variables still in the $\PI(C_i)$
+
+					TODO: basically do nothing here since no new atoms (revisit after mixed colored case has been dealt with)
+
+					Let $t_1, \ldots, t_{n_1}$ be terms overbound in $\PI(C_1)$ and
+					$s_1, \ldots, s_{n_2}$ terms overbound in $\PI(C_2)$.
+
+					$\{ z_1, \ldots, z_n \} = \{t_1, \ldots, t_{n_1}\} \sigma \cup \{s_1, \ldots, s_{n_2}\} \sigma$ $\quad$ // common terms are merged
+
+					order relations as in $C_1, C_2$
+
+					$\bar Q_n \PI(C)^* \equiv \bar Q_n ( \PI(C_1)^* \lor \PI(C_2)^*) $
+
+				\item $l$ and $l'$ $\Delta$-colored:
+
+					similar to first case
+
+				\item $l$ and $l'$ grey:
+
+					$\PI(C) \equiv [(\lnot l' \land \PI(C_1)) \lor (l \land \PI(C_2)) ] \sigma $
+
+					$\PI(C)^* \equiv ( [ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma ) ^* $
+					
+					// just replace any atoms, note that vars are exempt
+
+					// need to star at the end again for terms introduced by sigma
+
+					order relations as in $C_1, C_2$ plus:
+
+					Let $C'$ and $C''$ be the clauses in $\Gamma \cup \Delta$ where $l$ and $l'$ originate.
+					
+					If in $C'$ ($C''$) a maximal term $s$ of $l$ ($l''$) is smaller than a maximal term $t$ of the same clause, and $x_i$ replaces $s$ and $x_j$ replaces $t$ in $\PI(C)^*$, then $x_i < x_j$.
+
+					%\begin{itemize}[+]
+					%\end{itemize}
+
+
+						Let $t_1, \ldots, t_{n_1}$ be the maximal colored terms in $\PI(C_1)$
+						and $s_1, \ldots, s_{n_2}$ the maximal colored terms in $\PI(C_2)$,
+
+						Let $r_1, \ldots, r_{n_3}$ be the maximal colored terms in $[ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma$
+
+						// this way, we catch all colored terms in the new atoms + every term that becomes colored due to $\sigma$ changing a var.
+
+
+						$\{ z_1, \ldots, z_{n_1} \} = \{t_1, \ldots, t_{n_1}\} $
+
+						$\{ z_{n_1}, \ldots, z_{n_1+n_2} \} = \{s_1, \ldots, s_{n_2}\} $
+
+						$\{ z_{n_1+n_2}, \ldots, z_{n_1+n_2+n_3} \} = \{r_1, \ldots, r_{n_3}\} $
+
+						$\bar Q_n \sim $ $z_i$ ordered according to constraints and with quantifier. 
+
+						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
+
+						$\bar Q_n \overline{\PI(C)} \equiv \bar Q_n  \overline{[ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma}$
+
+
+
+			\end{enumerate}
+	\end{itemize}
+
+\end{defi}
+
+\begin{conj}
+	$Q_1 z_1 \ldots Q_n z_n \PI(\square)^*(z_1, \ldots, z_n)$,
+	with the $z_i$ ordered by the terms they replace with ordering defined as in \ref{def:order}, is a craig interpolant.
+\end{conj}
+\begin{proof}
+
+	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
+
+	The terms in $\overline{PI(\square)}$ are either among the $x_i$, $1 \leq i \leq n$ or grey terms or $\Gamma$-terms.
+
+	Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
+	Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.
+
+\end{proof}
+
+\clearpage
+\begin{prop}
+	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \overline{\PI(C)}(z_1, \ldots, z_n)  \lor C$, quantifiers ordered as in \ref{def:order}, is a craig interpolant.
+\end{prop}
+
+\begin{proof}
+
+	\color{red}
+	Induction.
+
+Suppose Resolution.
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
+
+	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l'$
+
+	to show:
+	$\Gamma \entails \bar Q_n \PI(C)^* \lor (D \lor E)\sigma$
+
+
+			$\Gamma \entails ( \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l )\sigma$
+
+			$\Gamma \entails (\bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l')\sigma$
+
+			By resolution:
+
+			$\Gamma \entails (\bar Q_{n_1} \PI(C_1)^*\lor \bar Q_{n_2} \PI(C_2)^*)\sigma  \lor (D \lor E )\sigma$
+
+
+			\begin{enumerate}
+					\item Suppose $l, l'$ are from $\Gamma$ alone:
+						TODO
+
+
+					\item Suppose $l$ and $l'$ are colored with different colors and w.l.o.g~$l$ is $\Gamma$-colored and $l'$ is $\Delta$-colored.
+
+						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
+
+						Adapt Huang proof to this, need to consider quantifiers:
+
+						If $\Gamma \cancel \entails D \sigma$ and 
+						$\Gamma \cancel \entails E \sigma$ (else we are done), then  
+
+						$\Gamma \entails [ (\lnot l' \land \bar Q_{n_1} \PI(C_1)^*) \lor (l \land \bar Q_{n_2} \PI(C_2)^*) ] \sigma$
+
+						As $\bar Q_{n_1}$ and $\bar Q_{n_2}$ disjoint and their variables do not appear in $l$ or $l'$,
+
+						$\Gamma \entails (\bar Q_{n_1} \bar Q_{n_2} [ (\lnot l' \land  \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] ) \sigma$
+
+						Consider the maximal terms of this expression which are $\Gamma$-colored.
+
+						Either they only have grey subterms, then if they are existentially quantified, we can just use it as witness as the terms aren't replaced.
+
+						Otherwise they contain at least a $\Gamma$-colored subterm. (TODO: proof $\overline \theta$)
+
+
+				\end{enumerate}
+				\end{proof}
+
+
+
+\clearpage
+\begin{prop}
+	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \PI(C)^*(z_1, \ldots, z_n)  \lor C$, quantifiers ordered as in \ref{def:order}, is a craig interpolant.
+\end{prop}
+
+\begin{proof}
+
+	Induction.
+
+Suppose Resolution.
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
+
+	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l'$
+
+	to show:
+	$\Gamma \entails \bar Q_n \PI(C)^* \lor (D \lor E)\sigma$
+
+
+			$\Gamma \entails ( \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l )\sigma$
+
+			$\Gamma \entails (\bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l')\sigma$
+
+			By resolution:
+
+			$\Gamma \entails (\bar Q_{n_1} \PI(C_1)^*\lor \bar Q_{n_2} \PI(C_2)^*)\sigma  \lor (D \lor E )\sigma$
+
+
+			\begin{enumerate}
+					\item Suppose $l, l'$ are from $\Gamma$ alone:
+						TODO
+
+
+					\item Suppose $l$ and $l'$ are colored with different colors and w.l.o.g~$l$ is $\Gamma$-colored and $l'$ is $\Delta$-colored.
+
+						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
+
+						Adapt Huang proof to this, need to consider quantifiers:
+
+						If $\Gamma \cancel \entails D \sigma$ and 
+						$\Gamma \cancel \entails E \sigma$ (else we are done), then  
+
+						$\Gamma \entails [ (\lnot l' \land \bar Q_{n_1} \PI(C_1)^*) \lor (l \land \bar Q_{n_2} \PI(C_2)^*) ] \sigma$
+
+						As $\bar Q_{n_1}$ and $\bar Q_{n_2}$ disjoint and their variables do not appear in $l$ or $l'$,
+
+						$\Gamma \entails (\bar Q_{n_1} \bar Q_{n_2} [ (\lnot l' \land  \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] ) \sigma$
+
+						Consider the maximal terms of this expression which are $\Gamma$-colored.
+
+						Either they only have grey subterms, then if they are existentially quantified, we can just use it as witness as the terms aren't replaced.
+
+						Otherwise they contain at least a $\Gamma$-colored subterm. (TODO: proof $\overline \theta$)
+
+
+
+
+
+
+			\end{enumerate}
+
+			\clearpage
+
+	{ \color{gray}
+
+
+	Base case: simple.
+
+	Suppose Resolution.
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l'}
+		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{C: (D\lor E)\sigma}
+	\end{prooftree}
+
+	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
+
+	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l'$
+
+	to show:
+	$\Gamma \entails \bar Q_n \PI(C)^* \sigma \lor (D \lor E)\sigma$
+
+
+	Note that a term newly introduced in $\PI(C)$ occurs in either $l$ or $l'$, but not in both.
+
+	Let $t$ be a colored term in $\PI(C)$, which has just been added
+	W.l.o.g.\ let it occur in $l$, i.e.\ in $C_1$.
+
+
+
+	Case distinction:
+
+			~
+
+			\begin{enumerate}
+					\item Suppose $l, l'$ are from $\Gamma$ alone:
+
+			By induction hypothesis:
+
+			$\Gamma \entails ( \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l )\sigma$
+
+			$\Gamma \entails (\bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l')\sigma$
+
+			By resolution:
+
+			$\Gamma \entails (\bar Q_{n_1} \PI(C_1)^*\lor \bar Q_{n_2} \PI(C_2)^*)\sigma  \lor (D \lor E )\sigma$
+
+			
+	\begin{description}
+		\item [Suppose $t$ is $\Gamma$-colored.] ~
+
+			Then it will be replaced by $x_i$ and existentially quantified.
+			It appears in either $\PI(C_1)$ or $\PI(C_2)$.
+
+			$t$ is a witness for $x_i$ because it contains subterms $t_1, \ldots, t_n$. If they are overbound as well, they are so before $t$ and are available here.
+
+			TODO: derive properties using examples 103 or so
+
+
+		\end{description}
+
+	\end{enumerate}
+	}
+
+			{ \color{gray}
+				OTHER TRY: 
+
+			Then $\sigma$ replaces variables $y_1, \ldots, y_k$ in $E \lor \lnot l'$ with terms that contain~$t$.
+
+			By the induction hypothesis, $\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l'$.
+
+			Hence $\Gamma \entails (Q_1 z_1 \ldots Q_{n_2} z_{n_2} \PI(C_2)^*(z_1, \ldots, z_{n_2})  \lor E \lor \lnot l' ) \sigma$.
+
+			Also $\Gamma \entails Q_1 z_1 \ldots Q_{n_2} z_{n_2} (\PI(C_2)^*(z_1, \ldots, z_{n_2})\sigma)  \lor E\sigma \lor \lnot l'\sigma$.
+
+			Similarily,
+			$\Gamma \entails Q_1 z_1 \ldots Q_{n_1} z_{n_1} (\PI(C_1)^*(z_1, \ldots, z_{n_1})\sigma)  \lor D\sigma \lor l\sigma$
+
+			$\Gamma \entails Q_1 z_1 \ldots Q_{n} z_{n} ( (\lnot l \land \PI(C_2)) \lor (l \land \PI(C_1))) ^*(z_1, \ldots, z_{n})\sigma)  \lor D\sigma \lor l\sigma$
+
+			$l$ basically is the only new thing ($l\sigma = l'\sigma$).
+
+			Either $l$ does not contain any subterms of other terms, then it does not depend on anything and $l$ serves as witness for itself.
+
+			Otherwise it does depend on other terms and we have to make sure that that term is available.
+			Depending on another term means that it uses information that is only available from another term,
+			i.e.~it contains a subterm of another term. but then that subterm is quantified over before the variable that replaces $t$ is, so it works out.
+
+
+		\item [$t$ is $\Delta$-colored.]
+			Then it is replaced by a universally quantified variable.
+			But it ``was already universally quantified'' in the induction hypothesis.
+			There, it was some free variable, because that's the only thing that can be substituted, but even with this free var, it worked out.
+
+
+			%When proving $\Gamma \entails Q_1 z_1 \ldots Q_{n} z_{n} \PI(C)^*(z_1, \ldots, z_{n}$, it will be replaced by an existentially quantified variable, which is ok since $t$ is the witness.
+			
+
+
+	}
+\end{proof}
+
+\begin{prop}
+
+	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
+	A variable occurs in one of the $x_i$ if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $x_i$ can be unified with $z_i$ and $y_i$ such that there is still a variable at that location.
+
+	This means that either the term structure above the variable is the same in the original clauses or there are some variables. Intended meaning: the original clauses prove at least the $x_i$, i.e.~are at least as or more general.
+	\medskip
+
+	Special case for outermost variables:
+
+	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
+	An $x_i$ is a variable if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $y_i$ and $z_i$ are variables.
+\end{prop}
+
+need more narrow version: clauses do appear in parent clauses in derivation.
+
+
+
+\begin{prop}
+	Suppose in a partial interpolant, there are two maximal terms $t_1$ and $t_2$ such that w.l.o.g.~$t_1$ is smaller (as defined in \ref{def:order}) than $t_2$. Then it the final interpolant, an overbinding can be defined where the variable corresponding to $t_1$ is quantified over before the variable corresponding to $t_2$ is.
+\end{prop}
