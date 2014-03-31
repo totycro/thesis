@@ -3,21 +3,31 @@
 	Suppose every variable occurs only once in $\Gamma \cup \Delta$.
 	Then the order of the quantifiers for $\PI(\square)^*$ does not matter.
 \end{conj}
+\begin{prop}
 
-%\begin{proof}
-%	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
-%	As these are just universal quantifiers, the order does not matter.
-%
-%	%Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
-%	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.
-%\end{proof}
+	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
+	A variable occurs in one of the $x_i$ if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $x_i$ can be unified with $z_i$ and $y_i$ such that there is still a variable at that location.
+
+	This means that either the term structure above the variable is the same in the original clauses or there are some variables. Intended meaning: the original clauses prove at least the $x_i$, i.e.~are at least as or more general.
+	\medskip
+
+	Special case for outermost variables:
+
+	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
+	An $x_i$ is a variable if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $y_i$ and $z_i$ are variables.
+\end{prop}
+
+need more narrow version: clauses do appear in parent clauses in derivation.
+
+
+
+\begin{prop}
+	Suppose in a partial interpolant, there are two maximal terms $t_1$ and $t_2$ such that w.l.o.g.~$t_1$ is smaller (as defined in \ref{def:order}) than $t_2$. Then it the final interpolant, an overbinding can be defined where the variable corresponding to $t_1$ is quantified over before the variable corresponding to $t_2$ is.
+\end{prop}
 
 The subterm-relation is reflexive.
 
 \begin{defi}
-	%Let $C$ be a clause in $\Gamma \cup \Delta$. 
-
-	%A maximal term $s$ of $C$ is said to be \defiemph{smaller} than a maximal term $t$ of $C$ if a subterm of $s$ occurs in $t$ and $s$ is of smaller length than $t$.
 
 
 	(OLD)
@@ -36,7 +46,7 @@ The subterm-relation is reflexive.
 
 \end{defi}
 
-\subsection{Half-baked approaches}
+\section{Half-baked approaches}
 
 \begin{defi}
 	Direct interpolation extraction.
@@ -92,6 +102,8 @@ The subterm-relation is reflexive.
 
 				\item $l$ and $l'$ grey:
 
+					{ \footnotesize \color{gray}
+
 					$\PI(C) \equiv [(\lnot l' \land \PI(C_1)) \lor (l \land \PI(C_2)) ] \sigma $
 
 					$\PI(C)^* \equiv ( [ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma ) ^* $
@@ -105,6 +117,8 @@ The subterm-relation is reflexive.
 					Let $C'$ and $C''$ be the clauses in $\Gamma \cup \Delta$ where $l$ and $l'$ originate.
 					
 					If in $C'$ ($C''$) a maximal term $s$ of $l$ ($l''$) is smaller than a maximal term $t$ of the same clause, and $x_i$ replaces $s$ and $x_j$ replaces $t$ in $\PI(C)^*$, then $x_i < x_j$.
+
+					If in $\PI(C)^*$, $x_i$ and $x_j$, $i\neq j$ replace $t_i$ and $t_j$ respectively, and $t_i$ and $t_j$ have a common origin where they were the same variable, then merge these variables in $\PI(C)^*$.
 
 					%\begin{itemize}[+]
 					%\end{itemize}
@@ -129,37 +143,23 @@ The subterm-relation is reflexive.
 						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
 
 						$\bar Q_n \overline{\PI(C)} \equiv \bar Q_n  \overline{[ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma}$
+// somewhat imprecise on $\bar Q_n$, but that's just useless quantifiers
 
 
+}
 
 			\end{enumerate}
 	\end{itemize}
 
 \end{defi}
 
-\begin{conj}
-	$Q_1 z_1 \ldots Q_n z_n \PI(\square)^*(z_1, \ldots, z_n)$,
-	with the $z_i$ ordered by the terms they replace with ordering defined as in \ref{def:order}, is a craig interpolant.
-\end{conj}
-\begin{proof}
-
-	By lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
-
-	The terms in $\overline{PI(\square)}$ are either among the $x_i$, $1 \leq i \leq n$ or grey terms or $\Gamma$-terms.
-
-	Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
-	Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.
-
-\end{proof}
-
 \clearpage
 \begin{prop}
-	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \overline{\PI(C)}(z_1, \ldots, z_n)  \lor C$, quantifiers ordered as in \ref{def:order}, is a craig interpolant.
+	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \overline{\PI(C) \lor C}(z_1, \ldots, z_n)$ , quantifiers ordered as in \ref{def:order}, is a craig interpolant.
 \end{prop}
 
 \begin{proof}
 
-	\color{red}
 	Induction.
 
 Suppose Resolution.
@@ -170,21 +170,22 @@ Suppose Resolution.
 		\BinaryInfCm{C: (D\lor E)\sigma}
 	\end{prooftree}
 
-	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
+	$\Gamma \entails \bar Q_{n_1} \overline{\PI(C_1)  \lor D \lor l}$
 
-	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l'$
+	$\Gamma \entails \bar Q_{n_2} \overline{\PI(C_2)  \lor E \lor \lnot l'}$
 
 	to show:
-	$\Gamma \entails \bar Q_n \PI(C)^* \lor (D \lor E)\sigma$
+
+		$\Gamma \entails \bar Q_n \overline {\PI(C) \lor (D \lor E)\sigma}$ $\quad$ // somewhat imprecise on $\bar Q_n$, but that's just useless quantifiers
 
 
-			$\Gamma \entails ( \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l )\sigma$
+		$\Gamma \entails ( \bar Q_{n_1} \overline{PI(C_1)}  \lor D \lor l )\sigma$
 
-			$\Gamma \entails (\bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l')\sigma$
+			$\Gamma \entails (\bar Q_{n_2} \overline{PI(C_2)}  \lor E \lor \lnot l')\sigma$
 
 			By resolution:
 
-			$\Gamma \entails (\bar Q_{n_1} \PI(C_1)^*\lor \bar Q_{n_2} \PI(C_2)^*)\sigma  \lor (D \lor E )\sigma$
+			$\Gamma \entails (\bar Q_{n_1} \overline{\PI(C_1)}\lor \bar Q_{n_2} \overline{\PI(C_2)})\sigma  \lor (D \lor E )\sigma$
 
 
 			\begin{enumerate}
@@ -194,32 +195,38 @@ Suppose Resolution.
 
 					\item Suppose $l$ and $l'$ are colored with different colors and w.l.o.g~$l$ is $\Gamma$-colored and $l'$ is $\Delta$-colored.
 
-						$\bar Q_n \PI(C)^* \equiv \bar Q_n  ([ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma)^*$
+						$\bar Q_n \overline{\PI(C)} \equiv \bar Q_n  \overline{[ (\lnot l' \land \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] \sigma}$
+
+						$\equiv \bar Q_n  (\overline{\lnot l'\sigma} \land \overline{\overline{\PI(C_1)}\sigma}) \lor (\overline{l\sigma} \land \overline{\overline{\PI(C_2)}\sigma})$
 
 						Adapt Huang proof to this, need to consider quantifiers:
 
 						If $\Gamma \cancel \entails D \sigma$ and 
 						$\Gamma \cancel \entails E \sigma$ (else we are done), then  
 
-						$\Gamma \entails [ (\lnot l' \land \bar Q_{n_1} \PI(C_1)^*) \lor (l \land \bar Q_{n_2} \PI(C_2)^*) ] \sigma$
+						$\Gamma \entails [ (\lnot l' \land \bar Q_{n_1} \overline{PI(C_1)}) \lor (l \land \bar Q_{n_2} \overline{\PI(C_2)}) ] \sigma$
 
 						As $\bar Q_{n_1}$ and $\bar Q_{n_2}$ disjoint and their variables do not appear in $l$ or $l'$,
 
-						$\Gamma \entails (\bar Q_{n_1} \bar Q_{n_2} [ (\lnot l' \land  \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] ) \sigma$
+						$\Gamma \entails (\bar Q_{n_1} \bar Q_{n_2} [ (\lnot l' \land  \overline{PI(C_1)}) \lor (l \land \overline{PI(C_2)}) ] ) \sigma$
 
-						Consider the maximal terms of this expression which are $\Gamma$-colored.
+						$\Gamma \entails \bar Q_{n_1} \bar Q_{n_2} [ (\lnot l'\sigma \land  \overline{\PI(C_1)}\sigma) \lor (l\sigma \land \overline{\PI(C_2)}\sigma) ] $
 
-						Either they only have grey subterms, then if they are existentially quantified, we can just use it as witness as the terms aren't replaced.
+						Consider the maximal terms of this expression which are $\Delta$-colored.
 
-						Otherwise they contain at least a $\Gamma$-colored subterm. (TODO: proof $\overline \theta$)
+						The $\PI(C_i)$, $i \in \{1,2\}$ contain no colored terms. $\sigma$ can introduce one by replacing a free variable $x$ by a $\Delta$-term $t$. But then overline replaces it with an universally quantified variable again, hence the formula is still entailed by $\Gamma$.
 
+						$\Gamma \entails \bar Q_{n_1} \bar Q_{n_2} [ (\lnot l'\sigma \land  \overline{\overline{\PI(C_1)}\sigma}) \lor (l\sigma \land \overline{\overline{\PI(C_2)}\sigma}) ] $
+
+
+
+						TODO: should work out similarily as huang if using $P_P$ or it's the same as what i'm trying above.
 
 				\end{enumerate}
 				\end{proof}
 
 
 
-\clearpage
 \begin{prop}
 	$\Gamma \entails Q_1 z_1 \ldots Q_n z_n \PI(C)^*(z_1, \ldots, z_n)  \lor C$, quantifiers ordered as in \ref{def:order}, is a craig interpolant.
 \end{prop}
@@ -273,11 +280,15 @@ Suppose Resolution.
 
 						$\Gamma \entails (\bar Q_{n_1} \bar Q_{n_2} [ (\lnot l' \land  \PI(C_1)^*) \lor (l \land \PI(C_2)^*) ] ) \sigma$
 
+						The $\PI(C_i)$, $i \in \{1,2\}$ contain no colored terms. $\sigma$ can introduce one by replacing a free variable $x$. 
+
 						Consider the maximal terms of this expression which are $\Gamma$-colored.
+
+
 
 						Either they only have grey subterms, then if they are existentially quantified, we can just use it as witness as the terms aren't replaced.
 
-						Otherwise they contain at least a $\Gamma$-colored subterm. (TODO: proof $\overline \theta$)
+						Otherwise they contain at least a $\Gamma$- or a $\Delta$-colored subterm.
 
 
 
@@ -286,7 +297,6 @@ Suppose Resolution.
 
 			\end{enumerate}
 
-			\clearpage
 
 	{ \color{gray}
 
@@ -388,24 +398,22 @@ Suppose Resolution.
 	}
 \end{proof}
 
-\begin{prop}
 
-	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
-	A variable occurs in one of the $x_i$ if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $x_i$ can be unified with $z_i$ and $y_i$ such that there is still a variable at that location.
+\clearpage
+\section{Arrow-Algo}
 
-	This means that either the term structure above the variable is the same in the original clauses or there are some variables. Intended meaning: the original clauses prove at least the $x_i$, i.e.~are at least as or more general.
-	\medskip
+\begin{enumerate}
+	\item In the original clauses, find all occurrences of variables. Add an arrow from an occurrence to each other occurrence with depth as least as high, if the full prefix to the occurrence with lower depth is shared by both occurrences (cf.~\ref{def:order}).  
 
-	Special case for outermost variables:
+		NOTE: this creates double arrows for occurrences at same depth. This appears to be necessary for terms which are only variables, and doesn't hurt if the variable is contained in a term.
 
-	Let $A(x_1, \ldots, x_n)$ be an atom in a relative interpolant.
-	An $x_i$ is a variable if and only if there are atoms $A(y_1, \ldots, y_n)$ and $A(z_1, \ldots, z_n)$ in $\Gamma$ and $\Delta$ respectively, where $y_i$ and $z_i$ are variables.
-\end{prop}
+		\item For each step in the derivation:
+			\begin{enumerate}
+				\item Build propositional interpolant using $\PI(C_i)^*$, $i\in \{1,2\}$, i.e.~use ancestor $\PI$ without colored terms.
+				\item If ancestors of atom added to $\PI(C)$ had arrows, merge them to atom in $\PI(C)$ (i.e.~arrows starting in and leading to this atom).
+				\item Replace colored terms in $\PI(C)$ with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
+				\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right.
+			\end{enumerate}
+\end{enumerate}
 
-need more narrow version: clauses do appear in parent clauses in derivation.
 
-
-
-\begin{prop}
-	Suppose in a partial interpolant, there are two maximal terms $t_1$ and $t_2$ such that w.l.o.g.~$t_1$ is smaller (as defined in \ref{def:order}) than $t_2$. Then it the final interpolant, an overbinding can be defined where the variable corresponding to $t_1$ is quantified over before the variable corresponding to $t_2$ is.
-\end{prop}
