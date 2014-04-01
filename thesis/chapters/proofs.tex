@@ -140,7 +140,7 @@ We proceed by defining a procedure $\PI$ which extracts interpolants from a reso
 					as well as $\Delta \entails (\lnot\PI(C_2) \lor E_\Delta)\sigma$.
 					Hence it certainly holds that $\Delta \entails (\lnot \PI(C_1) \lor \lnot\PI(C_2))\sigma \lor (D \lor E)\sigma_\Delta$.
 
-					The language restriction clearly remains satisfied as no nonlogical symbols are added.
+					The language restriction clearly remains satisfied as no non-logical symbols are added.
 
 				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$: 
 					\label{huang_proof_prop_case_2}
@@ -282,21 +282,49 @@ We proceed by defining a procedure $\PI$ which extracts interpolants from a reso
 	We know that $\theta$ works, just the terms are missing.
 
 	\clearpage
-	\section{Attempt without $P_P$}:
+	\section{Attempt without $P_P$}
 
 
 	\begin{defi}
 		\label{def:overline}
-		Overline as in paper, replace $\Delta$-terms $t_1, \ldots, t_k$ by respective fresh variables in parenthesis
+		Overline as in paper, replace $\Delta$-terms $t_1, \ldots, t_n$ by respective fresh variables in parenthesis
 	\end{defi}
+
+	NOTE: variables are *not* replaced by overline.
 
 	\begin{lemma}
 		\label{lemma:overline}
-		$(\overline{C\sigma}(x_1, \ldots, x_n))$ reduces to
-		$(\overline{C}(x_1, \ldots, x_n))\sigma'$, where $\sigma' = \sigma[t_1 / x_1]\ldots[t_n / x_n]$.
 
-		$(\overline{C}(x_1, \ldots, x_n))\sigma$ reduces to
-		$(\overline{C\sigma'}(x_1, \ldots, x_n))$ if $\sigma$ does not change any of $x_1, \ldots, x_n$ or any of $t_1, \ldots, t_n$.\qedhere
+		Let $t_1, \ldots, t_n$ be the maximal $\Delta$-terms in $C$.
+
+		Let $\sigma'(x) =
+		\begin{cases} 
+			x_i & \text{ if } x = x_j \text{ for some $j$ and $t_j\sigma = t_i$}  \\
+			\overline{x\sigma} & \text{ otherwise}
+		\end{cases} $
+
+		Then
+		$(\overline{C\sigma}(x_1, \ldots, x_n)) =
+		(\overline{C}(x_1, \ldots, x_n))\sigma'$.
+	\end{lemma}
+	\begin{proof}
+		TODO
+
+		// the first case handles the case where $\sigma$ replaces $x$ and $P(f(x)) \in C$ where $f$ is $\Delta$-colored.
+	\end{proof}
+
+	\begin{lemma}
+		\label{lemma:overline_literal}
+		If $l\sigma$ = $l'\sigma$, then $\overline{l}\sigma' = \overline{l'}\sigma'$ for $\sigma'$ defined as follows: TODO
+	\end{lemma}
+	\begin{proof}
+		TODO
+	\end{proof}
+
+	\begin{lemma} // currently unused
+
+		$(\overline{C}(x_1, \ldots, x_n))\sigma =
+		(\overline{C\sigma'}(x_1, \ldots, x_n))$ if $\sigma$ does not change any of $x_1, \ldots, x_n$ or any of $t_1, \ldots, t_n$.\qedhere
 
 		\todo[inline]{it would work to fix substitutions of $x_i$ by substituting $t_i$ for that instead, as long as the result isn't another $t_i$, but this isn't actually relevant here.}
 		
@@ -314,7 +342,7 @@ We proceed by defining a procedure $\PI$ which extracts interpolants from a reso
 	\end{lemma}
 
 	\begin{proof}
-	By induction on the resultion refutation.
+	By induction on the resolution refutation.
 
 	Base case:
 	Either $C \in \Gamma$, then it does not contain $\Delta$-terms.
@@ -340,7 +368,8 @@ We proceed by defining a procedure $\PI$ which extracts interpolants from a reso
 				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
 					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
 
-					We show that $\Gamma \entails \overline{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
+					We show that $\Gamma \entails \overline{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)\sigma}(x_1, \ldots, x_n) $,
+					\newline i.e.~$\Gamma \entails \overline{ (\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
 					This is by lemma \ref{lemma:overline} with $\sigma'$ as in the lemma equivalent to
 					$\Gamma \entails \overline{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)}(x_1, \ldots, x_n)\sigma' $.
 
@@ -348,18 +377,16 @@ We proceed by defining a procedure $\PI$ which extracts interpolants from a reso
 
 					$\Gamma \entails \overline{\PI(C_1)} \lor \overline{D} \lor \overline l$
 
-					$\Gamma \entails \overline{\PI(C_2)} \lor \overline{E} \lor \overline{\lnot l'}$
+					$\Gamma \entails \overline{\PI(C_2)} \lor \overline{E} \lor \lnot \overline{l'}$
 
-					As $l\sigma = l'\sigma$, $\overline{l\sigma} = \overline{l'\sigma}$.
+					By lemma \ref{lemma:overline_literal} and since $l\sigma = l'\sigma$, $\overline{l}\sigma'' = \overline{l'}\sigma''$.
 
-					Hence $\Gamma \entails \overline{\PI(C_1)} \lor \overline{D} \lor \overline{\PI(C_2)} \lor \overline{E}$
+					Hence $\Gamma \entails (\overline{\PI(C_1)} \lor \overline{D} \lor \overline{\PI(C_2)} \lor \overline{E} )\sigma''$
 					and again by Lemma 11 (Huang), 
-					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}$.
+					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E} \sigma''$.
 
-					Also
-					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}\sigma$.
-					As $ t_1, \ldots, t_n $ do not appear in $\overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}$ and these are the only variables where $\sigma$ and $\sigma'$ differs, we get that 
-					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E}\sigma'$.
+					TODO: show that from this, it follows that: $\Gamma \entails \overline{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)}(x_1, \ldots, x_n)\sigma' $,
+
 
 
 				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$:

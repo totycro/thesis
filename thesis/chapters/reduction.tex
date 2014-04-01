@@ -1,11 +1,12 @@
 
-Instead of proving the result from first principles, we can here reduce the problem of finding interpolants for first-order logic with equality to first-order logic \emph{without} equality, where it is simpler to give an appropriate algorithm.
+A common theme of proofs in theoretical computer science is to instead of proving the result from first principles to reduce the problem to another one, which then is easier to solve.
+In this instance, we are able to give a reduction for finding interpolants for first-order logic \emph{with} equality to first-order logic \emph{without} equality, where it is simpler to give an appropriate algorithm.
 
 The general layout of this approach is the following:
-From two sets $\Gamma$ and $\Delta$ where $\Gamma \cup \Delta$ is unsatisfiable, we compute $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate equality it via axioms.
+From two sets $\Gamma$ and $\Delta$, where $\Gamma \cup \Delta$ is unsatisfiable, we compute $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate equality it via axioms.
 In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that their behaviour is compatible to the one of functions.
-Now an interpolant of $\Gamma'$ and $\Delta'$ can be derived with an algorithm that is only capable of handling predicate symbols, as all other symbols have been removed.
-Since the additional axioms ensure that the newly added predicate symbols mimic equality and functions respectively, we will see that their occurrences in the interpolant can be translated back to first-order logic with equality in the language of $\Gamma$ and $\Delta$, thereby yielding the originally desired interpolant.
+Now an interpolant of $\Gamma'$ and $\Delta'$ can be derived using an algorithm that is only capable of handling predicate symbols, as all other non-logical symbols have been removed.
+Since the additional axioms ensure that the newly added predicate symbols mimic equality and functions respectively, we will see that the occurrences of these predicates in the interpolant can be translated back to occurrences of equality and function symbols in first-order logic with equality in the language of $\Gamma$ and $\Delta$, thereby yielding the originally desired interpolant.
 \todo{
 $\Gamma \entails I$
 
@@ -25,7 +26,7 @@ to show:
 
 As we shall see in this section, first-order formulas with equality can be transformed into first-order formulas without equality in a way that is satisfiability-preserving, which is sufficient for our purposes.
 
-First we define the axioms which allow for simulation of equality and functions in first order logic without equality and function symbols:
+First, we define the axioms which allow for simulation of equality and functions in first order logic without equality and function symbols:
 
 \begin{defi}
 	For first-order formulas $A$ and a fresh predicate symbol $E$, we define:\nopagebreak
@@ -40,6 +41,7 @@ First we define the axioms which allow for simulation of equality and functions 
 																		 & (( E(x_1,y_1) \land \ldots \land E(x_{\ar(P)},  y_{\ar(P)})) \limpl  \\
 																 &  (P(x_1, \ldots, x_{\ar(P)}) \Lra P(y_1, \ldots, y_{\ar(P)}) ) ) \end{aligned} 
 \end{align*}
+\todo{Wie $\EAX$ schöner formulieren? Auch: besserer Name?}
 For sets of first-order formulas $\Phi$ and $h \in \{\FAX, \EAX\}$, $h(\Phi) \defeq \bigcup_{A\in \Phi} h(A)$ .
 %$\FAX$ and $\EAX$ generalise to sets of formulas by elementwise application.
 \end{defi}
@@ -48,31 +50,42 @@ For sets of first-order formulas $\Phi$ and $h \in \{\FAX, \EAX\}$, $h(\Phi) \de
 	\label{def:trans}
 	Let $A$ be a first-order formula. Then $\Trans(A)$ is the result of applying the following algorithm to $A$:
 	\begin{compactenum}
-	\item Replace every occurrence of $t=s$ in $A$ by $E(t, s)$
+	\item Replace every occurrence of $s=t$ in $A$ by $E(s, t)$
 	\label{def:trans_step1}
 	\item As long as there is an occurrence of a function symbol $f$ in $A$:
 	\label{def:trans_step2}
 
 		Let $B$ be the atom in which $f$ occurs.
-		\newline Then $B$ is of the form $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
-		\newline Replace $B$ in $A$ by $\exists y F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m)$ for a variable $y$ which does not occur free in $B$.
+		\newline Then $B$ is of the form $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.\todo{replace by $P(s_1, \ldots, s_m)$ where $s_j = f(\bar t)$ for some $j$? (also in proof below}
+		\newline Replace $B$ in $A$ by $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for a variable $y$ which does not occur free in $B$.
 	\end{compactenum}
 
 	For sets of first-order formulas $\Phi$, $\Trans(\Phi) \defeq \bigcup_{A\in\Phi} \Trans(A)$.
 \end{defi}
 
-The inversion of this transformation will be denoted by $\TransInv$.
+\begin{defi}
+For a first-order formula $A$, let $\TransAll(A) = \FAX(A) \land \EAX(A) \land \Trans(A)$ and for a set of first-order formulas $\Phi$, let $\TransAll(\Phi) = \FAX(\Phi) \cup \EAX(\Phi) \cup \Trans(\Phi)$.
+\end{defi}
+
+
+Note that $\FAX(A)$, $\EAX(A)$ and $\Trans(A)$ contain neither the equality predicate nor function symbols.
+Hence they translate formulas $A$ in the language $\Lang(A)$ to formulas in the language $\Lang(A) \setminus (\{=\} \cup \FS(A))$.
+
 
 
 \begin{prop}
-	$\Phi$ is satisfiable if and only if $\FAX(\Phi) \cup \EAX(\Phi) \cup \Trans(\Phi)$ is satisfiable.
+	A first-order formula $A$ is satisfiable if and only if $\TransAll(A)$ is satisfiable.
+	\label{prop:trans_sat_equiv}
 \end{prop}
-\begin{proof}
-	Suppose $\Phi$ is satisfiable.
-	Let $M$ be a model of $\Phi$.
-	We show that $\FAX(\Phi) \cup \EAX(\Phi) \cup \Trans(\Phi)$ is satisfiable by extending $M$ to satisfy this formula.
 
-	First, let $M \entails E(x, y)$ if and only if $M \entails x = y$.
+
+// TODO: go through proof another time
+\begin{proof}
+	Suppose $A$ is satisfiable.
+	Let $M$ be a model of $A$.
+	We show that $\TransAll(A)$ is satisfiable by extending $M$ to satisfy this formula.
+
+	First, let $M \entails E(s, t)$ if and only if $M \entails s = t$.
 	By reflexivity of equality, it follows that $M \entails \forall x E(x, x)$ and since equality of all arguments implies the same truth value for predicates, we get that $M$ is a model of $\EAX(A)$.
 
 	Second, let $M \entails F_f(\bar x, y)$ if and only if $M \entails f(\bar x) = y$ for all $f \in \FS(A)$. 
@@ -83,22 +96,53 @@ The inversion of this transformation will be denoted by $\TransInv$.
 	For step \ref{def:trans_step2}, suppose $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
 	Let $y$ such that $M \entails f(\bar t)=y$.
 	By our definition of $F$ under $M$, $M\entails F(\bar t, y)$ with this unique $y$.
-	Hence $\exists y F(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, \allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
+	Hence $\exists y (F(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, \allowbreak s_{j+1}, \ldots s_m))$ does (not) hold under $M$.
 
 
-	For the other direction, suppose $\FAX(\Phi) \cup \EAX(\Phi) \cup \Trans(\Phi)$ is satisfiable. We again extend a model $M$ of this formula to a model of $\Phi$.
+	For the other direction, suppose $\TransAll(A)$ is satisfiable. We again extend a model $M$ of this formula to a model of $A$.
 
-	TODO
+	First, let $M\entails s = t$ if and only if $M\entails E(s, t)$. As $M$ is a model of $\EAX(A)$, $E$ and consequently $=$ are reflexive, symmetric and transitive.\todo{i do have to show this, right? then show in more detail}
+
+	Second, let $M\entails f(\bar x) = y$ if and only if $M\entails F(\bar x, y)$.
+	As by assumption $M$ is a model of $\FAX(A)$, we know that for every $\bar x$, some $y$ exists and is uniquely defined.
+	Hence $f$ in $M$ refers to a well-defined function.
+
+	To show that $M \entails A$, consider that the predicates $E$ and $=$ coincide in $M$.
+	Furthermore, let $B$ be an occurrence of $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ in $\Trans(A)$ which was introduced by $\Trans$.
+	First suppose that $B$ holds in $M$.
+	Then there is a $y$ such that $F_f(\bar t, y)$ and $P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m)$ hold in $M$. 
+	By our definition of $f$ in $M$, $M \entails f(\bar t) = y$, hence also
+	$P(s_1, \ldots, s_{j-1}, f(\bar t), s_{j+1}, \ldots s_m)$.
+	On the other hand, suppose that $B$ does not hold in $M$.
+	Then no $y$ exists such that $F_f(\bar t, y)$ and $P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m)$. 
+	Hence by our definition of $f$, $P(s_1, \ldots, s_{j-1}, f(\bar t), s_{j+1}, \ldots s_m)$ does not hold as well.
 \end{proof}
 
+\begin{corr}
+	A set of first-order formulas $\Phi$ is satisfiable if and only if $\TransAll(\Phi)$ is satisfiable.
+	\label{prop:trans_sat_equiv_set}
+\end{corr}
+\begin{proof}
+	Suppose $\Phi$ is satisfiable. Then there is a model $M$ which satisfies every formula $A$ in $\Phi$.
+	Hence $M \entails \bigwedge_{A\in\Phi} A$, and by proposition \ref{prop:trans_sat_equiv}, $M \entails \TransAll( \bigwedge_{A\in\Phi} A)$
 
-%$\Lang(\Gamma') = \Lang(\Gamma) \cup {E} \cup \{ F \mid f \in \FS(\Gamma)\}  \setminus \{=\} $ and 
+	TODO: this does not work like that, possibly show for EAX, FAX and Trans extra and combine then
+	\end{proof}
 
 
+
+\section{Compuation of interpolants in first-order logic without equality and function symbols}
+
+
+\section{Hence}
+
+\begin{proof}[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
+	By proposition \ref{prop:trans_sat_equiv}, as $\Gamma \cup \Delta$ is unsatisfiable, so is $\TransAll(\Gamma) \cup \TransAll(\Delta)$
+\end{proof}
+
+\begin{comment}
 \subsection{Notes}
 
-%$ \Gamma, \Delta \proves \bot $.
-%Hence exists $I$ such that $ \Gamma \proves I$, $\Delta \proves \lnot I$ and $\Lang(I) \subseteq \Lang(\Gamma) \intersect \Lang(\Delta) $.
 
 Let $A$ be a first-order formula.
 
@@ -122,5 +166,7 @@ As $E \entails_= A$ iff $I(E) \land U(E) \land (E) \entails A$, $E$ is unsatisfi
 Note that this does not rely on equality and contains no function symbols. Hence by the interpolation theorem for first-order logic without equality\todo{how to state?}, there is an interpolant for $\left(\bigcup_{A\in \Gamma} I(A) \land U(A) \land A\right) \cup \left(\bigcup_{A\in \Delta} I(A) \land U(A) \land A\right) $ for unsatisfiable $\Gamma \cup \Delta$.
 Since the equality axioms added via $I$ ensure a valid interpretation of the equality symbol and the $F_i$ can be translated back\todo{more verbose and precise}\ to $f_i$ in a natural way (as guaranteed by the $U$), the interpolant we receive is also an interpolant for $\Gamma \cup \Delta$.
 Note that by adding the axiom of reflexivity to both $\Gamma$ and $\Delta$, it is contained in the intersection of the languages and hence is allowed to appear in the interpolant, which is required. 
+
+\end{comment}
 
 

@@ -1,4 +1,9 @@
-\documentclass[a4paper,11pt,twoside]{memoir}
+\documentclass[
+	a4paper,
+	11pt,
+	oneside, %twoside
+	%openany % no blank page after chapter such that chapters start on odd pages
+]{memoir}
 \chapterstyle{veelo}
 
 
@@ -45,6 +50,7 @@
 \declaretheorem[title=Proposition,sibling=thm]{prop}
 %\declaretheorem[title=Lemma,parent=chapter]{lemma}
 \declaretheorem[sibling=thm]{lemma}
+\declaretheorem[title=Corollary,sibling=thm]{corr}
 \declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
 %\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
 \declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
@@ -185,7 +191,7 @@
 \input{chapters/acknowledgements}	% optional
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   ABSTARCT    %%%%%%%%%%%%%%%%%%%%%%%
+%%%   ABSTRACT    %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{chapters/abstract_en}
