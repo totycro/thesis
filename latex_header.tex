@@ -30,6 +30,7 @@ positioning,fit,calc,decorations.text,shadows%
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb} % the reals
+\usepackage{mathtools} % smashoperator
 
 \usepackage{stackengine}
 
@@ -87,6 +88,7 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\NKZ}{\textbf{NK2}}
 
 \newcommand{\limpl}{\supset}
+\newcommand{\liff}{\Lra}
 \newcommand{\union}{\cup}
 \newcommand{\bigunion}{\bigcup}
 \newcommand{\intersection}{\cap}
@@ -107,25 +109,43 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\spas}[1]{\;{#1}\;}
 
 % functions
-\newcommand{\sk}{\ensuremath{\mathrm{sk}}}
-\newcommand{\mgu}{\ensuremath{\mathrm{mgu}}}
-\newcommand{\Fun}{\ensuremath{\mathrm{FS}}}
-\newcommand{\Pred}{\ensuremath{\mathrm{PS}}}
+\DeclareMathOperator{\sk}{sk}
+\DeclareMathOperator{\mgu}{mgu}
+\DeclareMathOperator{\Fun}{FS}
+\DeclareMathOperator{\Pred}{PS}
+\DeclareMathOperator{\Lang}{L}
+\DeclareMathOperator{\ar}{ar}
+\DeclareMathOperator{\PI}{PI}
+\DeclareMathOperator{\Congr}{Congr}
+\DeclareMathOperator{\Refl}{Refl}
+%\newcommand{\sk}{\ensuremath{\mathrm{sk}}}
+%\newcommand{\mgu}{\ensuremath{\mathrm{mgu}}}
+%\newcommand{\Fun}{\ensuremath{\mathrm{FS}}}
+%\newcommand{\Pred}{\ensuremath{\mathrm{PS}}}
+%\newcommand{\PI}{\ensuremath{\mathrm{PI}}}
+%\newcommand{\Lang}{\ensuremath{\mathrm{L}}}
+%\newcommand{\ar}{\ensuremath{\mathrm{ar}}}
+
 \newcommand{\PS}{\Pred}
 \newcommand{\FS}{\Fun}
-\newcommand{\PI}{\ensuremath{\mathrm{PI}}}
-\newcommand{\Lang}{\ensuremath{\mathrm{L}}}
-\newcommand{\ar}{\ensuremath{\mathrm{ar}}}
 
-\newcommand{\Trans}{\ensuremath{\mathrm{T}}}
-\newcommand{\TransInv}{\ensuremath{\Trans^{-1}}}
+\DeclareMathOperator{\LangSym}{L}
 
-\newcommand{\FAX}{\ensuremath{\mathrm{FAx}}}
-\newcommand{\EAX}{\ensuremath{\mathrm{EAx}}}
+%\newcommand{\Trans}{\ensuremath{\mathrm{T}}}
+%\newcommand{\Trans}{\ensuremath{\mathrm{T}}}
+\DeclareMathOperator{\Trans}{T}
+\DeclareMathOperator{\TransInv}{T^{-1}}
 
-\newcommand{\TransAll}{\ensuremath{\Trans_{\mathrm{Ax}}}}
+\DeclareMathOperator{\FAX}{F_{Ax}}
+\DeclareMathOperator{\EAX}{E_{Ax}}
+%\newcommand{\FAX}{\ensuremath{\mathrm{F_{Ax}}}}
+%\newcommand{\EAX}{\ensuremath{\mathrm{E_{Ax}}}}
 
-\newcommand{\defeq}{\stackrel{\mathrm{def}}{=}}
+%\newcommand{\TransAll}{\ensuremath{\Trans_{\mathrm{Ax}}}}
+\DeclareMathOperator{\TransAll}{\Trans_{Ax}}
+%\newcommand{\FAX}{\ensuremath{\mathrm{F_{Ax}}}}
+
+\DeclareMathOperator{\defeq}{\stackrel{\mathrm{def}}{=}}
 
 \newcommand{\UICm}[1]{\UnaryInfCm{#1}}
 \newcommand{\UnaryInfCm}[1]{\UnaryInfC{$#1$}}
