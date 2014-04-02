@@ -1,3 +1,140 @@
+\documentclass[,%fontsize=11pt,%
+	paper=a4,% 
+	%landscape,
+	%DIV12, % mehr text pro seite als defaultyyp
+	DIV14, 
+	%DIV=calc,%
+	%twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+% subsections also in toc
+\setcounter{tocdepth}{2}
+
+%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
+\newcommand{\thmqed}{$\square$} % for thms without proof
+\newcommand{\propqed}{$\square$} % for props without proof
+\declaretheorem[title=Theorem]{thm}
+\declaretheorem[title=Proposition,sibling=thm]{prop}
+%\declaretheorem[title=Lemma,parent=chapter]{lemma}
+\declaretheorem[sibling=thm]{lemma}
+\declaretheorem[title=Corollary,sibling=thm]{corr}
+\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
+%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
+\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
+
+\declaretheorem[sibling=thm,title=Conjecture]{conj}
+
+%\def\proofSkipAmount{ \vskip -0.5em}
+
+
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+\def\proofSkipAmount{ \vskip -0.3em}
+
+\begin{document}
+
+\section{Overbinding in one step}
+
 
 \begin{conj}
 	Suppose every variable occurs only once in $\Gamma \cup \Delta$.
@@ -429,3 +566,4 @@ Suppose Resolution.
 
 
 
+\end{document}
