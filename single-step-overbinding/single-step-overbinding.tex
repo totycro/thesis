@@ -372,6 +372,7 @@ Suppose Resolution.
 
 	Induction.
 
+
 Suppose Resolution.
 	\begin{prooftree}
 		\AxiomCm{C_1: D \lor l}
@@ -549,21 +550,106 @@ Suppose Resolution.
 				\item Build propositional interpolant using $\PI(C_i)^*$, $i\in \{1,2\}$, i.e.~use ancestor $\PI$ without colored terms.
 				\item If ancestors of atom added to $\PI(C)$ had arrows, merge them to atom in $\PI(C)$ (i.e.~arrows starting in and leading to this atom).
 				\item Replace colored terms in $\PI(C)$ (from new atom and unifier applied to $\PI(C_i)^*$) with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
+
+					An arrow starts (ends) in one of the new variables if it starts (ends) somewhere in the term it replaced.
 				\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right.
+
+					$\bar Q_n = \operatorname{sort}( Q_{n_1} \cup Q_{n_2} \cup \operatorname{colored-terms}(l))$
 			\end{enumerate}
 \end{enumerate}
 
 \begin{conj}
-	$\Gamma \cup \Delta$ unsat, $\pi$ resolution refutation. Then $\Gamma \entails \PI(C) \lor C$ and $\Delta \entails \lnot \PI(C) \lor C$ for all $C$ in $\pi$.
+	$\Gamma \cup \Delta$ unsat, $\pi$ resolution refutation. Then $\Gamma \entails \bar Q_n \PI(C)^* \lor C$ and $\Delta \entails \lnot \bar Q_n \PI(C)^* \lor C$ for all $C$ in $\pi$.
 \end{conj}
 \begin{proof}
 	Base case as in Huang.
 
-	???
+
+	Induction.
+
+
+Suppose Resolution.
+	\begin{prooftree}
+		\AxiomCm{C_1: D \lor l}
+		\AxiomCm{C_2: E \lor \lnot l}
+		\BinaryInfCm{C: D\lor E}
+	\end{prooftree}
+
+	$\Gamma \entails \bar Q_{n_1} \PI(C_1)^*  \lor D \lor l$
+
+	$\Gamma \entails \bar Q_{n_2} \PI(C_2)^*  \lor E \lor \lnot l$
+
+	to show:
+	$\Gamma \entails \bar Q_n \PI(C)^* \lor D \lor E$, i.e.~
+	\newline
+	$\Gamma \entails \operatorname{sort}( Q_{n_1} \cup Q_{n_2} \cup \operatorname{colored-terms}(l)) ( (\lnot l^* \land  PI(C_1)^*) \lor (l^* \land PI(C_2)^*)  ) \lor D \lor E$
+
+
+						If $\Gamma \cancel \entails D $ and 
+						$\Gamma \cancel \entails E $ (else we are done), then  
+
+						$\Gamma \entails  (\lnot l \land \bar Q_{n_1} PI(C_1)^*) \lor (l \land \bar Q_{n_2} \PI(C_2)^*)  $
+
+						As $\bar Q_{n_1}$ and $\bar Q_{n_2}$ disjoint and their variables do not appear in $l$ or $l$,
+
+						$\Gamma \entails \bar Q_{n_1} \bar Q_{n_2} [ (\lnot l \land  PI(C_1)^*) \lor (l \land PI(C_2)^*) ]  $
+
+						Since we've pushed the variables outside, no colored terms appear in $\PI(C_i)^*$.
+
+						Suppose $l$ does not contain colored terms. Then $l = l^*$ and we are done.
+
+						Otherwise let $t$ be a maximal colored term in $l$.
+
+						By lemma \ref{lemma:interpolant_atom_origin}, $l$ appears in $\Gamma$ with a certain polarity, say in clause $E$.
+						$l$ is an instance of $E$.
+
+						In fact, $l$ is contained in $C\sigma$ where $\sigma$ is the composition of unifiers applied in the deriviation up to the current point.
+
+						Hence $\Gamma \entails C\sigma$.
+
+
+						\begin{enumerate}
+								\item Suppose $t$ is $\Gamma$-colored.
+									$\Gamma \entails l$ implies that $\Gamma \entails \exists y\,l[t/y]$
+
+								\item Suppose $t$ is $\Delta$-colored.
+									TODO
+						\end{enumerate}
+
 
 \end{proof}
 
 
+\begin{lemma}
+	\label{lemma:interpolant_atom_origin}
+	If an atom $A$ appears in the interpolant, it appeared in both original clause sets.
+	In $\Gamma$, it appeared in the same polarity as in the interpolant,
+	in $\Delta$ with the opposite one.
 
+	$A$ is both an instance of the respective clauses in $\Gamma$ and $\Delta$.
+\end{lemma}
+
+\begin{lemma}
+	Let $C \in \Phi$ for some initial clause set $\Phi$. 
+	\begin{enumerate}
+			\item
+				Let $x$ be an occurrence of a variable in $C$ and $x'$ another occurrence of the same variable in a different position but at the same term depth.
+				Then $\Phi \entails Q y C\subst{x/y}\subst{x'/y}$ for $Q \in \{\forall, \exists\}$.
+
+			\item
+				Let $x$ be an occurrence of a variable in $C$ with the lowest depth and $x'$ another occurrence of the same variable with a higher depth.
+				Let $t$ be the maximal colored term which contains $x'$. $t$ is $\Phi$-colored since it appears in $\Phi$.
+				Then $\Phi \entails Q y \exists z C\subst{x/y}\termsubst{t/z}$ for $Q \in \{\forall, \exists\}$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{lemma}
+
+	Let $t$ be a maximal colored term in $C$ in $\Phi$. It is $\Phi$-colored.
+	Let $x_1, \ldots, x_n$ be the variables which occur in $t$.
+	Then $\Phi \entails Q \bar x \exists y C\termsubst{t/y}$ for $Q \in \{\forall, \exists\}$.
+
+\end{lemma}
 
 \end{document}
+
