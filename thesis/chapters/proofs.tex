@@ -347,6 +347,27 @@ First, we define the lifting of the maximal $\Delta$-terms:
 	Then $\Gamma \entails \lift{\Delta}{ \PI(C) \lor C }{x} $ for $C$ in $\pi$.
 \end{lemma}
 \begin{proof}
+	We proof this result by induction on the number of rule applications in the propositional refutation corresponding to $\pi$. 
+
+	\begin{itemize}
+		\item[Base case.]
+
+			For the base case, $C$ is an instance of a clause of either $\Gamma$ or $\Delta$.
+			In the first case, all $\Delta$-terms of $C$ were added by unification, hence by replacing them with variables, we obtain a clause $C'$ which still is an instance of $C$ and consequently is implied by $\Gamma$. 
+			In the latter case, $\PI(C) = \top$. 
+
+		\item[Resolution.] Suppose the last rule application is an instance of resolution. Then it is of the form:
+			\begin{prooftree}
+				\AxiomCm{C_1: D\lor l}
+				\AxiomCm{C_2: E\lor \lnot l}
+				\BinaryInfCm{C: D \lor E}
+			\end{prooftree}
+
+
+
+
+	\end{itemize}
+
 
 \end{proof}
 
@@ -359,12 +380,6 @@ First, we define the lifting of the maximal $\Delta$-terms:
 
 
 
-
-	proof that we are allowed to overbind
-
-	TODO: define procedure
-
-	TODO: proof
 
 
 
