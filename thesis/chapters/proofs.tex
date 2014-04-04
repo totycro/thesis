@@ -16,7 +16,7 @@ Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of the empty cla
 \begin{defi}
 	$\theta$ is a \defiemph{propositional interpolant} with respect to a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$ if 
 	\label{def:rel_prop_interpol}
-	\begin{compactenum}
+	\begin{enumerate}
 		\item $\Gamma \entails \theta \lor C$
 			\label{rel_prop_interpol_cond1}
 		\item $\Delta \entails \lnot \theta \lor C$
@@ -24,7 +24,7 @@ Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of the empty cla
 		\item $\Pred(\theta) \subseteq (\Pred(\Gamma) \intersect \Pred(\Delta)) \cup \{\top, \bot\} $.
 			\label{rel_prop_interpol_cond_lang}
 			\qedhere
-	\end{compactenum}
+	\end{enumerate}
 \end{defi}
 
 The third condition will sometimes be referred to as \emph{language restriction}.
@@ -87,7 +87,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 	Then $\PI(C)$ is a propositional interpolant with respect to $C$. 
 \end{prop}
 \begin{proof}
-	Proof by induction on the number of rule applications including the following strenghtenings:
+	Proof by induction on the number of rule applications including the following strengthenings::
 	$\Gamma \entails \PI(C) \lor C_\Gamma$ and
 	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $\Lang(\Phi)$. They clearly imply conditions \ref{rel_prop_interpol_cond1} and \ref{rel_prop_interpol_cond2} of definition \ref{def:rel_prop_interpol}. 
 
@@ -169,7 +169,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 					First, we have to show that 
 					$ \Gamma \entails [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma \lor ((D \lor E)\sigma)_\Gamma$.
 					Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D_\Gamma$ and $\Gamma \cancel \entails E$. Otherwise we are done.
-					The induction assumtion hence simplifies to $M \entails \PI(C_1) \lor l$ and $M \entails \PI(C_2) \lor \lnot l'$ respectively.
+					The induction assumption hence simplifies to $M \entails \PI(C_1) \lor l$ and $M \entails \PI(C_2) \lor \lnot l'$ respectively.
 					As $l\sigma = l'\sigma$, by a case distinction argument on the truth value of $l\sigma$, we get that either $M \entails (l \land \PI(C_2))\sigma$ or $M \entails  (\lnot l' \land \PI(C_1))\sigma$.
 
 
@@ -204,7 +204,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\Delta \entails (\PI(C_1)\sigma \lor (l \lor D)_\Delta)\sigma$
 
-			The restriction on the language trivially remains intract.
+			The restriction on the language trivially remains intact.
 			
 
 		\item[Paramodulation.]	
@@ -263,7 +263,7 @@ Before we are able to specify a procedure to transform the propositional interpo
 	A resolution refutation is a \defiemph{tree refutation} if every clause is used at most once.
 \end{defi}
 
-The following lemma shows that this form does not restrict the calculus given that we allow multisets as inital clause sets.
+The following lemma shows that this form does not restrict the calculus given that we allow multisets as initial clause sets.
 \begin{lemma}
 	\label{lemma:bin_tree_deduction}
 	Every resolution refutation can be transformed into a tree refutation. 
@@ -342,6 +342,15 @@ First, we define the lifting of the maximal $\Delta$-terms:
 	Then $\lift{\Phi}{\phi}{x}$ denotes $\phi\termsubst{t_1/x_1}\ldots\termsubst{t_n/x_n}$.
 \end{defi}
 
+\begin{lemma} 
+	\label{lemma:lift_commute}
+	Let $A$ and $B$ be first-order formulas. Then it holds that:
+	\begin{enumerate}
+		\item $\lift{\Phi}{\lnot A}{x} \liff \lnot \lift{\Phi}{A}{x}$
+		\item $\lift{\Phi}{A \circ B}{x} \liff ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for $\circ \in \{\land, \lor\}$
+	\end{enumerate}
+\end{lemma}
+
 \begin{lemma}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
 	Then $\Gamma \entails \lift{\Delta}{ \PI(C) \lor C }{x} $ for $C$ in $\pi$.
@@ -363,7 +372,41 @@ First, we define the lifting of the maximal $\Delta$-terms:
 				\BinaryInfCm{C: D \lor E}
 			\end{prooftree}
 
+						By the induction hypothesis,
 
+						$\Gamma \entails \lift{\Delta}{ \PI(C_1) \lor D \lor l }{x}$ and
+
+						$\Gamma \entails \lift{\Delta}{ \PI(C_2) \lor E \lor \lnot l}{x}$
+
+						which by Lemma \ref{lemma:lift_commute} is equivalent to
+
+						$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
+						\lift{\Delta}{ D }{x} \lor
+						\lift{\Delta}{ l }{x} \;\; ^{(\circ)} $
+						and
+
+						$\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
+						\lift{\Delta}{ E }{x} \lor
+						\lnot \lift{\Delta}{ l }{x} \;\; ^{(*)}$ .
+				
+
+			\begin{enumerate}
+					\item Suppose $l$ is $\Gamma$-colored.
+						Then $\PI(C) = \PI(C_1) \lor \PI(C_2)$.
+						By using resolution on $^{(*)}$ and $^{(\circ)}$, we get that 
+						$\Gamma \entails\lift{\Delta}{ \PI(C_1) }{x} \lor \lift{\Delta}{ \PI(C_2) }{x} \lor
+						\lift{\Delta}{ D }{x} \lor
+						\lift{\Delta}{ E }{x}$ and several applications of Lemma \ref{lemma:lift_commute} give
+						$\Gamma \entails\lift{\Delta}{ \PI(C_1)  \lor  \PI(C_2) \lor D \lor E }{x}$.
+				
+					\item Suppose $l$ is $\Delta$-colored.
+						Then $\PI(C) = \PI(C_1) \land \PI(C_2)$.
+
+						As $l$ and $\lnot l$ are not contained in $\Gamma$, by the proof of \ref{foo}, $\Gamma \entails \PI(C_1) \lor D$ and $\Gamma \entails \PI(C_2) \lor E$
+				
+
+
+			\end{enumerate}
 
 
 	\end{itemize}
@@ -372,10 +415,6 @@ First, we define the lifting of the maximal $\Delta$-terms:
 \end{proof}
 
 \clearpage
-
-
-
-
 
 
 

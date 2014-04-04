@@ -51,9 +51,7 @@ positioning,fit,calc,decorations.text,shadows%
 %\hypersetup{colorlinks=false}  % don't give options to usepackage, it doesn't work with beamer
 
 
-
-% note: this breaks beamer itemize
-% \usepackage{enumitem} % labels for enumerate
+% \usepackage{enumitem} % labels for enumerate % breaks beamer and memoir itemize
 
 
 \usepackage{url} 
@@ -272,6 +270,5 @@ positioning,fit,calc,decorations.text,shadows%
 	{\draw[->,square arrow2,color=orange] (e.south) to (f.south);}
 }
 
-
-
+\newcommand{\refsub}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
 

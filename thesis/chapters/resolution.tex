@@ -56,7 +56,7 @@ In order to apply resolution to arbitrary first-order formulas, they have to be 
 This usually makes use of intermediate normal forms which are defined as follows:
 
 \begin{defi}
-	A formula is in \defiemph{Negation Normal Form (NNF)} if negations only occur directly befor of atoms.
+	A formula is in \defiemph{Negation Normal Form (NNF)} if negations only occur directly before of atoms.
 	A formula is in \defiemph{Conjunctive Normal Form (CNF)} if it is a conjunction of disjunctions of literals.
 \end{defi}
 
@@ -96,7 +96,7 @@ Skolemisation is a procedure for replacing existential quantifiers with Skolem t
 
 \begin{proof}
 	Since $\sk(\cdot)$ adds fresh symbols to both $\Gamma$ and $\Delta$ individually,
-	none of them are containd in $\Lang(\sk(\Gamma)) \intersect \Lang(\sk(\Delta))$.
+	none of them are contained in $\Lang(\sk(\Gamma)) \intersect \Lang(\sk(\Delta))$.
 	Therefore condition \ref{int_3} of theorem \ref{thm:interpolation} is satisfied in both directions.
 
 	As for any set of formulas $\Phi$, each model of $\Phi$ can be extended to a model of $\sk(\Phi)$ and every model of $\sk(\Phi)$ is a witness for the satisfiability of $\Phi$, $\Phi \entails I$ iff $\sk(\Phi) \entails I$.

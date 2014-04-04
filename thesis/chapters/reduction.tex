@@ -46,12 +46,10 @@ First, we define the axioms which allow for simulation of equality and functions
 
 $\Refl(P)$ will be referred to as reflexivity axiom of $P$, $\Congr(P)$ as congruence axiom of $P$.
 
-\begin{defi}[label=exa:cont]
+\begin{defi}[Translation of formulas]
 	\label{def:trans}
 	Let $A$ be a first-order formula and $E$ and $F_f$ for $f \in \FS(A)$ be fresh predicate symbols.
-	Then $\Trans(\Lang(A))$ denotes $(\Lang(A)\cup \{E\}\cup\{F_f\mid f \in \FS(A)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(A))$.
-
-	Moreover, $\Trans(A)$ is the result of applying the following algorithm to $A$:
+	Then $\Trans(A)$ is the result of applying the following algorithm to $A$:
 
 	\begin{compactenum}
 	\item Replace every occurrence of $s=t$ in $A$ by $E(s, t)$
@@ -64,7 +62,7 @@ $\Refl(P)$ will be referred to as reflexivity axiom of $P$, $\Congr(P)$ as congr
 		Replace $B$ in $A$ by $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for a variable $y$ which does not occur free in $B$.
 	\end{compactenum}
 
-	Furthermore, let the inverse operation $\TransInv(B)$ for formulas in the language $\Trans(L(A))$ be defined as the result of applying the following algorithm to $B$:
+	Moreover, let the inverse operation $\TransInv(B)$ for formulas $B$ in the language $\Trans(L(A))$ be defined as the result of applying the following algorithm to $B$:
 	\begin{compactenum}
 	\item Replace every occurrence of $E(s, t)$ in $B$ by $s=t$.
 	\item For every $f \in FS(A)$, replace every occurrence of 
@@ -108,9 +106,6 @@ $P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
 		\liff~&\{\FAX(\Lang(\Gamma)) \land \FAX(\Lang(\Delta)), \EAX(\Lang(\Gamma)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
 		\liff~&\{\FAX(\Lang(\Gamma)),\EAX(\Lang(\Gamma))\} \cup \{\FAX(\Lang(\Delta)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
 		\liff~&\TransAll(\Gamma) \cup \TransAll(\Delta)
-		%= &\FAX(\Gamma)\cup\FAX(\Delta) \cup \EAX(\Gamma)\cup \EAX(\Delta) \cup \Trans(\Gamma ) \cup \Trans(\Delta) \\
-		%= &\FAX(\Gamma)\cup\FAX(\Delta) \cup \EAX(\Gamma)\cup \EAX(\Delta) \cup \Trans(\Gamma ) \cup \Trans(\Delta) \\
-		%= &\TransAll(\Gamma) \cup \TransAll(\Delta)
 		\qedhere
 	\end{align*}
 \end{proof}
@@ -122,9 +117,22 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 %	Then $\Trans(\LangSym)$ denotes $(\LangSym\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
 %\end{defi}
 
-\begin{lemma}
-	\label{def:trans_lang}
-	Let $\Phi$ be a set of first-order formulas. Then $\TransAll(\Phi)$ is in the language $\Trans(\Lang(\Phi))$.
+\begin{defi}[Translation of languages]
+	Let $\LangSym$ be a language.
+	Then $\Trans(\LangSym)$ denotes $(\Lang(\LangSym)\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
+\end{defi}
+
+\begin{lemma}~ 
+	\label{lemma:trans_lang}
+	\begin{compactenum}
+	\item
+		Let $\Phi$ be a set of first-order formulas. Then $\TransAll(\Phi)$ is in the language~$\Trans(\Lang(\Phi))$.
+		\label{lemma:trans_lang1}
+
+	\item 
+		If $\Psi$ is in the language $\Trans(\LangSym)$, then $\TransInv(\Psi)$ is in the language~$\LangSym$.
+		\label{lemma:trans_lang2}
+	\end{compactenum}
 \end{lemma}
 
 \begin{prop}
@@ -132,8 +140,10 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	Let $\Phi$ be a set of first-order formulas.
 	\begin{compactenum}
 		\item If $\Phi$ is satisfiable, then so is $\TransAll(\Phi)$.
+			\label{prop:trans_sat_equiv1}
 		\item Let $\LangSym$ be a first-order language and $\Phi$ a set of first-order formulas in the language~$\Trans(\LangSym)$.
 			If $\{\FAX(\LangSym), \EAX(\LangSym)\} \cup \Phi $ is satisfiable, then so is $\TransInv(\Phi)$.
+			\label{prop:trans_sat_equiv2}
 	\end{compactenum}
 \end{prop}
 \begin{proof}
@@ -175,11 +185,11 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 	Lastly, to show that $M \entails \TransInv(\Phi)$, 
 	consider that the interpretations of the predicates $E$ and $=$ coincide in $M$.
-	Furthermore, let $B$ be an occurence of $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for some $f \in \FS(\LangSym)$ in $\Phi$.
+	Furthermore, let $B$ be an occurrence of $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for some $f \in \FS(\LangSym)$ in $\Phi$.
 	Then by the above definition of $f$ in $M$, we have that $B$ is in $M$ equivalent to $\exists y f(\bar t) = y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$, which due to $f$ being a function is equivalent to 
 	$M \entails P(s_1, \ldots, s_{j-1}, f(\bar t), s_{j+1}, \ldots s_m))$.
 
-	Similarily, let $B$ be an occurrence of $F_f(\bar t, s)$ in $\Phi$.
+	Similarly, let $B$ be an occurrence of $F_f(\bar t, s)$ in $\Phi$.
 	Then by our above definition of $f$ in $M$, we have that $M \entails f(\bar t) = s$ iff $M \entails B$.
 \end{proof}
 
@@ -194,19 +204,27 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 
 
-\section{Compuation of interpolants in first-order logic without equality and function symbols}
+\section{Computation of interpolants in first-order logic without equality and function symbols}
 
 
 \begin{thm}
 	\label{thm:prop_interpol}
-	Let $\Gamma$ and $\Delta$ be sets of first-order clauses such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an algorithm which computes an interpolant $I$ of $\Gamma$ and $\Delta$.
+	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant of $\Gamma$ and $\Delta$.
 \end{thm}
+\begin{proof}
+	By the Compactness Theorem, there are finite $\Gamma' \subseteq \Gamma$ and $\Delta' \subseteq \Delta$ such that $\Gamma' \cup \Delta'$ is unsatisfiable. Let $C = \bigwedge_{A \in \Gamma'} A$ and $D = \bigwedge_{A \in \Delta'} A$. As $C\land D$ is unsatisfiable, $C \entails \lnot D$.
+
+	By the completness of cut-free sequent calculus, there is a proof of $C \entails \lnot D$. By Lemma \ref{lemma:maehara}, there is an interpolant of $C$ and $D$, which clearly is an interpolant of $\Gamma$ and $\Delta$.
+\end{proof}
+
+\begin{lemma}[Maehara]
+	\label{lemma:maehara}
+	Let $\pi$ be a cut-free sequent calculus proof of $C \entails \lnot D$. Then there is an interpolant $I$ of $C$ and $D$.
+\end{lemma}
 
 
 
 TODO: put some kind of propositional interpolation algorithm here as soon at it is clear which to pick
-
-
 
 
 
@@ -216,87 +234,39 @@ TODO: put some kind of propositional interpolation algorithm here as soon at it 
 	Since $\Gamma \cup \Delta$ is unsatisfiable,
 	by proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
 	It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
-
-
-	Note that $\TransAll(\Gamma) \cup \TransAll(\Delta)$ contains neither function symbols nor the equality symbol.
-
+	By Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} $\TransAll(\Gamma) \cup \TransAll(\Delta)$ contains neither function symbols nor the equality symbol.
 	Hence by Theorem \ref{thm:prop_interpol}, there is an interpolant $I$ such that
 	\begin{enumerate}
 	\item $\TransAll(\Gamma) \entails I$
 	\item $\TransAll(\Delta) \entails \lnot I$ 
 	\item $\Lang(I) \subseteq \Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$
+		\label{proof:interpolation1_3}
 	\end{enumerate}
+
+	We now show that $\TransInv(I)$ is an interpolant of $\Gamma$ and $\Delta$.
 
 	$\TransAll(\Gamma) \entails I$ is equivalent to $\TransAll(\Gamma) \cup \{\lnot I\}$ being unsatisfiable.
 	Through the unfolding of $\TransAll(\Gamma)$, we get that 
 	$\{\FAX(\Lang(\Gamma)), \EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\lnot I\}$ is unsatisfiable.
 
-	Since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition \ref{prop:trans_sat_equiv} by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
-
+	Since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition
+	\refsub{prop:trans_sat_equiv}{prop:trans_sat_equiv2}
+	 by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
 	Therefore $\Gamma \entails \Trans^{-1}(I)$.
 
-	TODO: by similar argument, $\Delta$; language of I is right one
+	For $\Delta$, an analoguous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
+
+	By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) $. 
+	\begin{align*}
+		\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) =\,&
+		(\Lang(\Gamma)\cup \{E\}\cup\{F_f\mid f \in \FS(\Gamma)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Gamma))~\cap \\
+	& (\Lang(\Delta)\cup \{E\}\cup\{F_f\mid f \in \FS(\Delta)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Delta))\\
+		=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup\{F_f\mid f \in \FS(\Gamma)\cap\FS(\Delta\}))  \setminus(\{=\} \cup \FS(\Gamma) \cup \FS(\Delta)) \\
+		=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta)) ) \setminus ( \{=\} \cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) )  \\ 
+  =\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
+	\end{align*}
+
+	As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
 \end{proof}
 
 
-\begin{comment}
-\begin{prop}
-	A first-order formula $A$ is satisfiable if and only if $\TransAll(A)$ is satisfiable.
-	\label{prop:trans_sat_equiv}
-
-	\begin{compactenum}
-		\item  a first-order formula $A$ is satisfiable iff $\TransAll(A)$ satisfiable.
-		%\item for first-order language $\LangSym$ and a set of formulas $\Phi$ in the language $\Trans(\LangSym)$, $\FAX(\LangSym) \cup \EAX(\LangSym) \cup \Phi$ is satisfiable iff $T^{-1}(\Phi)$ is.
-
-		\item for first-order language $\LangSym$ and a first-order formula $A$ in the language $\Trans(\LangSym)$, $\FAX(A) \land \EAX(A) \land A$ is satisfiable iff $T^{-1}(A)$ is.
-	\end{compactenum}
-\end{prop}
-\begin{proof}
-	Suppose $A$ is satisfiable.
-	Let $M$ be a model of $A$.
-	We show that $\TransAll(A)$ is satisfiable by extending $M$ to the language $\Lang(A)\cup\{E\}\cup\{F_f\mid f \in \FS(A)\}$ to satisfy to a model of $\TransAll(A)$.
-
-	First, let $M \entails E(s, t)$ if and only if $M \entails s = t$.
-	By reflexivity of equality, it follows that $M \entails \Refl(E)$ and
-	as equality satisfies the congruence axiom we get that $M$ is a model $\Congr(E)$ and in consequence also of $\EAX(A)$.
-
-	Second, let $M \entails F_f(\bar x, y)$ if and only if $M \entails f(\bar x) = y$ for all $f \in \FS(A)$. 
-	Since $M$ is a model of $A$, it maps $f$ to a function, which returns a unique result for every combination of parameters.
-	This however is precisely the logical requirement on $F_f$ stated by $\FAX(A)$,   
-	hence $M$ is a model of $\FAX(A)$.
-
-	By the above definition of $E$ in $M$, step $\ref{def:trans_step1}$ of the algorithm in definition \ref{def:trans} yields a formula that is satisfied by $M$.
-	For step \ref{def:trans_step2}, suppose $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
-	Let $y$ such that $M \entails f(\bar t)=y$.
-	By our definition of $F$ under $M$, $M\entails F(\bar t, y)$ with this unique $y$.
-	Hence $\exists y (F(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, \allowbreak s_{j+1}, \ldots s_m))$ does (not) hold under $M$.
-
-
-	For the other direction, suppose $\TransAll(A)$ is satisfiable.
-	We again extend a model $M$ of this formula to a model of $A$ by extending it from the language $\Lang(\TransAll(A))$ to include $\{=\}$ and $\FS(A)$.
-
-	First, let $M\entails s = t$ if and only if $M\entails E(s, t)$.
-	As $M$ is a model of $\EAX(A)$, $E$ is reflexive. 
-	Since $M \entails \Congr(E)$, we can derive the symmetry of $E$ by the following instantiation of it using reflexivity:
-	$M \entails (E(s, t) \land E(s, s)) \limpl ( E(s, s) \limpl\nolinebreak E(t, s))$.
-	By symmetry, we have that $M \entails E(s, r) \liff E(r, s)$, and hence we can show the transitivity of $E$ by another instance of $\Congr(E)$: 
-	$M \entails (E(s, r) \land E(s, t)) \limpl ( E(s, s) \limpl\nolinebreak E(r, t))$, i.e.\ given $E(r, s)$ and $E(s, t)$, we can deduce $E(r, t)$ in $M$.
-	As these properties directly also apply to $=$ in $M$, equality is defined properly in $M$.
-
-	Second, let $M\entails f(\bar x) = y$ if and only if $M\entails F(\bar x, y)$.
-	As by assumption $M$ is a model of $\FAX(A)$, we know that for every $\bar x$, some $y$ with $M\entails F(\bar x, y)$ exists and is uniquely defined.
-	Hence $f$ in $M$ refers to a well-defined function.
-
-	To show that $M \entails A$, consider that the interpretations of the predicates $E$ and $=$ coincide in $M$.
-	Furthermore, let $B$ be an occurrence of $\exists y (F_f(\bar t, y) \land\allowbreak P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ in $\Trans(A)$.
-	First suppose that $B$ holds in $M$.
-	Then there is a $y$ such that $F_f(\bar t, y)$ and $P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m)$ hold in $M$. 
-	By our definition of $f$ in $M$, it follows that $M \entails f(\bar t) = y$, hence also
-	$M \entails P(s_1, \ldots, s_{j-1}, f(\bar t), s_{j+1}, \ldots s_m)$.
-	On the other hand, suppose that $B$ does not hold in $M$.
-	Then no $y$ exists such that $F_f(\bar t, y)$ and $P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m)$. 
-	Hence by our definition of $f$, $P(s_1, \ldots, s_{j-1}, f(\bar t), s_{j+1}, \ldots s_m)$ does not hold as well.
-\end{proof}
-
-
-\end{comment}
