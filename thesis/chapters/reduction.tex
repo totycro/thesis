@@ -48,7 +48,11 @@ $\Refl(P)$ will be referred to as reflexivity axiom of $P$, $\Congr(P)$ as congr
 
 \begin{defi}[label=exa:cont]
 	\label{def:trans}
-	Let $A$ be a first-order formula. Then $\Trans(A)$ is the result of applying the following algorithm to $A$:
+	Let $A$ be a first-order formula and $E$ and $F_f$ for $f \in \FS(A)$ be fresh predicate symbols.
+	Then $\Trans(\Lang(A))$ denotes $(\Lang(A)\cup \{E\}\cup\{F_f\mid f \in \FS(A)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(A))$.
+
+	Moreover, $\Trans(A)$ is the result of applying the following algorithm to $A$:
+
 	\begin{compactenum}
 	\item Replace every occurrence of $s=t$ in $A$ by $E(s, t)$
 	\label{def:trans_step1}
@@ -60,16 +64,15 @@ $\Refl(P)$ will be referred to as reflexivity axiom of $P$, $\Congr(P)$ as congr
 		Replace $B$ in $A$ by $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for a variable $y$ which does not occur free in $B$.
 	\end{compactenum}
 
-	Furthermore, let the inverse operation $\TransInv$ be defined as the result of applying the following algorithm:
+	Furthermore, let the inverse operation $\TransInv(B)$ for formulas in the language $\Trans(L(A))$ be defined as the result of applying the following algorithm to $B$:
 	\begin{compactenum}
-	\item Replace every occurrence of $E(s, t)$ in $A$ by $s=t$.
-	\item Replace every occurrence of 
-		$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$
-		by $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
-	\item Replace every occurrence of $F_f(\bar t, s)$ in $A$ by $f(\bar t) = s$.
+	\item Replace every occurrence of $E(s, t)$ in $B$ by $s=t$.
+	\item For every $f \in FS(A)$, replace every occurrence of 
+		$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1},\allowbreak y,\allowbreak s_{j+1}, \ldots s_m))$
+		in $B$ by $P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ and every remaining occurrence of $F_f(\bar t, s)$ by $f(\bar t) = s$.
 	\end{compactenum}
 
-	For sets of first-order formulas $\Phi$, $\Trans(\Phi) \defeq \bigcup_{A\in\Phi} \Trans(A)$ and 
+	For sets of first-order formulas $\Phi$, let $\Trans(\Phi) \defeq \bigcup_{A\in\Phi} \Trans(A)$ and 
 $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 \end{defi}
 
@@ -83,8 +86,11 @@ $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 	.
 \end{lemma}
 \begin{proof}
-	Step 1 and 2 in the transformation algorithm for $\Trans$ and $\TransInv$ are clearly the respective inverse of each other.
-	When $\TransInv$ is applied to $\Trans(\Phi)$, all occurrences of $F_f$ have been introduced by $\Trans$ and are hence of the form that is replaced in step 2, so step 3 has no effect. 
+	Step 1 and 2 in the transformation algorithm for $\Trans$ and $\TransInv$ are concerned with different symbols each and therefore do not interfere with each other.
+	Moreover, the respective steps in both algorithms are the inverse of each other.
+	For step 1, this is immediate and for step 2, consider that all occurrences of $F_f$ for $f \in \FS(A)$ in $\Trans(A)$ have been introduced by $\Trans$ and are consequently of the form
+	$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$, which in $\TransInv$ is replaced by 
+$P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
 \end{proof}
 
 \begin{defi}
@@ -111,10 +117,15 @@ $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 
 Note that $\TransAll(A)$ contains neither the equality predicate nor function symbols but additional predicate symbols instead. More formally:
 
-\begin{defi}[continues=exa:cont]
-	Let $\LangSym$ be a first-order language. 
-	Then $\Trans(\LangSym)$ denotes $(\LangSym\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
-\end{defi}
+%\begin{defi}[continues=exa:cont]
+%	Let $\LangSym$ be a first-order language. 
+%	Then $\Trans(\LangSym)$ denotes $(\LangSym\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
+%\end{defi}
+
+\begin{lemma}
+	\label{def:trans_lang}
+	Let $\Phi$ be a set of first-order formulas. Then $\TransAll(\Phi)$ is in the language $\Trans(\Lang(\Phi))$.
+\end{lemma}
 
 \begin{prop}
 	\label{prop:trans_sat_equiv}
@@ -158,14 +169,18 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	$M \entails (E(s, r) \land E(s, t)) \limpl ( E(s, s) \limpl\nolinebreak E(r, t))$, i.e.\ given $E(r, s)$ and $E(s, t)$, we can deduce $E(r, t)$ in $M$.
 	As these properties directly also apply to $=$ in $M$, equality is defined properly in $M$.
 
-	Second, let $M\entails f(\bar t) = s$ if and only if $M\entails F(\bar t, s)$.
+	Second, let $M\entails f(\bar t) = s$ if and only if $M\entails F_f(\bar t, s)$ for all $f \in \FS(\LangSym)$.
 	As by assumption $M$ is a model of $\FAX(A)$, we know that for every $\bar t$, some $s$ with $M\entails F(\bar t, s)$ exists and is uniquely defined.
 	Hence $f$ in $M$ refers to a well-defined function.
 
 	Lastly, to show that $M \entails \TransInv(\Phi)$, 
 	consider that the interpretations of the predicates $E$ and $=$ coincide in $M$.
-	Furthermore, let $B$ be an occurrence of $F_f(\bar t, s)$ in $\Phi$.
-	Then by our above definition of $f$ in $M$, we have that $M \entails f(\bar t, s)$ iff $M \entails F_f(\bar t, s)$.
+	Furthermore, let $B$ be an occurence of $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for some $f \in \FS(\LangSym)$ in $\Phi$.
+	Then by the above definition of $f$ in $M$, we have that $B$ is in $M$ equivalent to $\exists y f(\bar t) = y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$, which due to $f$ being a function is equivalent to 
+	$M \entails P(s_1, \ldots, s_{j-1}, f(\bar t), s_{j+1}, \ldots s_m))$.
+
+	Similarily, let $B$ be an occurrence of $F_f(\bar t, s)$ in $\Phi$.
+	Then by our above definition of $f$ in $M$, we have that $M \entails f(\bar t) = s$ iff $M \entails B$.
 \end{proof}
 
 \begin{corr}
@@ -174,7 +189,7 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 \end{corr}
 \begin{proof}
 	The left-to-right direction is directly given in proposition \ref{prop:trans_sat_equiv}.
-	For the other direction, consider that by proposition \ref{prop:trans_sat_equiv}, $\TransInv(\Trans(\Phi))$ is satisfiable and by lemma \ref{lemma:tinv}, $\TransInv(\Trans(\Phi)) = \Phi$.
+	For the other direction, consider that by proposition \ref{prop:trans_sat_equiv}, $\TransInv(\Trans(\Phi))$ is satisfiable and by Lemma \ref{lemma:tinv}, $\TransInv(\Trans(\Phi)) = \Phi$.
 \end{proof}
 
 
@@ -182,20 +197,35 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 \section{Compuation of interpolants in first-order logic without equality and function symbols}
 
 
+\begin{thm}
+	\label{thm:prop_interpol}
+	Let $\Gamma$ and $\Delta$ be sets of first-order clauses such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an algorithm which computes an interpolant $I$ of $\Gamma$ and $\Delta$.
+\end{thm}
+
+
+
+TODO: put some kind of propositional interpolation algorithm here as soon at it is clear which to pick
+
+
+
+
+
 \section{Conclusion}
 
 \begin{proof}[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
 	Since $\Gamma \cup \Delta$ is unsatisfiable,
 	by proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
-	By Lemma \ref{lemma:trans_transform}, also $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable.
+	It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
+
+
 	Note that $\TransAll(\Gamma) \cup \TransAll(\Delta)$ contains neither function symbols nor the equality symbol.
 
-	Hence by Theorem TODO, there is an interpolant $I$ such that
-	\begin{compactenum}
+	Hence by Theorem \ref{thm:prop_interpol}, there is an interpolant $I$ such that
+	\begin{enumerate}
 	\item $\TransAll(\Gamma) \entails I$
 	\item $\TransAll(\Delta) \entails \lnot I$ 
 	\item $\Lang(I) \subseteq \Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$
-	\end{compactenum}
+	\end{enumerate}
 
 	$\TransAll(\Gamma) \entails I$ is equivalent to $\TransAll(\Gamma) \cup \{\lnot I\}$ being unsatisfiable.
 	Through the unfolding of $\TransAll(\Gamma)$, we get that 

@@ -5,9 +5,13 @@ These are also referred to as the \emph{non-logical symbols} of $A$.
 
 An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
 
-$\bar x$ denotes $x_1, \ldots, x_n$.
+We denote $x_1, \ldots, x_n$ by $\bar x$.
 
+A substitution is a mapping of variables to terms. It is denoted by $\phi\subst{x/t}$, where $\phi$ is a formula or term where each occurrence of the variable $x$ is replaced by the term $t$.
+A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
 
+A term replacement on the other hand is a mapping of terms to terms. It is denoted by $\phi\termsubst{s/t}$, where $\phi$ is a formula or term where each occurrence of the term $t$ is replaced by the term $s$.
+\todo[inline]{is term replacement apt?}
 
 \section{Craig Interpolation}
 
