@@ -9,7 +9,8 @@ LANG="en" # of tex file
 
 #first: pdf
 #first: proofs
-first: content
+first:
+	make content >/dev/null &
 
 all: everything
 

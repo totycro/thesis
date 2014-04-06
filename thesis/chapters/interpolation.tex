@@ -15,20 +15,57 @@ A term replacement on the other hand is a mapping of terms to terms. It is denot
 
 \section{Craig Interpolation}
 
+\todo[inline]{TODO: write some text about what interpolation means and that we prove more or less only reverse interpolation, but that's fine by the proposition }
 
-\begin{samepage}
-	\begin{thm}[Interpolation]
-		\label{thm:interpolation}
-		Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \cup \Delta $ is unsatisfiable.
-		Then there exists a first-order formula $I$, called interpolant, such that \nopagebreak[4]
-		\begin{compactenum}
+\begin{defi}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
+	An \defiemph{interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that 
+	\begin{enumerate}
 		\item $ \Gamma \entails I$ \label{int_1}
-		\item $ \Delta \entails \lnot I$  \label{int_2}
+		\item $ I \entails \Delta $  \label{int_2}
 		\item $ \Lang(I) \subseteq \Lang(\Gamma) \intersect \Lang(\Delta)$.  \label{int_3}
-			\thmqed
-		\end{compactenum}
-	\end{thm}
-\end{samepage}
+	\end{enumerate}
+
+	\begin{samepage}
+		A \defiemph{reverse interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that $I$ meets conditions \ref{int_1} and \ref{int_3} of an interpolant as well as:
+		\begin{enumerate}[\quad\:1'.]
+				\setcounter{enumi}{1}
+			\item $ \Delta \entails \lnot I $  \label{int_2prime}
+				\qedhere
+		\end{enumerate}
+	\end{samepage}
+\end{defi}
+
+\begin{thm}[Interpolation]
+	\label{thm:interpolation_original}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \entails \Delta $.
+	Then there exists an interpolant of $\Gamma$ and $\Delta$.
+\end{thm}
+
+\begin{thm}[Reverse Interpolation]
+	\label{thm:interpolation}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \cup \Delta $ is unsatisfiable.
+	Then there exists an reverse interpolant of $\Gamma$ and $\Delta$.
+\end{thm}
+
+
+\begin{prop}
+	Theorem \ref{thm:interpolation_original} and \ref{thm:interpolation} are equivalent.
+	\label{prop:interpolations_equivalent}
+\end{prop}
+\begin{proof}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \entails \Delta$.
+	Then $\Gamma \cup \{\lnot B \mid B~\in~\Delta\}$ is unsatisfiable.
+	By Theorem \ref{thm:interpolation}, there exists a reverse interpolant $I$ of $\Gamma$ and $\{\lnot B \mid B \in \Delta\}$.
+	As $\{\lnot B \mid B \in \Delta\} \entails \lnot I$, we get by contraposition that $I \entails \Delta$, hence $I$ is an interpolant of $\Gamma$ and $\Delta$
+
+	For the other direction,
+	let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \cup \Delta$ is unsatisfiable.
+	Then $\Gamma \entails \{\lnot B \mid B \in \Delta\}$, hence by Theorem \ref{thm:interpolation_original}, there exists an interpolant $I$ of $\Gamma$ and $\{\lnot B \mid B \in \Delta\}$.
+	But as thus $ I\entails \{\lnot B \mid B \in \Delta\}$, we get by contraposition that $\Delta \entails \lnot I$, so $I$ is a reverse interpolant of $\Gamma$ and $\Delta$.
+\end{proof}
+
+As the notion of interpolation and reverse interpolation coincide, we will in the following only speak of interpolation and it will be clear from the context which definition applies.
 
 In the context of interpolation, every non-logical symbol is assigned a color which indicates the its origin(s). 
 A non-logical symbol is said to be \emph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \emph{grey} in case it occurs in both $\Gamma$ and $\Delta$.

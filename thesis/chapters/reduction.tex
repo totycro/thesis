@@ -1,4 +1,4 @@
-\chapter{Proof by Reduction to First-Order Logic without Equality}
+\chapter{Reduction to First-Order Logic without Equality}
 
 A common theme of proofs in theoretical computer science is to instead of proving the result from first principles to reduce the problem to another one, which then is easier to solve.
 In this instance, we are able to give a reduction for finding interpolants for first-order logic \emph{with} equality to first-order logic \emph{without} equality, where it is simpler to give an appropriate algorithm.
@@ -212,19 +212,29 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant of $\Gamma$ and $\Delta$.
 \end{thm}
 \begin{proof}
-	By the Compactness Theorem, there are finite $\Gamma' \subseteq \Gamma$ and $\Delta' \subseteq \Delta$ such that $\Gamma' \cup \Delta'$ is unsatisfiable. Let $C = \bigwedge_{A \in \Gamma'} A$ and $D = \bigwedge_{A \in \Delta'} A$. As $C\land D$ is unsatisfiable, $C \entails \lnot D$.
+	By the Compactness Theorem, there are finite $\Gamma' \subseteq \Gamma$ and $\Delta' \subseteq \Delta$ such that $\Gamma' \cup \Delta'$ is unsatisfiable.
+	Borrowing an idea of the proof of \ref{prop:interpolations_equivalent},
+	we show instead that there is an interpolant for $\bigwedge_{A\in \Gamma'}A \entails \bigvee_{B \in \Delta'} \lnot B$.
+	Let $C = \bigwedge_{A \in \Gamma'} A$ and $D = \bigvee_{B \in \Delta'} \lnot B$.
 
-	By the completness of cut-free sequent calculus, there is a proof of $C \entails \lnot D$. By Lemma \ref{lemma:maehara}, there is an interpolant of $C$ and $D$, which clearly is an interpolant of $\Gamma$ and $\Delta$.
+	By the completness of cut-free sequent calculus, there is a proof of $C \vdash D$. By Lemma \ref{lemma:maehara}, there is an interpolant of $C$ and $D$, which also is an interpolant of $\Gamma$~and~$\Delta$.
 \end{proof}
 
 \begin{lemma}[Maehara]
 	\label{lemma:maehara}
-	Let $\pi$ be a cut-free sequent calculus proof of $C \entails \lnot D$. Then there is an interpolant $I$ of $C$ and $D$.
+	If $C \vdash D$ is provable in cut-free sequent calculus proof,
+	then there is an interpolant  $C$ and $D$.
 \end{lemma}
+\begin{proof}
+	We prove this lemma by induction on the number of inferences.
+	\begin{itemize}
+		\item[Base case.] Suppose no rules were applied. Then $C \vdash D$ is either of the form $A \vdash A$, in which case $A$ serves as interpolant, or of the form $\vdash t=t$, in which case $\bot$ is an interpolant.
 
+			TODO
 
+	\end{itemize}
+\end{proof}
 
-TODO: put some kind of propositional interpolation algorithm here as soon at it is clear which to pick
 
 
 

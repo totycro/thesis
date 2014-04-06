@@ -1,10 +1,45 @@
 \documentclass[
 	a4paper,
 	11pt,
-	oneside, %twoside
+	oneside,
+	%twoside,
 	%openany % no blank page after chapter such that chapters start on odd pages
 ]{memoir}
-\chapterstyle{veelo}
+
+% ftp://ftp.tex.ac.uk/tex-archive/documentation/MemoirChapStyles/MemoirChapStyles.pdf
+%\chapterstyle{veelo}
+
+% VZ221 chapter style
+%\usepackage{calc}% used to import fourier
+%\makeatletter
+%\setlength\midchapskip{7pt}
+%\makechapterstyle{VZ21}{
+%\renewcommand\chapnamefont{\Large\scshape}
+%\renewcommand\chapnumfont{\Large\scshape\centering}
+%\renewcommand\chaptitlefont{\huge\bfseries\centering}
+%\renewcommand\printchaptertitle[1]{%
+%\setlength\tabcolsep{7pt}% used as indentation on both sides
+%\settowidth\@tempdimc{\chaptitlefont ##1}%
+%\setlength\@tempdimc{\textwidth-\@tempdimc-2\tabcolsep}%
+%\chaptitlefont
+%\ifdim\@tempdimc > 0pt\relax% one line
+%\begin{tabular}{c}
+%\toprule ##1\\ \bottomrule
+%\end{tabular}
+%\else% two+ lines
+%\begin{tabular}{%
+%>{\chaptitlefont\arraybackslash}p{\textwidth-2\tabcolsep}}
+%\toprule ##1\\ \bottomrule
+%\end{tabular}
+%\fi
+%}
+%}
+%\makeatother
+%\chapterstyle{VZ21}
+
+
+%\chapterstyle{ger}
+\chapterstyle{madsen}
 
 
 \usepackage[utf8]{inputenc}
@@ -83,8 +118,8 @@
 % to use the german charset include cp850 for MS-DOS, ansinew for Windows and latin1 for Linux.
 % \usepackage[latin1]{inputenc}
 
-\thesistitle{Title of the Thesis}
-\thesissubtitle{Optional Subtitle} % optional
+\thesistitle{Interpolation in First-Order Logic with Equality}
+%\thesissubtitle{Optional Subtitle} % optional
 \thesisdate{TT.MM.JJJJ}
 
 % all titles and designations have to be gender-related!
@@ -104,9 +139,20 @@
 \makeevenfoot{numberCorner}{\thepage}{}{}
 \makeoddfoot{numberCorner}{}{}{\thepage}
 
-% define custom macros for specific formats or names
-\newcommand{\uml}[1]{\texttt{#1}}
-\newcommand{\cd}{\textsf{Class Diagram}}
+%\makepagestyle{numberCenter}
+%\makeevenfoot{numberCenter}{}{\thepage}{}
+%\makeoddfoot{numberCenter}{}{\thepage}{}
+%
+%\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
+%\makeoddhead{numberCenter}{\sffamily \thesection}{}{\sffamily \thechapter}
+%    \makeheadrule{numberCenter}{\textwidth}{1pt}
+		   
+
+\newcommand{\mysetpagestyle}{ 
+%\pagestyle{numberCorner}
+%\pagestyle{numberCenter}
+}
+%\mysetpagestyle
 
 
 \newcommand{\proofcontent}{
@@ -119,8 +165,11 @@
 \chapter{Introduction}
 \input{chapters/interpolation}
 
-\chapter{The Resolution Calculus}
-\input{chapters/resolution.tex}
+\chapter{Calculi}
+In this chapter, we introduce the calculi that are used subsequently. These are resolution and sequent calculus.
+
+\input{chapters/resolution}
+\input{chapters/lk}
 
 \input{chapters/reduction}
 
@@ -148,6 +197,9 @@
 	\proofcontent
 
 \else
+
+	%\pagenumbering{arabic}
+	%\mysetpagestyle
 
 	\ifdefined\contentonly 
 	\selectlanguage{english}
@@ -212,7 +264,7 @@
 %\selectlanguage{ngerman}
 
 \cleardoublepage
-\pagestyle{numberCorner}
+\mysetpagestyle
 \tableofcontents*
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -221,7 +273,7 @@
 
 \mainmatter
 \pagenumbering{arabic}
-\pagestyle{numberCorner}
+\mysetpagestyle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
