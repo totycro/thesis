@@ -97,10 +97,10 @@ Skolemisation is a procedure for replacing existential quantifiers with Skolem t
 \begin{proof}
 	Since $\sk(\cdot)$ adds fresh symbols to both $\Gamma$ and $\Delta$ individually,
 	none of them are contained in $\Lang(\sk(\Gamma)) \intersect \Lang(\sk(\Delta))$.
-	Therefore condition \ref{int_3} of theorem \ref{thm:interpolation} is satisfied in both directions.
+	Therefore condition \refsub{def:interpolant}{int_3} is satisfied in both directions.
 
 	As for any set of formulas $\Phi$, each model of $\Phi$ can be extended to a model of $\sk(\Phi)$ and every model of $\sk(\Phi)$ is a witness for the satisfiability of $\Phi$, $\Phi \entails I$ iff $\sk(\Phi) \entails I$.
-	Hence conditions \ref{int_1} and \ref{int_2} of theorem \ref{thm:interpolation} remain satisfied for $I$ as well.
+	Hence conditions \refsub{def:interpolant}{int_1} and \refsub{def:interpolant}{int_2} remain satisfied for $I$ as well.
 \end{proof}
 
 
@@ -149,8 +149,8 @@ Let \defiemph{$\delta(A)$} be defined as $\bigwedge_{B \in \Sigma(A)} D_B \land 
 \end{prop}
 \begin{proof}
 	As $\delta$ introduces fresh symbols for each $\sk(\Gamma)$ and $\sk(\Delta)$, they must not occur in any interpolant of $\sk(\Gamma)$ and $\sk(\Delta)$. 
-	This establishes condition \ref{int_3} of theorem \ref{thm:interpolation} in both directions.
+	This establishes condition \refsub{def:interpolant}{int_3} in both directions.
 
-Using proposition \ref{prop:definitional_form}, condition \ref{int_1} and \ref{int_2} of theorem \ref{thm:interpolation} are immediate.
+Using proposition \ref{prop:definitional_form}, condition \refsub{def:interpolant}{int_1} and \refsub{def:interpolant}{int_2} are immediate.
 \end{proof}
 

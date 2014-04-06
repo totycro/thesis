@@ -1,16 +1,16 @@
 \chapter{Reduction to First-Order Logic without Equality}
 
-A common theme of proofs in theoretical computer science is to instead of proving the result from first principles to reduce the problem to another one, which then is easier to solve.
-In this instance, we are able to give a reduction for finding interpolants for first-order logic \emph{with} equality to first-order logic \emph{without} equality, where it is simpler to give an appropriate algorithm.
+A common theme of proofs in theoretical computer science is to avoid the tedious effort of proving the result from first principles by reducing the problem to one that is easier to solve.
+In this instance, we are able to give a reduction for finding interpolants in first-order logic \emph{with} equality to first-order logic \emph{without} equality, where it is simpler to give an appropriate algorithm.
 
 The general layout of this approach is the following:
-From two sets $\Gamma$ and $\Delta$, where $\Gamma \cup \Delta$ is unsatisfiable, we compute $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate equality it via axioms.
-In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that their behaviour is compatible to the one of functions.
-Now an interpolant of $\Gamma'$ and $\Delta'$ can be derived using an algorithm that is only capable of handling predicate symbols, as all other non-logical symbols have been removed.
+From two sets $\Gamma$ and $\Delta$, where $\Gamma \cup \Delta$ is unsatisfiable, we compute two sets $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate the effects of equality in $\Gamma$ and $\Delta$ via axioms.
+In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that the behaviour of these function-representing predicates is compatible to the one of actual functions.
+Now an interpolant of $\Gamma'$ and $\Delta'$ can be derived using an algorithm that is only capable of handling predicate symbols as all other non-logical symbols have been removed.
 Since the additional axioms ensure that the newly added predicate symbols mimic equality and functions respectively, we will see that the occurrences of these predicates in the interpolant can be translated back to occurrences of equality and function symbols in first-order logic with equality in the language of $\Gamma$ and $\Delta$, thereby yielding the originally desired interpolant.
 
 
-\section{Reduction to first-order logic without equality}
+\section{Translation of formulas}
 
 As we shall see in this section, first-order formulas with equality can be transformed into first-order formulas without equality in a way that is satisfiability-preserving, which is sufficient for our purposes.
 
@@ -18,7 +18,7 @@ In order to simplify notation, we shall consider constant symbols to be function
 
 First, we define the axioms which allow for simulation of equality and functions in first order logic without equality and function symbols:
 
-\begin{defi}
+\begin{defi}[Equality and function axioms]
 	For a first-order language $\LangSym$ and fresh predicate symbols $E$ and $F_f$ for $f\in \FS(\LangSym)$, we define:\nopagebreak
 	\begin{align*}
 		\FAX(\LangSym) \defeq{}& \smashoperator{\bigwedge_{f \in \FS(\LangSym)}}  \forall \bar x \exists y (F_f(\bar x, y) \land (\forall z (F_f(\bar x, z) \limpl E(y, z)))) \\
@@ -45,8 +45,14 @@ First, we define the axioms which allow for simulation of equality and functions
 \end{defi}
 
 $\Refl(P)$ will be referred to as reflexivity axiom of $P$, $\Congr(P)$ as congruence axiom of $P$.
+Now we define the precise language we translate formulas to as well as the translation procedure.
 
-\begin{defi}[Translation of formulas]
+\begin{defi}[Translation of languages]
+	Let $\LangSym$ be a language.
+	Then $\Trans(\LangSym)$ denotes $(\Lang(\LangSym)\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
+\end{defi}
+
+\begin{defi}[Translation and inverse translation of formulas]
 	\label{def:trans}
 	Let $A$ be a first-order formula and $E$ and $F_f$ for $f \in \FS(A)$ be fresh predicate symbols.
 	Then $\Trans(A)$ is the result of applying the following algorithm to $A$:
@@ -57,10 +63,11 @@ $\Refl(P)$ will be referred to as reflexivity axiom of $P$, $\Congr(P)$ as congr
 	\item As long as there is an occurrence of a function symbol $f$ in $A$:
 	\label{def:trans_step2}
 
-		Let $B$ be the atom in which $f$ as outermost symbol of a term occurs.
+		Let $B$ be the atom in which $f$ occurs as outermost symbol of a term.
 		Then $B$ is of the form $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
-		Replace $B$ in $A$ by $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for a variable $y$ which does not occur free in $B$.
+		Replace $B$ in $A$ by $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$ for a fresh variable $y$.
 	\end{compactenum}
+	\medskip
 
 	Moreover, let the inverse operation $\TransInv(B)$ for formulas $B$ in the language $\Trans(L(A))$ be defined as the result of applying the following algorithm to $B$:
 	\begin{compactenum}
@@ -84,31 +91,17 @@ $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 	.
 \end{lemma}
 \begin{proof}
-	Step 1 and 2 in the transformation algorithm for $\Trans$ and $\TransInv$ are concerned with different symbols each and therefore do not interfere with each other.
+	Step 1 and 2 in the transformation algorithm for $\Trans$ and $\TransInv$ are each concerned with a different set of symbols and therefore do not interfere with each other.
 	Moreover, the respective steps in both algorithms are the inverse of each other.
 	For step 1, this is immediate and for step 2, consider that all occurrences of $F_f$ for $f \in \FS(A)$ in $\Trans(A)$ have been introduced by $\Trans$ and are consequently of the form
-	$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$, which in $\TransInv$ is replaced by 
-$P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
+	$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$, which is replaced by 
+$P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ by~$\TransInv$.
 \end{proof}
 
-\begin{defi}
+\begin{defi}[Translation of formulas including axioms]
 	For first-order formulas $A$, let $\TransAll(A) = \FAX(\Lang(A)) \land \EAX(\Lang(A)) \land \Trans(A)$ and for sets of first-order formulas $\Phi$, let $\TransAll(\Phi) = \{\FAX(\Lang(\Phi)), \EAX(\Lang(\Phi))\} \cup \Trans(\Phi)$.
 \end{defi}
 
-\begin{lemma}
-	\label{lemma:trans_transform}
-	$\TransAll(\Gamma \cup \Delta)\,\liff\,\TransAll(\Gamma) \cup \TransAll(\Delta)$.
-\end{lemma}
-\begin{proof}
-	\begin{align*}
-		\TransAll(\Gamma \cup \Delta)\,\liff~&\{\FAX(\Lang(\Gamma\cup\Delta)), \EAX(\Lang(\Gamma \cup\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
-		\liff~&\{\FAX(\Lang(\Gamma)\cup\Lang(\Delta)), \EAX(\Lang(\Gamma)\cup\Lang(\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
-		\liff~&\{\FAX(\Lang(\Gamma)) \land \FAX(\Lang(\Delta)), \EAX(\Lang(\Gamma)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
-		\liff~&\{\FAX(\Lang(\Gamma)),\EAX(\Lang(\Gamma))\} \cup \{\FAX(\Lang(\Delta)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
-		\liff~&\TransAll(\Gamma) \cup \TransAll(\Delta)
-		\qedhere
-	\end{align*}
-\end{proof}
 
 Note that $\TransAll(A)$ contains neither the equality predicate nor function symbols but additional predicate symbols instead. More formally:
 
@@ -117,10 +110,6 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 %	Then $\Trans(\LangSym)$ denotes $(\LangSym\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
 %\end{defi}
 
-\begin{defi}[Translation of languages]
-	Let $\LangSym$ be a language.
-	Then $\Trans(\LangSym)$ denotes $(\Lang(\LangSym)\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
-\end{defi}
 
 \begin{lemma}~ 
 	\label{lemma:trans_lang}
@@ -149,19 +138,20 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 \begin{proof}
 	Suppose $\Phi$ is satisfiable.
 	Let $M$ be a model of $\Phi$.
-	We show that $\TransAll(\Phi)$ is satisfiable by extending $M$ to the language $\Lang(\Phi)\cup\{E\}\cup\{F_f\mid f \in \FS(A)\}$ to satisfy to a model of $\TransAll(\Phi)$.
+	We show that $\TransAll(\Phi)$ is satisfiable by extending $M$ to the language $\Lang(\Phi)\cup\{E\}\cup\{F_f\mid f \in \FS(A)\}$ and proving that the extended model satisfies $\TransAll(\Phi)$.
 
 	First, let $M \entails E(s, t)$ if and only if $M \entails s = t$.
-	By reflexivity of equality, it follows that $M \entails \Refl(E)$ and
-	as equality satisfies the congruence axiom we get that $M$ is a model $\Congr(E)$ and in consequence also of $\EAX(\Phi)$.
+	By reflexivity of equality, it follows that $M \entails \Refl(E)$.
+	As any predicate, in particular $E$ and $F_f$ for every $f \in \FS(\Phi)$, satisfy the congruence axiom with respect to $=$, by the definition of $E$ in $M$, they satisfy the congruence axiom with respect to $E$.
+	Therefore $M$ is a model of $\EAX(\Lang(\Phi))$.
 
 	Second, let $M \entails F_f(\bar x, y)$ if and only if $M \entails f(\bar x) = y$ for all $f \in \FS(\Phi)$. 
-	Since $M$ is a model of $\Phi$, it maps $f$ to a function, which returns a unique result for every combination of parameters.
-	This however is precisely the logical requirement on $F_f$ stated by $\FAX(\Phi)$,   
-	hence $M$ is a model of $\FAX(\Phi)$.
+	Since $M$ is a model of $\Phi$, it maps every function symbol $f$ to a function, which by definition returns a unique result for every combination of parameters.
+	This however is precisely the logical requirement on $F_f$ stated by $\FAX(\Lang(\Phi))$,   
+	hence $M$ is a model of $\FAX(\Lang(\Phi))$.
 
-	Lastly, we show that $M \entails A$ for all $A \in \Phi$.
-	By the above definition of $E$ in $M$, step $\ref{def:trans_step1}$ of the algorithm in definition \ref{def:trans} yields a formula that is satisfied by $M$.
+	Lastly, we show that $M \entails \Trans(A)$ for all $A \in \Phi$.
+	By the above definition of $E$ in $M$, step $\ref{def:trans_step1}$ of the algorithm in definition \ref{def:trans} yields a formula that is satisfied by $M$ as it satisfies every formula of $\Phi$.
 	For step \ref{def:trans_step2}, suppose $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
 	Let $y$ such that $M \entails f(\bar t)=y$.
 	By our definition of $F$ under $M$, $M\entails F(\bar t, y)$ with this unique $y$.
@@ -172,12 +162,16 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	We extend a model $M$ of this set of formulas to a model of $\TransInv(\Phi)$ by extending it from the language $\Trans(\LangSym)$ to include $\{=\}$ and $\FS(\LangSym)$.
 
 	First, let $M\entails s = t$ if and only if $M\entails E(s, t)$.
-	As $M$ is a model of $\EAX(A)$, $E$ is reflexive. 
-	Since $M \entails \Congr(E)$, we can derive the symmetry of $E$ by the following instantiation of it using reflexivity:
-	$M \entails (E(s, t) \land E(s, s)) \limpl ( E(s, s) \limpl\nolinebreak E(t, s))$.
-	By symmetry, we have that $M \entails E(s, r) \liff E(r, s)$, and hence we can show the transitivity of $E$ by another instance of $\Congr(E)$: 
-	$M \entails (E(s, r) \land E(s, t)) \limpl ( E(s, s) \limpl\nolinebreak E(r, t))$, i.e.\ given $E(r, s)$ and $E(s, t)$, we can deduce $E(r, t)$ in $M$.
-	As these properties directly also apply to $=$ in $M$, equality is defined properly in $M$.
+	As $M$ is a model of $\EAX(\LangSym)$, $E$ is reflexive. 
+	Since $M \entails \Congr(E)$,
+	$M \entails \forall x \forall y (E(x, y) \land E(x, x)) \limpl ( E(x, x) \limpl\nolinebreak E(y, x))$.
+	As we know that $E$ is reflexive, this simplifies to
+	$M \entails \forall x \forall y (E(x, y)\limpl\nolinebreak E(y, x))$, i.e.~$E$ is symmetric in $M$.
+	We show the transitivity of $E$ by another instance of $\Congr(E)$: 
+	$M \entails \forall x \forall y \forall z ((E(y, x) \land E(y, z)) \limpl ( E(y, y) \limpl\nolinebreak E(x, z)))$,
+	As $E$ is reflexive and symmetric, we get that 
+	$M \entails \forall x \forall y \forall z ((E(x, y) \land E(y, z)) \limpl\nolinebreak E(x, z))$.
+	As these properties directly also apply to $=$ in $M$, equality is adheres to the required axioms in $M$.
 
 	Second, let $M\entails f(\bar t) = s$ if and only if $M\entails F_f(\bar t, s)$ for all $f \in \FS(\LangSym)$.
 	As by assumption $M$ is a model of $\FAX(A)$, we know that for every $\bar t$, some $s$ with $M\entails F(\bar t, s)$ exists and is uniquely defined.
@@ -198,8 +192,8 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	Then $\Phi$ is satisfiable if and only if $\TransAll(\Phi)$ is satisfiable.
 \end{corr}
 \begin{proof}
-	The left-to-right direction is directly given in proposition \ref{prop:trans_sat_equiv}.
-	For the other direction, consider that by proposition \ref{prop:trans_sat_equiv}, $\TransInv(\Trans(\Phi))$ is satisfiable and by Lemma \ref{lemma:tinv}, $\TransInv(\Trans(\Phi)) = \Phi$.
+	The left-to-right direction is directly given in Proposition \ref{prop:trans_sat_equiv}.
+	For the other direction, consider that by Proposition \ref{prop:trans_sat_equiv}, $\TransInv(\Trans(\Phi))$ is satisfiable, which by Lemma \ref{lemma:tinv} is nothing else than $\Phi$.
 \end{proof}
 
 
@@ -214,7 +208,7 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 \begin{proof}
 	By the Compactness Theorem, there are finite $\Gamma' \subseteq \Gamma$ and $\Delta' \subseteq \Delta$ such that $\Gamma' \cup \Delta'$ is unsatisfiable.
 	Borrowing an idea of the proof of \ref{prop:interpolations_equivalent},
-	we show instead that there is an interpolant for $\bigwedge_{A\in \Gamma'}A \entails \bigvee_{B \in \Delta'} \lnot B$.
+	we show that there is an interpolant for $\bigwedge_{A\in \Gamma'}A \entails \bigvee_{B \in \Delta'} \lnot B$.
 	Let $C = \bigwedge_{A \in \Gamma'} A$ and $D = \bigvee_{B \in \Delta'} \lnot B$.
 
 	By the completness of cut-free sequent calculus, there is a proof of $C \vdash D$. By Lemma \ref{lemma:maehara}, there is an interpolant of $C$ and $D$, which also is an interpolant of $\Gamma$~and~$\Delta$.
@@ -222,17 +216,64 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 \begin{lemma}[Maehara]
 	\label{lemma:maehara}
-	If $C \vdash D$ is provable in cut-free sequent calculus proof,
+	If $C \vdash D$ is provable in cut-free sequent calculus,
 	then there is an interpolant  $C$ and $D$.
 \end{lemma}
 \begin{proof}
 	We prove this lemma by induction on the number of inferences.
-	\begin{itemize}
-		\item[Base case.] Suppose no rules were applied. Then $C \vdash D$ is either of the form $A \vdash A$, in which case $A$ serves as interpolant, or of the form $\vdash t=t$, in which case $\bot$ is an interpolant.
+	As many cases are similar, we prove some examples only.
 
-			TODO
+	\begin{description}
+		\item[\normalfont Base case.] Suppose no rules were applied. Then $C \vdash D$ is either of the form $A \vdash A$, in which case $A$ serves as interpolant, or of the form $\vdash t=t$, in which case $\top$ is an interpolant.
 
-	\end{itemize}
+
+		\item[\normalfont Structural rules.]
+			Suppose the property holds for $n$ rule applications and the $(n+1)$th rule is a structural one.
+			We consider some examples:
+
+			\begin{itemize}
+				\item Contraction left
+					\begin{prooftree}
+						\Axiomm{\Gamma, A \fCenter \Delta}
+						\RightLabelm{\lkrule{c}{l}}
+						\UnaryInfm{\Gamma, A, A \fCenter \Delta}
+					\end{prooftree}
+
+
+					By the induction hypothesis, there exists an interpolant $I$ of $\Gamma, A \vdash \Delta$. Clearly $I$ is an interpolant for $\Gamma, A, A \vdash \Delta $ as well.
+
+				\item Weakening right
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta}
+						\RightLabelm{\lkrule{w}{r}}
+						\UnaryInfm{\Gamma \fCenter \Delta, A}
+					\end{prooftree}
+
+					By the induction hypothesis, there exists an interpolant $I$ of $\Gamma \vdash \Delta$.
+					Clearly $I$ is also an interpolant for $\Gamma A \vdash \Delta $ as well.
+
+			\end{itemize}
+
+		\item[\normalfont Propositional rules.]
+			Suppose the property holds for $n-1$ rule applications and the $n$th rule is a propositional one.
+			We consider some examples:
+
+			\begin{itemize}
+				\item Negation left
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta,  A}
+						\RightLabelm{\lkrule{\lnot}{l}}
+						\UnaryInfm{\Gamma, \lnot A \fCenter \Delta }
+					\end{prooftree}
+
+					By the induction hypothesis, there exists an interpolant $I$ of $\Gamma \vdash \Delta, A$.
+
+					\todo[inline]{Need full maehara lemma, not just this restricted form, to have "global coloring"?}
+
+
+			\end{itemize}
+
+	\end{description}
 \end{proof}
 
 
@@ -240,17 +281,28 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 \section{Conclusion}
 
+Using the results of the previous sections, we can now give a proof of the interpolation theorem:
+
 \begin{proof}[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
+
 	Since $\Gamma \cup \Delta$ is unsatisfiable,
-	by proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
-	It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
+	by Proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
+	\begin{align*}
+		\TransAll(\Gamma \cup \Delta)\,\liff~&\{\FAX(\Lang(\Gamma\cup\Delta)), \EAX(\Lang(\Gamma \cup\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
+		\liff~&\{\FAX(\Lang(\Gamma)\cup\Lang(\Delta)), \EAX(\Lang(\Gamma)\cup\Lang(\Delta))\} \cup \Trans(\Gamma )\cup \Trans(\Delta) \\
+		\liff~&\{\FAX(\Lang(\Gamma)) \land \FAX(\Lang(\Delta)), \EAX(\Lang(\Gamma)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
+		\liff~&\{\FAX(\Lang(\Gamma)),\EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\FAX(\Lang(\Delta)), \EAX(\Lang(\Delta))\} \cup \Trans(\Delta) \\
+		\liff~&\TransAll(\Gamma) \cup \TransAll(\Delta)
+	\end{align*}
+	%It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$is unsatisfiable as well.
+	Hence  $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
 	By Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} $\TransAll(\Gamma) \cup \TransAll(\Delta)$ contains neither function symbols nor the equality symbol.
 	Hence by Theorem \ref{thm:prop_interpol}, there is an interpolant $I$ such that
 	\begin{enumerate}
-	\item $\TransAll(\Gamma) \entails I$
-	\item $\TransAll(\Delta) \entails \lnot I$ 
-	\item $\Lang(I) \subseteq \Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$
-		\label{proof:interpolation1_3}
+		\item $\TransAll(\Gamma) \entails I$
+		\item $\TransAll(\Delta) \entails \lnot I$ 
+		\item $\Lang(I) \subseteq \Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$
+			\label{proof:interpolation1_3}
 	\end{enumerate}
 
 	We now show that $\TransInv(I)$ is an interpolant of $\Gamma$ and $\Delta$.
@@ -261,7 +313,7 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 	Since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition
 	\refsub{prop:trans_sat_equiv}{prop:trans_sat_equiv2}
-	 by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
+	by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
 	Therefore $\Gamma \entails \Trans^{-1}(I)$.
 
 	For $\Delta$, an analoguous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
@@ -270,10 +322,10 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	\begin{align*}
 		\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) =\,&
 		(\Lang(\Gamma)\cup \{E\}\cup\{F_f\mid f \in \FS(\Gamma)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Gamma))~\cap \\
-	& (\Lang(\Delta)\cup \{E\}\cup\{F_f\mid f \in \FS(\Delta)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Delta))\\
+		& (\Lang(\Delta)\cup \{E\}\cup\{F_f\mid f \in \FS(\Delta)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Delta))\\
 		=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup\{F_f\mid f \in \FS(\Gamma)\cap\FS(\Delta\}))  \setminus(\{=\} \cup \FS(\Gamma) \cup \FS(\Delta)) \\
 		=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta)) ) \setminus ( \{=\} \cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) )  \\ 
-  =\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
+		=\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
 	\end{align*}
 
 	As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
