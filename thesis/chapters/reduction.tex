@@ -202,28 +202,22 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 For the proof of the interpolation theorem by reduction we require an algorithm which operates in first-order logic without equality and function symbols, which we describe in this section.
 
+\begin{remark}
+	As the idea of this reduction is to simplify the problem by amongst others not considering function symbols,
+	resolution-based methods can not be employed in a direct manner.
+	This is because function symbols appear naturally in them as they usually handle existential quantification by means of skolemisation, i.e.~a new function symbol is introduced for every occurrence of an existential quantifier in the scope of a universal quantifier.
+	
+	Translating the skolemised formulas to a language without function symbols as described in the last section is of no avail since this translation introduces new existential quantifiers for every function symbol it encounters, necessitating skolemisation yet again.
+\end{remark}
+
+We now show that interpolants can be computed by means of a sequent calculus based procedure.
+It is slightly stronger than the required statment as it allows for interpolants of partitions of sequents:
 
 \begin{defi}[Partition of sequents]
 	A \defiemph{partition} of a sequent $\Gamma \proves \Delta$ is denoted by $\parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2}$, where $\Phi_1 \cap \Phi_2 = \emptyset$ and $\Phi_1 \cup \Phi_2 = \Phi$ for $\Phi \in \{\Gamma, \Delta\}$.
 \end{defi}
 Note that while for partitions of sets it is usually required that the partitions are non-empty, empty partitions of sequents are permitted.
 
-
-
-\begin{thm}
-	\label{thm:prop_interpol}
-	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant of $\Gamma$ and $\Delta$.
-\end{thm}
-\begin{proof}
-	By the Compactness Theorem, there are finite $\Gamma' \subseteq \Gamma$ and $\Delta' \subseteq \Delta$ such that $\Gamma' \cup \Delta'$ is unsatisfiable.
-	Borrowing an idea of the proof of \ref{prop:interpolations_equivalent},
-	we show that there is an interpolant for $\bigwedge_{A\in \Gamma'}A \entails \bigvee_{B \in \Delta'} \lnot B$.
-	Let $C = \bigwedge_{A \in \Gamma'} A$ and $D = \bigvee_{B \in \Delta'} \lnot B$.
-
-	By the completness of cut-free sequent calculus, there is a proof of $C \vdash D$.
-	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{C}{}{}{D}. $I$ is also an interpolant of $\Gamma$~and~$\Delta$.
-
-\end{proof}
 \begin{lemma}[Maehara]
 	\label{lemma:maehara}
 Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \vdash \Delta$.
@@ -258,7 +252,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 			We consider some examples:
 
 			\begin{itemize}
-				\item The last rule application was an instance of contraction left. Then it is of the form:
+				\item The last rule application was an instance of \lkrule{c}{l}. Then it is of the form:
 					\begin{prooftree}
 						\Axiomm{\Gamma, A, A \fCenter \Delta}
 						\RightLabelm{\lkrule{c}{l}}
@@ -277,7 +271,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 
 					\end{enumerate}
 
-				\item The last rule application was an instance of weakening right. Then it is of the form:
+				\item The last rule application was an instance of \lkrule{w}{r}. Then it is of the form:
 					\begin{prooftree}
 						\Axiomm{\Gamma \fCenter \Delta}
 						\RightLabelm{\lkrule{w}{r}}
@@ -294,7 +288,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 			We consider some examples:
 
 			\begin{itemize}
-				\item The last rule application was an instance of negation left. Then it is of the form:
+				\item The last rule application was an instance of \lkrule{\lnot}{l}. Then it is of the form:
 					\begin{prooftree}
 						\Axiomm{\Gamma \fCenter \Delta,  A}
 						\RightLabelm{\lkrule{\lnot}{l}}
@@ -310,7 +304,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 						\item $\partisym = \parti{\Gamma_1}{\Delta_1}{\Gamma_2, \lnot A}{\Delta_2}$. A similar argument goes through. 
 					\end{enumerate}
 
-	\item The last rule application was an instance of implication left. Then it is of the form:
+				\item The last rule application was an instance of \lkrule{\limpl}{l}. Then it is of the form:
 					\begin{prooftree}
 						\Axiomm{\Gamma \fCenter \Delta,  A}
 						\Axiomm{\Sigma, B \fCenter \Pi}
@@ -320,7 +314,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 
 					There are two possible partitions of $\Gamma, A\limpl B \vdash \Delta$:
 					\begin{enumerate}
-						\item $\chi = \parti{\Gamma_1, \Sigma_1, A\limpl B}{\Delta_1, \Pi_1}{\Gamma_2, \Sigma_2}{\Delta_2, \Pi_2}$.
+						\item $\partisym = \parti{\Gamma_1, \Sigma_1, A\limpl B}{\Delta_1, \Pi_1}{\Gamma_2, \Sigma_2}{\Delta_2, \Pi_2}$.
 							By the induction hypothesis, there is an interpolant $I_1$ for the partition $\parti{\Gamma_1}{\Delta_1, A}{\Gamma_2}{\Delta_2}$ of the left upper sequent.
 							Hence for $I_1$, it holds that $\Gamma_1 \fCenter \Delta_1, A, I_1$ and 
 							$I_1, \Gamma_2 \fCenter \Delta_2$.
@@ -328,7 +322,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 							Moreover, we also get by the induction hypothesis that there is an interpolant $I_2$ for the partition $\parti{\Sigma_1, B}{\Pi_1}{\Sigma_2}{\Pi_2}$ of the right upper sequent.
 							This implies that $\Sigma_1, B \fCenter \Pi_1, I_2$ and $I_2, \Sigma_2 \fCenter \Pi_2$.
 
-							Using these prerequisites, we show that $I_1 \lor I_2$ is an interpolant for $\chi$:
+							Using these prerequisites, we show that $I_1 \lor I_2$ is an interpolant for $\partisym$:
 							\medskip
 
 							\begin{prooftree}
@@ -372,7 +366,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 
 							}
 
-						\item $\chi = \parti{\Gamma_1}{\Delta_1}{\Gamma_2, A\limpl B}{\Delta_2}$.
+						\item $\partisym = \parti{\Gamma_1}{\Delta_1}{\Gamma_2, A\limpl B}{\Delta_2}$.
 							The argument for this case is similar using $I_1 \land I_2$ as interpolant.
 					\end{enumerate}
 
@@ -386,6 +380,7 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 				\item The last rule application was an instance of $\lkrule{\forall}{l}$. Then it is of the form:
 					\begin{prooftree}
 						\Axiomm{\Gamma, A\subst{x/t} \fCenter \Delta}
+						\RightLabelm{\lkrule{\forall}{l}}
 						\UnaryInfm{\Gamma, \forall x A \fCenter \Delta}
 					\end{prooftree}
 					where no free variable of $t$ becomes bound in $A\subst{x/t}$.
@@ -396,77 +391,175 @@ Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and fu
 							By the induction hypothesis, there is an interpolant $I$ of the partition $\parti{\Gamma_1, A\subst{x/t}}{\Delta_1}{\Gamma_2}{\Delta_2}$.
 							Hence for $I$, it holds that
 							$\Gamma_1, A\subst{x/t} \fCenter \Delta_1, I$ and  
-							$\Gamma_2, I \fCenter \Delta_2$.
+							$I, \Gamma_2 \fCenter \Delta_2$.
 							By an application of $\lkrule{\forall}{l}$ to the first sequent we get that $\Gamma_1, \forall x A\fCenter \Delta_1, I$.
 
 							In order to show that also $\Lang(I) \subseteq \Lang(\Gamma_1, \forall x A, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$, consider that by the induction hypothesis, 
-							$\Lang(I) \subseteq \Lang(\Gamma_1, A[x/t], \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$.
-							As there are no function symbols and since constant symbols are viewed as function symbols, $L(\forall x A) = L(A[x/t])$.
+							$\Lang(I) \subseteq \Lang(\Gamma_1, A\subst{x/t}, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$.
+							As there are no function symbols and since constant symbols are viewed as function symbols, $L(\forall x A) = L(A\subst{x/t})$.
 
 
 						\item \parti{\Gamma_1}{\Delta_1}{\Gamma_2, \forall x A}{\Delta_2}.
 							This case can be argued analoguously.
 					\end{enumerate}
-				\item The last rule application was an instance of $\lkrule{\forall}{r}$ . Then it is of the form:
+
+				\item The last rule application was an instance of $\lkrule{\forall}{r}$. Then it is of the form:
+
+					\begin{prooftree}
+						\Axiomm{\Gamma\fCenter \Delta, A\subst{x/y} }
+						\RightLabelm{\lkrule{\forall}{r}}
+						\UnaryInfm{\Gamma\fCenter \Delta, \forall x A }
+					\end{prooftree}
+					where $y$ does not appear free in $\Gamma$ or $\Delta$.
+
+					There are two possible partitions of $\Gamma\vdash \Delta, \forall x A $:
+					\begin{enumerate}
+						\item $\partisym = \parti{\Gamma_1}{\Delta_1, \forall x A}{\Gamma_2}{\Delta_2}$.
+							By the induction hypothesis, there exists an interpolant I of the partition 
+							\parti{\Gamma_1}{\Delta_1, A\subst{x/y}}{\Gamma_2}{\Delta_2} of the upper sequent.
+							Hence for $I$, it holds that
+							$\Gamma_1 \fCenter \Delta_1, A\subst{x/y}, I$ and
+							$I, \Gamma_2 \fCenter \Delta_2$.
+
+							As $y$ does not occur in $\Gamma$ or $\Delta$ and consequently must by the language condition not occur in $I$, we may apply the $\lkrule{\forall}{r}$ rule to the former sequent to obtain $\Gamma_1 \fCenter \Delta_1, \forall x A, I$.
+							Hence is an interpolant for $\partisym$ as well.
+
+						\item \parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2, \forall x A}.
+							This case can be argued analoguously.
+			\qedhere
+					\end{enumerate}
 
 
 			\end{itemize}
-	\end{description}
+
+			\begin{comment} % i do not explain why this need not be here
+		\item[\normalfont Equality rules.]
+			Suppose the property holds for $n$ rule applications and the $(n+1)$th rule is an equality rule.
+			We consider an example:
+
+			\begin{itemize}
+				\item The last rule application was an instance of $\lkrule{=}{r_1}$. Then it is of the form:
+					\begin{prooftree}
+						\Axiomm{\Gamma\fCenter \Delta, A\subst{T/t} }
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{r_1}}
+						\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\subst{T/s}  }
+					\end{prooftree}
+
+					There are two possible partitions of $\Gamma, \Sigma \vdash \Delta, \Pi A\subst{T/s} $:
+					\begin{enumerate}
+						\item $\partisym = \parti{\Gamma_1, \Sigma_1}{\Delta_1, \Pi_1, A\subst{T/s}}{\Gamma_2, \Sigma_2}{\Delta_2, \Pi_2}$.  
+
+					By the induction hypothesis, there is an interpolant $I_1$ for the partition $\parti{\Gamma_1}{\Delta_1, A\subst{T/t}}{\Gamma_2}{\Delta_2}$ of the left upper sequent.
+					Hence $\Gamma_1 \fCenter \Delta_1, A\subst{T/t}, I_1$ and $I_1, \Gamma_2 \fCenter \Delta_2$.
+
+					We also get by the induction hypothesis that there is an interpolant $I_2$ for the partition $\parti{\Sigma_1}{\Pi_1, s=t}{\Sigma_2}{\Pi_2}$ of the right upper sequent. Here, we have that 
+					$\Sigma_1 \fCenter \Pi_1, s=t, I_2$ and $I_2, \Sigma_2 \fCenter \Pi_2$.
+
+					Now we establish that $I_1 \lor I_2$ is an interpolant for $\partisym$.
+
+					\begin{prooftree}
+						\Axiomm{\Gamma_1 \fCenter \Delta_1, A\subst{T/t}, I_1}
+						\Axiomm{\Sigma_1 \fCenter \Pi_1, s=t, I_2}
+						\RightLabelm{\lkrule{=}{r_2}}
+						\BinaryInfm{\Gamma_1, \Sigma_1 \fCenter \Delta_1, \Pi_1, A\subst{T/s}, I_1, I_2}
+						\RightLabelm{\lkrule{\lor}{r}}
+						\UnaryInfm{\Gamma_1, \Sigma_1 \fCenter \Delta_1, \Pi_1, A\subst{T/s}, I_1 \lor I_2}
+					\end{prooftree}
+
+					\begin{prooftree}
+						\Axiomm{I_1, \Gamma_2 \fCenter \Delta_2}
+						\Axiomm{I_2, \Sigma_2 \fCenter \Pi_2}
+						\RightLabelm{\lkrule{\lor}{l}}
+						\BinaryInfm{I_1\lor I_2, \Gamma_2, \Sigma_2 \fCenter \Delta_2, \Pi_2}
+					\end{prooftree}
+
+
+					We furthermore get by the induction hypothesis that
+
+					$\Lang(I_1) \subseteq \Lang(\Gamma_1, \Delta_1, A\subst{T/t}) \cap (\Gamma_2, \Delta_2)$
+
+					$\Lang(I_2) \subseteq \Lang(\Sigma_1, \Pi_1, s=t) \cap (\Sigma_2, \Pi_2)$
+
+					$\Lang(I_1 \lor I_2) \subseteq \Lang(\Gamma_1, \Sigma_1, \Delta_1, \Pi_1, A\subst{T/s}) \cap (\Gamma_2 \Sigma_2, \Delta_2, \Pi_2)$
+
+					\end{enumerate}
+
+			\end{itemize}
+		\end{comment}
+			\end{description}
+		\end{proof}
+
+
+\begin{thm}
+	\label{thm:prop_interpol}
+	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant of $\Gamma$ and $\Delta$.
+\end{thm}
+\begin{proof}
+	By the Compactness Theorem, there are finite $\Gamma' \subseteq \Gamma$ and $\Delta' \subseteq \Delta$ such that $\Gamma' \cup \Delta'$ is unsatisfiable.
+	Borrowing an idea of the proof of \ref{prop:interpolations_equivalent},
+	we show that there is an interpolant for $\bigwedge_{A\in \Gamma'}A \entails \bigvee_{B \in \Delta'} \lnot B$.
+	Let $C = \bigwedge_{A \in \Gamma'} A$ and $D = \bigvee_{B \in \Delta'} \lnot B$.
+
+	By the completness of cut-free sequent calculus, there is a proof of $C \vdash D$.
+	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{C}{}{}{D}. $I$ is also an interpolant of $\Gamma$~and~$\Delta$.
+
 \end{proof}
 
 
 
 
-\section{Conclusion}
 
-Using the results of the previous sections, we can now give a proof of the interpolation theorem:
+		\section{Conclusion}
 
-\begin{proof}[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
+		Using the results of the previous sections, we can now give a proof of the interpolation theorem:
 
-	Since $\Gamma \cup \Delta$ is unsatisfiable,
-	by Proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
-	\begin{align*}
-		\TransAll(\Gamma \cup \Delta)\,\liff~&\{\FAX(\Lang(\Gamma\cup\Delta)), \EAX(\Lang(\Gamma \cup\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
-		\liff~&\{\FAX(\Lang(\Gamma)\cup\Lang(\Delta)), \EAX(\Lang(\Gamma)\cup\Lang(\Delta))\} \cup \Trans(\Gamma )\cup \Trans(\Delta) \\
-		\liff~&\{\FAX(\Lang(\Gamma)) \land \FAX(\Lang(\Delta)), \EAX(\Lang(\Gamma)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
-		\liff~&\{\FAX(\Lang(\Gamma)),\EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\FAX(\Lang(\Delta)), \EAX(\Lang(\Delta))\} \cup \Trans(\Delta) \\
-		\liff~&\TransAll(\Gamma) \cup \TransAll(\Delta)
-	\end{align*}
-	%It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$is unsatisfiable as well.
-	Hence  $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
-	By Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} $\TransAll(\Gamma) \cup \TransAll(\Delta)$ contains neither function symbols nor the equality symbol.
-	Hence by Theorem \ref{thm:prop_interpol}, there is an interpolant $I$ such that
-	\begin{enumerate}
-		\item $\TransAll(\Gamma) \entails I$
-		\item $\TransAll(\Delta) \entails \lnot I$ 
-		\item $\Lang(I) \subseteq \Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$
-			\label{proof:interpolation1_3}
-	\end{enumerate}
+		\begin{proof}[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
 
-	We now show that $\TransInv(I)$ is an interpolant of $\Gamma$ and $\Delta$.
+			Since $\Gamma \cup \Delta$ is unsatisfiable,
+			by Proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
+			\begin{align*}
+				\TransAll(\Gamma \cup \Delta)\,\liff~&\{\FAX(\Lang(\Gamma\cup\Delta)), \EAX(\Lang(\Gamma \cup\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
+				\liff~&\{\FAX(\Lang(\Gamma)\cup\Lang(\Delta)), \EAX(\Lang(\Gamma)\cup\Lang(\Delta))\} \cup \Trans(\Gamma )\cup \Trans(\Delta) \\
+				\liff~&\{\FAX(\Lang(\Gamma)) \land \FAX(\Lang(\Delta)), \EAX(\Lang(\Gamma)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
+				\liff~&\{\FAX(\Lang(\Gamma)),\EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\FAX(\Lang(\Delta)), \EAX(\Lang(\Delta))\} \cup \Trans(\Delta) \\
+				\liff~&\TransAll(\Gamma) \cup \TransAll(\Delta)
+			\end{align*}
+			%It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$is unsatisfiable as well.
+			Hence  $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
+			By Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} $\TransAll(\Gamma) \cup \TransAll(\Delta)$ contains neither function symbols nor the equality symbol.
+			Hence by Theorem \ref{thm:prop_interpol}, there is an interpolant $I$ such that
+			\begin{enumerate}
+				\item $\TransAll(\Gamma) \entails I$
+				\item $\TransAll(\Delta) \entails \lnot I$ 
+				\item $\Lang(I) \subseteq \Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$
+					\label{proof:interpolation1_3}
+			\end{enumerate}
 
-	$\TransAll(\Gamma) \entails I$ is equivalent to $\TransAll(\Gamma) \cup \{\lnot I\}$ being unsatisfiable.
-	Through the unfolding of $\TransAll(\Gamma)$, we get that 
-	$\{\FAX(\Lang(\Gamma)), \EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\lnot I\}$ is unsatisfiable.
+			We now show that $\TransInv(I)$ is an interpolant of $\Gamma$ and $\Delta$.
 
-	Since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition
-	\refsub{prop:trans_sat_equiv}{prop:trans_sat_equiv2}
-	by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
-	Therefore $\Gamma \entails \Trans^{-1}(I)$.
+			$\TransAll(\Gamma) \entails I$ is equivalent to $\TransAll(\Gamma) \cup \{\lnot I\}$ being unsatisfiable.
+			Through the unfolding of $\TransAll(\Gamma)$, we get that 
+			$\{\FAX(\Lang(\Gamma)), \EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\lnot I\}$ is unsatisfiable.
 
-	For $\Delta$, an analoguous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
+			Since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition
+			\refsub{prop:trans_sat_equiv}{prop:trans_sat_equiv2}
+			by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
+			Therefore $\Gamma \entails \Trans^{-1}(I)$.
 
-	By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) $. 
-	\begin{align*}
-		\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) =\,&
-		(\Lang(\Gamma)\cup \{E\}\cup\{F_f\mid f \in \FS(\Gamma)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Gamma))~\cap \\
-		& (\Lang(\Delta)\cup \{E\}\cup\{F_f\mid f \in \FS(\Delta)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Delta))\\
-		=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup\{F_f\mid f \in \FS(\Gamma)\cap\FS(\Delta\}))  \setminus(\{=\} \cup \FS(\Gamma) \cup \FS(\Delta)) \\
-		=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta)) ) \setminus ( \{=\} \cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) )  \\ 
-		=\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
-	\end{align*}
+			For $\Delta$, an analoguous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
 
-	As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
-\end{proof}
+			By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) $. 
+			\begin{align*}
+				\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) =\,&
+				(\Lang(\Gamma)\cup \{E\}\cup\{F_f\mid f \in \FS(\Gamma)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Gamma))~\cap \\
+				& (\Lang(\Delta)\cup \{E\}\cup\{F_f\mid f \in \FS(\Delta)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Delta))\\
+				=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup\{F_f\mid f \in \FS(\Gamma)\cap\FS(\Delta\}))  \setminus(\{=\} \cup \FS(\Gamma) \cup \FS(\Delta)) \\
+				=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta)) ) \setminus ( \{=\} \cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) )  \\ 
+				=\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
+			\end{align*}
+
+			As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
+		\end{proof}
 
 

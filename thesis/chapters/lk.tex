@@ -171,7 +171,7 @@ The rules of cut-free sequent calculus are as follows:
 				\end{prooftree}
 
 				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta, A[x/\alpha]}
+					\Axiomm{\Gamma \fCenter \Delta, A[x/y]}
 					\RightLabelm{\lkrule{\forall}{r}}
 					\UnaryInfm{\Gamma, \forall x A \fCenter \Delta }
 				\end{prooftree}
@@ -182,7 +182,7 @@ The rules of cut-free sequent calculus are as follows:
 
 			\begin{multicols}{2}
 				\begin{prooftree}
-					\Axiomm{\Gamma, A[x/\alpha] \fCenter \Delta}
+					\Axiomm{\Gamma, A[x/y] \fCenter \Delta}
 					\RightLabelm{\lkrule{\exists}{l}}
 					\UnaryInfm{\Gamma, \exists x A \fCenter \Delta }
 				\end{prooftree}
@@ -198,7 +198,7 @@ The rules of cut-free sequent calculus are as follows:
 	\end{itemize}
 
 	(provided no free variable of $t$ becomes bound in $A[x/t]$ and
-	$\alpha$ does not occur free in $\Gamma$ or $\Delta$)
+	$y$ does not occur free in $\Gamma$ or $\Delta$)
 
 \end{lkdefsec}
 	\begin{figure}[H]
