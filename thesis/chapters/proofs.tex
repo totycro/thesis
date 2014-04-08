@@ -62,16 +62,16 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 		If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
 
 	\item[Paramodulation.]
-		If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D[r]$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following case distinction:
+		If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following case distinction:
 		\begin{enumerate}
-			\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D[r]$ and $h(r)$ occurs more than once in $D[r] \lor \PI(D[r])$:
+			\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
 				\label{def:PI_paramod_1}
 				\newline
-				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h(s) \neq h(t))$ 
-			\item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D[r]$ and $h(r)$ occurs more than once in $D[r] \lor \PI(D[r])$:
+				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})$ 
+			\item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
 				\label{def:PI_paramod_2}
 				\newline
-				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h(s) = h(t))$ 
+				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})$ 
 			\item Otherwise:
 				\label{def:PI_paramod_3}
 				\newline
@@ -214,7 +214,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 				\AxiomCm{C_1: D \lor s=t}
 				\AxiomCm{C_2: E[r]}
 				\RightLabel{$\quad \sigma = \mgu(s, r)$}
-				\BinaryInfCm{C: (D \lor E[t])\sigma}
+				\BinaryInfCm{C: (D \lor E\occur{t})\sigma}
 			\end{prooftree}
 
 			By the induction hypothesis, we have:
@@ -231,7 +231,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
 			
-			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E[t]\sigma$. Otherwise we are done.
+			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E\occur{t}\sigma$. Otherwise we are done.
 			Furthermore, assume that $M \entails (s=t)\sigma$. Then $M \cancel \entails E[r]\sigma$, but then necessarily $M \entails \PI(C_2)\sigma$. \\
 			On the other hand, suppose $M \entails (s\neq t)\sigma$. As also $M \cancel \entails D\sigma$, $M \entails \PI(C_1)\sigma$.
 			Consequently, $M \entails [(s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))]\sigma \lor [(D \lor E)_\Gamma]\sigma$
@@ -348,8 +348,8 @@ This replacement is referred to as lifting:
 	\label{lemma:lift_commute}
 	Let $A$ and $B$ be first-order formulas. Then it holds that:
 	\begin{enumerate}
-		\item $\lift{\Phi}{\lnot A}{x} \liff \lnot \lift{\Phi}{A}{x}$
-		\item $\lift{\Phi}{A \circ B}{x} \liff ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for $\circ \in \{\land, \lor\}$
+		\item $\lift{\Phi}{\lnot A}{x} \semiff \lnot \lift{\Phi}{A}{x}$
+		\item $\lift{\Phi}{A \circ B}{x} \semiff ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for $\circ \in \{\land, \lor\}$
 	\end{enumerate}
 \end{lemma}
 
@@ -365,6 +365,8 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 	$\Gamma \entails \lift{\Delta}{ \PI(C) \lor C_\Gamma }{x} $ for $C$ in $\pi$.
 
 	\begin{itemize}
+
+			\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
 		\item[Base case.]
 
 			If no rules have been applied, $C$ is an instance of a clause of either $\Gamma$ or $\Delta$.
@@ -378,59 +380,170 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 				\BinaryInfCm{C: D \lor E}
 			\end{prooftree}
 
-						By the induction hypothesis,
+			By the induction hypothesis,
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_1) \lor (D \lor l)_\Gamma }{x}$ and
+			$\Gamma \entails \lift{\Delta}{ \PI(C_1) \lor (D \lor l)_\Gamma }{x}$ and
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_2) \lor (E \lor \lnot l)_\Gamma }{x}$
+			$\Gamma \entails \lift{\Delta}{ \PI(C_2) \lor (E \lor \lnot l)_\Gamma }{x}$
 
-						which by Lemma \ref{lemma:lift_commute} is equivalent to
+			which by Lemma \ref{lemma:lift_commute} is equivalent to
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
-						\lift{\Delta}{ D_\Gamma }{x} \lor
-						\lift{\Delta}{ l_\Gamma }{x} \;\; ^{(\circ)} $
-						and
+			$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
+			\lift{\Delta}{ D_\Gamma }{x} \lor
+			\lift{\Delta}{ l_\Gamma }{x} \;\; ^{(\circ)} $
+			and
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
-						\lift{\Delta}{ E_\Gamma }{x} \lor
-						\lnot \lift{\Delta}{ l_\Gamma }{x} \;\; ^{(*)}$ .
-				
+			$\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
+			\lift{\Delta}{ E_\Gamma }{x} \lor
+			\lnot \lift{\Delta}{ l_\Gamma }{x} \;\; ^{(*)}$ .
+
 
 			\begin{enumerate}
-					\item Suppose $l$ is $\Gamma$-colored.
-						Then $\PI(C) = \PI(C_1) \lor \PI(C_2)$.
-						By using resolution of $^{(*)}$ and $^{(\circ)}$ on $\lift{\Delta}{l_\Gamma}{x}$, we get that 
-						$$\Gamma \entails\lift{\Delta}{ \PI(C_1) }{x} \lor \lift{\Delta}{ \PI(C_2) }{x} \lor
-						\lift{\Delta}{ D_\Gamma }{x} \lor
-						\lift{\Delta}{ E_\Gamma }{x}.$$
-						Several applications of Lemma \ref{lemma:lift_commute} give
-						$\Gamma \entails\lift{\Delta}{ \PI(C_1)  \lor  \PI(C_2) \lor (D \lor E)_\Gamma }{x}$.
-				
-					\item Suppose $l$ is $\Delta$-colored.
-						Then $\PI(C) = \PI(C_1) \land \PI(C_2)$.
+				\item Suppose $l$ is $\Gamma$-colored.
+					Then $\PI(C) = \PI(C_1) \lor \PI(C_2)$.
+					By using resolution of $^{(*)}$ and $^{(\circ)}$ on $\lift{\Delta}{l_\Gamma}{x}$, we get that 
+					$$\Gamma \entails\lift{\Delta}{ \PI(C_1) }{x} \lor \lift{\Delta}{ \PI(C_2) }{x} \lor
+					\lift{\Delta}{ D_\Gamma }{x} \lor
+					\lift{\Delta}{ E_\Gamma }{x}.$$
+					Several applications of Lemma \ref{lemma:lift_commute} give
+					$\Gamma \entails\lift{\Delta}{ \PI(C_1)  \lor  \PI(C_2) \lor (D \lor E)_\Gamma }{x}$.
 
-						As $l$ and $\lnot l$ are not contained in $\Lang(\Gamma)$, we get that 
+				\item Suppose $l$ is $\Delta$-colored.
+					Then $\PI(C) = \PI(C_1) \land \PI(C_2)$.
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
-						\lift{\Delta}{ D_\Gamma }{x}$
-						and
+					As $l$ and $\lnot l$ are not contained in $\Lang(\Gamma)$, we get that 
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
-						\lift{\Delta}{ E_\Gamma }{x}$.
+					$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
+					\lift{\Delta}{ D_\Gamma }{x}$
+					and
 
-						So if in a model $M$ of $\Gamma$ we have that
-						$\Gamma \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
-						$\Gamma \cancel\entails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute}:
-						$\Gamma \entails \lift{\Delta}{ \PI(C_1) \land \PI(C_2) }{x} \lor
-						\lift{\Delta}{ (D \lor E)_\Gamma }{x}$.
+					$\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
+					\lift{\Delta}{ E_\Gamma }{x}$.
 
-					\item Suppose $l$ is grey. TODO
+					So if in a model $M$ of $\Gamma$ we have that
+					$M \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
+					$M \cancel\entails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $M \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $M \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute}
+					$M \entails \lift{\Delta}{ \PI(C_1) \land \PI(C_2) }{x} \lor
+					\lift{\Delta}{ (D \lor E)_\Gamma }{x}$.
+
+				\item Suppose $l$ is grey.
+					Then $\PI(C) =  (l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1))$.
+
+					We show that 
+					$\Gamma \entails \lift{\Delta}{(l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) \lor (D \lor E)_\Gamma  }{x} $. 
+
+					Suppose that for a model $M$ of $\Gamma$ that 
+					$M \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
+					$M \cancel\entails \lift{\Delta}{ E_\Gamma }{x}$.
+					Then by $^{(\circ)}$
+					and $^{(*)}$, we get that\nopagebreak
+
+					$M \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
+					\lift{\Delta}{ l_\Gamma }{x}$ as well as
+
+					$M \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
+					\lnot \lift{\Delta}{ l_\Gamma }{x}$.
+
+					So $M \entails \lift{\Delta}{ l_\Gamma }{x}$ implies that 
+					$M \entails \lift{\Delta}{\PI(C_2)}{x}$ and 
+					$M \entails \lnot \lift{\Delta}{ l_\Gamma }{x}$  implies that 
+					$M \entails \lift{\Delta}{\PI(C_1)}{x}$ and 
+
+					Therefore
+					$M\entails (\lif{l} \land \lif{\PI(C_2)}) \lor (\lnot \lif{l} \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{E_\Gamma}) $,
+					and serveral applications of Lemma \ref{lemma:lift_commute} give
+					$M\entails \lif{(l \land \PI(C_2)) \lor (\lnot {l} \land {\PI(C_1)}) \lor ({D_\Gamma} \lor {E_\Gamma})} $.
+			\end{enumerate}
+
+
+		\item[Factorisation.] Suppose the last rule application is an instance of factorisation. Then it is of the form:
+			\begin{prooftree}
+				\AxiomCm{C_1: l \lor l \lor D}
+				\UnaryInfCm{C: l \lor D}
+			\end{prooftree}
+
+			The propositional interpolant directly carried over from $C_1$, i.e.~$\PI(C) = \PI(C_1)$.
+
+			By the induction hypothesis, we get that $\Gamma \entails \lif{\PI(C_1) \lor (l \lor l \lor D)_\Gamma}$.
+			By Lemma \ref{lemma:lift_commute}, 
+
+			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor  \lif{l_\Gamma} \lor \lif{D_\Gamma})$,
+			
+			which clearly is equivalent to
+
+			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor \lif{D_\Gamma})$,
+			
+			so by again applying Lemma \ref{lemma:lift_commute}, we arrive at
+
+			$\Gamma \entails \lif{\PI(C_1) \lor (l \lor D)_\Gamma}$.
+
+
+
+		\item[Paramodulation.] Suppose the last rule application is an instance of paramodulation. Then it is of the form:
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor s=t}
+				\AxiomCm{C_2: E\occur{s}}
+				\BinaryInfCm{C: D \lor E\occur{t}}
+			\end{prooftree}
+
+			By the induction hypothesis, we have that 
+
+			$\Gamma \entails \lif{\PI(C_1) \lor (D \lor s=t)_\Gamma}$ and 
+
+			$\Gamma \entails \lif{\PI(C_2) \lor E\occur{s}_\Gamma}$.
+
+			By Lemma \ref{lemma:lift_commute}, we get that 
+
+			$\Gamma \entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif{s}=\lif{t}$ and 
+
+			$\Gamma \entails \lif{\PI(C_2)} \lor \lif{E\occur{s}_\Gamma}$.
+
+			We distinguish two cases:\nopagebreak
+			\begin{enumerate}
+				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occur{s}$ which occurs more than once in $\PI(E(s)) \lor E\occur{s}$.
+
+					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E(t))_\Gamma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of 
+					Definition \ref{def:PI}. By Lemma \ref{lemma:lift_commute}, this is equivalent to
+
+					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{E(t)_\Gamma})$
+
+					Suppose that in a model $M$ of $\Gamma$ 
+					$M \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
+					$M \cancel\entails \lift{\Delta}{ E(t)_\Gamma }{x}$.
+					We show that then, depending on whether $\lif{s} = \lif{t}$ holds in $M$, one of the first disjuncts holds in $M$.
+
+					Then in case $M \entails \lif{s} = \lif{t}$ we also get
+					$M \cancel\entails \lift{\Delta}{ E(s)_\Gamma }{x}$ and consequently by the induction hypothesis $M\entails \lif{\PI(C_2)}$.
+
+					However in case $M \entails \lif{s} \neq \lif{t}$ we get by the induction hypothesis that 
+					$M\entails \lif{\PI(C_1)}$.
+
+					\label{njktahjtkhltah}
+
+				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occur{s}$ in $E\occur{s}$ which occurs more than once in $\PI(E(s)) \lor E\occur{s}$.
+
+					Then models are possible in which $s=t$ and therefore $\lif{s}=\lif{t}$ holds, while at the same time $\lif{h\occur{s}} \liff \lif{h\occur{t}}$ does not as $h\occur{s}$ and $h\occur{t}$ are replaced by distinct variables due to being different $\Delta$-terms.
+
+					Therefore we amend the proof of case \ref{njktahjtkhltah} as follows:
+
+					In the case $M \entails \lif{s} = \lif{t}$, 
+
+					TODO: what if multiple $h(s)$? which one?
+
+
+					However as here $\PI(C)$ contains the with respect to case \ref{njktahjtkhltah} additional disjunct $s=t \land h\occur{s} \neq h\occur{t}$, 
+
+
+					TODO: argue why not at other case
+
+
+					\qedhere
 
 			\end{enumerate}
 
 
-	\end{itemize}
 
+	\end{itemize}
 
 \end{proof}
 
@@ -442,22 +555,22 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 
 
-	\subsubsection{overbinding}
+\subsubsection{overbinding}
 
-	Algorithm (input: propositional interpolant $\theta$):
-	\begin{enumerate}
-		\item Let $t_1, \ldots, t_n$ be the maximal occurrences of noncommon terms in $\theta$. Order $t_i$ ascendingly by term size. 
-		\item Let $\theta^*$ be $\theta$ with maximal occurrences of $\Delta$-terms $r_1, \ldots, r_k$ replaced by fresh variables $x_1, \ldots, x_k$ and maximal occurrences of $\Gamma$-terms $s_1, \ldots, s_{n-k}$ by fresh variables $x_{k+1}, \ldots, x_{n}$
-		\item Return $Q_1 x_1, \ldots Q_n x_n \theta^*$, where $Q_i$ is $\forall$ if $t_i$ is a $\Delta$-term and $\exists$ otherwise.
-	\end{enumerate}
+Algorithm (input: propositional interpolant $\theta$):
+\begin{enumerate}
+	\item Let $t_1, \ldots, t_n$ be the maximal occurrences of noncommon terms in $\theta$. Order $t_i$ ascendingly by term size. 
+	\item Let $\theta^*$ be $\theta$ with maximal occurrences of $\Delta$-terms $r_1, \ldots, r_k$ replaced by fresh variables $x_1, \ldots, x_k$ and maximal occurrences of $\Gamma$-terms $s_1, \ldots, s_{n-k}$ by fresh variables $x_{k+1}, \ldots, x_{n}$
+	\item Return $Q_1 x_1, \ldots Q_n x_n \theta^*$, where $Q_i$ is $\forall$ if $t_i$ is a $\Delta$-term and $\exists$ otherwise.
+\end{enumerate}
 
-	Language condition easily established. To prove:
+Language condition easily established. To prove:
 
-	$\Gamma \entails Q_1 x_1, \ldots Q_n x_n \theta^*$
+$\Gamma \entails Q_1 x_1, \ldots Q_n x_n \theta^*$
 
-	$\Delta \entails \lnot Q_1 x_1, \ldots Q_n x_n \theta^*$
+$\Delta \entails \lnot Q_1 x_1, \ldots Q_n x_n \theta^*$
 
-	We know that $\theta$ works, just the terms are missing.
+We know that $\theta$ works, just the terms are missing.
 
 \subsection{final step of huang's proof}
 

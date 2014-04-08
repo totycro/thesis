@@ -93,7 +93,8 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\NKZ}{\textbf{NK2}}
 
 \DeclareMathOperator{\limpl}{\supset}
-\DeclareMathOperator{\liff}{\Lra}
+\DeclareMathOperator{\liff}{\lra}
+\DeclareMathOperator{\semiff}{\Lra}
 \newcommand{\union}{\cup}
 \newcommand{\bigunion}{\bigcup}
 \newcommand{\intersection}{\cap}
@@ -156,7 +157,9 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\termsubst}[1]{\{#1\}}
 
 %\newcommand{\lift}[3]{\operatorname{Lift}_{#1}(#2; #3)}
-\newcommand{\lift}[3]{\operatorname{Lift}_{#1,#3}(#2)}
+%\newcommand{\lift}[3]{\operatorname{Lift}_{#1,#3}(#2)}
+\newcommand{\lift}[3]{\operatorname{Lift}_{#1,#3}[#2]}
+%\newcommand{\lift}[3]{\overline{#2}_{#1,#3}}
 
 \newcommand{\UICm}[1]{\UnaryInfCm{#1}}
 \newcommand{\UnaryInfCm}[1]{\UnaryInfC{$#1$}}
@@ -292,3 +295,6 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\parti}[4]{\ensuremath{ \langle (#1; #2), (#3; #4)\rangle  }}
 
 \newcommand{\partisym}{\ensuremath{\chi}}
+
+\newcommand{\occur}[1]{\ensuremath{(#1)}}
+

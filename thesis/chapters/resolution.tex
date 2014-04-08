@@ -39,9 +39,9 @@ Clauses will usually be denoted by $C$ or $D$, literals by $l$.
 	\begin{prooftree}
 		\LeftLabel{\textit{Paramodulation:}\quad}
 		\AxiomCm{ C \lor s=t }
-		\AxiomCm{ D[r] }
+		\AxiomCm{ D\occur{r} }
 		\RightLabel{$\quad \sigma = \mgu(s, r)$}
-		\BinaryInfCm{ (C \lor D[t])\sigma }
+		\BinaryInfCm{ (C \lor D\occur{t})\sigma }
 	\end{prooftree}
 
 	\caption{The rules of resolution calculus}

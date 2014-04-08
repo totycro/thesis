@@ -246,11 +246,11 @@ This allows us to state the central theorem of this section:
 			Since $\Gamma \cup \Delta$ is unsatisfiable,
 			by Proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
 			\begin{align*}
-				\TransAll(\Gamma \cup \Delta)\,\liff~&\{\FAX(\Lang(\Gamma\cup\Delta)), \EAX(\Lang(\Gamma \cup\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
-				\liff~&\{\FAX(\Lang(\Gamma)\cup\Lang(\Delta)), \EAX(\Lang(\Gamma)\cup\Lang(\Delta))\} \cup \Trans(\Gamma )\cup \Trans(\Delta) \\
-				\liff~&\{\FAX(\Lang(\Gamma)) \land \FAX(\Lang(\Delta)), \EAX(\Lang(\Gamma)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
-				\liff~&\{\FAX(\Lang(\Gamma)),\EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\FAX(\Lang(\Delta)), \EAX(\Lang(\Delta))\} \cup \Trans(\Delta) \\
-				\liff~&\TransAll(\Gamma) \cup \TransAll(\Delta)
+				\TransAll(\Gamma \cup \Delta)\,\semiff~&\{\FAX(\Lang(\Gamma\cup\Delta)), \EAX(\Lang(\Gamma \cup\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
+				\semiff~&\{\FAX(\Lang(\Gamma)\cup\Lang(\Delta)), \EAX(\Lang(\Gamma)\cup\Lang(\Delta))\} \cup \Trans(\Gamma )\cup \Trans(\Delta) \\
+				\semiff~&\{\FAX(\Lang(\Gamma)) \land \FAX(\Lang(\Delta)), \EAX(\Lang(\Gamma)) \land \EAX(\Lang(\Delta))\} \cup \Trans(\Gamma) \cup \Trans(\Delta) \\
+				\semiff~&\{\FAX(\Lang(\Gamma)),\EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\FAX(\Lang(\Delta)), \EAX(\Lang(\Delta))\} \cup \Trans(\Delta) \\
+				\semiff~&\TransAll(\Gamma) \cup \TransAll(\Delta)
 			\end{align*}
 			%It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$is unsatisfiable as well.
 			Hence  $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.

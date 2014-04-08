@@ -487,7 +487,7 @@ Huang:
 
 \clearpage
 
-Example 4: Paramodulation special case in Huang 
+Example 4: Paramodulation special case in Huang {\color{red} failed, see next page}
 
 \begin{prooftree}
 	\AxiomCm{\sig{P(x) \lor \lnot Q(x)}}
@@ -540,6 +540,11 @@ $\Pi = \{ \lnot P(h(s)), Q(h(r)), s = t \} $
 
 Example 4b: Paramodulation special case in Huang 
 
+$\Sigma = \{ P(x) \lor \lnot Q(x), \lnot P(x) \lor Q(x), s=t \}  \quad{\color{grey}//~P(x) \lra Q(x) }$
+
+$\Pi = \{ \lnot Q(h(s)), Q(h(t)) \} $
+\bigskip
+
 \begin{prooftree}
 	\AxiomCm{\sig{P(x) \lor \lnot Q(x)}}
 	\AxiomCm{\p{Q(h(t))}}
@@ -561,33 +566,42 @@ Example 4b: Paramodulation special case in Huang
 	\BinaryInfCm{\lnot Q(h(t))}
 
 	\AxiomCm{\bot}
-	\BinaryInfCm{ ((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t) }
+	\BinaryInfCm{ ((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))}
 
 	\AxiomCm{\bot}
 	\AxiomCm{\top}
 	\BinaryInfCm{Q(h(s))}
 
-	\BinaryInfCm{ (\lnot P(h(s)) \land ((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor (P(h(s) \land Q(h(s))) )  }
+	\BinaryInfCm{ (((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor Q(h(s)) }
 
 \end{prooftree}
 
+$\theta = (((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor Q(h(s))  $
 
+$\lnot \theta = (((s\neq t) \lor Q(h(t))) \land (s\neq t \lor h(s) = h(t))) \land \lnot Q(h(s))  $
 
-$\Sigma = \{ P(x) \lor \lnot Q(x), \lnot P(x) \lor Q(x), s=t \}  \quad{\color{grey}//~P(x) \lra Q(x) }$
+$\theta^* = \forall x_1 \forall x_2 (((s=t) \land \lnot Q(x_2)) \lor (s=t \land x_1 \neq x_2)) \lor Q(x_1)  $
 
-$\Pi = \{ \lnot Q(h(s)), Q(h(t)) \} $
+$\lnot \theta^* = \exists x_1 \exists x_2 (((s\neq t) \lor Q(x_2)) \land (s\neq t \lor x_1 = x_2)) \land \lnot Q(x_1)  $
 \bigskip
 
+special case relevant for $\Sigma$ as it does not know about the relation of $x_1$ and $x_2$
 
-$ \theta = (\lnot P(h(s)) \land ((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor (P(h(s) \land Q(h(s))) ) $
-
-$\lnot \theta = (P(h(s)) \lor ((s\neq t) \lor Q(h(t))) \land (s\neq t \lor h(s) = h(t)) ) \land (\lnot P(h(s) \lor \lnot Q(h(s))) ) $
+$\Sigma \entails \forall x_1 \forall x_2 (((s=t) \land \lnot Q(x_2)) \lor (s=t \land x_1 \neq x_2)) \lor Q(x_1)  $
 
 
-$ \theta^* = \forall x_1 \forall x_2 (\lnot P(x_1) \land ((s=t) \land \lnot Q(x_2)) \lor (s=t \land x_1 \neq x_2)) \lor (P(x_1) \land Q(x_1) ) $
+$\Sigma \entails \forall x_1 \forall x_2 ((s=t) \land (\lnot Q(x_2) \lor x_1 \neq x_2)) \lor Q(x_1)  $
 
-$ \lnot \theta^* = \exists x_1 \exists x_2
-(P(x_1) \lor ((s\neq t) \lor Q(x_2)) \land (s\neq t \lor x_1 = x_2) ) \land (\lnot P(x_1) \lor \lnot Q(x_2) ) $
+$\Sigma \entails ((s=t) \land (\lnot Q(b) \lor a \neq b)) \lor Q(a)  $
+
+Intuition: 
+
+Get $s=t$ for free, but else not relevant
+
+$\Sigma \entails \lnot Q(b) \lor a \neq b \lor Q(a)  $
+
+$\Sigma \entails Q(b) \limpl a = b \limpl Q(a)  $
+
 
 
 	{
