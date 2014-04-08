@@ -90,11 +90,11 @@ The rules of cut-free sequent calculus are as follows:
 				\begin{prooftree}
 					\Axiomm{\Gamma \fCenter \Delta,  A}
 					\RightLabelm{\lkrule{\lnot}{l}}
-					\UnaryInfm{\Gamma, \lnot A \fCenter \Delta }
+					\UnaryInfm{\lnot A, \Gamma \fCenter \Delta }
 				\end{prooftree}
 
 				\begin{prooftree}
-					\Axiomm{\Gamma, A \fCenter \Delta}
+					\Axiomm{A, \Gamma \fCenter \Delta}
 					\RightLabelm{\lkrule{\lnot}{r}}
 					\UnaryInfm{\Gamma \fCenter \Delta, \lnot  A }
 				\end{prooftree}
@@ -205,6 +205,8 @@ The rules of cut-free sequent calculus are as follows:
 \begin{lkdefsec}
 
 	\calculussec{Equality rules}
+	\begin{itemize}
+			\item Left rules
 	\begin{multicols}{2}
 		\begin{prooftree}
 			\Axiomm{\Gamma, A[T/t] \fCenter \Delta}
@@ -220,6 +222,7 @@ The rules of cut-free sequent calculus are as follows:
 		\end{prooftree}
 	\end{multicols}
 
+			\item Right rules
 	\begin{multicols}{2}
 		\begin{prooftree}
 			\Axiomm{\Gamma\fCenter \Delta, A[T/t] }
@@ -234,6 +237,7 @@ The rules of cut-free sequent calculus are as follows:
 			\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A[T/t] }
 		\end{prooftree}
 	\end{multicols}
+	\end{itemize}
 
 
 
