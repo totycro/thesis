@@ -111,31 +111,32 @@ A common method for transforming a skolemised formula $A$ into CNF while preserv
 \begin{defi}
 For every occurrence of a subformula $B$ of $A$, introduce a new atom $L_B$ which acts as a label for the subformula. 
 For each of them, create a defining clause $D_B$:
-\todo[inline]{does it suffice to not treat universal quantifiers specifically here? (subterms have free variables; possibly need to mention to just pull universal quantifiers outwards to get prenex form and drop quantifiers)}
 
 \begin{itemize}
 	\item[If $B$ is atomic:]~
 
 	$D_B\equiv (\lnot B \lor L_B) \land (B \lor \lnot L_B)  $
-	\item[If $B$ is $\lnot G$:]~
+	\item[If $B$ is of the form $\lnot G$:]~
 
 	$D_B\equiv (L_B \lor L_G) \land (\lnot L_B \lor \lnot L_G)  $
-	\item[If $B$ is $G \land H$:]~
+	\item[If $B$ is of the form $G \land H$:]~
 
 		$D_B\equiv (\lnot L_B \lor L_G) \land (\lnot L_B \lor L_H) \land (L_B \lor \lnot L_G \lor \lnot L_H)  $
-	\item[If $B$ is $G \lor H$:]~
+	\item[If $B$ is of the form $G \lor H$:]~
 
 		$D_B\equiv (L_B \lor \lnot L_G) \land (L_B \lor \lnot L_H) \land (\lnot L_B \lor L_G \lor L_H)  $
-	\item[If $B$ is $G \limpl H$:]~
+	\item[If $B$ is of the form $G \limpl H$:]~
 
 		$D_B\equiv (L_B \lor L_G) \land (L_B \lor \lnot L_H) \land (\lnot L_B \lor \lnot L_G \lor L_H)  $
-	\item[If $B$ is $\forall x G$:]~
+	\item[If $B$ is of the form $\forall x G$:]~
 
-		$D_B\equiv \forall x (\lnot L_B \lor L_G) \land \forall x(L_B \lor \lnot L_G)$
+		$D_B\equiv (\lnot L_B \lor L_G) \land (L_B \lor \lnot L_G)$
 \end{itemize}
 
 Let \defiemph{$\delta(A)$} be defined as $\bigwedge_{B \in \Sigma(A)} D_B \land L_A$, where $\Sigma(A)$ denotes the set of occurrences of subformulas of $A$.
 \end{defi}
+
+Note that each of the $D_B$ is in CNF, hence also $\delta(A)$ for any skolemised formula $A$.
 
 \begin{prop}
 	\label{prop:definitional_form}

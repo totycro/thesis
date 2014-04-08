@@ -1,8 +1,11 @@
 \section{Preliminaries}
+\todo[inline]{this section contains all the required notation but will just be written up nicely at the end}
 
 The language of a first-order formula $A$ is denoted by $\Lang(A)$ and contains all predicate, constant and function symbols that occur in $A$.
-These are also referred to as the \emph{non-logical symbols} of $A$.
+These are also referred to as the \emph{\mbox{non-logical} symbols} of $A$.
 The \emph{logical symbols} on the other hand include all logical connectives, quantifiers, the equality symbol ($=$) as well as symbols denoting truth ($\top$) and falsity ($\bot$).
+
+For formulas $A_1, \ldots, A_n$, $\Lang(A_1, \ldots, A_n) = \bigcup_{1\leq i \leq n} \Lang(A_i)$.
 
 An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
 
@@ -67,7 +70,7 @@ A term replacement on the other hand is a mapping of terms to terms. It is denot
 	But as thus $ I\entails \{\lnot B \mid B \in \Delta\}$, we get by contraposition that $\Delta \entails \lnot I$, so $I$ is a reverse interpolant of $\Gamma$ and $\Delta$.
 \end{proof}
 
-As the notion of interpolation and reverse interpolation coincide, we will in the following only speak of interpolation and it will be clear from the context which definition applies.
+As the notion of interpolation and reverse interpolation coincide, we will in the following only speak of interpolation where  will be clear from the context which definition applies.
 
 In the context of interpolation, every non-logical symbol is assigned a color which indicates the its origin(s). 
 A non-logical symbol is said to be \emph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \emph{grey} in case it occurs in both $\Gamma$ and $\Delta$.

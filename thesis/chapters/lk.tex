@@ -4,9 +4,11 @@ The famous sequent calculus was introduced in \cite{Gentzen}.
 Its use of sequents in lieu of plain formulas allows for a natural mapping of the logical relations expressed by the connectives to the structure of proofs.
 
 \begin{defi} 
-	For multisets of first-order formulas $\Gamma$ and $\Delta$,  $\Gamma \proves \Delta$ is calld a \defiemph{sequent}. 
+	For multisets of first-order formulas $\Gamma$ and $\Delta$,  $\Gamma \proves \Delta$ is called a \defiemph{sequent}. 
 	In this context $\Gamma$ forms the \defiemph{antecedent}, whereas $\Delta$ is referred to as \defiemph{succedent}.
-\end{defi} 
+
+	A sequent $\Gamma \proves \Delta$ is called \defiemph{provable} if there is a sequent calculus proof of $\Gamma \proves \Delta$.
+\end{defi}
 
 For the purposes of this thesis, we consider the cut-free fragment of sequent calculus.
 
@@ -15,7 +17,6 @@ For the purposes of this thesis, we consider the cut-free fragment of sequent ca
 \end{thm}
 
 The rules of cut-free sequent calculus are as follows:
-
 \newcommand{\calculussec}[1]{\subsubsection*{#1}}
 \newenvironment{lkdefsec}{
 	%\begin{figure}[h!b]
@@ -25,14 +26,13 @@ The rules of cut-free sequent calculus are as follows:
 		\end{adjustwidth}
 	%\end{figure}
 }
-
-
 \begin{lkdefsec}
 	\calculussec{Axioms}
 	\begin{multicols}{2}
 		\begin{prooftree}
 			\AxiomCm{A \fCenter A}
 		\end{prooftree}
+
 		\begin{prooftree}
 			\AxiomCm{\fCenter t=t}
 		\end{prooftree}
@@ -108,7 +108,6 @@ The rules of cut-free sequent calculus are as follows:
 
 		\item Conjunction
 			\begin{multicols}{2}
-				\todo[inline]{possibly change to other version of $\land:l$}
 				\begin{prooftree}
 					\Axiomm{\Gamma, A, B \fCenter \Delta}
 					\RightLabelm{\lkrule{\land}{l}}
@@ -123,16 +122,21 @@ The rules of cut-free sequent calculus are as follows:
 				\end{prooftree}
 			\end{multicols}
 
-		\item Disjunction
+		\item Disjunction\nopagebreak
 			\begin{multicols}{2}
 				\begin{prooftree}
 					\Axiomm{\Gamma, A \fCenter \Delta}
 					\Axiomm{\Sigma, B \fCenter \Pi}
 					\RightLabelm{\lkrule{\lor}{l}}
-					\BinaryInfm{\Gamma, \Sigma A \lor B \fCenter \Delta, \Pi }
+					\BinaryInfm{\Gamma, \Sigma, A \lor B \fCenter \Delta, \Pi }
 				\end{prooftree}
 
-				\todo[inline]{Add some version of $\lor:r$}
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta, A, B}
+					\RightLabelm{\lkrule{\lor}{r}}
+					\UnaryInfm{\Gamma \fCenter \Delta, A \lor B  }
+				\end{prooftree}
+
 			\end{multicols}
 
 		\item Implication
@@ -198,7 +202,7 @@ The rules of cut-free sequent calculus are as follows:
 	\end{itemize}
 
 	(provided no free variable of $t$ becomes bound in $A[x/t]$ and
-	$y$ does not occur free in $\Gamma$ or $\Delta$)
+	$y$ does not occur free in $\Gamma$, $\Delta$ or $A$)
 
 \end{lkdefsec}
 	\begin{figure}[H]

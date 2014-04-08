@@ -216,27 +216,24 @@ It is slightly stronger than the required statement as it allows for interpolant
 \begin{defi}[Partition of sequents]
 	A {partition} of a sequent $\Gamma \proves \Delta$ is denoted by $\parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2}$, where $\Phi_1 \cap \Phi_2 = \emptyset$ and $\Phi_1 \cup \Phi_2 = \Phi$ for $\Phi \in \{\Gamma, \Delta\}$.
 \end{defi}
-Note that while for partitions of sets it is usually required that the partitions are non-empty, empty partitions of sequents are permitted.
+Note that while for partitions of sets it is usually required that the parts are non-empty, empty parts in a partition of sequents are permitted.
 
 \input{chapters/maehara}
 
-
+This allows us to state the central theorem of this section:
 \begin{thm}
 	\label{thm:prop_interpol}
 	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant of $\Gamma$ and $\Delta$.
 \end{thm}
 \begin{proof}
-	By the Compactness Theorem, there are finite $\Gamma' \subseteq \Gamma$ and $\Delta' \subseteq \Delta$ such that $\Gamma' \cup \Delta'$ is unsatisfiable.
-	Borrowing an idea of the proof of \ref{prop:interpolations_equivalent},
-	we show that there is an interpolant for $\bigwedge_{A\in \Gamma'}A \entails \bigvee_{B \in \Delta'} \lnot B$.
-	Let $C = \bigwedge_{A \in \Gamma'} A$ and $D = \bigvee_{B \in \Delta'} \lnot B$.
-
-	By the completeness of cut-free sequent calculus, there is a proof of $C \vdash D$.
-	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{C}{}{}{D}. $I$ is also an interpolant of $\Gamma$~and~$\Delta$.
+	Let $\lnot \Delta$ denote $\{\lnot B \mid B \in \Delta\}$.\todo{diese notation global einführen?}
+	We show that there is an interpolant for $\Gamma \entails \lnot \Delta$, which
+	by Proposition \ref{prop:interpolations_equivalent} proves the theorem.
+	By the completeness of cut-free sequent calculus, there is a proof of $\Gamma \vdash \lnot \Delta$.
+	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{\Gamma}{}{}{\lnot \Delta}.
+	$I$ is the desired interpolant of $\Gamma\entails\lnot\Delta$.
 
 \end{proof}
-
-
 
 
 
@@ -257,7 +254,7 @@ Note that while for partitions of sets it is usually required that the partition
 			\end{align*}
 			%It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$is unsatisfiable as well.
 			Hence  $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
-			By Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} $\TransAll(\Gamma) \cup \TransAll(\Delta)$ contains neither function symbols nor the equality symbol.
+			By Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} $\TransAll(\Gamma)$ and $\TransAll(\Delta)$ contain neither function symbols nor the equality symbol.
 			Hence by Theorem \ref{thm:prop_interpol}, there is an interpolant $I$ such that
 			\begin{enumerate}
 				\item $\TransAll(\Gamma) \entails I$
@@ -271,8 +268,9 @@ Note that while for partitions of sets it is usually required that the partition
 			$\TransAll(\Gamma) \entails I$ is equivalent to $\TransAll(\Gamma) \cup \{\lnot I\}$ being unsatisfiable.
 			Through the unfolding of $\TransAll(\Gamma)$, we get that 
 			$\{\FAX(\Lang(\Gamma)), \EAX(\Lang(\Gamma))\} \cup \Trans(\Gamma) \cup \{\lnot I\}$ is unsatisfiable.
-
-			Since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition
+			This set of formulas can now be translated back to the original language with the equality symbol and function symbols. 
+			More formally, 
+			since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition
 			\refsub{prop:trans_sat_equiv}{prop:trans_sat_equiv2}
 			by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
 			Therefore $\Gamma \entails \Trans^{-1}(I)$.
