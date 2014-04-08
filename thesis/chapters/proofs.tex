@@ -83,11 +83,12 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 
 \begin{prop}
+	\label{prop:prop_interpol}
 	Let $C$ be a clause of a resolution refutation.
 	Then $\PI(C)$ is a propositional interpolant with respect to $C$. 
 \end{prop}
 \begin{proof}
-	Proof by induction on the number of rule applications including the following strengthenings::
+	Proof by induction on the number of rule applications including the following strengthenings:
 	$\Gamma \entails \PI(C) \lor C_\Gamma$ and
 	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $\Lang(\Phi)$. They clearly imply conditions \ref{rel_prop_interpol_cond1} and \ref{rel_prop_interpol_cond2} of definition \ref{def:rel_prop_interpol}. 
 
@@ -270,9 +271,9 @@ The following lemma shows that this form does not restrict the calculus given th
 \end{lemma}
 \begin{proof}
 	Let $\pi$ be a resolution refutation of $\Phi$.
-	We prove that $\pi$ can be transformed into a tree refutation by induction on the number of clauses, that are used multiple times.
+	We prove that $\pi$ can be transformed into a tree refutation by induction on the number of clauses that are used multiple times.
 
-	Suppose that no clauses are used more than once in $\pi$. Then $\pi$ is a tree refutation.
+	Suppose that no clause is used more than once in $\pi$. Then $\pi$ is a tree refutation.
 
 	Otherwise let $\Psi$ be the set of clauses which is used multiple times.
 	Let $C \in \Psi$ be such that no clause $D \in \Psi$ is used in the derivation leading to $C$. 
@@ -306,7 +307,7 @@ This insight allows us to push substitutions of the variables upwards along this
 	By Lemma \ref{lemma:bin_tree_deduction}, we can assume without loss of generality that $\pi$ is a tree refutation where the sets of variables of the input clauses are disjoint.
 	Furthermore, we can assume that only most general unifiers are employed in $\pi$.
 
-	Then any unifier in $\pi$ is either trivial on $x$ or there is one unique unifier $\sigma$ with $x\sigma = t$ where $x$ does not occur in $t$.
+	Then any unifier in $\pi$ is either trivial on $x$ or there is one unique unifier $\sigma$ in $\pi$ with $x\sigma = t$ where $x$ does not occur in $t$.
 	Hence along the path through the deduction where $x$ occurs, it remains unchanged.
 	Therefore we can create a new resolution refutation $\pi'$ from $\pi$ where $x$ is replaced by $t$.
 	Clearly $\pi'$ is rooted in instances of $\Phi$.
@@ -314,27 +315,28 @@ This insight allows us to push substitutions of the variables upwards along this
 	By application of this procedure to all variable occurring in $\pi$, we obtain a desired resolution refutation.
 \end{proof}
 
-Even though propositional refutations have some nice properties for theoretical analysis, their use in practise is not desired as its construction involves a considerable blowup of the refutation. 
-But still its use is justified in this instance as we can show for arbitrary refutations $\pi$
+Even though propositional refutations have nice properties for theoretical analysis, their use in practise is not desired as its construction involves a considerable blowup of the refutation. 
+But its use is still justified in this instance as we can show for arbitrary refutations $\pi$
 that the algorithm stated in \ref{def:PI} gives closely related results for both $\pi$ and its corresponding propositional refutation.
 
 \begin{lemma}
 	Let $\pi$ be a resolution refutation of $\Phi$ and $\pi'$ a propositional refutation corresponding to $\pi$.
-	Then for every clause $C$ in $\pi$ and its corresponding clause $C'$ in $\pi'$, $\PI(C)\sigma = \PI(C')$ where $\sigma$ is the composition of unifications of $\pi$ applied to the variables occurring in $C$.
+	Then for every clause $C$ in $\pi$ and its corresponding clause $C'$ in $\pi'$, $\PI(C)\sigma = \PI(C')$, where $\sigma$ is the composition of the unifications of $\pi$ which are applied to the variables occurring in $C$ .
 \end{lemma}
 \begin{proof}
 	For the construction of the propositional skeleton of $\PI(\cdot)$ only the coloring of the clauses is relevant and since this is the same in both $\pi$ and $\pi'$, it coincides for $\PI(C)$ and $\PI(C')$.
 
 	Hence $\PI(C)$ and $\PI(C')$ differ only in their term structure. 
 	To be more specific, in $\PI(C')$, the composition of substitutions that are applied in $\pi$ have already been applied to the initial clauses of $\pi'$. 
-	Note that substitution commutes with the rules of substitution.
+	Note that substitution commutes with the rules of resolution.
 	Therefore the only difference between $\PI(C)$ and $\PI(C')$ is that at certain term positions, there are variables in $\PI(C)$ where in $\PI(C')$ by some substitution a different term is located. 
 	But these substitutions are certainly applied by $\sigma$, hence $\PI(C)\sigma = \PI(C')$.
 \end{proof}
 
-This establishes the theoretical framework which is required to define and show the correctness of a procedure to construct a proper interpolant from the propositional interpolant.
-The idea of this procedure will be to replace grey terms still occurring in the propositional interpolant with variables and quantifying them appropriately.
-First, we define the lifting of the maximal $\Delta$-terms:
+This establishes the theoretical framework which is required to define and show the correctness of the procedure to construct a proper interpolant from the propositional interpolant.
+The idea of this procedure will be to replace colored terms still occurring in the propositional interpolant with variables and quantifying them appropriately.
+This replacement is referred to as lifting:
+
 
 \begin{defi}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
@@ -351,18 +353,22 @@ First, we define the lifting of the maximal $\Delta$-terms:
 	\end{enumerate}
 \end{lemma}
 
+First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
+
 \begin{lemma}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
 	Then $\Gamma \entails \lift{\Delta}{ \PI(C) \lor C }{x} $ for $C$ in $\pi$.
 \end{lemma}
 \begin{proof}
 	We proof this result by induction on the number of rule applications in the propositional refutation corresponding to $\pi$. 
+	Similar to the proof of \ref{prop:prop_interpol}, we show the strengthening:
+	$\Gamma \entails \lift{\Delta}{ \PI(C) \lor C_\Gamma }{x} $ for $C$ in $\pi$.
 
 	\begin{itemize}
 		\item[Base case.]
 
-			For the base case, $C$ is an instance of a clause of either $\Gamma$ or $\Delta$.
-			In the first case, all $\Delta$-terms of $C$ were added by unification, hence by replacing them with variables, we obtain a clause $C'$ which still is an instance of $C$ and consequently is implied by $\Gamma$. 
+			If no rules have been applied, $C$ is an instance of a clause of either $\Gamma$ or $\Delta$.
+			In the former case, all $\Delta$-terms of $C$ were added by unification, hence by replacing them with variables, we obtain a clause $C'$ which still is an instance of $C$ and consequently is implied by $\Gamma$. 
 			In the latter case, $\PI(C) = \top$. 
 
 		\item[Resolution.] Suppose the last rule application is an instance of resolution. Then it is of the form:
@@ -374,39 +380,51 @@ First, we define the lifting of the maximal $\Delta$-terms:
 
 						By the induction hypothesis,
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_1) \lor D \lor l }{x}$ and
+						$\Gamma \entails \lift{\Delta}{ \PI(C_1) \lor (D \lor l)_\Gamma }{x}$ and
 
-						$\Gamma \entails \lift{\Delta}{ \PI(C_2) \lor E \lor \lnot l}{x}$
+						$\Gamma \entails \lift{\Delta}{ \PI(C_2) \lor (E \lor \lnot l)_\Gamma }{x}$
 
 						which by Lemma \ref{lemma:lift_commute} is equivalent to
 
 						$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
-						\lift{\Delta}{ D }{x} \lor
-						\lift{\Delta}{ l }{x} \;\; ^{(\circ)} $
+						\lift{\Delta}{ D_\Gamma }{x} \lor
+						\lift{\Delta}{ l_\Gamma }{x} \;\; ^{(\circ)} $
 						and
 
 						$\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
-						\lift{\Delta}{ E }{x} \lor
-						\lnot \lift{\Delta}{ l }{x} \;\; ^{(*)}$ .
+						\lift{\Delta}{ E_\Gamma }{x} \lor
+						\lnot \lift{\Delta}{ l_\Gamma }{x} \;\; ^{(*)}$ .
 				
 
 			\begin{enumerate}
 					\item Suppose $l$ is $\Gamma$-colored.
 						Then $\PI(C) = \PI(C_1) \lor \PI(C_2)$.
-						By using resolution on $^{(*)}$ and $^{(\circ)}$, we get that 
-						$\Gamma \entails\lift{\Delta}{ \PI(C_1) }{x} \lor \lift{\Delta}{ \PI(C_2) }{x} \lor
-						\lift{\Delta}{ D }{x} \lor
-						\lift{\Delta}{ E }{x}$ and several applications of Lemma \ref{lemma:lift_commute} give
-						$\Gamma \entails\lift{\Delta}{ \PI(C_1)  \lor  \PI(C_2) \lor D \lor E }{x}$.
+						By using resolution of $^{(*)}$ and $^{(\circ)}$ on $\lift{\Delta}{l_\Gamma}{x}$, we get that 
+						$$\Gamma \entails\lift{\Delta}{ \PI(C_1) }{x} \lor \lift{\Delta}{ \PI(C_2) }{x} \lor
+						\lift{\Delta}{ D_\Gamma }{x} \lor
+						\lift{\Delta}{ E_\Gamma }{x}.$$
+						Several applications of Lemma \ref{lemma:lift_commute} give
+						$\Gamma \entails\lift{\Delta}{ \PI(C_1)  \lor  \PI(C_2) \lor (D \lor E)_\Gamma }{x}$.
 				
 					\item Suppose $l$ is $\Delta$-colored.
 						Then $\PI(C) = \PI(C_1) \land \PI(C_2)$.
 
-						As $l$ and $\lnot l$ are not contained in $\Gamma$, by the proof of \ref{foo}, $\Gamma \entails \PI(C_1) \lor D$ and $\Gamma \entails \PI(C_2) \lor E$
+						As $l$ and $\lnot l$ are not contained in $\Lang(\Gamma)$, we get that 
 
-						TODO: make sure we can use propositional proof for $P_P$ to disregard $l$ here
-				
+						$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
+						\lift{\Delta}{ D_\Gamma }{x}$
+						and
 
+						$\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x} \lor
+						\lift{\Delta}{ E_\Gamma }{x}$.
+
+						So if in a model $M$ of $\Gamma$ we have that
+						$\Gamma \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
+						$\Gamma \cancel\entails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $\Gamma \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute}:
+						$\Gamma \entails \lift{\Delta}{ \PI(C_1) \land \PI(C_2) }{x} \lor
+						\lift{\Delta}{ (D \lor E)_\Gamma }{x}$.
+
+					\item Suppose $l$ is grey. TODO
 
 			\end{enumerate}
 
