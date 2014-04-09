@@ -6,7 +6,7 @@ In this instance, we are able to give a reduction for finding interpolants in fi
 The general layout of this approach is the following:
 From two sets $\Gamma$ and $\Delta$, where $\Gamma \cup \Delta$ is unsatisfiable, we compute two sets $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate the effects of equality in $\Gamma$ and $\Delta$ via axioms.
 In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that the behaviour of these function-representing predicates is compatible to the one of actual functions.
-Now an interpolant of $\Gamma'$ and $\Delta'$ can be derived using an algorithm that is only capable of handling predicate symbols as all other non-logical symbols have been removed.
+Now an interpolant for $\Gamma'$ and $\Delta'$ can be derived using an algorithm that is only capable of handling predicate symbols as all other non-logical symbols have been removed.
 Since the additional axioms ensure that the newly added predicate symbols mimic equality and functions respectively, we will see that the occurrences of these predicates in the interpolant can be translated back to occurrences of equality and function symbols in first-order logic with equality in the language of $\Gamma$ and $\Delta$, thereby yielding the originally desired interpolant.
 
 
@@ -223,15 +223,14 @@ Note that while for partitions of sets it is usually required that the parts are
 This allows us to state the central theorem of this section:
 \begin{thm}
 	\label{thm:prop_interpol}
-	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant of $\Gamma$ and $\Delta$.
+	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant for $\Gamma$ and $\Delta$.
 \end{thm}
 \begin{proof}
-	Let $\lnot \Delta$ denote $\{\lnot B \mid B \in \Delta\}$.\todo{diese notation global einführen?}
 	We show that there is an interpolant for $\Gamma \entails \lnot \Delta$, which
 	by Proposition \ref{prop:interpolations_equivalent} proves the theorem.
 	By the completeness of cut-free sequent calculus, there is a proof of $\Gamma \vdash \lnot \Delta$.
 	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{\Gamma}{}{}{\lnot \Delta}.
-	$I$ is the desired interpolant of $\Gamma\entails\lnot\Delta$.
+	$I$ is the desired interpolant for $\Gamma\entails\lnot\Delta$.
 
 \end{proof}
 
@@ -263,7 +262,7 @@ This allows us to state the central theorem of this section:
 					\label{proof:interpolation1_3}
 			\end{enumerate}
 
-			We now show that $\TransInv(I)$ is an interpolant of $\Gamma$ and $\Delta$.
+			We now show that $\TransInv(I)$ is an interpolant for $\Gamma$ and $\Delta$.
 
 			$\TransAll(\Gamma) \entails I$ is equivalent to $\TransAll(\Gamma) \cup \{\lnot I\}$ being unsatisfiable.
 			Through the unfolding of $\TransAll(\Gamma)$, we get that 

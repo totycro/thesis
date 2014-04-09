@@ -34,50 +34,50 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 \begin{defi}
 	\defiemph{$\PI$} is defined as follows:
 	\label{def:PI}
-\begin{itemize}
-	\item[Base case.]
-		If $C \in \Gamma$, $\PI(C) = \bot$. 
-		If otherwise $C \in \Delta$, $\Delta(C) = \top$. 
-	\item[Resolution.]
-	\label{def:PI_resolution}
-		Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
+	\begin{itemize}
+		\item[Base case.]
+			If $C \in \Gamma$, $\PI(C) = \bot$. 
+			If otherwise $C \in \Delta$, $\Delta(C) = \top$. 
+		\item[Resolution.]
+			\label{def:PI_resolution}
+			Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
 
-%	\begin{prooftree}
-%		\AxiomCm{C_1: D \lor l}
-%		\AxiomCm{C_2: E \lor \lnot l'}
-%		\RightLabelm{\quad l\sigma = l'\sigma}
-%		\BinaryInfCm{C: (D\lor E)\sigma}
-%	\end{prooftree}
-		%\todo{write as prooftree? (not necessary, but nicer)}
-		If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
-	%$\PI(C)$ is defined according to this case distinction:
-		\begin{enumerate}
-			\item If $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:\todo{change to "is $\Gamma$-colored?"} $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
-			\item If $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
-			\item If $\Pred(l) \in \Lang(\Gamma) \intersect \Lang(\Delta)$: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
-		\end{enumerate}
+			%	\begin{prooftree}
+			%		\AxiomCm{C_1: D \lor l}
+			%		\AxiomCm{C_2: E \lor \lnot l'}
+			%		\RightLabelm{\quad l\sigma = l'\sigma}
+			%		\BinaryInfCm{C: (D\lor E)\sigma}
+			%	\end{prooftree}
+			%\todo{write as prooftree? (not necessary, but nicer)}
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
+			%$\PI(C)$ is defined according to this case distinction:
+			\begin{enumerate}
+				\item If $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:\todo{change to "is $\Gamma$-colored?"} $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
+				\item If $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
+				\item If $\Pred(l) \in \Lang(\Gamma) \intersect \Lang(\Delta)$: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
+			\end{enumerate}
 
-	\item[Factorisation.]
-		If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
+		\item[Factorisation.]
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
 
-	\item[Paramodulation.]
-		If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following case distinction:
-		\begin{enumerate}
-			\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
-				\label{def:PI_paramod_1}
-				\newline
-				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})$ 
-			\item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
-				\label{def:PI_paramod_2}
-				\newline
-				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})$ 
-			\item Otherwise:
-				\label{def:PI_paramod_3}
-				\newline
-				$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
+		\item[Paramodulation.]
+			If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following case distinction:
+			\begin{enumerate}
+				\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+					\label{def:PI_paramod_1}
+					\newline
+					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})$ 
+				\item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+					\label{def:PI_paramod_2}
+					\newline
+					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})$ 
+				\item Otherwise:
+					\label{def:PI_paramod_3}
+					\newline
+					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
 
-		\end{enumerate}
-\end{itemize}
+			\end{enumerate}
+	\end{itemize}
 \end{defi}
 
 
@@ -91,40 +91,40 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 	$\Gamma \entails \PI(C) \lor C_\Gamma$ and
 	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $\Lang(\Phi)$. They clearly imply conditions \ref{rel_prop_interpol_cond1} and \ref{rel_prop_interpol_cond2} of definition \ref{def:rel_prop_interpol}. 
 
-\begin{itemize}
-	\item[Base case.]
-	Suppose no rules were applied. We distinguish two possible cases:
-	\begin{enumerate}
-		\item $C \in \Gamma$.
-			Then $\PI(C) = \bot$. Clearly $\Gamma \entails \bot \lor C_\Gamma$ as $C_\Gamma = C \in \Gamma$, $\Delta \entails \lnot \bot \lor C_\Delta$ and $\bot$ satisfies the restriction on the language.
+	\begin{itemize}
+		\item[Base case.]
+			Suppose no rules were applied. We distinguish two possible cases:
+			\begin{enumerate}
+				\item $C \in \Gamma$.
+					Then $\PI(C) = \bot$. Clearly $\Gamma \entails \bot \lor C_\Gamma$ as $C_\Gamma = C \in \Gamma$, $\Delta \entails \lnot \bot \lor C_\Delta$ and $\bot$ satisfies the restriction on the language.
 
-		\item $C \in \Delta$.
-			Then $\PI(C) = \top$. Clearly $\Gamma \entails \top \lor C_\Gamma$, $\Delta \entails \lnot \top \lor C_\Delta$ as $C_\Delta = C \in \Delta$ and $\top$ satisfies the restriction on the language.
-	\end{enumerate}
+				\item $C \in \Delta$.
+					Then $\PI(C) = \top$. Clearly $\Gamma \entails \top \lor C_\Gamma$, $\Delta \entails \lnot \top \lor C_\Delta$ as $C_\Delta = C \in \Delta$ and $\top$ satisfies the restriction on the language.
+			\end{enumerate}
 
-	Suppose the property holds for $n$ rule applications.
-	We show that it holds for $n+1$ applications by considering the last one:
+			Suppose the property holds for $n$ rule applications.
+			We show that it holds for $n+1$ applications by considering the last one:
 
-\item[Resolution.]
-	Suppose the last rule application is an instance of resolution. Then it is of the form:
-	\begin{prooftree}
-		\AxiomCm{C_1: D \lor l}
-		\AxiomCm{C_2: E \lor \lnot l'}
-		\RightLabelm{\quad l\sigma = l'\sigma}
-		\BinaryInfCm{C: (D\lor E)\sigma}
-	\end{prooftree}
+		\item[Resolution.]
+			Suppose the last rule application is an instance of resolution. Then it is of the form:
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor l}
+				\AxiomCm{C_2: E \lor \lnot l'}
+				\RightLabelm{\quad l\sigma = l'\sigma}
+				\BinaryInfCm{C: (D\lor E)\sigma}
+			\end{prooftree}
 
-	By the induction hypothesis, we can assume that:
+			By the induction hypothesis, we can assume that:
 
-	$\Gamma \entails \PI(C_1) \lor (D\lor l)_\Gamma$
+			$\Gamma \entails \PI(C_1) \lor (D\lor l)_\Gamma$
 
-	$\Delta \entails \lnot \PI(C_1) \lor (D\lor l)_\Delta$
+			$\Delta \entails \lnot \PI(C_1) \lor (D\lor l)_\Delta$
 
-	$\Gamma \entails \PI(C_2) \lor (E\lor \lnot l')_\Gamma$
+			$\Gamma \entails \PI(C_2) \lor (E\lor \lnot l')_\Gamma$
 
-	$\Delta \entails \lnot \PI(C_2) \lor (E\lor \lnot l')_\Delta$
+			$\Delta \entails \lnot \PI(C_2) \lor (E\lor \lnot l')_\Delta$
 
-		We consider the respective cases from definition \ref{def:PI_resolution}:
+			We consider the respective cases from definition \ref{def:PI_resolution}:
 
 			\begin{enumerate}
 				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
@@ -177,7 +177,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 					$\Delta \entails ((l \lor \lnot \PI(C_1)) \land (\lnot l' \lor \lnot \PI(C_2)))\sigma \lor ((D \lor E)\sigma)_\Delta$.
 					Suppose again that in a model $M$ of $\Delta$, $M \cancel \entails D_\Delta$ and $\Gamma \cancel \entails E_\Delta$. 
 					Then the required statement follows from the induction hypothesis.
-					
+
 					The language condition remains satisfied as only the common literal $l$ is added to the interpolant.
 
 
@@ -205,7 +205,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			$\Delta \entails (\PI(C_1)\sigma \lor (l \lor D)_\Delta)\sigma$
 
 			The restriction on the language trivially remains intact.
-			
+
 
 		\item[Paramodulation.]	
 			Suppose the last rule application is an instance of paramodulation. Then it is of the form:
@@ -229,7 +229,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			First, we show that $\PI(C)$ as constructed in case \ref{def:PI_paramod_3} of the definition is a propositional interpolant in any of these cases:
 
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
-			
+
 			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E\occur{t}\sigma$. Otherwise we are done.
 			Furthermore, assume that $M \entails (s=t)\sigma$. Then $M \cancel \entails E[r]\sigma$, but then necessarily $M \entails \PI(C_2)\sigma$. \\
 			On the other hand, suppose $M \entails (s\neq t)\sigma$. As also $M \cancel \entails D\sigma$, $M \entails \PI(C_1)\sigma$.
@@ -245,13 +245,13 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			This concludes the argumentation for case \ref{def:PI_paramod_3}. 
 
-			The interpolant of case \ref{def:PI_paramod_1} differs only by an additional formula added via a disjunction and hence condition \ref{rel_prop_interpol_cond1} of definition \ref{def:rel_prop_interpol} holds by the above reasoning.
+			The interpolant for case \ref{def:PI_paramod_1} differs only by an additional formula added via a disjunction and hence condition \ref{rel_prop_interpol_cond1} of definition \ref{def:rel_prop_interpol} holds by the above reasoning.
 			As the adjoined formula is a contradiction, its negation is valid which in combination with the above reasoning establishes condition \ref{rel_prop_interpol_cond2}.
 			Since no new predicated are added, the language condition remains intact. 
 
 			The situation in case \ref{def:PI_paramod_2} is somewhat symmetric: 
 			As a tautology is added to the interpolant with respect to case \ref{def:PI_paramod_1}, condition \ref{rel_prop_interpol_cond1} is satisfied by the above reasoning.
-			For condition \ref{rel_prop_interpol_cond2}, consider that the negated interpolant of case \ref{def:PI_paramod_1} implies the negated interpolant of this case.
+			For condition \ref{rel_prop_interpol_cond2}, consider that the negated interpolant for case \ref{def:PI_paramod_1} implies the negated interpolant for this case.
 			The language condition again remains intact.
 			\qedhere
 	\end{itemize}
@@ -451,7 +451,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 					Therefore
 					$M\entails (\lif{l} \land \lif{\PI(C_2)}) \lor (\lnot \lif{l} \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{E_\Gamma}) $,
-					and serveral applications of Lemma \ref{lemma:lift_commute} give
+					and several applications of Lemma \ref{lemma:lift_commute} give
 					$M\entails \lif{(l \land \PI(C_2)) \lor (\lnot {l} \land {\PI(C_1)}) \lor ({D_\Gamma} \lor {E_\Gamma})} $.
 			\end{enumerate}
 
@@ -468,11 +468,11 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			By Lemma \ref{lemma:lift_commute}, 
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor  \lif{l_\Gamma} \lor \lif{D_\Gamma})$,
-			
+
 			which clearly is equivalent to
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor \lif{D_\Gamma})$,
-			
+
 			so by again applying Lemma \ref{lemma:lift_commute}, we arrive at
 
 			$\Gamma \entails \lif{\PI(C_1) \lor (l \lor D)_\Gamma}$.
@@ -542,10 +542,56 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			\end{enumerate}
 
 
-
 	\end{itemize}
 
 \end{proof}
+
+\clearpage
+			\begin{remark}
+
+			\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+				This lemma does not directly hold for a non-propositional proof.
+
+				%In that case, the natural induction hypothesis would state that 
+				The statement of the lemma would be identical in this case. For resolution, by the induction hypothesis, we would get
+
+				$\Gamma \entails \lif{ \PI(C_1)} \lor \lif D  \lor \lif l$
+
+				$\Gamma \entails \lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'}$
+
+				By the resolution we know that 
+				$l\sigma = l'\sigma$.
+
+				In order to proceed as in the other proof, we would need $\sigma'$ s.t.\
+				$\lif{l}\sigma' = \lif{l'}\sigma'$
+
+				$\Gamma \entails (\lif{ \PI(C_1)} \lor \lif D  \lor \lif l )\sigma'$
+
+				$\Gamma \entails \lif{ \PI(C_1)}\sigma' \lor \lif D\sigma'  \lor \lif l\sigma'$
+
+				$\Gamma \entails (\lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'})\sigma'$
+
+				$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor \lnot \lif{l'} \sigma'$
+
+				Hence 
+
+				$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor
+				\lif{ \PI(C_1)}\sigma' \lor \lif D\sigma' $
+
+				and therefore
+
+				$\Gamma \entails \lif{ \PI(C_2) \lor E  \lor
+					\PI(C_1) \lor  D}\sigma' $
+
+				And we need to show that 
+				$\Gamma \entails \lif{( \PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma }$
+
+				%which is equivalent to
+				%$\Gamma \entails \lif{PI(C_1)\sigma} \lor \lif{\PI(C_2)\sigma} \lor \lif{D\sigma} \lor \lif{E\sigma} $
+
+
+			\end{remark}
+
 
 \clearpage
 
