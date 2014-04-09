@@ -2,7 +2,7 @@ BASENAME="thesis"
 TEXFILE="${BASENAME}.tex"
 PDFFILE="${BASENAME}.pdf"
 
-PDFVIEWER="okular"
+PDFVIEWER="evince"
 LANG="en" # of tex file
 
 # pdf
