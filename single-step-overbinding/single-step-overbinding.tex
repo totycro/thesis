@@ -638,7 +638,7 @@ Suppose Resolution.
 			\item
 				Let $x$ be an occurrence of a variable in $C$ with the lowest depth and $x'$ another occurrence of the same variable with a higher depth.
 				Let $t$ be the maximal colored term which contains $x'$. $t$ is $\Phi$-colored since it appears in $\Phi$.
-				Then $\Phi \entails Q y \exists z C\subst{x/y}\termsubst{t/z}$ for $Q \in \{\forall, \exists\}$.
+				Then $\Phi \entails Q y \exists z C\subst{x/y}\abstraction{t/z}$ for $Q \in \{\forall, \exists\}$.
 	\end{enumerate}
 \end{lemma}
 
@@ -646,7 +646,7 @@ Suppose Resolution.
 
 	Let $t$ be a maximal colored term in $C$ in $\Phi$. It is $\Phi$-colored.
 	Let $x_1, \ldots, x_n$ be the variables which occur in $t$.
-	Then $\Phi \entails Q \bar x \exists y C\termsubst{t/y}$ for $Q \in \{\forall, \exists\}$.
+	Then $\Phi \entails Q \bar x \exists y C\abstraction{t/y}$ for $Q \in \{\forall, \exists\}$.
 
 \end{lemma}
 

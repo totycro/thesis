@@ -341,7 +341,7 @@ This replacement is referred to as lifting:
 \begin{defi}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
 	$\phi$ a formula or a term, $t_1, \ldots, t_n$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\phi$ and $x_1, \ldots, x_n$ fresh variables.
-	Then $\lift{\Phi}{\phi}{x}$ denotes $\phi\termsubst{t_1/x_1}\ldots\termsubst{t_n/x_n}$.
+	Then $\lift{\Phi}{\phi}{x}$ denotes $\phi\abstraction{t_1/x_1}\ldots\abstraction{t_n/x_n}$.
 \end{defi}
 
 \begin{lemma} 

@@ -129,84 +129,115 @@
 
 \newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
 
+
 \def\proofSkipAmount{ \vskip -0.3em}
+
+\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
 
 \begin{document}
 
 
-	\section{Attempt without $P_P$}
-
-	{
-		\Huge
-
-		current state:
-
-		lemma \ref{lemma:overline} and \ref{lemma:overline_literal} seem to not work together. they would need some kind of common~$\sigma$
-
-		~
-	\bigskip
-	~
-
-	}
+\section{Attempt without $P_P$}
 
 
-	\begin{defi}
-		\label{def:overline}
-		Overline as in paper, replace $\Delta$-terms $t_1, \ldots, t_n$ by respective fresh variables in parenthesis
-	\end{defi}
+Intuition of $\sigma'$:
 
-	NOTE: variables are *not* replaced by overline.
+If we pull a substitution out of a lifting which replaced $\Delta$-terms, we also have to replace the $\Delta$-terms 
+in the ``domain'' of the substitution. This is the lower case.
 
-	\begin{lemma}
-		\label{lemma:overline}
+There is just a problem in the following case: $\lif{ f(x)\sigma }$, where $x\sigma = a$ and $f$ is a $\Delta$-symbol.
+Then $\lif{ f(x)\sigma } = \lif{ f(a) } = x_i$, but $\lif{f(x)}\sigma = x_j$ with $i\neq j$.
+The first case of the definition of $x_j$ then fixes this by replacing $x_j$ with $x_i$. 
 
-		Let $t_1, \ldots, t_n$ be the maximal $\Delta$-terms in $C$.
 
-		Let $\sigma'(x) =
-		\begin{cases} 
-			x_i & \text{ if } x = x_j \text{ for some $j$ and $t_j\sigma = t_i$}  \\
-			\overline{x\sigma} & \text{ otherwise}
-		\end{cases} $
 
-		Then
-		$(\overline{C\sigma}(x_1, \ldots, x_n)) =
-		(\overline{C}(x_1, \ldots, x_n))\sigma'$.
-	\end{lemma}
-	\begin{proof}
-		TODO
+\begin{lemma}
+	\label{lemma:lif}
 
-		// the first case handles the case where $\sigma$ replaces $x$ and $P(f(x)) \in C$ where $f$ is $\Delta$-colored.
-	\end{proof}
+	Let $C$ be a clause and $t_1, \ldots, t_n$ the set of maximal $\Delta$-terms in $C$ and $\sigma$ be a substitution.
+	Let $$r \sigma' =
+	\begin{cases} 
+		x_l & \text{ if } r = x_k \text{ for some $k$, $l\neq k$, and $t_k\sigma = t_l$}  \\ 
+		\lif{r\sigma} & \text{ otherwise}
+	\end{cases} $$
 
-	\begin{lemma}
-		\label{lemma:overline_literal}
-		If $l\sigma$ = $l'\sigma$, then $\overline{l}\sigma' = \overline{l'}\sigma'$ for $\sigma'$ defined as follows: TODO
-	\end{lemma}
-	\begin{proof}
-		TODO
-	\end{proof}
+	Then
+	$\lif{C\sigma} =
+	\lif{C}\sigma'$.
+\end{lemma}
+\begin{proof}
+	We prove this for an atom $P(s_1, \ldots, s_m)$ in $C$, which works since lifting and substitution commute over binary connectives and into an atom.
 
-	\begin{lemma} // currently unused
+	We show that 
+	$\lif{s_j \sigma} = \lif{s_j}\sigma'$ for $1 \leq j \leq m$.
 
-		$(\overline{C}(x_1, \ldots, x_n))\sigma =
-		(\overline{C\sigma'}(x_1, \ldots, x_n))$ if $\sigma$ does not change any of $x_1, \ldots, x_n$ or any of $t_1, \ldots, t_n$.\qedhere
+	%Let $\phi \sigma^{t}$ denote $\phi[t/y]\sigma[t/x]$ for a fresh variable $y$.
 
-		\todo[inline]{it would work to fix substitutions of $x_i$ by substituting $t_i$ for that instead, as long as the result isn't another $t_i$, but this isn't actually relevant here.}
-		
-	\end{lemma}
+	Note that anything in the term structure above a maximal $\Delta$-term is unaffected by both substitution and abstraction.
 
-	\begin{prop}
-		$\Gamma = \overline{\Gamma}(x_1, \ldots, x_n)$.
-	\end{prop}
-	\begin{proof}
-		By definition, $\Delta$-terms only appear in $\Delta$ and not in $\Gamma$. 
-	\end{proof}
+	Let $t_i$ be a maximal $\Delta$-term in $s_i \sigma$.
 
-	\begin{lemma} $ \Gamma \entails \overline{(\PI(C) \lor C)}(x_1, \ldots, x_n) $.
-		\label{lemma:gamma_entails_interpolant}
-	\end{lemma}
+	We show that $ \lif{ t_i \sigma } = \lif{ t_i } \sigma'$, which proves the lemma.
 
-	\begin{proof}
+	Let $t_i\sigma = t_j$. Then $\lif{ t_i\sigma} = \lif{t_j} = x_j$.
+
+	We show that $x_j = \lif{t_i}\sigma'$.
+
+	Suppose that $t_i = t_j$, i.e.\ $\sigma$ is trivial on $t_i$.
+	Then $i=j$ as the $\Delta$-terms have a unique number.
+	Hence $\lif{t_i}\sigma' = x_i \sigma' = x_i = x_j$.
+
+
+	Otherwise $t_i \neq t_j$. Then $i\neq j$ and  $x_j \neq x_i$.\newline
+	$\lif{t_i}\sigma' = x_i \sigma'$.
+	By the definition of $\sigma'$, as $t_i\sigma = t_j$, $x_i\sigma' = x_j$.
+	%
+	%
+	\begin{comment}
+		Suppose no $\Delta$-colored symbol occurs in $s_j$ or $s_j\sigma$. Then $\lif{s_j\sigma} = s_j\sigma $. this equals $  s_j\sigma'$ as there, only the second case applies, where the lifting doesn't affect the term.
+
+		Suppose a maximal $\Delta$-colored term $t_i$ occurs in $s_j\sigma$ but not in $s_j$ and suppose it's the only one in $s_j\sigma$.
+		Then $\lif{ s_j\sigma } = \lif{ s_j\sigma^{t_i} }= s_j\sigma^{t_i} \abstraction{t_i/x_i} = \lif{s_j} \sigma^{t_i} \abstraction{t_i/x_i}$
+	\end{comment}
+	%Note that if a $\Delta$-term $t_i$ occurs in $s_j$, a $\Delta$-term with the same outermost symbol occurs in $s_j$ at the same position.
+\end{proof}
+\clearpage
+
+\begin{lemma}
+	\label{lemma:lif_literal}
+	If $l\sigma$ = $l'\sigma$, then $\lif{l}\sigma' = \lif{l'}\sigma'$ for $\sigma'$ defined as in lemma \ref{lemma:lif}
+\end{lemma}
+\begin{proof}
+	$l\sigma$ = $l'\sigma$
+
+	$\ra \lif{l\sigma} = \lif{l'\sigma}$
+
+	by lemma \ref{lemma:lif}, 
+	$\lif{l}\sigma' = \lif{l'}\sigma'$
+
+\end{proof}
+
+\begin{lemma} // currently unused
+
+	$(\lif{C}(x_1, \ldots, x_n))\sigma =
+	(\lif{C\sigma'}(x_1, \ldots, x_n))$ if $\sigma$ does not change any of $x_1, \ldots, x_n$ or any of $t_1, \ldots, t_n$.\qedhere
+
+	\todo[inline]{it would work to fix substitutions of $x_i$ by substituting $t_i$ for that instead, as long as the result isn't another $t_i$, but this isn't actually relevant here.}
+
+\end{lemma}
+
+\begin{prop}
+	$\Gamma = \lif{\Gamma}(x_1, \ldots, x_n)$.
+\end{prop}
+\begin{proof}
+	By definition, $\Delta$-terms only appear in $\Delta$ and not in $\Gamma$. 
+\end{proof}
+
+\begin{lemma} $ \Gamma \entails \lif{(\PI(C) \lor C)}(x_1, \ldots, x_n) $.
+	\label{lemma:gamma_entails_interpolant}
+\end{lemma}
+
+\begin{proof}
 	By induction on the resolution refutation.
 
 	Base case:
@@ -225,41 +256,55 @@
 
 			By the induction hypothesis, we can assume that:
 
-			$\Gamma \entails \overline{\PI(C_1) \lor (D\lor l)}(x_1, \ldots, x_n)$
+			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor l)}(x_1, \ldots, x_n)$
 
-			$\Gamma \entails \overline{\PI(C_2) \lor (E\lor \lnot l')}(x_{1}, \ldots, x_n)$
+			$\Gamma \entails \lif{\PI(C_2) \lor (E\lor \lnot l')}(x_{1}, \ldots, x_n)$
 
 			\begin{enumerate}
 				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
 					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
 
-					We show that $\Gamma \entails \overline{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)\sigma}(x_1, \ldots, x_n) $,
-					\newline i.e.~$\Gamma \entails \overline{ (\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
-					This is by lemma \ref{lemma:overline} with $\sigma'$ as in the lemma equivalent to
-					$\Gamma \entails \overline{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)}(x_1, \ldots, x_n)\sigma' $.
+					We show that $\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)\sigma}$,
+					\newline 
+					i.e.~$\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma} $.
+
+					Let $\sigma'$ be as in Lemma \ref{lemma:lif} with all $\Delta$-terms occuring here (in formulas and substitutions) as $t_1, \ldots, t_n$.
+
+					Hence by Lemma \ref{lemma:lif}
+					$\Gamma \entails \lif{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)}\sigma' $.
 
 					By Lemma 11 (Huang) and the induction hypothesis,
 
-					$\Gamma \entails \overline{\PI(C_1)} \lor \overline{D} \lor \overline l$
+					$\Gamma \entails \lif{\PI(C_1)} \lor \lif{D} \lor \lif l$ $\;\;(*)$
 
-					$\Gamma \entails \overline{\PI(C_2)} \lor \overline{E} \lor \lnot \overline{l'}$
+					$\Gamma \entails \lif{\PI(C_2)} \lor \lif{E} \lor \lnot \lif{l'}$ $\;\;(\circ)$
 
-					By lemma \ref{lemma:overline_literal} and since $l\sigma = l'\sigma$, $\overline{l}\sigma'' = \overline{l'}\sigma''$.
 
-					Hence $\Gamma \entails (\overline{\PI(C_1)} \lor \overline{D} \lor \overline{\PI(C_2)} \lor \overline{E} )\sigma''$
-					and again by Lemma 11 (Huang), 
-					$\Gamma \entails \overline{\PI(C_1) \lor D \lor \PI(C_2) \lor E} \sigma''$.
+					Since $l\sigma = l'\sigma$ (by resolution rule application), $\lif{l\sigma} = \lif{l'\sigma}$.
+					
+					As by Lemma \ref{lemma:lif} $\lif{l\sigma} = \lif{l}\sigma'$ and $\lif{l'\sigma} = \lif{l'}\sigma'$,
+					we get $\lif{l'}\sigma' = \lif{l}\sigma'$.
 
-					TODO: show that from this, it follows that: $\Gamma \entails \overline{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)}(x_1, \ldots, x_n)\sigma' $,
+					So by applying $\sigma'$ to $(*)$ and $(\circ)$, we can resolve on $\lif{l'}$ and get
+
+					$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif D \sigma' \lor \lif{\PI(C_2)}\sigma' \lor \lif E \sigma'$.
+
+					and
+
+				$\Gamma \entails \lif{ \PI(C_1) \lor \PI(C_2) \lor D \lor E}\sigma' $.
+
+				So by Lemma \ref{lemma:lif},
+
+				$\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2) \lor D \lor E ) \sigma } $.
 
 
 
 				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$:
 					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
 
-					We show that $\Gamma \entails \overline{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
-					By lemma \ref{lemma:overline} with $\sigma'$ as in the lemma,
-					$\Gamma \entails \overline{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)}(x_1, \ldots, x_n) \sigma'$.
+					We show that $\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
+					By lemma \ref{lemma:lif} with $\sigma'$ as in the lemma,
+					$\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)}(x_1, \ldots, x_n) \sigma'$.
 
 					TODO
 
@@ -277,63 +322,63 @@
 
 			By the induction hypothesis, we have:
 
-			$\Gamma \entails \overline{\PI(C_1) \lor (D\lor s=t)}$
+			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor s=t)}$
 
-			$\Gamma \entails \overline{\PI(C_2) \lor (E[r])}$
+			$\Gamma \entails \lif{\PI(C_2) \lor (E[r])}$
 
 
 
-	easy case:
+			easy case:
 			$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$
 
 			to show:
-			$\Gamma \entails \overline{ [ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) ]\sigma} $
+			$\Gamma \entails \lif{ [ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) ]\sigma} $
 
 			proof idea: either $s=t$, then also $\PI(C_2)$, or else $s\neq t$, but then also $\PI(C_1)$
 
-			by lemma \ref{lemma:overline} for $\sigma'$ as in lemma, 
-			$\Gamma \entails \overline{ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) }\sigma' $
+			by lemma \ref{lemma:lif} for $\sigma'$ as in lemma, 
+			$\Gamma \entails \lif{ (( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1))) \lor (D \lor E[t]) }\sigma' $
 
 			by lemma 11 (huang)
-			$\Gamma \entails [((\overline{s}=\overline{t} \land \overline{\PI(C_2)} ) \lor (\overline{s\neq t} \land \overline{\PI(C_1)})) \lor (\overline{D} \lor \overline{E[t]}) ]\sigma' $
+			$\Gamma \entails [((\lif{s}=\lif{t} \land \lif{\PI(C_2)} ) \lor (\lif{s\neq t} \land \lif{\PI(C_1)})) \lor (\lif{D} \lor \lif{E[t]}) ]\sigma' $
 
 			reformulate:
-			$\Gamma \entails ((\overline{s}\sigma'=\overline{t}\sigma' \land \overline{\PI(C_2)}\sigma' ) \lor (\overline{s}\sigma'\neq \overline{t}\sigma' \land \overline{\PI(C_1)}\sigma')) \lor (\overline{D}\sigma' \lor \overline{E[t]}\sigma') $
+			$\Gamma \entails ((\lif{s}\sigma'=\lif{t}\sigma' \land \lif{\PI(C_2)}\sigma' ) \lor (\lif{s}\sigma'\neq \lif{t}\sigma' \land \lif{\PI(C_1)}\sigma')) \lor (\lif{D}\sigma' \lor \lif{E[t]}\sigma') $
 
-			By the rule: $s\sigma = r\sigma$, hence also $\overline{s\sigma} = \overline{r\sigma}$ and $\overline{s}\sigma' = \overline{r}\sigma'$ REALLY TRUE? -- think so\dots
+			By the rule: $s\sigma = r\sigma$, hence also $\lif{s\sigma} = \lif{r\sigma}$ and $\lif{s}\sigma' = \lif{r}\sigma'$ REALLY TRUE? -- think so\dots
 
-			Suppose $M \entails \Gamma$ and $M \not \entails (\overline{D}\sigma' \lor \overline{E[t]}\sigma') $.
+			Suppose $M \entails \Gamma$ and $M \not \entails (\lif{D}\sigma' \lor \lif{E[t]}\sigma') $.
 
-			Suppose $M \entails \overline{s}\sigma' = \overline{t}\sigma'$.
+			Suppose $M \entails \lif{s}\sigma' = \lif{t}\sigma'$.
 
 			By induction hypothesis (and lemma 11 (huang) and adding the substitution $\sigma'$), 
-			$\Gamma \entails \overline{\PI(C_2)}\sigma' \lor \overline{(E[r])}\sigma'$.
+			$\Gamma \entails \lif{\PI(C_2)}\sigma' \lor \lif{(E[r])}\sigma'$.
 
-		However by assumption $\Gamma \not \entails \overline{E[t]}\sigma'$.
+			However by assumption $\Gamma \not \entails \lif{E[t]}\sigma'$.
 
-		Hence $\Gamma \not \entails \overline{E[s]}\sigma'$, and
-		$\Gamma \not \entails \overline{E[r]}\sigma'$. Therefore $\Gamma \entails \overline{\PI(C_2)}\sigma'$.
-
-
-		Suppose on the other hand $M \entails \overline{s}\sigma' \neq \overline{t}\sigma'$.
-
-		By the induction hypothesis, 
-		$M \entails \overline{\PI(C_1)}\sigma' \lor (\overline{D}\sigma'\lor (\overline{s}=\overline{t})\sigma')$,
-		hence then $M \entails \overline{\PI(C_1)}\sigma'$.
-
-		Consequently, 
-		$M \entails (\overline{s}\sigma' \neq \overline{t}\sigma' \land \overline{\PI(C_1)}\sigma') \lor (\overline{s}\sigma' = \overline{t}\sigma' \land \overline{\PI(C_2)}\sigma')$.
-
-		By lemma 11 (huang), 
-		$M \entails \overline{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma'$.
-
-		Hence 
-		$\Gamma \entails \overline{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma' \lor (\overline{D} \lor \overline{E[t]})\sigma') $.
-
-		IS THIS REALLY WHAT I NEED TO SHOW?
+			Hence $\Gamma \not \entails \lif{E[s]}\sigma'$, and
+			$\Gamma \not \entails \lif{E[r]}\sigma'$. Therefore $\Gamma \entails \lif{\PI(C_2)}\sigma'$.
 
 
-\end{description}
+			Suppose on the other hand $M \entails \lif{s}\sigma' \neq \lif{t}\sigma'$.
+
+			By the induction hypothesis, 
+			$M \entails \lif{\PI(C_1)}\sigma' \lor (\lif{D}\sigma'\lor (\lif{s}=\lif{t})\sigma')$,
+			hence then $M \entails \lif{\PI(C_1)}\sigma'$.
+
+			Consequently, 
+			$M \entails (\lif{s}\sigma' \neq \lif{t}\sigma' \land \lif{\PI(C_1)}\sigma') \lor (\lif{s}\sigma' = \lif{t}\sigma' \land \lif{\PI(C_2)}\sigma')$.
+
+			By lemma 11 (huang), 
+			$M \entails \lif{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma'$.
+
+			Hence 
+			$\Gamma \entails \lif{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma' \lor (\lif{D} \lor \lif{E[t]})\sigma') $.
+
+			IS THIS REALLY WHAT I NEED TO SHOW?
+
+
+	\end{description}
 \end{proof}
 
 
