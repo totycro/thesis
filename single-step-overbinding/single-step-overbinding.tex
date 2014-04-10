@@ -133,6 +133,8 @@
 
 \begin{document}
 
+\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+
 \section{Overbinding in one step}
 
 
@@ -159,6 +161,8 @@ need more narrow version: clauses do appear in parent clauses in derivation.
 
 
 \begin{prop}
+
+
 	Suppose in a partial interpolant, there are two maximal terms $t_1$ and $t_2$ such that w.l.o.g.~$t_1$ is smaller (as defined in \ref{def:order}) than $t_2$. Then it the final interpolant, an overbinding can be defined where the variable corresponding to $t_1$ is quantified over before the variable corresponding to $t_2$ is.
 \end{prop}
 
@@ -176,10 +180,14 @@ The subterm-relation is reflexive.
 	(NEW)
 	%A term $s$ is smaller than a term $t$ if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
 
+	OUTDATED! DOES NOT WORK LIKE THIS
+
 	Let $C$ be a clause.
 
 	A maximal term $s$ of $C$ is smaller than a maximal term $t$ of $C$ if $s$ is a variable and occurs in $t$, but $s\neq t$. 
 	%if in some parent of a rule application, a subterm of $s$, which is a variable, appears in $t$ and $s$ is smaller in length than $t$.
+
+	OUTDATED! DOES NOT WORK LIKE THIS
 
 \end{defi}
 
@@ -541,7 +549,15 @@ Suppose Resolution.
 \section{Arrow-Algo}
 
 \begin{enumerate}
-	\item In the original clauses, find all occurrences of variables. Add an arrow from an occurrence to each other occurrence with depth as least as high, if the full prefix to the occurrence with lower depth is shared by both occurrences (cf.~\ref{def:order}).  
+	\item
+		In the original clauses, find all occurrences of variables.
+
+		Common case:
+		If a variable appears as outermost symbol or only has grey ancestor-terms, add an arrow from it to all other occurrences.
+
+		Uncommon case:
+		if there is more than one occurrence of a variable under a $\Phi$-colored term, add a \emph{weak} dependency between them all (symmetric relation).
+
 
 		NOTE: this creates double arrows for occurrences at same depth. This appears to be necessary for terms which are only variables, and doesn't hurt if the variable is contained in a term.
 
@@ -552,14 +568,14 @@ Suppose Resolution.
 				\item Replace colored terms in $\PI(C)$ (from new atom and unifier applied to $\PI(C_i)^*$) with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
 
 					An arrow starts (ends) in one of the new variables if it starts (ends) somewhere in the term it replaced.
-				\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right.
+				\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right AND weakly connected variables appear in the same quantifier block.
 
 					$\bar Q_n = \operatorname{sort}( Q_{n_1} \cup Q_{n_2} \cup \operatorname{colored-terms}(l))$
 			\end{enumerate}
 \end{enumerate}
 
 \begin{conj}
-	$\Gamma \cup \Delta$ unsat, $\pi$ resolution refutation. Then $\Gamma \entails \bar Q_n \PI(C)^* \lor C$ and $\Delta \entails \lnot \bar Q_n \PI(C)^* \lor C$ for all $C$ in $\pi$.
+	$\Gamma \cup \Delta$ unsat, $\pi$ propositional resolution refutation. Then $\Gamma \entails \bar Q_n \PI(C)^* \lor C$ and $\Delta \entails \lnot \bar Q_n \PI(C)^* \lor C$ for all $C$ in $\pi$.
 \end{conj}
 \begin{proof}
 	Base case as in Huang.
@@ -610,10 +626,13 @@ Suppose Resolution.
 
 						\begin{enumerate}
 								\item Suppose $t$ is $\Gamma$-colored.
-									$\Gamma \entails l$ implies that $\Gamma \entails \exists y\,l[t/y]$
+									$\Gamma \entails l$ implies that $\Gamma \entails \exists y\,l\abstraction{t/y}$
 
 								\item Suppose $t$ is $\Delta$-colored.
-									TODO
+									$\Gamma \entails \forall y\,l\abstraction{t/y}$ because:
+
+
+
 						\end{enumerate}
 
 
@@ -649,6 +668,68 @@ Suppose Resolution.
 	Then $\Phi \entails Q \bar x \exists y C\abstraction{t/y}$ for $Q \in \{\forall, \exists\}$.
 
 \end{lemma}
+
+\clearpage
+
+	We have that $\Gamma \entails \forall \bar x \lif{C} \lor C$.
+	\bigskip
+
+	Let $t$ be a maximal $\Gamma$-term.
+	It in general contains $\Gamma$-colored and grey terms, and also $\Delta$-terms.
+	The latter have entered it by unification.
+
+	If $t$ contains no $\Delta$ terms, we can just overbind it existentially and give a witness.
+
+	Otherwise it contains $\Delta$-terms.
+	Then there is a variable in $t$ at position say $p$ which also occurs elsewhere in $C$, say at position $q$.
+
+	If $q$ is the outermost term or if it has only grey term ancestors, then quantifying over whatever is in $q$ before quantifying over whatever is in $p$ is fine. Hence there is an arrow.
+
+	$q$ can not be contained in a $\Delta$ term since dependencies cannot be introduced and must be there from the beginning, where no color mix is possible.
+
+	So otherwise $q$ is contained in a maximal $\Gamma$-term $s$. For finding witnesses, we will put the same one for the variable at both $q$ and $t$.
+	As $q$ introduces a $\Delta$-term, at some point, there had had to be a unification with a formula from $\Delta$ (this then could have been passed on through ``mirroring'').
+
+	Conjecture: there are arrows along the path from the origin of the $\Delta$-path to $q$.
+
+	Hence whatever is placed in $q$ and $p$ is quantified over earlier than the variables which replace $t$ and~$s$.
+
+	TODO: Proof or refute!
+
+
+
+
+	\vspace{4em}
+
+	Notation:
+
+	$p_1$ is the position of $s$ in $t$
+
+	$p_2$ is the elsewhere position of the shared var 
+
+
+	A unification where a $\Gamma$-colored term $s$ enters $t$ happens when 
+
+	\begin{itemize}
+		\item the other unified clause has a variable at the position of $t$ ($p_1$)
+		\item a variable is both in $t$ ($p_1$) and elsewhere in the unified clause ($p_2$)
+		\item $p_2$ is either in a grey term or as outermost or a $\Delta$-colored term
+			\begin{itemize}
+				\item if $p_2$ directly in grey term or as outermost, the ancestor of $p_2$ will not be overbound (only $p_2$).
+					we need $p_2$ as witness for overbinding $t$, but not the other way.
+
+					Hence quantifying over $p_2$ first is ok.
+
+				\item
+					if $p_2$ is in a $\Delta$-colored term, say in maximal $\Delta$-term $s'$,
+					Then $s'$ and $t$ are overbound with the same quantifier and order between them doesn't matter.
+
+					for witness, we both need whatever the var is, and that we get by the inherited relation.
+
+					? there must be an inherited relation as since both $s'$ and $t$ are $\Gamma$ and contain a $\Delta$-term, the $\Delta$ term must have gotten into a $\Gamma$-colored term using aufschauckeln ?
+			\end{itemize}
+	\end{itemize}
+
 
 \end{document}
 

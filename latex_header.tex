@@ -270,6 +270,17 @@ positioning,fit,calc,decorations.text,shadows%
 	{\draw[->,square arrow,color=red] (a.south) to (b.south);}
 }
 
+\newcommand{\arrowAB}{\tikz[overlay,remember picture] \node (ab) {};}
+\newcommand{\arrowBA}{\tikz[overlay,remember picture] \node (ba) {};}
+\newcommand{\drawAABB}{
+	\tikz[overlay,remember picture]
+	%{\draw[->,bend left=80] (a.north) to (b.north);}
+	{\draw[->,square arrow,color=brown] (ab.south) to (ba.south);
+	\draw[->,square arrow,color=brown] (ba.south) to (ab.south);}
+}
+
+
+
 \newcommand{\arrowC}{\tikz[overlay,remember picture] \node (c) {};}
 \newcommand{\arrowD}{\tikz[overlay,remember picture] \node (d) {};}
 \newcommand{\drawCD}{

@@ -143,7 +143,7 @@
 Intuition of $\sigma'$:
 
 If we pull a substitution out of a lifting which replaced $\Delta$-terms, we also have to replace the $\Delta$-terms 
-in the ``domain'' of the substitution. This is the lower case.
+in the ``domain'' of the substitution. This is the lower case in the definition of $\sigma'$ below.
 
 There is just a problem in the following case: $\lif{ f(x)\sigma }$, where $x\sigma = a$ and $f$ is a $\Delta$-symbol.
 Then $\lif{ f(x)\sigma } = \lif{ f(a) } = x_i$, but $\lif{f(x)}\sigma = x_j$ with $i\neq j$.
@@ -154,7 +154,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 \begin{lemma}
 	\label{lemma:lif}
 
-	Let $C$ be a clause and $t_1, \ldots, t_n$ the set of maximal $\Delta$-terms in $C$ and $\sigma$ be a substitution.
+	Let $C$ be a clause and $t_1, \ldots, t_n$ the set of maximal $\Delta$-terms in $C$, $x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$, and $\sigma$ be a substitution.
 	Let $$r \sigma' =
 	\begin{cases} 
 		x_l & \text{ if } r = x_k \text{ for some $k$, $l\neq k$, and $t_k\sigma = t_l$}  \\ 
@@ -203,6 +203,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 \end{proof}
 \clearpage
 
+\begin{comment}
 \begin{lemma}
 	\label{lemma:lif_literal}
 	If $l\sigma$ = $l'\sigma$, then $\lif{l}\sigma' = \lif{l'}\sigma'$ for $\sigma'$ defined as in lemma \ref{lemma:lif}
@@ -227,13 +228,15 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 \end{lemma}
 
 \begin{prop}
-	$\Gamma = \lif{\Gamma}(x_1, \ldots, x_n)$.
+	$\Gamma = \lif{\Gamma}$.
 \end{prop}
 \begin{proof}
 	By definition, $\Delta$-terms only appear in $\Delta$ and not in $\Gamma$. 
 \end{proof}
 
-\begin{lemma} $ \Gamma \entails \lif{(\PI(C) \lor C)}(x_1, \ldots, x_n) $.
+\end{comment}
+
+\begin{lemma} $ \Gamma \entails \lif{(\PI(C) \lor C)} $.
 	\label{lemma:gamma_entails_interpolant}
 \end{lemma}
 
@@ -256,9 +259,9 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 			By the induction hypothesis, we can assume that:
 
-			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor l)}(x_1, \ldots, x_n)$
+			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor l)}$
 
-			$\Gamma \entails \lif{\PI(C_2) \lor (E\lor \lnot l')}(x_{1}, \ldots, x_n)$
+			$\Gamma \entails \lif{\PI(C_2) \lor (E\lor \lnot l')}$
 
 			\begin{enumerate}
 				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
@@ -268,7 +271,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 					\newline 
 					i.e.~$\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma} $.
 
-					Let $\sigma'$ be as in Lemma \ref{lemma:lif} with all $\Delta$-terms occuring here (in formulas and substitutions) as $t_1, \ldots, t_n$.
+					Let $\sigma'$ be as in Lemma \ref{lemma:lif}. $t_1, \ldots, t_n$ must contain all $\Delta$-terms occuring here in formulas and substitutions.
 
 					Hence by Lemma \ref{lemma:lif}
 					$\Gamma \entails \lif{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)}\sigma' $.
@@ -283,9 +286,9 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 					Since $l\sigma = l'\sigma$ (by resolution rule application), $\lif{l\sigma} = \lif{l'\sigma}$.
 					
 					As by Lemma \ref{lemma:lif} $\lif{l\sigma} = \lif{l}\sigma'$ and $\lif{l'\sigma} = \lif{l'}\sigma'$,
-					we get $\lif{l'}\sigma' = \lif{l}\sigma'$.
+					we get $\lif{l}\sigma' = \lif{l'}\sigma'$.
 
-					So by applying $\sigma'$ to $(*)$ and $(\circ)$, we can resolve on $\lif{l'}$ and get
+					So by applying $\sigma'$ to $(*)$ and $(\circ)$, we can do a resolution on $\lif{l}\sigma'$ and get
 
 					$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif D \sigma' \lor \lif{\PI(C_2)}\sigma' \lor \lif E \sigma'$.
 
@@ -300,11 +303,13 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 
 				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$:
+
+			\color{gray}
 					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
 
-					We show that $\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)\sigma}(x_1, \ldots, x_n) $.
+					We show that $\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)\sigma}$
 					By lemma \ref{lemma:lif} with $\sigma'$ as in the lemma,
-					$\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)}(x_1, \ldots, x_n) \sigma'$.
+					$\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)} \sigma'$.
 
 					TODO
 
@@ -312,6 +317,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 			\end{enumerate}
 
 		\item{Paramodulation.}
+			\color{gray}
 
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
@@ -375,7 +381,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 			Hence 
 			$\Gamma \entails \lif{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma' \lor (\lif{D} \lor \lif{E[t]})\sigma') $.
 
-			IS THIS REALLY WHAT I NEED TO SHOW?
+			is this really what i need to show?
 
 
 	\end{description}
