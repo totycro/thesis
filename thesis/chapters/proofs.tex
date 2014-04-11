@@ -52,9 +52,9 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
 			%$\PI(C)$ is defined according to this case distinction:
 			\begin{enumerate}
-				\item If $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:\todo{change to "is $\Gamma$-colored?"} $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
-				\item If $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
-				\item If $\Pred(l) \in \Lang(\Gamma) \intersect \Lang(\Delta)$: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
+				\item If $l$ is $\Gamma$-colored: $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
+				\item If $l$ is $\Delta$-colored: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
+				\item If $l$ is grey: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
 			\end{enumerate}
 
 		\item[Factorisation.]
@@ -127,7 +127,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			We consider the respective cases from definition \ref{def:PI_resolution}:
 
 			\begin{enumerate}
-				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
+				\item $l$ is $\Gamma$-colored.
 					\label{huang_proof_prop_case_1}
 					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
 
@@ -143,7 +143,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 					The language restriction clearly remains satisfied as no non-logical symbols are added.
 
-				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$: 
+				\item $l$ is $\Delta$-colored.
 					\label{huang_proof_prop_case_2}
 					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
 
@@ -163,7 +163,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 					The language restriction again remains intact.
 
-				\item $\Pred(l) \in \Lang(\Delta) \intersect \Lang(\Gamma)$:
+				\item $l$ is grey.
 					Then $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
 
 					First, we have to show that 
