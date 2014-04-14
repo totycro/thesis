@@ -7,7 +7,7 @@ Due to the simplicity of its rules, it is widely used in the area of automated d
 
 \begin{defi}
 	A \defiemph{clause} is a finite set of literals. The empty clause will be denoted by $\square$.
-	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a derivation of $\square$ consisting of applications of resolution rules (cf.~figure~\ref{fig:resolution}) starting from clauses in $\Gamma$.
+	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a derivation of $\square$ consisting of applications of resolution rules (cf.~Figure~\ref{fig:resolution}) starting from clauses in $\Gamma$.
 \end{defi}
 
 
@@ -18,7 +18,7 @@ Due to the simplicity of its rules, it is widely used in the area of automated d
 	See \cite{Rob65}.
 \end{proof}
 
-Clauses will usually be denoted by $C$ or $D$, literals by $l$.
+Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$, positions by $p$.
 
 \begin{figure}[htbp]
 	\begin{prooftree}
@@ -39,9 +39,9 @@ Clauses will usually be denoted by $C$ or $D$, literals by $l$.
 	\begin{prooftree}
 		\LeftLabel{\textit{Paramodulation:}\quad}
 		\AxiomCm{ C \lor s=t }
-		\AxiomCm{ D\occur{r} }
+		\AxiomCm{ D\occurat{r}{p} }
 		\RightLabel{$\quad \sigma = \mgu(s, r)$}
-		\BinaryInfCm{ (C \lor D\occur{t})\sigma }
+		\BinaryInfCm{ (C \lor D\occurat{t}{p})\sigma }
 	\end{prooftree}
 
 	\caption{The rules of resolution calculus}

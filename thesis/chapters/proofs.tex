@@ -61,6 +61,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
 
 		\item[Paramodulation.]
+	\label{def:PI_paramod}
 			If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following case distinction:
 			\begin{enumerate}
 				\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
@@ -83,7 +84,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 \begin{prop}
 	\label{prop:prop_interpol}
-	Let $C$ be a clause of a resolution refutation.
+	Let $C$ be a clause of a resolution refutation of $\Gamma \cup \Delta$.
 	Then $\PI(C)$ is a propositional interpolant with respect to $C$. 
 \end{prop}
 \begin{proof}
@@ -337,11 +338,10 @@ This establishes the theoretical framework which is required to define and show 
 The idea of this procedure will be to replace colored terms still occurring in the propositional interpolant with variables and quantifying them appropriately.
 This replacement is referred to as lifting:
 
-
-\begin{defi}
+\begin{defi}[Lifting]
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
 	$\phi$ a formula or a term, $t_1, \ldots, t_n$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\phi$ and $x_1, \ldots, x_n$ fresh variables.
-	Then $\lift{\Phi}{\phi}{x}$ denotes $\phi\abstraction{t_1/x_1}\ldots\abstraction{t_n/x_n}$.
+	Then $\lft{\Phi}{x}{\phi}$ denotes $\phi\abstraction{t_1/x_1}\ldots\abstraction{t_n/x_n}$.
 \end{defi}
 
 \begin{lemma} 
@@ -356,6 +356,7 @@ This replacement is referred to as lifting:
 First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 \begin{lemma}
+	\label{lemma:gamma_entails_lifted_interpolant}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
 	Then $\Gamma \entails \lift{\Delta}{ \PI(C) \lor C }{x} $ for $C$ in $\pi$.
 \end{lemma}
@@ -482,160 +483,192 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 		\item[Paramodulation.] Suppose the last rule application is an instance of paramodulation. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
-				\AxiomCm{C_2: E\occur{s}}
-				\BinaryInfCm{C: D \lor E\occur{t}}
+				\AxiomCm{C_2: E\occurat{s}{p}}
+				\BinaryInfCm{C: D \lor E\occurat{t}{p}}
 			\end{prooftree}
 
 			By the induction hypothesis, we have that 
 
 			$\Gamma \entails \lif{\PI(C_1) \lor (D \lor s=t)_\Gamma}$ and 
 
-			$\Gamma \entails \lif{\PI(C_2) \lor E\occur{s}_\Gamma}$.
+			$\Gamma \entails \lif{\PI(C_2) \lor (E\occurat{s}{p})_\Gamma}$.
 
 			By Lemma \ref{lemma:lift_commute}, we get that 
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif{s}=\lif{t}$ and 
 
-			$\Gamma \entails \lif{\PI(C_2)} \lor \lif{E\occur{s}_\Gamma}$.
+			$\Gamma \entails \lif{\PI(C_2)} \lor \lif{(E\occurat{s}{p})_\Gamma}$.
 
 			We distinguish two cases:\nopagebreak
 			\begin{enumerate}
-				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occur{s}$ which occurs more than once in $\PI(E(s)) \lor E\occur{s}$.
+				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
 
-					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E(t))_\Gamma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of 
-					Definition \ref{def:PI}. By Lemma \ref{lemma:lift_commute}, this is equivalent to
+					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E\occurat{t}{p})_\Gamma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of 
+					Definition \ref{def:PI_paramod}. By Lemma \ref{lemma:lift_commute}, this is equivalent to
 
-					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{E(t)_\Gamma})$
+					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{(E\occurat{t}{p})_\Gamma})$
 
-					Suppose that in a model $M$ of $\Gamma$ 
+					Suppose that in a model $M$ of $\Gamma$,
 					$M \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
-					$M \cancel\entails \lift{\Delta}{ E(t)_\Gamma }{x}$.
-					We show that then, depending on whether $\lif{s} = \lif{t}$ holds in $M$, one of the first disjuncts holds in $M$.
+					$M \cancel\entails \lift{\Delta}{ (E\occurat{t}{p})_\Gamma }{x}$.
+					We show that then, depending on whether $\lif{s} = \lif{t}$ holds in $M$, one of the first two disjuncts holds in $M$.
 
 					Then in case $M \entails \lif{s} = \lif{t}$ we also get
-					$M \cancel\entails \lift{\Delta}{ E(s)_\Gamma }{x}$ and consequently by the induction hypothesis $M\entails \lif{\PI(C_2)}$.
+					$M \cancel\entails \lift{\Delta}{ (E\occurat{s}{p})_\Gamma }{x}$ and consequently by the induction hypothesis $M\entails \lif{\PI(C_2)}$.
 
 					However in case $M \entails \lif{s} \neq \lif{t}$ we get by the induction hypothesis that 
 					$M\entails \lif{\PI(C_1)}$.
 
 					\label{njktahjtkhltah}
 
-				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occur{s}$ in $E\occur{s}$ which occurs more than once in $\PI(E(s)) \lor E\occur{s}$.
+				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
+				This reflects case \ref{def:PI_paramod_1} of Definition \ref{def:PI_paramod}.
 
-					Then models are possible in which $s=t$ and therefore $\lif{s}=\lif{t}$ holds, while at the same time $\lif{h\occur{s}} \liff \lif{h\occur{t}}$ does not as $h\occur{s}$ and $h\occur{t}$ are replaced by distinct variables due to being different $\Delta$-terms.
+					Then models are possible in which $s=t$ and therefore $\lif{s}=\lif{t}$ holds, while at the same time $\lif{h\occur{s}} \neq \lif{h\occur{t}}$ does not as $h\occur{s}$ and $h\occur{t}$ are replaced by distinct variables due to being different $\Delta$-terms.
 
 					Therefore we amend the proof of case \ref{njktahjtkhltah} as follows:
 
-					In the case $M \entails \lif{s} = \lif{t}$, 
+					In case $M \entails \lif{s} = \lif{t}$ (otherwise proceed as in case \ref{njktahjtkhltah}), 
+					one of the following cases holds:
 
-					TODO: what if multiple $h(s)$? which one?
+					\begin{itemize}
+					\item $M\entails \lif{h\occur{s}} = \lif{h\occur{t}}$. From this, it follows that as in the proof of case \ref{njktahjtkhltah}, $M \cancel \entails \lif{(E\occurat{s}{p})_\Gamma}$ and consequently $M \entails \lif{\PI(C_2)}$ again by the induction hypothesis.
 
-
-					However as here $\PI(C)$ contains the with respect to case \ref{njktahjtkhltah} additional disjunct $s=t \land h\occur{s} \neq h\occur{t}$, 
-
-
-					TODO: argue why not at other case
-
-
+					\item 
+						$M \entails \lif{h\occur{s}} \neq \lif{h\occur{t}}$.
+						However as here $\PI(C)$ contains the with respect to case \ref{njktahjtkhltah} additional disjunct $s=t \land h\occur{s} \neq h\occur{t}$,
+						$M \entails \lif{PI(C)}$ due to $M \entails \lif{s}=\lif{t} \land \lif{h\occur{s}} \neq \lif{h\occur{t}}$
 					\qedhere
-
+					\end{itemize}
 			\end{enumerate}
-
 
 	\end{itemize}
 
 \end{proof}
 
 \clearpage
-			\begin{remark}
+\begin{remark}
 
-			\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
-				This lemma does not directly hold for a non-propositional proof.
+	{\huge
 
-				%In that case, the natural induction hypothesis would state that 
-				The statement of the lemma would be identical in this case. For resolution, by the induction hypothesis, we would get
+		\textsc{
+		does not just work like this
+	}
 
-				$\Gamma \entails \lif{ \PI(C_1)} \lor \lif D  \lor \lif l$
+	}
 
-				$\Gamma \entails \lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'}$
+	\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+	This lemma does not directly hold for a non-propositional proof.
 
-				By the resolution we know that 
-				$l\sigma = l'\sigma$.
+	%In that case, the natural induction hypothesis would state that 
+	The statement of the lemma would be identical in this case. For resolution, by the induction hypothesis, we would get
 
-				In order to proceed as in the other proof, we would need $\sigma'$ s.t.\
-				$\lif{l}\sigma' = \lif{l'}\sigma'$
+	$\Gamma \entails \lif{ \PI(C_1)} \lor \lif D  \lor \lif l$
 
-				$\Gamma \entails (\lif{ \PI(C_1)} \lor \lif D  \lor \lif l )\sigma'$
+	$\Gamma \entails \lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'}$
 
-				$\Gamma \entails \lif{ \PI(C_1)}\sigma' \lor \lif D\sigma'  \lor \lif l\sigma'$
+	By the resolution we know that 
+	$l\sigma = l'\sigma$.
 
-				$\Gamma \entails (\lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'})\sigma'$
+	In order to proceed as in the other proof, we would need $\sigma'$ s.t.\
+	$\lif{l}\sigma' = \lif{l'}\sigma'$
 
-				$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor \lnot \lif{l'} \sigma'$
+	$\Gamma \entails (\lif{ \PI(C_1)} \lor \lif D  \lor \lif l )\sigma'$
 
-				Hence 
+	$\Gamma \entails \lif{ \PI(C_1)}\sigma' \lor \lif D\sigma'  \lor \lif l\sigma'$
 
-				$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor
-				\lif{ \PI(C_1)}\sigma' \lor \lif D\sigma' $
+	$\Gamma \entails (\lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'})\sigma'$
 
-				and therefore
+	$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor \lnot \lif{l'} \sigma'$
 
-				$\Gamma \entails \lif{ \PI(C_2) \lor E  \lor
-					\PI(C_1) \lor  D}\sigma' $
+	Hence 
 
-				And we need to show that 
-				$\Gamma \entails \lif{( \PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma }$
+	$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor
+	\lif{ \PI(C_1)}\sigma' \lor \lif D\sigma' $
 
-				%which is equivalent to
-				%$\Gamma \entails \lif{PI(C_1)\sigma} \lor \lif{\PI(C_2)\sigma} \lor \lif{D\sigma} \lor \lif{E\sigma} $
+	and therefore
 
+	$\Gamma \entails \lif{ \PI(C_2) \lor E  \lor
+	\PI(C_1) \lor  D}\sigma' $
 
-			\end{remark}
+	And we need to show that 
+	$\Gamma \entails \lif{( \PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma }$
 
-
-\clearpage
-
-
-
-
+	%which is equivalent to
+	%$\Gamma \entails \lif{PI(C_1)\sigma} \lor \lif{\PI(C_2)\sigma} \lor \lif{D\sigma} \lor \lif{E\sigma} $
 
 
+\end{remark}
 
-\subsubsection{overbinding}
 
-Algorithm (input: propositional interpolant $\theta$):
-\begin{enumerate}
-	\item Let $t_1, \ldots, t_n$ be the maximal occurrences of noncommon terms in $\theta$. Order $t_i$ ascendingly by term size. 
-	\item Let $\theta^*$ be $\theta$ with maximal occurrences of $\Delta$-terms $r_1, \ldots, r_k$ replaced by fresh variables $x_1, \ldots, x_k$ and maximal occurrences of $\Gamma$-terms $s_1, \ldots, s_{n-k}$ by fresh variables $x_{k+1}, \ldots, x_{n}$
-	\item Return $Q_1 x_1, \ldots Q_n x_n \theta^*$, where $Q_i$ is $\forall$ if $t_i$ is a $\Delta$-term and $\exists$ otherwise.
-\end{enumerate}
 
-Language condition easily established. To prove:
 
-$\Gamma \entails Q_1 x_1, \ldots Q_n x_n \theta^*$
 
-$\Delta \entails \lnot Q_1 x_1, \ldots Q_n x_n \theta^*$
-
-We know that $\theta$ works, just the terms are missing.
 
 \subsection{final step of huang's proof}
 
+\begin{lemma}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $I = \PI(\square)$ be the propositional interpolant of the empty clause derived in $\pi$.
+
+	Let $\pi'$ 
+\end{lemma}
+
+\begin{lemma}
+	%Let $\{z_1,\ldots, z_n\}$ be the maximal colored terms of a clause $C$.
+	%Then 
+	%$ Q_1 z_1 \ldots Q_n z_n \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }
+	%\;\liff\;
+	%Q_1 z_1 \ldots Q_n z_n \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$ for $Q_i \in \{\forall, \exists\}$ for $1\leq i\leq n$.
+
+	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }$ and 
+	$ \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$
+	differ only in the naming of the variables replacing maximal colored terms.
+	\label{lemma:naming_of_colored_variables}
+
+\end{lemma}
+\begin{proof}
+	Suppose a term $t$ in $C$ is affected by a lifting.
+	We only need to consider maximal colored terms as grey terms are not affected by the liftings.
+	Without loss of generality let $t$ be a maximal $\Delta$-colored term.
+
+	Let $\Phi$ be the positions of maximal occurrences of $t$.
+	Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
+
+	In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
+	However after this step,
+	all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
+	Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
+\end{proof}
+
 \begin{thm}
-	$Q_1 z_1 \ldots Q_n z_n \PI(\square)^*(z_1, \ldots, z_n)$ is a craig interpolant (order as in huang).
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $I = \PI(\square)$ the propositional interpolant of the empty clause derived in $\pi$.
+	Furthermore, let $z_1, \dots, z_n$ be the variables which replace the colored terms in $\lifgamma{\lifdelta{I}}$ ordered by their length.
+	Then
+	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{I}}$, where $Q_i$ is $\forall$ ($\exists$) if $z_i$ replaces a $\Delta$ ($\Gamma$)-term, is an interpolant.
 \end{thm}
 \begin{proof}
-	By Lemma \ref{lemma:gamma_entails_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_n \overline{\PI(\square)}(x_1, \ldots, x_n)$.
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{I}$ where $m$ is the number of maximal $\Delta$-colored terms in $I$.
 
-	The terms in $\overline{PI(\square)}$ are either among the $x_i$, $1 \leq i \leq n$ or grey terms or $\Gamma$-terms.
-	Let $t$ be a maximal $\Gamma$-term in $\overline{\PI(\square)}$.
-	Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $x_j$ are as before, the $u_j$ are grey terms and the $v_j$ are $\Gamma$-terms.\todo{basically only need the $x_j$}{}
-	Note that the $\Delta$-terms, which are replaced by the $x_{i_1}, \ldots, x_{i_{n_x}}$ are of strictly smaller size than $t$ as they are ``strict'' subterms of $t$.
+	A term in $\lifdelta{I}$ is either $x_i$, $1 \leq i \leq m$, a grey term or a $\Gamma$-terms.
+	Let $t$ be a maximal $\Gamma$-term in $\lifdelta{I}$ and $x_{j_1}, \dots, x_{j_k}$ the variables replacing $\Delta$-terms in $t$.
+	Note that the $\Delta$-terms, which are replaced by $x_{j_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
 
-	In $\PI(\square)^*$, $t$ will be replaced by some $z_j$, which is existentially quantified.
-	For this $z_j$, $t$ is a witness as due to the quantifier ordering, all the $x_{i_1}, \ldots, x_{i_{n_x}}$ will be quantified before the existential quantification of $z_j$.
-	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n \PI(\square)^*(z_1, \ldots, z_n)$.
+	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\leq j \leq n_u$ are grey terms and the $v_j$, $1\leq j\leq n_v$ are $\Gamma$-terms.
 
-	TODO: $\Delta$
+	In $\lifgamma{\lifdelta{I}}$, $t$ is replaced by some $z_j$, which is existentially quantified.
+	Hence $t$ is a witness for $z_j$ as due to the quantifier ordering,
+	the existential quantification of $z_j$ is in the scope of the quantifiers of $x_{j_1}, \ldots, x_{j_k}$ respectively.
+	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{I}}$.
+
+	By magic, $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{I}{y}$, where $m$ is the number of $\Gamma$-colored terms in $I$.
+	By a similar line of argumentation as above, we can replace the maximal $\Delta$-terms by existentially quantified variables and arrive at
+	$\Delta \entails\nolinebreak{} \overline Q_1 z_1 \dots \overline Q_n z_n\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{I}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
+	Therefore also
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Delta}{x}{\lft{\Gamma}{y}{I}}$.
+	By Lemma \ref{lemma:naming_of_colored_variables} and as all variables which replace colored terms are bound, 
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{I}}$.
+
+	As it is now easy to see that $Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{I}}$ contains no colored symbol, it is an interpolant.
 \end{proof}
 
 

@@ -163,7 +163,13 @@ positioning,fit,calc,decorations.text,shadows%
 %\newcommand{\lift}[3]{\operatorname{Lift}_{#1,#3}(#2)}
 %\newcommand{\lift}[3]{\operatorname{Lift}_{#1,#3}[#2]}
 %\newcommand{\lift}[3]{\overline{#2}_{#1,#3}}
-\newcommand{\lift}[3]{\ell_{#1,#3}[#2]}
+\newcommand{\lifsym}{\ell}
+\newcommand{\lift}[3]{\lifsym_{#1,#3}[#2]}
+
+\newcommand{\lft}[3]{\lifsym_{#1,#2}[#3]}
+
+\newcommand{\lifdelta}[1]{\lift{\Delta}{#1}{x}}
+\newcommand{\lifgamma}[1]{\lift{\Gamma}{#1}{y}}
 
 \newcommand{\arr}[1]{\ensuremath{\mathcal{A}(#1)}}
 \newcommand{\warr}[1]{\ensuremath{\mathcal{W}(#1)}}
@@ -327,5 +333,7 @@ positioning,fit,calc,decorations.text,shadows%
 
 \newcommand{\partisym}{\ensuremath{\chi}}
 
-\newcommand{\occur}[1]{\ensuremath{(#1)}}
+\newcommand{\occur}[1]{\ensuremath{[#1]}}
+
+\newcommand{\occurat}[2]{\ensuremath{{\occur{#1}_{#2}}}}
 
