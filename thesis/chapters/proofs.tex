@@ -12,27 +12,45 @@ terms can grow unpredictably, order cannot be determined during pass
 
 Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of the empty clause from $\Gamma \cup \Delta$. Then $\PI$ is a function that returns a interpolant with respect to the current clause. 
 
-\begin{defi}
-	$\theta$ is a \defiemph{propositional interpolant} with respect to a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$ if 
+\begin{defi}[Propositional interpolant]
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	A formula $A$ is a \defiemph{propositional interpolant} if
 	\label{def:rel_prop_interpol}
 	\begin{enumerate}
-		\item $\Gamma \entails \theta \lor C$
+		\item $\Gamma \entails A$
 			\label{rel_prop_interpol_cond1}
-		\item $\Delta \entails \lnot \theta \lor C$
+		\item $\Delta \entails \lnot A$
 			\label{rel_prop_interpol_cond2}
-		\item $\Pred(\theta) \subseteq (\Pred(\Gamma) \intersect \Pred(\Delta)) \cup \{\top, \bot\} $.
+		\item $\Pred(A) \subseteq (\Pred(\Gamma) \intersect \Pred(\Delta)) \cup \{\top, \bot\} $.
 			\label{rel_prop_interpol_cond_lang}
-			\qedhere
 	\end{enumerate}
+
+
+	For a clause $C$ in $\pi$, a formula $A_C$ is a \defiemph{propositional interpolant relative to $C$} if
+	\label{def:rel_prop_interpol}
+	\begin{enumerate}
+		\item $\Gamma \entails A_C \lor C$
+			\label{rel_prop_interpol_cond1}
+		\item $\Delta \entails \lnot A_C \lor C$
+			\label{rel_prop_interpol_cond2}
+		\item $\Pred(A_C) \subseteq (\Pred(\Gamma) \intersect \Pred(\Delta)) \cup \{\top, \bot\} $.
+			\label{rel_prop_interpol_cond_lang}
+	\end{enumerate}
+
+	The propositional interpolant of the empty clause derived in $\pi$ is denoted by $\PI(\pi)$.\qedhere
 \end{defi}
 
-The third condition will sometimes be referred to as \emph{language restriction}.
-It is easy to see that a propositional interpolant with respect to $\square$ is a propositional interpolant\todo{add this to the definition, i.e.~possible define rel prop interpol from prop interpol}, i.e.~it is an interpolant without the language restriction on constant, variable and function symbols.
+The third condition of a propositional interpolant will sometimes be referred to as \emph{language restriction}.
+It is easy to see that the propositional interpolant relative to the empty clause of a resolution refutation is a propositional interpolant.
+%^\todo{add this to the definition, i.e.~possible define rel prop interpol from prop interpol}
 
 We proceed by defining a procedure $\PI$ which extracts propositional interpolants from a resolution refutation.
 
-\begin{defi}
-	\defiemph{$\PI$} is defined as follows:
+\begin{defi}[Propositional interpolant extraction.]
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
+
+	For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
 	\label{def:PI}
 	\begin{itemize}
 		\item[Base case.]
@@ -40,7 +58,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			If otherwise $C \in \Delta$, $\Delta(C) = \top$. 
 		\item[Resolution.]
 			\label{def:PI_resolution}
-			Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
+			%Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
 
 			%	\begin{prooftree}
 			%		\AxiomCm{C_1: D \lor l}
@@ -54,7 +72,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			\begin{enumerate}
 				\item If $l$ is $\Gamma$-colored: $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
 				\item If $l$ is $\Delta$-colored: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
-				\item If $l$ is grey: $\PI(C) = [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma $
+				\item If $l$ is grey: $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
 			\end{enumerate}
 
 		\item[Factorisation.]
@@ -67,11 +85,11 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 				\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
 					\label{def:PI_paramod_1}
 					\newline
-					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})$ 
+					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$ 
 				\item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
 					\label{def:PI_paramod_2}
 					\newline
-					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})$ 
+					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$ 
 				\item Otherwise:
 					\label{def:PI_paramod_3}
 					\newline
@@ -546,7 +564,6 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 \end{proof}
 
-\clearpage
 \begin{remark}
 
 	{\huge
@@ -607,11 +624,90 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 \subsection{final step of huang's proof}
 
-\begin{lemma}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $I = \PI(\square)$ be the propositional interpolant of the empty clause derived in $\pi$.
+The definition $\PI$ posseses a convenient property which is termed \emph{symmetry} in \cite[Definition 5]{interpolantStrenth} and can be stated formally as follows:
 
-	Let $\pi'$ 
+\newcommand{\primex}[1]{\ensuremath{\hat{#1}}}
+\begin{lemma}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	Then $\PI(\pi) = \lnot \PI(\primex\pi)$.
 \end{lemma}
+\begin{proof}
+	We prove this lemma by induction on $\pi$.
+	Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
+
+	\newcommand{\p}[1]{\primex{#1}}
+	\begin{itemize}
+		\item[Base case.]
+			If $C \in \Gamma$, then $C' \in \Delta'$ and $\PI(C) = \bot \semiff \lnot \top = \lnot \PI(C')$. 
+			The case for $C\in \Delta$ is analogous.
+
+		\item[Resolution.]
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$ $^{(*)}$, then by induction hypothesis, we get that
+			$\PI(C_i) = \lnot \PI(C'_i)$ for $i\in \{1,2\}$.
+
+			We distinguish the following cases:
+			\begin{enumerate}
+					\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
+						\begin{align*}
+							\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
+														 &\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
+														 &= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
+														 &= \lnot \PI(\primex C)  
+						\end{align*}
+					\item $l$ is $\Delta$-colored. This case can be argued analogously.
+
+					\item $l$ is grey. Then $\primex l$ is grey.\nopagebreak 
+			\begin{align*}
+				\PI(C) 
+				&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
+				&=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
+				&\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
+				&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
+				&= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
+				&= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
+				&= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
+				&= \lnot \PI(\p C)
+			\end{align*}
+
+			\end{enumerate}
+
+		\item[Factorisation.]
+			Suppose the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$. Then $\PI(C) = \PI(C_1)\sigma$ and the induction hypothesis gives the result.
+
+		\item[Paramodulation.]
+			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
+			We distinguish the following cases:
+
+			\begin{enumerate}
+				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$ and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
+					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex D\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex D\occur{r} \lor \PI(\primex D\occur{r})$.
+					\begin{align*}
+						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+						 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+						 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+						 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+						 &= \lnot \PI(\primex C)
+					\end{align*}
+
+				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
+					This case can be argued analogously.
+				\item Otherwise:
+					\begin{align*}
+						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
+									 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
+									 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
+									 &\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
+									 &= \lnot \PI(\primex C)
+					\qedhere
+					\end{align*}
+			\end{enumerate}
+
+
+	\end{itemize}
+
+\end{proof}
+
 
 \begin{lemma}
 	%Let $\{z_1,\ldots, z_n\}$ be the maximal colored terms of a clause $C$.
@@ -641,34 +737,34 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 \end{proof}
 
 \begin{thm}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $I = \PI(\square)$ the propositional interpolant of the empty clause derived in $\pi$.
-	Furthermore, let $z_1, \dots, z_n$ be the variables which replace the colored terms in $\lifgamma{\lifdelta{I}}$ ordered by their length.
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	$z_1, \dots, z_n$ be the variables which replace the colored terms in $\lifgamma{\lifdelta{\PI(\pi)}}$ ordered by their length.
 	Then
-	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{I}}$, where $Q_i$ is $\forall$ ($\exists$) if $z_i$ replaces a $\Delta$ ($\Gamma$)-term, is an interpolant.
+	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ ($\exists$) if $z_i$ replaces a $\Delta$ ($\Gamma$)-term, is an interpolant.
 \end{thm}
 \begin{proof}
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{I}$ where $m$ is the number of maximal $\Delta$-colored terms in $I$.
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{\PI(\pi)}$ where $m$ is the number of maximal $\Delta$-colored terms in $\PI(\pi)$.
 
-	A term in $\lifdelta{I}$ is either $x_i$, $1 \leq i \leq m$, a grey term or a $\Gamma$-terms.
-	Let $t$ be a maximal $\Gamma$-term in $\lifdelta{I}$ and $x_{j_1}, \dots, x_{j_k}$ the variables replacing $\Delta$-terms in $t$.
+	A term in $\lifdelta{\PI(\pi)}$ is either $x_i$, $1 \leq i \leq m$, a grey term or a $\Gamma$-terms.
+	Let $t$ be a maximal $\Gamma$-term in $\lifdelta{\PI(\pi)}$ and $x_{j_1}, \dots, x_{j_k}$ the variables replacing $\Delta$-terms in $t$.
 	Note that the $\Delta$-terms, which are replaced by $x_{j_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
 
 	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\leq j \leq n_u$ are grey terms and the $v_j$, $1\leq j\leq n_v$ are $\Gamma$-terms.
 
-	In $\lifgamma{\lifdelta{I}}$, $t$ is replaced by some $z_j$, which is existentially quantified.
+	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is replaced by some $z_j$, which is existentially quantified.
 	Hence $t$ is a witness for $z_j$ as due to the quantifier ordering,
 	the existential quantification of $z_j$ is in the scope of the quantifiers of $x_{j_1}, \ldots, x_{j_k}$ respectively.
-	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{I}}$.
+	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
 
-	By magic, $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{I}{y}$, where $m$ is the number of $\Gamma$-colored terms in $I$.
+	By magic, $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $m$ is the number of $\Gamma$-colored terms in $\PI(\pi)$.
 	By a similar line of argumentation as above, we can replace the maximal $\Delta$-terms by existentially quantified variables and arrive at
-	$\Delta \entails\nolinebreak{} \overline Q_1 z_1 \dots \overline Q_n z_n\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{I}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
+	$\Delta \entails\nolinebreak{} \overline Q_1 z_1 \dots \overline Q_n z_n\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Delta}{x}{\lft{\Gamma}{y}{I}}$.
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$.
 	By Lemma \ref{lemma:naming_of_colored_variables} and as all variables which replace colored terms are bound, 
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{I}}$.
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
 
-	As it is now easy to see that $Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{I}}$ contains no colored symbol, it is an interpolant.
+	As it is now easy to see that $Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
 \end{proof}
 
 
