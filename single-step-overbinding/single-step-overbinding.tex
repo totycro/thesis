@@ -135,7 +135,8 @@
 
 \newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
 
-\newcommand{\lifboth}[1]{\lift{\Gamma}{\lift{\Delta}{#1}{x}}{y}}
+
+	\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
 
 \section{Overbinding in one step}
 
@@ -401,6 +402,17 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 \clearpage
 
+{\huge
+
+	actually
+
+	We have that $\Gamma \entails \forall \bar x \lif{ \PI(C) \lor C}$.
+
+	Note that both are lifted.
+	\medskip
+
+
+}
 We have that $\Gamma \entails \forall \bar x \lif{C} \lor C$.
 \bigskip
 
@@ -426,7 +438,7 @@ Hence whatever is placed in $q$ and $p$ is quantified over earlier than the vari
 
 TODO: Proof or refute\dots
 
-{\huge
+{
 
 	conjecture: put all terms that share variables and appear in the same clause and are all overbound with the same quantifier in the same quantifier block.
 
@@ -481,7 +493,7 @@ A unification where a $\Gamma$-colored term $s$ enters $t$ happens when
 \end{proof}
 
 \begin{lemma}
-	$\Gamma \entails \forall x_1 \ldots \forall x_n ( \lif{PI(C)} )\lor C$ for $C$ in a prop proof.
+	$\Gamma \entails \forall x_1 \ldots \forall x_n  \lif{PI(C) \lor C}$ for $C$ in a prop proof.
 	\label{structured2}
 \end{lemma}
 \begin{proof}
@@ -490,12 +502,41 @@ A unification where a $\Gamma$-colored term $s$ enters $t$ happens when
 
 
 \begin{lemma}
-	$\Gamma \entails \bar Q_n ( \lift{\Gamma}{ \lif{PI(C)} }{y} )\lor C$ for $C$ in a prop proof.
+	$\Gamma \entails \bar Q_n  \lifgamma{ \lifdelta{PI(C)\lor C} } $ for $C$ in a prop proof.
 \end{lemma}
 \begin{proof}
 	By \ref{structured2}, 
-	$\Gamma \entails \forall x_1 \ldots \forall x_n ( \lif{PI(C)} )\lor C$.
+	$\Gamma \entails \forall x_1 \ldots \forall x_n  \lif{PI(C) \lor C}$.
 	Show that the existential quantifiers in $\bar Q_n$ have witnesses.
+
+	If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l$, then by induction hypothesis, we get that
+
+	$\PI(C) = (l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) $
+
+	supp $l$ grey:
+	$\Gamma \entails \bar Q_n  \lifgamma{ \lifdelta{PI(C_i)\lor C_i} } $ for $i \in \{1,2\}$
+
+	Need:
+	$\Gamma \entails \bar Q_n \lifboth{{PI(C)\lor C} }$
+
+	i.e.
+	$\Gamma \entails \{Q_{n_1} \cup Q_{n_2} \cup \text{new ones}\} ( \lifboth{(l \land \lifboth{ \PI(C_2)) } \lor (\lnot l \land \lifboth{\PI(C_1)}) \lor D \lor E })$
+
+
+
+	existentially overbound variables in $\lifboth{\PI(C_i)}$ will still work if relative order is maintained, which it is.
+
+	for new terms in $l$, we have lemma \ref{structured2}, which provide witnesses.
+
+	huang-style: show how a foreign term got into a colored term, and this is how it must have an arrow.
+
+
+	TODO: show for restricted version: all variables occur once as maximal ``colored'' term. 
+
+	TODO: what if a predicate doesn't make it into the interpolant.
+
+
+
 \end{proof}
 
 
