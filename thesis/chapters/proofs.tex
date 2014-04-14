@@ -628,9 +628,10 @@ The definition $\PI$ posseses a convenient property which is termed \emph{symmet
 
 \newcommand{\primex}[1]{\ensuremath{\hat{#1}}}
 \begin{lemma}
+	\label{lemma:symmetry}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
 	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	Then $\PI(\pi) = \lnot \PI(\primex\pi)$.
+	Then $\PI(\pi) \semiff \lnot \PI(\primex\pi)$.
 \end{lemma}
 \begin{proof}
 	We prove this lemma by induction on $\pi$.
@@ -708,6 +709,23 @@ The definition $\PI$ posseses a convenient property which is termed \emph{symmet
 
 \end{proof}
 
+This lemma can be leveraged to show a counterpart of Lemma \ref{lemma:gamma_entails_lifted_interpolant} for $\Delta$:\nopagebreak
+
+\begin{cor}
+	\label{cor:delta_entails_lifted_interpolant}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
+	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
+\end{cor}
+\begin{proof}
+	Build $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause set partition.
+	\newline
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$.
+	\newline
+	By Lemma \ref{lemma:symmetry},
+$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
+	This however is nothing else than 
+$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
+\end{proof}
 
 \begin{lemma}
 	%Let $\{z_1,\ldots, z_n\}$ be the maximal colored terms of a clause $C$.
@@ -756,7 +774,7 @@ The definition $\PI$ posseses a convenient property which is termed \emph{symmet
 	the existential quantification of $z_j$ is in the scope of the quantifiers of $x_{j_1}, \ldots, x_{j_k}$ respectively.
 	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
 
-	By magic, $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $m$ is the number of $\Gamma$-colored terms in $\PI(\pi)$.
+	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $m$ is the number of $\Gamma$-colored terms in $\PI(\pi)$.
 	By a similar line of argumentation as above, we can replace the maximal $\Delta$-terms by existentially quantified variables and arrive at
 	$\Delta \entails\nolinebreak{} \overline Q_1 z_1 \dots \overline Q_n z_n\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also

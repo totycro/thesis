@@ -187,10 +187,10 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	Then by our above definition of $f$ in $M$, we have that $M \entails f(\bar t) = s$ iff $M \entails B$.
 \end{proof}
 
-\begin{corr}
+\begin{cor}
 	Let $\Phi$ be a set of first-order formulas.
 	Then $\Phi$ is satisfiable if and only if $\TransAll(\Phi)$ is satisfiable.
-\end{corr}
+\end{cor}
 \begin{proof}
 	The left-to-right direction is directly given in Proposition \ref{prop:trans_sat_equiv}.
 	For the other direction, consider that by Proposition \ref{prop:trans_sat_equiv}, $\TransInv(\Trans(\Phi))$ is satisfiable, which by Lemma \ref{lemma:tinv} is nothing else than $\Phi$.
