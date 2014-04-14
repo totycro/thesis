@@ -1,0 +1,1412 @@
+\documentclass[,%fontsize=11pt,%
+	paper=25cm:25cm,% 
+	%landscape,
+	%DIV12, % mehr text pro seite als defaultyyp
+	DIV22,
+	%DIV=calc,%
+	%twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+\def\proofSkipAmount{ \vskip -0.3em}
+
+\begin{document}
+
+\newcommand{\ha}[1]{ {\color{red} #1} }
+\newcommand{\hb}[1]{ {\color{blue} #1} }
+\newcommand{\hc}[1]{ {\color{violet} #1} }
+\section*{Example 101: canonical examples for overbinding w.r.t. order }
+Here, the second lower prooftree shows what huang would produce.
+
+\e{Ex 101a}
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(\ha u, f(\ha u)) \lor Q(\ha u)}  }
+	\AxiomCm{\p{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{P(a, f(a))}
+
+	\AxiomCm{\p{\lnot P(x, y)} }
+	\RightLabelm{x\mapsto a, y\mapsto f(a) }
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{u\mapsto a}
+		\BinaryInfCm{Q(a)}
+
+		\AxiomCm{\top}
+		\RightLabelm{x\mapsto a, y\mapsto f(a) }
+		\BinaryInfCm{ P(a, f(a)) \lor Q(a)}
+	\end{prooftree}
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\BinaryInfCm{\forall x_1 Q(x_1)}
+
+		\AxiomCm{\top}
+		\BinaryInfCm{  \forall x_1 \exists x_2 (P(x_1, x_2) \lor Q(x_1)) }
+	\end{prooftree}
+
+\end{multicols}
+
+Direct overbinding would not work without merging same variables!: $\forall x_1 \forall x_2 \exists x_3 ( P(x_2, x_3) \lor Q(x_1) )$
+
+counterexample: $Q \sim \{0\}, P\sim \{(1,0)\} $
+
+Direct overbinding would work when considering original dependencies as highlighted above
+
+\bigskip
+
+\e{Ex 101b -- other resolution order}
+\begin{prooftree}
+	\AxiomCm{\sig{P(u, f(u)) \lor Q(u)}  }
+	\AxiomCm{\p{\lnot P(x, y)} }
+	\RightLabelm{y\mapsto f(u), x\mapsto u}
+	\BinaryInfCm{Q(u))}
+
+	\AxiomCm{\p{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{x\mapsto f(u), x\mapsto u}
+		\BinaryInfCm{P(u, f(u))}
+
+		\AxiomCm{\top}
+		\RightLabelm{u\mapsto a}
+		\BinaryInfCm{ P(a, f(a)) \lor Q(a)  }
+	\end{prooftree}
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\BinaryInfCm{\exists x_1 P(u, x_1)}
+
+		\AxiomCm{\top}
+		\RightLabelm{u\mapsto a}
+		\BinaryInfCm{ \forall x_1 \exists x_2 ( P(x_1, x_2) \lor Q(x_1) ) }
+	\end{prooftree}
+\end{multicols}
+
+
+
+\e{Ex 101c --  $\Pi$ and $\Sigma$ swapped}
+\begin{prooftree}
+	\AxiomCm{\p{P(u, f(u)) \lor Q(u)}  }
+	\AxiomCm{\sig{\lnot P(x, y)} }
+	\RightLabelm{y\mapsto f(u), x\mapsto u}
+	\BinaryInfCm{Q(u))}
+
+	\AxiomCm{\sig{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+	\begin{prooftree}
+		\AxiomCm{\top}
+		\AxiomCm{\bot}
+		\RightLabelm{x\mapsto f(u), x\mapsto u}
+		\BinaryInfCm{\lnot P(u, f(u))}
+
+		\AxiomCm{\bot}
+		\RightLabelm{u\mapsto a}
+		\BinaryInfCm{ \lnot P(a, f(a)) \land \lnot Q(a)  }
+	\end{prooftree}
+	\begin{prooftree}
+		\AxiomCm{\top}
+		\AxiomCm{\bot}
+		\BinaryInfCm{\forall x_2 \lnot P(u, x_2)}
+
+		\AxiomCm{\bot}
+		\BinaryInfCm{ \exists x_1 \forall x_2 ( \lnot P(x_1, x_2) \land \lnot Q(x_1)  )}
+	\end{prooftree}
+\end{multicols}
+
+
+\e{Ex 101d --  $\Pi$ and $\Sigma$ swapped, other resolution order}
+\begin{prooftree}
+	\AxiomCm{\p{P(u, f(u)) \lor Q(u)}  }
+	\AxiomCm{\sig{\lnot Q(a)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{P(a, f(a))}
+
+	\AxiomCm{\sig{\lnot P(x, y)} }
+	\RightLabelm{x\mapsto a, y\mapsto f(a)}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+	\begin{prooftree}
+		\AxiomCm{\top}
+		\AxiomCm{\bot}
+		\RightLabelm{y\mapsto a}
+		\BinaryInfCm{\lnot Q(a)}
+
+		\AxiomCm{\bot}
+		\RightLabelm{x\mapsto a, y\mapsto f(a)}
+		\BinaryInfCm{ \lnot Q(a) \land \lnot P(a, f(a)) }
+	\end{prooftree}
+	\begin{prooftree}
+		\AxiomCm{\top}
+		\AxiomCm{\bot}
+		\BinaryInfCm{\exists x_1 \lnot Q(x_1)}
+
+		\AxiomCm{\bot}
+		\BinaryInfCm{ \exists x_1 \forall x_2 ( \lnot P(x_1, x_2) \land \lnot Q(x_1)  )}
+	\end{prooftree}
+\end{multicols}
+
+
+\section*{102 -- similar to 101 but with intra-clause-set inferences}
+
+
+\e{Ex 102a}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{P(f(\ha x)) \lor Q(f(\ha x), z)} }
+	\AxiomCm{ \p{\lnot P(y) } }
+	\BinaryInfCm{ Q(f(x), z) }
+
+	\AxiomCm{ \sig{\lnot Q(x_1, \hb y) \lor R(\hb y) } }
+	\AxiomCm{ \p{\lnot R(g(z_1)) } }
+	\RightLabelm{y \mapsto g(z_1), x_1 \mapsto f(x)}
+	\BinaryInfCm{ \lnot Q(x_1, g(z_1)) }
+
+	\RightLabelm{x_1 \mapsto f(x), z \mapsto g(z_1)}
+	\BinaryInfCm{ \square }
+\end{prooftree}
+
+\begin{multicols}{2}
+
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top}
+		\BinaryInfCm{ P(f(x))}
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{y \mapsto g(z_1), x_1 \mapsto f(x)}
+		\BinaryInfCm{ R(g(z_1)) }
+
+		\RightLabelm{x_1 \mapsto f(x), z \mapsto g(z_1)}
+		\BinaryInfCm{ P(f(x)) \lor R(g(z_1)) }
+
+	\end{prooftree}
+
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top}
+		\BinaryInfCm{ \exists x_1 P(x_1)}
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\BinaryInfCm{ \forall x_2 R(x_2) }
+
+		\BinaryInfCm{ \exists x_1 \forall x_2 ( P(x_1) \lor R(x_2) ) \quad\text{(order irrelevant!)} } 
+
+
+	\end{prooftree}
+
+\end{multicols}
+
+\bigskip
+
+\e{Ex 102b}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{P(f(\ha x)) \lor Q(f(\ha x), z)} }
+	\AxiomCm{ \p{\lnot P(y) } }
+	\BinaryInfCm{ Q(f(x), z) }
+
+	\AxiomCm{ \sig{\lnot Q(f(\hb y), z_1) \lor R(\hb y)} }
+	\AxiomCm{ \p{\lnot R(a) } }
+	\RightLabelm{y \mapsto a}
+	\BinaryInfCm{ \lnot Q(f(a), z_1) }
+
+	\RightLabelm{x \mapsto a, z \mapsto z_1}
+	\BinaryInfCm{ \square }
+\end{prooftree}
+
+\begin{multicols}{2}
+
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\BinaryInfCm{ P(f(x)) }
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{y \mapsto a}
+		\BinaryInfCm{ R(a) }
+
+		\RightLabelm{x \mapsto a, z \mapsto z_1}
+		\BinaryInfCm{ P(f(a)) \lor R(a) }
+
+	\end{prooftree}
+
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\BinaryInfCm{ \exists x_1 P(x_1) }
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{y \mapsto a}
+		\BinaryInfCm{ \forall x_2 R(x_2) }
+
+		\RightLabelm{x \mapsto a, z \mapsto z_1}
+		\BinaryInfCm{ \forall x_2 \exists x_1 ( P(x_1) \lor R(x_2) ) }
+
+	\end{prooftree}
+
+\end{multicols}
+	direct:
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{x_1 \sim f(x)}
+		\BinaryInfCm{ \exists x_1 P(x_1) }
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{x_2 \sim a}
+		\BinaryInfCm{ \forall x_2 R(x_2) }
+
+		\RightLabel{ order irrelevant!}
+		\BinaryInfCm{ \exists x_1 \forall x_2 (P(x_1) \lor R(x_2)) }
+	
+
+	\end{prooftree}
+
+
+	\clearpage
+
+\e{Ex 102b' with $Q$ grey}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{P(f(\ha x)) \lor Q(f(\ha x), z)} }
+	\AxiomCm{ \p{\lnot P(y) } }
+	\BinaryInfCm{ Q(f(x), z) }
+
+	\AxiomCm{ \sig{\lnot Q(f(\hb y), z_1) \lor R(\hb y)} }
+	\AxiomCm{ \p{\lnot R(a) } }
+	\RightLabelm{y \mapsto a}
+	\BinaryInfCm{ \lnot Q(f(a), z_1) }
+
+	\RightLabelm{x \mapsto a, z_1 \mapsto z}
+	\BinaryInfCm{ \square }
+\end{prooftree}
+
+
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\BinaryInfCm{ P(f(x)) }
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{y \mapsto a}
+		\BinaryInfCm{ R(a) }
+
+		\RightLabelm{x \mapsto a, z_1 \mapsto z}
+		\BinaryInfCm{ (\lnot Q(f(a), z) \land P(f(a))) \lor (Q(f(a), z) \land R(a) )  }
+
+	\end{prooftree}
+
+	Huang:
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\BinaryInfCm{ \exists x_2 P(x_2) }
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{y \mapsto a}
+		\BinaryInfCm{ \forall x_1 R(x_1) }
+
+		\RightLabelm{x \mapsto a, z_1 \mapsto z}
+		\BinaryInfCm{ \forall x_1 \exists x_2 (\lnot Q(x_2, z) \land P(x_2)) \lor (Q(x_2, z) \land R(x_1) )  }
+
+	\end{prooftree}
+
+	direct:
+	\begin{prooftree}
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{x_2 \sim f(x)}
+		\BinaryInfCm{ \exists x_2 P(x_2) }
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\RightLabelm{x_1 \sim a}
+		\BinaryInfCm{ \forall x_1 R(x_1) }
+
+		\RightLabelm{ x_3 \sim f(a); x_2 \parallel x_3, x_1 < x_3   }
+		\BinaryInfCm{ \forall x_1 \exists x_2 \exists x_3 (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
+
+		\UnaryInfCm{ \text{OR: }~ \exists x_2 \forall x_1 \exists x_3  (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
+		\UnaryInfCm{ \text{OR: }~ \exists x_1 \exists x_3 \forall x_2  (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
+	
+
+	\end{prooftree}
+
+	Huang-Version passt weil man für existenzielle quantoren eh gleichen term einsetzt
+
+
+
+\bigskip
+
+\clearpage
+\section*{Example 103: variables in interpolant get unified and order might have to be changed}
+
+\e{103a: length changes but old version is still valid, despite huang's algorithm doing a sort}
+
+
+\begin{prooftree}
+	\AxiomCm{\sig{Q(f(\ha x))\lor P(y)\lor R(\ha x)}}
+	\AxiomCm{\p{\lnot Q(y_1)}}
+
+	\RightLabelm{y_1\mapsto f(x)}
+	\BinaryInfCm{P(y)\lor R(x)}
+
+	\AxiomCm{\p{\lnot P(h(g(a)))}}
+	\RightLabelm{y\mapsto h(g(a))}
+	\BinaryInfCm{ R(x)}
+
+	\AxiomCm{\p{\lnot R(g(g(a)))}}
+	\RightLabelm{x\mapsto g(g(a))}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+
+		\RightLabelm{y_1\mapsto f(x)}
+		\BinaryInfCm{Q(f(x))}
+
+		\AxiomCm{\top}
+		\RightLabelm{y\mapsto h(g(a))}
+		\BinaryInfCm{ Q(f(x)) \lor P(h(g(a)))}
+
+		\AxiomCm{\top}
+		\RightLabelm{x\mapsto g(g(a))}
+		\BinaryInfCm{ Q(f(g(g(a)))) \lor P(h(g(a))) \lor R(g(g(a)))}
+	\end{prooftree}
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+
+		\BinaryInfCm{\exists x_1 Q(x_1)}
+
+		\AxiomCm{\top}
+		\BinaryInfCm{ \exists x_1 \forall x_2 (Q(x_1) \lor P(x_2))}
+
+		\AxiomCm{\top}
+		\BinaryInfCm{ X } 
+	\end{prooftree}
+
+\end{multicols}
+
+$X$: 
+
+Huang's algo gives:
+
+$ \forall x_2 \forall x_3 \exists x_1 ( Q(x_1) \lor P(x_2) \lor R(x_3) )$
+
+Direct overbinding gives: $x_3 < x_1$, rest arbitrary, hence:
+
+$ \forall x_3 \exists x_1 \forall x_2 ( Q(x_1) \lor P(x_2) \lor R(x_3) )$ <- this you do not get with huang
+
+$ \forall x_2 \forall x_3 \exists x_1 ( Q(x_1) \lor P(x_2) \lor R(x_3) )$
+
+$ \forall x_3 \forall x_2 \exists x_1 ( Q(x_1) \lor P(x_2) \lor R(x_3) )$
+
+
+\bigskip
+
+\e{103b: length changes ``uniformly''} 
+
+
+\begin{prooftree}
+	\AxiomCm{\sig{Q(f(f(\ha x)))\lor P(f(\ha x))\lor R(\ha x)}}
+	\AxiomCm{\p{\lnot Q(y_1)}}
+
+	\RightLabelm{y_1\mapsto f(f(x))}
+	\BinaryInfCm{P(f(x))\lor R(x)}
+
+	\AxiomCm{\p{\lnot P(y_2)}}
+	\RightLabelm{y_2\mapsto f(x)}
+	\BinaryInfCm{ R(x)}
+
+	\AxiomCm{\p{\lnot R(g(a))}}
+	\RightLabelm{x\mapsto g(a)}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+
+		\RightLabelm{y_1\mapsto f(f(x))}
+		\BinaryInfCm{Q(f(f(x)))}
+
+		\AxiomCm{\top}
+		\RightLabelm{y_2\mapsto f(x)}
+		\BinaryInfCm{ Q(f(f(x))) \lor P(f(x))}
+
+		\AxiomCm{\top}
+		\RightLabelm{x\mapsto g(a)}
+		\BinaryInfCm{ Q(f(f(g(a)))) \lor P(f(g(a))) \lor R(g(a))}
+	\end{prooftree}
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+
+		\BinaryInfCm{\exists x_1 Q(x_1)}
+
+		\AxiomCm{\top}
+		\BinaryInfCm{ \exists x_2 \exists x_1 ( Q(x_1) \lor P(x_2))}
+
+		\AxiomCm{\top}
+		\BinaryInfCm{ \forall x_3 \exists x_2 \exists x_1 ( Q(x_1) \lor P(x_2) \lor R(x_3))}
+	\end{prooftree}
+
+\end{multicols}
+
+Huang and direct overbinding somewhat coincide as $x_2 < x_1$ in both cases, and $x_3 < x_1$ and $x_3 < x_2$
+
+\bigskip
+
+\e{103c: Failed attempt: different variables, accidentally the same terms appear but no logical connection}
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(a, x)}}
+	
+	\AxiomCm{\sig{\lnot Q(a)}}
+	\AxiomCm{\p{\lnot P(y, f(\ha z)) \lor Q(\ha z)}}
+	\RightLabelm{z\mapsto a}
+	\BinaryInfCm{\lnot P(y, f(a))}
+
+	\RightLabelm{y\mapsto a, x\mapsto f(a)}
+	\BinaryInfCm{\square}
+
+\end{prooftree}
+
+\begin{multicols}{2}
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{z\mapsto a}
+		\BinaryInfCm{\lnot Q(a)}
+
+		\RightLabelm{y\mapsto a, x\mapsto f(a)}
+		\BinaryInfCm{P(a, f(a)) \land \lnot Q(a)}
+
+	\end{prooftree}
+	\begin{prooftree}
+		\AxiomCm{\bot}
+
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\BinaryInfCm{\exists x_1 \lnot Q(x_1)}
+
+		\BinaryInfCm{\exists x_1 \forall x_2 (P(x_1, x_2) \land \lnot Q(x_1))}
+
+
+	\end{prooftree}
+
+\end{multicols}
+
+order required for $\Pi$
+\bigskip
+
+direct:
+\begin{prooftree}
+		\AxiomCm{\bot}
+
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\RightLabelm{x_1 \sim a}
+	\BinaryInfCm{\exists x_1 \lnot Q(x_1)}
+
+	\RightLabelm{x_2 \sim a, x_3 \sim f(a); x_1 < x_3 }
+	\BinaryInfCm{\exists x_1 \exists x_2 \forall x_3  (P(x_2, x_3) \land \lnot Q(x_1))}
+	\UnaryInfCm{\text{OR:}~ \exists x_1 \forall x_3 \exists x_2  (P(x_2, x_3) \land \lnot Q(x_1))}
+
+\end{prooftree}
+
+\bigskip
+
+invariant:
+\begin{prooftree}
+	\AxiomCm{\exists x_2 (P(x_2, x) \lor \bot )}
+
+	\AxiomCm{\exists x_1 (Q(x_1) \lor \bot)}
+	\AxiomCm{\forall x_3 ((\lnot P(y, \ha{x_3}) \lor Q(\ha z)) \lor \top)}
+	\RightLabelm{x_1 \sim a}
+	\BinaryInfCm{\exists x_1 \forall x_3 { \lnot P(y, \ha{x_3}) \lor  \lnot Q(\ha{x_1})}}
+
+	\RightLabelm{x_2 \sim a, x_3 \sim f(a); x_1 < x_3 }
+	\BinaryInfCm{\exists x_1 \exists x_2 \forall x_3  (P(x_2, x_3) \land \lnot Q(x_1))}
+	\UnaryInfCm{\text{OR:}~ \exists x_1 \forall x_3 \exists x_2  (P(x_2, x_3) \land \lnot Q(x_1))}
+
+\end{prooftree}
+\bigskip
+
+invariant in other resolution order
+\begin{prooftree}
+		\AxiomCm{\bot}
+
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+	\RightLabelm{x_2 \sim a, x_3 \sim f(z)}
+	\BinaryInfCm{Q(\ha z) \lor \exists x_2 \forall x_3 P(x_2, \ha{x_3})}
+
+	\RightLabelm{x_1 \sim a; x_1 < x_3}
+	\BinaryInfCm{\exists x_1 \exists x_2 \forall x_3  (P(x_2, x_3) \land \lnot Q(x_1))}
+	\UnaryInfCm{\text{OR:}~ \exists x_1 \forall x_3 \exists x_2  (P(x_2, x_3) \land \lnot Q(x_1))}
+\end{prooftree}
+\bigskip
+
+
+invariant if $\Sigma$ and $\Pi$ swapped:
+\begin{prooftree}
+		\AxiomCm{\bot}
+
+	\AxiomCm{\top}
+	\AxiomCm{\bot}
+	\RightLabelm{x_1 \sim a}
+	\BinaryInfCm{\lnot P(y, f(x_1)) \lor \forall x_1 Q(x_1)}
+
+	\RightLabelm{x_2 \sim a, x_3 \sim f(a); x_1 < x_3 }
+	\BinaryInfCm{\forall x_1 \forall x_2 \exists x_3  (\lnot P(x_2, x_3) \lor Q(x_1))}
+	\UnaryInfCm{\text{OR:}~ \forall x_1 \exists x_3 \forall x_2  (\lnot P(x_2, x_3) \lor Q(x_1))}
+
+\end{prooftree}
+
+\bigskip
+
+
+SECOND ATTEMPT:
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(a)}}
+	\AxiomCm{\sig{Q(z)}}
+
+	\AxiomCm{\sig{\lnot S(a)}}
+	\AxiomCm{\p{\lnot P(y) \lor \lnot Q(f(\ha x)) \lor S(\ha x)}}
+
+	\RightLabelm{x\mapsto a}
+	\BinaryInfCm{\lnot P(y) \lor \lnot Q(f(a))}
+
+	\RightLabelm{z\mapsto f(a)}
+	\BinaryInfCm{\lnot P(y) }
+
+	\RightLabelm{y\mapsto a}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\bot}
+
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+
+	\RightLabelm{x\mapsto a}
+	\BinaryInfCm{\lnot S(a)}
+
+	\RightLabelm{z\mapsto f(a)}
+	\BinaryInfCm{\lnot S(a) \land Q(f(a))}
+
+	\RightLabelm{y\mapsto a}
+	\BinaryInfCm{P(a) \land \lnot S(a) \land Q(f(a))}
+\end{prooftree}
+
+Huang:
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\bot}
+
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+
+	\BinaryInfCm{\exists x_1 \lnot S(x_1)}
+
+	\BinaryInfCm{ \exists x_1 \forall x_2 ( \lnot S(x_1) \land Q(x_2))}
+
+	\BinaryInfCm{\exists x_1 \forall x_2 ( P(x_1) \land \lnot S(x_1) \land Q(x_2))}
+\end{prooftree}
+
+$ \forall x_1 \exists x_2 ( \lnot P(x_1) \lor S(x_1) \lor  \lnot Q(x_2) )$
+\medskip
+
+{ \bfseries similar fail }
+
+{$\Ra$ anytime there is $P(a, f(a))$, either they have a dependency or they are not both differently colored (grey is uncolored) }
+
+for the record, direct method anyway:
+
+\begin{prooftree}
+	\AxiomCm{\bot}
+	\AxiomCm{\bot}
+
+	\AxiomCm{\bot}
+	\AxiomCm{\top}
+
+	\RightLabelm{x\sim a}
+	\BinaryInfCm{\exists x_1 \lnot S(x_1)}
+
+	\RightLabelm{z\sim f(a); x_1 < x_2 }
+	\BinaryInfCm{\exists x_1 \forall x_2 \lnot S(x_1) \land Q(x_2)}
+
+	\RightLabelm{x_3 \sim a; x_3 \text{ need not be merged w } x_1 }
+	\BinaryInfCm{\exists x_1 \forall x_2 \exists x_3 P(x_3) \land \lnot S(x_1) \land Q(x_2)}
+\end{prooftree}
+
+
+
+
+
+\clearpage 
+
+
+%\begin{landscape}
+\section*{Example: ordering on both ancestors where the merge forces a new ordering}
+
+
+\e{202a -- canonical}
+{
+\begin{prooftree}
+	\AxiomCm{ \sig{P(a,x_1) \lor R(y) } }
+	\AxiomCm{ \p{\lnot P(\hc x, f\hc x)}}
+	\RightLabel{\stackanchor{$x_1 \mapsto fa$}{$x\mapsto a$}}
+	\BinaryInfCm{ R(y)}
+
+	\AxiomCm{ \sig{Q(\ha{x_2}, g\ha{x_2}) \lor \lnot R(u) } }
+	\AxiomCm{ \sig{\lnot S(a)}}
+	\AxiomCm{ \p{\lnot Q(f\hb z, x_3) \lor S(\hb z)}}
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{ \lnot Q(fa, x_3) }
+
+	\RightLabel{\stackanchor{$x_2 \mapsto fa,$}{$x_3\mapsto gfa$}}
+	\BinaryInfCm{ \lnot R(u) }	
+
+	\BinaryInfCm{ \square}
+\end{prooftree}
+}
+
+\begin{prooftree}
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top}
+	\RightLabel{\stackanchor{$x_1 \mapsto f(a)$}{$x\mapsto a$}}
+	\BinaryInfCm{ P(a, f(a)) }
+
+	\AxiomCm{ \bot }
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{ \lnot S(a) }
+
+	\RightLabel{\stackanchor{$x_2 \mapsto f(a),$}{$x_3\mapsto g(f(a))$}}
+	\BinaryInfCm{ Q(f(a), g(f(a))) \land \lnot S(a)}
+
+	\BinaryInfCm{ P(a, f(a)) \lor ( Q(f(a), g(f(a))) \land \lnot S(a))}
+\end{prooftree}
+
+
+Huang
+\begin{prooftree}
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top}
+	\BinaryInfCm{ \exists x_1 \forall x_2 P(x_1, x_2)) }
+
+	\AxiomCm{ \bot }
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\BinaryInfCm{ \exists x_1 \lnot S(x_1) }
+
+	\BinaryInfCm{ \exists x_1 \forall x_2 \exists x_3 Q(x_2, x_3) \land \lnot S(x_1)}
+
+	\BinaryInfCm{ \exists x_1 \forall x_2 \exists x_3  P(x_1, x_2) \lor ( Q(x_2, x_3)) \land \lnot S(x_1))}
+\end{prooftree}
+
+
+
+direct:
+
+{\small
+\begin{prooftree}
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top}
+	\RightLabel{\stackanchor{$x_1 \sim a, x_2 \sim fa$}{$ \hc{x_1 < x_2}$ } }
+	\BinaryInfCm{ \exists x_1 \forall x_2 P(x_1, x_2)) }
+
+	\AxiomCm{ \bot }
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\RightLabel{{$x_3 \sim a$} }
+	\BinaryInfCm{ \exists x_3 \lnot S(x_3) }
+
+	\LeftLabel{\stackanchor{$x_3 \sim a, x_4 \sim fa, x_5 \sim gfa)$}{$\ha{x_3 < x_4}, \hb{x_4 < x_5 }$}}
+	\BinaryInfCm{ \exists x_3 \forall x_4 \exists x_5 Q(x_4, x_5) \land \lnot S(x_3)}
+
+	\RightLabel{\stackanchor{$x_3\mapsto x_1, x_4\mapsto x_2$}{$x_1 < x_2, x_2 < x_5 $}}
+	\BinaryInfCm{ \exists x_1 \forall x_2 \exists x_5  P(x_1, x_2) \lor ( Q(x_2, x_5) \land \lnot S(x_5))}
+\end{prooftree}
+}
+
+without merge in end: ($x_1<x_2, x_3<x_4, x_4<x_5$)
+
+	$ \exists x_1 \forall x_2 \exists x_3 \forall x_4 \exists x_5  P(x_1, x_2) \lor ( Q(x_4, x_5) \land \lnot S(x_3)) $
+
+	$\exists x_3 \forall x_4 \exists x_5 \exists x_1 \forall x_2  P(x_1, x_2) \lor ( Q(x_4, x_5) \land \lnot S(x_3)) $
+
+	(also interwoven ones appear to work)
+
+
+	\clearpage
+
+	%\begin{landscape}
+
+
+combined presentation:
+
+\begin{prooftree}
+	\AxiomCm{ \bot \mid P(a, x_1) \lor R(y) }
+	\AxiomCm{ \top \mid - }
+	\RightLabel{\stackanchor{$x_1 \mapsto f(a)$}{$x\mapsto a$}}
+	\BinaryInfCm{ P(a, f(a)) \mid R(y) }
+
+	\AxiomCm{ \bot \mid Q(x_2, g(x_2)) \lor \lnot R(u) }
+	\AxiomCm{ \bot \mid \lnot S(a)}
+	\AxiomCm{ \top \mid \lnot Q(f(z), x_3) \lor S(z)}
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{ \lnot S(a) \mid \lnot Q(f(a), x_3) }
+
+	\RightLabel{\stackanchor{$x_2 \mapsto f(a),$}{$x_3\mapsto g(f(a))$}}
+	\BinaryInfCm{ Q(f(a), g(f(a))) \land \lnot S(a) \mid \lnot R(u)}
+
+	\BinaryInfCm{ P(a, f(a)) \lor ( Q(f(a), g(f(a))) \land \lnot S(a)) \mid \square}
+\end{prooftree}
+
+combined presentation ground:
+
+\begin{prooftree}
+	\AxiomCm{ \bot \mid P(a, f(a)) \lor R(y) }
+	\AxiomCm{ \top \mid \lnot P(x, f(x)) }
+	\BinaryInfCm{ (P(a, f(a)) \land \top) \lor (\lnot P(a, f(a))\land \bot) \mid R(y) }
+
+	\AxiomCm{ \bot \mid Q(f(a), g(f(a))) \lor \lnot R(u) }
+	\AxiomCm{ \bot \mid \lnot S(a)}
+	\AxiomCm{ \top \mid \lnot Q(f(a), g(f(a))) \lor S(a)}
+	\BinaryInfCm{ \lnot S(a) \mid \lnot Q(f(a), g(f(a))) }
+
+	\BinaryInfCm{ Q(f(a), g(f(a))) \land \lnot S(a) \mid \lnot R(u)}
+
+	\BinaryInfCm{ P(a, f(a)) \lor ( Q(f(a), g(f(a))) \land \lnot S(a)) \mid \square}
+\end{prooftree}
+
+combined presentation ground with direct method but only $\Delta$-terms removed :
+
+\begin{prooftree}
+	\AxiomCm{ \bot \mid P(a, f(a)) \lor R(y) }
+	\AxiomCm{ \top \mid \lnot P(x, f(x)) }
+	\BinaryInfCm{ (P(a, x_2) \land \top) \lor (\lnot P(a, x_2)\land \bot) \mid R(y) }
+
+	\AxiomCm{ \bot \mid Q(f(a), g(f(a))) \lor \lnot R(u) }
+	\AxiomCm{ \bot \mid \lnot S(a)}
+	\AxiomCm{ \top \mid \lnot Q(f(a), g(f(a))) \lor S(a)}
+	\BinaryInfCm{ \lnot S(a) \mid \lnot Q(f(a), g(f(a))) }
+
+	\BinaryInfCm{ Q(x_4, g(x_4)) \land \lnot S(a) \mid \lnot R(u)}
+
+	\BinaryInfCm{ P(a, x_2) \lor ( Q(x_4, g(x_4)) \land \lnot S(a)) \mid \square}
+\end{prooftree}
+
+
+combined presentation ground with direct method:
+
+\begin{prooftree}
+	\AxiomCm{ \bot \mid P(a, f(a)) \lor R(y) }
+	\AxiomCm{ \top \mid \lnot P(x, f(x)) }
+	\BinaryInfCm{ \exists x_1 \forall x_2 ( P(x_1, x_2) \land \top) \lor (\lnot P(x_1, x_2)\land \bot) \mid R(y) }
+
+	\AxiomCm{ \bot \mid Q(f(a), g(f(a))) \lor \lnot R(u) }
+	\AxiomCm{ \bot \mid \lnot S(a)}
+	\AxiomCm{ \top \mid \lnot Q(f(a), g(f(a))) \lor S(a)}
+	\BinaryInfCm{ \exists x_3 \lnot S(x_3) \mid \lnot Q(f(a), g(f(a))) }
+
+	\BinaryInfCm{ \exists x_3 \forall x_4 \exists x_5 (Q(x_4, x_5)) \land \lnot S(x_3)) \mid \lnot R(u)}
+
+	\BinaryInfCm{ \exists x_1 \forall x_2 \exists x_3 \forall x_4 \exists x_5 ( P(x_1, x_2) \lor ( Q(x_4, x_5)) \land \lnot S(x_3)) \mid \square}
+\end{prooftree}
+
+
+
+
+
+%\end{landscape}
+
+
+\clearpage
+
+\e{203a -- some alternations}
+
+\begin{prooftree}
+	\AxiomCm{ \p{\lnot S(x_1)}}
+
+	\AxiomCm{\p{ \lnot R(a)}}
+
+	\AxiomCm{\sig{ R(\arrowA x) \lor  \lnot P(f(\arrowB x)) \drawAB}}
+	\AxiomCm{ \p{ P(\arrowA z) \lor Q(g(\arrowB z)) \drawAB} }
+	\RightLabelm{z\mapsto f(x)}
+	\BinaryInfCm{ R(x) \lor Q(g(f(x)))}
+
+	\AxiomCm{ \sig{ \lnot Q(\arrowA y) \lor S(h(\arrowB y)) \drawAB}}
+	\RightLabelm{y\mapsto g(f(x))}
+	\BinaryInfCm{ R(x) \lor S(h(g(f(x))))}
+
+	\RightLabelm{x\mapsto a}
+	\BinaryInfCm{S(h(g(f(a))))}
+
+	\RightLabelm{x_1\mapsto h(g(f(a)))}
+	\BinaryInfCm{\square}
+
+\end{prooftree}
+
+\begin{prooftree}
+
+	\AxiomCm{ \top}
+
+	\AxiomCm{\top}
+
+	\AxiomCm{\bot}
+	\AxiomCm{ \top}
+	\RightLabelm{z\mapsto f(x)}
+	\BinaryInfCm{ \lnot P(f(x)) }
+
+	\AxiomCm{ \bot }
+	\RightLabelm{y\mapsto g(f(x))}
+	\BinaryInfCm{ \lnot Q(g(f(\arrowB x))) \land \lnot P(f(\arrowA x)) \drawAB }
+
+	\RightLabelm{x\mapsto a}
+	\BinaryInfCm{ \lnot Q(g(f(\arrowB a))) \land \lnot P(\arrowA f(\arrowD a)) \lor R(\arrowC a) \drawAB\drawCD}
+
+	\RightLabelm{x_1\mapsto h(g(f(a)))}
+	\BinaryInfCm{  \lnot Q(\arrowE g(\arrowB f(a))) \land \lnot P(\arrowA\drawAB f(\arrowD a)) \lor R(\arrowC\drawCD a) \lor S(h(\arrowF g(f(a)))) \drawEF }
+
+\end{prooftree}
+
+Huang:
+\begin{prooftree}
+	\AxiomCm{ \top}
+
+	\AxiomCm{\top}
+
+	\AxiomCm{\bot}
+	\AxiomCm{ \top}
+	\BinaryInfCm{ \exists x_1 \lnot P(x_1) }
+
+	\AxiomCm{ \bot }
+	\BinaryInfCm{ \exists x_1 \forall x_2 (\lnot Q(x_2) \land \lnot P(x_1) )}
+
+	\BinaryInfCm{ \forall x_0 \exists x_1 \forall x_2 (\lnot Q(x_2) \land \lnot P(x_1) \lor R(x_0) )}
+
+	\BinaryInfCm{ \forall x_0 \exists x_1 \forall x_2 \exists x_3 ( \lnot Q(x_2) \land \lnot P(x_1) \lor R(x_0) \lor S(x_3) ) }
+
+\end{prooftree}
+
+Direct:
+\begin{prooftree}
+
+	\AxiomCm{ \top}
+
+	\AxiomCm{\top}
+
+	\AxiomCm{\bot}
+	\AxiomCm{ \top}
+	\RightLabelm{x_1 \sim f(x)}
+	\BinaryInfCm{ \exists x_1 \lnot P(x_1) }
+
+	\AxiomCm{ \bot }
+	\RightLabel{{$x_2\sim g(f(x)); x_1 < x_2$}}
+	\BinaryInfCm{ \exists \arrowA x_1 \forall \arrowB x_2 (\lnot Q(x_2) \land \lnot P(f(x))) \drawAB }
+
+	\RightLabelm{x_0 \sim a; x_0 < x_1, x_0 < x_2}
+	\BinaryInfCm{ \forall \arrowA x_0 \exists \arrowB\,\arrowC x_1 \forall \arrowD x_2 \drawAB\drawCD (\lnot Q(x_2) \land \lnot P(x_1) \lor R(x_0) )}
+
+	\RightLabelm{x_3\sim h(g(f(a))); x_0 < x_3, x_1 < x_3, x_2 < x_3}
+	\BinaryInfCm{ \forall \arrowA x_0 \exists \arrowB\drawAB\,\arrowC x_1 \forall \arrowD\drawCD\,\arrowA x_2 \exists \arrowB\drawAB x_3 ( \lnot Q(x_2) \land \lnot P(x_1) \lor R(x_0) \lor S(x_3) ) }
+
+\end{prooftree}
+
+
+\e{203b -- many $\Sigma$-literals, coloring per occurrence}
+
+\begin{prooftree}
+	\AxiomCm{ \p{\lnot S(x_1)}}
+
+	\AxiomCm{\p{ \lnot R(a)}}
+
+	\AxiomCm{\sig{ R(\arrowA x) \lor  \lnot P(f(\arrowB x)) \drawAB}}
+	\AxiomCm{ \sig{ P(\arrowA z) \lor Q(g(\arrowB z)) \drawAB} }
+	\RightLabelm{z\mapsto fx}
+	
+	\BinaryInfCm{ R(x) \lor Q(gfx) }
+	
+	\AxiomCm{ \sig{ \lnot Q(\arrowA y) \lor S(h(\arrowB y)) \drawAB}}
+	\RightLabelm{y\mapsto gfx}
+
+	\BinaryInfCm{ R(x) \lor S(hgfx) }
+
+	\RightLabelm{x\mapsto a}
+
+	\BinaryInfCm{  S(hgfa) }
+
+	\RightLabelm{x_1\mapsto hgfa}
+	\BinaryInfCm{ \square }
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{ \top}
+
+	\AxiomCm{\top}
+
+	\AxiomCm{\bot}
+	\AxiomCm{ \bot}
+	\RightLabelm{z\mapsto fx}
+	
+	\BinaryInfCm{ \bot}
+	
+	\AxiomCm{ \bot}
+	\RightLabelm{y\mapsto gfx}
+
+	\BinaryInfCm{ \bot} 
+
+	\RightLabelm{x\mapsto a}
+
+	\BinaryInfCm{  R(a) }
+
+	\RightLabelm{x_1\mapsto hgfa}
+	\BinaryInfCm{ S(hgfa) \lor R(a) }
+\end{prooftree}
+
+$\ra$ $\forall x_1 \exists x_2 ( R(x_1) \lor S(x_2) )$
+
+\clearpage
+\e{203b' -- many $\Sigma$-literals, coloring per symbol, all predicates grey}
+
+\begin{prooftree}
+	\AxiomCm{ \p{\lnot S(x_1)}}
+
+	\AxiomCm{\p{ \lnot R(a)}}
+	\AxiomCm{\sig{ R(\arrowA x) \lor  \lnot P(f(\arrowB x)) \drawAB}}
+
+	\RightLabelm{x \mapsto a}
+	\BinaryInfCm{ R(a) \mid \lnot P(fa) }
+
+	\AxiomCm{ \sig{ P(\arrowA z) \lor Q(g(\arrowB z)) \drawAB} }
+
+	\RightLabelm{z \mapsto fa}
+	\BinaryInfCm{ P(fa) \lor R(a) \mid Q(gfa)  }
+	
+	
+	\AxiomCm{ \sig{ \lnot Q(\arrowA y) \lor S(h(\arrowB y)) \drawAB}}
+
+	\BinaryInfCm{ }
+	\BinaryInfCm{ }
+
+\end{prooftree}
+TODO
+
+
+
+\clearpage
+
+\section*{Example where variables are not the outermost symbol but order is still relevant}
+
+
+\e{204a}
+
+$\Sigma = \{ P(f(\arrowA x), g(f(\arrowB x))) \}\drawAB$
+
+$\Pi= \{ P(f(a), y) \} $
+
+$\Ra \forall \arrowA x_1 \exists \arrowB x_2\drawAB P(f(x_1), x_2) $ 
+
+\e{204b}
+
+$\Sigma = \{ P(f^5(\arrowA x), g(f(\arrowB x))) \}\drawAB$
+
+$\Pi= \{ P(f^5(a), y) \} $
+
+$\Ra \forall \arrowA x_1 \exists \arrowB x_2\drawAB P(f^5(x_1), x_2) $ 
+
+
+
+\clearpage 
+\section*{example with aufschaukelnde unification, such that direction of arrow isn't clear}
+
+
+\e{205a}
+
+\begin{prooftree}
+	\AxiomCm{\p{P(ff\hb y, g\hb y)}}
+
+	\AxiomCm{\sig{\lnot P(\ha x, y) \lor Q(\ha x)}}
+
+	\AxiomCm{\sig{\lnot R(a)}}
+	\AxiomCm{\p{\lnot Q(ff\arrowB{\hc z}) \lor R\arrowA{\hc z}}\drawAB}
+
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{\lnot R(a) \mid \lnot Q(ffa)}
+
+	\RightLabelm{x \mapsto ffa}
+	\BinaryInfCm{\lnot R(a) \land Q(ffa) \mid \lnot P(ffa, y) }
+
+	\RightLabelm{y \mapsto a}
+	\BinaryInfCm{ (\lnot R(a) \land Q(ffa)) \lor \lnot P(ffa, ga) }
+\end{prooftree}
+
+direct
+
+\begin{prooftree}
+	\AxiomCm{\p{P(ff\hb y, g\hb y)}}
+
+	\AxiomCm{\sig{\lnot P(\ha x, y) \lor Q(\ha x)}}
+
+	\AxiomCm{\sig{\lnot R(a)}}
+	\AxiomCm{\p{\lnot Q(ff\hc z) \lor R\hc z}}
+
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{\exists \arrowA x_1 \lnot R(x_1) \mid \lnot Q(ff\arrowB a)\drawAB}
+
+	\RightLabelm{x \mapsto ffa}
+	\BinaryInfCm{ \exists \arrowA x_1 \forall \arrowB x_2 (\lnot R(x_1) \land Q(x_2)) \mid \lnot P(ffa, u) \drawAB}
+
+	\RightLabelm{y \mapsto a, u\mapsto ga}
+	\BinaryInfCm{\exists \arrowA x_1 \forall \arrowB\,\arrowAB x_2 \forall \arrowBA\drawAABB x_3  ((\lnot R(x_1) \land Q(x_2)) \lor \lnot P(x_2, x_3) ) \drawAB}
+\end{prooftree}
+
+
+
+ground:
+
+
+\begin{prooftree}
+	\AxiomCm{\p{P(ff\hb a, g\hb a)}}
+
+	\AxiomCm{\sig{\lnot P(\ha{ffa}, y) \lor Q(\ha {ffa})}}
+
+	\AxiomCm{\sig{\lnot R(a)}}
+	\AxiomCm{\p{\lnot Q(ff\arrowB{\hc a}) \lor R\arrowA{\hc a}}\drawAB}
+
+	\BinaryInfCm{\lnot R(\arrowA a) \mid \lnot Q(ff\arrowB a)\drawAB}
+
+	\BinaryInfCm{\lnot R(\arrowA a) \land Q(ff\arrowB\,\arrowAB a) \mid \lnot P(ff\arrowBA a, a) \drawAB \drawAABB}
+
+	\BinaryInfCm{ (\lnot R(\arrowE a) \land Q(\arrowBA ff\arrowF a)) \lor \lnot P(ff\arrowAB\,\arrowDC a, g\arrowCD a) \drawEF \drawAABB\drawCCDD}
+\end{prooftree}
+
+
+
+
+
+
+	\e{205b $\sim$ 205a, but simpler}
+
+	Suppose $P$ occurs somewhere in $\Sigma$ (result not that optimal in this setting, but correct)
+
+	not nice for proving, $\lnot R(a)$ is a nice interpolant already
+
+\begin{prooftree}
+	\AxiomCm{\p{P(ff\hb y, g\hb y)}}
+
+
+	\AxiomCm{\sig{\lnot R(a)}}
+	\AxiomCm{\p{\lnot P(ff\arrowB{\hc z}, x) \lor R\arrowA{\hc z}}\drawAB}
+
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{\lnot R(a) \mid \lnot P(ffa, x)}
+
+	\RightLabelm{x \mapsto ga, y \mapsto a}
+	\BinaryInfCm{ \lnot R(a) \lor \lnot P(ffa, ga)  \mid \square }
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\top \mid \p{P(ff\arrowAB\hb y, g\arrowBA \hb y)} \drawAABB}
+
+
+	\AxiomCm{\bot \mid \sig{\lnot R(a)}}
+	\AxiomCm{\top \mid \p{\lnot P(ff\arrowB{\hc z}, x) \lor R\arrowA{\hc z}}\drawAB}
+
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{\exists \arrowA x_1 \lnot R(x_1) \mid \lnot P(ff\arrowB a, x) \drawAB}
+
+	\RightLabelm{x \mapsto ga, y \mapsto a}
+	\BinaryInfCm{ \exists \arrowA x_1 \forall \arrowB\,\arrowAB \drawAB x_2 \forall \arrowBA \drawAABB x_3  \lnot R(x_1) \lor \lnot P(x_2, x_3)  \mid \square }
+\end{prooftree}
+
+
+
+$\exists x_1  R(x_1)$
+
+$\exists x_1 \forall x_2 \forall x_3 ( R(\arrowA x_1) \lor \lnot P(\arrowB\, \arrowAB x_2, \arrowBA x_3) ) \drawAABB \drawAB$
+
+
+\clearpage 
+\section*{misc examples}
+
+\e{201a}
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(x, y) \lor \lnot Q(y)}}
+	\AxiomCm{\p{\lnot P(a, y_2)}}
+	\RightLabelm{x \mapsto a}
+	\BinaryInfCm{\lnot Q(y)}
+
+	\AxiomCm{\sig{Q(f(z)) \lor R(z)}}
+	\AxiomCm{\p{\lnot R(a)} }
+	\RightLabelm{z\mapsto a}
+	\BinaryInfCm{Q(f(a)}
+	\RightLabelm{y \mapsto f(a)}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{x \mapsto a}
+		\BinaryInfCm{P(a, y)}
+
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{z\mapsto a}
+		\BinaryInfCm{R(a)}
+		\RightLabelm{y \mapsto f(a)}
+		\BinaryInfCm{P(a, f(a)) \lor R(a)}
+	\end{prooftree}
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{x \mapsto a}
+		\BinaryInfCm{\forall x_1 P(x_1, y)}
+
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{z\mapsto a}
+		\BinaryInfCm{\forall x_3 R(x_3)}
+		\RightLabelm{y \mapsto f(a)}
+		\BinaryInfCm{\forall x_3 \forall x_1 \exists x_2 ( P(x_1, x_2) \lor R(x_3))}
+	\end{prooftree}
+
+\end{multicols}
+Huang would produce: $\forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_1) $
+
+
+\e{201b}
+\begin{prooftree}
+	\AxiomCm{\sig{P(x, f(y)) \lor \lnot Q(f(y))}}
+	\AxiomCm{\p{\lnot P(a, y_2)}}
+	\RightLabelm{x \mapsto a}
+	\BinaryInfCm{\lnot Q(f(y))}
+
+	\AxiomCm{\sig{Q(f(z)) \lor R(z)}}
+	\AxiomCm{\p{\lnot R(a)} }
+	\RightLabelm{z\mapsto a}
+	\BinaryInfCm{Q(f(a)}
+	\RightLabelm{y \mapsto f(a)}
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+\begin{multicols}{2}
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{x \mapsto a}
+		\BinaryInfCm{P(a, f(y))}
+
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{z\mapsto a}
+		\BinaryInfCm{R(a)}
+		\RightLabelm{y \mapsto a}
+		\BinaryInfCm{P(a, f(a)) \lor R(a)}
+	\end{prooftree}
+
+	\begin{prooftree}
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{x \mapsto a}
+		\BinaryInfCm{\forall x_1 \exists x_2 P(x_1, x_2)}
+
+		\AxiomCm{\bot}
+		\AxiomCm{\top}
+		\RightLabelm{z\mapsto a}
+		\BinaryInfCm{\forall x_3 R(x_3)}
+		\RightLabelm{y \mapsto f(a)}
+		\BinaryInfCm{ \forall x_3 \forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_3) }
+	\end{prooftree}
+
+\end{multicols}
+Huang would produce: $\forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_1) $
+
+
+\clearpage
+
+\section*{arrow in element which is not in interpolant or resolution clause}
+
+\e{206}
+
+\begin{prooftree}
+	\AxiomCm{\sig{P(\arrowA x)\lor \lnot Q(f(\arrowB x))\drawAB}}
+	\AxiomCm{\p{\lnot P(a)}}
+
+	\RightLabelm{x\mapsto a}
+	\BinaryInfCm{\forall \arrowA x_1 P(x_1) \mid \lnot Q(f(\arrowB a))\drawAB}
+
+	\AxiomCm{\sig{Q(\arrowC y)\lor R(g(\arrowD y))\drawCD}}
+	\AxiomCm{\p{\lnot R(z)}}
+
+	\RightLabelm{z\mapsto g(y)}
+	\BinaryInfCm{\exists \arrowD x_2 R(x_2) \mid Q(\arrowC y) \drawCD }
+
+	\RightLabelm{y\mapsto f(a)}
+	\BinaryInfCm{\forall x_1 \exists x_2( P(x_1) \lor R(x_2)) \mid \square}
+\noLine
+\UnaryInfCm{\color{gray} P(a) \lor R(g(f(a))}
+\end{prooftree}
+
+{\huge
+
+	for first interpolant, $\Sigma \not\entails \lift{\Delta}{\PI(C)}{x} \lor C$
+
+		\end{document}
