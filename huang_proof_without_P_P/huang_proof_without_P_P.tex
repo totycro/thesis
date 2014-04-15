@@ -155,11 +155,14 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 	\label{lemma:lif}
 
 	Let $C$ be a clause and $t_1, \ldots, t_n$ the set of maximal $\Delta$-terms in $C$, $x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$, and $\sigma$ be a substitution.
-	Let $$r \sigma' =
-	\begin{cases} 
-		x_l & \text{ if } r = x_k \text{ for some $k$, $l\neq k$, and $t_k\sigma = t_l$}  \\ 
-		\lif{r\sigma} & \text{ otherwise}
-	\end{cases} $$
+	Let $\sigma'$ be defined such that
+	\[
+		z \sigma' =
+		\begin{cases} 
+			x_l & \text{ if } z = x_k \text{ and } t_k\sigma = t_l  \\
+			\lif{z\sigma} & \text{ otherwise}
+		\end{cases} 
+	\]
 
 	Then
 	$\lif{C\sigma} =

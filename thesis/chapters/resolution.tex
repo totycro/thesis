@@ -10,15 +10,7 @@ Due to the simplicity of its rules, it is widely used in the area of automated d
 	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a derivation of $\square$ consisting of applications of resolution rules (cf.~Figure~\ref{fig:resolution}) starting from clauses in $\Gamma$.
 \end{defi}
 
-
-\begin{thm}
-	A clause set $\Gamma$ is unsatisfiable if and only if there is resolution refutation of $\Gamma$.
-\end{thm}
-\begin{proof}
-	See \cite{Rob65}.
-\end{proof}
-
-Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$, positions by $p$.
+Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$ and positions by $p$.
 
 \begin{figure}[htbp]
 	\begin{prooftree}
@@ -47,6 +39,42 @@ Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$, position
 	\caption{The rules of resolution calculus}
 	\label{fig:resolution}
 \end{figure}
+
+\begin{samepage}
+\begin{thm}
+	A clause set $\Gamma$ is unsatisfiable if and only if there is resolution refutation of $\Gamma$.
+\end{thm}
+\begin{proof}
+	See \cite{Rob65}.
+\end{proof}
+\end{samepage}
+
+
+
+\begin{defi}[Tree refutations]
+	A resolution refutation is a \defiemph{tree refutation} if every clause is used at most once.
+\end{defi}
+
+The following lemma shows that the restriction to tree refutations does not restrict the calculus given that we allow multisets as initial clause sets.
+\begin{lemma}
+  \label{lemma:bin_tree_deduction}
+  Every resolution refutation can be transformed into a tree refutation.
+\end{lemma}
+\begin{proof}
+  Let $\pi$ be a resolution refutation of a set of clauses $\Phi$.
+  We show that $\pi$ can be transformed into a tree refutation by induction on the number of clauses that are used multiple times.
+
+  Suppose that no clause is used more than once in $\pi$. Then $\pi$ is a tree refutation.
+
+  Otherwise let $\Psi$ be the set of clauses which is used multiple times.
+  Let $C \in \Psi$ be such that no clause $D \in \Psi$ is used in the derivation leading to $C$.
+  Let $\chi$ be the derivation leading to $C$.
+
+  Suppose $C$ is used $m$ times.
+  We create another resolution refutation $\pi'$ from $\pi$ which contains $m$ copies of $\chi$ and replaces the $i$th use of the clause $C$ by the final clause of the $i$th copy of $\chi$, $1 \leq i \leq m$.
+  In order to ensure that the sets of variables of the input clauses are disjoint, we rename the variables in each copy of $\chi$ and adapt $\pi'$ accordingly.
+  Hence $\pi'$ is a resolution refutation of $\Phi$ where $m-1$ clauses are used more than once.
+\end{proof}
 
 
 \section{Resolution and Interpolation}
