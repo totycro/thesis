@@ -9,7 +9,9 @@ For formulas $A_1, \ldots, A_n$, $\Lang(A_1, \ldots, A_n) = \bigcup_{1\leq i \le
 
 A term $s$ is a subterm of a term $t$ if $s$ occurs in $t$. $s$ is a strict subterm of $t$ if $s$ is a subterm of $t$ and $s \neq t$.
 
-An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term. An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
+An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
+An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
+\todo{colors are only defined later}
 
 We denote $x_1, \ldots, x_n$ by $\bar x$.
 
@@ -81,5 +83,16 @@ TODO: define $A\occur{s}$.
 
 As the notions of interpolation and reverse interpolation in this sense coincide, we will in the following only speak of interpolation where  will be clear from the context which definition applies.
 
+\begin{lemma}
+	\label{lemma:logically_equivalent_sets}
+	Let $\Gamma, \Gamma', \Delta, \Delta'$ be sets of first order formulas such that $\Gamma \semiff \Gamma'$ and $\Delta \semiff \Delta'$.
+	Then $I$ is an interpolant for $\Gamma$ and $\Delta$ if and only if $I$ is an interpolant for $\Gamma'$ and $\Delta'$.
+\end{lemma}
+\begin{proof}
+	TODO
+\end{proof}
+
 In the context of interpolation, every non-logical symbol is assigned a color which indicates its origin(s). 
+\begin{defi}[Coloring]
 A non-logical symbol is said to be \emph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \emph{grey} in case it occurs in both $\Gamma$ and $\Delta$. A symbol is \emph{colored} if it is $\Gamma$- or $\Delta$-colored.
+\end{defi}
