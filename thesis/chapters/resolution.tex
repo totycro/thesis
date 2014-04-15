@@ -173,17 +173,135 @@ For each of them, create a defining clause $D_B$:
 		$D_B\equiv (L_B \lor \lnot L_G) \land (L_B \lor \lnot L_H) \land (\lnot L_B \lor L_G \lor L_H)  $
 	\item[If $B$ is of the form $G \limpl H$:]~
 
-		$D_B\equiv (L_B \lor L_G) \land (L_B \lor \lnot L_H) \land (\lnot L_B \lor \lnot L_G \lor L_H)  $
+		$D_B\equiv \forall \bar x \big(L_B(\bar x) \lor L_G(\bar y)\big) \land
+		\forall \bar x \big(L_B(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  $
 	\item[If $B$ is of the form $\forall x G$:]~
 
 		$D_B\equiv (\lnot L_B \lor L_G) \land (L_B \lor \lnot L_G)$
 \end{itemize}
 
-Let \defiemph{$\delta(A)$} be defined as $\left(\bigwedge_{B \in \Sigma(A)} D_B\right) \land \forall \bar x L_A(\bar x)$, where $\Sigma(A)$ denotes the set of occurrences of subformulas of $A$.
+Let $\subformdefinitional{A}$ be defined as $\bigwedge_{B \in \Sigma(A)} D_B$ and
+\defiemph{$\delta(A)$} as $\subformdefinitional{A} \land \forall \bar x L_A(\bar x)$, where $\Sigma(A)$ denotes the set of occurrences of subformulas of $A$.
 For a set of formulas without existential quantifiers $\Phi$, let \defiemph{$\delta(\Phi) = \{ \delta(B) \mid B \in \Phi\}$}.
 \end{defi}
 
 Note that each of the $D_B$ is in CNF, hence also $\delta(A)$ for any formula $A$ without existential quantifiers.
+
+\begin{lemma}
+	Let $M_A$ be a model and $A$ a formula without existential quantifiers such that $M_A \entails A$.
+	Construct $M_A'$ from $M_A$ such that for $B\in\Sigma(A)$, $M_A\entails B(\bar x)$ if and only if $M_A \entails L_B(\bar x)$
+	Then $M_A' \entails \subformdefinitional{A}$.
+\end{lemma}
+\begin{proof}
+	We do an induction on the structure of $A$.
+
+	For the base case, suppose $A$ is an atom. 
+	Then $\subformdefinitional{A} = D_A  =\allowbreak \forall \bar x \big(\lnot A \lor L_A(\bar x)\big) \land\allowbreak \forall \bar x \big(A \lor \lnot L_A(\bar x)\big)$. 
+	As $M_A' \entails A$ by assumption and $M_A'\entails L_A(\bar x)$ by construction, this formula holds in $A$.
+
+	For the induction step, consider the following cases:
+	\begin{itemize}
+		\item $A$ is of the form $G \limpl H$. 
+			Then $\subformdefinitional{A} =
+			\subformdefinitional{G} \land
+			\subformdefinitional{H} \land D_A$.
+			As $M_A$ is a model of $G$ ($H$) and $M_A'$ by construction agrees with $M_G$ ($M_H$) on the interpretation of \subformdefinitional{G} (\subformdefinitional{H}),
+			by the induction hypothesis, $M_A' \entails \subformdefinitional{G}$  ($\subformdefinitional{H}$) 
+			{
+
+				\huge
+
+				induction hypothesis does not work like this
+
+			}
+
+			$D_A =
+		 \forall \bar x \big(L_A(\bar x) \lor L_G(\bar y)\big) \land
+		\forall \bar x \big(L_A(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_A(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  $
+			
+	\end{itemize}
+
+\end{proof}
+
+\begin{lemma}
+	Let $M$ be a model and $A$ a formula without existential quantifiers. Then the following statements hold:
+	\begin{enumerate}
+	\item $M \entails A$ implies that we can extend $M$ to some $M'$ such that $M' \entails \delta(A)$.
+		\label{lemma:delta_1}
+	\item $M \entails \delta(A)$ implies that $M \entails A$.
+		\label{lemma:delta_2}
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	Ad \ref{lemma:delta_1}: 
+	We construct $M'$ from $M$ such that $M'\entails L_B(\bar x)$ iff $M \entails B(\bar x)$ for $B\in\Sigma(A)$.
+	Let $M \entails A$ (and consequently $M\entails L_A$). We show by induction on the structure of $A$ that $M' \entails \delta(A)$.
+
+	For the base case, suppose $A$ is an atom. 
+	Then $\delta(A) = D_A \land L_A(\bar x) =\allowbreak \forall \bar x \big(\lnot A \lor L_A(\bar x)\big) \land\allowbreak \forall \bar x \big(A \lor \lnot L_A(\bar x)\big) \land L_A(\bar x) $.
+
+	For the induction step, consider the following cases:
+
+	\begin{itemize}
+		\item[$A$ is of the form $G \limpl H$.] 
+			We show that $M' \entails \delta(G\limpl H) = 
+			\left(\bigwedge_{B \in \Sigma(A)} D_B\right) \land  \forall \bar x L_A(\bar x) = 
+		%(L_A \lor L_G) \land (L_A \lor \lnot L_H) \land (\lnot L_A \lor \lnot L_G \lor L_H) 
+		%\forall \bar x \big(L_A(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_A(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  
+		\forall \bar x \big(L_A(\bar x) \lor L_G(\bar y)\big) \land
+		\forall \bar x \big(L_A(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_A(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  
+		\land \left(\bigwedge_{B \in \Sigma(G)} D_B\right) 
+		\land \left(\bigwedge_{B \in \Sigma(H)} D_B\right) 
+		\land \forall \bar x L_A(\bar x)
+		$
+
+		We know that $M\cancel\entails G$ or $M \entails H$.
+
+		By the other lemma item for $n-1$, $M \cancel\entails \delta(G)$
+
+		OR 
+
+		By this lemma item, $M' \entails \delta(H)$
+
+		By the definition of $M'$, $M' \entails \left(\bigwedge_{B \in \Sigma(G)} D_B\right) $, so if the $G$ part doesn't hold, it has to be $L_G$
+	\end{itemize}
+
+
+
+\end{proof}
+
+\begin{lemma}
+	Let $A$ be a formula and $\Phi$ a set of formulas without existential quantifiers with such that $\Lang(A) \subseteq(\Phi)$.
+
+	Then $\Phi \entails A$ iff $\delta(\Phi) \entails A$.
+
+\end{lemma}
+\begin{proof}
+	finite $\Phi$ -> $B$
+
+	induction on structure of $B$
+
+	base case
+
+	suppose all holds for smaller $B$
+
+	Suppose that $\delta(B) \entails A$ and $M \entails B$.
+
+	$M' \entails \delta(B)$
+
+	$M' \entails A$
+
+	if $\Lang(A) \subseteq \Lang(M)$, then $M\entails A$
+	\bigskip
+
+	Suppose that $B \entails A$ and $M \entails \delta(B)$.
+
+	then $M \entails B$ and so on.
+
+
+	%Suppose that $\delta(\Phi) \entails A$ and $M \entails \Phi$.
+	%Suppose that $\Phi \entails A$ and $M \entails \delta(\Phi)$.
+\end{proof}
 
 \begin{lemma}
 	\label{prop:definitional_form}
