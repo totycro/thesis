@@ -153,6 +153,8 @@ Note that due to the introduction of Skolem symbols, it is not the case that $\P
 In the following, we describe a common method for transforming a formula $A$ without existential quantifiers into CNF while preserving its structure.
 Note that the restriction to formulas without existential quantifiers can easily be established for arbitrary formulas by means of skolemisation and therefore does not limit the applicability of this procedure.
 
+In the following, we use the notational convention that $\{\bar y\} \cup \{\bar z\} = \{\bar x\}$ expressing the intuition that the free variables $\bar x$ of a formula $B$ are comprised of the not necessarily disjoint free variables  $\bar y$ and $\bar z$ of $B$'s direct subformulas.
+
 \begin{defi}
 	For every occurrence of a subformula $B$ of a formula $A$ without existential quantifiers, introduce a new atom $L_B(\bar x)$, where $\bar x$ are the free variables occurring in $B$.
 	This atom acts as a label for the subformula. 
@@ -189,11 +191,53 @@ Note that each of the $D_B$ is in CNF, hence also $\delta(A)$ for any formula $A
 We continue by working out the logical relations of formulas and their image under $A$:
 
 \begin{lemma}
-	Let $M$ be a model in the language $\Lang(\delta(A))$ for a formula $A$ without existential quantifiers. Then $M \entails A$ if and only if $M \entails \delta(A)$.
+	Let $M$ be a model of $\delta(A)$ for a formula $A$ without existential quantifiers.
+	Then $M \entails A$.
 \end{lemma}
 \begin{proof}
-	We show this lemma by induction on the structure of $A$.
-	Suppose that $A$ is an atom. Then $\delta(A) = \subformdefinitional{A} \land L_A(\bar x) =\allowbreak \forall \bar x \big(\lnot A \lor L_A(\bar x)\big) \land\allowbreak \forall \bar x \big(A \lor \lnot L_A(\bar x)\big) \land \forall x L_A(\bar x) $.
+
+	We show that $M \entails B \liff L_B(\bar x)$ for $B \in \Sigma(A)$.
+	As $M\entails \delta(A)$ directly implies that $M\entails L_A$, this proves the lemma.
+	Note that also $M \entails \subformdefinitional{A}$.
+
+	TODO: bsae  case 
+
+	For the induction step, we illustrate a few cases as the remaining ones are similar.
+	\begin{itemize}
+		\item Suppose $B$ is of the form $\lnot C$.
+			Then:
+			\[D_B \equiv \forall \bar x \big(L_B(\bar x) \lor L_C(\bar x)\big) \land\linebreak[0] \forall \bar x \big(\lnot L_B(\bar x) \lor \lnot L_C(\bar x)\big)\]
+			By the induction hypothesis, $M \entails C \liff L_C(\bar x)$.
+			As $M \entails D_B$, it follows that $M\entails \lnot L_C(\bar x) \liff L_B(\bar x)$,
+			so $M\entails \lnot C \liff L_B(\bar x)$
+			and $M\entails B \liff L_B(\bar x)$.
+
+		\item Suppose $B$ is of the form $C \lor D$.
+			Then:
+			\[D_B\equiv \forall \bar x \big(L_B(\bar x) \lor \lnot L_C(\bar y)\big) \land\linebreak[0] \forall \bar x \big(L_B(\bar x) \lor \lnot L_D(\bar z)\big) \land\linebreak[0] \forall \bar x \big(\lnot L_B(\bar x) \lor L_C(\bar y) \lor L_D(\bar z)\big)\]
+			We can assume by the induction hypothesis that 
+			$M \entails C \liff L_C(\bar x)$ as well as 
+			$M \entails D \liff L_D(\bar x)$.
+			As $M \entails D_B$, this expresses that
+			$M\entails L_C(\bar y) \limpl L_B(\bar x)$
+
+			TODO: other implications, then it works out !
+
+
+
+	\end{itemize}
+
+
+\end{proof}
+
+\begin{comment}
+	\begin{lemma}
+		Let $M$ be a model in the language $\Lang(\delta(A))$ for a formula $A$ without existential quantifiers.
+		Then $M \entails A$ if and only if $M \entails \delta(A)$.
+	\end{lemma}
+	\begin{proof}
+		We show this lemma by induction on the structure of $A$.
+		Suppose that $A$ is an atom. Then $\delta(A) = \subformdefinitional{A} \land L_A(\bar x) =\allowbreak \forall \bar x \big(\lnot A \lor L_A(\bar x)\big) \land\allowbreak \forall \bar x \big(A \lor \lnot L_A(\bar x)\big) \land \forall x L_A(\bar x) $.
 	As $M \entails \delta(A)$, $M \entails A$.
 
 	For the induction step, we illustrate a few cases as the remaining ones are similar.
@@ -220,6 +264,7 @@ We continue by working out the logical relations of formulas and their image und
 
 	\end{itemize}
 \end{proof}
+\end{comment}
 
 \begin{lemma}
 	\label{lemma:m_prime}
