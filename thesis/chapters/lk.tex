@@ -10,14 +10,9 @@ Its use of sequents in lieu of plain formulas allows for a natural mapping of th
 	A sequent $\Gamma \proves \Delta$ is called \defiemph{provable} if there is a sequent calculus proof of $\Gamma \proves \Delta$.
 \end{defi}
 
-For the purposes of this thesis, we consider the cut-free fragment of sequent calculus.
-
-\begin{thm}
-	Cut-free sequent calculus is sound and complete.
-\end{thm}
-
-The rules of cut-free sequent calculus are as follows:
-\newcommand{\calculussec}[1]{\subsubsection*{#1}}
+The rules of sequent calculus are as follows:
+%\newcommand{\calculussec}[1]{\textbf{#1}\nopagebreak}
+\newcommand{\calculussec}[1]{\subsubsection*{#1}\nopagebreak}
 \newenvironment{lkdefsec}{
 	%\begin{figure}[h!b]
 	%\ContinuedFloat
@@ -37,6 +32,16 @@ The rules of cut-free sequent calculus are as follows:
 			\AxiomCm{\fCenter t=t}
 		\end{prooftree}
 	\end{multicols}
+
+\end{lkdefsec}
+
+\begin{lkdefsec}
+	\calculussec{Cut}
+	\begin{prooftree}
+		\Axiomm{\Gamma \fCenter \Delta, A}
+		\Axiomm{A, \Sigma \fCenter \Pi}
+		\BinaryInfm{\Gamma, \Sigma \fCenter \Delta, \Pi}
+	\end{prooftree}
 
 \end{lkdefsec}
 \begin{lkdefsec}
@@ -177,7 +182,7 @@ The rules of cut-free sequent calculus are as follows:
 				\begin{prooftree}
 					\Axiomm{\Gamma \fCenter \Delta, A[x/y]}
 					\RightLabelm{\lkrule{\forall}{r}}
-					\UnaryInfm{\Gamma, \forall x A \fCenter \Delta }
+					\UnaryInfm{\Gamma\fCenter \Delta, \forall x A  }
 				\end{prooftree}
 
 			\end{multicols}
@@ -194,7 +199,7 @@ The rules of cut-free sequent calculus are as follows:
 				\begin{prooftree}
 					\Axiomm{\Gamma \fCenter \Delta, A[x/t]}
 					\RightLabelm{\lkrule{\exists}{r}}
-					\UnaryInfm{\Gamma, \exists x A \fCenter \Delta }
+					\UnaryInfm{\Gamma\fCenter \Delta, \exists x A  }
 				\end{prooftree}
 
 			\end{multicols}
@@ -213,38 +218,37 @@ The rules of cut-free sequent calculus are as follows:
 			\item Left rules
 	\begin{multicols}{2}
 		\begin{prooftree}
-			\Axiomm{\Gamma, A[T/t] \fCenter \Delta}
+			\Axiomm{\Gamma, A\occurat{t}{p} \fCenter \Delta}
 			\Axiomm{\Sigma \fCenter \Pi, s=t}
 			\RightLabelm{\lkrule{=}{l_1}}
-			\BinaryInfm{\Gamma, \Sigma, A[T/s] \fCenter \Delta, \Pi }
+			\BinaryInfm{\Gamma, \Sigma, A\occurat{s}{p} \fCenter \Delta, \Pi }
 		\end{prooftree}
 		\begin{prooftree}
-			\Axiomm{\Gamma, A[T/s] \fCenter \Delta}
+			\Axiomm{\Gamma, A\occurat{s}{p} \fCenter \Delta}
 			\Axiomm{\Sigma \fCenter \Pi, s=t}
 			\RightLabelm{\lkrule{=}{l_2}}
-			\BinaryInfm{\Gamma, \Sigma, A[T/t] \fCenter \Delta, \Pi }
+			\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
 		\end{prooftree}
 	\end{multicols}
 
 			\item Right rules
 	\begin{multicols}{2}
 		\begin{prooftree}
-			\Axiomm{\Gamma\fCenter \Delta, A[T/t] }
+			\Axiomm{\Gamma\fCenter \Delta, A\occurat{t}{p} }
 			\Axiomm{\Sigma \fCenter \Pi, s=t}
 			\RightLabelm{\lkrule{=}{r_1}}
-			\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A[T/s]  }
+			\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{s}{p}  }
 		\end{prooftree}
 		\begin{prooftree}
-			\Axiomm{\Gamma\fCenter \Delta, A[T/s] }
+			\Axiomm{\Gamma\fCenter \Delta, A\occurat{s}{p} }
 			\Axiomm{\Sigma \fCenter \Pi, s=t}
 			\RightLabelm{\lkrule{=}{r_2}}
-			\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A[T/t] }
+			\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{t}{p} }
 		\end{prooftree}
 	\end{multicols}
 	\end{itemize}
 
-
-
+	(provided no free variable of $s$ or $t$ becomes bound in $A\occurat{t}{p}$ or $A\occurat{s}{p}$)
 
 	\caption{The rules of sequent calculus}
 	\label{fig:lk}
@@ -252,7 +256,13 @@ The rules of cut-free sequent calculus are as follows:
 \end{lkdefsec}
 	\end{figure}
 
-\clearpage
+For the purposes of this thesis, we consider the cut-free fragment of sequent calculus.
+
+\begin{thm}
+	Cut-free sequent calculus is sound and complete.
+\end{thm}
+
+
 
 
 

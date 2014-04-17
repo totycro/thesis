@@ -87,11 +87,13 @@ As the notions of interpolation and reverse interpolation in this sense coincide
 
 \begin{lemma}
 	\label{lemma:logically_equivalent_sets}
-	Let $\Gamma, \Gamma', \Delta, \Delta'$ be sets of first order formulas such that $\Gamma \semiff \Gamma'$ and $\Delta \semiff \Delta'$.
+	Let $\Gamma, \Gamma', \Delta, \Delta'$ be sets of first order formulas such that $\Gamma \semiff \Gamma'$ and $\Delta \semiff \Delta'$ and $\Lang(\Gamma) \cap \Lang(\Delta) = \Lang(\Gamma') \cap \Lang(\Delta')$ .
 	Then $I$ is an interpolant for $\Gamma$ and $\Delta$ if and only if $I$ is an interpolant for $\Gamma'$ and $\Delta'$.
 \end{lemma}
 \begin{proof}
-	TODO
+	Clearly $\Gamma \entails I$ holds if and only if $\Gamma' \entails I$ and similarly
+	$\Delta \entails \lnot I$ holds if and only if $\Delta' \entails \lnot I$.
+	As the intersections of the respective languages coincide, the language condition on $I$ is satisfied in both directions.
 \end{proof}
 
 In the context of interpolation, every non-logical symbol is assigned a color which indicates its origin(s). 
