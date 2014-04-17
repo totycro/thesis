@@ -37,6 +37,8 @@ positioning,fit,calc,decorations.text,shadows%
 \usepackage{amssymb} % the reals
 \usepackage{mathtools} % smashoperator
 
+\usepackage{nicefrac} % nicefrac
+
 \usepackage{mathrsfs} % mathscr
 
 \usepackage{pst-node} % http://tex.stackexchange.com/questions/35717/how-to-draw-arrows-between-parts-of-an-equation-to-show-the-math-distributive-pr
@@ -333,7 +335,7 @@ positioning,fit,calc,decorations.text,shadows%
 \def\fCenter{\proves}
 
 
-\newcommand{\lkrule}[2]{\ensuremath{#1:#2}}
+\newcommand{\lkrule}[2]{\ensuremath{\operatorname{#1}:#2}} % operatorname fixes spacing issues for =
 
 \newcommand{\parti}[4]{\ensuremath{ \langle (#1; #2), (#3; #4)\rangle  }}
 

@@ -1,8 +1,10 @@
 \chapter{Reduction to First-Order Logic without Equality}
 
-A common theme of proofs in theoretical computer science is to avoid the tedious effort of proving the result from first principles by reducing the problem to one that is easier to solve.
+A common theme of proofs is to avoid the tedious effort of proving the result from first principles by reducing the problem to one that is easier to solve.
 In this instance, we are able to give a reduction for finding interpolants in first-order logic \emph{with} equality to first-order logic \emph{without} equality, where it is simpler to give an appropriate algorithm.
+This method is due to Craig (\cite{Craig57three}).
 
+In order to simplify notation, we shall consider constant symbols to be function symbols of arity $0$ in this section.
 The general layout of this approach is the following:
 From two sets $\Gamma$ and $\Delta$, where $\Gamma \cup \Delta$ is unsatisfiable, we compute two sets $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate the effects of equality in $\Gamma$ and $\Delta$ via axioms.
 In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that the behaviour of these function-representing predicates is compatible to the one of actual functions.
@@ -14,14 +16,17 @@ Since the additional axioms ensure that the newly added predicate symbols mimic 
 
 As we shall see in this section, first-order formulas with equality can be transformed into first-order formulas without equality in a way that is satisfiability-preserving, which is sufficient for our purposes.
 
-In order to simplify notation, we shall consider constant symbols to be function symbols of arity $0$ in this section.
+First, we define axioms in a language with fresh symbols which allows for simulation of equality and functions in first order logic without equality and function symbols:
 
-First, we define the axioms which allow for simulation of equality and functions in first order logic without equality and function symbols:
+\begin{defi}[Translation of languages]
+	For a first-order language $\LangSym$ and fresh predicate symbols $E$ and $F_f$ for $f\in \FS(\LangSym)$, 
+	\defiemph{$\Trans(\LangSym)$} denotes $(\LangSym \cup \{E\}\cup\{F_f\mid f \in\nolinebreak \FS(\LangSym)\}) \setminus\allowbreak (\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
+\end{defi}
 
 \begin{defi}[Equality and function axioms]
-	For a first-order language $\LangSym$ and fresh predicate symbols $E$ and $F_f$ for $f\in \FS(\LangSym)$, we define:\nopagebreak
+	For a first-order language $\LangSym$ we define the following axions in $\Trans(\LangSym)$:\nopagebreak
 	\begin{align*}
-		\FAX(\LangSym) \defeq{}& \smashoperator{\bigwedge_{f \in \FS(\LangSym)}}  \forall \bar x \exists y (F_f(\bar x, y) \land (\forall z (F_f(\bar x, z) \limpl E(y, z)))) \\
+		\FAX(\LangSym) \defeq{}& \smashoperator{\bigcup_{f \in \FS(\LangSym)}}  \forall \bar x \exists y (F_f(\bar x, y) \land (\forall z (F_f(\bar x, z) \limpl E(y, z)))) \\
 %		\EAX(A) \defeq{} & \forall x \; x=x~\land  \\
 %																		 & \begin{aligned} \bigwedge_{\substack{P \in\PS(A)\cup\\ \{F_i\mid f_i\in \FS(A)\}}} &\forall x_1 \ldots \forall x_{\ar(P)} \forall y_1 \ldots \forall y_{\ar(P)} \\
 %																 & (( x_1~=~y_1 \land \ldots \land x_{\ar(P)} = y_{\ar(P)}) \limpl  \\
@@ -32,7 +37,7 @@ First, we define the axioms which allow for simulation of equality and functions
 \forall x_1 \forall y_1 \ldots \forall x_{\ar(P)} \forall y_{\ar(P)} 
 (( E(x_1,y_1) \land \ldots \land E(x_{\ar(P)},  y_{\ar(P)})) \limpl  \\
  & (P(x_1, \ldots, x_{\ar(P)}) \limpl P(y_1, \ldots, y_{\ar(P)}) )) \\
-		\EAX(\LangSym) \defeq{}& \Refl(E) \land \;\smashoperator{\bigwedge_{\substack{P \in\PS(\LangSym)\cup\{E\}\cup\\ \{F_f\mid f\in \FS(\LangSym)\}}}}\; \Congr(P)
+		\EAX(\LangSym) \defeq{}& \Refl(E) \cup \;\smashoperator{\bigcup_{\substack{P \in\PS(\LangSym)\cup\{E\}\cup\\ \{F_f\mid f\in \FS(\LangSym)\}}}}\; \Congr(P)
 	%	\EAX(A) \defeq{} & \forall x E(x,x)\land  \\
 	%																	 & \begin{aligned} \bigwedge_{\substack{P \in\PS(A)\cup\{E\}\cup\\ \{F_f\mid f\in \FS(A)\}}} &\forall x_1 \ldots \forall x_{\ar(P)} \forall y_1 \ldots \forall y_{\ar(P)} \\
 	%																	 & (( E(x_1,y_1) \land \ldots \land E(x_{\ar(P)},  y_{\ar(P)})) \limpl  \\
@@ -45,12 +50,29 @@ First, we define the axioms which allow for simulation of equality and functions
 \end{defi}
 
 $\Refl(P)$ will be referred to as reflexivity axiom of $P$, $\Congr(P)$ as congruence axiom of $P$.
-Now we define the precise language we translate formulas to as well as the translation procedure.
+As any model of $\EAX(\LangSym)$ requires $\Refl(E)$ and $\Congr(E)$, $E$ is also symmetric and transitive in the model:
 
-\begin{defi}[Translation of languages]
-	Let $\LangSym$ be a language.
-	Then $\Trans(\LangSym)$ denotes $(\Lang(\LangSym)\cup \{E\}\cup\{F_f\mid f \in \FS(\LangSym)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\LangSym))$.
-\end{defi}
+\begin{prop}
+	\label{prop:equivalence_relation}
+	In every model of $\Refl(E)$ and $\Congr(E)$,
+	$E$ is an equivalence relation.
+\end{prop}
+\begin{proof}
+	Let $M$ be a model of $\Refl(E)$ and $\Congr(E)$.
+	Then $M$ clearly is reflexive.
+	Due to $M \entails \Congr(E)$,
+	$M \entails \forall x \forall y (E(x, y) \land E(x, x)) \limpl ( E(x, x) \limpl\nolinebreak E(y, x))$.
+	As we know that $E$ is reflexive, this simplifies to
+	$M \entails \forall x \forall y (E(x, y)\limpl\nolinebreak E(y, x))$, i.e.~$E$ is symmetric in $M$.
+	We show the transitivity of $E$ by another instance of $\Congr(E)$: 
+	$M \entails \forall x \forall y \forall z ((E(y, x) \land E(y, z)) \limpl ( E(y, y) \limpl\nolinebreak E(x, z)))$,
+	As $E$ is reflexive and symmetric, we get that 
+	$M \entails \forall x \forall y \forall z ((E(x, y) \land E(y, z)) \limpl\nolinebreak E(x, z))$.
+\end{proof}
+
+
+We continue by defining the translation procedure for formulas:
+
 
 \begin{defi}[Translation and inverse translation of formulas]
 	\label{def:trans}
@@ -74,12 +96,32 @@ Now we define the precise language we translate formulas to as well as the trans
 	\item Replace every occurrence of $E(s, t)$ in $B$ by $s=t$.
 	\item For every $f \in FS(A)$, replace every occurrence of 
 		$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1},\allowbreak y,\allowbreak s_{j+1}, \ldots s_m))$
-		in $B$ by $P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ and every remaining occurrence of $F_f(\bar t, s)$ by $f(\bar t) = s$.
+		in $B$ by $P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ 
+		\label{t_inverse_2}
+
+	\item 
+		\label{t_inverse_3}
+		For every $f \in FS(A)$, replace every occurrence of 
+		$F_f(\bar t, s)$ by $f(\bar t) = s$.
 	\end{compactenum}
 
 	For sets of first-order formulas $\Phi$, let $\Trans(\Phi) \defeq \bigcup_{A\in\Phi} \Trans(A)$ and 
 $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 \end{defi}
+
+\begin{remark}
+	Let $\LangSym$ be a language.
+	Step \ref{t_inverse_2} and \ref{t_inverse_3} of $\TransInv$ are both concerned with replacing occurrences of $F_f$ by occurrences of $f$ for $f \in \FS(\LangSym)$, but are relevant in different contexts.
+
+	Step \ref{t_inverse_2} of $\TransInv$ is the precise inverse of step \ref{def:trans_step2} of $\Trans$ in the sense that for any formula $A$, $\TransInv(\Trans(A)) = A$ as we will show in Lemma \ref{lemma:tinv}.
+	In this context, step \ref{t_inverse_3} has no effect, as all occurrences of $F_f$ have been introduced by $\Trans(\cdot)$ and are consequently of exactly the form that is handled by step \ref{t_inverse_2}. 
+	So the algorithm is in this regard complete even without step \ref{t_inverse_3}.
+
+	On the other hand, if arbitrary formulas in the language $\Trans(\LangSym)$ are given, 
+	they in general do not match that pattern and are only translated to $\LangSym$ in step \ref{t_inverse_3}.
+	Note that $\TransInv$ without step \ref{t_inverse_2} yields a complete algorithm, as any formula that is handled there can also be processed in step \ref{t_inverse_3}.
+	In such a procedure, $\TransInv(\Trans(A))$ and $A$ are in general not syntactically equal for formulas $A$ but only logically equivalent. 
+\end{remark}
 
 \begin{lemma}
 	\label{lemma:tinv}
@@ -91,15 +133,19 @@ $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 	.
 \end{lemma}
 \begin{proof}
-	Step 1 and 2 in the transformation algorithm for $\Trans$ and $\TransInv$ are each concerned with a different set of symbols and therefore do not interfere with each other.
+	Step 1 and 2 in the algorithms $\Trans$ and $\TransInv$ are each concerned with a different set of symbols and therefore do not interfere with each other.
 	Moreover, the respective steps in both algorithms are the inverse of each other.
 	For step 1, this is immediate and for step 2, consider that all occurrences of $F_f$ for $f \in \FS(A)$ in $\Trans(A)$ have been introduced by $\Trans$ and are consequently of the form
 	$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, s_{j+1}, \ldots s_m))$, which is replaced by 
-$P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ by~$\TransInv$.
+	$P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ by $\TransInv$.
+	As no occurrences of $F_f$ remain, step 3 of $\TransInv$ leaves the formula unchanged. 
 \end{proof}
 
 \begin{defi}[Translation of formulas including axioms]
-	For first-order formulas $A$, let $\TransAll(A) = \FAX(\Lang(A)) \land \EAX(\Lang(A)) \land \Trans(A)$ and for sets of first-order formulas $\Phi$, let $\TransAll(\Phi) = \{\FAX(\Lang(\Phi)), \EAX(\Lang(\Phi))\} \cup \Trans(\Phi)$.
+	For first-order formulas $A$, let $\TransAll(A) =
+	\left(\bigwedge_{B\in\FAX(\Lang(A))} B \right) \land
+	\left(\bigwedge_{B\in\EAX(\Lang(A))} B \right) \land
+	\Trans(A)$ and for sets of first-order formulas $\Phi$, let $\TransAll(\Phi) = \FAX(\Lang(\Phi)) \cup  \EAX(\Lang(\Phi)) \cup \Trans(\Phi)$.
 \end{defi}
 
 
@@ -131,7 +177,7 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 		\item If $\Phi$ is satisfiable, then so is $\TransAll(\Phi)$.
 			\label{prop:trans_sat_equiv1}
 		\item Let $\LangSym$ be a first-order language and $\Phi$ a set of first-order formulas in the language~$\Trans(\LangSym)$.
-			If $\{\FAX(\LangSym), \EAX(\LangSym)\} \cup \Phi $ is satisfiable, then so is $\TransInv(\Phi)$.
+			If $\FAX(\LangSym) \cup \EAX(\LangSym) \cup \Phi $ is satisfiable, then so is $\TransInv(\Phi)$.
 			\label{prop:trans_sat_equiv2}
 	\end{compactenum}
 \end{prop}
@@ -153,25 +199,27 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	Lastly, we show that $M \entails \Trans(A)$ for all $A \in \Phi$.
 	By the above definition of $E$ in $M$, step $\ref{def:trans_step1}$ of the algorithm in definition \ref{def:trans} yields a formula that is satisfied by $M$ as it satisfies every formula of $\Phi$.
 	For step \ref{def:trans_step2}, suppose $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
-	Let $y$ such that $M \entails f(\bar t)=y$.
-	By our definition of $F$ under $M$, $M\entails F(\bar t, y)$ with this unique $y$.
-	Hence $\exists y (F(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, \allowbreak s_{j+1}, \ldots s_m))$ does (not) hold under $M$.
+	Let $y$ be such that $M \entails f(\bar t)=y$.
+	By our definition of $F_f$ under $M$, $M\entails F_f(\bar t, y)$ with this unique $y$.
+	Hence $\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1}, y, \allowbreak s_{j+1}, \ldots s_m))$ does (not) hold under $M$.
 
 
-	For the other direction, suppose $\{\FAX(\LangSym), \EAX(\LangSym)\} \cup \Phi$ is satisfiable.
-	We extend a model $M$ of this set of formulas to a model of $\TransInv(\Phi)$ by extending it from the language $\Trans(\LangSym)$ to include $\{=\}$ and $\FS(\LangSym)$.
+	For 2, suppose $\FAX(\LangSym) \cup \EAX(\LangSym) \cup \Phi$ is satisfiable and let $M$ be a model of it.
 
-	First, let $M\entails s = t$ if and only if $M\entails E(s, t)$.
-	As $M$ is a model of $\EAX(\LangSym)$, $E$ is reflexive. 
-	Since $M \entails \Congr(E)$,
-	$M \entails \forall x \forall y (E(x, y) \land E(x, x)) \limpl ( E(x, x) \limpl\nolinebreak E(y, x))$.
-	As we know that $E$ is reflexive, this simplifies to
-	$M \entails \forall x \forall y (E(x, y)\limpl\nolinebreak E(y, x))$, i.e.~$E$ is symmetric in $M$.
-	We show the transitivity of $E$ by another instance of $\Congr(E)$: 
-	$M \entails \forall x \forall y \forall z ((E(y, x) \land E(y, z)) \limpl ( E(y, y) \limpl\nolinebreak E(x, z)))$,
-	As $E$ is reflexive and symmetric, we get that 
-	$M \entails \forall x \forall y \forall z ((E(x, y) \land E(y, z)) \limpl\nolinebreak E(x, z))$.
-	As these properties directly also apply to $=$ in $M$, equality is adheres to the required axioms in $M$.
+	First, note that as $M \entails \EAX(\LangSym)$, by Proposition \ref{prop:equivalence_relation},  $E^M$ is an equivalence relation.
+	Let $D$ be the domain of $M$.
+	We build a model $M'$ with the domain 
+	$D' = D/{E^M}$, i.e.\ the the congruence relation of $D$ modulo $E^M$.
+	The interpretation $\calI'$ of $M'$ is obtained from the interpretation $\calI$ of $M$ by 
+	replacing every occurrence of a domain element $d$ by its respective congruence class $\{ x \mid (d, x) \in E^M\}$.\todo{how to write this in a nicer way?}{}
+	As $M \entails \EAX(\LangSym)$, it satisfies the congruence axioms with respect to every function and predicate symbol, and therefore $\calI'$ is well-defined.
+	Due to this construction, $M' \entails s = t$ if and only if $M \entails E(s, t)$ for all terms $s$ and $t$.
+
+	%We extend a model $M$ of this set of formulas to a model of $\TransInv(\Phi)$ by extending it from the language $\Trans(\LangSym)$ to include $\FS(\LangSym)$.
+
+	%First, let $M\entails s = t$ if and only if $M\entails E(s, t)$.
+	%By Proposition \ref{prop:equivalence_relation} and as $M \entails \EAX(\LangSym)$, $E$ is an equivalence relation in $M$.
+	%As these properties directly also apply to $=$ in $M$, equality is adheres to the required axioms in $M$.
 
 	Second, let $M\entails f(\bar t) = s$ if and only if $M\entails F_f(\bar t, s)$ for all $f \in \FS(\LangSym)$.
 	As by assumption $M$ is a model of $\FAX(A)$, we know that for every $\bar t$, some $s$ with $M\entails F(\bar t, s)$ exists and is uniquely defined.
@@ -209,26 +257,78 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	Translating the skolemised formulas to a language without function symbols as described in Definition \ref{def:trans} is of no avail since this translation introduces new existential quantifiers for every function symbol it encounters, necessitating skolemisation yet again.
 \end{remark}
 
+
+\begin{lemma}
+	\label{lemma:no_equality_in_proof}
+	 Let $\Gamma$ and $\Delta$ be sets of first-order formulas without the equality symbol and $\Gamma \proves \Delta$ be provable in sequent calculus. 
+	 Then there exists a proof of $\Gamma \proves \Delta$ that does not contain the equality symbol.
+\end{lemma}
+\begin{proof}
+	Let $\pi$ be a proof of $\Gamma \proves \Delta$.
+
+	Suppose $\pi$ contains an instance of the equality axiom $\proves t = t$ for a term $t$.
+	As no equality symbol is contained in the end sequent, there has to be a rule application in $\pi$ which removes either $t=t$.
+	Only instances of equality rules or cut are capable of this. 
+
+	Consider the case that an equality rule removed $t=t$.
+	As the cases for
+	$\lkrule{=}{l_1}$,
+	$\lkrule{=}{l_2}$,
+	$\lkrule{=}{r_1}$ and
+	$\lkrule{=}{r_2}$ are similar, we only consider the case of $\lkrule{=}{l_1}$.
+	
+	TODO: here
+	
+	The proof 
+
+	\begin{prooftree}
+		\AxiomCm{\varphi}
+		\noLine
+		\UnaryInfCm{\Gamma, A\occurat{t}{p} \proves \Delta}
+		\AxiomCm{\psi}
+		\noLine
+		\UnaryInfCm{\Sigma \proves \Pi, t=t}
+		\RightLabelm{\lkrule{=}{l_1}}
+		\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
+	\end{prooftree}
+
+
+
+
+
+	agenda:
+	
+	- equality axiom -> paramodulation recht sinnfrei
+
+	- reguläres axiom -> linke seite 
+
+	- schnitt ?!? 
+
+	(beweis kann länger werden, aber wie geht das? inessential cuts bleiben doch über?)
+
+\end{proof}
+
+
 We now show that interpolants can be computed by means of a sequent calculus based procedure by Maehara.
 It is slightly stronger than the required statement as it allows for interpolants of partitions of sequents:
 
-
 \begin{defi}[Partition of sequents]
-	A {partition} of a sequent $\Gamma \proves \Delta$ is denoted by $\parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2}$, where $\Phi_1 \cap \Phi_2 = \emptyset$ and $\Phi_1 \cup \Phi_2 = \Phi$ for $\Phi \in \{\Gamma, \Delta\}$.
+A {partition} of a sequent $\Gamma \proves \Delta$ is denoted by $\parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2}$, where
+$\Gamma_1 \uplus \Gamma_2 = \Gamma$ and 
+$\Delta_1 \uplus \Delta_2 = \Delta$.
 \end{defi}
-Note that while for partitions of sets it is usually required that the parts are non-empty, empty parts in a partition of sequents are permitted.
 
 \input{chapters/maehara}
 
 This allows us to state the central theorem of this section:
 \begin{thm}
 	\label{thm:prop_interpol}
-	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant for $\Gamma$ and $\Delta$.
+	Let $\Gamma$ and $\Delta$ be sets of closed first-order formulas without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant for $\Gamma$ and $\Delta$.
 \end{thm}
 \begin{proof}
 	We show that there is an interpolant for $\Gamma \entails \lnot \Delta$, which
 	by Proposition \ref{prop:interpolations_equivalent} proves the theorem.
-	By the completeness of cut-free sequent calculus, there is a proof of $\Gamma \vdash \lnot \Delta$.
+	By the completeness of cut-free sequent calculus, there is a cut-free proof of $\Gamma \vdash \lnot \Delta$.
 	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{\Gamma}{}{}{\lnot \Delta}.
 	$I$ is the desired interpolant for $\Gamma\entails\lnot\Delta$.
 

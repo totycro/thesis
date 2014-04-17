@@ -2,7 +2,7 @@
 
 \begin{lemma}[Maehara]
 	\label{lemma:maehara}
-	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \vdash \Delta$ is provable in sequent calculus.
+	Let $\Gamma$ and $\Delta$ be sets of first-order clauses without equality and function symbols such that $\Gamma \vdash \Delta$ is provable in cut-free sequent calculus.
 	Then for any partition \parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2}
 	there is an interpolant $I$ such that
 	\begin{compactenum}
@@ -15,26 +15,20 @@
 	\end{compactenum}
 \end{lemma}
 \begin{proof}
-	We prove this lemma by induction on the number of inferences in a proof of $\Gamma \proves \Delta$.
+	We prove this lemma by induction on the number of inferences in a cut-free proof of $\Gamma \proves \Delta$.
+	By Lemma \ref{lemma:no_equality_in_proof}, we can assume that no equality symbol occurs in the proof, so equality rules need not be considered. 
 	As many cases are similar, we prove some examples only.
 	\begin{description}
 		\item[\normalfont Base case.]
 			Suppose no rules were applied.
-			Then $C \vdash D$ is of one of the following forms:
-			\begin{itemize}
-				\item $C \vdash D$ is of the form $A \vdash A$. We give interpolants for any of the four possible partitions:
+			Then $C \vdash D$ is of one of the form
+				$A \vdash A$. We give interpolants for any of the four possible partitions:
 					\begin{enumerate}
 						\item \parti{A}{A}{}{}: $I=\bot$
 						\item \parti{}{}{A}{A}: $I=\top$
 						\item \parti{}{A}{A}{}: $I=\lnot A$
 						\item \parti{A}{}{}{A}: $I=A$
 					\end{enumerate}
-				\item $C \vdash D$ is of the form $\vdash t=t$. We again give interpolants for all possible partitions:
-					\begin{enumerate}
-						\item \parti{}{t=t}{}{}: $I=\bot$
-						\item \parti{}{}{}{t=t}: $I=\top$
-					\end{enumerate}
-			\end{itemize}
 
 		\item[\normalfont Structural rules.]
 			Suppose the property holds for $n$ rule applications and the $(n+1)$th rule is a structural one.
