@@ -260,7 +260,8 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 
 \begin{lemma}
 	\label{lemma:no_equality_in_proof}
-	 Let $\Gamma$ and $\Delta$ be sets of first-order formulas without the equality symbol and $\Gamma \proves \Delta$ be provable in sequent calculus. 
+	 %Let $\Gamma$ and $\Delta$ be sets of first-order formulas without the equality symbol and $\Gamma \proves \Delta$ be provable in sequent calculus. 
+	 Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that the equality symbol does not occur in them and $\Gamma \proves \Delta$ is provable in sequent calculus. 
 	 Then there exists a proof of $\Gamma \proves \Delta$ that does not contain the equality symbol.
 \end{lemma}
 \begin{proof}
@@ -276,11 +277,7 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	$\lkrule{=}{l_2}$,
 	$\lkrule{=}{r_1}$ and
 	$\lkrule{=}{r_2}$ are similar, we only consider the case of $\lkrule{=}{l_1}$.
-	
-	TODO: here
-	
-	The proof 
-
+	The proof $\pi'$ leading up to the rule application that removes of the occurrence of $t=t$ is of the form:
 	\begin{prooftree}
 		\AxiomCm{\varphi}
 		\noLine
@@ -291,20 +288,52 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 		\RightLabelm{\lkrule{=}{l_1}}
 		\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
 	\end{prooftree}
+	We can replace $\pi'$ in $\pi$ by the following to obtain a proof without an occurrence of the equality symbol:
+	\begin{prooftree}
+		\AxiomCm{\varphi}
+		\noLine
+		\UnaryInfCm{\Gamma, A\occurat{t}{p} \proves \Delta}
+		\RightLabelm{\lkrule{w}{l}}
+		\UnaryInfCm{\Gamma, \Sigma, A\occurat{t}{p} \proves \Delta}
+		\RightLabelm{\lkrule{w}{r}}
+		\UnaryInfCm{\Gamma, \Sigma, A\occurat{t}{p} \proves \Delta, \Pi}
+	\end{prooftree}
+
+	TODO: CUT
+
+	Suppose $\pi$ contains an instance of the axiom $A \proves A$ such that the equality symbol occurs in $A$.
+	Then $A$ is of the form $s=t$ for terms $s$ and $t$.
+	While the occurrence in the consequent might be eliminated by an equality rule application, due to the subformula property, there is no rule in cut-free sequent calculus such that the occurrence in the antecedent is removed.
+	Hence it appears in the final sequent, which contradicts the assumption.
+
+	Suppose $\pi$ contains an instance of \lkrule{w}{l} such that the equality symbolc occurs in the principal formula $A$. 
+	This case can be argued similarly as for occurrences of $A$ as antecedent of an axiom $A \proves A$.
+
+	Suppose $\pi$ contains an instance of \lkrule{w}{r} such that the equality symbolc occurs in the principal formula $A$. 
+	Then as it does not occur in the end sequent, it is removed by either an instance of an equality rule or the cut rule. 
+	Suppose it is removed via an equality rule. We consider the case of  $\lkrule{=}{l_1}$.
+
+	\begin{prooftree}
+		\AxiomCm{\varphi}
+		\noLine
+		\UnaryInfCm{\Gamma \proves \Delta}
+		\RightLabelm{\lkrule{w}{r}}
+		\UnaryInfCm{\Gamma \proves \Delta, s=t}
+		\noLine
+		\UnaryInfCm{\vdots}
+		\noLine
+
+
+	\UnaryInfCm{\Sigma \proves \Pi, t=t}                 
+	\RightLabelm{\lkrule{=}{l_1}}                        
+	%\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
+	\end{prooftree}
+							
 
 
 
 
-
-	agenda:
-	
-	- equality axiom -> paramodulation recht sinnfrei
-
-	- reguläres axiom -> linke seite 
-
-	- schnitt ?!? 
-
-	(beweis kann länger werden, aber wie geht das? inessential cuts bleiben doch über?)
+	(beweis kann l"anger werden, aber wie geht das? inessential cuts bleiben doch "uber?)
 
 \end{proof}
 
@@ -313,9 +342,9 @@ We now show that interpolants can be computed by means of a sequent calculus bas
 It is slightly stronger than the required statement as it allows for interpolants of partitions of sequents:
 
 \begin{defi}[Partition of sequents]
-A {partition} of a sequent $\Gamma \proves \Delta$ is denoted by $\parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2}$, where
-$\Gamma_1 \uplus \Gamma_2 = \Gamma$ and 
-$\Delta_1 \uplus \Delta_2 = \Delta$.
+	A {partition} of a sequent $\Gamma \proves \Delta$ is denoted by $\parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2}$, where
+	$\Gamma_1 \uplus \Gamma_2 = \Gamma$ and 
+	$\Delta_1 \uplus \Delta_2 = \Delta$.
 \end{defi}
 
 \input{chapters/maehara}
