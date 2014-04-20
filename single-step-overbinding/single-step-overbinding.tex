@@ -290,6 +290,8 @@ The subterm-relation is reflexive.
 \clearpage
 \subsection{algo more formally}
 
+Every literal in any initial clause set has a globally unique id/number
+
 Ex: $P(y, a, f(z, g(y, b)) ) \lor Q(x)$
 
 Term position:
@@ -300,7 +302,7 @@ $0.1$ is $a$
 
 $0.2.1$ is $g(z, b)$
 
-for a position $p$, $\pos{p_i}$ denotes whatever $p_i$ refers to in its respective clause.
+for a position $p_i$, $\pos{p_i}$ denotes whatever $p_i$ refers to in its respective clause.
 
 for a term $t$, $\pos{t}$ denotes the position in $t$ in its respective clause.
 
@@ -310,35 +312,34 @@ for a position $p$, $\posterm{p}$ denotes the position of the term in $p_i$
 
 $\Ra$ $p = \poslit{p}.\posterm{p}$
 
-\subsection{
-	Arrows:
-}
+\subsection{Arrows:}
 
-$\arr{C}$ for a clause $C$ is a set of ordered pairs or term positions in $C$ or $\PI(C)$.
+$\arr$ is a set of ordered pairs of term positions which point to positions in terms in literals
 
-$\warr{C}$ for a clause $C$ is a set of unordered pairs or term positions in $C$ or $\PI(C)$.
+$\warr$ is a set of unordered pairs of term positions which point to positions in terms in literals
 
 w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 \begin{enumerate}
 	\item For each initial clause $C$ in $\Gamma \cup \Delta$:
 
-		Add to $\arr{C}$ all $(p_1, p_2)$
-		such that $p_1$ contains only grey symbol and $\pos{p_1} = \pos{p_2}$ but $p_1 \neq p_2$.
+		Add to $\arr$ all $(p_1, p_2)$ in $C$
+		such that $p_1$ contains only grey symbol and $\pos{p_1}$ is a variable and $\pos{p_1} = \pos{p_2}$ but $p_1 \neq p_2$.
 
-		Add to $\warr{C}$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos{p_1} = \pos{p_2}$.
+		Add to $\warr{C}$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos{p_1}$ is a var and $\pos{p_1} = \pos{p_2}$.
 
 	\item 
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
 
-		Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
+		Note: literals are added to the interpolant if they occur in both ancestors.
 
-		If $l$ and/or $l'$ is added to $\PI(C)$, it comes from both $l$ and $l'$.
+		Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
+
+		%Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
+		%If $l$ and/or $l'$ is added to $\PI(C)$, it comes from both $l$ and $l'$.
 
 
-
-
-		$(p_1, p_2) \in \arr{C} \semiff $ $\poslit{p_i}$ comes from literal $l_i$ in a clause $D$ in an original clause set, $i\in\{1, 2\}$, (both from same $D$), and $(l_1.\posterm{p_1}, l_2.\posterm{p_2}) \in \arr{D}$ 
+		%Add $(p_1, p_2)$ to $\arr$ if $\poslit{p_i}$ comes from literal $l_i$ in a clause $D$ in an original clause set, $i\in\{1, 2\}$, (both from same $D$), and $(l_1.\posterm{p_1}, l_2.\posterm{p_2}) \in \arr{D}$ 
 
 \end{enumerate}
 
@@ -351,19 +352,29 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 	\item
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
 
-		if $l$ and $l'$ don't have the same color:
+		\begin{itemize}
+			\item if $l$ and $l'$ don't have the same color:
 
-		$\AImatrix(C) = (\lnot \lifboth{l} \land \AImatrix(C_1)) \lor (\lifboth{l} \land \AImatrix(C_2))$
+				$\chi = \lifboth{l}$
+				
+				NOTE: same overbinding for $l$ and $\lnot l$
 
-		$\AI(C) = Q_1 u_1 \ldots Q_m u_m \AImatrix(C)$
+				$\AImatrix(C) = (\lnot \chi \land \AImatrix(C_1)) \lor (\chi \land \AImatrix(C_2))$ 
 
-		$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ in $\AImatrix(C)$.
-		
-		$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ otherwise.
+			
+			\item if $l$ and $l'$ have the same color:
 
-		$(p_1, p_2) \in \arr{C}$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
+				$\AImatrix(C) = \AImatrix(C_1) \lor/\land \AImatrix(C_2)$
 
-		TODO here
+		\end{itemize}
+
+	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \AImatrix(C)$
+
+				$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ in $\AImatrix(C)$.
+
+				$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ otherwise.
+
+				$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr{C})$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
 
 \end{enumerate}
 
@@ -502,22 +513,84 @@ A unification where a $\Gamma$-colored term $s$ enters $t$ happens when
 
 
 \begin{lemma}
-	$\Gamma \entails \bar Q_n  \lifgamma{ \lifdelta{PI(C)\lor C} } $ for $C$ in a prop proof.
+	\label{lemma:pi_ai_the_same}
+	$\AImatrix(C) = \lifboth{PI(C)}$ for $C \in \pi$.
+\end{lemma}
+
+SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET 
+
+\begin{lemma}
+	if there is a max $\Delta$-term in a max $\Gamma$-term, there is an arrow from occurrence of $\Delta$-term to the occurrence of $\Gamma$-term in $\AI$.
 \end{lemma}
 \begin{proof}
-	By \ref{structured2}, 
-	$\Gamma \entails \forall x_1 \ldots \forall x_n  \lif{PI(C) \lor C}$.
+
+	induction:
+
+	base case: no foreign terms
+
+	$C_1: D \lor l$ and $C_2: E \lor \lnot l$
+
+	resolution, same color: 
+	induction hypothesis!!!
+
+	resolution, different color: 
+	$l$ and $l'$ unified. 
+	Disregard grey terms.
+	Supp one of the unification locations, a term has a variable and all the prefix is grey/shared in $l$ and $l'$.
+	Then term from other literal enters, possibly foreign.
+	Then by replacing all variables in $C_1$ or $C_2$, a $\Delta$-term might enter a $\Gamma$-term. But in this case, we have an arrow.
+
+	$\Gamma$-terms and $\Delta$-terms are different and hence not unifiable.
+
+	Suppose same prefix (i.e. same colored prefix), then different variables each. Supp variable at one end, foreign colored term at other.
+	then arrows of literals are merged, and by induction hypothesis, the term with the foreign colored term has an arrow to the foreign colored term. 
+
+
+
+
+	\comm{
+	for each unification where possibly foreign terms are introduced, there is an arrow.
+
+	Either resolution with same color:
+	as long as just same color resolutions, no new literals in interpolant (but new terms by resolution?)
+
+	if after chain of same color resolution a grey literal is resolved, transitive edges kick in (chain of arrows)
+
+
+	resolution with grey literals:
+	resolved literals share grey or aufgeschaukelter prefix before the variable.
+
+	RESTRICTION APPLIES HERE: no aufgeschaukelte prefixes
+
+	if the variable occurs elsewhere in one of the clauses, a foreign term might have been introduced in a colored term. in this case, there is an arrow
+}
+\end{proof}
+
+\begin{lemma}
+	$\Gamma \entails \bar Q_n  \lifgamma{ \lifdelta{PI(C)\lor C} } $ for $C$ in a prop proof.
+
+	i.e.
+
+	$\Gamma \entails \AI(C) $ for $C$ in a prop proof.
+\end{lemma}
+\begin{proof}
+%	By \ref{structured2}, 
+%	$\Gamma \entails \forall x_1 \ldots \forall x_n  \lif{PI(C) \lor C}$.
 	Show that the existential quantifiers in $\bar Q_n$ have witnesses.
 
 	If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l$, then by induction hypothesis, we get that
 
-	$\PI(C) = (l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) $
-
 	supp $l$ grey:
-	$\Gamma \entails \bar Q_n  \lifgamma{ \lifdelta{PI(C_i)\lor C_i} } $ for $i \in \{1,2\}$
+	$\AI(C) = Q_1 u_i\dots Q_m u_m (\lnot \chi \land \AImatrix(C_2)) \lor (l \land \AImatrix(C_1)) $
+
+	Know:   $\Gamma \entails  \lifgamma{{PI(C)\lor C} }$
+
+	By Lemma \ref{lemma:pi_ai_the_same}:
+	Know:   $  \lifboth{{{\PI(C)\lor C} }} = \AImatrix(C) \lor \lifboth{C}$
+
 
 	Need:
-	$\Gamma \entails \bar Q_n \lifboth{{PI(C)\lor C} }$
+	$\Gamma \entails \AI(C) \lor C$ \comm{C in binding of $\AI$}
 
 	i.e.
 	$\Gamma \entails \{Q_{n_1} \cup Q_{n_2} \cup \text{new ones}\} ( \lifboth{(l \land \lifboth{ \PI(C_2)) } \lor (\lnot l \land \lifboth{\PI(C_1)}) \lor D \lor E })$
@@ -533,9 +606,6 @@ A unification where a $\Gamma$-colored term $s$ enters $t$ happens when
 
 	TODO: show for restricted version: all variables occur once as maximal ``colored'' term. 
 
-	TODO: what if a predicate doesn't make it into the interpolant.
-
-	TODO: use formalised version
 
 
 

@@ -1,0 +1,345 @@
+\documentclass[,%fontsize=11pt,%
+	paper=a4,% 
+	%landscape,
+	%DIV12, % mehr text pro seite als defaultyyp
+	DIV14, 
+	%DIV=calc,%
+	%twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+% subsections also in toc
+\setcounter{tocdepth}{2}
+
+%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
+\newcommand{\thmqed}{$\square$} % for thms without proof
+\newcommand{\propqed}{$\square$} % for props without proof
+\declaretheorem[title=Theorem]{thm}
+\declaretheorem[title=Proposition,sibling=thm]{prop}
+%\declaretheorem[title=Lemma,parent=chapter]{lemma}
+\declaretheorem[sibling=thm]{lemma}
+\declaretheorem[title=Corollary,sibling=thm]{corr}
+\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
+%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
+\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
+
+\declaretheorem[sibling=thm,title=Conjecture]{conj}
+
+%\def\proofSkipAmount{ \vskip -0.5em}
+
+
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+\def\proofSkipAmount{ \vskip -0.3em}
+
+\begin{document}
+
+\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+
+
+	\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
+
+\section{Arrow-Algo}
+
+\begin{enumerate}
+	\item
+		In the original clauses, find all occurrences of variables.
+
+		Common case:
+		If a variable appears as outermost symbol or only has grey ancestor-terms, add an arrow from it to all other occurrences.
+
+		Uncommon case:
+		if there is more than one occurrence of a variable under a $\Phi$-colored term, add a \emph{weak} dependency between them all (symmetric relation).
+
+
+		NOTE: this creates double arrows for occurrences at same depth. This appears to be necessary for terms which are only variables, and doesn't hurt if the variable is contained in a term.
+
+	\item For each step in the derivation:
+		\begin{enumerate}
+			\item Build propositional interpolant using $\PI(C_i)^*$, $i\in \{1,2\}$, i.e.~use ancestor $\PI$ without colored terms.
+			\item If ancestors of atom added to $\PI(C)$ had arrows, merge them to atom in $\PI(C)$ (i.e.~arrows starting in and leading to this atom).
+			\item Replace colored terms in $\PI(C)$ (from new atom and unifier applied to $\PI(C_i)^*$) with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
+
+				An arrow starts (ends) in one of the new variables if it starts (ends) somewhere in the term it replaced.
+			\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right AND weakly connected variables appear in the same quantifier block.
+
+				$\bar Q_n = \operatorname{sort}( Q_{n_1} \cup Q_{n_2} \cup \operatorname{colored-terms}(l))$
+		\end{enumerate}
+\end{enumerate}
+
+\clearpage
+\subsection{algo more formally}
+
+Every literal in any initial clause set has a globally unique id/number
+
+Ex: $P(y, a, f(z, g(y, b)) ) \lor Q(x)$
+
+Term position:
+
+$0.2.1.0$ means first literal, 3rd arg, 2nd arg, fst arg: $y$
+
+$0.1$ is $a$
+
+$0.2.1$ is $g(z, b)$
+
+$\pos$ calculates the position of a term or the term of a position, depending on the argument type.
+
+for a position $p_i$, $\pos{p_i}$ denotes whatever $p_i$ refers to in its respective clause.
+
+for a term $t$, $\pos{t}$ denotes the position in $t$ in its respective clause.
+
+for a position $p$, $\poslit{p}$ denotes the position of the literal
+
+for a position $p$, $\posterm{p}$ denotes the position of the term in $p_i$ 
+
+$\Ra$ $p = \poslit{p}.\posterm{p}$
+
+for a position $p$, $p \mod i$ denotes $p$ with $i$ least significant places cut off, $0.2.1.0 \mod 2 = 0.2$
+
+\subsection{Arrows:}
+
+$\arr$ is a set of ordered pairs of term positions which point to positions in terms in literals
+
+$\warr$ is a set of unordered pairs of term positions which point to positions in terms in literals
+
+w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
+
+\begin{enumerate}
+	\item For each initial clause $C$ in $\Gamma \cup \Delta$:
+
+		Add to $\arr$ all $(p_1, p_2)$ in $C$
+		such that $p_1$ contains only grey symbol and $\pos{p_1}$ is a variable and $\pos{p_1} = \pos{p_2}$ but $p_1 \neq p_2$.
+
+		Add to $\warr{C}$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos{p_1}$ is a var and $\pos{p_1} = \pos{p_2}$.
+
+	\item 
+		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
+
+		Note: literals are added to the interpolant if they occur in both ancestors.
+
+		Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
+
+		%Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
+		%If $l$ and/or $l'$ is added to $\PI(C)$, it comes from both $l$ and $l'$.
+
+
+		%Add $(p_1, p_2)$ to $\arr$ if $\poslit{p_i}$ comes from literal $l_i$ in a clause $D$ in an original clause set, $i\in\{1, 2\}$, (both from same $D$), and $(l_1.\posterm{p_1}, l_2.\posterm{p_2}) \in \arr{D}$ 
+
+\end{enumerate}
+
+\subsection{algo}
+
+\begin{enumerate}
+	\item 
+		For each initial clause $C$, $\AI(C) = \PI(C)$.
+
+	\item
+		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
+
+		\begin{itemize}
+			\item if $l$ and $l'$ don't have the same color:
+
+				$\chi = \lifboth{l}$
+				
+				NOTE: same overbinding for $l$ and $\lnot l$
+
+				$\AImatrix(C) = (\lnot \chi \land \AImatrix(C_1)) \lor (\chi \land \AImatrix(C_2))$ 
+
+			
+			\item if $l$ and $l'$ have the same color:
+
+				$\AImatrix(C) = \AImatrix(C_1) \lor/\land \AImatrix(C_2)$
+
+		\end{itemize}
+
+	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \AImatrix(C)$
+
+				$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ in $\AImatrix(C)$.
+
+				$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ otherwise.
+
+				$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr{C})$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
+
+\end{enumerate}
+
+\clearpage
+
+\section{current proof attempts}
+
+\begin{lemma}
+	\label{lemma:arrow_for_same_variables}
+	Whenever the same variable appears multiple times in $\PI(C)$ for $C \in \pi$, there are arrows. \comm{such that we can do unification}
+\end{lemma}
+\begin{proof}
+	By induction. Note: As required by resolution, all initial clauses are variable disjoint.
+
+	Base case:
+	In the initial clause sets, consider for a clause $C$ two different positions $p_1$ and $p_2$ pointing to the same variable. 
+	Then either:
+	\begin{itemize}
+		\item $p_1$ and $p_2$ contain only grey symbols. Then $(p_1, p_2) \in \arr$.
+		\item Only $p_i$, $i\in\{1,2\}$ contains only grey symbols. Then $(p_i, p_{(i \mod 2)+1}) \in \arr$.
+		\item There are not only grey symbols in both $p_1$ and $p_2$, i.e.~both contain at least a colored symbol. Then $\{p_1, p_2\} \in \warr$. 
+	\end{itemize}
+
+	Induction step:
+	      Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+	$\PI(C)$ is $[\PI(C_1) \circ \PI(C)]\sigma$ or $[(l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) ] \sigma $.
+
+	Assumptions: $C_1
+
+
+
+\end{proof}
+
+
+
+\begin{lemma}
+	In $\PI(C)\lor C$ for $C \in \pi$, if there is a $\Delta$-colored term $s$ in a $\Gamma$-term $t$, then there is an arrow from $p_1$ to $p_2$ such that $\pos{p_1} = s$ and $\pos{p_2} = s$ and for some $i$, $\pos{ p_2 \mod i } = t$.
+\end{lemma}
+Note: $p_1$ might be in some clause, the prop interpolant or none of both. 
+\begin{proof}
+	By induction.
+
+	Base case: There are no foreign terms in the initial clause sets, so no arrows necessary.
+
+	Induction step:
+
+	\begin{itemize}
+		\item[Resolution.]
+			Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+
+			\begin{enumerate}
+				\item Suppose $l$ is colored. 
+					This case is similar to the grey one, with the exception that the cases applying to $l$ in $\PI$ do not apply.
+
+				\item Suppose $l$ is grey. Then  $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) ] \sigma $
+
+					By the induction hypothesis, there are appropriate arrows in $\PI(C_1) \lor C_1$ and $\PI(C_2) \lor C_2$.
+
+					We show that for all maximal $\Gamma$-terms in $\PI(C)\lor C$ with $\Delta$-terms in them which were not present in $\PI(C_i)\lor C_i$, $i \in \{1,2\}$, there is an arrow.
+
+					$\Gamma$-terms and $\Delta$-terms are not unifiable.
+					%Hence all pairs of terms $(t_1, t_2)$ in the same positions in $l$ and $l'$ (if both positions exist) are both grey, or w.l.o.g.~$t_1$ is a variable and $t_2$ is a colored/grey term.
+					Hence all pairs of terms $(t_1, t_2)$ in the same positions in $l$ and $l'$ (if both positions exist) either point to the same symbol or (w.l.o.g.) $t_1$ is a variable and $t_2$ is a term.
+					If there are $\Delta$-terms in $\Gamma$-terms in the prefix, they are present in both ancestors and handled by the induction hypothesis.
+
+					The only way a $\Delta$-colored term may enter a $\Gamma$-colored term is in the situation where $t_1$ is a variable and $t_2$ a colored term.
+					But then $\mgu(t_1, t_2)$ applied to $t_1$ yields $t_2$, i.e.~``the parts of $\sigma$ concerned with unifying $t_1$ and $t_2$'' do not introduce new $\Delta$-terms in $\Gamma$-terms.
+					In other words, all such situation have been present in $\PI(C_i) \lor C_i$ for $i \in \{1,2\}$ and since the arrows for $l$ and $l'$ are merged, they are present for $l\sigma$ in $\PI(C)$.
+
+					This handles the case where terms $t_1$ and $t_2$ are unified. 
+					But unification also affects all other occurrences of variables, this means ``the parts of $\sigma$ not concerned with unifying $t_1$ and $t_2$''.
+					The relevant case for this lemma is when a $\Gamma$-term contains a variable, that is substituted by a term containing $\Delta$-terms.
+					But in this case, by Lemma \ref{lemma:arrow_for_same_variables}, there is an arrow from the other occurrence of the variable to the one in the $\Gamma$-term: either one in $\arr$ if one of the prefixes is grey or one in $\warr$ if both prefixes contain a colored symbol.
+
+
+
+
+			\end{enumerate}
+
+	\end{itemize}
+
+
+\end{proof}
+
+\end{document}

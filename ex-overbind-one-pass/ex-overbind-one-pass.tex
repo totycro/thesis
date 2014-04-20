@@ -111,7 +111,7 @@
 
 \newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
 
-\def\proofSkipAmount{ \vskip -0.3em}
+\def\proofSkipAmount{ \vskip -2em}
 
 \begin{document}
 
@@ -462,6 +462,25 @@ Direct overbinding would work when considering original dependencies as highligh
 	\end{prooftree}
 
 	Huang-Version passt weil man für existenzielle quantoren eh gleichen term einsetzt
+
+direct w mixed, slightly different:
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid P(f(\arrowB x)) \lor Q(\arrowA x, z) \drawAB}
+		\AxiomCm{ \top \mid \lnot P(y)}
+		\RightLabelm{x_2 \sim f(x)}
+		\BinaryInfCm{ \exists \arrowB x_2 P(x_2) \mid Q(\arrowA x, z) \drawAB }
+
+		\AxiomCm{ \bot \mid  \sig{\lnot Q(f(\arrowB y), z_1) \lor R(\arrowA y)} } \drawAB
+		\AxiomCm{ \top \mid \p{\lnot R(a) } }
+		\RightLabelm{x_1 \sim a}
+		\BinaryInfCm{ \forall \arrowA x_1 R(x_1) \mid \lnot Q(f(\arrowB a), z_1) } \drawAB
+
+		\RightLabelm{ x_3 \sim f(a); x_2 \parallel x_3, x_1 < x_3   }
+		\BinaryInfCm{ \forall \arrowA x_1 \exists \arrowB\,\arrowC x_3 \exists \arrowD\drawCD x_2 (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  } \drawAB\drawCD
+		\UnaryInfCm{ (\lnot Q(f(a), z) \land P(f(f(a)))) \lor (Q(f(a), z) \land R(a) )  } 
+	\end{prooftree}
+
+	last dependency not crucial because other arrow is a $\Sigma$-arrow as well, but just changing it to $\Pi$ (and changing $f$ for $g$ should produce a quantifier alternation)
 
 
 
@@ -897,27 +916,28 @@ combined presentation:
 
 \begin{prooftree}
 	\AxiomCm{ \bot \mid P(a, x_1) \lor R(y) }
-	\AxiomCm{ \top \mid - }
+	\AxiomCm{ \top \mid \lnot P(\arrowA x, f(\arrowB x)) } \drawAB
 	\RightLabel{\stackanchor{$x_1 \mapsto f(a)$}{$x\mapsto a$}}
-	\BinaryInfCm{ P(a, f(a)) \mid R(y) }
+	\BinaryInfCm{ P(\arrowA a, f(\arrowB a)) \mid R(y) } \drawAB
 
-	\AxiomCm{ \bot \mid Q(x_2, g(x_2)) \lor \lnot R(u) }
+	\AxiomCm{ \bot \mid Q(\arrowC x_2, g(\arrowD x_2)) \lor \lnot R(u) } \drawCD
 	\AxiomCm{ \bot \mid \lnot S(a)}
-	\AxiomCm{ \top \mid \lnot Q(f(z), x_3) \lor S(z)}
+	\AxiomCm{ \top \mid \lnot Q(f(\arrowF z), x_3) \lor S(\arrowE z)}\drawEF
 	\RightLabelm{z \mapsto a}
-	\BinaryInfCm{ \lnot S(a) \mid \lnot Q(f(a), x_3) }
+	\BinaryInfCm{ \lnot S(\arrowE a) \mid \lnot Q(f(\arrowF a), x_3) } \drawEF
 
 	\RightLabel{\stackanchor{$x_2 \mapsto f(a),$}{$x_3\mapsto g(f(a))$}}
-	\BinaryInfCm{ Q(f(a), g(f(a))) \land \lnot S(a) \mid \lnot R(u)}
+	\BinaryInfCm{ Q(\arrowC f(\arrowF a), g(\arrowD f(a))) \land \lnot S(\arrowE a) \mid \lnot R(u)} \drawCD \drawEF
 
-	\BinaryInfCm{ P(a, f(a)) \lor ( Q(f(a), g(f(a))) \land \lnot S(a)) \mid \square}
+	\BinaryInfCm{ P(\arrowA a, f(\arrowB a)) \lor ( Q(\arrowC f(\arrowF a), g(\arrowD f(a))) \land \lnot S(\arrowE a)) \mid \square}
+\drawCD \drawEF \drawAB
 \end{prooftree}
 
 combined presentation ground:
 
 \begin{prooftree}
 	\AxiomCm{ \bot \mid P(a, f(a)) \lor R(y) }
-	\AxiomCm{ \top \mid \lnot P(x, f(x)) }
+	\AxiomCm{ \top \mid \lnot P(a, f(a)) }
 	\BinaryInfCm{ (P(a, f(a)) \land \top) \lor (\lnot P(a, f(a))\land \bot) \mid R(y) }
 
 	\AxiomCm{ \bot \mid Q(f(a), g(f(a))) \lor \lnot R(u) }
@@ -934,7 +954,7 @@ combined presentation ground with direct method but only $\Delta$-terms removed 
 
 \begin{prooftree}
 	\AxiomCm{ \bot \mid P(a, f(a)) \lor R(y) }
-	\AxiomCm{ \top \mid \lnot P(x, f(x)) }
+	\AxiomCm{ \top \mid \lnot P(a, f(a)) }
 	\BinaryInfCm{ (P(a, x_2) \land \top) \lor (\lnot P(a, x_2)\land \bot) \mid R(y) }
 
 	\AxiomCm{ \bot \mid Q(f(a), g(f(a))) \lor \lnot R(u) }
@@ -952,7 +972,7 @@ combined presentation ground with direct method:
 
 \begin{prooftree}
 	\AxiomCm{ \bot \mid P(a, f(a)) \lor R(y) }
-	\AxiomCm{ \top \mid \lnot P(x, f(x)) }
+	\AxiomCm{ \top \mid \lnot P(a, f(a)) }
 	\BinaryInfCm{ \exists x_1 \forall x_2 ( P(x_1, x_2) \land \top) \lor (\lnot P(x_1, x_2)\land \bot) \mid R(y) }
 
 	\AxiomCm{ \bot \mid Q(f(a), g(f(a))) \lor \lnot R(u) }
@@ -1256,6 +1276,8 @@ ground:
 	\RightLabelm{x \mapsto ga, y \mapsto a}
 	\BinaryInfCm{ \lnot R(a) \lor \lnot P(ffa, ga)  \mid \square }
 \end{prooftree}
+
+~
 
 \begin{prooftree}
 	\AxiomCm{\top \mid \p{P(ff\arrowAB\hb y, g\arrowBA \hb y)} \drawAABB}
