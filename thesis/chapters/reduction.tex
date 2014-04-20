@@ -265,6 +265,7 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	 Then there exists a proof of $\Gamma \proves \Delta$ that does not contain the equality symbol.
 \end{lemma}
 \begin{proof}
+	\todo{this is not finished}
 	Let $\pi$ be a proof of $\Gamma \proves \Delta$.
 
 	Suppose $\pi$ contains an instance of the equality axiom $\proves t = t$ for a term $t$.
@@ -312,8 +313,10 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	Suppose $\pi$ contains an instance of \lkrule{w}{r} such that the equality symbolc occurs in the principal formula $A$. 
 	Then as it does not occur in the end sequent, it is removed by either an instance of an equality rule or the cut rule. 
 	Suppose it is removed via an equality rule. We consider the case of  $\lkrule{=}{l_1}$.
-
 	\begin{prooftree}
+
+		\AxiomCm{\Lambda, A\occurat{t}{p} \proves \Theta}
+
 		\AxiomCm{\varphi}
 		\noLine
 		\UnaryInfCm{\Gamma \proves \Delta}
@@ -322,15 +325,15 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 		\noLine
 		\UnaryInfCm{\vdots}
 		\noLine
+		\UnaryInfCm{\Sigma \proves \Pi, s=t}
 
-
-	\UnaryInfCm{\Sigma \proves \Pi, t=t}                 
-	\RightLabelm{\lkrule{=}{l_1}}                        
-	%\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
+		\RightLabelm{\lkrule{=}{l_1}}                        
+		\BinaryInfm{\Lambda, \Sigma, A\occurat{s}{p} \fCenter \Theta, \Pi }
 	\end{prooftree}
-							
 
 
+
+	TODO
 
 
 	(beweis kann l"anger werden, aber wie geht das? inessential cuts bleiben doch "uber?)
@@ -352,7 +355,7 @@ It is slightly stronger than the required statement as it allows for interpolant
 This allows us to state the central theorem of this section:
 \begin{thm}
 	\label{thm:prop_interpol}
-	Let $\Gamma$ and $\Delta$ be sets of closed first-order formulas without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant for $\Gamma$ and $\Delta$.
+	Let $\Gamma$ and $\Delta$ be sets of closed first-order formulas without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant for $\Gamma$ and~$\Delta$.
 \end{thm}
 \begin{proof}
 	We show that there is an interpolant for $\Gamma \entails \lnot \Delta$, which
@@ -369,7 +372,8 @@ This allows us to state the central theorem of this section:
 
 		Using the results of the previous sections, we can now give a proof of the interpolation theorem:
 
-		\begin{proof}[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
+		\interpolationRevThm*
+		\begin{proof}%[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
 
 			Since $\Gamma \cup \Delta$ is unsatisfiable,
 			by Proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
@@ -406,15 +410,20 @@ This allows us to state the central theorem of this section:
 			For $\Delta$, an analogous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
 
 			By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) $. 
+				\newcommand{\somespace}{\;}
+				\newcommand{\impconn}[1]{\somespace#1\somespace}
+				%\medskip
+				\begin{figure}[H]
 			\begin{align*}
-				\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) =\,&
-				(\Lang(\Gamma)\cup \{E\}\cup\{F_f\mid f \in \FS(\Gamma)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Gamma))~\cap \\
-				& (\Lang(\Delta)\cup \{E\}\cup\{F_f\mid f \in \FS(\Delta)\}) \setminus(\{=\nolinebreak \} \cup\nolinebreak \FS(\Delta))\\
-				=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup\{F_f\mid f \in \FS(\Gamma)\cap\FS(\Delta\}))  \setminus(\{=\} \cup \FS(\Gamma) \cup \FS(\Delta)) \\
-				=\,& ((\Lang(\Gamma) \cap \Lang(\Delta)) \cup \{E\} \cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta)) ) \setminus ( \{=\} \cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) )  \\ 
+				\noalign{$\Trans(\Lang(\Gamma))\cap\nolinebreak \Trans(\Lang(\Delta)) =$} 
+				& \Big(\Lang(\Gamma)\impconn\cup \{E\}\impconn\cup\{F_f\mid f \in \FS(\Gamma)\}\Big) \impconn\setminus\Big(\{=\nolinebreak \} \impconn\cup \FS(\Gamma)\Big)\,\impconn\cap \\
+				& \Big(\Lang(\Delta)\impconn\cup \{E\}\impconn\cup\{F_f\mid f \in \FS(\Delta)\}\Big) \impconn\setminus\Big(\{=\nolinebreak \} \impconn\cup \FS(\Delta)\Big)\\
+				=\,& \Big((\Lang(\Gamma) \cap \Lang(\Delta)) \impconn\cup \{E\} \impconn\cup\{F_f\mid f \in \FS(\Gamma)\cap\FS(\Delta)\}\Big)  \impconn\setminus\Big(\{=\} \impconn\cup \FS(\Gamma) \impconn\cup \FS(\Delta)\Big) \\
+				=\,& \Big((\Lang(\Gamma) \cap \Lang(\Delta)) \impconn\cup \{E\} \impconn\cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta))\} \Big) \impconn\setminus \Big( \{=\} \impconn\cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) \Big)  \\ 
 				=\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
 			\end{align*}
-
+				\end{figure}
+				\vspace{-1em}
 			As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
 		\end{proof}
 

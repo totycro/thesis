@@ -17,7 +17,6 @@
 \begin{proof}
 	We prove this lemma by induction on the number of inferences in a cut-free proof of $\Gamma \proves \Delta$.
 	By Lemma \ref{lemma:no_equality_in_proof}, we can assume that no equality symbol occurs in the proof, so equality rules need not be considered. 
-	As many cases are similar, we prove some examples only.
 	\begin{description}
 		\item[\normalfont Base case.]
 			Suppose no rules were applied.
@@ -26,13 +25,12 @@
 					\begin{enumerate}
 						\item \parti{A}{A}{}{}: $I=\bot$
 						\item \parti{}{}{A}{A}: $I=\top$
-						\item \parti{}{A}{A}{}: $I=\lnot A$
+						\item \parti{}{A}{A}{}: $I=\lnot A$\nopagebreak
 						\item \parti{A}{}{}{A}: $I=A$
 					\end{enumerate}
 
 		\item[\normalfont Structural rules.]
 			Suppose the property holds for $n$ rule applications and the $(n+1)$th rule is a structural one.
-			We consider some examples:
 
 			\begin{itemize}
 				\item The last rule application is an instance of \lkrule{c}{l}. Then it is of the form:
@@ -54,6 +52,8 @@
 
 					\end{enumerate}
 
+					The case of \lkrule{c}{r} is analogous.
+
 				\item The last rule application is an instance of \lkrule{w}{r}. Then it is of the form:
 					\begin{prooftree}
 						\Axiomm{\Gamma \fCenter \Delta}
@@ -64,11 +64,12 @@
 					By the induction hypothesis, there exists an interpolant $I$ for any partition \parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2} of $\Gamma \vdash \Delta$.
 					Clearly $I$ remains an interpolant when adding $A$ to either $\Delta_1$ or $\Delta_2$.
 
+					The case of \lkrule{w}{l} is analogous.
+
 			\end{itemize}
 
 		\item[\normalfont Propositional rules.]
 			Suppose the property holds for $n$ rule applications and the $(n+1)$th rule is a propositional one.
-			We consider some examples:
 
 			\begin{itemize}
 				\item The last rule application is an instance of \lkrule{\lnot}{l}. Then it is of the form:
@@ -86,6 +87,8 @@
 
 						\item $\partisym = \parti{\Gamma_1}{\Delta_1}{\Gamma_2, \lnot A}{\Delta_2}$. A similar argument goes through. 
 					\end{enumerate}
+
+					The case of \lkrule{\lnot}{r} is analogous.
 
 				\item The last rule application is an instance of \lkrule{\limpl}{l}. Then it is of the form:
 					\begin{prooftree}
@@ -155,38 +158,47 @@
 							The argument for this case is similar using $I_1 \land I_2$ as interpolant.
 					\end{enumerate}
 
+
+					For the other binary connectives \lkrule{\land}{l}, \lkrule{\land}{r}, \lkrule{\lor}{l}, \lkrule{\lor}{r} and \lkrule{\limpl}{r}, similar arguments go through, where the interpolant is always either the conjunction or the disjunction of the interpolants of partitions of the preceding sequents.
+
 			\end{itemize}
 
 		\item[\normalfont Quantifier rules.]
 			Suppose the property holds for $n$ rule applications and the $(n+1)$th rule is a quantifier rule.
-			We consider some examples:
 
 			\begin{itemize}
 				\item The last rule application is an instance of $\lkrule{\forall}{l}$. Then it is of the form:
 					\begin{prooftree}
-						\Axiomm{\Gamma, A\subst{x/t} \fCenter \Delta}
+						\Axiomm{\Gamma, A\subst{x/y} \fCenter \Delta}
 						\RightLabelm{\lkrule{\forall}{l}}
 						\UnaryInfm{\Gamma, \forall x A \fCenter \Delta}
 					\end{prooftree}
-					where no free variable of $t$ becomes bound in $A\subst{x/t}$.
+					Note that since we have excluded function symbols to occur in the final sequent (and constant symbols are treated as function symbols of arity 0), 
+					\todo[inline]{it is only possible to find a proof where these don't occur, but they might occur in a stupid proof.
+					add a lemma as for equality?}
+
+
 
 					There are two possible partition schemes of $\Gamma, \forall x A \vdash \Delta$:
 					\begin{enumerate}
 						\item \parti{\Gamma_1, \forall x A}{\Delta_1}{\Gamma_2}{\Delta_2}.
-							By the induction hypothesis, there is an interpolant $I$ of the partition $\parti{\Gamma_1, A\subst{x/t}}{\Delta_1}{\Gamma_2}{\Delta_2}$.
+							By the induction hypothesis, there is an interpolant $I$ of the partition $\parti{\Gamma_1, A\subst{x/y}}{\Delta_1}{\Gamma_2}{\Delta_2}$.
 							Hence for $I$, 
-							$\Gamma_1, A\subst{x/t} \fCenter \Delta_1, I$ and  
+							$\Gamma_1, A\subst{x/y} \fCenter \Delta_1, I$ and  
 							$I, \Gamma_2 \fCenter \Delta_2$ are provable.
 							By an application of $\lkrule{\forall}{l}$ to the first sequent we get $\Gamma_1, \forall x A\fCenter \Delta_1, I$, so $I$ satisfies conditions \ref{maehcond1} and \ref{maehcond2} of being an interpolant for $\partisym$.
 
 							In order to show that also $\Lang(I) \subseteq \Lang(\Gamma_1, \forall x A, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$, consider that by the induction hypothesis, 
-							$\Lang(I) \subseteq \Lang(\Gamma_1, A\subst{x/t}, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$.
-							As there are no function symbols and since constant symbols are treated as function symbols, $L(\forall x A) = L(A\subst{x/t})$.
+							$\Lang(I) \subseteq \Lang(\Gamma_1, A\subst{x/y}, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$.
+
+							As free variables are not considered to be part of the language, $L(\forall x A) = L(A\subst{x/y})$.
 
 
 						\item \parti{\Gamma_1}{\Delta_1}{\Gamma_2, \forall x A}{\Delta_2}.
 							This case can be argued analogously.
 					\end{enumerate}
+
+					In the case of \lkrule{\exists}{r}, a similar argument goes through.
 
 				\item The last rule application is an instance of $\lkrule{\forall}{r}$. Then it is of the form:
 					\begin{prooftree}
@@ -210,16 +222,14 @@
 
 						\item \parti{\Gamma_1}{\Delta_1}{\Gamma_2}{\Delta_2, \forall x A}.
 							This case can be argued analogously.
-							\qedhere
 					\end{enumerate}
 
-
+					In the case of \lkrule{\exists}{l}, a similar argument goes through.
+					\qedhere
 			\end{itemize}
-
 			\begin{comment} % i do not explain why this need not be here
 			\item[\normalfont Equality rules.]
 				Suppose the property holds for $n$ rule applications and the $(n+1)$th rule is an equality rule.
-				We consider an example:
 
 				\begin{itemize}
 					\item The last rule application is an instance of $\lkrule{=}{r_1}$. Then it is of the form:
@@ -266,9 +276,7 @@
 								$\Lang(I_2) \subseteq \Lang(\Sigma_1, \Pi_1, s=t) \cap (\Sigma_2, \Pi_2)$
 
 								$\Lang(I_1 \lor I_2) \subseteq \Lang(\Gamma_1, \Sigma_1, \Delta_1, \Pi_1, A\subst{T/s}) \cap (\Gamma_2 \Sigma_2, \Delta_2, \Pi_2)$
-
 						\end{enumerate}
-
 				\end{itemize}
 			\end{comment}
 	\end{description}

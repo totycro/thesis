@@ -11,15 +11,19 @@ Its use of sequents in lieu of plain formulas allows for a natural mapping of th
 \end{defi}
 
 The rules of sequent calculus are as follows:
-%\newcommand{\calculussec}[1]{\textbf{#1}\nopagebreak}
-\newcommand{\calculussec}[1]{\subsubsection*{#1}\nopagebreak}
+%\medskip
+
+\newcommand{\calculussec}[1]{ \textbf{#1}\nopagebreak}
+%\newcommand{\calculussec}[1]{\subsubsection*{#1}\nopagebreak}
 \newenvironment{lkdefsec}{
-	%\begin{figure}[h!b]
+	\begin{figure}[H]
+	%\begin{samepage}
 	%\ContinuedFloat
 		\begin{adjustwidth}{0.05\textwidth}{0.05\textwidth}
 		}{
 		\end{adjustwidth}
-	%\end{figure}
+	\end{figure}
+	%\end{samepage}
 }
 \begin{lkdefsec}
 	\calculussec{Axioms}
@@ -27,12 +31,10 @@ The rules of sequent calculus are as follows:
 		\begin{prooftree}
 			\AxiomCm{A \fCenter A}
 		\end{prooftree}
-
 		\begin{prooftree}
 			\AxiomCm{\fCenter t=t}
 		\end{prooftree}
 	\end{multicols}
-
 \end{lkdefsec}
 
 \begin{lkdefsec}
@@ -42,10 +44,9 @@ The rules of sequent calculus are as follows:
 		\Axiomm{A, \Sigma \fCenter \Pi}
 		\BinaryInfm{\Gamma, \Sigma \fCenter \Delta, \Pi}
 	\end{prooftree}
-
 \end{lkdefsec}
-\begin{lkdefsec}
 
+\begin{lkdefsec}
 	\calculussec{Structural rules}
 	\begin{itemize}
 		\item Contraction
@@ -79,11 +80,9 @@ The rules of sequent calculus are as follows:
 				\end{prooftree}
 
 			\end{multicols}
-
-
 	\end{itemize}
-
 \end{lkdefsec}
+
 \begin{lkdefsec}
 
 	\calculussec{Propositional rules}
@@ -97,19 +96,12 @@ The rules of sequent calculus are as follows:
 					\RightLabelm{\lkrule{\lnot}{l}}
 					\UnaryInfm{\lnot A, \Gamma \fCenter \Delta }
 				\end{prooftree}
-
 				\begin{prooftree}
 					\Axiomm{A, \Gamma \fCenter \Delta}
 					\RightLabelm{\lkrule{\lnot}{r}}
 					\UnaryInfm{\Gamma \fCenter \Delta, \lnot  A }
 				\end{prooftree}
 			\end{multicols}
-
-	\end{itemize}
-\end{lkdefsec}
-\begin{lkdefsec}
-
-	\begin{itemize}
 
 		\item Conjunction
 			\begin{multicols}{2}
@@ -150,7 +142,7 @@ The rules of sequent calculus are as follows:
 					\Axiomm{\Gamma \fCenter A, \Delta}
 					\Axiomm{\Sigma, B \fCenter \Pi}
 					\RightLabelm{\lkrule{\limpl}{l}}
-					\BinaryInfm{\Gamma, \Sigma A \limpl B \fCenter \Delta, \Pi }
+					\BinaryInfm{\Gamma, \Sigma, A \limpl B \fCenter \Delta, \Pi }
 				\end{prooftree}
 
 				\begin{prooftree}
@@ -210,52 +202,49 @@ The rules of sequent calculus are as follows:
 	$y$ does not occur free in $\Gamma$, $\Delta$ or $A$)
 
 \end{lkdefsec}
-	\begin{figure}[H]
-\begin{lkdefsec}
+\begin{figure}[H]
+	\begin{lkdefsec}
 
-	\calculussec{Equality rules}
-	\begin{itemize}
+		\calculussec{Equality rules}
+		\begin{itemize}
 			\item Left rules
-	\begin{multicols}{2}
-		\begin{prooftree}
-			\Axiomm{\Gamma, A\occurat{t}{p} \fCenter \Delta}
-			\Axiomm{\Sigma \fCenter \Pi, s=t}
-			\RightLabelm{\lkrule{=}{l_1}}
-			\BinaryInfm{\Gamma, \Sigma, A\occurat{s}{p} \fCenter \Delta, \Pi }
-		\end{prooftree}
-		\begin{prooftree}
-			\Axiomm{\Gamma, A\occurat{s}{p} \fCenter \Delta}
-			\Axiomm{\Sigma \fCenter \Pi, s=t}
-			\RightLabelm{\lkrule{=}{l_2}}
-			\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
-		\end{prooftree}
-	\end{multicols}
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A\occurat{t}{p} \fCenter \Delta}
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{l_1}}
+						\BinaryInfm{\Gamma, \Sigma, A\occurat{s}{p} \fCenter \Delta, \Pi }
+					\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A\occurat{s}{p} \fCenter \Delta}
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{l_2}}
+						\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
+					\end{prooftree}
+				\end{multicols}
 
 			\item Right rules
-	\begin{multicols}{2}
-		\begin{prooftree}
-			\Axiomm{\Gamma\fCenter \Delta, A\occurat{t}{p} }
-			\Axiomm{\Sigma \fCenter \Pi, s=t}
-			\RightLabelm{\lkrule{=}{r_1}}
-			\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{s}{p}  }
-		\end{prooftree}
-		\begin{prooftree}
-			\Axiomm{\Gamma\fCenter \Delta, A\occurat{s}{p} }
-			\Axiomm{\Sigma \fCenter \Pi, s=t}
-			\RightLabelm{\lkrule{=}{r_2}}
-			\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{t}{p} }
-		\end{prooftree}
-	\end{multicols}
-	\end{itemize}
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma\fCenter \Delta, A\occurat{t}{p} }
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{r_1}}
+						\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{s}{p}  }
+					\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{\Gamma\fCenter \Delta, A\occurat{s}{p} }
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{r_2}}
+						\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{t}{p} }
+					\end{prooftree}
+				\end{multicols}
+		\end{itemize}
 
-	(provided no free variable of $s$ or $t$ becomes bound in $A\occurat{t}{p}$ or $A\occurat{s}{p}$)
-
-	\caption{The rules of sequent calculus}
-	\label{fig:lk}
-
-\end{lkdefsec}
-	\end{figure}
-
+		(provided no free variable of $s$ or $t$ becomes bound in $A\occurat{t}{p}$ or $A\occurat{s}{p}$)
+		\caption{The rules of sequent calculus}
+		\label{fig:lk}
+	\end{lkdefsec}
+\end{figure}
 For the purposes of this thesis, we usually consider the cut-free fragment of sequent calculus.
 
 \begin{thm}

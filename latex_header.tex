@@ -37,6 +37,11 @@ positioning,fit,calc,decorations.text,shadows%
 \usepackage{amssymb} % the reals
 \usepackage{mathtools} % smashoperator
 
+\usepackage{thm-restate} % restatable env
+
+% needs extra work and fails on some label here
+%\usepackage{cleveref} % cref, apparently better than autoref of hyperref 
+
 \usepackage{nicefrac} % nicefrac
 
 \usepackage{mathrsfs} % mathscr
@@ -345,3 +350,38 @@ positioning,fit,calc,decorations.text,shadows%
 
 \newcommand{\occurat}[2]{\ensuremath{{\occur{#1}_{#2}}}}
 
+
+
+
+% fix restateable spacing 
+%http://tex.stackexchange.com/questions/111639/extra-spacing-around-restatable-theorems
+
+\makeatletter
+
+\def\thmt@rst@storecounters#1{%
+%THIS IS THE LINE I ADDED:
+\vspace{-1.9ex}%
+  \bgroup
+        % ugly hack: save chapter,..subsection numbers
+        % for equation numbers.
+  %\refstepcounter{thmt@dummyctr}% why is this here?
+  %% temporarily disabled, broke autorefname.
+  \def\@currentlabel{}%
+  \@for\thmt@ctr:=\thmt@innercounters\do{%
+    \thmt@sanitizethe{\thmt@ctr}%
+    \protected@edef\@currentlabel{%
+      \@currentlabel
+      \protect\def\@xa\protect\csname the\thmt@ctr\endcsname{%
+        \csname the\thmt@ctr\endcsname}%
+      \ifcsname theH\thmt@ctr\endcsname
+        \protect\def\@xa\protect\csname theH\thmt@ctr\endcsname{%
+          (restate \protect\theHthmt@dummyctr)\csname theH\thmt@ctr\endcsname}%
+      \fi
+      \protect\setcounter{\thmt@ctr}{\number\csname c@\thmt@ctr\endcsname}%
+    }%
+  }%
+  \label{thmt@@#1@data}%
+  \egroup
+}%
+
+\makeatother
