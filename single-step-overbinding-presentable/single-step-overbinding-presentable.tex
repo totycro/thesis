@@ -267,11 +267,12 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 \begin{lemma}
 	\label{lemma:arrow_for_same_variables}
-	Whenever the same variable appears multiple times in $\PI(C)\lor C$ for $C \in \pi$, there are arrows. \comm{such that we can do unification}
+	Whenever the same variable appears multiple times in $\PI(C)\lor C$ for $C \in \pi$, there are arrows.
 
 	\begin{itemize}
-		\item If one occurrence of a variable is a subterm of another one, there is a directed arrow directed towards the larger term (or both ways if .
-		\item If they are incomparable, there are weak arrows in both directions.
+		\item if both variables are contained only in grey terms, there is a double arrow \comm{they unify to exactly the same}
+		\item if only one variable is only contained in grey terms, there is an arrow from it to the other one \comm{either unify the one in grey term, then other one must be overbound later. if otherwise var in the colored term is unified, we can still overbind the grey one first. }
+		\item otherwise there are weak arrows between them \comm{have same quantifier, so order does not matter, but want to keep dependencies on both the same}
 	\end{itemize}
 \end{lemma}
 \begin{proof}
@@ -294,15 +295,13 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 	By the induction hypothesis, there are appropriate arrows in both $\PI(C_i) \lor C_i$, $i \in \{1,2\}$.
 
-	New variables are introduced in $l\sigma$ or $\PI(C_i)\sigma$.
-	
+	If the variables were present in $C_1$ or $C_2$, the arrow is still there, either in $\PI(C)$ (in the case of $l$ or $l'$), $C$ (in case of $D$ and $E$) or in currently not shown literal (in case $l$ and $l'$ have the same color).
 
-
-
-
-
-
-
+	Otherwise, it was introduced by unification in $l\sigma$ or $\PI(C_i)\sigma$.
+	In this case, there is some term position $q$ in with $\pos{l}.q$ a variable and $\pos{l'}.q$ a variable or a term containing variables (or other way around).
+	Hence unification maps a variable to a variable or a term containing variables.
+	The variable being unified is in $\PI(C_i)\lor C_i$ for some $i\in\{1,2\}$.
+	But by the induction hypothesis, all occurrences of each variable does already have appropriate arrows, which are still present. 
 \end{proof}
 
 
@@ -344,15 +343,22 @@ Note: $p_1$ might be in some clause, the prop interpolant or none of both.
 					This handles the case where terms $t_1$ and $t_2$ are unified. 
 					But unification also affects all other occurrences of variables, this means ``the parts of $\sigma$ not concerned with unifying $t_1$ and $t_2$''.
 					The relevant case for this lemma is when a $\Gamma$-term contains a variable, that is substituted by a term containing $\Delta$-terms.
-					But in this case, by Lemma \ref{lemma:arrow_for_same_variables}, there is an arrow from the other occurrence of the variable to the one in the $\Gamma$-term: either one in $\arr$ if one of the prefixes is grey or one in $\warr$ if both prefixes contain a colored symbol.
-
-
-
-
+					But in this case, by Lemma \ref{lemma:arrow_for_same_variables}, there is an arrow from the other occurrence of the variable to the one in the $\Gamma$-term: either double arrow in $\arr$ if both prefixes are grey, one in $\arr$ if one of the prefixes is grey or one in $\warr$ if both prefixes contain a colored symbol.
+			\qedhere
 			\end{enumerate}
-
 	\end{itemize}
+\end{proof}
 
+\begin{lemma}
+	\label{lemma:pi_ai_the_same}
+	$\AImatrix(C) \sim \lifboth{PI(C)}$ for $C \in \pi$.
+\end{lemma}
+\begin{proof}
+	Clearly the propositional structure is the same.
+
+	The coloring of the terms is the same, but some variables are ``split up'' into multiple ones in $\AImatrix$ as not all terms of the same form are replaced by the same variable if the terms have entered in different stages.
+
+	-> these are only the variables which have no logical connection, TODO: formally define what this means
 
 \end{proof}
 
