@@ -267,7 +267,12 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 \begin{lemma}
 	\label{lemma:arrow_for_same_variables}
-	Whenever the same variable appears multiple times in $\PI(C)$ for $C \in \pi$, there are arrows. \comm{such that we can do unification}
+	Whenever the same variable appears multiple times in $\PI(C)\lor C$ for $C \in \pi$, there are arrows. \comm{such that we can do unification}
+
+	\begin{itemize}
+		\item If one occurrence of a variable is a subterm of another one, there is a directed arrow directed towards the larger term (or both ways if .
+		\item If they are incomparable, there are weak arrows in both directions.
+	\end{itemize}
 \end{lemma}
 \begin{proof}
 	By induction. Note: As required by resolution, all initial clauses are variable disjoint.
@@ -285,7 +290,16 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 	      Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
 	$\PI(C)$ is $[\PI(C_1) \circ \PI(C)]\sigma$ or $[(l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) ] \sigma $.
 
-	Assumptions: $C_1
+	Assumption: $C_1$ and $C_2$ are variable disjoint, i.e.~variables are renamed in case $C_1$ and $C_2$ are derived from some common original clause and share variables.
+
+	By the induction hypothesis, there are appropriate arrows in both $\PI(C_i) \lor C_i$, $i \in \{1,2\}$.
+
+	New variables are introduced in $l\sigma$ or $\PI(C_i)\sigma$.
+	
+
+
+
+
 
 
 
