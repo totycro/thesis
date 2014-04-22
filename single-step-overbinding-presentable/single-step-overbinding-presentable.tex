@@ -247,18 +247,23 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 
 				$\AImatrix(C)' =
-				\Big((\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))\Big)\sigma$
+				(\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))$
 
-				$\AIclause(C)' = \Big((\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})\Big) \sigma$ \comm{ setminus: remove clause with that ancestor }
+				$\AIclause(C)' = (\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})$ \comm{ setminus: remove clause with that ancestor }
 
- same term in matrix/clause $\Ra$ overbound by same variable
+				$\left.\begin{tabular}{l}
+				$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
 
-				$\lifboth{ \AImatrix(C)' \lor \AIclause(C)' } = \underbrace{\lifboth{ \AImatrix(C)' }}_{\AImatrix(C)} \lor \underbrace{\lifboth{\AIclause(C)'}}_{\AIclause(C)}$ 
+				$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
+		\end{tabular}\right\} \lifboth $ with same overbinding!
 
-			
+
+				%				$\lifboth{ \AImatrix(C)' \lor \AIclause(C)' } = \underbrace{\lifboth{ \AImatrix(C)' }}_{\AImatrix(C)} \lor \underbrace{\lifboth{\AIclause(C)'}}_{\AIclause(C)}$ 
+
+
 			\item if $l$ and $l'$ have the same color:
 
-			%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
+				%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
 				as above but with  $\AImatrix(C)' =
 				\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
 
@@ -270,14 +275,14 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 \subsubsection{$\AI$}
 
 
-	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \AImatrix(C)$
+$\AI(C) = Q_1 u_1 \ldots Q_m u_m \AImatrix(C)$
 
-				$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ PLUS all free variables in $\AImatrix(C)$.
+$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ PLUS all free variables in $\AImatrix(C)$.
 
-				$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
-				For free variables, $Q_i$ as in $C_1/C_2$. if $u_i\sigma \neq u_i$, $u_i$ becomes one of $x_j$ or $y_j$ or grey term.
+$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
+For free variables, $Q_i$ as in $C_1/C_2$. if $u_i\sigma \neq u_i$, $u_i$ becomes one of $x_j$ or $y_j$ or grey term.
 
-				$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
+$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
 
 
 \clearpage

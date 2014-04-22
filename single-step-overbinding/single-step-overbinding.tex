@@ -47,6 +47,8 @@
 \declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
 
 \declaretheorem[sibling=thm,title=Conjecture]{conj}
+\declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
+
 
 %\def\proofSkipAmount{ \vskip -0.5em}
 
@@ -542,6 +544,72 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 \end{proof}
 
+
+\begin{lemma}
+	$\AImatrix(C)$ and $\AIclause(C)$ do not contain colored terms.
+	\label{lemma:no_colored_terms}
+\end{lemma}
+
+\begin{remark}
+	Let $t$ be a term without $\Gamma$-terms.
+	It contains $\Delta$-terms $t_i$, grey terms $g_i$ and free variables $v_i$.
+	$\lifdelta{t}$ is $t$, where the maximal $\Delta$-term $t_i$ is replaced by free variable $x_i$.
+
+	A substitution $\sigma$ occuring in a resolution refutation does not affect any of the $x_i$, as these symbols do not occur in the initial clause sets.
+
+	Hence $\lifdelta{t} \sigma $ differs from $\lifdelta{t}$ in the $v_i$, which are potentially substituted.
+	The $v_i$ can be substituted to other free variables $v'_i$ (not the same ones as factors of clauses are variable disjoint), grey terms $g'_i$ or $\Delta$-terms $t'_i$ (or combinations of $g'_i$ and $t'_i$ including occurrences of $v'_i$).
+	%Hence $\lifdelta{ \lifdelta{t} \sigma }$ 
+
+	Assumption: $\lifdelta$ keeps track of the terms it replaces and always uses the same variables.
+	
+	Goal: $\lifdelta{\lifdelta{t} \sigma} = \lifdelta{t\sigma}$.
+	Suppose $\sigma$ does not affect $t$ (and also not the $x_i$ as it occurs in a resolution rule application). Then it holds.
+
+	Otherwise it changes a variable $v_i$ at position $p$.
+	$\lifdelta{t}$ has at position $p$ $v_i$ as well if the path to $p$ does not contain colored symbol.
+	So $\lifdelta{\lifdelta{t}\sigma}$ and $\lifdelta{t\sigma}$ coincide at $p$, irrespective of what $\sigma$ introduces (var, $\Delta$-/grey-term).
+
+	If $p$ points into a maximal $\Delta$-colored term, $p \mod k$ for some $k\geq 1$ is a $\Delta$-colored term $t_j$.
+	Hence in $\lifdelta{t}$, $\pos(p\mod k) = x_j$.
+
+	However in $\lifdelta{t\sigma}$, $\pos(p\mod k) = x_l$.
+
+	TODO: argue with arrows that this does not break anything?
+
+\end{remark}
+
+\begin{lemma}
+	If $l \in C$, then $\lifboth{l} \in \AIclause(C)$.
+	\label{lemma:literals_in_aiclause}
+\end{lemma}
+\begin{proof} By induction:
+
+	Base case by definition.
+
+	Let $\lambda \in C_1$ w.l.o.g. Resolution $C_1 : D \lor l$ and $C_2 : E \lor \lnot l'$ with $l\sigma = l'\sigma$ give $C: (D\lor E)\sigma$.
+	Then $(\lambda\sigma) \in C$.
+	
+	Have to show $ \lifboth{\lambda\sigma} \in \AIclause(C)$.
+	
+	Induction hypothesis: $\lifboth{\lambda} \in \AIclause(C_1)$. $\lambda \neq l$.
+	\begin{itemize}
+		\item Supp.~$l$ grey.
+
+			$\AIclause(C) = \lifboth{ \Big( (\AIclause(C_1) \setminus \{\lifboth{l}\}) \lor (\AIclause(C_2) \setminus \{\lnot \lifboth{l'}\}) \Big) \sigma} $
+
+			As $\lifboth{\lambda} \in \AIclause(C_1)$, $\lifboth{\lifboth{\lambda} \sigma} \in \AIclause(C) $.
+
+		It remains to show that $\lifboth{\lifboth{\lambda} \sigma} = \lifboth{\lambda \sigma}$
+
+		TODO after remark
+
+	\end{itemize}
+
+
+
+\end{proof}
+
 \begin{lemma}
 	Suppose no maximal $\Gamma$-term occurs in $\PI(C) \lor C$ for $C \in \pi$.
 	Then 
@@ -569,21 +637,59 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 	Induction step:
 
-	We know: $\Gamma \entails \AImatrix(C_i) \lor \AIclause(C_i)$, $i\in\{1,2\}$.
 
-	\begin{itemize}
-		\item
-			Suppose $l$ and $l'$ of opposite color.
-
-			$\AImatrix(C)' =
-			\Big((\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))\Big)\sigma$
-
-			$\AIclause(C)' = \Big((\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})\Big) \sigma$ \comm{ setminus: remove clause with that ancestor }
-
-			To show: $\Gamma \entails \lifboth{ \AImatrix(C)' \lor \AIclause(C)' }$
+	\begin{description}
+		\item{Resolution.}
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor l}
+				\AxiomCm{C_2: E \lor \lnot l'}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\BinaryInfCm{C: (D\lor E)\sigma}
+			\end{prooftree}
 
 
-	\end{itemize}
+			By the induction hypothesis,
+			$\Gamma \entails \AImatrix(C_i) \lor \AIclause(C_i)$, $i\in\{1,2\}$, or expressed differently (cf.~Lemma \ref{lemma:literals_in_aiclause}):
+			
+			$\Gamma \stackrel{\markA}\entails \AImatrix(C_1) \lor (\AIclause(C_1)\setminus\{\lifboth{l}\}) \lor \lifboth{l}$
+
+			$\Gamma \stackrel{\markB}\entails \AImatrix(C_2) \lor (\AIclause(C_2)\setminus\{\lnot \lifboth{l'}\}) \lor \lnot \lifboth{l'}$
+
+			\begin{itemize}
+				\item
+					Suppose $l$ and $l'$ of opposite color.
+
+
+					$\AImatrix(C)' =
+					(\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))$
+
+					$\AIclause(C)' = (\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})$ \comm{     setminus: remove clause with that ancestor }
+
+					$\left.\begin{tabular}{l}
+						$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
+
+						$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
+				\end{tabular}\right\} \lifboth $ with same overbinding!
+
+				We show: $\Gamma \entails \lifboth{ \AImatrix(C) \lor \AIclause(C) }$,
+				which by the restriction is equivalent to $\Gamma \entails \lifdelta{ \AImatrix(C)'\sigma} \lor \lifdelta{\AIclause(C)'\sigma }$
+
+
+				Suppose for a model $M$ of $\Gamma$ that $M \notentails \AIclause(C)'$.
+				Otherwise $M \entails \AIclause(C)'\sigma$.
+				But $\sigma$ only introduces grey terms and $\Delta$-terms, hence $M \entails \lifdelta{ \AIclause(C)'\sigma }$ which proves the result.
+
+				As $\sigma = \mgu(l, l')$, $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
+
+				Suppose that $M\entails \lifdelta{l\sigma}$. Then by \markB, $M\entails \AImatrix(C_2)$.
+
+
+
+
+
+
+		\end{itemize}
+\end{description}
 
 
 \end{proof}

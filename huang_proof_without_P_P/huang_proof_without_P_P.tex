@@ -257,7 +257,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 
 \begin{lemma}
-	$ \Gamma \entails \lif{(\PI(C) \lor C)} $.
+	$ \Gamma \entails \lif{\PI(C) \lor C} $.
 	\label{lemma:gamma_entails_interpolant}
 \end{lemma}
 
@@ -403,7 +403,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 			\begin{enumerate}
 				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
 
-					We show that $\Gamma \entails \lif{ \Big((s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))\Big)\sigma \lor \Big((D \lor E\occurat{t}{p})_\Gamma\Big)\sigma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of Definition \ref{def:PI_paramod}.
+					We show that $\Gamma \entails \lif{ \Big((s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))\Big)\sigma \lor \Big((D \lor E\occurat{t}{p})_\Gamma\Big)\sigma}$, which subsumes the cases 2 and 3 of the definition of $\PI$ for paramodulation.
 					By Lemma~\ref{lemma:lift_commute}, we can pull the liftings inwards and by Lemma~\ref{lemma:lif}, we can commute substitution and lifting by employing $\sigma'$ to arrive at
 
 				$\Gamma \entails
@@ -480,13 +480,9 @@ $\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$, which implies
 				\Big((\lif{s}\sigma')\neq(\lif{t}\sigma') \land \lif{\PI(C_1)}\sigma'\Big) \lor
 				\Big((\lif{s}\sigma')=(\lif{t}\sigma') \land (\lif{h\occurat{s}{q}}) \neq (\lif{h\occurat{t}{q}} )\Big) \lor
 				\Big(\lif{D_\Gamma}\sigma' \lor \lif{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
-
-
-
+				\qedhere
 		\end{enumerate}
 
-
-		\clearpage
 
 		\begin{comment}
 
@@ -541,21 +537,19 @@ $\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$, which implies
 
 			is this really what i need to show?
 		\end{comment}
-
 \end{description}
 \end{proof}
 
 
-General layout of this proof:
 
-$ \Gamma \entails \lif{(\PI(C) \lor C)} $
+Then the following from the thesis (also same in Huang) seem to go through:
 
-Lemma 4.10: swap $\Gamma$ and $\Delta$ and obtain logical negationas interpolant <-- seems to go through
+Lemma 4.10: swap $\Gamma$ and $\Delta$ and obtain logical negationas interpolant 
 
-Corollary 4.11: $\Delta \entails \lifgamma{ \lnot \PI(C) \lor C}$ <-- just a corollary
+Corollary 4.11: $\Delta \entails \lifgamma{ \lnot \PI(C) \lor C}$ 
 
-Lemma 4.12: not important if lifting delta or gamma terms first <-- seems to go through
+Lemma 4.12: not important if lifting delta or gamma terms first 
 
-Thm 4.13: ordering <--- also?
+Thm 4.13: ordering 
 
 \end{document}
