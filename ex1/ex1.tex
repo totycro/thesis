@@ -148,8 +148,9 @@ $ L(\Sigma) = \{ R, P, Q, f, z, x, c\}$
 
 $ L(\Pi) = \{ R, P, Q, g, u, v, d\}$
 
-\newcommand{\sig}[1]{{#1}_\Sigma}
-\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
 
 Refutation:
 \begin{prooftree}
@@ -540,11 +541,8 @@ $\Pi = \{ \lnot P(h(s)), Q(h(r)), s = t \} $
 
 Example 4b: Paramodulation special case in Huang 
 
-$\Sigma = \{ P(x) \lor \lnot Q(x), \lnot P(x) \lor Q(x), s=t \}  \quad{\color{grey}//~P(x) \lra Q(x) }$
-
+$\Sigma = \{ P(x) \lor \lnot Q(x), \lnot P(x) \lor Q(x), s=t \}  \quad{\color{grey}//~P(x) \lra Q(x) }$ $\quad\quad$
 $\Pi = \{ \lnot Q(h(s)), Q(h(t)) \} $
-\bigskip
-
 \begin{prooftree}
 	\AxiomCm{\sig{P(x) \lor \lnot Q(x)}}
 	\AxiomCm{\p{Q(h(t))}}
@@ -573,8 +571,24 @@ $\Pi = \{ \lnot Q(h(s)), Q(h(t)) \} $
 	\BinaryInfCm{Q(h(s))}
 
 	\BinaryInfCm{ (((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor Q(h(s)) }
-
 \end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{\Sigma \entails \bot \mid P(x) \lor \lnot Q(x)}
+	\AxiomCm{\Sigma \entails \top \mid Q(x_2)}
+	\BinaryInfCm{\Sigma \entails \lnot Q(x_2) \mid P(x_2)}
+
+	\AxiomCm{\Sigma \entails \bot \mid s = t}
+\BinaryInfCm{\Sigma \entails ((s=t) \land \lnot Q(x_2)) \lor (s=t \land x_1 \neq x_2) \mid  P(x_1)}
+
+\AxiomCm{\comm{\sig{\lnot P(x) \lor Q(x)}}}
+\AxiomCm{\comm{\p{\lnot Q(h(s))}}}
+	\BinaryInfCm{\comm{\lnot P(h(s))}}
+
+	\BinaryInfCm{\square}
+\end{prooftree}
+
+
 
 $\theta = (((s=t) \land \lnot Q(h(t))) \lor (s=t \land h(s) \neq h(t))) \lor Q(h(s))  $
 

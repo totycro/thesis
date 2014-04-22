@@ -207,10 +207,10 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 	\end{comment}
 	%Note that if a $\Delta$-term $t_i$ occurs in $s_j$, a $\Delta$-term with the same outermost symbol occurs in $s_j$ at the same position.
 \end{proof}
-\clearpage
+
 
 \begin{comment}
-\begin{lemma}
+	\begin{lemma}
 	\label{lemma:lif_literal}
 	If $l\sigma$ = $l'\sigma$, then $\lif{l}\sigma' = \lif{l'}\sigma'$ for $\sigma'$ defined as in lemma \ref{lemma:lif}
 \end{lemma}
@@ -223,6 +223,8 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 	$\lif{l}\sigma' = \lif{l'}\sigma'$
 
 \end{proof}
+
+
 
 \begin{lemma} // currently unused
 
@@ -244,13 +246,15 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
  
 \begin{lemma}[currently 4.8 in thesis, Lemma 11 in Huang]
-	\label{lemma:lift_commute}
-	Let $A$ and $B$ be first-order formulas. Then it holds that:
-	\begin{enumerate}
-		\item $\lift{\Phi}{\lnot A}{x} \semiff \lnot \lift{\Phi}{A}{x}$
-		\item $\lift{\Phi}{A \circ B}{x} \semiff ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for     $\circ \in \{\land, \lor\}$
-	\end{enumerate}
+  \label{lemma:lift_commute}
+  Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
+  \begin{enumerate}
+    \item $\lift{\Phi}{\lnot A}{x} \semiff{} \lnot \lift{\Phi}{A}{x}$
+    \item $\lift{\Phi}{A \circ B}{x} \semiff{} ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for  $\circ \in \{\land, \lor\}$
+    \item $\lift{\Phi}{s = t}{x} \semiff{} ( \lift{\Phi}{s}{x} = \lift{\Phi}{t}{x} )$
+  \end{enumerate}
 \end{lemma}
+
 
 \begin{lemma}
 	$ \Gamma \entails \lif{(\PI(C) \lor C)} $.
@@ -334,7 +338,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 					We show that $\Gamma \entails \lif{ [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2))]\sigma \lor (D_\Gamma \lor E_\Gamma)\sigma}$, which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} is equivalent to
 
-			$\Gamma \entails \Big(\lif{l}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\Big(\lnot \lif{l'}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\lif{D_\Gamma}\sigma' \lor \lif{E_\Gamma}\sigma'$.
+					$\Gamma \entails \Big(\lif{l}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\Big(\lnot \lif{l'}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\lif{D_\Gamma}\sigma' \lor \lif{E_\Gamma}\sigma'$.
 
 					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lif{D_\Gamma}\sigma'$ and $M\notentails \lif{E_\Gamma}\sigma'$ as otherwise we would be done.
 					But then by $(*)$ and $(\circ)$,
@@ -346,6 +350,33 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 
 			\end{enumerate}
+
+		\item{Factorisation.}
+			\begin{prooftree}
+				\AxiomCm{C_1: l \lor l' \lor D}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\UnaryInfCm{C: (l \lor D)\sigma}
+			\end{prooftree}
+
+			Then $\PI(C) = \PI(C_1)\sigma$.
+
+			The induction hypothesis gives that
+			$\Gamma \entails \lif{\PI(C_1) \lor l \lor l' \lor D}$.
+			Let $\sigma'$ be as in Lemma \ref{lemma:lif}.
+
+			Then $\Gamma \entails \lif{\PI(C_1) \lor l \lor l' \lor D}\sigma'$ and by Lemma \ref{lemma:lif},
+			$\Gamma \entails \lif{\PI(C_1)\sigma \lor l\sigma \lor l'\sigma \lor D\sigma}$.
+
+			By Lemma \ref{lemma:lift_commute},
+			$\Gamma \entails \lif{\PI(C_1)\sigma} \lor \lif{l\sigma} \lor \lif{l'\sigma} \lor \lif{D\sigma}$.
+
+			As $\sigma = \mgu(l, l')$, $l\sigma$ and $l'\sigma$ are syntactically equal, hence $\lif{l\sigma} = \lif{l'\sigma}$.\todo[noline,size=\tiny]{syntactically equal? does ``equal'' suffice?. see also $s\sigma=r\sigma$ below}
+
+			But then 
+			$\Gamma \entails \lif{\PI(C_1)\sigma} \lor \lif{l\sigma} \lor \lif{D\sigma}$ and consequently by Lemma \ref{lemma:lif}, 
+			$\Gamma \entails \lif{\PI(C_1)\sigma \lor l\sigma \lor D\sigma}$.
+
+
 
 		\item{Paramodulation.}
 
@@ -360,22 +391,104 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor s=t)_\Gamma}$
 
-			$\Gamma \entails \lif{\PI(C_2) \lor (E[r])_\Gamma}$
+			$\Gamma \entails \lif{\PI(C_2) \lor (E\occurat{r}{p})_\Gamma}$
 
 			By Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif}, these imply:
 
-			$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma}\sigma' \lor (\lif{s_\Gamma}\sigma') = (\lif{t_\Gamma}\sigma')$
+			$\Gamma \stackrel{\markA}\entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma}\sigma' \lor \lif{s}\sigma' = \lif{t}\sigma'$
 
-			$\Gamma \entails \lif{\PI(C_2)}\sigma' \lor \lif{(E\occurat{r}{p})_\Gamma}\sigma'$
+			$\Gamma \stackrel{\markB}\entails \lif{\PI(C_2)}\sigma' \lor \lif{(E\occurat{r}{p})_\Gamma}\sigma'$
 
-			$\PI(C) = $
+			We distinguish two cases:\nopagebreak
+			\begin{enumerate}
+				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
 
-			We show that $\Gamma \entails $
+					We show that $\Gamma \entails \lif{ \Big((s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))\Big)\sigma \lor \Big((D \lor E\occurat{t}{p})_\Gamma\Big)\sigma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of Definition \ref{def:PI_paramod}.
+					By Lemma~\ref{lemma:lift_commute}, we can pull the liftings inwards and by Lemma~\ref{lemma:lif}, we can commute substitution and lifting by employing $\sigma'$ to arrive at
+
+				$\Gamma \entails
+				\Big((\lif{s}\sigma')=(\lif{t}\sigma') \land \lif{\PI(C_2)}\sigma'\Big) \lor
+				\Big((\lif{s}\sigma')\neq(\lif{t}\sigma') \land \lif{\PI(C_1)}\sigma'\Big) \lor
+				\Big(\lif{D_\Gamma}\sigma' \lor \lif{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
+
+				Let $M$ be a model of $\Gamma$. Let $M \notentails \lif{D_\Gamma}\sigma' \lor \lif{(E\occurat{t}{p})_\Gamma}\sigma'$ as otherwise we would be done. We show that depending on the truth value of  $(\lif{s}) = (\lif{t})$ in $M$, either the first or second conjunct of the above formula holds.
+
+				Suppose that $M \entails (\lif{s}) \neq (\lif{t})$. 
+				Then $M \entails (\lif{s})\sigma' \neq (\lif{t})\sigma'$, so by~\markA, $M \entails \lif{\PI(C_1)}\sigma'$.
+
+				On the other hand, suppose that $M \entails (\lif{s}) = (\lif{t})$.
+				The following two lemmas show that $M \notentails \lif{E\occurat{r}{p}}\sigma'$, so by~\markB, we get that $M\entails \lif{\PI(C_2)}\sigma'$.
+\bigskip
+
+				\begin{lemma}
+					\label{aga5tg5ba}
+					$M \entails (\lif{s}) = (\lif{t})$ and $M\notentails \lif{E\occurat{t}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{s}{p}}\sigma'$.
+				\end{lemma}
+				\begin{proof} 
+					$\lif{E\occurat{t}{p}}$ and $\lif{E\occurat{s}{p}}$ only differ at position $p$, where at the first, there is $\lif{t}$, and at the latter, there is $\lif{s}$. But in $M$, they are interpreted the same way, hence $M\entails \lif{E\occurat{t}{p}} \semiff \lif{E\occurat{s}{p}}$, which implies the result.
+				\end{proof} 
+\bigskip
+
+				\begin{lemma}
+					$\sigma=\mgu(s, r)$ and $M\notentails \lif{E\occurat{s}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{r}{p}}\sigma'$.
+				\end{lemma}\nopagebreak 
+				\begin{proof} 
+					By Lemma \ref{lemma:lif}, $M\notentails \lif{(E\occurat{s}{p})\sigma}$. 
+
+					%$\lif{(E\occurat{s}{p})\sigma}$ differs from $\lif{(E\occurat{r}{p})\sigma}$ exactly at $p$. 
+
+					Due to $\sigma=\mgu(s, r)$, both $s\sigma$ and $r\sigma$ are syntactically equal.
+%We also have that
+% 					$M \entails (E\occurat{s}{p})\sigma \semiff{} (E\occurat{r}{p})\sigma$.
+					Suppose they are both not $\Delta$-colored.
+Then the lifting does not affect them and 
+$\lif{(E\occurat{s}{p})\sigma} = \lif{(E\occurat{r}{p})\sigma}$.
+Otherwise the lifting will replace them with the same variable and we as well get that
+$\lif{(E\occurat{s}{p})\sigma} = \lif{(E\occurat{r}{p})\sigma}$.
+
+By Lemma $\ref{lemma:lif}$, 
+$\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$, which implies the result.
+				\end{proof} 
 
 
-			\clearpage
 
-			\color{gray}
+
+			\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
+
+
+				\newenvironment{lemmaCustomNo}[1]
+				{\renewcommand{\thelemma}{\ref{#1}$'$}%
+					\addtocounter{lemma}{-1}%
+				\begin{lemma}}
+				{\end{lemma}}
+
+
+				Then we have to replace Lemma \ref{aga5tg5ba} by:
+				\begin{lemmaCustomNo}{aga5tg5ba}
+					$M \entails (\lif{s}) = (\lif{t})$ and $M\notentails \lif{E\occurat{t}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{s}{p}}\sigma'$ or that $\lif{h\occurat{s}{q}} \neq \lif{h\occurat{t}{q}}$.
+				\end{lemmaCustomNo}
+				\begin{proof}
+					If $\lif{E\occurat{t}{p}}$ and $\lif{E\occurat{s}{p}}$ differ only at position $p$, then the proof of Lemma \ref{aga5tg5ba} applies.
+					
+					Otherwise position $p$ is in a maximal $\Delta$-term $h\occurat{t}{q}$, such that $h\occurat{t}{q}$ and $h\occurat{s}{q}$ are replaced with distinct variables.
+					But then clearly $\lif{h\occurat{s}{q}} \neq \lif{h\occurat{t}{q}}$.
+				\end{proof}
+ Hence the following holds:
+
+				$\Gamma \entails
+				\Big((\lif{s}\sigma')=(\lif{t}\sigma') \land \lif{\PI(C_2)}\sigma'\Big) \lor
+				\Big((\lif{s}\sigma')\neq(\lif{t}\sigma') \land \lif{\PI(C_1)}\sigma'\Big) \lor
+				\Big((\lif{s}\sigma')=(\lif{t}\sigma') \land (\lif{h\occurat{s}{q}}) \neq (\lif{h\occurat{t}{q}} )\Big) \lor
+				\Big(\lif{D_\Gamma}\sigma' \lor \lif{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
+
+
+
+		\end{enumerate}
+
+
+		\clearpage
+
+		\begin{comment}
 
 
 
@@ -427,24 +540,22 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 			$\Gamma \entails \lif{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma' \lor (\lif{D} \lor \lif{E[t]})\sigma') $.
 
 			is this really what i need to show?
+		\end{comment}
 
-
-	\end{description}
+\end{description}
 \end{proof}
 
 
 General layout of this proof:
 
-	$ \Gamma \entails \lif{(\PI(C) \lor C)} $
+$ \Gamma \entails \lif{(\PI(C) \lor C)} $
 
-	Lemma 4.10: swap $\Gamma$ and $\Delta$ and obtain logical negationas interpolant <-- seems to go through
+Lemma 4.10: swap $\Gamma$ and $\Delta$ and obtain logical negationas interpolant <-- seems to go through
 
-	Corollary 4.11: $\Delta \entails \lifgamma{ \lnot \PI(C) \lor C}$ <-- just a corollary
+Corollary 4.11: $\Delta \entails \lifgamma{ \lnot \PI(C) \lor C}$ <-- just a corollary
 
-	Lemma 4.12: not important if lifting delta or gamma terms first <-- seems to go through
+Lemma 4.12: not important if lifting delta or gamma terms first <-- seems to go through
 
-	Thm 4.13: ordering <--- also?
+Thm 4.13: ordering <--- also?
 
-$\Gamma \entails \bar Q \lifboth{\PI(\pi)}$;
-$\Delta \entails \lnot \bar Q \lifboth{\PI(\pi)}$;
 \end{document}
