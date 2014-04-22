@@ -183,15 +183,15 @@ $0.2.1$ is $g(z, b)$
 
 $\pos$ calculates the position of a term or the term of a position, depending on the argument type.
 
-for a position $p_i$, $\pos{p_i}$ denotes whatever $p_i$ refers to in its respective clause.
+for a position $p_i$, $\pos(p_i)$ denotes whatever $p_i$ refers to in its respective clause.
 
-for a term $t$, $\pos{t}$ denotes the position in $t$ in its respective clause.
+for a term $t$, $\pos(t)$ denotes the position in $t$ in its respective clause.
 
-for a position $p$, $\poslit{p}$ denotes the position of the literal
+for a position $p$, $\poslit(p)$ denotes the position of the literal
 
-for a position $p$, $\posterm{p}$ denotes the position of the term in $p_i$ 
+for a position $p$, $\posterm(p)$ denotes the position of the term in $p_i$ 
 
-$\Ra$ $p = \poslit{p}.\posterm{p}$
+$\Ra$ $p = \poslit(p).\posterm(p)$
 
 for a position $p$, $p \mod i$ denotes $p$ with $i$ least significant places cut off, $0.2.1.0 \mod 2 = 0.2$
 
@@ -207,9 +207,9 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 	\item For each initial clause $C$ in $\Gamma \cup \Delta$:
 
 		Add to $\arr$ all $(p_1, p_2)$ in $C$
-		such that $p_1$ contains only grey symbol and $\pos{p_1}$ is a variable and $\pos{p_1} = \pos{p_2}$ but $p_1 \neq p_2$.
+		such that $p_1$ contains only grey symbol and $\pos(p_1)$ is a variable and $\pos(p_1) = \pos(p_2)$ but $p_1 \neq p_2$.
 
-		Add to $\warr{C}$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos{p_1}$ is a var and $\pos{p_1} = \pos{p_2}$.
+		Add to $\warr$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos(p_1)$ is a var and $\pos(p_1) = \pos(p_2)$.
 
 	\item 
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
@@ -228,38 +228,57 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 \subsection{algo}
 
+\subsubsection{$\AImatrix$ and $\AIclause$}
 \begin{enumerate}
 	\item 
-		For each initial clause $C$, $\AI(C) = \PI(C)$.
+		For each initial clause $C$, $\AImatrix(C) = \PI(C)$ and $\AIclause(C) = \lifboth{C}$.
+
+
+
+
 
 	\item
-		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
+		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = (D \lor E)\sigma$ with $l\sigma = l'\sigma$ with prop interpolant $\PI(\cdot)$:
 
 		\begin{itemize}
 			\item if $l$ and $l'$ don't have the same color:
 
-				$\chi = \lifboth{l}$
-				
 				NOTE: same overbinding for $l$ and $\lnot l$
 
-				$\AImatrix(C) = (\lnot \chi \land \AImatrix(C_1)) \lor (\chi \land \AImatrix(C_2))$ 
+
+				$\AImatrix(C)' =
+				\Big((\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))\Big)\sigma$
+
+				$\AIclause(C)' = \Big((\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})\Big) \sigma$ \comm{ setminus: remove clause with that ancestor }
+
+ same term in matrix/clause $\Ra$ overbound by same variable
+
+				$\lifboth{ \AImatrix(C)' \lor \AIclause(C)' } = \underbrace{\lifboth{ \AImatrix(C)' }}_{\AImatrix(C)} \lor \underbrace{\lifboth{\AIclause(C)'}}_{\AIclause(C)}$ 
 
 			
 			\item if $l$ and $l'$ have the same color:
 
-				$\AImatrix(C) = \AImatrix(C_1) \lor/\land \AImatrix(C_2)$
+			%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
+				as above but with  $\AImatrix(C)' =
+				\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
+
 
 		\end{itemize}
 
+\end{enumerate}
+
+\subsubsection{$\AI$}
+
+
 	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \AImatrix(C)$
 
-				$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ in $\AImatrix(C)$.
+				$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ PLUS all free variables in $\AImatrix(C)$.
 
-				$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ otherwise.
+				$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
+				For free variables, $Q_i$ as in $C_1/C_2$. if $u_i\sigma \neq u_i$, $u_i$ becomes one of $x_j$ or $y_j$ or grey term.
 
-				$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr{C})$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
+				$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
 
-\end{enumerate}
 
 \clearpage
 
@@ -298,7 +317,7 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 	If the variables were present in $C_1$ or $C_2$, the arrow is still there, either in $\PI(C)$ (in the case of $l$ or $l'$), $C$ (in case of $D$ and $E$) or in currently not shown literal (in case $l$ and $l'$ have the same color).
 
 	Otherwise, it was introduced by unification in $l\sigma$ or $\PI(C_i)\sigma$.
-	In this case, there is some term position $q$ in with $\pos{l}.q$ a variable and $\pos{l'}.q$ a variable or a term containing variables (or other way around).
+	In this case, there is some term position $q$ in with $\pos(l).q$ a variable and $\pos(l').q$ a variable or a term containing variables (or other way around).
 	Hence unification maps a variable to a variable or a term containing variables.
 	The variable being unified is in $\PI(C_i)\lor C_i$ for some $i\in\{1,2\}$.
 	But by the induction hypothesis, all occurrences of each variable does already have appropriate arrows, which are still present. 
@@ -307,7 +326,7 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 
 \begin{lemma}
-	In $\PI(C)\lor C$ for $C \in \pi$, if there is a $\Delta$-colored term $s$ in a $\Gamma$-term $t$, then there is an arrow from $p_1$ to $p_2$ such that $\pos{p_1} = s$ and $\pos{p_2} = s$ and for some $i$, $\pos{ p_2 \mod i } = t$.
+	In $\PI(C)\lor C$ for $C \in \pi$, if there is a $\Delta$-colored term $s$ in a $\Gamma$-term $t$, then there is an arrow from $p_1$ to $p_2$ such that $\pos(p_1) = s$ and $\pos(p_2) = s$ and for some $i$, $\pos( p_2 \mod i ) = t$.
 \end{lemma}
 Note: $p_1$ might be in some clause, the prop interpolant or none of both. 
 \begin{proof}

@@ -258,125 +258,6 @@ The subterm-relation is reflexive.
 \end{defi}
 
 \clearpage
-\clearpage
-\section{Arrow-Algo}
-
-\begin{enumerate}
-	\item
-		In the original clauses, find all occurrences of variables.
-
-		Common case:
-		If a variable appears as outermost symbol or only has grey ancestor-terms, add an arrow from it to all other occurrences.
-
-		Uncommon case:
-		if there is more than one occurrence of a variable under a $\Phi$-colored term, add a \emph{weak} dependency between them all (symmetric relation).
-
-
-		NOTE: this creates double arrows for occurrences at same depth. This appears to be necessary for terms which are only variables, and doesn't hurt if the variable is contained in a term.
-
-	\item For each step in the derivation:
-		\begin{enumerate}
-			\item Build propositional interpolant using $\PI(C_i)^*$, $i\in \{1,2\}$, i.e.~use ancestor $\PI$ without colored terms.
-			\item If ancestors of atom added to $\PI(C)$ had arrows, merge them to atom in $\PI(C)$ (i.e.~arrows starting in and leading to this atom).
-			\item Replace colored terms in $\PI(C)$ (from new atom and unifier applied to $\PI(C_i)^*$) with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
-
-				An arrow starts (ends) in one of the new variables if it starts (ends) somewhere in the term it replaced.
-			\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right AND weakly connected variables appear in the same quantifier block.
-
-				$\bar Q_n = \operatorname{sort}( Q_{n_1} \cup Q_{n_2} \cup \operatorname{colored-terms}(l))$
-		\end{enumerate}
-\end{enumerate}
-
-\clearpage
-\subsection{algo more formally}
-
-Every literal in any initial clause set has a globally unique id/number
-
-Ex: $P(y, a, f(z, g(y, b)) ) \lor Q(x)$
-
-Term position:
-
-$0.2.1.0$ means first literal, 3rd arg, 2nd arg, fst arg: $y$
-
-$0.1$ is $a$
-
-$0.2.1$ is $g(z, b)$
-
-for a position $p_i$, $\pos{p_i}$ denotes whatever $p_i$ refers to in its respective clause.
-
-for a term $t$, $\pos{t}$ denotes the position in $t$ in its respective clause.
-
-for a position $p$, $\poslit{p}$ denotes the position of the literal
-
-for a position $p$, $\posterm{p}$ denotes the position of the term in $p_i$ 
-
-$\Ra$ $p = \poslit{p}.\posterm{p}$
-
-\subsection{Arrows:}
-
-$\arr$ is a set of ordered pairs of term positions which point to positions in terms in literals
-
-$\warr$ is a set of unordered pairs of term positions which point to positions in terms in literals
-
-w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
-
-\begin{enumerate}
-	\item For each initial clause $C$ in $\Gamma \cup \Delta$:
-
-		Add to $\arr$ all $(p_1, p_2)$ in $C$
-		such that $p_1$ contains only grey symbol and $\pos{p_1}$ is a variable and $\pos{p_1} = \pos{p_2}$ but $p_1 \neq p_2$.
-
-		Add to $\warr{C}$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos{p_1}$ is a var and $\pos{p_1} = \pos{p_2}$.
-
-	\item 
-		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
-
-		Note: literals are added to the interpolant if they occur in both ancestors.
-
-		Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
-
-		%Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
-		%If $l$ and/or $l'$ is added to $\PI(C)$, it comes from both $l$ and $l'$.
-
-
-		%Add $(p_1, p_2)$ to $\arr$ if $\poslit{p_i}$ comes from literal $l_i$ in a clause $D$ in an original clause set, $i\in\{1, 2\}$, (both from same $D$), and $(l_1.\posterm{p_1}, l_2.\posterm{p_2}) \in \arr{D}$ 
-
-\end{enumerate}
-
-\subsection{algo}
-
-\begin{enumerate}
-	\item 
-		For each initial clause $C$, $\AI(C) = \PI(C)$.
-
-	\item
-		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
-
-		\begin{itemize}
-			\item if $l$ and $l'$ don't have the same color:
-
-				$\chi = \lifboth{l}$
-				
-				NOTE: same overbinding for $l$ and $\lnot l$
-
-				$\AImatrix(C) = (\lnot \chi \land \AImatrix(C_1)) \lor (\chi \land \AImatrix(C_2))$ 
-
-			
-			\item if $l$ and $l'$ have the same color:
-
-				$\AImatrix(C) = \AImatrix(C_1) \lor/\land \AImatrix(C_2)$
-
-		\end{itemize}
-
-	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \AImatrix(C)$
-
-				$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ in $\AImatrix(C)$.
-
-				$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ otherwise.
-
-				$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr{C})$ implies that $u_i < u_j$ if $u_i$ replaces $t_i$ and $u_j$ replaces $t_j$ and $p_1$ points into $t_i$ and $p_2$ points into $t_j$.
-
-\end{enumerate}
 
 \section{current proof attempts}
 
@@ -612,6 +493,100 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 \end{proof}
 
 
+\clearpage
+
+
+\begin{lemma}
+	Suppose no colored term occurs in $\PI(C) \lor C$ for $C \in \pi$.
+	Then 
+	$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$ \comm{implicit universal quantification}
+\end{lemma}
+\begin{proof}
+
+	Proof by induction.
+
+	Base case:
+
+	For $C \in \Gamma$, $\AImatrix(C) = \bot$ and $\AIclause = \lifboth{C} = \lifgamma{C} $. By the restriction, $\lifgamma{C} = C$ and $\Gamma \entails C$.
+
+	For $C \in \Delta$, $\AImatrix(C) = \top$.
+
+	Induction step:
+
+	We know: $\Gamma \entails \AImatrix(C_i) \lor \AIclause(C_i)$, $i\in\{1,2\}$.
+
+	\begin{itemize}
+		\item
+			Suppose $l$ and $l'$ of opposite color.
+
+			$\AImatrix(C)' =
+			\Big((\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))\Big)\sigma$
+
+			$\AIclause(C)' = \Big((\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})\Big) \sigma$ \comm{ setminus: remove clause with that ancestor }
+
+			To show: $\Gamma \entails \lifboth{ \AImatrix(C)' \lor \AIclause(C)' }$, but as $\sigma $ does not introduce a colored term, this is the same as $\Gamma \entails \AImatrix(C)' \lor \AIclause(C)'$.
+
+			Suppose $\Gamma \notentails (\AIclause(C_1) \setminus \{l\})\sigma$ and $\Gamma \notentails (\AIclause(C_2) \setminus \{\lnot l'\})\sigma$ as otherwise we would be done.
+
+			Then $\Gamma \notentails (\AIclause(C_1) \setminus \{l\})$ and $\Gamma \notentails (\AIclause(C_1) \setminus \{l\})$.
+
+			Hence the induction hypothesis reduces to $\Gamma \entails \AImatrix(C_1) \lor l$ and $\Gamma \entails \AImatrix(C_2) \lor \lnot l'$.
+
+			Therefore also $\Gamma \entails (\AImatrix(C_1) \lor l)\sigma$ and $\Gamma \entails (\AImatrix(C_2) \lor \lnot l')\sigma$. 
+
+			Now as $l\sigma = l'\sigma$, their interpretation is linked, so we get the result in a similar way as in Huang's proof.
+
+
+	\end{itemize}
+
+
+\end{proof}
+
+\begin{lemma}
+	Suppose no maximal $\Gamma$-term occurs in $\PI(C) \lor C$ for $C \in \pi$.
+	Then 
+	$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$ \comm{implicit universal quantification}
+\end{lemma}
+\begin{proof}
+	\comm{
+		Given that $\Gamma \entails \lifdelta{\PI(C)}$.
+
+		By the restriction to $\Gamma$-terms, $\lifdelta{\PI(C)} = \lifboth{\PI(C)}$.
+		$\AI(C)$ differs from $\lifboth{\PI(C)}$ insofar as in the latter, all equal maximal $\Gamma$-terms are overbound with the same variable.
+
+		In $\AI(C)$, occurrences of the same maximal $\Gamma$-term in $l$ or $l'$ are overbound with the same variable as well as all occurrences of the same variable which are contained in grey terms only.
+
+	}
+
+
+	Proof by induction.
+
+	Base case:
+
+	For $C \in \Gamma$, $\AImatrix(C) = \bot$ and $\AIclause = \lifboth{C} = \lifgamma{C} $. By the restriction, $\lifgamma{C} = C$ and $\Gamma \entails C$.
+
+	For $C \in \Delta$, $\AImatrix(C) = \top$.
+
+	Induction step:
+
+	We know: $\Gamma \entails \AImatrix(C_i) \lor \AIclause(C_i)$, $i\in\{1,2\}$.
+
+	\begin{itemize}
+		\item
+			Suppose $l$ and $l'$ of opposite color.
+
+			$\AImatrix(C)' =
+			\Big((\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))\Big)\sigma$
+
+			$\AIclause(C)' = \Big((\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})\Big) \sigma$ \comm{ setminus: remove clause with that ancestor }
+
+			To show: $\Gamma \entails \lifboth{ \AImatrix(C)' \lor \AIclause(C)' }$
+
+
+	\end{itemize}
+
+
+\end{proof}
 
 
 \clearpage

@@ -145,7 +145,8 @@ positioning,fit,calc,decorations.text,shadows%
 %\newcommand{\Lang}{\ensuremath{\mathrm{L}}}
 %\newcommand{\ar}{\ensuremath{\mathrm{ar}}}
 
-\newcommand{\AImatrix}{\ensuremath{\AI_\text{matrix}}}
+\newcommand{\AImatrix}{\ensuremath{\AI_\mathrm{matrix}}}
+\newcommand{\AIclause}{\ensuremath{\AI_\mathrm{clause}}}
 
 \newcommand{\PS}{\Pred}
 \newcommand{\FS}{\Fun}
@@ -186,12 +187,19 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\lifdelta}[1]{\lift{\Delta}{#1}{x}}
 \newcommand{\lifgamma}[1]{\lift{\Gamma}{#1}{y}}
 
-\newcommand{\arr}[1]{\ensuremath{\mathcal{A}(#1)}}
-\newcommand{\warr}[1]{\ensuremath{\mathcal{W}(#1)}}
+\DeclareMathOperator{\arr}{\mathcal{A}}
+\DeclareMathOperator{\warr}{\mathcal{W}}
 
-\newcommand{\pos}[1]{\ensuremath{p(#1)}}
-\newcommand{\poslit}[1]{\ensuremath{p_\text{lit}(#1)}}
-\newcommand{\posterm}[1]{\ensuremath{p_\text{term}(#1)}}
+%\usepackage{yfonts}
+\usepackage{upgreek}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+%\DeclareMathOperator{\pos}{\mathscr{P}}
+%\DeclareMathOperator{\pos}{\mathpzc{p}}
+\DeclareMathOperator{\pos}{\rho}
+\DeclareMathOperator{\poslit}{\pos_\mathrm{lit}}
+\DeclareMathOperator{\posterm}{\pos_\mathrm{term}}
+%\newcommand{\poslit}[1]{\ensuremath{p_\text{lit}(#1)}}
+%\newcommand{\posterm}[1]{\ensuremath{p_\text{term}(#1)}}
 
 \newcommand{\UICm}[1]{\UnaryInfCm{#1}}
 \newcommand{\UnaryInfCm}[1]{\UnaryInfC{$#1$}}

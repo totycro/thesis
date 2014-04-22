@@ -245,7 +245,7 @@ Direct overbinding would work when considering original dependencies as highligh
 	\RightLabelm{x\mapsto a, y\mapsto f(a)}
 	\BinaryInfCm{\square}
 \end{prooftree}
-
+~ % latex makes pagebreak without this, bug?
 \begin{multicols}{2}
 	\begin{prooftree}
 		\AxiomCm{\top}
@@ -645,6 +645,7 @@ Huang and direct overbinding somewhat coincide as $x_2 < x_1$ in both cases, and
 		\BinaryInfCm{P(a, f(a)) \land \lnot Q(a)}
 
 	\end{prooftree}
+	Huang:
 	\begin{prooftree}
 		\AxiomCm{\bot}
 
@@ -1018,6 +1019,8 @@ combined presentation ground with direct method:
 
 \end{prooftree}
 
+~
+
 \begin{prooftree}
 
 	\AxiomCm{ \top}
@@ -1299,6 +1302,27 @@ $\exists x_1  R(x_1)$
 
 $\exists x_1 \forall x_2 \forall x_3 ( R(\arrowA x_1) \lor \lnot P(\arrowB\, \arrowAB x_2, \arrowBA x_3) ) \drawAABB \drawAB$
 
+
+\clearpage 
+
+\section*{$f(x) \lor g(x)$ with $f$, $g$ different colors}
+~
+
+\begin{prooftree}
+
+	\AxiomCm{\p{\lnot P(z)}}
+	\AxiomCm{\p{\lnot R(g(a))}}
+	\AxiomCm{\sig{P(f(\arrowB x)) \lor Q(\arrowA x)}} \drawAB
+	\AxiomCm{\p{R(g(\arrowF y)) \lor \lnot Q(\arrowE y)}} \drawEF
+	\RightLabelm{y\mapsto x}
+	\BinaryInfCm{\forall \arrowA\,\arrowE x_1 Q(x_1) \mid P(f(\arrowB x)) \lor R(g(\arrowF x)) }\drawAB\drawEF
+	\RightLabelm{x\mapsto a}
+	\BinaryInfCm{\forall \arrowA\,\arrowE x_1 Q(x_1)  \mid P(f(\arrowB a)) \comm{ R(g(\arrowF a))} }\drawAB\drawEF
+	\RightLabelm{z\mapsto f(a)}
+	\BinaryInfCm{\forall \arrowA\,\arrowE x_1 \exists \arrowB x_2 \big( Q(x_1) \lor P(x_2) \big) \comm{ R(g(\arrowF a))} }\drawAB\drawEF
+\end{prooftree}
+
+$\Ra$ free vars in the interpolant have to be overbound (if there are arrows, but we can just always do so)
 
 \clearpage 
 \section*{misc examples}

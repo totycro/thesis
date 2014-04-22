@@ -133,6 +133,7 @@
 \def\proofSkipAmount{ \vskip -0.3em}
 
 \newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
 
 \begin{document}
 
@@ -163,6 +164,8 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 			\lif{z\sigma} & \text{ otherwise}
 		\end{cases} 
 	\]
+
+	Note that the definition of $\sigma'$ only depends on the $x_i$ and $t_i$.
 
 	Then
 	$\lif{C\sigma} =
@@ -239,12 +242,23 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 \end{comment}
 
-\begin{lemma} $ \Gamma \entails \lif{(\PI(C) \lor C)} $.
+ 
+\begin{lemma}[currently 4.8 in thesis, Lemma 11 in Huang]
+	\label{lemma:lift_commute}
+	Let $A$ and $B$ be first-order formulas. Then it holds that:
+	\begin{enumerate}
+		\item $\lift{\Phi}{\lnot A}{x} \semiff \lnot \lift{\Phi}{A}{x}$
+		\item $\lift{\Phi}{A \circ B}{x} \semiff ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for     $\circ \in \{\land, \lor\}$
+	\end{enumerate}
+\end{lemma}
+
+\begin{lemma}
+	$ \Gamma \entails \lif{(\PI(C) \lor C)} $.
 	\label{lemma:gamma_entails_interpolant}
 \end{lemma}
 
 \begin{proof}
-	By induction on the resolution refutation.
+	By induction on the resolution refutation of the strengthening: $\Gamma \entails \PI(C) \lor C_\Gamma$
 
 	Base case:
 	Either $C \in \Gamma$, then it does not contain $\Delta$-terms.
@@ -262,78 +276,106 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 			By the induction hypothesis, we can assume that:
 
-			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor l)}$
+			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lif{\PI(C_2) \lor (E\lor \lnot l')_\Gamma}$
 
-			$\Gamma \entails \lif{\PI(C_2) \lor (E\lor \lnot l')}$
+			which by Lemma \ref{lemma:lift_commute} implies that
+
+			$\Gamma \stackrel{(*)}\entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif {l_\Gamma}$ and $\Gamma \stackrel{(\circ)}\entails \lif{\PI(C_2)} \lor \lif{E_\Gamma} \lor \lnot \lif{l'_\Gamma}$
+
+					Let $\sigma'$ be defined as in Lemma \ref{lemma:lif} with $t_1, \ldots, t_n$ all $\Delta$-terms in this context, i.e.~from $C_1$, $C_2$, $\PI(C_1)$, $\PI(C_2)$ and $\sigma$.
 
 			\begin{enumerate}
-				\item $\Pred(l) \in \Lang(\Gamma) \setminus \Lang(\Delta)$:
+				\item $l$ is $\Gamma$-colored.
 					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
 
-					We show that $\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)\sigma}$,
+					We show that $\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)_\Gamma\sigma}$,
 					\newline 
-					i.e.~$\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma} $.
+					i.e.~$\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma)\sigma} $.
 
-					Let $\sigma'$ be as in Lemma \ref{lemma:lif}. $t_1, \ldots, t_n$ must contain all $\Delta$-terms occuring here in formulas and substitutions.
 
-					Hence by Lemma \ref{lemma:lif}
-					$\Gamma \entails \lif{(\PI(C_1) \lor \PI(C_2) \lor D \lor E)}\sigma' $.
-
-					By Lemma 11 (Huang) and the induction hypothesis,
-
-					$\Gamma \entails \lif{\PI(C_1)} \lor \lif{D} \lor \lif l$ $\;\;(*)$
-
-					$\Gamma \entails \lif{\PI(C_2)} \lor \lif{E} \lor \lnot \lif{l'}$ $\;\;(\circ)$
-
+					Hence by Lemma \ref{lemma:lif},
+					$\Gamma \entails \lif{(\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma)}\sigma' $.
 
 					Since $l\sigma = l'\sigma$ (by resolution rule application), $\lif{l\sigma} = \lif{l'\sigma}$.
 					
-					As by Lemma \ref{lemma:lif} $\lif{l\sigma} = \lif{l}\sigma'$ and $\lif{l'\sigma} = \lif{l'}\sigma'$,
-					we get $\lif{l}\sigma' = \lif{l'}\sigma'$.
+					As by Lemma \ref{lemma:lif}, with $\sigma'$ as above, $\lif{l\sigma} = \lif{l}\sigma'$ and $\lif{l'\sigma} = \lif{l'}\sigma'$,
+					we get $\lif{l}\sigma' = \lif{l'}\sigma'$. \label{aou5jklah}
 
-					So by applying $\sigma'$ to $(*)$ and $(\circ)$, we can do a resolution on $\lif{l}\sigma'$ and get
+					So by applying $\sigma'$ to $(*)$ and $(\circ)$, we can perform a resolution step on $\lif{l}\sigma'$ and get
 
-					$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif D \sigma' \lor \lif{\PI(C_2)}\sigma' \lor \lif E \sigma'$.
+					$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma} \sigma' \lor \lif{\PI(C_2)}\sigma' \lor \lif {E_\Gamma} \sigma'$.
 
-					and
-
-				$\Gamma \entails \lif{ \PI(C_1) \lor \PI(C_2) \lor D \lor E}\sigma' $.
+					and consequently
+				$\Gamma \entails \lif{ \PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma}\sigma' $.
 
 				So by Lemma \ref{lemma:lif},
 
-				$\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2) \lor D \lor E ) \sigma } $.
+				$\Gamma \entails \lif{ \Big(\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma \Big) \sigma } $.
 
 
+				\item $l$ is $\Delta$-colored.
+					Then $\PI(C) = (\PI(C_1) \land \PI(C_2))\sigma$. 
 
-				\item $\Pred(l) \in \Lang(\Delta) \setminus \Lang(\Gamma)$:
+					We show that $\Gamma \entails \lif{(\PI(C_1) \land \PI(C_2))\sigma \lor (D_\Gamma \lor E_\Gamma)\sigma}$
 
-			\color{gray}
-					Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$. 
+					which by Lemma \ref{lemma:lift_commute} is equivalent to\newline
+					$\Gamma \entails \Big(\lif{\PI(C_1)\sigma} \land \lif{\PI(C_2)\sigma}\Big) \lor \lif{D_\Gamma\sigma} \lor \lif{E_\Gamma\sigma}$
 
-					We show that $\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)\sigma}$
-					By lemma \ref{lemma:lif} with $\sigma'$ as in the lemma,
-					$\Gamma \entails \lif{((\PI(C_1) \land \PI(C_2)) \lor D \lor E)} \sigma'$.
+					and by Lemma \ref{lemma:lif} is equivalent to\newline
+					$\Gamma \stackrel{(\times)}\entails \Big(\lif{\PI(C_1)}\sigma' \land \lif{\PI(C_2)}\sigma'\Big) \lor \lif{D_\Gamma}\sigma' \lor \lif{E_\Gamma}\sigma'$
 
-					TODO
+					As $l$ and $l'$ are $\Delta$-colored, we can strengthen $(*)$ and $(\circ)$ as follows and apply $\sigma'$:
+
+					$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma}\sigma' $ and $\Gamma \entails \lif{\PI(C_2)}\sigma' \lor \lif{E_\Gamma}\sigma'$
+
+					These clearly imply $(\times)$.
+
+				\item $l$ is grey. Then $\PI(C) = [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2))]\sigma$.
+
+					We show that $\Gamma \entails \lif{ [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2))]\sigma \lor (D_\Gamma \lor E_\Gamma)\sigma}$, which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} is equivalent to
+
+			$\Gamma \entails \Big(\lif{l}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\Big(\lnot \lif{l'}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\lif{D_\Gamma}\sigma' \lor \lif{E_\Gamma}\sigma'$.
+
+					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lif{D_\Gamma}\sigma'$ and $M\notentails \lif{E_\Gamma}\sigma'$ as otherwise we would be done.
+					But then by $(*)$ and $(\circ)$,
+					$M \entails \lif{\PI(C_1)}\sigma' \lor \lif{l}\sigma'$ and
+					$M \entails \lif{\PI(C_2)}\sigma' \lor \lnot\lif{l'}\sigma'$.
+
+					As observed in case \ref{aou5jklah}, $\lif{l}\sigma' = \lif{l'}\sigma'$. By a case distinction on the truth value of $\lif{l}\sigma'$, we obtain the result.
+
 
 
 			\end{enumerate}
 
 		\item{Paramodulation.}
-			\color{gray}
 
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
-				\AxiomCm{C_2: E[r]}
+				\AxiomCm{C_2: E\occurat{r}{p}}
 				\RightLabel{$\quad \sigma = \mgu(s, r)$}
-				\BinaryInfCm{C: (D \lor E[t])\sigma}
+				\BinaryInfCm{C: (D \lor E\occurat{t}{p})\sigma}
 			\end{prooftree}
 
 			By the induction hypothesis, we have:
 
-			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor s=t)}$
+			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor s=t)_\Gamma}$
 
-			$\Gamma \entails \lif{\PI(C_2) \lor (E[r])}$
+			$\Gamma \entails \lif{\PI(C_2) \lor (E[r])_\Gamma}$
+
+			By Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif}, these imply:
+
+			$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma}\sigma' \lor (\lif{s_\Gamma}\sigma') = (\lif{t_\Gamma}\sigma')$
+
+			$\Gamma \entails \lif{\PI(C_2)}\sigma' \lor \lif{(E\occurat{r}{p})_\Gamma}\sigma'$
+
+			$\PI(C) = $
+
+			We show that $\Gamma \entails $
+
+
+			\clearpage
+
+			\color{gray}
 
 
 
@@ -379,7 +421,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 			$M \entails (\lif{s}\sigma' \neq \lif{t}\sigma' \land \lif{\PI(C_1)}\sigma') \lor (\lif{s}\sigma' = \lif{t}\sigma' \land \lif{\PI(C_2)}\sigma')$.
 
 			By lemma 11 (huang), 
-			$M \entails \lif{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma'$.
+			$M \entails \lif{s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma'$.
 
 			Hence 
 			$\Gamma \entails \lif{(s \neq {t} \land {\PI(C_1)} \lor ({s} = {t} \land \PI(C_2))}\sigma' \lor (\lif{D} \lor \lif{E[t]})\sigma') $.
@@ -391,4 +433,18 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 \end{proof}
 
 
+General layout of this proof:
+
+	$ \Gamma \entails \lif{(\PI(C) \lor C)} $
+
+	Lemma 4.10: swap $\Gamma$ and $\Delta$ and obtain logical negationas interpolant <-- seems to go through
+
+	Corollary 4.11: $\Delta \entails \lifgamma{ \lnot \PI(C) \lor C}$ <-- just a corollary
+
+	Lemma 4.12: not important if lifting delta or gamma terms first <-- seems to go through
+
+	Thm 4.13: ordering <--- also?
+
+$\Gamma \entails \bar Q \lifboth{\PI(\pi)}$;
+$\Delta \entails \lnot \bar Q \lifboth{\PI(\pi)}$;
 \end{document}
