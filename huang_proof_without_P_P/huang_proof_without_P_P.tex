@@ -138,13 +138,13 @@
 \begin{document}
 
 
-\section{Attempt without $P_P$}
+\section{Proof of the correctness of Huang's algorithm without propositional refutations}
 
 
 Intuition of $\sigma'$:
 
-If we pull a substitution out of a lifting which replaced $\Delta$-terms, we also have to replace the $\Delta$-terms 
-in the ``domain'' of the substitution. This is the lower case in the definition of $\sigma'$ below.
+If we pull a substitution out of a lifting which replaces $\Delta$-terms, we also have to replace the $\Delta$-terms 
+in the ``codomain'' of the substitution. This is the second case in the definition of $\sigma'$ below.
 
 There is just a problem in the following case: $\lif{ f(x)\sigma }$, where $x\sigma = a$ and $f$ is a $\Delta$-symbol.
 Then $\lif{ f(x)\sigma } = \lif{ f(a) } = x_i$, but $\lif{f(x)}\sigma = x_j$ with $i\neq j$.
@@ -155,8 +155,10 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 \begin{lemma}
 	\label{lemma:lif}
 
-	Let $C$ be a clause and $t_1, \ldots, t_n$ the set of maximal $\Delta$-terms in $C$, $x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$, and $\sigma$ be a substitution.
-	Let $\sigma'$ be defined such that
+	Let $C$ be a clause and $\sigma$ a substitution.
+	Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
+	$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$.
+	Define $\sigma'$ such that for a variable $z$, 
 	\[
 		z \sigma' =
 		\begin{cases} 
@@ -165,12 +167,11 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 		\end{cases} 
 	\]
 
-	Note that the definition of $\sigma'$ only depends on the $x_i$ and $t_i$.
-
 	Then
 	$\lif{C\sigma} =
 	\lif{C}\sigma'$.
 \end{lemma}
+Note that the definition of $\sigma'$ only depends on the $x_i$ and $t_i$.
 \begin{proof}
 	We prove this for an atom $P(s_1, \ldots, s_m)$ in $C$, which works since lifting and substitution commute over binary connectives and into an atom.
 
@@ -179,7 +180,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 	%Let $\phi \sigma^{t}$ denote $\phi[t/y]\sigma[t/x]$ for a fresh variable $y$.
 
-	Note that anything in the term structure above a maximal $\Delta$-term is unaffected by both substitution and abstraction.
+	Note that anything in the term structure above a maximal $\Delta$-term is unaffected by both substitution and the lifting.
 
 	Let $t_i$ be a maximal $\Delta$-term in $s_i \sigma$.
 
@@ -245,7 +246,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 \end{comment}
 
  
-\begin{lemma}[currently 4.8 in thesis, Lemma 11 in Huang]
+\begin{lemma}[corresponds to Lemma 4.8 in thesis and Lemma 11 in Huang]
   \label{lemma:lift_commute}
   Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
   \begin{enumerate}
@@ -255,14 +256,98 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
   \end{enumerate}
 \end{lemma}
 
-
 \begin{lemma}
+	Let $s$ and $t$ be terms such that no $x_i$ occurs in them, $\Phi$ a set of formulas and $M$ a model.
+	Then $M\entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$ implies that $M\entails s=t$.
+	\label{lemma:lift_equality}
+\end{lemma}
+\begin{proof}
+	Suppose no $\Delta$-term occurs in $s$ or $t$. Then $\lft{\Phi}{x}{s} = s$ 
+	and $\lft{\Phi}{x}{t} = t$.
+
+	Otherwise let $t_i$ be a maximal $\Delta$-term in $s$. Suppose it occurs at position $p$. In $\lft{\Phi}{x}{s}$, it is replaced by $x_i$.
+	But as $M \entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$, two situations can arise:
+	\begin{compactenum}
+	\item $x_i$ occurs at $p$ in $\lft{\Phi}{x}{t}$.
+		As $x_i$ does not occur in $t$, it is placed there by the lifting.
+		But $x_i$ is only employed in order to replace $t_i$, so at position $p$ in $t$, we have $t_i$.
+	\item A term $r$ occurs at $p$ in $\lft{\Phi}{x}{t}$ which does not influence the evaluation of $\lft{\Phi}{x}{t}$ in $M$. This can be the case if $r$ is contained in a subterm of $u$ and in $M$, the function symbol of $u$ is interpreted such that it does not depend on the argument that contains $r$.
+		
+		But as the maximal $\Delta$-term $t_i$ occurs in $s$ at $p$ and $M \entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$, there is a function symbol $u'$ in $\lft{\Phi}{x}{s}$ corresponding to $u$ which also does not depend on this argument.
+
+		Hence even though $s$ and $t$ are not syntactically equal, $M\entails s=t$ in this case. \qedhere
+	\end{compactenum}
+
+\end{proof}
+
+
+We use basically the same definition of $\PI$ as Huang with minor adaptions for paramodulation (deviations are marked):
+\begin{defi}[Propositional interpolant extraction.]
+  Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+  \defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
+
+  For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
+  \label{def:PI}
+  \begin{itemize}
+    \item[Base case.]
+      If $C \in \Gamma$, $\PI(C) = \bot$.
+      If otherwise $C \in \Delta$, $\PI(C) = \top$.
+    \item[Resolution.]
+      \label{def:PI_resolution}
+      %Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
+
+      % \begin{prooftree}
+      %   \AxiomCm{C_1: D \lor l}
+      %   \AxiomCm{C_2: E \lor \lnot l'}
+      %   \RightLabelm{\quad l\sigma = l'\sigma}
+      %   \BinaryInfCm{C: (D\lor E)\sigma}
+      % \end{prooftree}
+      %\todo{write as prooftree? (not necessary, but nicer)}
+      If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
+      %$\PI(C)$ is defined according to this case distinction:
+      \begin{enumerate}
+        \item If $l$ is $\Gamma$-colored: $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
+        \item If $l$ is $\Delta$-colored: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
+        \item If $l$ is grey: $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
+      \end{enumerate}
+
+    \item[Factorisation.]
+      If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
+
+    \item[Paramodulation.]
+  \label{def:PI_paramod}
+      If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following  case distinction:
+      \begin{enumerate}
+        \item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+          \label{def:PI_paramod_1}
+          \newline
+          $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$
+        \item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+          \label{def:PI_paramod_2}
+          \newline
+          $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$
+        \item Otherwise:
+          \label{def:PI_paramod_3}
+          \newline
+          $\PI(C) = [ ( s=t \land (\PI(C_2) \lor h[s] \neq h[t] ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
+
+      \end{enumerate}
+  \end{itemize}
+\end{defi}
+
+
+Now we show the ``main'' lemma of Huang's proof without using a propositional deduction $P_P$.
+The remaining part of his proof after this lemma does not use the restriction to propositional deductions and hence goes through.
+
+\begin{lemma}[corresponds to Lemma 12 in Huang and Lemma 4.9 in the thesis]
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	Then for $C \in \pi$,
 	$ \Gamma \entails \lif{\PI(C) \lor C} $.
 	\label{lemma:gamma_entails_interpolant}
 \end{lemma}
 
 \begin{proof}
-	By induction on the resolution refutation of the strengthening: $\Gamma \entails \PI(C) \lor C_\Gamma$
+	By induction on the resolution refutation of the strengthening: $\Gamma \entails \lif{\PI(C) \lor C_\Gamma}$, i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
 
 	Base case:
 	Either $C \in \Gamma$, then it does not contain $\Delta$-terms.
@@ -286,7 +371,9 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 			$\Gamma \stackrel{(*)}\entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif {l_\Gamma}$ and $\Gamma \stackrel{(\circ)}\entails \lif{\PI(C_2)} \lor \lif{E_\Gamma} \lor \lnot \lif{l'_\Gamma}$
 
-					Let $\sigma'$ be defined as in Lemma \ref{lemma:lif} with $t_1, \ldots, t_n$ all $\Delta$-terms in this context, i.e.~from $C_1$, $C_2$, $\PI(C_1)$, $\PI(C_2)$ and $\sigma$.
+			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif} with $t_1, \ldots, t_n$ all $\Delta$-terms in this context (we need that every maximal $\Delta$-term has a distinct index, so take all occurring in $C_1$, $C_2$, $\PI(C_1)$, $\PI(C_2)$, with and without $\sigma$ applied to them).
+
+			Case distinction:
 
 			\begin{enumerate}
 				\item $l$ is $\Gamma$-colored.
@@ -294,18 +381,18 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 					We show that $\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)_\Gamma\sigma}$,
 					\newline 
-					i.e.~$\Gamma \entails \lif{ (\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma)\sigma} $.
+					i.e.~$\Gamma \entails \lif{ \Big(\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma\Big)\sigma} $.
 
 
 					Hence by Lemma \ref{lemma:lif},
 					$\Gamma \entails \lif{(\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma)}\sigma' $.
 
-					Since $l\sigma = l'\sigma$ (by resolution rule application), $\lif{l\sigma} = \lif{l'\sigma}$.
+					Since $\sigma = \mgu(l, l')$, $l\sigma$ and $l'\sigma$ are syntactically equal and so $\lif{l\sigma} = \lif{l'\sigma}$.
 					
-					As by Lemma \ref{lemma:lif}, with $\sigma'$ as above, $\lif{l\sigma} = \lif{l}\sigma'$ and $\lif{l'\sigma} = \lif{l'}\sigma'$,
-					we get $\lif{l}\sigma' = \lif{l'}\sigma'$. \label{aou5jklah}
+					As by Lemma \ref{lemma:lif} $\lif{l\sigma} = \lif{l}\sigma'$ and $\lif{l'\sigma} = \lif{l'}\sigma'$,
+					we get $\lif{l}\sigma' = \lif{l'}\sigma'$.\label{aou5jklah}
 
-					So by applying $\sigma'$ to $(*)$ and $(\circ)$, we can perform a resolution step on $\lif{l}\sigma'$ and get
+					So by applying $\sigma'$ to $(*)$ and $(\circ)$ (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lif{l}\sigma'$ and get
 
 					$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma} \sigma' \lor \lif{\PI(C_2)}\sigma' \lor \lif {E_\Gamma} \sigma'$.
 
@@ -326,24 +413,24 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 					$\Gamma \entails \Big(\lif{\PI(C_1)\sigma} \land \lif{\PI(C_2)\sigma}\Big) \lor \lif{D_\Gamma\sigma} \lor \lif{E_\Gamma\sigma}$
 
 					and by Lemma \ref{lemma:lif} is equivalent to\newline
-					$\Gamma \stackrel{(\times)}\entails \Big(\lif{\PI(C_1)}\sigma' \land \lif{\PI(C_2)}\sigma'\Big) \lor \lif{D_\Gamma}\sigma' \lor \lif{E_\Gamma}\sigma'$
+					$\Gamma \stackrel{\markC}\entails \Big(\lif{\PI(C_1)}\sigma' \land \lif{\PI(C_2)}\sigma'\Big) \lor \lif{D_\Gamma}\sigma' \lor \lif{E_\Gamma}\sigma'$
 
-					As $l$ and $l'$ are $\Delta$-colored, we can strengthen $(*)$ and $(\circ)$ as follows and apply $\sigma'$:
+					As $l$ and $l'$ are $\Delta$-colored, we can simplify $(*)$ and $(\circ)$ as follows and apply $\sigma'$:
 
 					$\Gamma \entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma}\sigma' $ and $\Gamma \entails \lif{\PI(C_2)}\sigma' \lor \lif{E_\Gamma}\sigma'$
 
-					These clearly imply $(\times)$.
+					These clearly imply \markC.
 
 				\item $l$ is grey. Then $\PI(C) = [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2))]\sigma$.
 
-					We show that $\Gamma \entails \lif{ [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2))]\sigma \lor (D_\Gamma \lor E_\Gamma)\sigma}$, which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} is equivalent to
+					We show that $\Gamma \entails \lif{ \Big((l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2)) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} is equivalent to
 
 					$\Gamma \entails \Big(\lif{l}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\Big(\lnot \lif{l'}\sigma' \land \lif{\PI(C_2)}\sigma'\Big)\lor\lif{D_\Gamma}\sigma' \lor \lif{E_\Gamma}\sigma'$.
 
 					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lif{D_\Gamma}\sigma'$ and $M\notentails \lif{E_\Gamma}\sigma'$ as otherwise we would be done.
 					But then by $(*)$ and $(\circ)$,
 					$M \entails \lif{\PI(C_1)}\sigma' \lor \lif{l}\sigma'$ and
-					$M \entails \lif{\PI(C_2)}\sigma' \lor \lnot\lif{l'}\sigma'$.
+					$M \entails\nolinebreak \lif{\PI(C_2)}\sigma' \lor \lnot\lif{l'}\sigma'$.
 
 					As observed in case \ref{aou5jklah}, $\lif{l}\sigma' = \lif{l'}\sigma'$. By a case distinction on the truth value of $\lif{l}\sigma'$, we obtain the result.
 
@@ -357,7 +444,6 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 				\RightLabelm{\quad \sigma = \mgu(l, l')}
 				\UnaryInfCm{C: (l \lor D)\sigma}
 			\end{prooftree}
-
 			Then $\PI(C) = \PI(C_1)\sigma$.
 
 			The induction hypothesis gives that
@@ -370,34 +456,32 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 			By Lemma \ref{lemma:lift_commute},
 			$\Gamma \entails \lif{\PI(C_1)\sigma} \lor \lif{l\sigma} \lor \lif{l'\sigma} \lor \lif{D\sigma}$.
 
-			As $\sigma = \mgu(l, l')$, $l\sigma$ and $l'\sigma$ are syntactically equal, hence $\lif{l\sigma} = \lif{l'\sigma}$.\todo[noline,size=\tiny]{syntactically equal? does ``equal'' suffice?. see also $s\sigma=r\sigma$ below}
+			As $\sigma = \mgu(l, l')$, $l\sigma$ and $l'\sigma$ are syntactically equal, hence $\lif{l\sigma} = \lif{l'\sigma}$.%\todo[noline,size=\tiny]{syntactically equal? does ``equal'' suffice?. see also $s\sigma=r\sigma$ below}
 
-			But then 
-			$\Gamma \entails \lif{\PI(C_1)\sigma} \lor \lif{l\sigma} \lor \lif{D\sigma}$ and consequently by Lemma \ref{lemma:lif}, 
-			$\Gamma \entails \lif{\PI(C_1)\sigma \lor l\sigma \lor D\sigma}$.
+			But then we can apply a factorisation step and get
+			$\Gamma \entails \lif{\PI(C_1)\sigma} \lor \lif{l\sigma} \lor \lif{D\sigma}$ and by Lemma \ref{lemma:lif} and Lemma \ref{lemma:lift_commute}, 
+			$\Gamma \entails\nolinebreak \lif{\PI(C_1)\sigma \lor l\sigma \lor D\sigma}$.
 
 
 
 		\item{Paramodulation.}
-
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
 				\AxiomCm{C_2: E\occurat{r}{p}}
 				\RightLabel{$\quad \sigma = \mgu(s, r)$}
 				\BinaryInfCm{C: (D \lor E\occurat{t}{p})\sigma}
 			\end{prooftree}
-
 			By the induction hypothesis, we have:
 
 			$\Gamma \entails \lif{\PI(C_1) \lor (D\lor s=t)_\Gamma}$
 
 			$\Gamma \entails \lif{\PI(C_2) \lor (E\occurat{r}{p})_\Gamma}$
 
-			By Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif}, these imply:
+			By Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute}, we get that:
 
-			$\Gamma \stackrel{\markA}\entails \lif{\PI(C_1)}\sigma' \lor \lif{D_\Gamma}\sigma' \lor \lif{s}\sigma' = \lif{t}\sigma'$
+			$\Gamma \stackrel{\markA}\entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif{s} = \lif{t}$
 
-			$\Gamma \stackrel{\markB}\entails \lif{\PI(C_2)}\sigma' \lor \lif{(E\occurat{r}{p})_\Gamma}\sigma'$
+			$\Gamma \stackrel{\markB}\entails \lif{\PI(C_2)} \lor \lif{(E\occurat{r}{p})_\Gamma}$
 
 			We distinguish two cases:\nopagebreak
 			\begin{enumerate}
@@ -414,7 +498,7 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 				Let $M$ be a model of $\Gamma$. Let $M \notentails \lif{D_\Gamma}\sigma' \lor \lif{(E\occurat{t}{p})_\Gamma}\sigma'$ as otherwise we would be done. We show that depending on the truth value of  $(\lif{s}) = (\lif{t})$ in $M$, either the first or second conjunct of the above formula holds.
 
 				Suppose that $M \entails (\lif{s}) \neq (\lif{t})$. 
-				Then $M \entails (\lif{s})\sigma' \neq (\lif{t})\sigma'$, so by~\markA, $M \entails \lif{\PI(C_1)}\sigma'$.
+				Then by~\markA, $M \entails \lif{\PI(C_1)}$ and hence $M \entails \lif{\PI(C_1)}\sigma'$.
 
 				On the other hand, suppose that $M \entails (\lif{s}) = (\lif{t})$.
 				The following two lemmas show that $M \notentails \lif{E\occurat{r}{p}}\sigma'$, so by~\markB, we get that $M\entails \lif{\PI(C_2)}\sigma'$.
@@ -422,12 +506,19 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 
 				\begin{lemma}
 					\label{aga5tg5ba}
-					$M \entails (\lif{s}) = (\lif{t})$ and $M\notentails \lif{E\occurat{t}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{s}{p}}\sigma'$.
+					$M \entails (\lif{s}) = (\lif{t})$ and $M\notentails \lif{E\occurat{t}{p}}$ imply that $M\notentails \lif{E\occurat{s}{p}}$
+					or, in case the term at position $p$ in $E$ is contained in a maximal $\Delta$-colored term $g\occur{t}$, $M\entails s=t \;\land\;(\lif{g\occur{s}}) \neq (\lif{g\occur{t}})$.
 				\end{lemma}
 				\begin{proof} 
+					Suppose that the term at $p$ in $E$ is not contained in a $\Delta$-colored term. Then
 					$\lif{E\occurat{t}{p}}$ and $\lif{E\occurat{s}{p}}$ only differ at position $p$, where at the first, there is $\lif{t}$, and at the latter, there is $\lif{s}$. But in $M$, they are interpreted the same way, hence $M\entails \lif{E\occurat{t}{p}} \semiff \lif{E\occurat{s}{p}}$, which implies the result.
+
+					Otherwise as $g\occur{t}$ and $g\occur{s}$ in $E\occurat{t}{p}$ and $E\occurat{s}{p}$ respectively  are distinct $\Delta$-terms, they are replaced by distinct variables by the lifting.
+					By Lemma \ref{lemma:lift_equality}, $M\entails s=t$, so $M \entails\nolinebreak s=\nolinebreak t \;\land\;(\lif{g\occur{s}})  \neq (\lif{g\occur{t}})$.
+
+
 				\end{proof} 
-\bigskip
+				\bigskip
 
 				\begin{lemma}
 					$\sigma=\mgu(s, r)$ and $M\notentails \lif{E\occurat{s}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{r}{p}}\sigma'$.
@@ -544,7 +635,7 @@ $\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$, which implies
 
 Then the following from the thesis (also same in Huang) seem to go through:
 
-Lemma 4.10: swap $\Gamma$ and $\Delta$ and obtain logical negationas interpolant 
+Lemma 4.10: swap $\Gamma$ and $\Delta$ and obtain logical negation as interpolant 
 
 Corollary 4.11: $\Delta \entails \lifgamma{ \lnot \PI(C) \lor C}$ 
 
