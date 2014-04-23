@@ -542,62 +542,6 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 \end{proof}
 
-\begin{remark}
-
-	{\huge
-
-		\textsc{
-		does not just work like this
-	}
-
-	}
-
-	\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
-	This lemma does not directly hold for a non-propositional proof.
-
-	%In that case, the natural induction hypothesis would state that 
-	The statement of the lemma would be identical in this case. For resolution, by the induction hypothesis, we would get
-
-	$\Gamma \entails \lif{ \PI(C_1)} \lor \lif D  \lor \lif l$
-
-	$\Gamma \entails \lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'}$
-
-	By the resolution we know that 
-	$l\sigma = l'\sigma$.
-
-	In order to proceed as in the other proof, we would need $\sigma'$ s.t.\
-	$\lif{l}\sigma' = \lif{l'}\sigma'$
-
-	$\Gamma \entails (\lif{ \PI(C_1)} \lor \lif D  \lor \lif l )\sigma'$
-
-	$\Gamma \entails \lif{ \PI(C_1)}\sigma' \lor \lif D\sigma'  \lor \lif l\sigma'$
-
-	$\Gamma \entails (\lif{ \PI(C_2)} \lor \lif E  \lor \lnot \lif{l'})\sigma'$
-
-	$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor \lnot \lif{l'} \sigma'$
-
-	Hence 
-
-	$\Gamma \entails \lif{ \PI(C_2)}\sigma' \lor \lif E\sigma'  \lor
-	\lif{ \PI(C_1)}\sigma' \lor \lif D\sigma' $
-
-	and therefore
-
-	$\Gamma \entails \lif{ \PI(C_2) \lor E  \lor
-	\PI(C_1) \lor  D}\sigma' $
-
-	And we need to show that 
-	$\Gamma \entails \lif{( \PI(C_1) \lor \PI(C_2) \lor D \lor E)\sigma }$
-
-	%$\Gamma \entails \lif{PI(C_1)\sigma} \lor \lif{\PI(C_2)\sigma} \lor \lif{D\sigma} \lor \lif{E\sigma} $
-
-
-\end{remark}
-
-
-
-
-
 
 \subsection{final step of huang's proof}
 
