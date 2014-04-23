@@ -625,6 +625,65 @@ $\Sigma \entails Q(b) \limpl a = b \limpl Q(a)  $
 }
 
 
+\clearpage
+
+Example 4c: Paramodulation special case in Huang, term contained in both $\Gamma$- and $\Delta$-term
+
+$\Sigma = \{ P(x) \lor \lnot Q(x), \lnot P(y) \lor Q(y), s=t, \lnot R_1(g(t)), \lnot R_2(g(s))  \}  \quad{\color{grey}//~P(x) \lra Q(x) }$ $\quad\quad$
+$\Pi = \{ R_2(x_3) \lor \lnot Q(h(x_3)), R_1(x_2) \lor  Q(h(x_2)) \} $
+
+\begin{prooftree}
+	\AxiomCm{\sig{ \lnot R_1(g(t))}}
+	\AxiomCm{\p{  R_1(x_2) \lor  Q(h(x_2) }} 
+
+	\RightLabelm{x_2\mapsto g(t)}
+	\BinaryInfCm{ \lnot R_1(g(t)) \mid  Q(h(g(t))) }
+
+	\AxiomCm{\sig{P(x) \lor \lnot Q(x)}}
+
+	\RightLabelm{x \mapsto h(g(t))}
+	\BinaryInfCm{ \underbrace{\lnot R_1(g(t)) \land \lnot Q(h(g(t)))}_\alpha \mid P(h(g(t))) }
+
+	\AxiomCm{\sig{s=t}}
+	\BinaryInfCm{ \nu \mid P(h(g(s))) }
+\end{prooftree}
+\begin{prooftree}
+	\AxiomCm{\sig{ \lnot R_2(g(s))}}
+	\AxiomCm{\p{  R_2(x_3) \lor \lnot Q(h(x_3)) }} 
+
+	\RightLabelm{x_3\mapsto g(s)}
+	\BinaryInfCm{ \lnot R_2(g(s)) \mid \lnot Q(h(g(s))) }
+
+	\AxiomCm{\sig{\lnot P(y) \lor Q(y)}}
+
+	\RightLabelm{y \mapsto h(g(s))}
+	\BinaryInfCm{ \underbrace{\lnot R_1(g(s)) \land Q(h(g(s)))}_\beta \mid \lnot P(h(g(s))) }
+	\UnaryInfCm{ \square\;\;\comm{\text{ by resolution with upper tree }} }
+\end{prooftree}
+
+$\nu_0 = \Big( (s=t \land \alpha ) \lor (s\neq t \land \bot) \Big) \sigma \spa\equiv ( s=t \land \alpha ) \sigma \spa\equiv s=t \land \lnot R_1(g(t)) \land \lnot Q(h(g(t)))  $
+
+\begin{tabular}{ | p{0.5\linewidth} | p{0.5\linewidth} | }
+	\hline
+1. $\nu = \nu_0 \lor (s=t \land h(g(s)) \neq h(g(t))) \sigma $
+
+$\Sigma \entails  \Big(s=t \land \lnot R_1(g(t)) \land \lnot Q(h(g(t))) \Big) \lor (s=t \land h(g(s)) \neq h(g(t))) \lor P(h(g(s)))$
+
+$\Sigma \entails \exists y_1 \forall x_2 \forall x_3 (  \Big(s=t \land \lnot R_1(y_1) \land \lnot Q(x_2) \Big) \lor (s=t \land x_1 \neq x_2)\lor P(x_1) )$
+
+$\checkmark$
+
+&
+2. $\nu = \nu_0 \land (s\neq t \land g(s) = g(t)) \sigma $
+\\
+	\hline
+\end{tabular}
+
+
+
+
+
+
 \begin{comment}
 $\Sigma = \{ c=d, \lnot C(x) \}$
 

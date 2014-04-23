@@ -341,11 +341,11 @@ We use basically the same definition of $\PI$ as Huang with minor adaptions for 
   \label{def:PI_paramod}
       If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following  case distinction:
       \begin{enumerate}
-        \item If $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$:
+				\item If $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$: \comm{Huang's version has another restriction here}
           \label{def:PI_paramod_1}
           \newline
           $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$
-        \item If $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $D\occur{r}$:
+        \item If $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $D\occur{r}$: \comm{Huang's version has another restriction here}
           \label{def:PI_paramod_2}
           \newline
           $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$
