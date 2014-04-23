@@ -280,6 +280,29 @@ Note that the definition of $\sigma'$ only depends on the $x_i$ and $t_i$.
 
 \end{proof}
 
+			\begin{lemma}
+					\label{aga5tg5ba}
+				Let $E$ be a formula and $s$ and $t$ terms.
+					Let $h\occur{t}$ be a maximal $\Delta$-colored term containing $t$ at $p$ in $E\occurat{t}{p}$, if such a term exists.
+					Then
+					$M \entails (\lif{s}) = (\lif{t})$ and $M\notentails \lif{E\occurat{t}{p}}$ imply that $M\notentails \lif{E\occurat{s}{p}}$
+					or $M\entails s=t \;\land\;(\lif{h\occur{s}}) \neq (\lif{h\occur{t}})$.
+				\end{lemma}
+				\begin{proof} 
+					Suppose that $t$ at $p$ in $E\occurat{t}{p}$ is not contained in a $\Delta$-colored term.
+					Then $\lif{E\occurat{t}{p}}$ and $\lif{E\occurat{s}{p}}$ only differ at position $p$, where at the first, there is $\lif{t}$, and at the latter, there is $\lif{s}$. But in $M$, they are interpreted the same way, hence $M\entails \lif{E\occurat{s}{p}} \semiff \lif{E\occurat{t}{p}}$, which implies the result.
+
+					Otherwise $t$ at $p$ in $E\occurat{t}{p}$ is contained in the maximal $\Delta$-colored term $h\occur{t}$.
+					%Suppose that $s$ and $t$ are syntactically equal. Then $h\occur{t}$ and $h\occur{s}$ are lifted by the same variable and $\lif{E\occurat{t}{p}} \semiff{} \lif{E\occurat{s}{p}}$.
+					%Otherwise $s$ and $t$ are distinct terms.
+					%Then they are replaced by distinct variables by the lifting.
+					If $s$ and $t$ are syntactically equal, then $(\lif{h\occur{s}}) = (\lif{h\occur{t}})$ and $\lif{E\occurat{s}{p}} \semiff{} \lif{E\occurat{t}{p}}$.
+					Otherwise, as by Lemma \ref{lemma:lift_equality} it holds that $M\entails s=t$,
+					we get that $M \entails\nolinebreak s=\nolinebreak t \;\land\;(\lif{h\occur{s}})  \neq (\lif{h\occur{t}})$.
+				\end{proof} 
+
+
+
 
 We use basically the same definition of $\PI$ as Huang with minor adaptions for paramodulation (deviations are marked):
 \begin{defi}[Propositional interpolant extraction.]
@@ -318,11 +341,11 @@ We use basically the same definition of $\PI$ as Huang with minor adaptions for 
   \label{def:PI_paramod}
       If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following  case distinction:
       \begin{enumerate}
-        \item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$:
+        \item If $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$:
           \label{def:PI_paramod_1}
           \newline
           $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$
-        \item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+        \item If $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $D\occur{r}$:
           \label{def:PI_paramod_2}
           \newline
           $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$
@@ -482,10 +505,13 @@ The remaining part of his proof after this lemma does not use the restriction to
 			$\Gamma \stackrel{\markA}\entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif{s} = \lif{t}$
 
 			$\Gamma \stackrel{\markB}\entails \lif{\PI(C_2)} \lor \lif{(E\occurat{r}{p})_\Gamma}$
+\bigskip
+		
 
+	
 			We distinguish two cases:\nopagebreak
 			\begin{enumerate}
-				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
+				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$
 
 					We show that $\Gamma \entails \lif{ \Big((s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))\Big)\sigma \lor \Big((D \lor E\occurat{t}{p})_\Gamma\Big)\sigma}$, which subsumes the cases 2 and 3 of the definition of $\PI$ for paramodulation.
 					By Lemma~\ref{lemma:lift_commute}, we can pull the liftings inwards and by Lemma~\ref{lemma:lif}, we can commute substitution and lifting by employing $\sigma'$ to arrive at
@@ -501,52 +527,37 @@ The remaining part of his proof after this lemma does not use the restriction to
 				Then by~\markA, $M \entails \lif{\PI(C_1)}$ and hence $M \entails \lif{\PI(C_1)}\sigma'$.
 
 				On the other hand, suppose that $M \entails (\lif{s}) = (\lif{t})$.
-				The following two lemmas show that $M \notentails \lif{E\occurat{r}{p}}\sigma'$, so by~\markB, we get that $M\entails \lif{\PI(C_2)}\sigma'$.
-\bigskip
+				Then by Lemma~\ref{aga5tg5ba}, as $s$ at $p$ in $E\occurat{s}{p}$ does not occur in a maximal $\Delta$-term, 
+				$M \notentails \lif{E\occurat{s}{p}}$.
 
-				\begin{lemma}
-					\label{aga5tg5ba}
-					$M \entails (\lif{s}) = (\lif{t})$ and $M\notentails \lif{E\occurat{t}{p}}$ imply that $M\notentails \lif{E\occurat{s}{p}}$
-					or, in case the term at position $p$ in $E$ is contained in a maximal $\Delta$-colored term $g\occur{t}$, $M\entails s=t \;\land\;(\lif{g\occur{s}}) \neq (\lif{g\occur{t}})$.
-				\end{lemma}
-				\begin{proof} 
-					Suppose that the term at $p$ in $E$ is not contained in a $\Delta$-colored term. Then
-					$\lif{E\occurat{t}{p}}$ and $\lif{E\occurat{s}{p}}$ only differ at position $p$, where at the first, there is $\lif{t}$, and at the latter, there is $\lif{s}$. But in $M$, they are interpreted the same way, hence $M\entails \lif{E\occurat{t}{p}} \semiff \lif{E\occurat{s}{p}}$, which implies the result.
+				Hence also $M \notentails \lif{E\occurat{s}{p}}\sigma'$ and
+				by Lemma \ref{lemma:lif}, $M\notentails \lif{(E\occurat{s}{p})\sigma}$. 
 
-					Otherwise as $g\occur{t}$ and $g\occur{s}$ in $E\occurat{t}{p}$ and $E\occurat{s}{p}$ respectively  are distinct $\Delta$-terms, they are replaced by distinct variables by the lifting.
-					By Lemma \ref{lemma:lift_equality}, $M\entails s=t$, so $M \entails\nolinebreak s=\nolinebreak t \;\land\;(\lif{g\occur{s}})  \neq (\lif{g\occur{t}})$.
+				Due to $\sigma=\mgu(s, r)$, both $s\sigma$ and $r\sigma$ are syntactically equal.
+				Suppose they are both not $\Delta$-colored.
+				Then the lifting does not affect them and 
+				$\lif{(E\occurat{s}{p})\sigma} = \lif{(E\occurat{r}{p})\sigma}$.
+				Otherwise the lifting will replace them with the same variable and we as well get that
+				$\lif{(E\occurat{s}{p})\sigma} = \lif{(E\occurat{r}{p})\sigma}$.
+
+				By Lemma $\ref{lemma:lif}$, 
+				$\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$,
+				so from $M \notentails \lif{E\occurat{s}{p}}\sigma'$, it follows that $M \notentails \lif{(E\occurat{r}{p})}\sigma'$
+
+				Then by~\markB{}, we arrive at $M\entails \lif{\PI(C_2)}\sigma'$
 
 
-				\end{proof} 
-				\bigskip
+				%The following two lemmas show that $M \notentails \lif{E\occurat{r}{p}}\sigma'$, which by~\markB{} implies that $M\entails \lif{\PI(C_2)}\sigma'$, or $M \entails s=t \;\land\;(\lif{h\occur{s}}) \neq (\lif{h\occur{t}})$.
 
-				\begin{lemma}
-					$\sigma=\mgu(s, r)$ and $M\notentails \lif{E\occurat{s}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{r}{p}}\sigma'$.
-				\end{lemma}\nopagebreak 
-				\begin{proof} 
-					By Lemma \ref{lemma:lif}, $M\notentails \lif{(E\occurat{s}{p})\sigma}$. 
-
-					%$\lif{(E\occurat{s}{p})\sigma}$ differs from $\lif{(E\occurat{r}{p})\sigma}$ exactly at $p$. 
-
-					Due to $\sigma=\mgu(s, r)$, both $s\sigma$ and $r\sigma$ are syntactically equal.
-%We also have that
-% 					$M \entails (E\occurat{s}{p})\sigma \semiff{} (E\occurat{r}{p})\sigma$.
-					Suppose they are both not $\Delta$-colored.
-Then the lifting does not affect them and 
-$\lif{(E\occurat{s}{p})\sigma} = \lif{(E\occurat{r}{p})\sigma}$.
-Otherwise the lifting will replace them with the same variable and we as well get that
-$\lif{(E\occurat{s}{p})\sigma} = \lif{(E\occurat{r}{p})\sigma}$.
-
-By Lemma $\ref{lemma:lif}$, 
-$\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$, which implies the result.
-				\end{proof} 
+				%\begin{lemma} $\sigma=\mgu(s, r)$ and $M\notentails \lif{E\occurat{s}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{r}{p}}\sigma'$.  \end{lemma}\nopagebreak 
 
 
 
+			\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$.
 
-			\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
-
-
+				Then a similar line of argument can be employed, with the difference that the application of Lemma~\ref{aga5tg5ba} yields the extra case that 
+			$M\entails s=t \;\land\;(\lif{h\occur{s}}) \neq (\lif{h\occur{t}})$.
+				\begin{comment}
 				\newenvironment{lemmaCustomNo}[1]
 				{\renewcommand{\thelemma}{\ref{#1}$'$}%
 					\addtocounter{lemma}{-1}%
@@ -555,6 +566,8 @@ $\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$, which implies
 
 
 				Then we have to replace Lemma \ref{aga5tg5ba} by:
+				\bigskip
+
 				\begin{lemmaCustomNo}{aga5tg5ba}
 					$M \entails (\lif{s}) = (\lif{t})$ and $M\notentails \lif{E\occurat{t}{p}}\sigma'$ imply that $M\notentails \lif{E\occurat{s}{p}}\sigma'$ or that $\lif{h\occurat{s}{q}} \neq \lif{h\occurat{t}{q}}$.
 				\end{lemmaCustomNo}
@@ -564,6 +577,9 @@ $\lif{(E\occurat{s}{p})}\sigma' = \lif{(E\occurat{r}{p})}\sigma'$, which implies
 					Otherwise position $p$ is in a maximal $\Delta$-term $h\occurat{t}{q}$, such that $h\occurat{t}{q}$ and $h\occurat{s}{q}$ are replaced with distinct variables.
 					But then clearly $\lif{h\occurat{s}{q}} \neq \lif{h\occurat{t}{q}}$.
 				\end{proof}
+
+				\end{comment}
+
  Hence the following holds:
 
 				$\Gamma \entails

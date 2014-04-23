@@ -82,11 +82,11 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 	\label{def:PI_paramod}
 			If the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$, then $\PI(C)$ is defined according to the following case distinction:
 			\begin{enumerate}
-				\item If $r$ occurs in a maximal $\Delta$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+				\item If $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$ and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
 					\label{def:PI_paramod_1}
 					\newline
 					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$ 
-				\item If $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+				\item If $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $D\occur{r}$ and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
 					\label{def:PI_paramod_2}
 					\newline
 					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$ 
