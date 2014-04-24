@@ -228,44 +228,49 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 \subsection{algo}
 
+NOTE: for now, we assume that every colored-term has a globally unique id $i$ and will be replaced by a variable with this index. 
+This restriction is useful now and could potentially be lifted later, but it's not severe anyway.
+
+
 \subsubsection{$\AImatrix$ and $\AIclause$}
 \begin{enumerate}
 	\item 
 		For each initial clause $C$, $\AImatrix(C) = \PI(C)$ and $\AIclause(C) = \lifboth{C}$.
 
 
-
-
-
 	\item
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = (D \lor E)\sigma$ with $l\sigma = l'\sigma$ with prop interpolant $\PI(\cdot)$:
+
+				$\AIclause(C) =
+				\lifboth{\Big( (\AIclause(C_1) \setminus \{\lifboth{l}\}) \lor (\AIclause(C_2)\setminus \{\lifboth{\lnot l'}\}) \Big)\sigma}$ 
 
 		\begin{itemize}
 			\item if $l$ and $l'$ don't have the same color:
 
-				NOTE: same overbinding for $l$ and $\lnot l$
+				$\AImatrix(C) =
+				\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma}
+				$
 
 
-				$\AImatrix(C)' =
-				(\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))$
+				%		$\left.\begin{tabular}{l}
+				%		$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
 
-				$\AIclause(C)' = (\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})$ \comm{ setminus: remove clause with that ancestor }
-
-				$\left.\begin{tabular}{l}
-				$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
-
-				$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
-		\end{tabular}\right\} \lifboth $ with same overbinding!
+				%		$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
+				%\end{tabular}\right\} \lifboth $ with same overbinding!
 
 
 				%				$\lifboth{ \AImatrix(C)' \lor \AIclause(C)' } = \underbrace{\lifboth{ \AImatrix(C)' }}_{\AImatrix(C)} \lor \underbrace{\lifboth{\AIclause(C)'}}_{\AIclause(C)}$ 
 
 
-			\item if $l$ and $l'$ have the same color:
+			\item if $l$ and $l'$ are $\Gamma$-colored :
 
 				%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
 				as above but with  $\AImatrix(C)' =
 				\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
+			\item if $l$ and $l'$ are $\Delta$-colored:
+
+				as above but with  $\AImatrix(C)' =
+				\Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma$
 
 
 		\end{itemize}

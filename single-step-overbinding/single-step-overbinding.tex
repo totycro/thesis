@@ -557,24 +557,29 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 \end{lemma}
 
 \begin{lemma}
-	Let $t$ be a term and $\sigma$ a substitution
+	Let $\Phi$ be a set of formulas, $t$ be a term and $\sigma$ a substitution
 	Then
-	$\lifdelta{\lifdelta{t} \sigma} = \lifdelta{t\sigma}$.
+	$\lifphi{\lifphi{t} \sigma} = \lifphi{t\sigma}$.
 	\comm{true and used}
+	\label{lemma:lift_multiple_times}
 \end{lemma}
 \begin{proof}
 
 	With $\sigma'$ as in Lemma 1 from huang without prop deduc proof:
 
-	$\lifdelta{t\sigma} = \lifdelta{t}\sigma'$
+	$\lifphi{t\sigma} = \lifphi{t}\sigma'$.
 
-	$\lifdelta{\lifdelta{t}\sigma} = \lifdelta{\lifdelta{t}}\sigma' = \lifdelta{t}\sigma' $
+	As $\sigma$ just depends on the terms to replace and the variables to replace them with: 
+	\newline
+	$\lifphi{\lifphi{t}\sigma} = \lifphi{\lifphi{t}}\sigma' = \lifphi{t}\sigma' $. \qedhere
 
 	OLD from first principles reasoning (complete this in case Lemma 1 is flawed):
 
 	{
 		
 		\tiny
+
+		(this was based on $\Delta$-terms)
 
 	$t$ contains $\Delta$-terms $t_i$, grey terms $g_i$ and free variables~$v_i$.
 	$\lifdelta{t}$ is $t$, where every maximal $\Delta$-term $t_i$ is replaced by free variable $x_i$.
@@ -601,38 +606,37 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 	However in $\lifdelta{t\sigma}$, $\pos(p\mod k) = x_l$.
 }
-
 \end{proof}
 
 \begin{lemma}
+
 	If $l \in C$, then $\lifboth{l} \in \AIclause(C)$.
 	\label{lemma:literals_in_aiclause}
+	\comm{true}
 \end{lemma}
 \begin{proof} By induction:
 
 	Base case by definition.
 
-	Let $\lambda \in C_1$ w.l.o.g. Resolution $C_1 : D \lor l$ and $C_2 : E \lor \lnot l'$ with $l\sigma = l'\sigma$ give $C: (D\lor E)\sigma$.
-	Then $(\lambda\sigma) \in C$.
+	Let a literal $\lambda$ be such that it hasn't been resolved upon in the deduction leading up to $C$.
 	
-	Have to show $ \lifboth{\lambda\sigma} \in \AIclause(C)$.
+	Resolution $C_1 : D \lor l$ and $C_2 : E \lor \lnot l'$ with $l\sigma = l'\sigma$ give $C: (D\lor E)\sigma$.
+
+	$\lambda \not\sim l$, as otherwise it would not be contained in $C$.
+	W.l.o.g.\ $\lambda \in C_1$.
+	Then $(\lambda\sigma) \in C$ by the resolution rule.
 	
-	Induction hypothesis: $\lifboth{\lambda} \in \AIclause(C_1)$. $\lambda \neq l$.
-	\begin{itemize}
-		\item Supp.~$l$ grey.
+	Induction hypothesis: $\lifboth{\lambda} \in \AIclause(C_1)$.
+
+	So have to show $ \lifboth{\lambda\sigma} \in \AIclause(C)$ \comm{as $(\lambda\sigma) \in C$}
+
+	By Lemma~\ref{lemma:lift_multiple_times}, 
+	$\lifboth{\lambda\sigma} = \lifboth{\lifboth{\lambda}\sigma}$.
+	We show that in all resolution cases, $\lifboth{\lifboth{\lambda} \sigma} \in \AIclause(C)$.
 
 			$\AIclause(C) = \lifboth{ \Big( (\AIclause(C_1) \setminus \{\lifboth{l}\}) \lor (\AIclause(C_2) \setminus \{\lnot \lifboth{l'}\}) \Big) \sigma} $
 
-			As $\lifboth{\lambda} \in \AIclause(C_1)$, $\lifboth{\lifboth{\lambda} \sigma} \in \AIclause(C) $.
-
-		It remains to show that $\lifboth{\lifboth{\lambda} \sigma} = \lifboth{\lambda \sigma}$
-
-		TODO after remark
-
-	\end{itemize}
-
-
-
+			As $\lambda \not\sim l$ and $\lifboth{\lambda} \in \AIclause(C_1)$, $\lifboth{\lifboth{\lambda} \sigma} \in \AIclause(C) $.
 \end{proof}
 
 \begin{lemma}
@@ -675,46 +679,43 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 			By the induction hypothesis,
 			$\Gamma \entails \AImatrix(C_i) \lor \AIclause(C_i)$, $i\in\{1,2\}$, or expressed differently (cf.~Lemma \ref{lemma:literals_in_aiclause}):
-			
+
 			$\Gamma \stackrel{\markA}\entails \AImatrix(C_1) \lor (\AIclause(C_1)\setminus\{\lifboth{l}\}) \lor \lifboth{l}$
 
 			$\Gamma \stackrel{\markB}\entails \AImatrix(C_2) \lor (\AIclause(C_2)\setminus\{\lnot \lifboth{l'}\}) \lor \lnot \lifboth{l'}$
 
 			\begin{itemize}
 				\item
-					Suppose $l$ and $l'$ of opposite color.
+					Suppose $l$ and $l'$ grey:
+
+					$\AIclause(C) =
+					\lifboth{\Big( (\AIclause(C_1) \setminus \{\lifboth{l}\}) \lor (\AIclause(C_2)\setminus   \{\lifboth{\lnot l'}\}) \Big)\sigma}$
 
 
-					$\AImatrix(C)' =
-					(\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2))$
-
-					$\AIclause(C)' = (\AIclause(C_1) \setminus \{l\}) \lor (\AIclause(C_2)\setminus \{\lnot l'\})$ \comm{     setminus: remove clause with that ancestor }
-
-					$\left.\begin{tabular}{l}
-						$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
-
-						$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
-				\end{tabular}\right\} \lifboth $ with same overbinding!
-
-				We show: $\Gamma \entails \lifboth{ \AImatrix(C) \lor \AIclause(C) }$,
-				which by the restriction is equivalent to $\Gamma \entails \lifdelta{ \AImatrix(C)'\sigma} \lor \lifdelta{\AIclause(C)'\sigma }$
+					$\AImatrix(C) =
+					\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma}
+					$
 
 
-				Suppose for a model $M$ of $\Gamma$ that $M \notentails \AIclause(C)'$.
-				Otherwise $M \entails \AIclause(C)'\sigma$.
-				But $\sigma$ only introduces grey terms and $\Delta$-terms, hence $M \entails \lifdelta{ \AIclause(C)'\sigma }$ which proves the result.
+					We show: $\Gamma \entails \lifboth{ \AImatrix(C) \lor \AIclause(C) }$,
+					which by the restriction is equivalent to $\Gamma \entails \lifdelta{ \AImatrix(C)'\sigma} \lor \lifdelta{\AIclause(C)'\sigma }$
 
-				As $\sigma = \mgu(l, l')$, $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
 
-				Suppose that $M\entails \lifdelta{l\sigma}$. Then by \markB, $M\entails \AImatrix(C_2)$.
+					Suppose for a model $M$ of $\Gamma$ that $M \notentails \AIclause(C)'$.
+					Otherwise $M \entails \AIclause(C)'\sigma$.
+					But $\sigma$ only introduces grey terms and $\Delta$-terms, hence $M \entails \lifdelta{ \AIclause(C)'\sigma }$ which proves the result.
+
+					As $\sigma = \mgu(l, l')$, $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
+
+					Suppose that $M\entails \lifdelta{l\sigma}$. Then by \markB, $M\entails \AImatrix(C_2)$.
 
 
 
 
 
 
-		\end{itemize}
-\end{description}
+			\end{itemize}
+	\end{description}
 
 
 \end{proof}
