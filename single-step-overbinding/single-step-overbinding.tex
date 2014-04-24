@@ -551,10 +551,24 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 	\comm{true}
 \end{lemma}
 
+\begin{corr}
+	For a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$:
+	\begin{compactenum}
+		\item $\AImatrix(C) = \lifboth{\AImatrix(C)}$.
+
+		\item $\AIclause(C) = \lifboth{\AIclause(C)}$.
+	\end{compactenum}
+	\label{corr:lift_ai}
+	\comm{true and used}
+\end{corr}
+
 \begin{lemma}
 	The $x_i$, $y_i$ and $z_i$ do not occur in any substitution of a resolution refutation. 
 	\comm{true but unused}
 \end{lemma}
+
+\newcommand{\lemmOne}{Lemma $\eth$}
+\newcommand{\lemmTwo}{Lemma $\pitchfork$}
 
 \begin{lemma}
 	Let $\Phi$ be a set of formulas, $t$ be a term and $\sigma$ a substitution
@@ -565,7 +579,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 \end{lemma}
 \begin{proof}
 
-	With $\sigma'$ as in Lemma 1 from huang without prop deduc proof:
+	With $\sigma'$ as in \lemmOne:
 
 	$\lifphi{t\sigma} = \lifphi{t}\sigma'$.
 
@@ -573,7 +587,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 	\newline
 	$\lifphi{\lifphi{t}\sigma} = \lifphi{\lifphi{t}}\sigma' = \lifphi{t}\sigma' $. \qedhere
 
-	OLD from first principles reasoning (complete this in case Lemma 1 is flawed):
+	OLD from first principles reasoning (complete this in case \lemmOne{} is flawed):
 
 	{
 		
@@ -642,25 +656,15 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 \begin{lemma}
 	Suppose no maximal $\Gamma$-term occurs in $\PI(C) \lor C$ for $C \in \pi$.
 	Then 
-	$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$ \comm{implicit universal quantification}
+	$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$.
 \end{lemma}
 \begin{proof}
-	\comm{
-		Given that $\Gamma \entails \lifdelta{\PI(C)}$.
-
-		By the restriction to $\Gamma$-terms, $\lifdelta{\PI(C)} = \lifboth{\PI(C)}$.
-		$\AI(C)$ differs from $\lifboth{\PI(C)}$ insofar as in the latter, all equal maximal $\Gamma$-terms are overbound with the same variable.
-
-		In $\AI(C)$, occurrences of the same maximal $\Gamma$-term in $l$ or $l'$ are overbound with the same variable as well as all occurrences of the same variable which are contained in grey terms only.
-
-	}
-
-
-	Proof by induction.
+	Proof by induction of the strenghtening:
+	$\Gamma \entails \AImatrix(C) \lor \AIclause(C_\Gamma)$
 
 	Base case:
 
-	For $C \in \Gamma$, $\AImatrix(C) = \bot$ and $\AIclause = \lifboth{C} = \lifgamma{C} $. By the restriction, $\lifgamma{C} = C$ and $\Gamma \entails C$.
+	For $C \in \Gamma$, $\AImatrix(C) = \bot$ and $\AIclause = \lifboth{C_\Gamma} = \lifgamma{C}$. By the restriction, $\lifgamma{C} = C$ and $\Gamma \entails C$.\todo{restriction used here}
 
 	For $C \in \Delta$, $\AImatrix(C) = \top$.
 
@@ -678,44 +682,73 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 
 			By the induction hypothesis,
-			$\Gamma \entails \AImatrix(C_i) \lor \AIclause(C_i)$, $i\in\{1,2\}$, or expressed differently (cf.~Lemma \ref{lemma:literals_in_aiclause}):
+			$\Gamma \entails \AImatrix(C_i) \lor \AIclause({C_i}_\Gamma)$, $i\in\{1,2\}$, or expressed differently (cf.~Lemma \ref{lemma:literals_in_aiclause}):
 
-			$\Gamma \stackrel{\markA}\entails \AImatrix(C_1) \lor (\AIclause(C_1)\setminus\{\lifboth{l}\}) \lor \lifboth{l}$
+			$\Gamma \stackrel{\markA}\entails \AImatrix(C_1) \lor \Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l_\Gamma}\}\Big) \lor \lifboth{l_\Gamma}$
 
-			$\Gamma \stackrel{\markB}\entails \AImatrix(C_2) \lor (\AIclause(C_2)\setminus\{\lnot \lifboth{l'}\}) \lor \lnot \lifboth{l'}$
+			$\Gamma \stackrel{\markB}\entails \AImatrix(C_2) \lor \Big(\AIclause((C_2)_\Gamma)\setminus\{\lnot \lifboth{l'_\Gamma}\}\Big) \lor \lnot \lifboth{l'_\Gamma}$
+
+			Let $\sigma'$ as in \lemmOne. Then by \lemmOne{} and \lemmTwo:
+			\begin{flalign*}
+				\AIclause(C_\Gamma) &=
+				\lifboth{\Big( (\AIclause((C_1)_\Gamma) \setminus \{\lifboth{l_\Gamma}\}) \lor (\AIclause((C_2)_\Gamma)\setminus   \{\lifboth{\lnot l'_\Gamma}\}) \Big)\sigma} & \\
+				&=
+				\lifboth{(\AIclause((C_1)_\Gamma) \setminus \{\lifboth{l_\Gamma}\})}\sigma'
+				\lor \lifboth{(\AIclause((C_2)_\Gamma)\setminus   \{\lifboth{\lnot l'_\Gamma}\})}\sigma'
+			\end{flalign*}
+			Furthermore,
+			$\sigma = \mgu(l, l')$, so $\lifboth{l\sigma} = \lifboth{l'\sigma}$ and $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$ by \lemmOne.
 
 			\begin{itemize}
 				\item
-					Suppose $l$ and $l'$ grey:
+					Suppose that $l$ and $l'$ are grey:
+					\begin{flalign*}
+						\AImatrix(C) &=
+						\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma} &\\
+						&= (\lifboth{\lnot l}\sigma' \land \lifboth{\AImatrix(C_1)}\sigma') \lor (\lifboth{l}\sigma' \land \lifboth{\AImatrix(C_2)}\sigma')
+					\end{flalign*}
 
-					$\AIclause(C) =
-					\lifboth{\Big( (\AIclause(C_1) \setminus \{\lifboth{l}\}) \lor (\AIclause(C_2)\setminus   \{\lifboth{\lnot l'}\}) \Big)\sigma}$
+					Note that $l_\Gamma = l$ and $l'_\Gamma = l'$.
+
+					Let $M$ be a model of $\Gamma$.
+					Suppose that $M\notentails \AIclause(C)$ as otherwise we would be done.
+
+					Then by \markA{} and \markB{}:
+
+					$\Gamma \entails \AImatrix(C_1) \lor \lifboth{l}$
+
+					$\Gamma \entails \AImatrix(C_2) \lor \lnot \lifboth{l'}$
+
+					By Corollary~\ref{corr:lift_ai} and applying $\sigma'$:
+
+					$\Gamma \entails \lifboth{\AImatrix(C_1)}\sigma' \lor \lifboth{l}\sigma'$
+
+					$\Gamma \entails \lifboth{\AImatrix(C_2)}\sigma' \lor \lnot \lifboth{l'}\sigma'$
+
+					As $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$, we can deduce that $M \entails \Big(\lnot \lifboth{l}\sigma' \land \lifboth{\AImatrix(C_1)}\sigma'\Big) \lor \Big(\lifboth{l}\sigma' \land \lifboth{\AImatrix(C_2)}\sigma'\Big)$, i.e.~$M \entails \AImatrix(C)$.
 
 
-					$\AImatrix(C) =
-					\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma}
-					$
+			\item Suppose that $l$ and $l'$ are $\Gamma$-colored.
+				\begin{flalign*}
+					\AImatrix(C) &=
+					\lifboth{\Big( (\AImatrix(C_1) \lor \AImatrix(C_2)) \Big) \sigma} & \\ 
+					&= \lifboth{\AImatrix(C_1)}\sigma' \lor \lifboth{\AImatrix(C_2)}\sigma'
+				\end{flalign*}
+				By Corollary~\ref{corr:lift_ai} and applying $\sigma'$ to \markA{} and \markB, we obtain:
 
+				$\Gamma \entails \lifboth{\AImatrix(C_1)}\sigma' \lor \lifboth{\Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \lor \lifboth{l}\sigma'$
 
-					We show: $\Gamma \entails \lifboth{ \AImatrix(C) \lor \AIclause(C) }$,
-					which by the restriction is equivalent to $\Gamma \entails \lifdelta{ \AImatrix(C)'\sigma} \lor \lifdelta{\AIclause(C)'\sigma }$
+					$\Gamma \entails \lifboth{\AImatrix(C_2)}\sigma' \lor \lifboth{\Big(\AIclause((C_2)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \lnot \lifboth{l'}\sigma'$
 
+					As $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$, we can perform a resolution step to arrive at:
 
-					Suppose for a model $M$ of $\Gamma$ that $M \notentails \AIclause(C)'$.
-					Otherwise $M \entails \AIclause(C)'\sigma$.
-					But $\sigma$ only introduces grey terms and $\Delta$-terms, hence $M \entails \lifdelta{ \AIclause(C)'\sigma }$ which proves the result.
+				$\Gamma \entails \lifboth{\AImatrix(C_1)}\sigma' \spa\lor \lifboth{\Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \spa\lor
+					 \lifboth{\AImatrix(C_2)}\sigma' \spa\lor \lifboth{\Big(\AIclause((C_2)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' $
 
-					As $\sigma = \mgu(l, l')$, $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
+					 But this is nothing else than $\Gamma \entails \AImatrix(C) \lor \AIclause(C_\Gamma)$.
 
-					Suppose that $M\entails \lifdelta{l\sigma}$. Then by \markB, $M\entails \AImatrix(C_2)$.
-
-
-
-
-
-
-			\end{itemize}
-	\end{description}
+		\end{itemize}
+\end{description}
 
 
 \end{proof}
