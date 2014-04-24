@@ -1,8 +1,9 @@
 \documentclass[,%fontsize=11pt,%
-			paper=a4,% 
-			landscape,
+			%paper=a4,% 
+			%landscape,
+			paper=25cm:30cm,% 
 			%DIV12, % mehr text pro seite als defaultyyp
-			DIV18,
+			DIV22,
 			%DIV=calc,%
 			%twoside=false,%
 			liststotoc,
@@ -631,7 +632,6 @@ Example 4c: Paramodulation special case in Huang, term contained in both $\Gamma
 
 $\Sigma = \{ P(x) \lor \lnot Q(x), \lnot P(y) \lor Q(y), s=t, \lnot R_1(g(t)), \lnot R_2(g(s))  \}  \quad{\color{grey}//~P(x) \lra Q(x) }$ $\quad\quad$
 $\Pi = \{ R_2(x_3) \lor \lnot Q(h(x_3)), R_1(x_2) \lor  Q(h(x_2)) \} $
-
 \begin{prooftree}
 	\AxiomCm{\sig{ \lnot R_1(g(t))}}
 	\AxiomCm{\p{  R_1(x_2) \lor  Q(h(x_2) }} 
@@ -657,7 +657,7 @@ $\Pi = \{ R_2(x_3) \lor \lnot Q(h(x_3)), R_1(x_2) \lor  Q(h(x_2)) \} $
 	\AxiomCm{\sig{\lnot P(y) \lor Q(y)}}
 
 	\RightLabelm{y \mapsto h(g(s))}
-	\BinaryInfCm{ \underbrace{\lnot R_1(g(s)) \land Q(h(g(s)))}_\beta \mid \lnot P(h(g(s))) }
+	\BinaryInfCm{ \underbrace{\lnot R_2(g(s)) \land Q(h(g(s)))}_\beta \mid \lnot P(h(g(s))) }
 	\UnaryInfCm{ \square\;\;\comm{\text{ by resolution with upper tree }} }
 \end{prooftree}
 
@@ -665,34 +665,82 @@ $\nu_0 = \Big( (s=t \land \alpha ) \lor (s\neq t \land \bot) \Big) \sigma \spa\e
 
 \begin{tabular}{ | p{0.5\linewidth} | p{0.5\linewidth} | }
 	\hline
-1. $\nu = \nu_0 \lor (s=t \land h(g(s)) \neq h(g(t))) \sigma $
+	\hline
+	Using the maximal colored symbol, $h(g(t))$
 
-$\Sigma \entails  \Big(s=t \land \lnot R_1(g(t)) \land \lnot Q(h(g(t))) \Big) \lor (s=t \land h(g(s)) \neq h(g(t))) \lor P(h(g(s)))$
+	1. $\nu = \nu_0 \lor (s=t \land h(g(s)) \neq h(g(t))) \sigma $
+	&
+	Using the maximal $\Sigma$ symbol, $g(t)$
 
-$\Sigma \entails \exists y_1 \forall x_2 \forall x_3 (  \Big(s=t \land \lnot R_1(y_1) \land \lnot Q(x_2) \Big) \lor (s=t \land x_1 \neq x_2)\lor P(x_1) )$
+	2. $\nu = \nu_0 \land (s\neq t \land g(s) = g(t)) \sigma $
+	\\
+	\hline
 
-$\checkmark$
+	$\Big(s=t \land \lnot R_1(g(t)) \land \lnot Q(h(g(t))) \Big) \lor (s=t \land h(g(s)) \neq h(g(t))) \lor P(h(g(s)))$
 
-&
-2. $\nu = \nu_0 \land (s\neq t \land g(s) = g(t)) \sigma $
-\\
+	$\Sigma \entails \exists y_1 \forall x_2 \forall x_3 (  \Big(s=t \land \lnot R_1(y_1) \land \lnot Q(x_2) \Big) \lor (s=t \land x_3 \neq x_2)\lor P(x_3) )$
+
+	$\Ra \Sigma \entails \exists y_1 \forall x_2 \forall x_3 (  \Big(\lnot R_1(y_1) \land \lnot Q(x_2) \Big) \lor (x_3 \neq x_2)\lor P(x_3) )$
+
+	$\Ra \Sigma \entails  \forall x_2 \forall x_3 ( \lnot Q(x_2) \lor (x_3 \neq x_2)\lor P(x_3) )$
+
+	{\hfill special case saves the day!$\quad$\huge  $\checkmark$ }
+
+	$\Pi \entails \forall y_1 \exists x_2 \exists x_3 (\Big(s\neq t \lor R_1(y_1) \lor Q(x_2) \Big) \land (s\neq t \lor x_3 = x_2)\lor \lnot P(x_3) )$
+
+	$\Ra
+	\Pi \entails \forall y_1 \exists x_2  \Big(R_1(y_1) \lor Q(x_2) \Big) \land (x_3 = x_2)$
+
+	{\hfill\huge $\checkmark$ }
+
+	Final interpolant:
+
+	$\mu = \nu \lor \beta
+	\spa=  \Big(s=t \land \lnot R_1(g(t)) \land \lnot Q(h(g(t))) \Big) \lor (s=t \land h(g(s)) \neq h(g(t))) \lor 
+	\lnot R_2(g(s)) \land Q(h(g(s)))$
+	$\quad \Ra$
+	looks good
+
+
+	&
+
+	$ \Big(s=t \land \lnot R_1(g(t)) \land \lnot Q(h(g(t))) \Big) \land (s\neq t \lor g(s) = g(t)) \lor P(h(g(s)))$
+
+	$ \Sigma \entails \exists y_1 \exists y_2 \forall x_3 \forall x_4 (  \Big(s=t \land \lnot R_1(y_1) \land \lnot Q(x_3) \Big) \land (s\neq t \lor y_2 = y_1) ) \lor P(x_4)$
+
+	$\Ra
+	\Sigma \entails \exists y_1 \exists y_2 \forall x_3 \forall x_4 (  \Big(\lnot R_1(g(t)) \land   \lnot Q(x_3) \Big)  ) \lor P(x_4)$
+
+	$\Ra
+	\Sigma \entails  \forall x_3 \forall x_4 (   \lnot Q(x_3) \lor P(x_4 ))$
+
+	{\hfill\huge\color{red} $\boxtimes$}
+
+	This makes sense: $\nu_0$ needs some help, but the extra case here becomes effective for $\Pi$ only 
+
+	
+	\\
 	\hline
 \end{tabular}
+{ \huge
 
+	$\Ra$ need to use outermost colored symbol, not just maximal $\Phi$-term!
+
+}
 
 
 
 
 
 \begin{comment}
-$\Sigma = \{ c=d, \lnot C(x) \}$
+	$\Sigma = \{ c=d, \lnot C(x) \}$
 
-$\Pi = \{ P(f(c)) \lor Q(f(c)) \lor C(f(c), \lnot P(f(d), \lnot Q(f(d)) \}$
+	$\Pi = \{ P(f(c)) \lor Q(f(c)) \lor C(f(c), \lnot P(f(d), \lnot Q(f(d)) \}$
 
-\begin{prooftree}
-	\AxiomCm{\p{P(f(c)) \lor Q(f(c))\lor C(f(c))}}
-	\AxiomCm{\sig{\lnot C(x)}}
-	\BinaryInfCm{P(f(c)) \lor Q(f(c))}
+	\begin{prooftree}
+		\AxiomCm{\p{P(f(c)) \lor Q(f(c))\lor C(f(c))}}
+		\AxiomCm{\sig{\lnot C(x)}}
+		\BinaryInfCm{P(f(c)) \lor Q(f(c))}
 	\AxiomCm{\sig{c=d}}
 	\BinaryInfCm{P(f(d) \lor Q(f(d))}
 	\AxiomCm{\p{\lnot P(f(d))}}

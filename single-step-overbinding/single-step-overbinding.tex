@@ -548,36 +548,61 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 \begin{lemma}
 	$\AImatrix(C)$ and $\AIclause(C)$ do not contain colored terms.
 	\label{lemma:no_colored_terms}
+	\comm{true}
 \end{lemma}
 
-\begin{remark}
-	Let $t$ be a term without $\Gamma$-terms.
-	It contains $\Delta$-terms $t_i$, grey terms $g_i$ and free variables $v_i$.
-	$\lifdelta{t}$ is $t$, where the maximal $\Delta$-term $t_i$ is replaced by free variable $x_i$.
+\begin{lemma}
+	The $x_i$, $y_i$ and $z_i$ do not occur in any substitution of a resolution refutation. 
+	\comm{true but unused}
+\end{lemma}
+
+\begin{lemma}
+	Let $t$ be a term and $\sigma$ a substitution
+	Then
+	$\lifdelta{\lifdelta{t} \sigma} = \lifdelta{t\sigma}$.
+	\comm{true and used}
+\end{lemma}
+\begin{proof}
+
+	With $\sigma'$ as in Lemma 1 from huang without prop deduc proof:
+
+	$\lifdelta{t\sigma} = \lifdelta{t}\sigma'$
+
+	$\lifdelta{\lifdelta{t}\sigma} = \lifdelta{\lifdelta{t}}\sigma' = \lifdelta{t}\sigma' $
+
+	OLD from first principles reasoning (complete this in case Lemma 1 is flawed):
+
+	{
+		
+		\tiny
+
+	$t$ contains $\Delta$-terms $t_i$, grey terms $g_i$ and free variables~$v_i$.
+	$\lifdelta{t}$ is $t$, where every maximal $\Delta$-term $t_i$ is replaced by free variable $x_i$.
 
 	A substitution $\sigma$ occuring in a resolution refutation does not affect any of the $x_i$, as these symbols do not occur in the initial clause sets.
 
-	Hence $\lifdelta{t} \sigma $ differs from $\lifdelta{t}$ in the $v_i$, which are potentially substituted.
-	The $v_i$ can be substituted to other free variables $v'_i$ (not the same ones as factors of clauses are variable disjoint), grey terms $g'_i$ or $\Delta$-terms $t'_i$ (or combinations of $g'_i$ and $t'_i$ including occurrences of $v'_i$).
+	Hence $\lifdelta{t} \sigma $ differs from $\lifdelta{t}$ only in the $v_i$, which are potentially substituted.
+	The $v_i$ can be substituted to other free variables $v'_i$ (not the same ones as factors of clauses are variable disjoint), grey terms $g'_i$ or $\Delta$-terms $t'_i$ (these terms may contain grey or $\Delta$-terms or free variables).
 	%Hence $\lifdelta{ \lifdelta{t} \sigma }$ 
 
-	Assumption: $\lifdelta$ keeps track of the terms it replaces and always uses the same variables.
+	Assumption: $\lifdelta$ always replaces a certain $\Delta$-term with the same variable, globally.
 	
 	Goal: $\lifdelta{\lifdelta{t} \sigma} = \lifdelta{t\sigma}$.
-	Suppose $\sigma$ does not affect $t$ (and also not the $x_i$ as it occurs in a resolution rule application). Then it holds.
 
-	Otherwise it changes a variable $v_i$ at position $p$.
+	Suppose $\sigma$ does not affect $t$ (and also not the $x_i$ as it occurs in a resolution rule application). 
+	Then $\lifdelta{t\sigma} = \lifdelta{t} = \lifdelta{\lifdelta{t}}$ (
+
+	Otherwise $\sigma$ changes a variable $v_i$ at position $p$ in $t$.
 	$\lifdelta{t}$ has at position $p$ $v_i$ as well if the path to $p$ does not contain colored symbol.
 	So $\lifdelta{\lifdelta{t}\sigma}$ and $\lifdelta{t\sigma}$ coincide at $p$, irrespective of what $\sigma$ introduces (var, $\Delta$-/grey-term).
 
-	If $p$ points into a maximal $\Delta$-colored term, $p \mod k$ for some $k\geq 1$ is a $\Delta$-colored term $t_j$.
+	If $p$ points into a maximal $\Delta$-colored term, $p\mod k$ for some $k\geq 1$ is a $\Delta$-colored term $t_j$.
 	Hence in $\lifdelta{t}$, $\pos(p\mod k) = x_j$.
 
 	However in $\lifdelta{t\sigma}$, $\pos(p\mod k) = x_l$.
+}
 
-	TODO: argue with arrows that this does not break anything?
-
-\end{remark}
+\end{proof}
 
 \begin{lemma}
 	If $l \in C$, then $\lifboth{l} \in \AIclause(C)$.
