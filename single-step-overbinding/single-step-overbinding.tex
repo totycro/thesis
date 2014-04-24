@@ -2,7 +2,7 @@
 	paper=a4,% 
 	%landscape,
 	%DIV12, % mehr text pro seite als defaultyyp
-	DIV14, 
+	DIV20, 
 	%DIV=calc,%
 	%twoside=false,%
 	liststotoc,
@@ -692,7 +692,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 			\begin{flalign*}
 				\AIclause(C_\Gamma) &=
 				\lifboth{\Big( (\AIclause((C_1)_\Gamma) \setminus \{\lifboth{l_\Gamma}\}) \lor (\AIclause((C_2)_\Gamma)\setminus   \{\lifboth{\lnot l'_\Gamma}\}) \Big)\sigma} & \\
-				&=
+																																																																																			 &=
 				\lifboth{(\AIclause((C_1)_\Gamma) \setminus \{\lifboth{l_\Gamma}\})}\sigma'
 				\lor \lifboth{(\AIclause((C_2)_\Gamma)\setminus   \{\lifboth{\lnot l'_\Gamma}\})}\sigma'
 			\end{flalign*}
@@ -700,12 +700,57 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 			$\sigma = \mgu(l, l')$, so $\lifboth{l\sigma} = \lifboth{l'\sigma}$ and $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$ by \lemmOne.
 
 			\begin{itemize}
+
+
+				\item Suppose that $l$ and $l'$ are $\Gamma$-colored.
+					\begin{flalign*}
+						\AImatrix(C) &=
+						\lifboth{\Big( (\AImatrix(C_1) \lor \AImatrix(C_2)) \Big) \sigma} & \\ 
+																																						 &= \lifboth{\AImatrix(C_1)}\sigma' \lor \lifboth{\AImatrix(C_2)}\sigma'
+					\end{flalign*}
+					By Corollary~\ref{corr:lift_ai} and applying $\sigma'$ to \markA{} and \markB, we obtain:
+
+					$\Gamma \entails \lifboth{\AImatrix(C_1)}\sigma' \lor \lifboth{\Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \lor \lifboth{l}\sigma'$
+
+					$\Gamma \entails \lifboth{\AImatrix(C_2)}\sigma' \lor \lifboth{\Big(\AIclause((C_2)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \lnot \lifboth{l'}\sigma'$
+
+					As $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$, we can perform a resolution step to arrive at:
+
+					$\Gamma \entails \lifboth{\AImatrix(C_1)}\sigma' \spa\lor \lifboth{\Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \spa\lor
+					\lifboth{\AImatrix(C_2)}\sigma' \spa\lor \lifboth{\Big(\AIclause((C_2)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' $
+
+					But this is nothing else than $\Gamma \entails \AImatrix(C) \lor \AIclause(C_\Gamma)$.
+
+
+
+				\item Suppose that $l$ and $l'$ are $\Delta$-colored.
+					\begin{flalign*}
+						\AImatrix(C) &=
+						\lifboth{\Big( (\AImatrix(C_1) \land \AImatrix(C_2)) \Big) \sigma} & \\ 
+																																							&= \lifboth{\AImatrix(C_1)}\sigma' \land \lifboth{\AImatrix(C_2)}\sigma'
+					\end{flalign*}
+					\markA{} and \markB{} then reduce to:
+
+			$\Gamma \entails \AImatrix(C_1) \lor \Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l_\Gamma}\}\Big) $
+
+			$\Gamma \entails \AImatrix(C_2) \lor \Big(\AIclause((C_2)_\Gamma)\setminus\{\lnot \lifboth{l'_\Gamma}\}\Big)$
+
+			But this implies that:
+
+			$\Gamma \entails \Big(\AImatrix(C_1)\spa\land \AImatrix(C_2)\Big) \lor 
+			\Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l_\Gamma}\}\Big) \lor
+			\Big(\AIclause((C_2)_\Gamma)\setminus\{\lnot \lifboth{l'_\Gamma}\}\Big)$
+
+			Which is nothing else than 
+			$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$.
+
+
 				\item
 					Suppose that $l$ and $l'$ are grey:
 					\begin{flalign*}
 						\AImatrix(C) &=
 						\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma} &\\
-						&= (\lifboth{\lnot l}\sigma' \land \lifboth{\AImatrix(C_1)}\sigma') \lor (\lifboth{l}\sigma' \land \lifboth{\AImatrix(C_2)}\sigma')
+																																																			&= (\lifboth{\lnot l}\sigma' \land \lifboth{\AImatrix(C_1)}\sigma') \lor (\lifboth{l}\sigma' \land \lifboth{\AImatrix(C_2)}\sigma')
 					\end{flalign*}
 
 					Note that $l_\Gamma = l$ and $l'_\Gamma = l'$.
@@ -728,27 +773,8 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 					As $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$, we can deduce that $M \entails \Big(\lnot \lifboth{l}\sigma' \land \lifboth{\AImatrix(C_1)}\sigma'\Big) \lor \Big(\lifboth{l}\sigma' \land \lifboth{\AImatrix(C_2)}\sigma'\Big)$, i.e.~$M \entails \AImatrix(C)$.
 
 
-			\item Suppose that $l$ and $l'$ are $\Gamma$-colored.
-				\begin{flalign*}
-					\AImatrix(C) &=
-					\lifboth{\Big( (\AImatrix(C_1) \lor \AImatrix(C_2)) \Big) \sigma} & \\ 
-					&= \lifboth{\AImatrix(C_1)}\sigma' \lor \lifboth{\AImatrix(C_2)}\sigma'
-				\end{flalign*}
-				By Corollary~\ref{corr:lift_ai} and applying $\sigma'$ to \markA{} and \markB, we obtain:
-
-				$\Gamma \entails \lifboth{\AImatrix(C_1)}\sigma' \lor \lifboth{\Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \lor \lifboth{l}\sigma'$
-
-					$\Gamma \entails \lifboth{\AImatrix(C_2)}\sigma' \lor \lifboth{\Big(\AIclause((C_2)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \lnot \lifboth{l'}\sigma'$
-
-					As $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$, we can perform a resolution step to arrive at:
-
-				$\Gamma \entails \lifboth{\AImatrix(C_1)}\sigma' \spa\lor \lifboth{\Big(\AIclause((C_1)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' \spa\lor
-					 \lifboth{\AImatrix(C_2)}\sigma' \spa\lor \lifboth{\Big(\AIclause((C_2)_\Gamma)\setminus\{\lifboth{l}\}\Big)}\sigma' $
-
-					 But this is nothing else than $\Gamma \entails \AImatrix(C) \lor \AIclause(C_\Gamma)$.
-
-		\end{itemize}
-\end{description}
+			\end{itemize}
+	\end{description}
 
 
 \end{proof}
