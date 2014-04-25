@@ -133,7 +133,7 @@
 \def\proofSkipAmount{ \vskip -0.3em}
 
 \newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
-\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
+%\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
 
 \begin{document}
 
@@ -152,13 +152,12 @@ Then $\lif{ f(x)\sigma } = \lif{ f(a) } = x_i$, but $\lif{f(x)}\sigma = x_j$ wit
 The first case of the definition of $x_j$ then fixes this by replacing $x_j$ with $x_i$. 
 
 
-
 \begin{lemma}
 	\label{lemma:lif}
 
 	Let $C$ be a clause and $\sigma$ a substitution.
 	Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
-	$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$.
+	$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
 	Define $\sigma'$ such that for a variable $z$, 
 	\[
 		z \sigma' =
@@ -194,6 +193,7 @@ Note that the definition of $\sigma'$ only depends on the $x_i$ and $t_i$.
 	Suppose that $t_i = t_j$, i.e.\ $\sigma$ is trivial on $t_i$.
 	Then $i=j$ as the $\Delta$-terms have a unique number.
 	Hence $\lif{t_i}\sigma' = x_i \sigma' = x_i = x_j$.
+	Note that $x_k$ must not occur in $t_i$ for some $k$, as $x_k\sigma = x_k$, but potentially $x_k\sigma' \neq x_k$.
 
 
 	Otherwise $t_i \neq t_j$. Then $i\neq j$ and  $x_j \neq x_i$.\newline

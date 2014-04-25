@@ -162,6 +162,18 @@ counterexample: $Q \sim \{0\}, P\sim \{(1,0)\} $
 
 Direct overbinding would work when considering original dependencies as highlighted above
 
+arrow lemma:
+\begin{prooftree}
+	\AxiomCm{\Gamma \entails \sig{\exists y_1 (P(\ha u, y_1) \lor Q(\ha u) \lor \bot)}  }
+	\AxiomCm{\Gamma \entails \p{\lnot Q(x_1) \lor \top} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{\Gamma \entails \exists y_1 ( P(\ha{x_1}, y_1) \lor Q(\ha{x_1}))}
+
+	\AxiomCm{\Gamma \entails \p{\lnot P(x, y) \lor \top} }
+	\RightLabelm{x\mapsto a, y\mapsto f(a) }
+	\BinaryInfCm{\Gamma \entails (\forall x_1) \exists y_1 ( Q(\ha{x_1}) \lor P(\ha{x_1}, y_1))}
+\end{prooftree}
+
 \bigskip
 
 \e{Ex 101b -- other resolution order}
@@ -232,6 +244,31 @@ Direct overbinding would work when considering original dependencies as highligh
 		\BinaryInfCm{ \exists x_1 \forall x_2 ( \lnot P(x_1, x_2) \land \lnot Q(x_1)  )}
 	\end{prooftree}
 \end{multicols}
+
+arrow lemma:
+\begin{prooftree}
+	\AxiomCm{\Gamma \entails \p{P(u, x_1) \lor Q(u)} \lor \top  }
+	\AxiomCm{\Gamma \entails \sig{\lnot P(x, y)} \lor \bot }
+	\RightLabelm{y\mapsto f(u), x\mapsto u}
+	\BinaryInfCm{\Big( Q(u) \mid  (\lnot P(x, x_1) \land \top) \lor (P(u, /f(u)) \land \bot)\Big)\sigma}
+	\noLine
+	\UnaryInfCm{Q(u) \mid  (\lnot P(u, x_1) \land \top) \lor (P(u, f(u)) \land \bot)}
+	\noLine
+	\UnaryInfCm{\text{ employ $\sigma'$ !?!!?!?!?!??!?????!!!}}
+	\noLine
+	\UnaryInfCm{\Gamma \entails Q(u) \mid \lnot P(u, x_1)}
+	\noLine
+	\UnaryInfCm{\Delta \entails Q(u) \mid \exists x_1 P(u, x_1)}
+
+	\AxiomCm{\Gamma \entails \exists y_1 \sig{\lnot Q(y_1)} }
+	\RightLabelm{u\mapsto a}
+	\BinaryInfCm{\text{ both $u$'s on LHS need to become $a$ and then $y_1$ }}
+	\noLine
+	\UnaryInfCm{\Gamma \entails (\forall x_1) \exists y_1 (\lnot P(y_1, x_1) \lor \lnot Q(y_1))}
+	\noLine
+	\UnaryInfCm{\Delta \entails (\exists x_1) \forall y_1 (P(y_1, x_1) \land Q(y_1))}
+\end{prooftree}
+
 
 
 \e{Ex 101d --  $\Pi$ and $\Sigma$ swapped, other resolution order}

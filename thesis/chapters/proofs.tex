@@ -336,8 +336,13 @@ This replacement is referred to as lifting:
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
 	$\phi$ a formula or a term, $t_1, \ldots, t_n$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\phi$ and $x_1, \ldots, x_n$ fresh variables.
 	Then $\lft{\Phi}{x}{\phi}$ denotes $\phi\abstraction{t_1/x_1}\ldots\abstraction{t_n/x_n}$.
+
+	We also denote $\phi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\phi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
 \end{defi}
 
+
+
+Some elementary properties of liftings are described by the following lemmas:
 
 \begin{lemma} 
   \label{lemma:lift_commute}
@@ -348,6 +353,33 @@ This replacement is referred to as lifting:
     \item $\lift{\Phi}{s = t}{x} \semiff{} ( \lift{\Phi}{s}{x} = \lift{\Phi}{t}{x} )$
   \end{enumerate}
 \end{lemma}
+\begin{lemma}
+	%Let $\{z_1,\ldots, z_n\}$ be the maximal colored terms of a clause $C$.
+	%Then 
+	%$ Q_1 z_1 \ldots Q_n z_n \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }
+	%\;\liff\;
+	%Q_1 z_1 \ldots Q_n z_n \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$ for $Q_i \in \{\forall, \exists\}$ for $1\leq i\leq n$.
+
+	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }$ and 
+	$ \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$
+	differ only in the naming of the variables replacing maximal colored terms.
+	\label{lemma:naming_of_colored_variables}
+
+\end{lemma}
+\begin{proof}
+	Suppose a term $t$ in $C$ is affected by a lifting.
+	We only need to consider maximal colored terms as grey terms are not affected by the liftings.
+	Without loss of generality let $t$ be a maximal $\Delta$-colored term.
+
+	Let $\Phi$ be the positions of maximal occurrences of $t$.
+	Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
+
+	In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
+	However after this step,
+	all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
+	Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
+\end{proof}
+
 
 First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
@@ -647,32 +679,6 @@ $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ 
 $\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 \end{proof}
 
-\begin{lemma}
-	%Let $\{z_1,\ldots, z_n\}$ be the maximal colored terms of a clause $C$.
-	%Then 
-	%$ Q_1 z_1 \ldots Q_n z_n \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }
-	%\;\liff\;
-	%Q_1 z_1 \ldots Q_n z_n \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$ for $Q_i \in \{\forall, \exists\}$ for $1\leq i\leq n$.
-
-	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }$ and 
-	$ \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$
-	differ only in the naming of the variables replacing maximal colored terms.
-	\label{lemma:naming_of_colored_variables}
-
-\end{lemma}
-\begin{proof}
-	Suppose a term $t$ in $C$ is affected by a lifting.
-	We only need to consider maximal colored terms as grey terms are not affected by the liftings.
-	Without loss of generality let $t$ be a maximal $\Delta$-colored term.
-
-	Let $\Phi$ be the positions of maximal occurrences of $t$.
-	Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
-
-	In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
-	However after this step,
-	all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
-	Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
-\end{proof}
 
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
