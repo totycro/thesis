@@ -445,80 +445,110 @@ arrow lemma:
 	\BinaryInfCm{ \square }
 \end{prooftree}
 
+~
 
-	\begin{prooftree}
-		\AxiomCm{ \bot }
-		\AxiomCm{ \top }
-		\BinaryInfCm{ P(f(x)) }
+\begin{prooftree}
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\BinaryInfCm{ P(f(x)) }
 
-		\AxiomCm{ \bot }
-		\AxiomCm{ \top }
-		\RightLabelm{y \mapsto a}
-		\BinaryInfCm{ R(a) }
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\RightLabelm{y \mapsto a}
+	\BinaryInfCm{ R(a) }
 
-		\RightLabelm{x \mapsto a, z_1 \mapsto z}
-		\BinaryInfCm{ (\lnot Q(f(a), z) \land P(f(a))) \lor (Q(f(a), z) \land R(a) )  }
+	\RightLabelm{x \mapsto a, z_1 \mapsto z}
+	\BinaryInfCm{ (\lnot Q(f(a), z) \land P(f(a))) \lor (Q(f(a), z) \land R(a) )  }
 
-	\end{prooftree}
+\end{prooftree}
 
-	Huang:
-	\begin{prooftree}
-		\AxiomCm{ \bot }
-		\AxiomCm{ \top }
-		\BinaryInfCm{ \exists x_2 P(x_2) }
 
-		\AxiomCm{ \bot }
-		\AxiomCm{ \top }
-		\RightLabelm{y \mapsto a}
-		\BinaryInfCm{ \forall x_1 R(x_1) }
+arrow lemma: (change of specification: $P(g(z_3))$ in clause in $\Sigma$ instead of $P(f(x))$
+\begin{prooftree}
+	\AxiomCm{ \exists x_1 (\sig{P(x_4) \lor Q(x_1, z)}) }
+	\AxiomCm{ \p{\lnot P(y) } }
+	\BinaryInfCm{\exists x_1 (P(g(z_3)) \land \bot) \lor (P(x_4) \land \top) \mid Q(x_1, z) }
+	\noLine
+	\UnaryInfCm{ \exists x_1 (P(x_4) \mid  Q(x_1, z) ) }
 
-		\RightLabelm{x \mapsto a, z_1 \mapsto z}
-		\BinaryInfCm{ \forall x_1 \exists x_2 (\lnot Q(x_2, z) \land P(x_2)) \lor (Q(x_2, z) \land R(x_1) )  }
+	\AxiomCm{\exists x_2( \sig{\lnot Q(x_2, z_1) \lor R(y)} )}
+	\AxiomCm{ \forall x_3 \p{\lnot R(x_3) } }
+	\RightLabelm{y \mapsto a}
+	\BinaryInfCm{ \stackrel{\forall x_3}{\exists x_2} ( (\lnot R(x_3) \land \bot ) \lor ( R(a) \land \top ) \mid \lnot Q(x_2, z_1)) }
+	\noLine
+	\UnaryInfCm{ \stackrel{\forall x_3}{\exists x_2} ( (\lnot R(x_3) \land \bot ) \lor ( R(x_3) \land \top ) \mid \lnot Q(x_2, z_1)) }
 
-	\end{prooftree}
+	\RightLabelm{x \mapsto a, z_1 \mapsto z}
+	\BinaryInfCm{ \stackrel{\forall x_1}{\stackrel{\forall x_3}{\exists x_2}} \Big( (\lnot Q(x_2, z_1) \land P(x_4)) \lor (Q(x_1, z) \land R(x_3))  \Big) }
+\end{prooftree}
 
-	direct:
-	\begin{prooftree}
-		\AxiomCm{ \bot }
-		\AxiomCm{ \top }
-		\RightLabelm{x_2 \sim f(x)}
-		\BinaryInfCm{ \exists x_2 P(x_2) }
+arrow order: $x_3 < x_2$, $x_2 \operatorname{same-block-as} x_4 $:
+$ \forall x_3 \exists x_2 \exists x_4 \forall x_1 \Big( (\lnot Q(x_2, z_1) \land \lnot P(x_4)) \lor (Q(x_1, z) \land R(x_3))  \Big) $
+\newline{
+	\huge
+	$\ra$ bad example, plus some errors still in there
+	\medskip
 
-		\AxiomCm{ \bot }
-		\AxiomCm{ \top }
-		\RightLabelm{x_1 \sim a}
-		\BinaryInfCm{ \forall x_1 R(x_1) }
+}
 
-		\RightLabelm{ x_3 \sim f(a); x_2 \parallel x_3, x_1 < x_3   }
-		\BinaryInfCm{ \forall x_1 \exists x_2 \exists x_3 (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
 
-		\UnaryInfCm{ \text{OR: }~ \exists x_2 \forall x_1 \exists x_3  (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
-		\UnaryInfCm{ \text{OR: }~ \exists x_1 \exists x_3 \forall x_2  (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
-	
+Huang:
+\begin{prooftree}
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\BinaryInfCm{ \exists x_2 P(x_2) }
 
-	\end{prooftree}
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\RightLabelm{y \mapsto a}
+	\BinaryInfCm{ \forall x_1 R(x_1) }
 
-	Huang-Version passt weil man für existenzielle quantoren eh gleichen term einsetzt
+	\RightLabelm{x \mapsto a, z_1 \mapsto z}
+	\BinaryInfCm{ \forall x_1 \exists x_2 (\lnot Q(x_2, z) \land P(x_2)) \lor (Q(x_2, z) \land R(x_1) )  }
+
+\end{prooftree}
+
+direct:
+\begin{prooftree}
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\RightLabelm{x_2 \sim f(x)}
+	\BinaryInfCm{ \exists x_2 P(x_2) }
+
+	\AxiomCm{ \bot }
+	\AxiomCm{ \top }
+	\RightLabelm{x_1 \sim a}
+	\BinaryInfCm{ \forall x_1 R(x_1) }
+
+	\RightLabelm{ x_3 \sim f(a); x_2 \parallel x_3, x_1 < x_3   }
+	\BinaryInfCm{ \forall x_1 \exists x_2 \exists x_3 (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
+
+	\UnaryInfCm{ \text{OR: }~ \exists x_2 \forall x_1 \exists x_3  (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
+	\UnaryInfCm{ \text{OR: }~ \exists x_1 \exists x_3 \forall x_2  (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  }
+
+
+\end{prooftree}
+
+Huang-Version passt weil man für existenzielle quantoren eh gleichen term einsetzt
 
 direct w mixed, slightly different:
-	\begin{prooftree}
-		\AxiomCm{ \bot \mid P(f(\arrowB x)) \lor Q(\arrowA x, z) \drawAB}
-		\AxiomCm{ \top \mid \lnot P(y)}
-		\RightLabelm{x_2 \sim f(x)}
-		\BinaryInfCm{ \exists \arrowB x_2 P(x_2) \mid Q(\arrowA x, z) \drawAB }
+\begin{prooftree}
+	\AxiomCm{ \bot \mid P(f(\arrowB x)) \lor Q(\arrowA x, z) \drawAB}
+	\AxiomCm{ \top \mid \lnot P(y)}
+	\RightLabelm{x_2 \sim f(x)}
+	\BinaryInfCm{ \exists \arrowB x_2 P(x_2) \mid Q(\arrowA x, z) \drawAB }
 
-		\AxiomCm{ \bot \mid  \sig{\lnot Q(f(\arrowB y), z_1) \lor R(\arrowA y)} } \drawAB
-		\AxiomCm{ \top \mid \p{\lnot R(a) } }
-		\RightLabelm{x_1 \sim a}
-		\BinaryInfCm{ \forall \arrowA x_1 R(x_1) \mid \lnot Q(f(\arrowB a), z_1) } \drawAB
+	\AxiomCm{ \bot \mid  \sig{\lnot Q(f(\arrowB y), z_1) \lor R(\arrowA y)} } \drawAB
+	\AxiomCm{ \top \mid \p{\lnot R(a) } }
+	\RightLabelm{x_1 \sim a}
+	\BinaryInfCm{ \forall \arrowA x_1 R(x_1) \mid \lnot Q(f(\arrowB a), z_1) } \drawAB
 
-		\RightLabelm{ x_3 \sim f(a); x_2 \parallel x_3, x_1 < x_3   }
-		\BinaryInfCm{ \forall \arrowA x_1 \exists \arrowB\,\arrowC x_3 \exists \arrowD\drawCD x_2 (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  } \drawAB\drawCD
-		\UnaryInfCm{ (\lnot Q(f(a), z) \land P(f(f(a)))) \lor (Q(f(a), z) \land R(a) )  } 
-	\end{prooftree}
+	\RightLabelm{ x_3 \sim f(a); x_2 \parallel x_3, x_1 < x_3   }
+	\BinaryInfCm{ \forall \arrowA x_1 \exists \arrowB\,\arrowC x_3 \exists \arrowD\drawCD x_2 (\lnot Q(x_3, z) \land P(x_2)) \lor (Q(x_3, z) \land R(x_1) )  } \drawAB\drawCD
+	\UnaryInfCm{ (\lnot Q(f(a), z) \land P(f(f(a)))) \lor (Q(f(a), z) \land R(a) )  } 
+\end{prooftree}
 
-	last dependency not crucial because other arrow is a $\Sigma$-arrow as well, but just changing it to $\Pi$ (and changing $f$ for $g$ should produce a quantifier alternation)
-
+last dependency not crucial because other arrow is a $\Sigma$-arrow as well, but just changing it to $\Pi$ (and changing $f$ for $g$ should produce a quantifier alternation)
 
 
 \bigskip
@@ -1218,6 +1248,7 @@ $\Pi= \{ P(f(a), y) \} $
 
 $\Ra \forall \arrowA x_1 \exists \arrowB x_2\drawAB P(f(x_1), x_2) $ 
 
+
 \e{204b}
 
 $\Sigma = \{ P(f^5(\arrowA x), g(f(\arrowB x))) \}\drawAB$
@@ -1230,10 +1261,9 @@ $\Ra \forall \arrowA x_1 \exists \arrowB x_2\drawAB P(f^5(x_1), x_2) $
 
 \clearpage 
 \section*{example with aufschaukelnde unification, such that direction of arrow isn't clear}
-
-
 \e{205a}
 
+\vspace{-1em}
 \begin{prooftree}
 	\AxiomCm{\p{P(ff\hb y, g\hb y)}}
 
@@ -1273,10 +1303,7 @@ direct
 \end{prooftree}
 
 
-
 ground:
-
-
 \begin{prooftree}
 	\AxiomCm{\p{P(ff\hb a, g\hb a)}}
 
@@ -1292,8 +1319,46 @@ ground:
 	\BinaryInfCm{ (\lnot R(\arrowE a) \land Q(\arrowBA ff\arrowF a)) \lor \lnot P(ff\arrowAB\,\arrowDC a, g\arrowCD a) \drawEF \drawAABB\drawCCDD}
 \end{prooftree}
 
+{ \tiny
 
+arrow lemma:
+$x_1 \sim ffy$,
+$x_2 \sim gy$,
+$y_3 \sim a$
+$x_4 \sim ffz$,
+$x_5 \sim ffa$,
+$y_6 \sim a$,
+\begin{prooftree}
+	\AxiomCm{\forall x_1 \forall x_4 (\p{P(x_1, x_2)} \mid \top)}
 
+	\AxiomCm{\sig{\lnot P(\ha x, y) \lor Q(\ha x)}\mid \bot}
+
+	\AxiomCm{\sig{\exists y_3 ( \lnot R(y_3)}\mid \bot)}
+	\AxiomCm{\forall x_4(\p{\lnot Q(x_4) \lor R\arrowA{\hc z}}\mid \bot)}
+
+	\RightLabelm{z \mapsto a}
+	\BinaryInfCm{\exists y_3 \forall x_4 ( (\lnot R(y_3) \land \top ) \lor \dashuline{(R(a) \land \bot)} \mid \lnot Q(x_4))}
+
+	\RightLabelm{x \mapsto ffa}
+	\BinaryInfCm{\exists y_3 \forall x_4 ( (\lnot Q(x_4 \land \bot)) \lor (Q(x)\sigma \land \lnot R(y_3) ) \mid \lnot P(x, y)\sigma ) }
+	\noLine
+	\UnaryInfCm{\exists y_3 \forall x_4 ( (Q(ffa) \land \lnot R(y_3) ) \mid \lnot P(ffa, y) ) \quad(*)} 
+	\noLine
+	\UnaryInfCm{\exists y_3 \forall x_4 \forall x_5 ( (Q(x_5) \land \lnot R(y_3) ) \mid \lnot P(x_5, y) )} 
+
+	\RightLabelm{y \mapsto a}
+	\BinaryInfCm{  (\lnot P(x_5, y) \land \top) \lor (P(x_1, x_2) \land (Q(x_5) \land \lnot R(y_3))) }
+	\noLine
+	\UnaryInfCm{  (\lnot P(x_5, a) \land \top) \lor (P(x_1, x_2) \land (Q(x_5) \land \lnot R(y_3))) }
+	\noLine
+	\UnaryInfCm{ \forall x_1 \forall x_2 \exists y_3 \forall x_4 \forall x_5 \forall x_6  (\lnot P(x_5, y_6) \land \top) \lor (P(x_1, x_2) \land (Q(x_5) \land \lnot R(y_3))) }
+\end{prooftree}
+$(*)$ ``luckily'', same overbinding for $ffa$, so this works
+
+dashed underline: problem, but does not cause issues here.
+
+situations not critical here :'-(
+}
 
 
 
@@ -1338,7 +1403,36 @@ ground:
 $\exists x_1  R(x_1)$
 
 $\exists x_1 \forall x_2 \forall x_3 ( R(\arrowA x_1) \lor \lnot P(\arrowB\, \arrowAB x_2, \arrowBA x_3) ) \drawAABB \drawAB$
+\clearpage 
 
+\section*{example to demonstrate that literals being resolved upon have to be overbound with the same variable}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{\p{R(f(x))}}
+	\AxiomCm{\sig{\lnot R(y) \lor P(y)}}
+	\BinaryInfCm{ (\lnot R(x_3) \land \top) \lor (R(x_3) \land \bot) \mid P(x_3)}
+
+	\AxiomCm{\p{\lnot P(f(z)) \lor S(z)}}
+	\AxiomCm{\sig{\lnot S(a)}}
+	\BinaryInfCm{ (\lnot S(y_2) \land \top ) \lor (S(y_2) \land \bot) \mid \lnot P(x_4) }
+
+	\BinaryInfCm{ (\forall x_3) \exists y_2 \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor (P(x_3) \land S(y_2)) \Big)}
+
+\end{prooftree}
+
+$\Sigma \entails
+(\forall x_3) \exists y_2 \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor (P(x_3) \land S(y_2)) \Big)$
+
+
+$\Sigma \entails
+(\forall x_3)  \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor P(x_3) \Big)$
+
+$\Sigma \notentails
+(\lnot P(1) \land \lnot R(0)) \lor P(0) $
+
+if $P \sim \{1\}$ and $R \sim \{0\}$
 
 \clearpage 
 
