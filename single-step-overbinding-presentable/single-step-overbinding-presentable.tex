@@ -244,19 +244,31 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 	\item 
 		For each initial clause $C$, $\AImatrix(C) = \PI(C)$ and $\AIclause(C) = \lifboth{C}$.
 
-
 	\item
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = (D \lor E)\sigma$ with $l\sigma = l'\sigma$ with prop interpolant $\PI(\cdot)$:
+		(cf.~also Lemma~\ref{lemma:literals_in_aiclause})
+
+		let $l^*$ be the literal in $\AIclause(C_1)$ which corresponds to $l$ and
+		let ${l^*}'$ be the literal in $\AIclause(C_2)$ which corresponds to $l'$.
+
+		$l\sigma = l'\sigma$, but $l^*$ and ${l^*}'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them. Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-replacing-var vs $\Phi$-term (let var win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
+		Also apply this to liftings in $\AIclause$ and $\AImatrix$ here.
+
 
 				$\AIclause(C) =
-				\lifboth{\Big( (\AIclause(C_1) \setminus \{\lifboth{l}\}) \lor (\AIclause(C_2)\setminus \{\lifboth{\lnot l'}\}) \Big)\sigma}$ 
+			\lifboth{\Big( (\AIclause(C_1) \setminus \{l^*\}) \lor (\AIclause(C_2)\setminus \{{l^*}'\}) \Big)\sigma}$ 
 
 		\begin{itemize}
 			\item if $l$ and $l'$ don't have the same color:
 
 				$\AImatrix(C) =
-				\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma}
+			(\lnot {l^*}' \land \lifboth{\AImatrix(C_1)\sigma}) \lor
+					(l^* \land \lifboth{\AImatrix(C_2)\sigma) }
 				$
+
+
+				%$\AImatrix(C) =
+				%\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma} $
 
 
 				%		$\left.\begin{tabular}{l}

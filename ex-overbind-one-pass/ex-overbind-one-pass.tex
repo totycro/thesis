@@ -1430,9 +1430,12 @@ $\Sigma \entails
 (\forall x_3)  \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor P(x_3) \Big)$
 
 $\Sigma \notentails
-(\lnot P(1) \land \lnot R(0)) \lor P(0) $
+(\lnot P(1) \land \lnot R(0)) \lor P(0) $ 
+\comm{if $P \sim \{1\}$ and $R \sim \{0\}$}
 
-if $P \sim \{1\}$ and $R \sim \{0\}$
+we know that for original clauses $l$ and $l'$ of $P(x_4)$ and $P(x_3)$, $l\sigma = l'\sigma$
+
+hence same color, and can use different var as same value works.
 
 \clearpage 
 
