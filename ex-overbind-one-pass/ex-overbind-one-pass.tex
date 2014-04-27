@@ -1407,7 +1407,7 @@ $\exists x_1 \forall x_2 \forall x_3 ( R(\arrowA x_1) \lor \lnot P(\arrowB\, \ar
 
 \section*{example to demonstrate that literals being resolved upon have to be overbound with the same variable}
 
-~
+\e{206a}
 
 \begin{prooftree}
 	\AxiomCm{\p{R(f(x))}}
@@ -1421,6 +1421,14 @@ $\exists x_1 \forall x_2 \forall x_3 ( R(\arrowA x_1) \lor \lnot P(\arrowB\, \ar
 	\BinaryInfCm{ (\forall x_3) \exists y_2 \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor (P(x_3) \land S(y_2)) \Big)}
 
 \end{prooftree}
+
+Gist of this example: $P(f(x))$ is lifted to the left, but $P(f(a))$ to the right. So it's $P(x_3)$ vs $P(x_4)$, but both of them have to have the same variable.
+
+$R(x_3) \in \AImatrix(C_7)$
+
+$P(x_3) \in \AIclause(C_7)$
+
+$P(x_4) \in \AIclause(C_8)$
 
 $\Sigma \entails
 (\forall x_3) \exists y_2 \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor (P(x_3) \land S(y_2)) \Big)$

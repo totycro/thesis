@@ -2,7 +2,7 @@
 	paper=a4,% 
 	%landscape,
 	%DIV12, % mehr text pro seite als defaultyyp
-	DIV20, 
+	DIV18, 
 	%DIV=calc,%
 	%twoside=false,%
 	liststotoc,
@@ -47,6 +47,8 @@
 \declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
 
 \declaretheorem[sibling=thm,title=Conjecture]{conj}
+
+\declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
 
 %\def\proofSkipAmount{ \vskip -0.5em}
 
@@ -246,24 +248,55 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 
 	\item
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = (D \lor E)\sigma$ with $l\sigma = l'\sigma$ with prop interpolant $\PI(\cdot)$:
-		(cf.~also Lemma~\ref{lemma:literals_in_aiclause})
 
-		let $l^*$ be the literal in $\AIclause(C_1)$ which corresponds to $l$ and
-		let ${l^*}'$ be the literal in $\AIclause(C_2)$ which corresponds to $l'$.
+		$l.\dotsc$ literal in original clause
 
-		$l\sigma = l'\sigma$, but $l^*$ and ${l^*}'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them. Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-replacing-var vs $\Phi$-term (let var win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
+		$l^*\dotsc$ literal in $\AIclause$ (with unifications and liftings carried over, such that ind hyp goes through)
+
+		$l^\circ\dotsc$ literal to put in $\AImatrix$ is defined as $x_i =\lifboth{l\sigma} = \lifboth{l'\sigma}$
+
+		$l\sigma = l'\sigma$, but $l^*$ and ${l^*}'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them.
+		
+		Prose explanation of formal definition below: Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-replacing-var vs $\Phi$-term (let var win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
 		Also apply this to liftings in $\AIclause$ and $\AImatrix$ here.
 
+		$\aiu$ is defined on terms which are used as parameters for literals $l = A(a_1, \dotsc, a_n)$, $l' = A(b_1, \dotsc, b_n)$ which occur in $\AIclause(C_1)$, $\AIclause(C_2)$ such that $l\sigma = l'\sigma$. Note that if one of the arguments of $\aiu$ has assigned a color, the other one either has none or the same color. There cannot be a conflict as otherwise their original form would not be unifiable.
+	%	\[
+	%		\aiu ( a_i, b_i) =
+	%		\begin{cases}
+	%			f_s(\aiu(s_1, t_1), \dotsc, \aiu(s_n, t_n)) & \text{if $a_i=f_s(\bar s)$ grey and $b_i = f_t(\bar t)$ (include $f_s$ being a constant)} \\
+	%			x_j & \parbox[t]{.4\textwidth}{ if $a_i = x_j$, where $x_j$ from lifting (then $b_i$ is either variable or term with same color) } \\
+	%			x_j & \text{if $b_i = x_j$, if $x_j$ but not $a_i$ from lifting }\\
+	%			x_j & \text{if $\lifboth{a_i\sigma} = \lifboth{b_i\sigma} = x_j$ }
+	%		\end{cases}
+	%	\]
 
-				$\AIclause(C) =
-			\lifboth{\Big( (\AIclause(C_1) \setminus \{l^*\}) \lor (\AIclause(C_2)\setminus \{{l^*}'\}) \Big)\sigma}$ 
+		$\tau = \bigcup_{i=1}^n \aiu(a_i, b_i)$
+
+
+		$
+			\aiu (a, b) =
+			\begin{cases}
+				\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a=f_s(\bar s)$ grey and $b = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
+			\{x_j \mapsto x_k\} & \parbox[t]{.6\textwidth}{ if $a = x_j$ from lifting and $b$ colored term with $\lifboth{b\sigma} = x_k$} \\
+			\{x_k \mapsto x_j\} & \parbox[t]{.6\textwidth}{ if $b = x_k$ from lifting and $a$ colored term with $\lifboth{a\sigma} = x_j$} \\
+				\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a = x_j$ and $b = x_k$, both from lifting, and $p = \pos(a) = \pos(b)$ and $\lifboth{l\sigma}.\posterm(p) = \lifboth{l'\sigma}.\posterm(p) = x_m$}\\
+				\emptyset & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
+			\end{cases}
+		$
+
+
+
+
+		$\AIclause(C) =
+		\lifboth{\Big( (\AIclause(C_1) \setminus \{l^*\}) \lor (\AIclause(C_2)\setminus \{{l^*}'\}) \Big)\sigma} \tau$ 
 
 		\begin{itemize}
 			\item if $l$ and $l'$ don't have the same color:
 
 				$\AImatrix(C) =
-			(\lnot {l^*}' \land \lifboth{\AImatrix(C_1)\sigma}) \lor
-					(l^* \land \lifboth{\AImatrix(C_2)\sigma) }
+				(\lnot {l^\circ}' \land \lifboth{\AImatrix(C_1)\sigma}\tau) \lor
+				(l^\circ \land \lifboth{\AImatrix(C_2)\sigma) }\tau
 				$
 
 
@@ -284,12 +317,12 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 			\item if $l$ and $l'$ are $\Gamma$-colored :
 
 				%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
-				as above but with  $\AImatrix(C)' =
-				\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
+				%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
+				$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma} \tau$
 			\item if $l$ and $l'$ are $\Delta$-colored:
 
-				as above but with  $\AImatrix(C)' =
-				\Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma$
+				%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma$
+				$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma} \tau$
 
 
 		\end{itemize}
@@ -332,6 +365,17 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	\lif{C}\sigma'$.
 \end{lemma}
 
+\begin{remark}[ad Lemma \ref{lemma:lift_subst_commute}]
+	Lemma \ref{lemma:lift_subst_commute} does not hold in case $x_i$ occurs in $C$.
+	This can easily be seen using a counterexample:
+
+	Let $\sigma = \{x \mapsto a\$
+
+	$x_i \sigma $
+
+	
+\end{remark}
+
 \begin{lemma}[corresponds to Lemma 4.8 in thesis and Lemma 11 in Huang]
 	\label{lemma:lift_logic_commute}
 	Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
@@ -372,7 +416,7 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
   Let $\Phi$ be a set of formulas, $t$ be a term and $\sigma$ a substitution
   Then
   $\lifphi{\lifphi{t} \sigma} = \lifphi{t\sigma}$.
-  \comm{true and used}
+	\comm{\color{red} WRONG}
   \label{lemma:lift_multiple_times}
 \end{lemma}
 \begin{proof}
@@ -423,7 +467,7 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 
   If $l \in C$, then $\lifboth{l} \in \AIclause(C)$.
   \label{lemma:literals_in_aiclause}
-  \comm{true and used}
+	\comm{\color{red} WRONG}
 \end{lemma}
 \begin{proof} By induction:
 
