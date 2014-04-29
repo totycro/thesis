@@ -288,7 +288,7 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 				\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a=f_s(\bar s)$ grey and $b = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
 				\{x_j \mapsto x_k\} & \parbox[t]{.6\textwidth}{ if $a = x_j$ from lifting and $b$ a term with $\lifboth{b\sigma} = x_k$ (note that $b$ is a variable as otherwise it would be colored and lifted)} \\
 			\{x_k \mapsto x_j\} & \parbox[t]{.6\textwidth}{  if $b = x_k$ from lifting and $a$ a term with $\lifboth{a\sigma} = x_j$ (note that $a$ is a variable as otherwise it would be colored and lifted)} \\
-				\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a = x_j$ and $b = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal. More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = x_m$.}\\
+				\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a = x_j$ and $b = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal. More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.}\\
 				\emptyset & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
 			\end{cases} $
 
@@ -400,21 +400,21 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 
 
 \begin{lemma}
-	$\AImatrix(C)$ and $\AIclause(C)$ contain only grey terms and variables replacing colored terms. They do not contain colored terms.
 	\label{lemma:no_colored_terms}
+	$\AImatrix(C)$ and $\AIclause(C)$ contain only grey terms and variables replacing colored terms. They do not contain colored terms.
 	\comm{true and used}
 \end{lemma}
 
 
 
 \begin{corr}
+  \label{corr:lift_ai}
   For a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$:
   \begin{compactenum}
     \item $\AImatrix(C) = \lifboth{\AImatrix(C)}$.
 
     \item $\AIclause(C) = \lifboth{\AIclause(C)}$.
   \end{compactenum}
-  \label{corr:lift_ai}
   \comm{true and unused}
 \end{corr}
 
@@ -424,9 +424,9 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 \end{lemma}
 
 \begin{lemma}
+	\label{lemma:substitute_and_lift}
 	Let $F$ be a formula without colored terms such that for a set of formulas $\Phi$, $\Phi \entails F$.
 	Then $\Phi \entails \lifboth{F\sigma}$ for a substitution $\sigma$.
-	\label{lemma:substitute_and_lift}
 \end{lemma}
 \begin{proof}
 	Note that substitutions only replace variables. Term positions, which are replaced by grey terms by $\sigma$ are not affected by the lifting and hold due to being special cases of~$F$.
@@ -435,18 +435,108 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	All occurrences of a certain variable in $F$ are substituted by the same term, so as the lifting replaces a certain term always be the same variables, all these occurrences of the variable are replaced by the same variable.
 \end{proof}
 
+\begin{lemma}
+	$\{x_j \mapsto x_k\} \in \aiu(l\fromclause, l\fromclause')$ with $j\neq k$ implies that $t_j$ (corresponding to $x_j$) contains a free variable.
+\end{lemma}
+\begin{proof}
+	Let  $\aiu(s\fromclause, r\fromclause)$ introduce $\{x_j \mapsto x_k\}$.
+	We perform a case distinction:
+	\begin{itemize}
+			\item Suppose $s\fromclause$ is a lifting variable and but $r\fromclause$ is not.
+	Then by the definition of $\aiu$, $s\fromclause = x_j$ and $\lifboth{r\fromclause\sigma} = x_k$.
+	Suppose that $t_j$ does not have a free variable.
+	Then in the resolution derivation, from the point on as it is lifted by $x_j$ the original term does not change, hence $s = t_j$. As in consequence $s$ does not contain free variables, $s\sigma = s$.
+	As $s\sigma = r\sigma$ by the resolution rule application, we have that $s = r\sigma$.
+	But as $\lifboth{s} = \lifboth{s_j} = x_j$, we must also have that $\lifboth{r\sigma} = x_j$.
+	Hence $r\sigma = t_j$.
+
+	As $r\fromclause$ occurs in $\AIclause(C)$ for some $C$, it is not a colored term, but as it is not a lifting variable and $r\fromclause\sigma$ is a colored term, $r\fromclause$ must be a variable.
+	By Lemma~\ref{lemma:literal_in_clause}, as $r \in C$, $r\fromclause$ is equal to $s$ up to the index of lifting variables, hence $r = r\fromclause$.
+	
+	But then $r\fromclause\sigma = r\sigma = t_j$, so $\lifboth{r\fromclause\sigma} = x_j$. But then $j=k$, a contradiction.
+
+			\item Suppose $r\fromclause$ is a lifting variable but $s\fromclause$ is not. This case can be argued analogously.
+
+			\item Suppose that both $s\fromclause$ and $r\fromclause$ are a lifting variables.
+				Then by the definition of $\aiu$, $s = r = t_k$ such that $\lifboth{t_k} = x_k$.
+				Suppose that $t_j$ does not contain a free variable. Then from the point on where $s\fromclause$ has been lifted, $t_j$ does not change. Therefore $s = t_j$. But then $k=j$, a contradiction.
+
+	\end{itemize}
+
+
+	\clearpage
+	If $\aiu(s\fromclause, r\fromclause)$ introduces $\{x_j \mapsto x_k\}$ and w.l.o.g.\ $s\fromclause =x_j$, then $\lifboth{r\fromclause\sigma} = x_k$
+	and there is a $\sigma'$ such that $t_j\sigma' = s\sigma$.
+
+
+	But $s\sigma = r\sigma$, so $\lifboth{s\sigma} = \lifboth{r\sigma}$.
+	Suppose that $t_j$ does not have a free variable.
+	As terms in resolution derivations are only changed by means of unification and $t_j$ does not have free variables, it is invariant, so $t_j = s$.
+	Hence $s\sigma = s$ and $t_j = r\sigma$
+
+	$\lifboth{t_j} = \lifboth{s} = s\fromclause = x_j$
+
+	If $r\fromclause$ is a variable overbinding a colored term, then $r\fromclause = x_k$.  TODO
+
+	Suppose $r\fromclause$ is not a variable from an overbinding. As $\lifboth{r\fromclause \sigma} = x_k$, 
+
+	$\exists \sigma''$ s.t. $ \sigma'' = t_j$
+
+
+	TODO
+
+	To show: $j=k$.
+\end{proof}
+
 \begin{prop}
-	$\aiu$ is well-defined, i.e.~if it maps a variable $x$ to another variable $y$, then $y$ is unique.
+	Let $\Phi$ be the set of occurrences of $x_j$ for some $j$ in $\AIclause(C)$ for $C$ in a resolution refutation.
+	Then all terms at the positions $\Phi$ in the respective corresponding literal in $C$ refer the same term.
 \end{prop}
+\begin{proof}
+	Proof by induction.
+
+	Base case: $\AIclause(C) = \lifboth{C}$ for $C$ in some initial clause set.
+	As $x_j$ replaces a distinct term~$t_j$, all occurrences of $x_j$ in $\AIclause(C)$ correspond to some $t_j$ in $C$.
+
+	Induction step:
+	Suppose the statement holds for $C_1$ and $C_2$, usual resolution step notation.
+	Every $x_j \in C$ is derived from some $t \in C_1$ (w.l.o.g.).
+	\begin{compactitem}
+	\item
+		Suppose $t$ is a variable replacing a colored term.
+		Then $t = x_{j'}$ such that $\lifboth{x_{j'}\sigma}\tau = \lifboth{x_{j'}}\tau = x_{j'}\tau = x_j$.
+
+		Suppose that $x_j$ refers to a colored term without free variables $t_j$. 
+		TODO
+	\end{compactitem}
+
+\end{proof}
+
+\begin{prop}
+	Let $C_1$ and $C_2$ be clauses of a resolution step such that a literal $l\in C_1$ and $l' \in C_2$ are resolved upon using $\sigma$ such that $l\sigma = l'\sigma$.
+	Let $l\fromclause \in \AIclause(C_1)$ correspond to $l$ and $l\fromclause' \in \AIclause(C_2)$ correspond to $l'$ (cf.\ Lemma~\ref{lemma:literal_in_clause}).
+	Then
+	$\aiu(l\fromclause, l\fromclause')$ is well-defined, i.e.~if it maps a variable $x$ to another variable $y$, then $y$ is unique.
+\end{prop}
+\begin{proof}
+	Suppose that $\{x_j \mapsto x_k\} \in \aiu(l\fromclause, l\fromclause')$.
+	Then either a (sub)term in $l\fromclause$ or $l\fromclause'$ is $x_j$ and the corresponding (sub)term in the other literal is $t$ such that $\lifboth{t\sigma} = x_k$, or \dots
+
+	$\aiu(l\fromclause, l\fromclause')$ is ill-defined if and only if there is another occurrence of $x_j$, at whose corresponding sub(term) in the other literal is $s$ such that $\lifboth{s\sigma} = x_l$ with $k\neq l$.
+	However as $l\sigma = l'\sigma$, we know that $t\sigma = $
+
+	BIG TODO
+
+\end{proof}
 
 
 Apparently, $\tau$ establishes equality for the terms in the literals being resolved on and quasi-equality for other literals in the remaining clause.
 \begin{lemma}
+\label{lemma:literals_clauses_equal}
 	Let $l\fromclause$, $l\fromclause'$ be the literal in $\AIclause(C_1)$ and $\AIclause(C_2)$ corresponding to $l$ and $l'$ where 
 	$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$
 (i.e.~$l\sigma=l'\sigma$).
 Let $\tau = \aiu(l\fromclause\sigma, l\fromclause'\sigma)$. Then $\lifboth{l\fromclause\sigma}\tau = \lifboth{l\fromclause'\sigma}\tau$.
-\label{lemma:literals_clauses_equal}
 \comm{true and used}
 \end{lemma}
 \begin{proof} 
@@ -500,6 +590,7 @@ We show that $\lifboth{s\fromclause\sigma}\tau = \lifboth{t\fromclause\sigma}\ta
 
 
 \begin{lemma} 
+	\label{lemma:literal_in_clause}
 	If a literal $l$ occurs in a clause $C$ from a resolution refutation,
 	then $\AIclause(C)$ contains a literal $l\fromclause$ such that $l\fromclause \sim \lifboth{l}$, where $\sim$ means equal up to the index of the variables which replace colored terms.
 \comm{true but unused}

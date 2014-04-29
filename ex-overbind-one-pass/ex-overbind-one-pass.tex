@@ -628,7 +628,6 @@ $ \forall x_3 \forall x_2 \exists x_1 ( Q(x_1) \lor P(x_2) \lor R(x_3) )$
 
 \e{103b: length changes ``uniformly''} 
 
-
 \begin{prooftree}
 	\AxiomCm{\sig{Q(f(f(\ha x)))\lor P(f(\ha x))\lor R(\ha x)}}
 	\AxiomCm{\p{\lnot Q(y_1)}}
@@ -681,9 +680,31 @@ $ \forall x_3 \forall x_2 \exists x_1 ( Q(x_1) \lor P(x_2) \lor R(x_3) )$
 
 Huang and direct overbinding somewhat coincide as $x_2 < x_1$ in both cases, and $x_3 < x_1$ and $x_3 < x_2$
 
+new algo:
+	\begin{prooftree}
+		\AxiomCm{\bot \mid Q(x_1)\lor P(x_2)\lor R(x)}
+		\AxiomCm{\top \mid \lnot Q(y_1)}
+
+		\RightLabelm{y_1\mapsto f(f(x))}
+		\BinaryInfCm{Q(x_1) \mid P(x_2)\lor R( x)}
+
+		\AxiomCm{\top \mid \lnot P(y_2)}
+		\RightLabelm{y_2\mapsto f(x)}
+		\BinaryInfCm{ Q(x_1) \lor P(x_2) \mid R(x)}
+
+		\AxiomCm{\top \mid R(x_3)}
+		\RightLabelm{x\mapsto g(a)}
+		\BinaryInfCm{  Q(x_1) \lor P(x_2) \lor R(x_3) }
+		\UnaryInfCm{ Q(f(f(g(a)))) \lor P(f(g(a))) \lor R(g(a))}
+	\end{prooftree}
+	\NB{in the last line, the terms corresponding to $x_1$ and $x_2$ change, but the interpolant stays the same}
+
+
 \bigskip
 
 \e{103c: Failed attempt: different variables, accidentally the same terms appear but no logical connection}
+
+
 
 \begin{prooftree}
 	\AxiomCm{\sig{P(a, x)}}
@@ -888,7 +909,7 @@ for the record, direct method anyway:
 \e{202a -- canonical}
 {
 \begin{prooftree}
-	\AxiomCm{ \sig{P(a,x_1) \lor R(y) } }
+	\AxiomCm{ \sig{P(a,x_{564}) \lor R(y) } }
 	\AxiomCm{ \p{\lnot P(\hc x, f\hc x)}}
 	\RightLabel{\stackanchor{$x_1 \mapsto fa$}{$x\mapsto a$}}
 	\BinaryInfCm{ R(y)}
@@ -965,6 +986,7 @@ direct:
 	\BinaryInfCm{ \exists x_1 \forall x_2 \exists x_5  P(x_1, x_2) \lor ( Q(x_2, x_5) \land \lnot S(x_5))}
 \end{prooftree}
 }
+
 
 without merge in end: ($x_1<x_2, x_3<x_4, x_4<x_5$)
 
@@ -1485,10 +1507,127 @@ $\Gamma \entails (\lnot P(x_3) \land \lnot R(x_3)) \lor (P(x_3) \land S(a)) $
 
 }
 
+\clearpage 
+
+\section*{problems due to $x_j$ not referring to actual term}
+
+\e{208a}
+
+{\huge
+
+	\bfseries
+	\color{red}
+
+	WRONG: variable $x$ is used in two clauses
+
+}
+
+\begin{prooftree}
+	\AxiomCm{\p{P(f(x)) \lor Q(x) \lor R(u)}}
+	\AxiomCm{\sig{\lnot Q(a)}}
+	\BinaryInfCm{P(f(a)) \lor R(u)}
+
+	\AxiomCm{\p{P(f(x)) \lor Q(x) \lor \lnot R(u)}}
+	\AxiomCm{\sig{\lnot Q(b)}}
+	\BinaryInfCm{P(f(b)) \lor \lnot R(u)}
+
+	\BinaryInfCm{P(f(a)) \lor P(f(b))}
+
+	\AxiomCm{\p{\lnot P(f(x)) \lor S(x) }}
+	\AxiomCm{\sig{\lnot S(a)}}
+	\BinaryInfCm{\lnot P(f(a))}
+
+	\BinaryInfCm{P(f(b))} 
+\end{prooftree}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{\top \mid {P(x_1) \lor Q(x) \lor R(u)}}
+	\AxiomCm{\bot \mid {\lnot Q(y_2)}}
+	\BinaryInfCm{\lnot Q(y_2) \mid P(x_1) \lor R(u)}
+
+	\AxiomCm{\top \mid {P(x_1) \lor Q(x) \lor R(u)}}
+	\AxiomCm{\bot \mid {\lnot Q(y_4)}}
+	\BinaryInfCm{\lnot Q(y_4) \mid P(x_1) \lor R(u)}
+
+	\BinaryInfCm{ \lnot Q(y_2) \land \lnot Q(y_4) \mid  P(x_1) \lor P(x_1)}
+
+	\AxiomCm{\top \mid \p{\lnot P(x_1) \lor S(x) }}
+	\AxiomCm{\top \mid \sig{\lnot S(y_2)}}
+	\BinaryInfCm{\lnot S(y_2) \mid \lnot P(x_1)}
+
+	\BinaryInfCm{ (\lnot P(x_5) \land \lnot Q(y_2) \land \lnot Q(y_4) )
+	\spa\lor (P(x_5) \land \lnot S(y_2)) \spa{|} P(x_5)}
+	\noLine
+	\UnaryInfC{\NB{as the $x_1$ in the literal is actually $f(a)$, this way, all $x_1$ become $x_5$, but the other one is supposed to stand for $f(b)$}}
+
+
+\end{prooftree}
+
+{\huge
+
+	\bfseries
+	\color{green}
+
+	ACTUALLY:
+
+}
+
+\begin{prooftree}
+	\AxiomCm{\p{P(f(x)) \lor Q(x) \lor R(u)}}
+	\AxiomCm{\sig{\lnot Q(a)}}
+	\BinaryInfCm{P(f(a)) \lor R(u)}
+
+	\AxiomCm{\p{P(f(x')) \lor Q(x') \lor \lnot R(u')}}
+	\AxiomCm{\sig{\lnot Q(b)}}
+	\BinaryInfCm{P(f(b)) \lor \lnot R(u')}
+
+	\BinaryInfCm{P(f(a)) \lor P(f(b))}
+
+	\AxiomCm{\p{\lnot P(f(x'')) \lor S(x'') }}
+	\AxiomCm{\sig{\lnot S(a)}}
+	\BinaryInfCm{\lnot P(f(a))}
+
+	\BinaryInfCm{P(f(b))} 
+\end{prooftree}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{\top \mid {P(x_1) \lor Q(x) \lor R(u)}}
+	\AxiomCm{\bot \mid {\lnot Q(y_2)}}
+	\BinaryInfCm{\lnot Q(y_2) \mid P(x_1) \lor R(u)}
+
+	\AxiomCm{\top \mid {P(x_2) \lor Q(x) \lor R(u)}}
+	\AxiomCm{\bot \mid {\lnot Q(y_4)}}
+	\BinaryInfCm{\lnot Q(y_4) \mid P(x_2) \lor R(u)}
+
+	\BinaryInfCm{ \lnot Q(y_2) \land \lnot Q(y_4) \mid  P(x_1) \lor P(x_2)}
+
+	\AxiomCm{\top \mid \p{\lnot P(x_3) \lor S(x) }}
+	\AxiomCm{\top \mid \sig{\lnot S(y_2)}}
+	\BinaryInfCm{\lnot S(y_2) \mid \lnot P(x_3)}
+
+	\BinaryInfCm{ (\lnot P(x_5) \land \lnot Q(y_2) \land \lnot Q(y_4) )
+	\spa\lor (P(x_5) \land \lnot S(y_2)) \spa{|} P(x_2)}
+	\noLine
+	\UnaryInfC{ \NB{$\aiu(P(x_1), P(x_5)) = \{x_1 \mapsto x_5, x_2\mapsto x_5\}$}}
+
+
+\end{prooftree}
+
+Hence a term with a free variable in a clause can never be lifted by the same variable as a term in another clause.
+
+If two terms in the same clause are lifted with a certain variable, they are bound together in the derivation anyway.
+
+
 
 \clearpage 
 
 \section*{$f(x) \lor g(x)$ with $f$, $g$ different colors}
+
+\e{207a}
 ~
 
 \begin{prooftree}
