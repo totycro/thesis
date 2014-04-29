@@ -2,9 +2,9 @@
 	paper=a4,% 
 	%landscape,
 	%DIV12, % mehr text pro seite als defaultyyp
-	DIV15, 
+	%DIV10, 
 	%DIV=calc,%
-	%twoside=false,%
+	twoside=false,%
 	liststotoc,
 	bibtotoc,
 	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
@@ -133,6 +133,8 @@
 
 \def\proofSkipAmount{ \vskip -0.3em}
 
+\usepackage{refcheck}
+
 \begin{document}
 
 \newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
@@ -256,12 +258,13 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 		%literal to put in $\AImatrix$ is defined as $x_i =\lifboth{l\sigma} = \lifboth{l'\sigma}$
 		%$l^\circ\dotsc$ literal to put in $\AImatrix$ is defined as $x_i =\lifboth{l\sigma} = \lifboth{l'\sigma}$
 
-		$l\sigma = l'\sigma$, but $l^*$ and ${l^*}'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them.
+		$l\sigma = l'\sigma$, but $l\fromclause$ and $l\fromclause'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them.
 		
 		Prose explanation of formal definition below: Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-replacing-var vs $\Phi$-term (let var win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
 		Also apply this to liftings in $\AIclause$ and $\AImatrix$ here.
 
-		$\aiu$ is defined on terms which are used as parameters for literals $l\fromclause = A(a_1, \dotsc, a_n)$, $l\fromclause' = A(b_1, \dotsc, b_n)$ which occur in $\AIclause(C_1)$, $\AIclause(C_2)$ such that for their corresponding $l$ and $l'$, $l\sigma = l'\sigma$.
+		$\aiu$ is defined on terms which are used as parameters for literals $l\fromclause$ and $l\fromclause'$
+		which occur in $\AIclause(C_1)$, $\AIclause(C_2)$ such that for their corresponding $l$ and $l'$, $l\sigma = l'\sigma$.
 		Note that if one of the arguments of $\aiu$ has assigned a color, the other one either has none or the same color.
 		There cannot be a conflict as otherwise their original form would not be unifiable.
 	%	\[
@@ -274,6 +277,9 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 	%		\end{cases}
 	%	\]
 		Note that $\aiu(a, b)$ is well-defined, i.e.~never maps a variable to two different values as each occurrence of some $x_j$ refers to a term with possible free variables, and since across the definition of $\aiu$, always the same substitution $\sigma$ is used as reference, every occurrence of $x_j$ will be mapped to the same variable.
+
+		Let 
+		$l\fromclause = A(a_1, \dotsc, a_n)$, $l\fromclause' = A(b_1, \dotsc, b_n)$
 
 		$\aiu(A(a_1, \dotsc, a_n), A(b_1, \dotsc, b_n)) = \bigcup_{i=1}^n \aiu(a_i, b_i)$
 
@@ -396,7 +402,7 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 \begin{lemma}
 	$\AImatrix(C)$ and $\AIclause(C)$ contain only grey terms and variables replacing colored terms. They do not contain colored terms.
 	\label{lemma:no_colored_terms}
-	\comm{true}
+	\comm{true and used}
 \end{lemma}
 
 
@@ -409,7 +415,7 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
     \item $\AIclause(C) = \lifboth{\AIclause(C)}$.
   \end{compactenum}
   \label{corr:lift_ai}
-  \comm{true and used}
+  \comm{true and unused}
 \end{corr}
 
 \begin{lemma}
@@ -418,19 +424,23 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 \end{lemma}
 
 \begin{lemma}
-	Let $F$ be a formula without colored terms such that for a set of formulas $\Gamma$, $\Gamma \entails F$.
-	Then $\Gamma \entails \lifboth{F\sigma}$ for a substitution $\sigma$.
+	Let $F$ be a formula without colored terms such that for a set of formulas $\Phi$, $\Phi \entails F$.
+	Then $\Phi \entails \lifboth{F\sigma}$ for a substitution $\sigma$.
 	\label{lemma:substitute_and_lift}
 \end{lemma}
 \begin{proof}
-	Note that substitutions only replace variables. Term positions, which are replaced by grey terms by $\sigma$ are not affected by the lifting and hold due to being special cases of $F$.
+	Note that substitutions only replace variables. Term positions, which are replaced by grey terms by $\sigma$ are not affected by the lifting and hold due to being special cases of~$F$.
 
 	Term positions, which are replaced by colored term by $\sigma$ are again reduced to variables.
 	All occurrences of a certain variable in $F$ are substituted by the same term, so as the lifting replaces a certain term always be the same variables, all these occurrences of the variable are replaced by the same variable.
 \end{proof}
 
+\begin{prop}
+	$\aiu$ is well-defined, i.e.~if it maps a variable $x$ to another variable $y$, then $y$ is unique.
+\end{prop}
 
-Apparently, $\tau$ creates equality for the terms in the literals and quasi-equality for other literals in the remaining clause.
+
+Apparently, $\tau$ establishes equality for the terms in the literals being resolved on and quasi-equality for other literals in the remaining clause.
 \begin{lemma}
 	Let $l\fromclause$, $l\fromclause'$ be the literal in $\AIclause(C_1)$ and $\AIclause(C_2)$ corresponding to $l$ and $l'$ where 
 	$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$
