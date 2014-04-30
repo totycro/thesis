@@ -497,6 +497,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 \clearpage
 
+\section{proof attempt using $\AIclause$/$\AImatrix$}
 
 \begin{lemma}
 	Suppose no colored term occurs in $\PI(C) \lor C$ for $C \in \pi$.
@@ -538,11 +539,89 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 			Now as $l\sigma = l'\sigma$, their interpretation is linked, so we get the result in a similar way as in Huang's proof.
 
+	\end{itemize}
+
+\end{proof}
+
+\begin{conj}
+	Let $\Phi_{\AIclause(C)}$ be the set of occurrences of lifting variables $x_j$ for some $j$ in $\AIclause(C)$ for $C$ in a resolution refutation.
+	Let $\Phi_{C}$ be the terms at the positions $\Phi_{\AIclause(C)}$ in the respective corresponding literal in $C$ .
+	Then all terms at $\Phi_C$ are equal.
+\end{conj}
+\begin{proof}
+	Note that by Lemma~\ref{lemma:disjoint_lifting_variables}, incomparable clauses do not share lifting variables which replace terms without free variables. 
+	We proceed by induction.
+
+	Base case: $\AIclause(C) = \lifboth{C}$ for $C$ in some initial clause set.
+	As $x_j$ replaces a distinct term~$t_j$, all occurrences of $x_j$ in $\AIclause(C)$ correspond to some $t_j$ in $C$.
+
+	Induction step:
+	Suppose the statement holds for $C_1$ and $C_2$, usual resolution step notation.
+	Every $x_j \in \AIclause(C)$ is derived from some $t \in \AIclause(C_1)$ (w.l.o.g.).
+	\begin{compactitem}
+	\item
+		Suppose $t$ is a lifting variable.
+		Then $t = x_{j'}$ such that $\lifboth{x_{j'}\sigma}\tau = \lifboth{x_{j'}}\tau = x_{j'}\tau =\nolinebreak x_j$.
+
+		Suppose that $t$ does not contain a free variable.
+		Then by Lemma~\ref{lemma:tau_only_for_variable_terms}, $\tau$ is trivial on $x_{j'}$, so $x_{j'}\tau = x_{j'}$, but then $j=j'$.
+		By the induction hypothesis, all terms at $\Phi_{C_1}$ are equal.
+	\end{compactitem}
+
+	\bigskip
+
+	~
+	\bigskip
+
+	ind step for terms with variables
+
+
+	Let $\phi$ and $\phi'$ be contained in $\Phi_{\AIclause(C)}$. We show that their corresponding positions $\phi_C$ and $\phi_C'$ in $\Phi_C$ refer to equal terms.
+	Let $\phi$ and $\phi'$ refer to $s\fromclause$ and $r\fromclause$ respectively, so $s\fromclause = r\fromclause = x_j$.
+	\begin{itemize}
+		\item Suppose that $s\fromclause$ and $r\fromclause$ are both derived from terms in either $C_1$ or $C_2$.
+			Then by the induction hypothesis, they both refer to some term $t$ in $C_1$ or $C_2$ (TODO: be more precise).
+			By the construction of $\AIclause(C)$, they refer to $\lifboth{t\sigma}\tau$ in $\AIclause(C)$.
+
+		\item Suppose that w.l.o.g.\ $s\fromclause$ is derived from a term $s\fromclause'$ in $C_1$ and $r\fromclause$ is derived from a term $r\fromclause'$ in $C_2$.
+
+			Suppose that $s\fromclause'$ is a lifting variable and $r\fromclause'$ is not. 
+			Then $r\fromclause'$ is a variable as $\AIclause(C_2)$ does not contain colored terms but $\lifboth{r\fromclause'\sigma} = x_j$.
+			%As $\lifboth{s\fromclause'\sigma} = 
+
+
+			$\lifboth{s\fromclause} = \lifboth{r\fromclause}$ which implies that $s\fromclause = r\fromclause$.
+			
+			$s\fromclause = \lifboth{s\fromclause'\sigma}\tau$ and
+			$r\fromclause = \lifboth{r\fromclause'\sigma}\tau$.
+
+			Hence $\lifboth{s\fromclause'\sigma}\tau = \lifboth{r\fromclause'\sigma}\tau$
+			TODO
+			
+			The opposite case is analogous.
 
 	\end{itemize}
 
+\end{proof}
+
+\begin{conj}
+	Let $C_1$ and $C_2$ be clauses of a resolution step such that a literal $l\in C_1$ and $l' \in C_2$ are resolved upon using $\sigma$ such that $l\sigma = l'\sigma$.
+	Let $l\fromclause \in \AIclause(C_1)$ correspond to $l$ and $l\fromclause' \in \AIclause(C_2)$ correspond to $l'$ (cf.\ Lemma~\ref{lemma:literal_in_clause}).
+	Then
+	$\aiu(l\fromclause, l\fromclause')$ is well-defined, i.e.~if it maps a variable $x$ to another variable $y$, then $y$ is unique.
+\end{conj}
+\begin{proof}
+	Suppose that $\{x_j \mapsto x_k\} \in \aiu(l\fromclause, l\fromclause')$.
+	Then either a (sub)term in $l\fromclause$ or $l\fromclause'$ is $x_j$ and the corresponding (sub)term in the other literal is $t$ such that $\lifboth{t\sigma} = x_k$, or \dots
+
+	$\aiu(l\fromclause, l\fromclause')$ is ill-defined if and only if there is another occurrence of $x_j$, at whose corresponding sub(term) in the other literal is $s$ such that $\lifboth{s\sigma} = x_l$ with $k\neq l$.
+	However as $l\sigma = l'\sigma$, we know that $t\sigma = $
+
+	BIG TODO
 
 \end{proof}
+
+
 
 \clearpage
 \section{old stuff, not sure if valuable}

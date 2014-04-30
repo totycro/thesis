@@ -438,6 +438,9 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 \begin{lemma}
 	\label{lemma:tau_only_for_variable_terms}
 	$\{x_j \mapsto x_k\} \in \aiu(l\fromclause, l\fromclause')$ with $j\neq k$ implies that $t_j$ (corresponding to $x_j$) contains a free variable.
+
+	In other words: If $t_j$ does not contain a free variable, then if it is lifted to $x_j$, $\tau$ will never change it to some $x_k$ with $k\neq j$.
+	\comm{true but unused}
 \end{lemma}
 \begin{proof}
 	Let  $\aiu(s\fromclause, r\fromclause)$ introduce $\{x_j \mapsto x_k\}$.
@@ -468,101 +471,13 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 \begin{lemma}
 	\label{lemma:disjoint_lifting_variables}
 	The set of lifting variables, which refer to terms which have free variables, is disjoint for every incomparable clause.
+	\comm{true but ok to have unused}
 \end{lemma}
 \begin{proof}
 	The free variables for every inital clause is disjoint.
 \end{proof}
 
-\begin{conj}
-	Let $\Phi_{\AIclause(C)}$ be the set of occurrences of lifting variables $x_j$ for some $j$ in $\AIclause(C)$ for $C$ in a resolution refutation.
-	Let $\Phi_{C}$ be the terms at the positions $\Phi_{\AIclause(C)}$ in the respective corresponding literal in $C$ .
-	Then all terms at $\Phi_C$ are equal.
-\end{conj}
-\begin{proof}
-	Note that by Lemma~\ref{lemma:disjoint_lifting_variables}, incomparable clauses do not share lifting variables which replace terms without free variables. 
-	We proceed by induction.
-
-	Base case: $\AIclause(C) = \lifboth{C}$ for $C$ in some initial clause set.
-	As $x_j$ replaces a distinct term~$t_j$, all occurrences of $x_j$ in $\AIclause(C)$ correspond to some $t_j$ in $C$.
-
-	Induction step:
-	Suppose the statement holds for $C_1$ and $C_2$, usual resolution step notation.
-	Every $x_j \in \AIclause(C)$ is derived from some $t \in \AIclause(C_1)$ (w.l.o.g.).
-	\begin{compactitem}
-	\item
-		Suppose $t$ is a lifting variable.
-		Then $t = x_{j'}$ such that $\lifboth{x_{j'}\sigma}\tau = \lifboth{x_{j'}}\tau = x_{j'}\tau =\nolinebreak x_j$.
-
-		Suppose that $t$ does not contain a free variable.
-		Then by Lemma~\ref{lemma:tau_only_for_variable_terms}, $\tau$ is trivial on $x_{j'}$, so $x_{j'}\tau = x_{j'}$, but then $j=j'$.
-		By the induction hypothesis, all terms at $\Phi_{C_1}$ are equal.
-	\end{compactitem}
-
-	\bigskip
-
-	~
-	\bigskip
-
-	ind step for terms with variables
-
-
-	Let $\phi$ and $\phi'$ be contained in $\Phi_{\AIclause(C)}$. We show that their corresponding positions $\phi_C$ and $\phi_C'$ in $\Phi_C$ refer to equal terms.
-	Let $\phi$ and $\phi'$ refer to $s\fromclause$ and $r\fromclause$ respectively, so $s\fromclause = r\fromclause = x_j$.
-	\begin{itemize}
-		\item Suppose that $s\fromclause$ and $r\fromclause$ are both derived from terms in either $C_1$ or $C_2$.
-			Then by the induction hypothesis, they both refer to some term $t$ in $C_1$ or $C_2$ (TODO: be more precise).
-			By the construction of $\AIclause(C)$, they refer to $\lifboth{t\sigma}\tau$ in $\AIclause(C)$.
-
-		\item Suppose that w.l.o.g.\ $s\fromclause$ is derived from a term $s\fromclause'$ in $C_1$ and $r\fromclause$ is derived from a term $r\fromclause'$ in $C_2$.
-
-			Suppose that $s\fromclause'$ is a lifting variable and $r\fromclause'$ is not. 
-			Then $r\fromclause'$ is a variable as $\AIclause(C_2)$ does not contain colored terms but $\lifboth{r\fromclause'\sigma} = x_j$.
-			%As $\lifboth{s\fromclause'\sigma} = 
-
-
-			$\lifboth{s\fromclause} = \lifboth{r\fromclause}$ which implies that $s\fromclause = r\fromclause$.
-			
-			$s\fromclause = \lifboth{s\fromclause'\sigma}\tau$ and
-			$r\fromclause = \lifboth{r\fromclause'\sigma}\tau$.
-
-			Hence $\lifboth{s\fromclause'\sigma}\tau = \lifboth{r\fromclause'\sigma}\tau$
-			TODO
-			
-			The opposite case is analogous.
-
-
-
-
-
-			
-
-	\end{itemize}
-
-
-
-
-
-\end{proof}
-
-\begin{conj}
-	Let $C_1$ and $C_2$ be clauses of a resolution step such that a literal $l\in C_1$ and $l' \in C_2$ are resolved upon using $\sigma$ such that $l\sigma = l'\sigma$.
-	Let $l\fromclause \in \AIclause(C_1)$ correspond to $l$ and $l\fromclause' \in \AIclause(C_2)$ correspond to $l'$ (cf.\ Lemma~\ref{lemma:literal_in_clause}).
-	Then
-	$\aiu(l\fromclause, l\fromclause')$ is well-defined, i.e.~if it maps a variable $x$ to another variable $y$, then $y$ is unique.
-\end{conj}
-\begin{proof}
-	Suppose that $\{x_j \mapsto x_k\} \in \aiu(l\fromclause, l\fromclause')$.
-	Then either a (sub)term in $l\fromclause$ or $l\fromclause'$ is $x_j$ and the corresponding (sub)term in the other literal is $t$ such that $\lifboth{t\sigma} = x_k$, or \dots
-
-	$\aiu(l\fromclause, l\fromclause')$ is ill-defined if and only if there is another occurrence of $x_j$, at whose corresponding sub(term) in the other literal is $s$ such that $\lifboth{s\sigma} = x_l$ with $k\neq l$.
-	However as $l\sigma = l'\sigma$, we know that $t\sigma = $
-
-	BIG TODO
-
-\end{proof}
-
-
-Apparently, $\tau$ establishes equality for the terms in the literals being resolved on and quasi-equality for other literals in the remaining clause.
+Apparently, $\tau$ establishes equality for the terms in the literals being resolved on and quasi-equality for other literals in the remaining clause:
 \begin{lemma}
 \label{lemma:literals_clauses_equal}
 	Let $l\fromclause$, $l\fromclause'$ be the literal in $\AIclause(C_1)$ and $\AIclause(C_2)$ corresponding to $l$ and $l'$ where 
@@ -572,7 +487,8 @@ Let $\tau = \aiu(l\fromclause\sigma, l\fromclause'\sigma)$. Then $\lifboth{l\fro
 \comm{true and used}
 \end{lemma}
 \begin{proof} 
-	Let $s\fromclause$ be a (sub-)term of a parameter of $l\fromclause\sigma$ and $t\fromclause\sigma$ the term at the same term position in $l\fromclause'\sigma$. Let $s$ and $t$ be their corresponding (sub)-term at the same term position in $l\sigma$ and $l'\sigma$.
+	Let $s\fromclause$ be a (sub-)term of a parameter of $l\fromclause\sigma$ and $t\cl$ the term at the same term position in $l\fromclause'\sigma$.
+	Let $s$ and $t$ be their corresponding (sub)-term at the same term position in $l\sigma$ and $l'\sigma$.
 We show that $\lifboth{s\fromclause\sigma}\tau = \lifboth{t\fromclause\sigma}\tau$ by induction on the structure of $s\fromclause$ and $t\fromclause$ respectively.
 
 	Note that by Lemma~\ref{lemma:no_colored_terms}, $s\fromclause$ and $t\fromclause$ do not contain colored terms. Hence only grey terms can contain subterms.
