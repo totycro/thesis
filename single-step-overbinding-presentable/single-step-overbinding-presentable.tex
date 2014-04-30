@@ -1,7 +1,7 @@
 \documentclass[,%fontsize=11pt,%
 	paper=a4,% 
 	%landscape,
-	%DIV12, % mehr text pro seite als defaultyyp
+	DIV12, % mehr text pro seite als defaultyyp
 	%DIV10, 
 	%DIV=calc,%
 	twoside=false,%
@@ -276,7 +276,7 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 	%			x_j & \text{if $\lifboth{a_i\sigma} = \lifboth{b_i\sigma} = x_j$ }
 	%		\end{cases}
 	%	\]
-		Note that $\aiu(a, b)$ is well-defined, i.e.~never maps a variable to two different values as each occurrence of some $x_j$ refers to a term with possible free variables, and since across the definition of $\aiu$, always the same substitution $\sigma$ is used as reference, every occurrence of $x_j$ will be mapped to the same variable.
+		Note that $\aiu(a, b)$ is well-defined, i.e.~never maps a variable to two different values as each occurrence of some $x_j$ refers to a term with possible free variables, and since across the definition of $\aiu$, always the same substitution $\sigma$ is used as reference, every occurrence of $x_j$ will be mapped to the same variable. (NOTE: this is what yet unproven conjectures in the other pdf are trying to formalize.)
 
 		Let 
 		$l\fromclause = A(a_1, \dotsc, a_n)$, $l\fromclause' = A(b_1, \dotsc, b_n)$
@@ -382,7 +382,7 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	But now consider $x_1 \sigma$. 
 	As $x_1$ has its place in the domain of variables to replace colored terms, and $\sigma$ is taken from a resolution refutation, they do not affect each other. 
 	Hence $x_1\sigma = x_1$ and therefore $\lifdelta{x_1\sigma} = x_1$, but $\lifdelta{x_1}\sigma' = \lifdelta{x_1}\sigma' = x_2$.
-	
+
 
 	However such a situation arises naturally if we lift colored terms after every step of the interpolant extraction procedure, as there, the intermediate relative interpolants clearly contains variables to overbind terms, but we also need to treat terms that enter the interpolant by means of unification.
 \end{remark}
@@ -408,19 +408,20 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 
 
 \begin{corr}
-  \label{corr:lift_ai}
-  For a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$:
-  \begin{compactenum}
-    \item $\AImatrix(C) = \lifboth{\AImatrix(C)}$.
+	\label{corr:lift_ai}
+	For a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$:
+	\begin{compactenum}
+	\item $\AImatrix(C) = \lifboth{\AImatrix(C)}$.
 
-    \item $\AIclause(C) = \lifboth{\AIclause(C)}$.
-  \end{compactenum}
-  \comm{true and unused}
+	\item $\AIclause(C) = \lifboth{\AIclause(C)}$.
+	\end{compactenum}
+	\comm{true and unused}
 \end{corr}
 
 \begin{lemma}
-  The $x_i$, $y_i$ and $z_i$ do not occur in any substitution of a resolution refutation.
-  \comm{true but unused}
+	\label{lemma:no_lifting_vars_in_subst}
+	Lifting variables do not occur in any substitution of a resolution refutation.
+	\comm{true and used, also generally relevant}
 \end{lemma}
 
 \begin{lemma}
@@ -437,36 +438,90 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 
 \begin{lemma}
 	\label{lemma:tau_only_for_variable_terms}
-	$\{x_j \mapsto x_k\} \in \aiu(l\fromclause, l\fromclause')$ with $j\neq k$ implies that $t_j$ (corresponding to $x_j$) contains a free variable.
+	$(x_j \mapsto x_k) \in \aiu(l\fromclause, l\fromclause')$ with $j\neq k$ implies that $t_j$ (corresponding to $x_j$) contains a free variable.
 
 	In other words: If $t_j$ does not contain a free variable, then if it is lifted to $x_j$, $\tau$ will never change it to some $x_k$ with $k\neq j$.
-	\comm{true but unused}
+	\comm{true but unused in actual proof of the procedure}
 \end{lemma}
 \begin{proof}
 	Let  $\aiu(s\fromclause, r\fromclause)$ introduce $\{x_j \mapsto x_k\}$.
 	We perform a case distinction:
 	\begin{itemize}
-			\item Suppose $s\fromclause$ is a lifting variable and but $r\fromclause$ is not.
-	Then by the definition of $\aiu$, $s\fromclause = x_j$ and $\lifboth{r\fromclause\sigma} = x_k$.
-	Suppose that $t_j$ does not have a free variable.
-	Then in the resolution derivation, from the point on as it is lifted by $x_j$ the original term does not change, hence $s = t_j$. As in consequence $s$ does not contain free variables, $s\sigma = s$.
-	As $s\sigma = r\sigma$ by the resolution rule application, we have that $s = r\sigma$.
-	But as $\lifboth{s} = \lifboth{s_j} = x_j$, we must also have that $\lifboth{r\sigma} = x_j$.
-	Hence $r\sigma = t_j$.
+		\item Suppose $s\fromclause$ is a lifting variable and but $r\fromclause$ is not.
+			Then by the definition of $\aiu$, $s\fromclause = x_j$ and $\lifboth{r\fromclause\sigma} = x_k$.
+			Suppose that $t_j$ does not have a free variable.
+			Then in the resolution derivation, from the point on as it is lifted by $x_j$ the original term does not change, hence $s = t_j$. As in consequence $s$ does not contain free variables, $s\sigma = s$.
+			As $s\sigma = r\sigma$ by the resolution rule application, we have that $s = r\sigma$.
+			But as $\lifboth{s} = \lifboth{s_j} = x_j$, we must also have that $\lifboth{r\sigma} = x_j$.
+			Hence $r\sigma = t_j$.
 
-	As $r\fromclause$ occurs in $\AIclause(C)$ for some $C$, it is not a colored term, but as it is not a lifting variable and $r\fromclause\sigma$ is a colored term, $r\fromclause$ must be a variable.
-	By Lemma~\ref{lemma:literal_in_clause}, as $r \in C$, $r\fromclause$ is equal to $s$ up to the index of lifting variables, hence $r = r\fromclause$.
-	
-	But then $r\fromclause\sigma = r\sigma = t_j$, so $\lifboth{r\fromclause\sigma} = x_j$. But then $j=k$, a contradiction.
+			As $r\fromclause$ occurs in $\AIclause(C)$ for some $C$, it is not a colored term, but as it is not a lifting variable and $r\fromclause\sigma$ is a colored term, $r\fromclause$ must be a variable.
+			By Lemma~\ref{lemma:literal_in_clause_similar}, as $r \in C$, $r\fromclause$ is equal to $s$ up to the index of lifting variables, hence $r = r\fromclause$.
 
-			\item Suppose $r\fromclause$ is a lifting variable but $s\fromclause$ is not. This case can be argued analogously.
+			But then $r\fromclause\sigma = r\sigma = t_j$, so $\lifboth{r\fromclause\sigma} = x_j$. But then $j=k$, a contradiction.
 
-			\item Suppose that both $s\fromclause$ and $r\fromclause$ are a lifting variables.
-				Then by the definition of $\aiu$, $s = r = t_k$ such that $\lifboth{t_k} = x_k$.
-				Suppose that $t_j$ does not contain a free variable. Then from the point on where $s\fromclause$ has been lifted, $t_j$ does not change. Therefore $s = t_j$. But then $k=j$, a contradiction.
-				\qedhere
+		\item Suppose $r\fromclause$ is a lifting variable but $s\fromclause$ is not. This case can be argued analogously.
+
+		\item Suppose that both $s\fromclause$ and $r\fromclause$ are a lifting variables.
+			Then by the definition of $\aiu$, $s = r = t_k$ such that $\lifboth{t_k} = x_k$.
+			Suppose that $t_j$ does not contain a free variable. Then from the point on where $s\fromclause$ has been lifted, $t_j$ does not change. Therefore $s = t_j$. But then $k=j$, a contradiction.
+			\qedhere
 	\end{itemize}
 \end{proof}
+
+\begin{lemma}
+	\label{lemma:jka5a5halat}
+	If a grey or maximal colored term $t$ in a clause $C$ does not contain a free variable, then for $t\cl$ in $\AIclause$, we have that $\lifboth{t}=t\cl$. 
+	\comm{this is more of a comment, prove properly before actually using it}
+\end{lemma}
+\begin{proof}
+	Either $t$ is there from beginning, then $t\cl = \lifboth{t}$.
+	Otherwise it was introduced by a substitution, but then it was also introduced in $\AIclause(C)$ and lifted there.
+
+	Substitutions do not affect $t\cl$ due to Lemma~\ref{lemma:no_lifting_vars_in_subst}.
+	Hence also liftings do not affect $t\cl$.
+	By Lemma~\ref{lemma:tau_only_for_variable_terms}, $\tau$ does not change $t\cl$.
+
+	$\Ra$ $t$ as well as $t\cl$ remain invariant
+\end{proof}
+
+\cbstart
+\begin{lemma}
+	\label{lemma:just_introduced_lifting_vars_not_affected_by_tau}
+	Let $u$ be a variable in a literal $l$ being unified in a resolution step with $l'$ using $\sigma$ and let $\lifboth{u\sigma} = z_k$.
+	Then $z_k\tau = z_k$.
+	\comm{true and used}
+\end{lemma}
+\begin{proof}
+	$u\sigma = t_k$.
+
+	Suppose that elsewhere in the literal $l\cl$ $s = z_k$ occurs and in $l\cl'$, there's $t$ at that position.
+
+	$s\cl \sim \lifboth{l}$, so $s$ is some colored term.
+
+	TODO
+
+	\begin{itemize}
+			\item
+				Suppose that $(z_k\mapsto z_j) \in \tau$ (first kind). 
+				Then we have a pair of corresponding terms $(a\cl, b\cl)$ in $l\cl$ and $l\cl'$ respectively such that  
+				$a\cl = z_k$ and $b\cl$ is such that $\lifboth{b\cl\sigma} = z_j$ but $b\cl$ is not a lifting variable. As by Lemma~\ref{lemma:no_colored_terms} $b\cl$ is not colored, it must be a variable.
+				and as by Lemma~\ref{lemma:literal_in_clause_similar} $b\cl \sim \lifboth{b}$, $b = b\cl$.
+
+				%As $u$ is a variable and by Lemma~\ref{lemma:literal_in_clause_similar} $u\cl \sim \lifboth{u}$, $u = u\cl$.
+
+				Furthermore due to $l\sigma = l'\sigma$, $a\sigma = b\sigma$.
+				Hence $\lifboth{b\cl\sigma} = \lifboth{b\sigma} = \lifboth{a\sigma}$.
+
+	\end{itemize}
+
+	TODO
+
+	As the $\Delta$-term which is replaced by $z_k$ occurs in the unified literal, none of its occurrences are modified any further, so $z_k$ is not updated to some $z_l$, $l\neq k$ by the substitution $\tau$.
+
+	TODO
+\end{proof}
+\cbend
 
 \begin{lemma}
 	\label{lemma:disjoint_lifting_variables}
@@ -479,128 +534,248 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 
 Apparently, $\tau$ establishes equality for the terms in the literals being resolved on and quasi-equality for other literals in the remaining clause:
 \begin{lemma}
-\label{lemma:literals_clauses_equal}
+	\label{lemma:literals_clauses_equal}
 	Let $l\fromclause$, $l\fromclause'$ be the literal in $\AIclause(C_1)$ and $\AIclause(C_2)$ corresponding to $l$ and $l'$ where 
 	$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$
-(i.e.~$l\sigma=l'\sigma$).
-Let $\tau = \aiu(l\fromclause\sigma, l\fromclause'\sigma)$. Then $\lifboth{l\fromclause\sigma}\tau = \lifboth{l\fromclause'\sigma}\tau$.
-\comm{true and used}
+	(i.e.~$l\sigma=l'\sigma$).
+	Let $\tau = \aiu(l\fromclause\sigma, l\fromclause'\sigma)$. Then $\lifboth{l\fromclause\sigma}\tau = \lifboth{l\fromclause'\sigma}\tau$.
+	\comm{true and used}
 \end{lemma}
 \begin{proof} 
 	Let $s\fromclause$ be a (sub-)term of a parameter of $l\fromclause\sigma$ and $t\cl$ the term at the same term position in $l\fromclause'\sigma$.
 	Let $s$ and $t$ be their corresponding (sub)-term at the same term position in $l\sigma$ and $l'\sigma$.
-We show that $\lifboth{s\fromclause\sigma}\tau = \lifboth{t\fromclause\sigma}\tau$ by induction on the structure of $s\fromclause$ and $t\fromclause$ respectively.
+	We show that $\lifboth{s\fromclause\sigma}\tau = \lifboth{t\fromclause\sigma}\tau$ by induction on the structure of $s\fromclause$ and $t\fromclause$ respectively.
 
-	Note that by Lemma~\ref{lemma:no_colored_terms}, $s\fromclause$ and $t\fromclause$ do not contain colored terms. Hence only grey terms can contain subterms.
+	Note that by Lemma~\ref{lemma:no_colored_terms}, $s\fromclause$ and $t\fromclause$ do not contain colored terms. This also implies that only grey terms can contain subterms.
 
-	Suppose that $s\fromclause = z_i$ and/or $t\fromclause = z_j$ for some $i$ and $j$.
-	Suppose that $s\fromclause \neq t\fromclause$ as otherwise we are done.
-	Hence $s\neq t$, but by the resolution rule application $s\sigma = t\sigma$. Cases:
-	\begin{compactitem}
-		\item $s\fromclause = z_i$ and $t\fromclause = z_j$ with $i\neq j$.
-					As $\sigma$ affects neither $s\fromclause$, nor $t\fromclause$,
-					$\lifboth{s\fromclause \sigma}  = s\fromclause$ and
-					$\lifboth{t\fromclause \sigma}  = t\fromclause$.
-					We show that $s\fromclause\tau = t\fromclause\tau$.
+	By Lemma~\ref{lemma:literal_in_clause_similar}, $l\cl \sim \lifboth{l}$ and
+	$l'\cl \sim \lifboth{l'}$. 
 
-					Note that the function $\aiu$ visits all subterms and combines all mappings it encounters.
-					Hence $\aiu(s\fromclause, t\fromclause)$ is part of the final substitution $\tau$.
-					However due to the just established circumstances, $\aiu(s\fromclause, t\fromclause) = \{z_i \mapsto z_m, z_j \mapsto z_m\}$ with $m$ as in the definition of $\aiu$, so $s\fromclause\tau = t\fromclause\tau$.
+	\begin{description}
+		\item[Lifting variables.]
 
-		\item W.l.o.g.~$s\fromclause = z_i$ and $t\fromclause \neq z_j$ for any $j$.
-			Then as $s\sigma = t\sigma$ and $s$ is a $\Delta$-term, $t$ must be a variable which is substituted for a $\Delta$-term by $\sigma$.
-			So $\lifboth{t\sigma} = z_k$ for some $k$.
-			Note that the function $\aiu$ visits all subterms and combines all mappings it encounters.
-			At $\aiu(s\fromclause, t\fromclause)$, $\{ z_i \mapsto z_k \}$ is added.
-			Therefore $\lifboth{s\fromclause\sigma}\tau = \lifboth{z_i\sigma}\tau = \lifboth{z_i}\tau = z_i\tau = z_k$.
-			As the $\Delta$-term which is replaced by $z_k$ occurs in the unified literal, none of its occurrences are modified any further, so $z_k$ is not updated to some $z_l$, $l\neq k$ by the substitution $\tau$.
-			Therefore $z_k = z_k \tau = \lifboth{t\fromclause\sigma}\tau = z_k \tau$. 
-%			But as $t\fromclause = \lifboth{t}$ and $t$ is a variable, $t\fromclause\sigma = s$.
-			%Note that $\sigma$ does not affect $s\fromclause$.
-			%So $\lifboth{t\fromclause\sigma} = \lifboth{s} =  s\fromclause = s\fromclause\sigma = \lifboth{s\fromclause\sigma}$ and also 
-			%$\lifboth{t\fromclause\sigma}\tau = \lifboth{s\fromclause\sigma}\tau$.
-	\end{compactitem}
+			Suppose that $s\fromclause = z_i$ and/or $t\fromclause = z_j$ for some $i$ and $j$.
+			Suppose that $s\fromclause \neq t\fromclause$ as otherwise we are done.
+			%Hence $s\neq t$, but
+			By the resolution rule application $s\sigma = t\sigma$. Cases:
+			\begin{compactitem}
+			\item $s\fromclause = z_i$ and $t\fromclause = z_j$ with $i\neq j$.
+				As $\sigma$ affects neither $s\fromclause$ nor $t\fromclause$,
+				$\lifboth{s\fromclause \sigma}  = s\fromclause$ and
+				$\lifboth{t\fromclause \sigma}  = t\fromclause$.
+				We show that $s\fromclause\tau = t\fromclause\tau$.
 
-	Suppose that $s\fromclause$ and $t\fromclause$ are grey terms:
-	Then their outermost symbol is unaffected by the lifting and as $s\sigma = t\sigma$, the outermost symbol is the same under $\sigma$ in $s\fromclause \sigma$ and $t\fromclause\sigma$.
-	The equality of the parameters is established by the induction hypothesis.
-	Note that grey constants can be treated as grey functions without parameters.
+				Note that the function $\aiu$ visits all subterms and combines all mappings it encounters.
+				Hence $\aiu(s\fromclause, t\fromclause)$ is part of the final substitution $\tau$.
+				However due to the just established circumstances, $\aiu(s\fromclause, t\fromclause) = \{z_i \mapsto z_m, z_j \mapsto z_m\}$ with $m$ as in the definition of $\aiu$, so $s\fromclause\tau = t\fromclause\tau$.
+				\NB{this is the somewhat crude step where all lifting variables in the resolved literal are just reset.}
 
-	Suppose that one of $s\fromclause$ and $t\fromclause$ are grey terms. W.l.o.g.~Let $s\fromclause$ be a grey term. Then as $s\sigma=t\sigma$, $t\fromclause$ is a variable such that $t\fromclause\sigma$ is a grey term. 
-	Even more, their outermost symbol is the same due to $s\sigma = t\sigma$.
-	Equality of the children is established by the induction hypothesis.
+			\item W.l.o.g.~$s\fromclause = z_i$ and $t\fromclause$ is not a lifting variable.
+				As $t\cl \sim \lifboth{t}$, $t$ is not a colored term.
+				But due to $s\cl \sim \lifboth{s}$, $s$ is a colored term.
+				As $s\sigma = t\sigma$, $t$ must be a variable and $t\sigma$ a colored term.
+				So $\lifboth{t\sigma} = z_k$ for some $k$.
+				Note that the function $\aiu$ visits all subterms and combines all mappings it encounters.
+				By the construction of $\aiu$, at $\aiu(s\fromclause, t\fromclause)$, $\{ z_i \mapsto z_k \}$ is added.
+				Therefore $\lifboth{s\fromclause\sigma}\tau = \lifboth{z_i\sigma}\tau = \lifboth{z_i}\tau = z_i\tau = z_k$.
+
+				Due to $t\cl \sim \lifboth{t}$ and as $t$ is a variable, $t=t\cl$.
+				Then $\lifboth{t\cl\sigma}\tau = \lifboth{t\sigma}\tau = z_k\tau$. By Lemma~\ref{lemma:just_introduced_lifting_vars_not_affected_by_tau}, $z_k\tau = z_k$.
+
+				%			But as $t\fromclause = \lifboth{t}$ and $t$ is a variable, $t\fromclause\sigma = s$.
+				%Note that $\sigma$ does not affect $s\fromclause$.
+				%So $\lifboth{t\fromclause\sigma} = \lifboth{s} =  s\fromclause = s\fromclause\sigma = \lifboth{s\fromclause\sigma}$ and also 
+				%$\lifboth{t\fromclause\sigma}\tau = \lifboth{s\fromclause\sigma}\tau$.
+			\end{compactitem}
+
+		\item[Grey terms.]
+			Suppose that at least one of $s\cl$ and $t\cl$ is a grey term.
+			\begin{itemize}
+				\item
+					Suppose that both $s\fromclause$ and $t\fromclause$ are grey terms:
+					By $s\fromclause = \lifboth{s}$ and 
+					$t\fromclause = \lifboth{t}$, and as $s\sigma = t\sigma$, their outermost symbol is the same in all these terms.
+					The equality of the parameters is established by the induction hypothesis.
+					Note that grey constants can be treated as grey functions without parameters.
+
+				\item
+					Suppose that exactly one of $s\fromclause$ and $t\fromclause$ is a grey terms. W.l.o.g.~let $s\fromclause$ be a grey term. Then as $s\sigma=t\sigma$, $s\fromclause = \lifboth{s}$ and $t\fromclause = \lifboth{t}$, $t\fromclause$ is a variable and $t=t\cl$.
+					Furthermore, $t\fromclause\sigma$ is a grey term. 
+					Even more, their outermost symbol is the same due to $s\sigma = t\sigma$.
+					Equality of potential parameters in $s\fromclause$ is established by the induction hypothesis.
+			\end{itemize}
 
 
-	Suppose that both $s\fromclause$ and $t\fromclause$ are variables. 
-	Suppose that $\sigma$ is non-trivial on at least $s\fromclause$ or $t\fromclause$, as otherwise we would be done.
-	Note that due to $s\sigma = t\sigma$, the outermost symbol of both $s\fromclause\sigma$ is the same as the one of $t\fromclause\sigma$. As the equality of the children of $s\fromclause\sigma$ and $t\fromclause\sigma$ is established by the induction hypothesis, we are done.
+		\item[Variables.]
+			Suppose that both $s\fromclause$ and $t\fromclause$ are variables. 
+			Suppose that $\sigma$ is non-trivial on at least $s\fromclause$ or $t\fromclause$, as otherwise we would be done.
+			Due to $s\fromclause = \lifboth{s}$ and $t\fromclause = \lifboth{t}$, $s = s\fromclause$ and $t=t\fromclause$.
+			As $s\sigma=t\sigma$,  the outermost symbol of both $s\fromclause\sigma$ is the same as the one of $t\fromclause\sigma$. As the equality of potential parameters of $s\fromclause\sigma$ and $t\fromclause\sigma$ is established by the induction hypothesis, we are done.
+			\qedhere
+	\end{description}
 \end{proof}
 
+\begin{exa} 
+	\label{exa:lifting_var_refers_to_different_term}
+	We illustrate that the given procedure, if a lifting variable $x_k$ occurs in $\AIclause(C)$, it does not necessaily mean that $t_k$ occurs in $C$:
+
+	$\Gamma = \{P(f(x))\lor Q(x)\}$
+
+	$\Delta = \{\lnot P(y), \lnot Q(a)\}$
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid P(f(x))\lor Q(x) }
+		\AxiomCm{ \top \mid \lnot P(y) }
+
+		\BinaryInfCm{ P(x_1) \mid Q(x) }
+
+		\AxiomCm{ \top \mid \lnot Q(a) }
+
+		\BinaryInfCm{  Q(y_2) \lor P(x_1) \mid \square }
+	\end{prooftree}
+	Here, $x_1$ first refers to $f(x)$ and later to $f(a)$.
+	This however is not essential for the correctness of the procedure, and it would be tedious to fix all such $x_1$ see also corresponding remark in case distinction in Lemma~\ref{lemma:literal_in_clause_similar}.
+\end{exa} 
 
 \begin{lemma} 
-	\label{lemma:literal_in_clause}
+	\label{lemma:literal_in_clause_similar}
 	If a literal $l$ occurs in a clause $C$ from a resolution refutation,
-	then $\AIclause(C)$ contains a literal $l\fromclause$ such that $l\fromclause \sim \lifboth{l}$, where $\sim$ means equal up to the index of the variables which replace colored terms.
-\comm{true but unused}
+	then $\AIclause(C)$ contains corresponding a literal $l\fromclause$ such that $l\fromclause \sim \lifboth{l}$, where $\sim$ means equal up to the index of the variables which replace colored terms.
+\comm{true and somewhat used}
 \end{lemma}
 \begin{proof}
 	Base case: By Definition of $\AIclause$.
 
 	Let $C$ be the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
 	Every literal of $C$ is derived from a literal in $C_1$ or $C_2$. Let $\lambda$ be a literal in $C_1$. The case for a literal in $C_2$ is analogous.
-	Note that $\lambda \neq l$ as otherwise it would not be contained in $C$.
+	Note that $\lambda \neq l$ as otherwise $\lambda$ would not be contained in $C$.
 
 	By assumption $\lambda \in C_1$. Then by the resolution rule application, $\lambda\sigma \in C$.
 
-	By the induction hypothesis, $\lifboth{\lambda} \in \AIclause(C_1)$.
-	By the definition of $\AIclause$, $\lifboth{\lifboth{\lambda}\sigma}\tau \in \AIclause(C)$ 
+	\newcommand{\lclOne}{\lambda\cl}
+	By the induction hypothesis, there is a $\lclOne \in \AIclause(C_1)$ such that $\lclOne \sim \lifboth{\lambda}$.
+	By the definition of $\AIclause$, $\lifboth{\lclOne\sigma}\tau \in \AIclause(C)$ 
 	with $\tau = \aiu(l, l')$.
 
-	So we have to show that $\lifboth{ \lambda \sigma }  \sim \lifboth{\lifboth{\lambda}\sigma}\tau$.
+	So we have to show that $\lifboth{ \lambda \sigma }  \sim \lifboth{\lambda\cl\sigma}\tau$.
 
-	We perform an induction on the depth of terms in $\lambda$.
-	\begin{itemize}
-			\item Suppose $t$ is a term of size $1$ in $\lambda$ and  it is a variable.
-
-				Suppose the variable $t$ is a lifting variable, say $z_i$.
-				Then $t\sigma = t$ and $\lifboth{t\sigma} = t$.
-				Furthermore, $\lifboth{t} = t$, $\lifboth{t}\sigma = t$ and $\lifboth{\lifboth{t}\sigma} = t$.
-				As $\tau$ only replaces variables which replace colored terms by other variables of the same type, $\lifboth{\lambda \sigma} \sim \lifboth{\lifboth{\lambda}\sigma}\tau$.
+	Remark on $\tau$: $\tau$ only replaces lifting terms by other lifting termlifting terms by other lifting terms
 				\NB{this is where variable indices may not match.}
 
-				Otherwise suppose the variable $t$, call it $u$, is not a lifting variable but occurs in the resolution refutation. 
-				Suppose that $\sigma$ is not trival on $u$ as otherwise we are done.
-				Note that by the induction hypothesis, we get the desired relation for possible subterms of $u\sigma$.
-				Suppose that $u\sigma$ is a grey term. Then $\lifboth{u\sigma} = u\sigma$. 
+				We perform an induction on the depth of terms in $\lambda$ (except the non-maximal colored terms).
+	\begin{itemize}
+			\item Suppose $t$ is a term of size $1$ in $\lambda$ and it is a lifting variable, say $z_i$.
+				Then by Lemma~\ref{lemma:no_lifting_vars_in_subst}, $t\sigma = t$ and also $\lifboth{t\sigma} = t$.
 
-				Furthermore as $\lifboth{u} = u$, $\lifboth{u}\sigma = u\sigma$. Hence $\lifboth{u\sigma} = \lifboth{\lifboth{u}\sigma}$. 
-				As $\tau$ again only replaces variables which replace colored terms by other variables of the same kind, the induction holds in this case. \NB{$\tau$ stuff again}
+				As by the induction hypothesis $t\fromclause \sim \lifboth{t}$, $t\fromclause =z_j$.
+				Hence, $\lifboth{t\cl\sigma} = t\cl$.
+				By the remark on~$\tau$,
+				$\lifboth{t\sigma} \sim \lifboth{t\cl\sigma}\tau$.
 
-			\item Suppose $t$ is a term of size $1$ in $\lambda$ and  it is a constant.
+			\item Suppose $t$ is a term of size $1$ in $\lambda$ and it is a non-lifting variable, say $u$.
+				%Suppose that $\sigma$ is trivial on $u$. Then $\lifboth{u\sigma} = u \sim u\cl = \lifboth{u\cl\sigma} = \lifboth{u\cl\sigma}\tau$.
+
+				%Otherwise suppose that $\sigma$ is not trival on $u$.
+				As $\lifboth{u}\sim u\cl$ and $u$ is a variable, $u = u\cl$.
+				But then $u\sigma = u\cl\sigma$ and also $\lifboth{u \sigma} = \lifboth{u\cl\sigma}$ and
+				$\lifboth{u\sigma} \sim \lifboth{u\cl\sigma}\tau$.
+
+				%Note that by the induction hypothesis, we get the desired relation for possible subterms of $u\sigma$.
+				%Suppose that $u\sigma$ is a grey term. Then $\lifboth{u\sigma} = u\sigma$. 
+				%Furthermore as $\lifboth{u} = u$, $\lifboth{u}\sigma = u\sigma$. Hence $\lifboth{u\sigma} = \lifboth{\lifboth{u}\sigma}$. 
+				%As $\tau$ again only replaces variables which replace colored terms by other variables of the same kind, the induction holds in this case. \NB{$\tau$ stuff again}
+
+			\item Suppose $t$ is a term of size $1$ in $\lambda$ and it is a constant.
 				Suppose $t$ is grey. Then it is unaffected by both liftings and substitutions.
-				Otherwise suppose $t$ is colored. Then $\lifboth{t\sigma} = \lifboth{t} = \lifboth{t}\sigma = \lifboth{\lifboth{t}\sigma}$.
-				As $\tau$ again only replaces variables which replace colored terms by other variables of the same kind, the induction holds in this case. \NB{$\tau$ stuff again}
+				Otherwise suppose $t$ is colored.
+				Then $\lifboth{t\sigma}$ is a lifting variable, but 
+				as $t\cl = \lifboth{t}$, so is $\lifboth{t\fromclause\sigma}\tau$.
 
+				\NB{From the point on where $t$ was lifted, $t\cl$ even always refers to exactly the lifting var $\lifboth{t} = x_k$ for some $k$. Cf.\ Lemma~\ref{lemma:jka5a5halat}. Hence this case is no obstacle to showing the statement with $\lifboth{t}=t\fromclause$ (and not just $\lifboth{t}\sim t\cl$).}
+				
 
-			\item Suppose $t$ is of the form $f(t_1, \dotsc, t_n)$.
-				Then by the induction hypothesis, $\lifboth{t_i\sigma} = \lifboth{\lifboth{t_i}\sigma}\tau$ for $1 \leq i \leq n$.
+			\item Suppose $t$ is of the form $f(t_1, \dotsc, t_n)$ in $\lambda$.
+				Then by the induction hypothesis, $\lifboth{t_i\sigma} \sim \lifboth{(t_i)\fromclause\sigma}\tau$ for $1 \leq i \leq n$.
 				\begin{compactitem}
 					\item Suppose $f$ is grey.
 						Then $f$ is neither affected by substitutions nor by liftings.
 
 					\item Suppose $f$ is colored.
 						We only consider the case of occurrences of maximal colored terms as the other ones are discarded by the lifting.
-						Then $\lifboth{t\sigma} = z_i$ for some $i$ and
-						$\lifboth{t} = z_j$ for some $j$. 
-						Furthermore $\lifboth{t}\sigma = z_j$ and  $\lifboth{\lifboth{t}\sigma} = z_j$.
-						Hence $\lifboth{t\sigma} \sim \lifboth{\lifboth{t}\sigma}$.
+						As $t\cl \sim \lifboth{t}$, $t\cl$ is a lifting variable. Hence also $\lifboth{t\cl\sigma}\tau$ is a lifting variable.
+						But so is $\lifboth{t\sigma}$.
 						\qedhere
+
+				\NB{Note that even if it was the case that $\lifboth{t}=t\fromclause$ (and not just $\lifboth{t}\sim t\cl$), $\lifboth{t\sigma}$ might not be equal to $\lifboth{t\fromclause\sigma}$, but only $\lifboth{t\sigma} \sim \lifboth{t\fromclause\sigma}$.
+				
+					E.g.\ $t = f(x)$, $\lifboth{t} = x_1$, $t\cl = x_1$, $\sigma = \{x\mapsto a\}$. 
+					Then $\lifboth{t\sigma} = \lifboth{f(a)} = x_2$, but $\lifboth{t\cl\sigma} = x_1$.
+					$\tau$ does not fix this, but could potentially if it is more careful than $\sigma'$.
+					See also Example~\ref{exa:lifting_var_refers_to_different_term}.
+				}
+
 				\end{compactitem}
 	\end{itemize}
-
-
 \end{proof}
 
+
+\cbstart
+\begin{lemma}[Strenghtening of \ref{lemma:literal_in_clause_similar}]
+	\label{lemma:literal_in_clause_similar_strenghtened}
+	If for term $s$ in $l$ and the corresponding $s\cl$ in $l\cl$ we have that $s\cl = z_i$ and $\lifboth{s} = z_j$ with $i\neq j$, 
+	then there is a substitution $\rho$ such that $t_i\rho = t_j$.
+\end{lemma} 
+\begin{proof}
+	Note that by Lemma~\ref{lemma:literal_in_clause_similar}, $s\cl \sim \lifboth{s}$.
+
+	At some point in the resolution proof, $s\cl = z_i$ was introduced in $\AIclause(C^*)$ for a clause $C^*$. 
+	Hence the corresponding term in $C^*$ is $t_i$.
+
+	In the resolution derivation, $t_i$ is, in general, changed by means of substitution, so $s$ in later stages of the proof refers to $t_i\sigma^*$ for some $\sigma^*$.
+
+	If $z_i$ is never affected by $\tau$, we are done.
+
+	Suppose that at the position of $s\cl$, $z_k$ is introduced and later changed to $z_i$.
+	We have to show that there is a substitution $\rho$ such that $t_k\rho = t_i$.
+	See Lemma~\ref{lemma:tau_is_specialisation}.
+\end{proof}
+\cbend
+
+\begin{changebar}
+\begin{lemma}
+	\label{lemma:tau_is_specialisation}
+	$(z_j \mapsto z_k) \in \tau$ implies that there is a substitution $\rho$ such that $t_j \rho = t_k$.
+\end{lemma}
+\begin{proof}
+	Note that when $z_j$ is first introduced, it actually is $t_j$. 
+	If $t_j$ contains a var which also appears elsewhere, it might be changed but still referred to as $z_j$. Then it is $t_j\rho'$ for some $\rho'$.
+	(this was the base case)
+
+	induction:
+	suppose there is a substituion $\rho'$ from the original introduction of $t_j$ to the point where $z_j$ is first changed.
+	We show that if $z_j$ is changed to $z_k$, then $t_j\rho'\sigma = t_k$, hence by transitivity of the specialisation-relation, $t_k$ is still a specialisation of the original introduction.
+	
+	$l\sigma = l'\sigma$
+
+	\begin{itemize}
+		\item Suppose first kind of $\tau$ entry.
+			Then 
+
+			$a\cl \in l\cl$, $a\cl=z_j$. Let $a=t_j\rho'$ for some $\rho'$, see note above.
+
+			$b\cl \in l\cl$, same position as $a\cl$, $\lifboth{b\cl\sigma} = z_k$. $b\cl$ is a non-lifting variable and by $\lifboth{b} \sim b\cl$, $b=b\cl$.
+
+			But $a\sigma = b\sigma$, so $t_j\rho'\sigma = b\sigma$.
+			But $b\cl \sigma = t_k$, so $b\sigma = t_k$, so $t_j\rho'\sigma = t_k$.
+
+		\item Suppose second kind of $\tau$ entry.\nopagebreak
+
+			$a\cl \in l\cl$, $a\cl=z_j$. Let $a=t_j\rho'$ for some $\rho'$, see note above.
+
+			$t_k$ here is actually even $a$.
+			\qedhere
+	\end{itemize}
+\end{proof}
+\end{changebar}
 
 \begin{lemma}
   Suppose no $\Gamma$-term occurs in $\Gamma$.
