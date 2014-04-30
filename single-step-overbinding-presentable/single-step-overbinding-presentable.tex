@@ -493,33 +493,59 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	\comm{true and used}
 \end{lemma}
 \begin{proof}
+
+	\NB{much weird stuff here, but last two paragraphs of first item seem to make sense}
+
+	\NB{possibly try to show that $u\sigma = t_j$ in first item}
+
 	$u\sigma = t_k$.
 
-	Suppose that elsewhere in the literal $l\cl$ $s = z_k$ occurs and in $l\cl'$, there's $t$ at that position.
+	as $l\sigma = l'\sigma$, in $l'$ there is $t$ with $u\sigma = t\sigma$, so $t\sigma = t_k$.
 
-	$s\cl \sim \lifboth{l}$, so $s$ is some colored term.
-
-	TODO
 
 	\begin{itemize}
 			\item
-				Suppose that $(z_k\mapsto z_j) \in \tau$ (first kind). 
+				Suppose that $(z_k\mapsto z_j) \in \tau$ (first kind). Suppose that $k\neq j$ as otherwise we are done.
 				Then we have a pair of corresponding terms $(a\cl, b\cl)$ in $l\cl$ and $l\cl'$ respectively such that  
 				$a\cl = z_k$ and $b\cl$ is such that $\lifboth{b\cl\sigma} = z_j$ but $b\cl$ is not a lifting variable. As by Lemma~\ref{lemma:no_colored_terms} $b\cl$ is not colored, it must be a variable.
 				and as by Lemma~\ref{lemma:literal_in_clause_similar} $b\cl \sim \lifboth{b}$, $b = b\cl$.
+				Also $b = t_j$
 
-				%As $u$ is a variable and by Lemma~\ref{lemma:literal_in_clause_similar} $u\cl \sim \lifboth{u}$, $u = u\cl$.
+				By Lemma~\ref{lemma:literal_in_clause_similar} $a\cl \sim \lifboth{a}$. 
+				By Lemma~\ref{lemma:literal_in_clause_similar_strenghtened}, there is a substitution $\rho$ such that $t_k\rho = a$.
+				So $a$ is a specialisation of $t_k$.
 
 				Furthermore due to $l\sigma = l'\sigma$, $a\sigma = b\sigma$.
 				Hence $\lifboth{b\cl\sigma} = \lifboth{b\sigma} = \lifboth{a\sigma}$.
 
+				$a\sigma = b\sigma$, so $t_k\rho\sigma = b\sigma = t_j$. 
+				
+
+				%As $u$ is a variable and by Lemma~\ref{lemma:literal_in_clause_similar} $u\cl \sim \lifboth{u}$, $u = u\cl$.
+				\bigskip
+
+
+				By Lemma~\ref{lemma:tau_only_for_variable_terms}, $t_k$ contains a free variable.
+				As each incomparable clause is variable disjoint, $C_1$ and $C_2$ are variable disjoint\todo{really?}.
+				Hence $t_k$ can only occur in one of them, w.l.o.g.\ let it occur in $C_1$ say at $p$.
+
+				$u\sigma = t\sigma = t_k$
+
+				we only have $(z_k \mapsto z_j)$ if the underlying term is unified, i.e.\ the variable is replaced.
+				This variable only occurs in this clause (or related ones).
+				But $t\sigma=t_k$, i.e.~either $t$ still contains this variable or $\sigma$ introduces it.
+
+				$t$ cannot still contain it as $t_k\sigma$ removes it, and $\sigma$ cannot introduce it as $C_1$ and $C_2$ are variable disjoint, and it could only add it if a variable from the other clause is unified with it, but that variabel then cannot occur in $t$ as it's from the other clause.
+
+
+			\item
+				Suppose that $(z_k\mapsto z_j) \in \tau$ (second kind). Suppose that $k\neq j$ as otherwise we are done.
+
+				Similar reasoning: there is a variable in $t_k$ occurring at least twice (as $z_k$).
+				but then it must be unified to the same variable. so there, the same terms are present and the lifting variables are set accordingly by this crude method.
+
+				So $u$ is substituted for whatever happens on this other side, i.e. $u\sigma = t_j$
 	\end{itemize}
-
-	TODO
-
-	As the $\Delta$-term which is replaced by $z_k$ occurs in the unified literal, none of its occurrences are modified any further, so $z_k$ is not updated to some $z_l$, $l\neq k$ by the substitution $\tau$.
-
-	TODO
 \end{proof}
 \cbend
 
@@ -721,10 +747,12 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 \cbstart
 \begin{lemma}[Strenghtening of \ref{lemma:literal_in_clause_similar}]
 	\label{lemma:literal_in_clause_similar_strenghtened}
-	If for term $s$ in $l$ and the corresponding $s\cl$ in $l\cl$ we have that $s\cl = z_i$ and $\lifboth{s} = z_j$ with $i\neq j$, 
+	If for term $s$ in $l$ and the corresponding $s\cl$ in $l\cl$ we have that $s\cl = z_i$ and $\lifboth{s} = z_j$ (i.e.\ $s=t_j$),
 	then there is a substitution $\rho$ such that $t_i\rho = t_j$.
 \end{lemma} 
 \begin{proof}
+	Note that if $i=j$, the $\rho$ is the identity function.
+
 	Note that by Lemma~\ref{lemma:literal_in_clause_similar}, $s\cl \sim \lifboth{s}$.
 
 	At some point in the resolution proof, $s\cl = z_i$ was introduced in $\AIclause(C^*)$ for a clause $C^*$. 
