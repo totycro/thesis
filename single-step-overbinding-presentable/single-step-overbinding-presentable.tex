@@ -283,12 +283,17 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 
 		$\aiu(A(a_1, \dotsc, a_n), A(b_1, \dotsc, b_n)) = \bigcup_{i=1}^n \aiu(a_i, b_i)$
 
-		$ \aiu (a, b) =
+		$ \aiu (a\fromclause, b\fromclause) =
 			\begin{cases}
-				\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a=f_s(\bar s)$ grey and $b = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
-				\{x_j \mapsto x_k\} & \parbox[t]{.6\textwidth}{ if $a = x_j$ from lifting and $b$ a term with $\lifboth{b\sigma} = x_k$ (note that $b$ is a variable as otherwise it would be colored and lifted)} \\
-			\{x_k \mapsto x_j\} & \parbox[t]{.6\textwidth}{  if $b = x_k$ from lifting and $a$ a term with $\lifboth{a\sigma} = x_j$ (note that $a$ is a variable as otherwise it would be colored and lifted)} \\
-				\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a = x_j$ and $b = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal. More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.}\\
+				\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
+				\{x_j \mapsto x_k\} & \parbox[t]{.6\textwidth}{ if $a\cl = x_j$ from lifting and $b\cl$ a term with $\lifboth{b\cl\sigma} = x_k$ (note that $b\cl$ is a variable as otherwise it would be colored and lifted) \circled{1}} \\
+				\{x_k \mapsto x_j\} & \parbox[t]{.6\textwidth}{  if $b\cl = x_k$ from lifting and $a\cl$ a term with $\lifboth{a\cl\sigma} = x_j$ (note that $a\cl$ is a variable as otherwise it would be colored and lifted) \circled{1}} \\
+				\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal, i.e. $x_m = \lifboth{a} = \lifboth{b}$. \circled{2}
+				{\footnotesize
+
+			More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
+
+		}}\\
 				\emptyset & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
 			\end{cases} $
 
@@ -518,48 +523,104 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	\end{itemize}
 \end{proof}
 
+\begin{exa}
+	TODO: example with terms in $\pi$ vs $AI$, similar to 206a and last part of 208a:
+
+	$f(x)$ vs $ x_j $
+
+	$f(g(y))$ vs $ x_j $ (actual term is changed but lifting variable stays the same
+
+	$f(g(h(z)))$ vs $ x_k $ (now $x_j$ appears in resolution, either this occurrence or another occurrence of this var)
+
+	$f(g(h(a)))$ vs $ x_k $ (again actual term is changed without changing the lifting variable)
+\end{exa}
 
 \begin{changebar}
+
 \begin{lemma}
-	\label{lemma:tau_is_specialisation}
-	$(z_j \mapsto z_k) \in \tau$ implies that there is a substitution $\rho$ such that $t_j \rho = t_k$.
+	\label{lemma:tau_variable}
+	For \circled{1} kind of $\tau$ entries, $b$ is a non-lifting variable.
 \end{lemma}
+
+
+\begin{lemma}
+	\label{lemma:lifting_var_refers_to_abstraction_of_term}
+	%$(z_j \mapsto z_k) \in \tau$ implies that there is a substitution $\rho$ such that $t_j \rho = t_k$.
+	Let $a\cl = z_j$ a lifting variable. Then $a = t_j\rho$ for some substitution $\rho$.
+	Even more, if a substitution $z_j\mapsto z_k$ for lifting variables $z_j$ and $z_k$ occurs,
+	$z_k$ refers to exactly $t_k$ and there exists a substitution $\rho'$ such that $t_k = t_j\rho'$.
+	\comm{used}
+	\label{lemma:tau_is_specialisation}
+\end{lemma}
+\NB{this probably also hold in $\AImatrix$ and for terms not occurring $\AIclause$ as well.}
 \begin{proof}
-	Note that when $z_j$ is first introduced, it actually is $t_j$. 
-	If $t_j$ contains a var which also appears elsewhere, it might be changed but still referred to as $z_j$. Then it is $t_j\rho'$ for some $\rho'$.
-	(this was the base case)
+	Base case:
+	$z_j$ is introduced to lift $t_j$, $\rho$ is the identity function.
 
-	induction:
-	suppose there is a substituion $\rho'$ from the original introduction of $t_j$ to the point where $z_j$ is first changed.
-	We show that if $z_j$ is changed to $z_k$, then $t_j\rho'\sigma = t_k$, hence by transitivity of the specialisation-relation, $t_k$ is still a specialisation of the original introduction.
+	Induction step:
+	Suppose $z_j$ refers to $t_j\rho$ for some $\rho$.
+
+	Suppose $t_j\rho$ changes in the course of the resolution derivation.
+	Then it changes by means of unification, say by the unifier $\sigma$.
+	Then it changes to $t_j\rho\sigma$, so now $z_j$ refers to $t_j\rho\sigma$.
+
+	Suppose $z_j$ changes. By the construction of $\AIclause$/$\AImatrix$, lifting variables are not affected by the resolution unifications or the liftings, but only by $\tau$.
+
+
+%	Note that when $z_j$ is first introduced, it actually is $t_j$. 
+%	If $t_j$ contains a var which also appears elsewhere, it might be changed but still referred to as $z_j$. Then it is $t_j\rho'$ for some $\rho'$.
+%	(this was the base case)
+%
+%	induction:
+%	suppose there is a substituion $\rho'$ from the original introduction of $t_j$ to the point where $z_j$ is first changed.
+%	We show that if $z_j$ is changed to $z_k$, then $t_j\rho'\sigma = t_k$, hence by transitivity of the specialisation-relation, $t_k$ is still a specialisation of the original introduction.
 	
-	$l\sigma = l'\sigma$
-
 	\begin{itemize}
-		\item Suppose first kind of $\tau$ entry.
-			Then 
+		\item Suppose \circled{1} kind of $\tau$ entry, $(z_j \mapsto z_k)$.
+			If $z_j$ is changed to $z_k$ in a resolution step,
+			then the term $z_j$ refers to, say $a$, is changed to $a\sigma$.
+			We show that $a\sigma = t_k$.
 
-			$a\cl \in l\cl$, $a\cl=z_j$. Let $a=t_j\rho'$ for some $\rho'$, see note above.
+			$a\cl=z_j$.
+			By the induction hypothesis, 
+			$a=t_j\rho$ for some $\rho$.
+			By the resolution step $\aiu$, $b\sigma=a\sigma$.
 
-			$b\cl \in l\cl$, same position as $a\cl$, $\lifboth{b\cl\sigma} = z_k$. $b\cl$ is a non-lifting variable and by $\lifboth{b} \sim b\cl$, $b=b\cl$.
 
-			But $a\sigma = b\sigma$, so $t_j\rho'\sigma = b\sigma$.
-			But $b\cl \sigma = t_k$, so $b\sigma = t_k$, so $t_j\rho'\sigma = t_k$.
+			By the definition of $\aiu$, 
+			$\lifboth{b\cl\sigma} = z_k$
+			and hence $b\cl\sigma = t_k$.
+			By Lemma~\ref{lemma:tau_variable}, $b$ is a non-lifting variable and
+			as by Lemma~\ref{lemma:literal_in_clause_similar} $\lifboth{b} \sim b\cl$, $b=b\cl$.
 
-		\item Suppose second kind of $\tau$ entry.\nopagebreak
+			But then $t_k = b\cl\sigma = b\sigma = a\sigma = t_j\rho\sigma$.
 
-			$a\cl \in l\cl$, $a\cl=z_j$. Let $a=t_j\rho'$ for some $\rho'$, see note above.
 
-			$t_k$ here is actually even $a$.
+		\item Suppose \circled{2} kind of $\tau$ entry, $(z_j \mapsto z_k)$.\nopagebreak
+
+			By the induction hypothesis, 
+			$a=t_j\rho$ for some $\rho$.
+
+			$a\sigma = t_k$.
+
+			Hence $t_j\rho \sigma = a\sigma = t_k$.
 			\qedhere
 	\end{itemize}
 \end{proof}
+
+
 \end{changebar}
 
+By Lemma~\ref{lemma:literal_in_clause_similar}, we have that $l\cl \sim \lifboth{l}$.
+But we can also show that the terms in $l$ only become more specialised, i.e.\ if a lifting variable $z_j$ occurs in $l\cl$, the corresponding term in $\lifboth{l}$ is a specialisation of $t_j$, 
+
+
+\begin{comment}
 \cbstart
 \begin{lemma}[Strenghtening of \ref{lemma:literal_in_clause_similar}]
 	\label{lemma:literal_in_clause_similar_strenghtened}
-	If for term $s$ in $l$ and the corresponding $s\cl$ in $l\cl$ we have that $s\cl = z_i$ and $\lifboth{s} = z_j$ (i.e.\ $s=t_j$),
+
+	If $s\cl$ is a lifting variable $z_i$ and $\lifboth{s} = z_j$ (i.e.\ $s=t_j$),
 	then there is a substitution $\rho$ such that $t_i\rho = t_j$.
 \end{lemma} 
 \begin{proof}
@@ -579,6 +640,7 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	See Lemma~\ref{lemma:tau_is_specialisation}.
 \end{proof}
 \cbend
+\end{comment}
 
 
 
@@ -658,7 +720,7 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 				Also $b = t_j$
 
 				By Lemma~\ref{lemma:literal_in_clause_similar} $a\cl \sim \lifboth{a}$. 
-				By Lemma~\ref{lemma:literal_in_clause_similar_strenghtened}, there is a substitution $\rho$ such that $t_k\rho = a$.
+				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term} , there is a substitution $\rho$ such that $t_k\rho = a$.
 				So $a$ is a specialisation of $t_k$.
 
 				Furthermore due to $l\sigma = l'\sigma$, $a\sigma = b\sigma$.
