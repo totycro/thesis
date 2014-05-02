@@ -441,6 +441,28 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	All occurrences of a certain variable in $F$ are substituted by the same term, so as the lifting replaces a certain term always be the same variables, all these occurrences of the variable are replaced by the same variable.
 \end{proof}
 
+\begin{exa} 
+	\label{exa:lifting_var_refers_to_different_term}
+	We illustrate that the given procedure, if a lifting variable $x_k$ occurs in $\AIclause(C)$, it does not necessaily mean that $t_k$ occurs in $C$:
+
+	$\Gamma = \{P(f(x))\lor Q(x)\}$
+
+	$\Delta = \{\lnot P(y), \lnot Q(a)\}$
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid P(f(x))\lor Q(x) }
+		\AxiomCm{ \top \mid \lnot P(y) }
+
+		\BinaryInfCm{ P(x_1) \mid Q(x) }
+
+		\AxiomCm{ \top \mid \lnot Q(a) }
+
+		\BinaryInfCm{  Q(y_2) \lor P(x_1) \mid \square }
+	\end{prooftree}
+	Here, $x_1$ first refers to $f(x)$ and later to $f(a)$.
+	This however is not essential for the correctness of the procedure, and it would be tedious to fix all such $x_1$ see also corresponding remark in case distinction in Lemma~\ref{lemma:literal_in_clause_similar}.
+\end{exa} 
+
+
 
 \begin{lemma} 
 	\label{lemma:literal_in_clause_similar}
@@ -538,8 +560,58 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 \begin{changebar}
 
 \begin{lemma}
+	\label{lemma:lifting_var_refers_to_same_terms}
+	Let $s\cl$ and $t\cl$ be two occurrences of the lifting variable $x_i$ in $\AIclause(C)$ for $C$ in a resolution refutation.
+	Then $s=t$.
+	\comm{not really used, is it really true? is it interesting?}
+\end{lemma}
+\begin{proof}
+	Base case: $\AIclause(C) = \lifboth{C}$ for $C$ in some initial clause set.
+
+	Suppose that $t_i$ does not contain a variable.
+	Then any occurrence of $t_i$ is never altered throughout the derivation.
+	If a substitution introduced $t_i$, it is lifted to $x_i$.
+	By Lemma~\ref{lemma:tau_only_for_variable_terms}, $\tau$ does not alter $x_i$. 
+	Hence all occurrences to $x_i$ refer to $t_i$ at any given stage of the derivation.
+
+	Now we suppose that $t_i$ does contain a variable.
+	By Lemma~\ref{lemma:lifting_variables_disjoint}, $s\cl$ and $t\cl$ are both derived from one of the preceding clauses, say from $C_1$. 
+
+	Induction step: $s=t$ in $C_1$.
+	Then $s$ and $t$ as well as $s\cl$ and $t\cl$ are affected the same way by the algorithm as they are respectively equal.
+	It remains to show that for newly introduced occurrences $x_i$ in $\AIclause(C)$, the condition holds. Let $r$ be such a newly introduced occurrence.
+	$r\cl$ in $\AIclause(C)$ is contained in $\lifboth{u\cl\sigma}\tau$ for a term $u\cl \in \AIclause(C_1) \cup \AIclause(C_2)$.
+	As $u\cl$ does not contain $x_i$, it was introduced either by $\tau$ or by $\sigma$ introducing $t_i$ which is then lifted to $x_i$.
+	\begin{itemize}
+		\item Suppose $r\cl$ was introduced by $\sigma$ and consecutive lifting. 
+			Then $\sigma$ has introduced $t_i$.
+
+			\mytodo{} Note that with ``strict variable renaming'', each variable is renamed every time so $t_i$ cannot be introduced here as the variable it would have to contain does not exist anymore.
+
+			Without strict renaming, we can show that then an arbitrary occurrence of $x_i$ in $\AIclause(C)$ different from $r$ also refers to $t_i$.
+			Note that $C_1$ and $C_2$ are variable disjoint.
+			Hence the set of variables of $t_i$ is a subset of the variables of $C_1$. \mytodo{clarify on the conditions that are ncessary for this. if some other $t_i$ occurs in $C_1$, then no variable of $t_i$ must occur in $C_2$. But if only $t_i\rho$ occurs in $C_1$, $C_2$ might ``reintroduce'' a variable from $t_i$}
+
+			Note furthermore that if any of the variables of $t_i$ would not be present in $C_1$ anymore, than $\sigma$ could not have produced $t_i$ as unifications never introduce new variables.
+
+			And note that if a substitution is applied to a clause which is non-trivial on a variable, then this variable is not present in the clause afterwards.
+
+			Hence no variable of $t_i$ has been unified in the derivation leading to $C_1$. But as term are only changed by means of unification, the $t_i$ which were responsible for introducing the other occurrences of $x_i$ in $\AIclause(C_1)$ are still present, and they are all equal to $t_i$.
+
+		\item Suppose $r\cl$ was introduced by $\tau$.
+			Then $(x_j \mapsto x_i) \in \tau$.
+
+			By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}, $r = t_i$ and either for a term $b\cl\in\AIclause(C_1)\cup\AIclause(C_2)$ it holds that either, depending on the type of $\tau$-substitution, $\lifboth{b\cl\sigma} = x_i$ and $b=b\cl$ or $a\sigma = b\sigma = x_i$.
+			In both cases, the variables of $t_i$ are present in $b\sigma$, so either they have been present before (i.e.\ in $b$) or were introduced by $\sigma$. In any case, by a similar reasoning as in the former case, the other occurrences of $x_i$ in $\AIclause{C_1}$ refer to $t_i$ as well. 
+			\qedhere
+	\end{itemize}
+\end{proof}
+
+\begin{lemma}
 	\label{lemma:tau_variable}
 	For \circled{1} kind of $\tau$ entries, $b$ is a non-lifting variable.
+	Furthermore, as by Lemma~\ref{lemma:literal_in_clause_similar} $b\cl \sim \lifboth{b}$,
+ $b\cl = b$.
 \end{lemma}
 
 
@@ -550,7 +622,6 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	Even more, if a substitution $z_j\mapsto z_k$ for lifting variables $z_j$ and $z_k$ occurs,
 	$z_k$ refers to exactly $t_k$ and there exists a substitution $\rho'$ such that $t_k = t_j\rho'$.
 	\comm{used}
-	\label{lemma:tau_is_specialisation}
 \end{lemma}
 \NB{this probably also hold in $\AImatrix$ and for terms not occurring $\AIclause$ as well.}
 \begin{proof}
@@ -649,7 +720,7 @@ But we can also show that the terms in $l$ only become more specialised, i.e.\ i
 	$(x_j \mapsto x_k) \in \aiu(l\fromclause, l\fromclause')$ with $j\neq k$ implies that $t_j$ (corresponding to $x_j$) contains a free variable.
 
 	In other words: If $t_j$ does not contain a free variable, then if it is lifted to $x_j$, $\tau$ will never change it to some $x_k$ with $k\neq j$.
-	\comm{true but unused in actual proof of the procedure}
+	\comm{true and somewhat used}
 \end{lemma}
 \begin{proof}
 	Let  $\aiu(s\fromclause, r\fromclause)$ introduce $\{x_j \mapsto x_k\}$.
@@ -693,70 +764,6 @@ But we can also show that the terms in $l$ only become more specialised, i.e.\ i
 	$\Ra$ $t$ as well as $t\cl$ remain invariant
 \end{proof}
 
-\cbstart
-\begin{lemma}
-	\label{lemma:just_introduced_lifting_vars_not_affected_by_tau}
-	Let $u$ be a variable in a literal $l$ being unified in a resolution step with $l'$ using $\sigma$ and let $\lifboth{u\sigma} = z_k$.
-	Then $z_k\tau = z_k$.
-	\comm{true and used}
-\end{lemma}
-\begin{proof}
-
-	\NB{much weird stuff here, but last two paragraphs of first item seem to make sense}
-
-	\NB{possibly try to show that $u\sigma = t_j$ in first item}
-
-	$u\sigma = t_k$.
-
-	as $l\sigma = l'\sigma$, in $l'$ there is $t$ with $u\sigma = t\sigma$, so $t\sigma = t_k$.
-
-
-	\begin{itemize}
-			\item
-				Suppose that $(z_k\mapsto z_j) \in \tau$ (first kind). Suppose that $k\neq j$ as otherwise we are done.
-				Then we have a pair of corresponding terms $(a\cl, b\cl)$ in $l\cl$ and $l\cl'$ respectively such that  
-				$a\cl = z_k$ and $b\cl$ is such that $\lifboth{b\cl\sigma} = z_j$ but $b\cl$ is not a lifting variable. As by Lemma~\ref{lemma:no_colored_terms} $b\cl$ is not colored, it must be a variable.
-				and as by Lemma~\ref{lemma:literal_in_clause_similar} $b\cl \sim \lifboth{b}$, $b = b\cl$.
-				Also $b = t_j$
-
-				By Lemma~\ref{lemma:literal_in_clause_similar} $a\cl \sim \lifboth{a}$. 
-				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term} , there is a substitution $\rho$ such that $t_k\rho = a$.
-				So $a$ is a specialisation of $t_k$.
-
-				Furthermore due to $l\sigma = l'\sigma$, $a\sigma = b\sigma$.
-				Hence $\lifboth{b\cl\sigma} = \lifboth{b\sigma} = \lifboth{a\sigma}$.
-
-				$a\sigma = b\sigma$, so $t_k\rho\sigma = b\sigma = t_j$. 
-				
-
-				%As $u$ is a variable and by Lemma~\ref{lemma:literal_in_clause_similar} $u\cl \sim \lifboth{u}$, $u = u\cl$.
-				\bigskip
-
-
-				By Lemma~\ref{lemma:tau_only_for_variable_terms}, $t_k$ contains a free variable.
-				As each incomparable clause is variable disjoint, $C_1$ and $C_2$ are variable disjoint\todo{really?}.
-				Hence $t_k$ can only occur in one of them, w.l.o.g.\ let it occur in $C_1$ say at $p$.
-
-				$u\sigma = t\sigma = t_k$
-
-				we only have $(z_k \mapsto z_j)$ if the underlying term is unified, i.e.\ the variable is replaced.
-				This variable only occurs in this clause (or related ones).
-				But $t\sigma=t_k$, i.e.~either $t$ still contains this variable or $\sigma$ introduces it.
-
-				$t$ cannot still contain it as $t_k\sigma$ removes it, and $\sigma$ cannot introduce it as $C_1$ and $C_2$ are variable disjoint, and it could only add it if a variable from the other clause is unified with it, but that variabel then cannot occur in $t$ as it's from the other clause.
-
-
-			\item
-				Suppose that $(z_k\mapsto z_j) \in \tau$ (second kind). Suppose that $k\neq j$ as otherwise we are done.
-
-				Similar reasoning: there is a variable in $t_k$ occurring at least twice (as $z_k$).
-				but then it must be unified to the same variable. so there, the same terms are present and the lifting variables are set accordingly by this crude method.
-
-				So $u$ is substituted for whatever happens on this other side, i.e. $u\sigma = t_j$
-	\end{itemize}
-\end{proof}
-\cbend
-
 \begin{lemma}
 	\label{lemma:disjoint_lifting_variables}
 	The set of lifting variables, which refer to terms which have free variables, is disjoint for every incomparable clause.
@@ -764,6 +771,19 @@ But we can also show that the terms in $l$ only become more specialised, i.e.\ i
 \end{lemma}
 \begin{proof}
 	The free variables for every inital clause is disjoint.
+\end{proof}
+
+\begin{conj}
+	All lifting variables of a clause refer to the same term. If the var is $x_i$, it is $t_i\rho$ for some $\rho$
+\end{conj}
+
+\begin{lemma}
+	\label{lemma:lifting_variables_disjoint}
+	Let $t_k$ be a colored term containing a variable and $z_k$ its corresponding lifting variable.
+	Then $z_k$ does not occur in both $\AIclause(C_1)$ and $\AIclause(C_2)$ if $C_1$ and $C_2$ are resolved.
+\end{lemma}
+\begin{proof}
+	$C_1$ and $C_2$ are variable disjoint, so $t_k$ cannot occur in both the derivations leading to $C_1$ and $C_2$ respectively. \mytodo{check what happens if proof is not a tree derivation}
 \end{proof}
 
 Apparently, $\tau$ establishes equality for the terms in the literals being resolved on and quasi-equality for other literals in the remaining clause:
@@ -813,13 +833,51 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 				By the construction of $\aiu$, at $\aiu(s\fromclause, t\fromclause)$, $\{ z_i \mapsto z_k \}$ is added.
 				Therefore $\lifboth{s\fromclause\sigma}\tau = \lifboth{z_i\sigma}\tau = \lifboth{z_i}\tau = z_i\tau = z_k$.
 
+				\cbstart
 				Due to $t\cl \sim \lifboth{t}$ and as $t$ is a variable, $t=t\cl$.
-				Then $\lifboth{t\cl\sigma}\tau = \lifboth{t\sigma}\tau = z_k\tau$. By Lemma~\ref{lemma:just_introduced_lifting_vars_not_affected_by_tau}, $z_k\tau = z_k$.
+				Then $\lifboth{t\cl\sigma}\tau = \lifboth{t\sigma}\tau = z_k\tau$.
+
+				It remains to show that $z_k\tau = z_k$.
+
+				As $t$ is a variable and due to $t\sigma = t_k$ and as $\sigma$ is the most general unifier, it is necessary to substitute $t_k$ in order to unify the literals. 
+
+
+				Suppose that $(z_k \mapsto z_l) \in \tau$ with $k\neq l$ as otherwise we are done.
+				This can only happen if $z_k$ occurs elsewhere (i.e., besides from $\lifboth{s\fromclause\sigma}\tau$) in one of the direct ancestors of $C$, i.e.\ $C_1$ or $C_2$. 
+				Hence one of these clauses originally contained $t_k$, as otherwise $z_k$ would not have been used (cf.\ Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}).
+				
+				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}, $z_l$ refers to precisely $t_l$. %and there exists a substitution $\rho''$ such that $t_k\sigma = t_l$.
+				As $z_l$ replaces $z_k$, and $z_k$ used to refer to $t_k$, but as at the same position now $z_l$ refers to $t_l$, some sequence of substitutions occurred which changed $t_k$ to $t_l$. 
+				This substitution however has substituted at least one variable of $t_k$.
+				But as the set of clauses is unique for a clause, this variable does not occur in the consecutive derivation.
+
+				As however $\sigma$ introduces $t_k$ and therefore all of its variabels as subterms, 
+				$t_k$ has never been updated to $t_l$, but then $(z_k \mapsto z_l)$ is not an element of $\tau$.
+				{
+
+				\tiny
+				Other attempt: 
+
+				$t_i \rho = t_k$ for some $\rho$.
+
+				By Lemma~\ref{lemma:lifting_var_refers_to_same_terms}, every occurrence of $z_k$ in both clauses refers to the same term, say $t_k\rho'$.
+
+
+				But $t\sigma = t_k$. 
+
+				If $\sigma$ would remove some variable present in $t_k$, $t_k$ would not unify with any other term, but $\sigma$ is a unifier. Hence $\sigma$ must not remove any free variable of $t_k$.
+
+				As however $t_l$ is a specialisation of $t_k$, at some point, a unifier has removed some variable of $t_k$. However this would imply that the respective variable isn't present in the clause anymore and as all clauses are variable disjoint, it would not appear in the whole derivation anymore.
+
+				As this is a contradiction to $\sigma$ being a unifier, there is no term $t_l$ in $C$ and hence $(z_k \mapsto z_l)$ is not an element of $\tau$, so $z_k\tau = z_k$.
+			}
+				%By Lemma~\ref{lemma:just_introduced_lifting_vars_not_affected_by_tau}, $z_k\tau = z_k$.
 
 				%			But as $t\fromclause = \lifboth{t}$ and $t$ is a variable, $t\fromclause\sigma = s$.
 				%Note that $\sigma$ does not affect $s\fromclause$.
 				%So $\lifboth{t\fromclause\sigma} = \lifboth{s} =  s\fromclause = s\fromclause\sigma = \lifboth{s\fromclause\sigma}$ and also 
 				%$\lifboth{t\fromclause\sigma}\tau = \lifboth{s\fromclause\sigma}\tau$.
+				\cbend
 			\end{compactitem}
 
 		\item[Grey terms.]
@@ -848,27 +906,6 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 			\qedhere
 	\end{description}
 \end{proof}
-
-\begin{exa} 
-	\label{exa:lifting_var_refers_to_different_term}
-	We illustrate that the given procedure, if a lifting variable $x_k$ occurs in $\AIclause(C)$, it does not necessaily mean that $t_k$ occurs in $C$:
-
-	$\Gamma = \{P(f(x))\lor Q(x)\}$
-
-	$\Delta = \{\lnot P(y), \lnot Q(a)\}$
-	\begin{prooftree}
-		\AxiomCm{ \bot \mid P(f(x))\lor Q(x) }
-		\AxiomCm{ \top \mid \lnot P(y) }
-
-		\BinaryInfCm{ P(x_1) \mid Q(x) }
-
-		\AxiomCm{ \top \mid \lnot Q(a) }
-
-		\BinaryInfCm{  Q(y_2) \lor P(x_1) \mid \square }
-	\end{prooftree}
-	Here, $x_1$ first refers to $f(x)$ and later to $f(a)$.
-	This however is not essential for the correctness of the procedure, and it would be tedious to fix all such $x_1$ see also corresponding remark in case distinction in Lemma~\ref{lemma:literal_in_clause_similar}.
-\end{exa} 
 
 
 \begin{lemma}

@@ -2,7 +2,7 @@
 	paper=a4,% 
 	%landscape,
 	%DIV12, % mehr text pro seite als defaultyyp
-	DIV20, 
+	DIV14, 
 	%DIV=calc,%
 	%twoside=false,%
 	liststotoc,
@@ -543,11 +543,76 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
 \end{proof}
 
-\begin{conj}
+
+\cbstart
+\begin{lemma}
+	\label{lemma:just_introduced_lifting_vars_not_affected_by_tau}
+	Let $u$ be a variable in a literal $l$ being unified in a resolution step with $l'$ using $\sigma$.
+	Then $\lifboth{u\sigma} \tau = \lifboth{u\sigma}$
+	\comm{possibly true and UNUSED}
+\end{lemma}
+\begin{proof}
+	Let $u\sigma = t_j$ and hence $\lifboth{u\sigma} = z_j$.
+
+	\NB{much weird stuff here, but last two paragraphs of first item seem to make sense}
+
+	\NB{possibly try to show that $u\sigma = t_k$ in first item}
+
+	as $l\sigma = l'\sigma$, in $l'$ there is $t$ with $u\sigma = t\sigma$, so $t\sigma = t_j$.
+
+
+	\begin{itemize}
+			\item
+				Suppose that $(z_j\mapsto z_k) \in \tau$ is of kind \circled{1}. Suppose that $k\neq j$ as otherwise we are done.
+				Then by the definition of $\aiu$, we have a pair of corresponding terms $(a\cl, b\cl)$ in $l\cl$ and $l\cl'$ respectively such that  
+				$a\cl = z_j$ and $b\cl$ is such that $\lifboth{b\cl\sigma} = z_k$, hence $b\cl\sigma = t_k$.
+				By Lemma~\ref{lemma:tau_variable} $b\cl$ is a variable and $b = b\cl$.
+
+				By Lemma~\ref{lemma:literal_in_clause_similar} $a\cl \sim \lifboth{a}$. 
+				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}, $a\sigma = t_k$ and there is a substitution $\rho$ such that $t_j\rho = t_k$.
+				Also $a = t_j\rho'$ for some substituion $\rho'$.
+
+				Furthermore due to $l\sigma = l'\sigma$, $a\sigma = b\sigma$.
+				Hence $\lifboth{b\cl\sigma} = \lifboth{b\sigma} = \lifboth{a\sigma}$.
+
+				$a\sigma = b\sigma$, so $t_j\rho'\sigma = b\sigma = t_k$. 
+
+				By Lemma~\ref{lemma:tau_only_for_variable_terms}, $t_j$ contains a free variable.
+				As $C_1$ and $C_2$ are used in a resolution step, they are variable disjoint. \mytodo{currently assume they are variable disjoint (tree derivation), try to generalise later.}
+				Hence $t_j$ can only occur in one of them, w.l.o.g.\ let it occur in $C_1$.
+
+				%As $(x_j\mapsto x_k)\in \tau$, the underlying terms are unified. %, which is the same as $t_j\rho' \sigma = t_k \sigma$. 
+				As by assumption $t_k \neq t_j$ and $t_j\rho = t_k$, a free variable of $t_j$ is substituted by .
+
+				\mytodo{}
+
+				$u\sigma = t\sigma = t_j$
+
+				we only have $(z_j \mapsto z_k)$ if the underlying term is unified, i.e.\ the variable is replaced.
+				This variable only occurs in this clause (or related ones).
+				But $t\sigma=t_j$, i.e.~either $t$ still contains this variable or $\sigma$ introduces it.
+
+				$t$ cannot still contain it as $t_j\sigma$ removes it, and $\sigma$ cannot introduce it as $C_1$ and $C_2$ are variable disjoint, and it could only add it if a variable from the other clause is unified with it, but that variabel then cannot occur in $t$ as it's from the other clause.
+
+
+			\item
+				Suppose that $(z_j\mapsto z_k) \in \tau$ (second kind). Suppose that $k\neq j$ as otherwise we are done.
+
+				Similar reasoning: there is a variable in $t_j$ occurring at least twice (as $z_j$).
+				but then it must be unified to the same variable. so there, the same terms are present and the lifting variables are set accordingly by this crude method.
+
+				So $u$ is substituted for whatever happens on this other side, i.e. $u\sigma = t_k$
+	\end{itemize}
+\end{proof}
+\cbend
+
+
+
+\begin{lemma}
 	Let $\Phi_{\AIclause(C)}$ be the set of occurrences of lifting variables $x_j$ for some $j$ in $\AIclause(C)$ for $C$ in a resolution refutation.
 	Let $\Phi_{C}$ be the terms at the positions $\Phi_{\AIclause(C)}$ in the respective corresponding literal in $C$ .
 	Then all terms at $\Phi_C$ are equal.
-\end{conj}
+\end{lemma}
 \begin{proof}
 	Note that by Lemma~\ref{lemma:disjoint_lifting_variables}, incomparable clauses do not share lifting variables which replace terms without free variables. 
 	We proceed by induction.
