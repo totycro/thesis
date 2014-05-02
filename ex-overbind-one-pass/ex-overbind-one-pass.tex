@@ -1612,7 +1612,7 @@ $\Gamma \entails (\lnot P(x_3) \land \lnot R(x_3)) \lor (P(x_3) \land S(a)) $
 	\BinaryInfCm{ (\lnot P(x_5) \land \lnot Q(y_2) \land \lnot Q(y_4) )
 	\spa\lor (P(x_5) \land \lnot S(y_2)) \spa{|} P(x_2)}
 	\noLine
-	\UnaryInfC{ \NB{$\aiu(P(x_1), P(x_5)) = \{x_1 \mapsto x_5, x_2\mapsto x_5\}$}}
+	\UnaryInfC{ \NB{$\aiu(P(x_1), P(x_3)) = \{x_1 \mapsto x_5, x_3\mapsto x_5\}$}}
 
 
 \end{prooftree}
@@ -1622,6 +1622,61 @@ Hence a term with a free variable in a clause can never be lifted by the same va
 If two terms in the same clause are lifted with a certain variable, they are bound together in the derivation anyway.
 
 
+\clearpage 
+
+\section*{clause used multiple times} 
+
+\e{209a}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{P(a)} }
+	\AxiomCm{ \sig{\lnot Q(a)} }
+	\AxiomCm{ \p{\lnot P(x) \lor P(f(x)) \lor Q(y)} }
+	\BinaryInfCm{ \lnot P(x) \lor\arrowA P(f(x)) }
+	\BinaryInfCm{ P(f(a)) }
+	\AxiomCm{ \arrowB\drawAB }
+	\BinaryInfCm{ P(f(f(a))) }
+	\AxiomCm{ \p{\lnot P(f(f(z)))}}
+	\BinaryInfCm{ \square} 
+\end{prooftree}
+
+\NB{we need to rename lifting variables, possibly rename all lifting variables which refer to a term which contains variables (an actual implementation might do this more efficiently, i.e.\ not always)} 
+
+~
+
+\begin{prooftree}
+	\AxiomCm{ \bot \mid {P(a)} }
+	\AxiomCm{ \bot \mid Q(a) }
+	\AxiomCm{ \top \mid {\lnot P(x) \lor P(x_1) \lor Q(y)} }
+	\BinaryInfCm{ Q(a) \mid \lnot P(x) \lor\arrowA P(x_1) }
+	\BinaryInfCm{ P(a) \land Q(a) \mid  P(x_1)  }
+	\noLine
+	\UnaryInfC{\NB{$x_1$ used to refer to $f(x)$, now: $f(a)$}}
+	\AxiomCm{ \arrowB\drawAB Q(a) \mid \lnot P(x') \lor P(x_1')}
+	\BinaryInfCm{( \lnot P(x_1) \land P(a)\land Q(a) ) \spa\lor (P(x_1) \land Q(a)) \spa\mid  P(x_1') }
+	\AxiomCm{ \top \mid {\lnot P(x_2)}}
+	\BinaryInfCm{ \Big(\lnot P(x_3) \land  (\lnot P(x_1) \land P(a)\land Q(a) ) \spa\lor (P(x_1) \land Q(a))\Big) \spa \lor P(x_3)  \mid  \square} 
+	\noLine
+	\UnaryInfCm{\aiu(x_1', x_2) = \{x_1' \mapsto \lifboth{f(f(a))},
+		x_2 \mapsto \lifboth{f(f(a))}}
+\end{prooftree}
+
+$ \Big(\lnot P(x_3) \land  (\lnot P(x_1) \land P(a)\land Q(a) ) \spa\lor (P(x_1) \land Q(a))\Big) \spa     \lor P(x_3)$
+
+$\equiv
+\Big(Q(a) \land \Big( (\lnot P(x_1) \land P(a) ) \spa\lor P(x_1) \Big)\Big) \spa     \lor P(x_3)$
+
+$\Sigma \checkmark$
+
+negated: 
+$\Big(\lnot Q(a) \lor \Big( (P(x_1) \lor \lnot P(a) ) \spa\land \lnot P(x_1) \Big)\Big) \spa     \land \lnot P(x_3)$
+
+$\equiv
+\Big(\lnot Q(a) \lor \Big(  \lnot P(a) \spa\land \lnot P(x_1) \Big)\Big) \spa     \land \lnot P(x_3)$
+
+$\Pi \checkmark$
+
+(none of the $P(f^n(x))$, $n\leq 2$ are allowed to be true in a model of $\Phi$) 
 
 \clearpage 
 
