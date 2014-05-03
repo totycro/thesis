@@ -909,6 +909,7 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 
 
 \begin{lemma}
+	\label{ref:gamma_entails_delta_terms_lifted}
 	Let every $\Gamma$-term be grey. (To establish valid conditions, for each $\Gamma$-term $t$, add $P(t)$ to $\Delta$ where $P$ is a fresh predicate symbol. Then the resolution refutation is unaffected).
   Then
   $\Gamma \entails \AImatrix(C) \lor \AIclause(C)$.
@@ -1025,79 +1026,79 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 \end{proof}
 
 \begin{conj}
-	$\Gamma \entails  \AI(C)$
+	$\Gamma \entails \AI(C)$. (Recall that $\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$.)
 \end{conj}
-\begin{proof} ~
-	\begin{description}
-		\item[Induction start.]
-			For $C\in\Gamma$, $\AImatrix(C) = \bot$ and $\AIclause(C) = \lifgamma{C}$.
-			Furthermore, the quantifier prefix is $\exists y_1 \dots \exists y_n $, where $y_1n\dotsc , y_n$ are the maximal $\Gamma$-terms of $C$.
-			Hence as $\Gamma \entails C$, $C$ acts as witness for the existential terms in $\AIclause(C)$ and we get that $\Gamma \entails \exists y_1 \dots \exists y_n \AIclause(C)$.
+\begin{proof}
+	\begin{comment}
+		\begin{description}
+			\item[Induction start.]
+				For $C\in\Gamma$, $\AImatrix(C) = \bot$ and $\AIclause(C) = \lifgamma{C}$.
+				Furthermore, the quantifier prefix is $\exists y_1 \dots \exists y_n $, where $y_1n\dotsc , y_n$ are the maximal $\Gamma$-terms of $C$.
+				Hence as $\Gamma \entails C$, $C$ acts as witness for the existential terms in $\AIclause(C)$ and we get that $\Gamma \entails \exists y_1 \dots \exists y_n \AIclause(C)$.
 
-			For $C\in \Delta$, $\Gamma \entails \AImatrix(C)$ as $\AImatrix(C) = \top$.
+				For $C\in \Delta$, $\Gamma \entails \AImatrix(C)$ as $\AImatrix(C) = \top$.
 
-			$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
+				$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
 
-		\item[Induction step.]
-			$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
+			\item[Induction step.]
+				$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
 
-			$ \clauseOnePrime = \AIclause((C_1)_\Gamma) \setminus \{\lifboth{(l{\fromclause})_\Gamma}\}$
+				$ \clauseOnePrime = \AIclause((C_1)_\Gamma) \setminus \{\lifboth{(l{\fromclause})_\Gamma}\}$
 
-			$ \clauseTwoPrime = \AIclause((C_2)_\Gamma)\setminus \{\lifboth{\lnot (l{\fromclause'})_\Gamma}\}$
+				$ \clauseTwoPrime = \AIclause((C_2)_\Gamma)\setminus \{\lifboth{\lnot (l{\fromclause'})_\Gamma}\}$
 
-			$\tau  = \aiu((l{\fromclause})_\Gamma, (l{\fromclause'})_\Gamma)$
-
-
-			$\AIclause(C_\Gamma) =
-			\lifboth{\Big( \clauseOnePrime \lor \clauseTwoPrime \Big)\sigma} \tau$.
+				$\tau  = \aiu((l{\fromclause})_\Gamma, (l{\fromclause'})_\Gamma)$
 
 
-			By Lemma~\ref{lemma:lift_logic_commute},
-			$\AIclause(C_\Gamma) =
-			\lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma} \tau$.
-
-			By the induction hypothesis:
-
-			$\Gamma \entails Q_1 z_1 \dots Q_m z_m \Big( \AImatrix(C_1) \lor \AIclause(C_1)  \Big)$
-
-			$\Gamma \entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big( \AImatrix(C_2) \lor \AIclause(C_2) \Big)$
-
-			or, expressed differently:
-
-			$\Gamma \entails  Q_1 z_1 \dots Q_m z_m \Big( \AImatrix(C_1) \lor \clauseOnePrime \lor {(l{\fromclause})_\Gamma}\Big)$
-
-			$\Gamma \entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big( \AImatrix(C_2) \lor \clauseTwoPrime \lor {\lnot (l{\fromclause'})_\Gamma} \Big)$
+				$\AIclause(C_\Gamma) =
+				\lifboth{\Big( \clauseOnePrime \lor \clauseTwoPrime \Big)\sigma} \tau$.
 
 
-			\clearpage
-			By the previous proof:
+				By Lemma~\ref{lemma:lift_logic_commute},
+				$\AIclause(C_\Gamma) =
+				\lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma} \tau$.
 
-			$\Gamma \stackrel{\markA}\entails Q_1 z_1 \dots Q_m z_m \Big(\lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclause})_\Gamma\sigma}\tau \Big)$
+				By the induction hypothesis:
 
-	$\Gamma \stackrel{\markB}\entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big(  \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclause'})_\Gamma\sigma}\tau \Big)$
+				$\Gamma \entails Q_1 z_1 \dots Q_m z_m \Big( \AImatrix(C_1) \lor \AIclause(C_1)  \Big)$
 
-	\end{description}
+				$\Gamma \entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big( \AImatrix(C_2) \lor \AIclause(C_2) \Big)$
+
+				or, expressed differently:
+
+				$\Gamma \entails  Q_1 z_1 \dots Q_m z_m \Big( \AImatrix(C_1) \lor \clauseOnePrime \lor {(l{\fromclause})_\Gamma}\Big)$
+
+				$\Gamma \entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big( \AImatrix(C_2) \lor \clauseTwoPrime \lor {\lnot (l{\fromclause'})_\Gamma} \Big)$
+				\bigskip
+
+
+				By the previous proof:
+
+				$\Gamma \stackrel{\markA}\entails Q_1 z_1 \dots Q_m z_m \Big(\lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclause})_\Gamma\sigma}\tau \Big)$
+
+				$\Gamma \stackrel{\markB}\entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big(  \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclause'})_\Gamma\sigma}\tau \Big)$
+
+		\end{description}
+	\end{comment}
+
+	By Lemma~\ref{ref:gamma_entails_delta_terms_lifted}, by considering $\Gamma$-terms to be grey, there is a ``witness formula'' 
+	$\AImatrix(C) \lor \AIclause(C)$ which contains all $\Gamma$-terms and all $\Delta$-terms are lifted and implicitly universally quantified.
+
+	If we now again consider $\Gamma$-terms to be $\Gamma$-terms, then in the ``witness formula'', the $\Gamma$-terms are lifted and existentially quantified.
+	As a $\Gamma$-term $\colterm{i}$ in general contains lifting variables which lift $\Delta$-terms, we have to ensure that these are quantified before $y_i$ is.
+
+	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result.
 \end{proof}
 
 TODO here:
 
 algorithm yields negation if coloring is swapped (hence $\Delta$ entails negated interpolant by an easy corollary)
 
-final theorem:
-
-
-
-
-
-
-
-
-\clearpage
-\section{thoughts}
-
-\begin{conj}
-	Double ended arrows are not important as terms are overbound with same variable anyway as always same unifier applies.
-\end{conj}
+\begin{lemma}
+	\label{lemma:arrows_for_lifting_terms}
+	Let $\colterm{i}$ be a $\Delta$-term and $\colterm{j}$ be a $\Gamma$-term, which contains $\colterm{i}$ as subterm.
+	If the corresponding lifting variables $z_i$ and $z_j$ occur in $\AImatrix(C) \lor \AIclause(C)$ for some $C$, then there is an arrow from $z_i$ to $z_j$.
+\end{lemma}
 
 \clearpage
 \section{arrow proof}
@@ -1170,7 +1171,7 @@ Note: $p_1$ might be in some clause, the prop interpolant or none of both.
 
 					$\Gamma$-terms and $\Delta$-terms are not unifiable.
 					%Hence all pairs of terms $(\colterm{1}, \colterm{2})$ in the same positions in $l$ and $l'$ (if both positions exist) are both grey, or w.l.o.g.~$\colterm{1}$ is a variable and $\colterm{2}$ is a colored/grey term.
-					Hence all pairs of terms $(\colterm{1}, \colterm{2})$ in the same positions in $l$ and $l'$ (if both positions exist) either point to the same symbol or (w.l.o.g.) $\colterm{1}$ is a variable and $\colterm{2}$ is a term.
+					Hence all pairs of terms $(\colterm{1}, \colterm{2})$ in the same positions in $l$ and $l'$ (if both positions exist) either point to the same symbol or (w.l.o.g.) $\colterm{1}$ is a variable and $\colterm{2}$ is a term. \mytodo{or the outermost symbol is the same and contains variables.}
 					If there are $\Delta$-terms in $\Gamma$-terms in the prefix, they are present in both ancestors and handled by the induction hypothesis.
 
 					The only way a $\Delta$-colored term may enter a $\Gamma$-colored term is in the situation where $\colterm{1}$ is a variable and $\colterm{2}$ a colored term.
@@ -1185,6 +1186,14 @@ Note: $p_1$ might be in some clause, the prop interpolant or none of both.
 			\end{enumerate}
 	\end{itemize}
 \end{proof}
+
+\clearpage
+\section{thoughts}
+
+\begin{conj}
+	Double ended arrows are not important as terms are overbound with same variable anyway as always same unifier applies.
+\end{conj}
+
 
 
 \end{document}
