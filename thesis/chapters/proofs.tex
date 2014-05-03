@@ -334,12 +334,13 @@ This replacement is referred to as lifting:
 
 \begin{defi}[Lifting]
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
-	$\phi$ a formula or a term, $\colterm{1}, \dotsc, \colterm{n}$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\phi$ and $x_1, \ldots, x_n$ fresh variables, referred to as \defiemph{lifting variables}.
-	Then $\lft{\Phi}{x}{\phi}$ denotes $\phi\abstraction{\colterm{1}/x_1}\dots\abstraction{\colterm{n}/x_n}$.
+	$\phi$ a formula or a term, $\colterm{1}, \dotsc, \colterm{n}$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\phi$ and $z_1, \ldots, z_n$ fresh variables, referred to as \defiemph{lifting variables}.
+	Then $\lft{\Phi}{z}{\phi}$ denotes $\phi\abstraction{\colterm{1}/z_1}\dots\abstraction{\colterm{n}/z_n}$.
 
 	We also denote $\phi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\phi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
 \end{defi}
 
+We usually lift $\Delta$-terms by indexed variables with letter $x$ and $\Gamma$-terms with letter $y$. If the lifting is not specific to a color, we use indexed variables with letter $z$.
 
 
 Some elementary properties of liftings are described by the following lemmas:
@@ -348,9 +349,9 @@ Some elementary properties of liftings are described by the following lemmas:
   \label{lemma:lift_commute}
   Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
   \begin{enumerate}
-    \item $\lift{\Phi}{\lnot A}{x} \semiff{} \lnot \lift{\Phi}{A}{x}$
-    \item $\lift{\Phi}{A \circ B}{x} \semiff{} ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for  $\circ \in \{\land,       \lor\}$
-    \item $\lift{\Phi}{s = t}{x} \semiff{} ( \lift{\Phi}{s}{x} = \lift{\Phi}{t}{x} )$
+    \item $\lift{\Phi}{\lnot A}{z} \semiff{} \lnot \lift{\Phi}{A}{z}$
+    \item $\lift{\Phi}{A \circ B}{z} \semiff{} ( \lift{\Phi}{A}{z} \circ \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land,       \lor\}$
+    \item $\lift{\Phi}{s = t}{z} \semiff{} ( \lift{\Phi}{s}{z} = \lift{\Phi}{t}{z} )$
   \end{enumerate}
 \end{lemma}
 \begin{lemma}
@@ -684,7 +685,7 @@ $\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
 	$z_1, \dots, z_n$ be the variables which replace the colored terms in $\lifgamma{\lifdelta{\PI(\pi)}}$ ordered by their length.
 	Then
-	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ ($\exists$) if $z_i$ replaces a $\Delta$ ($\Gamma$)-term, is an interpolant.
+	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_i$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
 \end{thm}
 \begin{proof}
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{\PI(\pi)}$ where $m$ is the number of maximal $\Delta$-colored terms in $\PI(\pi)$.

@@ -168,7 +168,7 @@ need more narrow version: clauses do appear in parent clauses in derivation.
 \begin{prop}
 
 
-	Suppose in a partial interpolant, there are two maximal terms $t_1$ and $t_2$ such that w.l.o.g.~$t_1$ is smaller (as defined in \ref{def:order}) than $t_2$. Then it the final interpolant, an overbinding can be defined where the variable corresponding to $t_1$ is quantified over before the variable corresponding to $t_2$ is.
+	Suppose in a partial interpolant, there are two maximal terms $\colterm{1}$ and $\colterm{2}$ such that w.l.o.g.~$\colterm{1}$ is smaller (as defined in \ref{def:order}) than $\colterm{2}$. Then it the final interpolant, an overbinding can be defined where the variable corresponding to $\colterm{1}$ is quantified over before the variable corresponding to $\colterm{2}$ is.
 \end{prop}
 
 The subterm-relation is reflexive.
@@ -204,7 +204,7 @@ The subterm-relation is reflexive.
 	This version of overline and star does NOT overbind variables! If they happen to be in the final interpolant, just overbind them somehow, but not earlier. This is ok as the interpolant only contains variables if both corresponding atoms in $\Gamma$ and $\Delta$ do. Variables are the only terms in the interpolant that can ``change their color'', so we don't know a priori if there are constraints on the quantifier to overbind them with.
 
 	Convention w.r.t. a clause $C$ which has been derived from $C_1$ and $C_2$:
-	$\bar Q_n = Q_1 z_1 \ldots Q_n z_n$, such that the $z_i$ correspond to the maximal terms $t_i$ in $\PI(C)$. Same terms must be overbound by same variable, see 101a for counterexample to per-occurrence-overbinding.
+	$\bar Q_n = Q_1 z_1 \ldots Q_n z_n$, such that the $z_i$ correspond to the maximal terms $\colterm{i}$ in $\PI(C)$. Same terms must be overbound by same variable, see 101a for counterexample to per-occurrence-overbinding.
 	The $z_i$ are ordered such that
 	\begin{compactenum}
 	\item the orderings in the $Q_{n_1}$ and $Q_{n_2}$ are respected (no circlular relations can occur in combination with merging as a term is only smaller than another term if it is smaller in length as well, which excludes cycles) 
@@ -237,10 +237,10 @@ The subterm-relation is reflexive.
 
 					TODO: basically do nothing here since no new atoms (revisit after mixed colored case has been dealt with)
 
-					Let $t_1, \ldots, t_{n_1}$ be terms overbound in $\PI(C_1)$ and
+					Let $\colterm{1}, \ldots, \colterm{n_1}$ be terms overbound in $\PI(C_1)$ and
 					$s_1, \ldots, s_{n_2}$ terms overbound in $\PI(C_2)$.
 
-					$\{ z_1, \ldots, z_n \} = \{t_1, \ldots, t_{n_1}\} \sigma \cup \{s_1, \ldots, s_{n_2}\} \sigma$ $\quad$ // common terms are merged
+					$\{ z_1, \ldots, z_n \} = \{\colterm{1}, \ldots, \colterm{n_1}\} \sigma \cup \{s_1, \ldots, s_{n_2}\} \sigma$ $\quad$ // common terms are merged
 
 					order relations as in $C_1, C_2$
 
@@ -552,56 +552,56 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 	\comm{possibly true and UNUSED}
 \end{lemma}
 \begin{proof}
-	Let $u\sigma = t_j$ and hence $\lifboth{u\sigma} = z_j$.
+	Let $u\sigma = \colterm{j}$ and hence $\lifboth{u\sigma} = z_j$.
 
 	\NB{much weird stuff here, but last two paragraphs of first item seem to make sense}
 
-	\NB{possibly try to show that $u\sigma = t_k$ in first item}
+	\NB{possibly try to show that $u\sigma = \colterm{k}$ in first item}
 
-	as $l\sigma = l'\sigma$, in $l'$ there is $t$ with $u\sigma = t\sigma$, so $t\sigma = t_j$.
+	as $l\sigma = l'\sigma$, in $l'$ there is $t$ with $u\sigma = t\sigma$, so $t\sigma = \colterm{j}$.
 
 
 	\begin{itemize}
 			\item
 				Suppose that $(z_j\mapsto z_k) \in \tau$ is of kind \circled{1}. Suppose that $k\neq j$ as otherwise we are done.
 				Then by the definition of $\aiu$, we have a pair of corresponding terms $(a\cl, b\cl)$ in $l\cl$ and $l\cl'$ respectively such that  
-				$a\cl = z_j$ and $b\cl$ is such that $\lifboth{b\cl\sigma} = z_k$, hence $b\cl\sigma = t_k$.
+				$a\cl = z_j$ and $b\cl$ is such that $\lifboth{b\cl\sigma} = z_k$, hence $b\cl\sigma = \colterm{k}$.
 				By Lemma~\ref{lemma:tau_variable} $b\cl$ is a variable and $b = b\cl$.
 
 				By Lemma~\ref{lemma:literal_in_clause_similar} $a\cl \sim \lifboth{a}$. 
-				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}, $a\sigma = t_k$ and there is a substitution $\rho$ such that $t_j\rho = t_k$.
-				Also $a = t_j\rho'$ for some substituion $\rho'$.
+				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}, $a\sigma = \colterm{k}$ and there is a substitution $\rho$ such that $\colterm{j}\rho = \colterm{k}$.
+				Also $a = \colterm{j}\rho'$ for some substituion $\rho'$.
 
 				Furthermore due to $l\sigma = l'\sigma$, $a\sigma = b\sigma$.
 				Hence $\lifboth{b\cl\sigma} = \lifboth{b\sigma} = \lifboth{a\sigma}$.
 
-				$a\sigma = b\sigma$, so $t_j\rho'\sigma = b\sigma = t_k$. 
+				$a\sigma = b\sigma$, so $\colterm{j}\rho'\sigma = b\sigma = \colterm{k}$. 
 
-				By Lemma~\ref{lemma:tau_only_for_variable_terms}, $t_j$ contains a free variable.
+				By Lemma~\ref{lemma:tau_only_for_variable_terms}, $\colterm{j}$ contains a free variable.
 				As $C_1$ and $C_2$ are used in a resolution step, they are variable disjoint. \mytodo{currently assume they are variable disjoint (tree derivation), try to generalise later.}
-				Hence $t_j$ can only occur in one of them, w.l.o.g.\ let it occur in $C_1$.
+				Hence $\colterm{j}$ can only occur in one of them, w.l.o.g.\ let it occur in $C_1$.
 
-				%As $(x_j\mapsto x_k)\in \tau$, the underlying terms are unified. %, which is the same as $t_j\rho' \sigma = t_k \sigma$. 
-				As by assumption $t_k \neq t_j$ and $t_j\rho = t_k$, a free variable of $t_j$ is substituted by .
+				%As $(x_j\mapsto x_k)\in \tau$, the underlying terms are unified. %, which is the same as $\colterm{j}\rho' \sigma = \colterm{k} \sigma$. 
+				As by assumption $\colterm{k} \neq \colterm{j}$ and $\colterm{j}\rho = \colterm{k}$, a free variable of $\colterm{j}$ is substituted by .
 
 				\mytodo{}
 
-				$u\sigma = t\sigma = t_j$
+				$u\sigma = t\sigma = \colterm{j}$
 
 				we only have $(z_j \mapsto z_k)$ if the underlying term is unified, i.e.\ the variable is replaced.
 				This variable only occurs in this clause (or related ones).
-				But $t\sigma=t_j$, i.e.~either $t$ still contains this variable or $\sigma$ introduces it.
+				But $t\sigma=\colterm{j}$, i.e.~either $t$ still contains this variable or $\sigma$ introduces it.
 
-				$t$ cannot still contain it as $t_j\sigma$ removes it, and $\sigma$ cannot introduce it as $C_1$ and $C_2$ are variable disjoint, and it could only add it if a variable from the other clause is unified with it, but that variabel then cannot occur in $t$ as it's from the other clause.
+				$t$ cannot still contain it as $\colterm{j}\sigma$ removes it, and $\sigma$ cannot introduce it as $C_1$ and $C_2$ are variable disjoint, and it could only add it if a variable from the other clause is unified with it, but that variabel then cannot occur in $t$ as it's from the other clause.
 
 
 			\item
 				Suppose that $(z_j\mapsto z_k) \in \tau$ (second kind). Suppose that $k\neq j$ as otherwise we are done.
 
-				Similar reasoning: there is a variable in $t_j$ occurring at least twice (as $z_j$).
+				Similar reasoning: there is a variable in $\colterm{j}$ occurring at least twice (as $z_j$).
 				but then it must be unified to the same variable. so there, the same terms are present and the lifting variables are set accordingly by this crude method.
 
-				So $u$ is substituted for whatever happens on this other side, i.e. $u\sigma = t_k$
+				So $u$ is substituted for whatever happens on this other side, i.e. $u\sigma = \colterm{k}$
 	\end{itemize}
 \end{proof}
 \cbend
@@ -618,7 +618,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 	We proceed by induction.
 
 	Base case: $\AIclause(C) = \lifboth{C}$ for $C$ in some initial clause set.
-	As $x_j$ replaces a distinct term~$t_j$, all occurrences of $x_j$ in $\AIclause(C)$ correspond to some $t_j$ in $C$.
+	As $x_j$ replaces a distinct term~$\colterm{j}$, all occurrences of $x_j$ in $\AIclause(C)$ correspond to some $\colterm{j}$ in $C$.
 
 	Induction step:
 	Suppose the statement holds for $C_1$ and $C_2$, usual resolution step notation.
@@ -716,8 +716,8 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 
     (this was based on $\Delta$-terms)
 
-  $t$ contains $\Delta$-terms $t_i$, grey terms $g_i$ and free variables~$v_i$.
-  $\lifdelta{t}$ is $t$, where every maximal $\Delta$-term $t_i$ is replaced by free variable $x_i$.
+  $t$ contains $\Delta$-terms $\colterm{i}$, grey terms $g_i$ and free variables~$v_i$.
+  $\lifdelta{t}$ is $t$, where every maximal $\Delta$-term $\colterm{i}$ is replaced by free variable $x_i$.
 
   A substitution $\sigma$ occuring in a resolution refutation does not affect any of the $x_i$, as these symbols do not occur   in the initial clause sets.
 
@@ -735,7 +735,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
   $\lifdelta{t}$ has at position $p$ $v_i$ as well if the path to $p$ does not contain colored symbol.
   So $\lifdelta{\lifdelta{t}\sigma}$ and $\lifdelta{t\sigma}$ coincide at $p$, irrespective of what $\sigma$ introduces (var,   $\Delta$-/grey-term).
 
-  If $p$ points into a maximal $\Delta$-colored term, $p\mod k$ for some $k\geq 1$ is a $\Delta$-colored term $t_j$.
+  If $p$ points into a maximal $\Delta$-colored term, $p\mod k$ for some $k\geq 1$ is a $\Delta$-colored term $\colterm{j}$.
   Hence in $\lifdelta{t}$, $\pos(p\mod k) = x_j$.
 
   However in $\lifdelta{t\sigma}$, $\pos(p\mod k) = x_l$.
@@ -974,7 +974,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 						Then it will be replaced by $x_i$ and existentially quantified.
 						It appears in either $\PI(C_1)$ or $\PI(C_2)$.
 
-						$t$ is a witness for $x_i$ because it contains subterms $t_1, \ldots, t_n$. If they are overbound as well, they are so before $t$ and are available here.
+						$t$ is a witness for $x_i$ because it contains subterms $\colterm{1}, \ldots, \colterm{n}$. If they are overbound as well, they are so before $t$ and are available here.
 
 						TODO: derive properties using examples 103 or so
 
