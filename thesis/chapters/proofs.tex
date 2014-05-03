@@ -334,8 +334,8 @@ This replacement is referred to as lifting:
 
 \begin{defi}[Lifting]
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
-	$\phi$ a formula or a term, $t_1, \ldots, t_n$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\phi$ and $x_1, \ldots, x_n$ fresh variables, referred to as \defiemph{lifting variables}.
-	Then $\lft{\Phi}{x}{\phi}$ denotes $\phi\abstraction{t_1/x_1}\ldots\abstraction{t_n/x_n}$.
+	$\phi$ a formula or a term, $\colterm{1}, \dotsc, \colterm{n}$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\phi$ and $x_1, \ldots, x_n$ fresh variables, referred to as \defiemph{lifting variables}.
+	Then $\lft{\Phi}{x}{\phi}$ denotes $\phi\abstraction{\colterm{1}/x_1}\dots\abstraction{\colterm{n}/x_n}$.
 
 	We also denote $\phi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\phi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
 \end{defi}
