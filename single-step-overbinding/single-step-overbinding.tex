@@ -612,6 +612,7 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 	Let $\Phi_{\AIclause(C)}$ be the set of occurrences of lifting variables $x_j$ for some $j$ in $\AIclause(C)$ for $C$ in a resolution refutation.
 	Let $\Phi_{C}$ be the terms at the positions $\Phi_{\AIclause(C)}$ in the respective corresponding literal in $C$ .
 	Then all terms at $\Phi_C$ are equal.
+	\NB{similar lemma with possibly better proof below}
 \end{lemma}
 \begin{proof}
 	Note that by Lemma~\ref{lemma:disjoint_lifting_variables}, incomparable clauses do not share lifting variables which replace terms without free variables. 
@@ -668,6 +669,106 @@ SUPPOSE NO VARIABLE OCCURS TWICE IN A COLORED TERM IN AN INITIAL CLAUSE SET
 	\end{itemize}
 
 \end{proof}
+
+	\begin{lemma}
+		\label{lemma:lifting_var_refers_to_same_terms}
+		Let $s\cl$ and $t\cl$ be two occurrences of the lifting variable $x_i$ in $\AIclause(C)$ for $C$ in a resolution refutation.
+		Then $s=t$.
+		\comm{not really used, is it really true? is it interesting?}
+
+	\NB{similar lemma with possibly worse proof above}
+	\end{lemma}
+	\begin{proof}
+		Base case: $\AIclause(C) = \lifboth{C}$ for $C$ in some initial clause set.
+
+		Suppose that $\colterm{i}$ does not contain a variable.
+		Then any occurrence of $\colterm{i}$ is never altered throughout the derivation.
+		If a substitution introduced $\colterm{i}$, it is lifted to $x_i$.
+		By Lemma~\ref{lemma:tau_only_for_variable_terms}, $\tau$ does not alter $x_i$. 
+		Hence all occurrences to $x_i$ refer to $\colterm{i}$ at any given stage of the derivation.
+
+		Now we suppose that $\colterm{i}$ does contain a variable.
+		By Lemma~\ref{lemma:lifting_variables_disjoint}, $s\cl$ and $t\cl$ are both derived from one of the preceding clauses, say from $C_1$. 
+
+		Induction step: $s=t$ in $C_1$.
+		Then $s$ and $t$ as well as $s\cl$ and $t\cl$ are affected the same way by the algorithm as they are respectively equal.
+		It remains to show that for newly introduced occurrences $x_i$ in $\AIclause(C)$, the condition holds. Let $r$ be such a newly introduced occurrence.
+		$r\cl$ in $\AIclause(C)$ is contained in $\lifboth{u\cl\sigma}\tau$ for a term $u\cl \in \AIclause(C_1) \cup \AIclause(C_2)$.
+		As $u\cl$ does not contain $x_i$, it was introduced either by $\tau$ or by $\sigma$ introducing $\colterm{i}$ which is then lifted to $x_i$.
+		\begin{itemize}
+			\item Suppose $r\cl$ was introduced by $\sigma$ and consecutive lifting. 
+				Then $\sigma$ has introduced $\colterm{i}$.
+
+				\mytodo{} Note that with ``strict variable renaming'', each variable is renamed every time so $\colterm{i}$ cannot be introduced here as the variable it would have to contain does not exist anymore.
+
+				Without strict renaming, we can show that then an arbitrary occurrence of $x_i$ in $\AIclause(C)$ different from $r$ also refers to $\colterm{i}$.
+				Note that $C_1$ and $C_2$ are variable disjoint.
+				Hence the set of variables of $\colterm{i}$ is a subset of the variables of $C_1$. \mytodo{clarify on the conditions that are ncessary for this. if some other $\colterm{i}$ occurs in $C_1$, then no variable of $\colterm{i}$ must occur in $C_2$. But if only $\colterm{i}\rho$ occurs in $C_1$, $C_2$ might ``reintroduce'' a variable from $\colterm{i}$}
+
+				Note furthermore that if any of the variables of $\colterm{i}$ would not be present in $C_1$ anymore, than $\sigma$ could not have produced $\colterm{i}$ as unifications never introduce new variables.
+
+				And note that if a substitution is applied to a clause which is non-trivial on a variable, then this variable is not present in the clause afterwards.
+
+				Hence no variable of $\colterm{i}$ has been unified in the derivation leading to $C_1$. But as term are only changed by means of unification, the $\colterm{i}$ which were responsible for introducing the other occurrences of $x_i$ in $\AIclause(C_1)$ are still present, and they are all equal to $\colterm{i}$.
+
+			\item Suppose $r\cl$ was introduced by $\tau$.
+				Then $(x_j \mapsto x_i) \in \tau$.
+
+				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}, $r = \colterm{i}$ and either for a term $b\cl\in\AIclause(C_1)\cup\AIclause(C_2)$ it holds that either, depending on the type of $\tau$-substitution, $\lifboth{b\cl\sigma} = x_i$ and $b=b\cl$ or $a\sigma = b\sigma = x_i$.
+				In both cases, the variables of $\colterm{i}$ are present in $b\sigma$, so either they have been present before (i.e.\ in $b$) or were introduced by $\sigma$. In any case, by a similar reasoning as in the former case, the other occurrences of $x_i$ in $\AIclause{C_1}$ refer to $\colterm{i}$ as well. 
+				\qedhere
+		\end{itemize}
+	\end{proof}
+
+\begin{lemma}
+	\label{lemma:tau_only_for_variable_terms}
+	$(x_j \mapsto x_k) \in \aiu(l\fromclause, l\fromclause')$ with $j\neq k$ implies that $\colterm{j}$ (corresponding to $x_j$) contains a free variable.
+
+	In other words: If $\colterm{j}$ does not contain a free variable, then if it is lifted to $x_j$, $\tau$ will never change it to some $x_k$ with $k\neq j$.
+	\comm{true and somewhat used}
+\end{lemma}
+\begin{proof}
+	Let  $\aiu(s\fromclause, r\fromclause)$ introduce $\{x_j \mapsto x_k\}$.
+	We perform a case distinction:
+	\begin{itemize}
+		\item Suppose $s\fromclause$ is a lifting variable and but $r\fromclause$ is not.
+			Then by the definition of $\aiu$, $s\fromclause = x_j$ and $\lifboth{r\fromclause\sigma} = x_k$.
+			Suppose that $\colterm{j}$ does not have a free variable.
+			Then in the resolution derivation, from the point on as it is lifted by $x_j$ the original term does not change, hence $s = \colterm{j}$. As in consequence $s$ does not contain free variables, $s\sigma = s$.
+			As $s\sigma = r\sigma$ by the resolution rule application, we have that $s = r\sigma$.
+			But as $\lifboth{s} = \lifboth{s_j} = x_j$, we must also have that $\lifboth{r\sigma} = x_j$.
+			Hence $r\sigma = \colterm{j}$.
+
+			As $r\fromclause$ occurs in $\AIclause(C)$ for some $C$, it is not a colored term, but as it is not a lifting variable and $r\fromclause\sigma$ is a colored term, $r\fromclause$ must be a variable.
+			By Lemma~\ref{lemma:literal_in_clause_similar}, as $r \in C$, $r\fromclause$ is equal to $s$ up to the index of lifting variables, hence $r = r\fromclause$.
+
+			But then $r\fromclause\sigma = r\sigma = \colterm{j}$, so $\lifboth{r\fromclause\sigma} = x_j$. But then $j=k$, a contradiction.
+
+		\item Suppose $r\fromclause$ is a lifting variable but $s\fromclause$ is not. This case can be argued analogously.
+
+		\item Suppose that both $s\fromclause$ and $r\fromclause$ are a lifting variables.
+			Then by the definition of $\aiu$, $s = r = \colterm{k}$ such that $\lifboth{\colterm{k}} = x_k$.
+			Suppose that $\colterm{j}$ does not contain a free variable. Then from the point on where $s\fromclause$ has been lifted, $\colterm{j}$ does not change. Therefore $s = \colterm{j}$. But then $k=j$, a contradiction.
+			\qedhere
+	\end{itemize}
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:jka5a5halat}
+	If a grey or maximal colored term $t$ in a clause $C$ does not contain a free variable, then for $t\cl$ in $\AIclause$, we have that $\lifboth{t}=t\cl$. 
+	\comm{this is more of a comment, prove properly before actually using it}
+\end{lemma}
+\begin{proof}
+	Either $t$ is there from beginning, then $t\cl = \lifboth{t}$.
+	Otherwise it was introduced by a substitution, but then it was also introduced in $\AIclause(C)$ and lifted there.
+
+	Substitutions do not affect $t\cl$ due to Lemma~\ref{lemma:no_lifting_vars_in_subst}.
+	Hence also liftings do not affect $t\cl$.
+	By Lemma~\ref{lemma:tau_only_for_variable_terms}, $\tau$ does not change $t\cl$.
+
+	$\Ra$ $t$ as well as $t\cl$ remain invariant
+\end{proof}
+
 
 \begin{conj}
 	Let $C_1$ and $C_2$ be clauses of a resolution step such that a literal $l\in C_1$ and $l' \in C_2$ are resolved upon using $\sigma$ such that $l\sigma = l'\sigma$.
