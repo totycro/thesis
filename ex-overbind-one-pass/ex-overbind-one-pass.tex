@@ -357,6 +357,22 @@ arrow lemma:
 
 \end{multicols}
 
+combined:
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid {P(x_1) \lor Q(x_1, z)}}
+		\AxiomCm{ \top}
+		\BinaryInfCm{ \exists x_1 P(x_1)}
+
+		\AxiomCm{ \bot }
+		\AxiomCm{ \top }
+		\BinaryInfCm{ \forall x_2 R(x_2) }
+
+		\BinaryInfCm{ \exists x_1 \forall x_2 ( P(x_1) \lor R(x_2) ) }
+
+
+	\end{prooftree}
+
+
 \bigskip
 
 \e{Ex 102b}
@@ -990,20 +1006,19 @@ direct:
 
 without merge in end: ($x_1<x_2, x_3<x_4, x_4<x_5$)
 
-$ \exists x_1 \forall x_2 \exists x_3 \forall x_4 \exists x_5 \Big(  P(x_1, x_2) \lor ( Q(x_4, x_5) \land \lnot S(x_3)) \Big)$
+$ \underline{\exists x_1 \forall x_2}\, \underline{\exists x_3 \forall x_4 \exists x_5} \Big(  P(x_1, x_2) \lor ( Q(x_4, x_5) \land \lnot S(x_3)) \Big)$
 
-$\exists x_3 \forall x_4 \exists x_5 \exists x_1 \forall x_2  \Big( P(x_1, x_2) \lor ( Q(x_4, x_5) \land \lnot S(x_3)) \Big)$
+$ \underline{\exists x_3 \forall x_4 \exists x_5}\, \underline{\exists x_1 \forall x_2}  \Big( P(x_1, x_2) \lor ( Q(x_4, x_5) \land \lnot S(x_3)) \Big)$
 
 	(also interwoven ones appear to work)
 
 
-	\clearpage
-
 	%\begin{landscape}
+	\bigskip
 
 
-combined presentation:
-
+combined presentation of 202a:
+\vspace{-2em}
 \begin{prooftree}
 	\AxiomCm{ \bot \mid P(a, x_1) \lor R(y) }
 	\AxiomCm{ \top \mid \lnot P(\arrowA x, f(\arrowB x)) } \drawAB
@@ -1074,7 +1089,6 @@ combined presentation ground with direct method:
 
 	\BinaryInfCm{ \exists x_1 \forall x_2 \exists x_3 \forall x_4 \exists x_5 ( P(x_1, x_2) \lor ( Q(x_4, x_5)) \land \lnot S(x_3)) \mid \square}
 \end{prooftree}
-
 
 
 
@@ -1232,34 +1246,6 @@ Direct:
 $\ra$ $\forall x_1 \exists x_2 ( R(x_1) \lor S(x_2) )$
 
 \clearpage
-\e{203b' -- many $\Sigma$-literals, coloring per symbol, all predicates grey}
-
-\begin{prooftree}
-	\AxiomCm{ \p{\lnot S(x_1)}}
-
-	\AxiomCm{\p{ \lnot R(a)}}
-	\AxiomCm{\sig{ R(\arrowA x) \lor  \lnot P(f(\arrowB x)) \drawAB}}
-
-	\RightLabelm{x \mapsto a}
-	\BinaryInfCm{ R(a) \mid \lnot P(fa) }
-
-	\AxiomCm{ \sig{ P(\arrowA z) \lor Q(g(\arrowB z)) \drawAB} }
-
-	\RightLabelm{z \mapsto fa}
-	\BinaryInfCm{ P(fa) \lor R(a) \mid Q(gfa)  }
-	
-	
-	\AxiomCm{ \sig{ \lnot Q(\arrowA y) \lor S(h(\arrowB y)) \drawAB}}
-
-	\BinaryInfCm{ }
-	\BinaryInfCm{ }
-
-\end{prooftree}
-TODO
-
-
-
-\clearpage
 
 \section*{Example where variables are not the outermost symbol but order is still relevant}
 
@@ -1286,6 +1272,12 @@ $\Ra \forall \arrowA x_1 \exists \arrowB x_2\drawAB P(f^5(x_1), x_2) $
 \clearpage 
 \section*{example with aufschaukelnde unification, such that direction of arrow isn't clear}
 \e{205a}
+{\LARGE
+
+situation not critical here :'-(
+
+}
+{\footnotesize
 
 \vspace{-1em}
 \begin{prooftree}
@@ -1343,6 +1335,7 @@ ground:
 	\BinaryInfCm{ (\lnot R(\arrowE a) \land Q(\arrowBA ff\arrowF a)) \lor \lnot P(ff\arrowAB\,\arrowDC a, g\arrowCD a) \drawEF \drawAABB\drawCCDD}
 \end{prooftree}
 
+}
 { \tiny
 
 arrow lemma:
@@ -1380,12 +1373,7 @@ $y_6 \sim a$,
 $(*)$ ``luckily'', same overbinding for $ffa$, so this works
 
 dashed underline: problem, but does not cause issues here.
-
-situations not critical here :'-(
 }
-
-
-
 	\e{205b $\sim$ 205a, but simpler}
 
 	Suppose $P$ occurs somewhere in $\Sigma$ (result not that optimal in this setting, but correct)
@@ -1411,18 +1399,54 @@ situations not critical here :'-(
 \begin{prooftree}
 	\AxiomCm{\top \mid \p{P(ff\arrowAB\hb y, g\arrowBA \hb y)} \drawAABB}
 
-
 	\AxiomCm{\bot \mid \sig{\lnot R(a)}}
 	\AxiomCm{\top \mid \p{\lnot P(ff\arrowB{\hc z}, x) \lor R\arrowA{\hc z}}\drawAB}
 
-	\RightLabelm{z \mapsto a}
 	\BinaryInfCm{\exists \arrowA x_1 \lnot R(x_1) \mid \lnot P(ff\arrowB a, x) \drawAB}
 
-	\RightLabelm{x \mapsto ga, y \mapsto a}
 	\BinaryInfCm{ \exists \arrowA x_1 \forall \arrowB\,\arrowAB \drawAB x_2 \forall \arrowBA \drawAABB x_3  \lnot R(x_1) \lor \lnot P(x_2, x_3)  \mid \square }
 \end{prooftree}
 
 
+\begin{prooftree}
+	\AxiomCm{\forall \arrowAB x_7 \forall \arrowBA x_8 \Big( \top \mid \p{P(x_7, x_8) \Big)} \drawAABB}
+
+	\AxiomCm{ \exists x_1 \Big( \bot \mid \sig{\lnot R(x_1)}\Big)}
+	\AxiomCm{ \forall x_5 \Big(\top \mid \p{\lnot P(\arrowB x_5, x) \lor R\arrowA{z}}\drawAB\Big)}
+
+	\BinaryInfCm{\exists \arrowA x_1\,\forall \arrowB x_5 \Big(\lnot R(x_1) \mid \lnot P(x_5, x) \drawAB\Big)}
+
+	\BinaryInfCm{ \exists \arrowA x_1 \forall \arrowB\,\arrowAB \drawAB x_2 \forall \arrowBA \drawAABB x_3  \lnot R(x_1) \lor \lnot P(x_2, x_3)  \mid \square }
+	\noLine
+	\UnaryInfC{ in $\aiu$, $x_2$ and $x_3$ win since these are the ``actual'' terms}
+
+\end{prooftree}
+
+last step in slow motion:
+
+\begin{multicols}{6}
+$\colterm{1} = a$
+
+$\colterm{2} = f(f(a))$
+
+$\colterm{3} = g(a)$
+
+$\colterm{5} = f(f(z))$
+
+$\colterm{7} = f(f(y))$
+
+$\colterm{8} = g(y)$
+\end{multicols}
+
+$ \AImatrix(\cdot) = $
+
+$= \lifboth{ \Big( \Big( P(x_7, x_8) \land \lnot R(x_1) \Big) \lor \Big(\lnot P(x_5, x) \land \top\Big) \Big) \sigma} \tau  $
+
+$=  \Big( P(x_7, x_8) \land \lnot R(x_1) \Big)\tau \lor \Big(\lnot P(x_5, x_3) \land \top\Big) \Big) \tau  $
+
+$\aiu(x_7, x_5) = \{x_7\mapsto x_2, x_5\mapsto x_2\}$
+
+$\aiu(x_8, x_3) = \{x_8\mapsto x_3, x_8\mapsto x_3\}$
 
 $\exists x_1  R(x_1)$
 
@@ -1447,34 +1471,34 @@ $\exists x_1 \forall x_2 \forall x_3 ( R(\arrowA x_1) \lor \lnot P(\arrowB\, \ar
 \end{prooftree}
 
 \begin{tabular}{p{.48\textwidth}|p{.48\textwidth}}
-Gist of this example: $P(f(x))$ is lifted on the left, but $P(f(a))$ on the right. So it's $P(x_3)$ vs $P(x_4)$, but both of them have to have the same variable.
+	Gist of this example: $P(f(x))$ is lifted on the left, but $P(f(a))$ on the right. So it's $P(x_3)$ vs $P(x_4)$, but both of them have to have the same variable.
 
-$R(x_3) \in \AImatrix(C_7)$
+	$R(x_3) \in \AImatrix(C_7)$
 
-$P(x_3) \in \AIclause(C_7)$
+	$P(x_3) \in \AIclause(C_7)$
 
-$P(x_4) \in \AIclause(C_8)$
+	$P(x_4) \in \AIclause(C_8)$
 
-$\Sigma \entails
-(\forall x_3) \exists y_2 \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor (P(x_3) \land S(y_2)) \Big)$
+	$\Sigma \entails
+	(\forall x_3) \exists y_2 \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor (P(x_3) \land S(y_2)) \Big)$
 
 
-$\Sigma \entails
-(\forall x_3)  \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor P(x_3) \Big)$
+	$\Sigma \entails
+	(\forall x_3)  \forall x_4 (\forall x_3) \Big((\lnot P(x_4) \land \lnot R(x_3)) \lor P(x_3) \Big)$
 
-$\Sigma \notentails
-(\lnot P(1) \land \lnot R(0)) \lor P(0) $ 
-\comm{if $P \sim \{1\}$ and $R \sim \{0\}$}
+	$\Sigma \notentails
+	(\lnot P(1) \land \lnot R(0)) \lor P(0) $ 
+	\comm{if $P \sim \{1\}$ and $R \sim \{0\}$}
 
-we know that for original clauses $l$ and $l'$ of $P(x_4)$ and $P(x_3)$, $l\sigma = l'\sigma$
+	we know that for original clauses $l$ and $l'$ of $P(x_4)$ and $P(x_3)$, $l\sigma = l'\sigma$
 
-hence same color, and can use different var as same value works.
-&
-inductive hypothesis:
+	hence same color, and can use different var as same value works.
+	&
+	inductive hypothesis:
 
-$\Gamma \entails \top \lor R(x_3)$
+	$\Gamma \entails \top \lor R(x_3)$
 
-$\Gamma \entails \bot \lor \lnot R(y) \lor P(y)$
+	$\Gamma \entails \bot \lor \lnot R(y) \lor P(y)$
 
 $\Gamma \entails (\lnot R(x_3) \land \top) \lor (R(x_3) \land \bot) \lor P(x_3) \spa\equiv \lnot R(x_3) \lor P(x_3) $
  \line(1,0){250}
@@ -1837,5 +1861,34 @@ Huang would produce: $\forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_1) $
 	=> need to overbind clause as well
 
 }
+
+\clearpage
+\e{203b' -- many $\Sigma$-literals, coloring per symbol, all predicates grey}
+
+\begin{prooftree}
+	\AxiomCm{ \p{\lnot S(x_1)}}
+
+	\AxiomCm{\p{ \lnot R(a)}}
+	\AxiomCm{\sig{ R(\arrowA x) \lor  \lnot P(f(\arrowB x)) \drawAB}}
+
+	\RightLabelm{x \mapsto a}
+	\BinaryInfCm{ R(a) \mid \lnot P(fa) }
+
+	\AxiomCm{ \sig{ P(\arrowA z) \lor Q(g(\arrowB z)) \drawAB} }
+
+	\RightLabelm{z \mapsto fa}
+	\BinaryInfCm{ P(fa) \lor R(a) \mid Q(gfa)  }
+	
+	
+	\AxiomCm{ \sig{ \lnot Q(\arrowA y) \lor S(h(\arrowB y)) \drawAB}}
+
+	\BinaryInfCm{ }
+	\BinaryInfCm{ }
+
+\end{prooftree}
+TODO
+
+
+
 
 		\end{document}
