@@ -1274,7 +1274,7 @@ $\Ra \forall \arrowA x_1 \exists \arrowB x_2\drawAB P(f^5(x_1), x_2) $
 \e{205a}
 {\LARGE
 
-situation not critical here :'-(
+situation not critical here 
 
 }
 {\footnotesize
@@ -1711,6 +1711,7 @@ $\Pi \checkmark$
 \e{207a}
 ~
 
+ORIGINAL VERSION:
 \begin{prooftree}
 
 	\AxiomCm{\p{\lnot P(z)}}
@@ -1726,6 +1727,48 @@ $\Pi \checkmark$
 \end{prooftree}
 
 $\Ra$ free vars in the interpolant have to be overbound (if there are arrows, but we can just always do so)
+\bigskip
+
+
+VERSION WITH ``CURRENT'' ALGO:
+\begin{multicols}{6}
+	$x_4 = g(x)$
+
+	$x_5 = g(a)$
+
+	$x_6 = g(y)$
+
+	$x_7 = f(x)$
+
+	$x_8 = f(a)$
+
+\end{multicols}
+~
+\begin{prooftree}
+	\AxiomCm{\p{\lnot P(z)}}
+	\AxiomCm{\p{\lnot R(x_5)}}
+	\AxiomCm{\exists x_7 \mid \bot \mid~\sig{P(\arrowB x_7) \lor Q(\arrowA x)}} \drawAB
+	\noLine
+	\UnaryInfC{}
+	\AxiomCm{\forall x_6 \mid \top \mid~\p{R(\arrowF x_6) \lor \lnot Q(\arrowE y)}} \drawEF
+	\noLine
+	\UnaryInfC{}
+	\RightLabelm{y\mapsto x}
+	\BinaryInfCm{\forall x_6 \exists x_7 \mid  (Q(\arrowA\,\arrowE x) \land \top) \lor (\lnot Q(x)\land \bot) \mid P(\arrowB x_7) \lor R(\arrowF x_6 )  }\drawAB\drawEF
+	\noLine
+	\UnaryInfC{}
+	\RightLabelm{x\mapsto a}
+	\BinaryInfCm{\forall x_1 \forall x_6 \exists x_7 \mid Q(\arrowA\,\arrowE x_1)  \mid P(\arrowB x_7) \comm{ R(\arrowF x_6)} }\drawAB\drawEF
+	\noLine
+	\UnaryInfC{}
+	\RightLabelm{z\mapsto f(a)}
+	\BinaryInfCm{\forall x_1 \exists x_8 \mid\big( Q(\arrowA\,\arrowE x_1) \lor P(\arrowB x_8) \big) \comm{ R(\arrowF x_6)} }\drawAB\drawEF
+	\noLine
+	\UnaryInfC{}
+\end{prooftree}
+
+$\Ra$ a free variable can be left as is as it is implicitly universally bound at highest level, which is also the case in the preceding clauses (else it would have been unified and changed)
+
 
 \clearpage 
 \section*{misc examples}

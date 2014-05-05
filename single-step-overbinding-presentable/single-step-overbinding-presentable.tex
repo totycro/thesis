@@ -201,26 +201,51 @@ for a position $p$, $p \mod i$ denotes $p$ with $i$ least significant places cut
 
 \subsection{Arrows:}
 
+\begin{defi}[Coloring of variable occurrences]
+	An occurrence of a variable $x$ is called \defiemph{colored} if it is contained in a maximal colored term.
+	Otherwise it is called \defiemph{grey}.
+\end{defi}
+
 $\arr$ is a set of ordered pairs of term positions which point to positions in terms in literals
 
 $\warr$ is a set of unordered pairs of term positions which point to positions in terms in literals
 
+Note that the ``anchor point'' for arrows are literals and not clauses.
+All literals occur in the initial clause sets.
+The literals in $\AI(C)$ are derived from these and the arrows apply to them.
+Literals of colored predicates to not occur in $\AI(C)$ but can be relevant by transitivity.
+
 w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
+\newcommand{\Phicol}{\Phi^{\operatorname{col}}}
+\newcommand{\Phigrey}{\Phi^{\operatorname{grey}}}
+\newcommand{\MaxCol}{\operatorname{MaxCol}}
 \begin{enumerate}
 	\item For each initial clause $C$ in $\Gamma \cup \Delta$:
 
-		Add to $\arr$ all $(p_1, p_2)$ in $C$
-		such that $p_1$ contains only grey symbol and $\pos(p_1)$ is a variable and $\pos(p_1) = \pos(p_2)$ but $p_1 \neq p_2$.
+		For every variable $x$ in $C$:
 
-		Add to $\warr$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos(p_1)$ is a var and $\pos(p_1) = \pos(p_2)$.
+		Let $\Phi_x$ be the set of occurrences of a $x$ in $C$. 
+		Let $\Phicol_x = \{p \in \Phi_x \mid \text{$p$ is contained in a colored term} \}$
+		and $\Phigrey_x = \Phi_x \setminus \Phicol_x$.
+
+		Let $\MaxCol(\Phi) = \{p \mid \text{$p$ is a maximal colored term containing $q$ for $q \in \Phi$} \}$
+
+		Add to $\arr$ all $(p_1, p_2)$ such that $p_1\in\Phigrey_x$ and $p_2 \in \MaxCol(\Phicol_x)$.
+		
+		Add to $\warr$ all $(p_1, p_2)$ such that $p_1\in\MaxCol(\Phicol_x)$ and $p_2\in\MaxCol(\Phicol_x)$ and $p_1 \neq p_2$.
+
+
+		%Add to $\arr$ all $(p_1, p_2)$ in $C$ such that $p_1$ contains only grey symbol and $\pos(p_1)$ is a variable and $\pos(p_1) = \pos(p_2)$ but $p_1 \neq p_2$.
+
+		%Add to $\warr$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos(p_1)$ is a var and $\pos(p_1) = \pos(p_2)$.
 
 	\item 
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
 
-		Note: literals are added to the interpolant if they occur in both ancestors.
-
-		Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
+		The literals $l$ and $l'$ are unified and henceforth considered to be the same literal.
+		Therefore the arrows of $l$ and $l'$ are merged.
+		%Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
 
 		%Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
 		%If $l$ and/or $l'$ is added to $\PI(C)$, it comes from both $l$ and $l'$.
@@ -238,6 +263,10 @@ This restriction is useful now and could potentially be lifted later, but it's n
 Note: when a literal is added to the interpolant, the colored terms in one literal might have already been replaced with a certain variable before. we definitely have to use the same variable for both literals, and if one literal has other dependencies, we should stick with the variable we have.
 
 PROBLEM: terms already replaced by variables still change! need to use same variable anyway, so note above not accurate!
+
+POSSIBLE SOLUTION: for resolution, it is vital that the resolved literals are the unified, but nothing else is vital. We however ensure that the literals also have the same lifting variables.   
+
+Furthermore, if variables are in the interpolant, then they have been present in both clauses, (e.g.~$f(x)$ in $C_1$, $f(y)$ in $C_2$, then it's fine to universally quantify).
 
 
 \subsubsection{$\AImatrix$ and $\AIclause$}
@@ -259,7 +288,7 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 		%$l^\circ\dotsc$ literal to put in $\AImatrix$ is defined as $x_i =\lifboth{l\sigma} = \lifboth{l'\sigma}$
 
 		$l\sigma = l'\sigma$, but $l\fromclause$ and $l\fromclause'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them.
-		
+
 		Prose explanation of formal definition below: Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
 		($\Phi$-replacing-var vs $\Phi$-term cannot happen as $\Phi$-term is overbound as it has to be colored as otherwise the terms woudln't unify).
 		Also apply these to substitutions in $\AIclause$ and $\AImatrix$ here.
@@ -280,12 +309,12 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 		$\aiu(A(a_1, \dotsc, a_n), A(b_1, \dotsc, b_n)) = \bigcup_{i=1}^n \aiu(a_i, b_i)$
 
 		$ \aiu (a\fromclause, b\fromclause) =
-			\begin{cases}
-				\bigcup_{j=1}^n \aiu(s_j, \colterm{j}) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
-				\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal, i.e. $x_m = \lifboth{a} = \lifboth{b}$.
-				{\footnotesize
+		\begin{cases}
+			\bigcup_{j=1}^n \aiu(s_j, \colterm{j}) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
+			\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal, i.e. $x_m = \lifboth{a} = \lifboth{b}$.
+			{\footnotesize
 
-			More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
+				More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
 
 		}}\\
 				\emptyset & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
@@ -345,7 +374,8 @@ $u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ PLUS all free variables 
 $Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
 For free variables, $Q_i$ as in $C_1/C_2$. if $u_i\sigma \neq u_i$, $u_i$ becomes one of $x_j$ or $y_j$ or grey term.
 
-$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$ if $u_i$ replaces $\colterm{i}$ and $u_j$ replaces $\colterm{j}$ and $p_1$ points into $\colterm{i}$ and $p_2$ points into $\colterm{j}$.
+$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies
+that $u_i < u_j$ if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ (positions in $\AI(C)$, not in $C$).
 
 
 \clearpage
@@ -733,7 +763,7 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 			Suppose that both $s\fromclause$ and $t\fromclause$ are variables. 
 			Suppose that $\sigma$ is non-trivial on at least $s\fromclause$ or $t\fromclause$, as otherwise we are done.
 			Due to $s\fromclause = \lifboth{s}$ and $t\fromclause = \lifboth{t}$, $s = s\fromclause$ and $t=t\fromclause$.
-			As $s\sigma=t\sigma$,  the outermost symbol of both $s\fromclause\sigma$ is the same as the one of $t\fromclause\sigma$. As the equality of potential parameters of $s\fromclause\sigma$ and $t\fromclause\sigma$ is established by the induction hypothesis, we are done.
+			As $s\sigma=t\sigma$,  the outermost symbol of both $s\fromclause\sigma$ is the same as the one of~$t\fromclause\sigma$. As the equality of potential parameters of $s\fromclause\sigma$ and $t\fromclause\sigma$ is established by the induction hypothesis, we are done.
 			\qedhere
 	\end{description}
 \end{proof}
@@ -847,7 +877,7 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 
 					But this implies that 
 
-					$\Gamma \entails \Big(\lifboth{\AImatrix(C_1)\sigma}\tau \land \lifboth{\clauseOnePrime\sigma}\tau\Big) 
+					$\Gamma \entails \Big(\lifboth{\AImatrix(C_1)\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma}\tau\Big) 
 					\spam\lor \lifboth{\clauseOnePrime\sigma}\tau
 					\spam\lor \lifboth{\clauseTwoPrime\sigma}\tau$
 
@@ -928,14 +958,77 @@ TODO here:
 
 algorithm yields negation if coloring is swapped (hence $\Delta$ entails negated interpolant by an easy corollary)
 
-\begin{lemma}
+\begin{conj}
 	\label{lemma:arrows_for_lifting_terms}
-	Let $\colterm{i}$ be a $\Delta$-term and $\colterm{j}$ be a $\Gamma$-term, which contains $\colterm{i}$ as subterm.
-	If the corresponding lifting variables $z_i$ and $z_j$ occur in $\AImatrix(C) \lor \AIclause(C)$ for some $C$, then there is an arrow from $z_i$ to $z_j$.
-\end{lemma}
+	Let $\colterm{i}$ is contained in some literal in $\Gamma$ and
+	a term $t$ derived from $\colterm{i}$ occurs in $\AI(C)$ as in Lemma~\ref{ref:gamma_entails_delta_terms_lifted}. 
+	Suppose $\colterm{i}$ contains some $\Delta$-colored $\colterm{j}$.
+	Then as $\Delta$-terms are lifted in $t$, it contains $z_j$.
 
-\clearpage
+	There is an arrow from some occurrence of $z_j$ in $\AI(C)$ to $\colterm{i}$.
+	
+	\NB{this is what the proof above needs}
+
+\end{conj}
+
+\begin{conj}
+	Let $\colterm{i}$ be a term of some color and $\colterm{j}$ be a term of a different color, which contains $\colterm{i}$ as subterm.
+	If the corresponding lifting variables $z_i$ and $z_j$ occur in $\AI(C)$ for some $C$, then there is an arrow from an occurrence of $z_i$ to an occurrence of $z_j$.
+
+	\NB{this seems to be provable, but check what it actually implies/expresses}
+\end{conj}
+\begin{proof}
+	For a term to occur in $\AI(C)$ means to occur in $\AImatrix(C) \lor \AIclause(C)$.
+
+	Base case: No foreign terms occur in the inital clauses.
+
+	Induction step:
+	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+	By the induction hypothesis, all $z_i$ and $z_j$ which occur in $\AI(C_1)$ and $\AI(C_2)$ satisfy the condition.
+
+	Hence we consider all introductions of either $z_i$ or $z_j$ in $\AI(C)$, i.e.~symbols that are not present in $\AI(C_1)$ or $\AI(C_2)$.
+
+	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
+
+	All non-logical symbols of
+	$\AIclause(C)$ are contained in 
+	$\lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau$ or $\lifboth{ (\AIclause(C_2)\setminus\nolinebreak \{l\fromclause'\})\sigma} \tau$ 
+	and all non-logical symbols of 
+	$\AImatrix(C)$ are contained in $\lifboth{l\fromclause\sigma}\tau$, $\lifboth{l'\fromclause\sigma}\tau$, $\lifboth{\AImatrix(C_1)\sigma}\tau$ or
+	$\lifboth{\AImatrix(C_2)\sigma) }\tau$.
+	%As by Lemma~\ref{lemma:literals_clauses_equal} $\lifboth{l\fromclause\sigma}\tau = \lifboth{l'\fromclause\sigma}\tau$, 
+	As by Lemma~\ref{lemma:no_lifting_vars_in_subst} $\sigma$ does not introduce lifting variables, new occurrences of $z_i$ or $z_j$ have been introduced by the lifting (of colored terms introduced by $\sigma$) or by $\tau$.
+
+	\begin{itemize}
+			\item Suppose $z_i$ and/or $z_j$ has been introduced by the lifting.
+
+	\end{itemize}
+
+
+
+
+
+
+\end{proof}
+
+
 \section{arrow proof}
+
+\begin{conj}
+	Let $x$ be a variable in $\AIclause(C)$.
+	Suppose there is a colored and a grey occurrence of $x$.
+	Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$.
+\end{conj}
+
+\begin{conj}
+	If there is a term in $C$ which contains a subterm of a different color, then there is variable in an ancestor of $C$ which has a grey and a colored occurrence.
+\end{conj}
+
+If a variable occurs twice in colored terms, foreign terms can be propagated.
+If it's once as grey and once as colored occurrence, foreign terms can be introduced.
+
+
+
 
 \begin{lemma}
 	\label{lemma:arrow_for_same_variables}
