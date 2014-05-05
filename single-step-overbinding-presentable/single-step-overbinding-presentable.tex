@@ -202,8 +202,7 @@ for a position $p$, $p \mod i$ denotes $p$ with $i$ least significant places cut
 \subsection{Arrows:}
 
 \begin{defi}[Coloring of variable occurrences]
-	An occurrence of a variable $x$ is called \defiemph{colored} if it is contained in a maximal colored term.
-	Otherwise it is called \defiemph{grey}.
+	An occurrence of a variable $x$ is called \defiemph{$\Phi$-colored} if it is contained in a maximal $\Phi$-colored term. It is called \defiemph{colored} if it is of any color and \defiemph{grey} otherwise.
 \end{defi}
 
 $\arr$ is a set of ordered pairs of term positions which point to positions in terms in literals
@@ -966,6 +965,63 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 
 	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result. \mytodo{verify this after the proof of the lemma}
 \end{proof}
+
+\cbstart
+\begin{defi}[Unification algorithm]
+	The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
+
+		Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable.
+
+		$\mgu$ for a set of pairs of terms $T$ is defined as follows:
+
+		$
+		\mgu(\emptyset) = \id
+		$
+
+		$
+		\mgu(\{t\} \cup T) = \begin{cases}
+			\mathbf{fail} 				& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$} \\
+			\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$} \\
+			\mathbf{fail} 				& \text{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
+			\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \text{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
+			\mgu(T) 							& \text{if $t=(s, s)$} \\
+		\end{cases}
+		$
+\end{defi}
+\begin{conj}
+	A $\Delta$-colored term can only be a subterm of a $\Gamma$-colored term in a subsequent clause if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in the current clause $C$.
+\end{conj}
+\begin{proof}
+	Suppose no such variable exists in $\Gamma$ and $\Delta$.
+	By the definition of the colors, no $\Gamma$-colored term initially contains a $\Delta$-colored term. We show that no resolution derivation can introduce one.
+
+	As terms in clauses are only changed by means of unification, we have to show that no most general unifier $\sigma$ exists for any clauses derived from $\Gamma$ and $\Delta$ which introduces a $\Delta$-term in an existing $\Gamma$-term or a new $\Gamma$-term, which contains a $\Delta$-term.
+
+	\begin{enumerate}
+		\item
+			\label{a5hsefdgsy6}
+			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Delta$-term $t$ in a $\Gamma$-term $s$ in $C_1$. 
+			Then a variable $x$ occurs in $s$ such that $x\sigma = t$.
+			By the unification algorithm, this implies that $x$ is directly unified with at least the outermost symbol of $t$.
+			Note that clauses involved in a resolution step are variable disjoint, so $x$ only occurs in $C_1$. 
+			Since $x$ has a $\Gamma$-colored occurrence, it does by assumption not have a grey occurrence. 
+			Hence all occurrences of $x$ are of the form $r\occur{x}$, where the outermost symbol of $r$ is colored.
+
+			$\Gamma$- and $\Delta$-colored terms are not unifiable, so a unifier mapping $x$ to a $\Delta$-colored term must be created from a unification of $\Gamma$-terms.
+			But by assumption, no $\Gamma$-colored term contains a $\Delta$-colored term.  So by unification of a $\Gamma$-colored term containing $x$ with another $\Gamma$-colored term, it is not possible that the $\mgu$ maps $x$ to a $\Delta$-colored term, which is a contradiction.
+
+
+		\item
+			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Gamma$-term $s$, which contains a $\Delta$-term $t$.
+			As by assumption no such term $s$ exists in $C_1$ or $C_2$, the unification algorithm does not encounter it as term to unify a variable with directly. 
+
+			This does not exclude the case that a variable $y$ is unified first with a $\Gamma$-term containing a variable $x$, where later $x$ is unified with a $\Delta$-term. 
+			However the argumentation in case~\ref{a5hsefdgsy6} excludes precisely the case that a variable, which is contained in a $\Gamma$-term, is unified with a $\Delta$-term.
+			\qedhere
+	\end{enumerate}
+\end{proof}
+
+\cbend
 
 \cbstart
 \begin{conj}
