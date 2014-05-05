@@ -374,7 +374,11 @@ $u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ PLUS all free variables 
 $Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
 For free variables, $Q_i$ as in $C_1/C_2$. if $u_i\sigma \neq u_i$, $u_i$ becomes one of $x_j$ or $y_j$ or grey term.
 
-$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies
+Combine dependencies of positions which are connected by weak arrows:
+
+$\arr' =  \arr \union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
+
+$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr')$ implies
 that $u_i < u_j$ if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ (positions in $\AI(C)$, not in $C$).
 
 
@@ -889,6 +893,12 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	\end{description}
 \end{proof}
 
+\begin{lemma}
+	The previous lemma basically calculates $\AI^\Delta$, where in $\AIclause$ and $\AImatrix$ instead of $\lifboth{\cdot}$ $\lifdelta{\cdot}$ is employed.
+	\mytodo{NEEDS A PROOF}
+\end{lemma}
+
+
 \begin{conj}
 	$\Gamma \entails \AI(C)$. (Recall that $\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$.)
 \end{conj}
@@ -950,30 +960,38 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 
 	If we now again consider $\Gamma$-terms to be $\Gamma$-terms, then in the ``witness formula'', the $\Gamma$-terms are lifted and existentially quantified.
 	As a $\Gamma$-term $\colterm{i}$ in general contains lifting variables which lift $\Delta$-terms, we have to ensure that these are quantified before $y_i$ is.
+	Note that this implies that in $C$, a $\Delta$-term is contained in a $\Gamma$-term.
 
-	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result.
+	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result. \mytodo{verify this after the proof of the lemma}
 \end{proof}
-
-TODO here:
-
-algorithm yields negation if coloring is swapped (hence $\Delta$ entails negated interpolant by an easy corollary)
 
 \begin{conj}
 	\label{lemma:arrows_for_lifting_terms}
-	Let $\colterm{i}$ is contained in some literal in $\Gamma$ and
-	a term $t$ derived from $\colterm{i}$ occurs in $\AI(C)$ as in Lemma~\ref{ref:gamma_entails_delta_terms_lifted}. 
-	Suppose $\colterm{i}$ contains some $\Delta$-colored $\colterm{j}$.
-	Then as $\Delta$-terms are lifted in $t$, it contains $z_j$.
+	In $\AI^\Delta(C)$, if a lifting variable $x_i$ (lifting a $\Delta$-term)
+	occurs inside of a maximal $\Gamma$-term $t$, 
+	then there is an arrow from an occurrence of $x_i$ to $t$.$t$.
+\end{conj}
 
-	There is an arrow from some occurrence of $z_j$ in $\AI(C)$ to $\colterm{i}$.
-	
+\begin{exa}
+	TODO: example showing that if lifting vars occur in both $\AIclause(C_1)$ and $\AIclause(C_2)$, combining them with the same quantifier is fine as they both have the same dependencies. $\forall x F(x)$ and $\exists y G(y)$ combines nicely to $\forall x\exists y (F(x) \lor G(y))$ anyway as the bound variables are different.
+\end{exa}
+
+\begin{conj}
+	Let $\colterm{i}$ be contained in some literal in $\Gamma$ and
+	a term $t$ derived from $\colterm{i}$ occurs in $\AI(C)$ for some $C$ as in Lemma~\ref{ref:gamma_entails_delta_terms_lifted}. 
+	Suppose $t_{\AI}$ contains some $\Delta$-colored $\colterm{j}$.
+	$t = \colterm{i}\rho$ for some $\rho$.
+	Then as $\Delta$-terms are lifted in $t$, it contains $z_j$ for some $j$.
+
+	There is an arrow from some occurrence of $z_j$ in $\AI(C)$ to the position of $\colterm{i}$ (where there's actually some kind of lifting variable)
+
 	\NB{this is what the proof above needs}
 
 \end{conj}
 
 \begin{conj}
 	Let $\colterm{i}$ be a term of some color and $\colterm{j}$ be a term of a different color, which contains $\colterm{i}$ as subterm.
-	If the corresponding lifting variables $z_i$ and $z_j$ occur in $\AI(C)$ for some $C$, then there is an arrow from an occurrence of $z_i$ to an occurrence of $z_j$.
+	If the corresponding lifting variables $z_i$ and $z_j$ occur in $\AI(C)$ for some $C$, then there is an arrow from an occurrence of $z_i$ to an occurrence of $z_j$ (or for different $i$, $j$, as the $z$'s can become more specialised).
 
 	\NB{this seems to be provable, but check what it actually implies/expresses}
 \end{conj}
