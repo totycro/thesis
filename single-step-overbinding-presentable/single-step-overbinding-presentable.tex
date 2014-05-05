@@ -352,6 +352,8 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 
 \section{proof of propositional aspect of $\AI$}
 
+The following lemma works in the other proof, but the remark below shows why it is not applicable here:
+
 \begin{lemma}[Restated from proof without propositional refutation, lemma 1] 
 	\label{lemma:lift_subst_commute}
 	Let $C$ be a clause and $\sigma$ a substitution.
@@ -562,40 +564,33 @@ $(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr)$ implies that $u_i < u_j$
 	$f(g(h(a)))$ vs $ x_k $ (again actual term is changed without changing the lifting variable)
 \end{exa}
 
-\begin{changebar}
+\begin{lemma}
+	\label{lemma:lifting_var_refers_to_abstraction_of_term}
+	%$(z_j \mapsto z_k) \in \tau$ implies that there is a substitution $\rho$ such that $\colterm{j} \rho = \colterm{k}$.
+	Let $a\cl = z_j$ a lifting variable for a term position $a\cl$ in $\AIclause(C)$. Then $a = \colterm{j}\rho$ for some substitution $\rho$.
+	Even more, if a substitution $z_j\mapsto z_k$ for lifting variables $z_j$ and $z_k$ occurs,
+	$z_k$ refers to exactly $\colterm{k}$ and there exists a substitution $\rho'$ such that $\colterm{k} = \colterm{j}\rho'$.
+	\comm{used}
+\end{lemma}
+\NB{this probably also hold in $\AImatrix$ and for terms not occurring $\AIclause$ as well.}
+\begin{proof}
+	Base case:
+	$z_j$ is introduced to lift $\colterm{j}$, $\rho$ is the identity function.
 
-	\begin{lemma}
-		\label{lemma:lifting_var_refers_to_abstraction_of_term}
-		%$(z_j \mapsto z_k) \in \tau$ implies that there is a substitution $\rho$ such that $\colterm{j} \rho = \colterm{k}$.
-		Let $a\cl = z_j$ a lifting variable. Then $a = \colterm{j}\rho$ for some substitution $\rho$.
-		Even more, if a substitution $z_j\mapsto z_k$ for lifting variables $z_j$ and $z_k$ occurs,
-		$z_k$ refers to exactly $\colterm{k}$ and there exists a substitution $\rho'$ such that $\colterm{k} = \colterm{j}\rho'$.
-		\comm{used}
-	\end{lemma}
-	\NB{this probably also hold in $\AImatrix$ and for terms not occurring $\AIclause$ as well.}
-	\begin{proof}
-		Base case:
-		$z_j$ is introduced to lift $\colterm{j}$, $\rho$ is the identity function.
+	Induction step:
+	Suppose $z_j$ refers to $\colterm{j}\rho$ for some $\rho$.
 
-		Induction step:
-		Suppose $z_j$ refers to $\colterm{j}\rho$ for some $\rho$.
+	Suppose $\colterm{j}\rho$ changes in the course of the resolution derivation.
+	As it is a term in a resolution derivation, it changes only by means of unification, say by the unifier $\sigma$.
+	Hence it changes to $\colterm{j}\rho\sigma$ and $z_j$ refers to $\colterm{j}\rho\sigma$.
 
-		Suppose $\colterm{j}\rho$ changes in the course of the resolution derivation.
-		Then it changes by means of unification, say by the unifier $\sigma$.
-		Hence it changes to $\colterm{j}\rho\sigma$ and $z_j$ refers to $\colterm{j}\rho\sigma$.
+	Suppose $z_j$ changes. By the construction of $\AIclause$/$\AImatrix$, lifting variables are not affected by the resolution unifications (cf.\ Lemma~\ref{lemma:no_lifting_vars_in_subst}) or the liftings, but only by $\tau$.
 
-		Suppose $z_j$ changes. By the construction of $\AIclause$/$\AImatrix$, lifting variables are not affected by the resolution unifications or the liftings, but only by $\tau$.
-
-		Suppose $(z_j\mapsto z_k)\in \tau$.
-		Then by the definition of $\aiu$, the $z_k$ refers to $\colterm{k}$. 
-
-		Furthermore, by the induction hypothesis, $A = \colterm{j}\rho$.
-		But also by the definition of $\aiu$, $a\sigma = \colterm{k}$.
-		Hence $\colterm{j}\rho\sigma = \colterm{k}$.
-	\end{proof}
-
-
-\end{changebar}
+	Suppose $(z_j\mapsto z_k)\in \tau$.
+	Then by the definition of $\aiu$, the term at position $a$ is now $\colterm{k}$. 
+	As by the induction hypothesis $a = \colterm{j}\rho$ in the preceding clause, $a\sigma = \colterm{k}$.
+	Hence $\colterm{j}\rho\sigma = \colterm{k}$.
+\end{proof}
 
 By Lemma~\ref{lemma:literal_in_clause_similar}, we have that $l\cl \sim \lifboth{l}$.
 But we can also show that the terms in $l$ only become more specialised, i.e.\ if a lifting variable $z_j$ occurs in $l\cl$, the corresponding term in $\lifboth{l}$ is a specialisation of $\colterm{j}$, 
