@@ -378,7 +378,9 @@ Combine dependencies of positions which are connected by weak arrows:
 
 $\arr' =  \arr \union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
 
-$(p_1, p_2) \in \operatorname{TransitiveClosure}(\arr')$ implies
+$\arr'' = \operatorname{TransitiveClosure}(\arr')$
+
+$(p_1, p_2) \in \arr'' $ implies
 that $u_i < u_j$ if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ (positions in $\AI(C)$, not in $C$).
 
 
@@ -965,12 +967,111 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result. \mytodo{verify this after the proof of the lemma}
 \end{proof}
 
+\cbstart
+\begin{conj}
+	\label{lemma:variable_never_added}
+	Variables are never added in a resolution derivation. 
+	Hence if they are present in a clause $C$ at some point in the derivation, their position in the original clause has been a variable or has been contained in a variable in case a varaiable has been added inside of a term.
+\end{conj}
+
+\mytodo{possibly show that only a variable with a grey and a colored occurrence introduce foreign terms and multiple colored occurrences don't introduce but propagate the terms. check which formulation the proof below would need.}
+
 \begin{conj}
 	\label{lemma:arrows_for_lifting_terms}
 	In $\AI^\Delta(C)$, if a lifting variable $x_i$ (lifting a $\Delta$-term)
 	occurs inside of a maximal $\Gamma$-term $t$, 
-	then there is an arrow from an occurrence of $x_i$ to $t$.$t$.
+	then there is an arrow from an occurrence of $x_i$ to $t$ in $\AI^\Delta(C)$ in $\arr''$.
 \end{conj}
+\begin{proof}
+	For a term to occur in $\AI(C)$ means to occur in $\AImatrix(C) \lor \AIclause(C)$.
+
+	Base case: No foreign terms occur in the inital clauses.
+
+	Induction step:
+	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+	By the induction hypothesis, all $t$ which occur in $\AI(C_1)$ and $\AI(C_2)$ satisfy the condition.
+
+	Note that every $x_i$ from $\AI(C_1)$ or $\AI(C_2)$ is carried over to $\AI(C)$. $\tau$ might rename $x_i$ to another lifting variable, but as this applies to every occurrence of $x_i$, the statement of this lemma is not violated.
+
+	\newcommand{\newterm}{{^*}}
+	Hence we consider all introductions of new $t\newterm$ in $\AI(C)$, i.e.~those that have not been present in $\AI(C_1)$ or $\AI(C_2)$.
+	Let $t$ be the term in w.l.o.g.~$\AI(C_1)$ where $t\newterm$ originates from, i.e.~$t\sigma = t\newterm$
+
+	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
+
+	All terms of
+	$\AIclause(C)$ are contained in 
+	$\lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau$ or $\lifboth{ (\AIclause(C_2)\setminus\nolinebreak \{l\fromclause'\})\sigma} \tau$ 
+	and all terms of 
+	$\AImatrix(C)$ are contained in $\lifboth{l\fromclause\sigma}\tau$, $\lifboth{l'\fromclause\sigma}\tau$, $\lifboth{\AImatrix(C_1)\sigma}\tau$ or
+	$\lifboth{\AImatrix(C_2)\sigma) }\tau$.
+	%As by Lemma~\ref{lemma:literals_clauses_equal} $\lifboth{l\fromclause\sigma}\tau = \lifboth{l'\fromclause\sigma}\tau$, 
+	As by Lemma~\ref{lemma:no_lifting_vars_in_subst} $\sigma$ does not introduce lifting variables, $\sigma$ does not introduce $t$.
+	There are 2 cases, we show that in both of them, there is an arrow from an occurrence of $x_i$ to $t$ in $\arr''$
+	\begin{itemize}
+		\item $\sigma$ introduces the $\Delta$-colored term $\colterm{i}$ in $t\newterm$.
+			Hence $t$ contains a variable $u$ such that $u\sigma = \colterm{i}$.
+
+			\begin{itemize}
+				\item
+					Suppose $t$ does not occur in the literal being unified. 
+					Then $u$ is only set due to occurring in the literal being unified, say at position $p$.
+
+					The occurrence at $p$ is either grey or colored.
+					As variables are never added (cf.~\ref{lemma:variable_never_added}) and arrows never removed, the original arrows still apply.
+					$u$ in $t$ is a colored occurrence.
+					
+					Suppose $p$ is a grey occurrence. Then there is an arrow from $p$ to $u$ in $t$.
+
+					Otherwise suppose $p$ is a colored occurrence. Then there is a weak connection between $p$ and $u$ in $t$.
+					But as then the literal $p$ is unified to does not introduce the $\Delta$-term into a $\Gamma$-term, there has to be some kind of induction hypothesis which gives the result here.
+
+
+				\item
+					Suppose $t$ does occur in the literal being unified, say in $l$.
+					Let $t'$ be the term in $l'$ that $t$ is unified with.
+
+					\begin{itemize}
+						\item[\markA]
+							Suppose $t'$ is a variable
+							\mytodo{blablub}
+
+						\item[\markB]
+							Suppose 
+							$t'$ is not variable. 
+
+							We know that $t'$ is the lifting of an abstraction of $\colterm{i}$.
+							We assume it is not a variable.
+							Hence it is a maximal $\Gamma$-term.
+							If it contains a lifting var just like $t^*$, we get the result by the induction hypothesis as there must be an arrow towards $t'$ and the arrows of the literals are being merged.
+
+							Otherwise $t'$ does not contain a lifting variable.
+							As $t$ does not either, but $t\sigma = t'\sigma = t^*$ does, 
+							variables in $t$ or $t'$ or both are substituted for terms containing $\Delta$-terms.
+							These variables occur elsewhere in the respective clauses.
+
+							They occur either in colored terms as well.
+							Then this is the same situation as this case (if not one of the fast bailouts above applies, in which case we are done).
+							However there can only be finitely many such cases as formulas are finite and there cannot be a circle as the vars have proper substitutions, which must have originated somewhere.
+
+							Otherwise these variables occur as outermost symbol. Then case \markA{} applies.
+
+
+					\end{itemize}
+
+
+			\end{itemize}
+
+
+
+		\item $\sigma$ introduces the mixed-colored term $t'$.
+			\mytodo{}
+
+	\end{itemize}
+\end{proof}
+\cbend
+
+
 
 \begin{exa}
 	TODO: example showing that if lifting vars occur in both $\AIclause(C_1)$ and $\AIclause(C_2)$, combining them with the same quantifier is fine as they both have the same dependencies. $\forall x F(x)$ and $\exists y G(y)$ combines nicely to $\forall x\exists y (F(x) \lor G(y))$ anyway as the bound variables are different.
@@ -995,40 +1096,6 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 
 	\NB{this seems to be provable, but check what it actually implies/expresses}
 \end{conj}
-\begin{proof}
-	For a term to occur in $\AI(C)$ means to occur in $\AImatrix(C) \lor \AIclause(C)$.
-
-	Base case: No foreign terms occur in the inital clauses.
-
-	Induction step:
-	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
-	By the induction hypothesis, all $z_i$ and $z_j$ which occur in $\AI(C_1)$ and $\AI(C_2)$ satisfy the condition.
-
-	Hence we consider all introductions of either $z_i$ or $z_j$ in $\AI(C)$, i.e.~symbols that are not present in $\AI(C_1)$ or $\AI(C_2)$.
-
-	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
-
-	All non-logical symbols of
-	$\AIclause(C)$ are contained in 
-	$\lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau$ or $\lifboth{ (\AIclause(C_2)\setminus\nolinebreak \{l\fromclause'\})\sigma} \tau$ 
-	and all non-logical symbols of 
-	$\AImatrix(C)$ are contained in $\lifboth{l\fromclause\sigma}\tau$, $\lifboth{l'\fromclause\sigma}\tau$, $\lifboth{\AImatrix(C_1)\sigma}\tau$ or
-	$\lifboth{\AImatrix(C_2)\sigma) }\tau$.
-	%As by Lemma~\ref{lemma:literals_clauses_equal} $\lifboth{l\fromclause\sigma}\tau = \lifboth{l'\fromclause\sigma}\tau$, 
-	As by Lemma~\ref{lemma:no_lifting_vars_in_subst} $\sigma$ does not introduce lifting variables, new occurrences of $z_i$ or $z_j$ have been introduced by the lifting (of colored terms introduced by $\sigma$) or by $\tau$.
-
-	\begin{itemize}
-			\item Suppose $z_i$ and/or $z_j$ has been introduced by the lifting.
-
-	\end{itemize}
-
-
-
-
-
-
-\end{proof}
-
 
 \section{arrow proof}
 
