@@ -309,7 +309,7 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 
 		$ \aiu (a\fromclause, b\fromclause) =
 		\begin{cases}
-			\bigcup_{j=1}^n \aiu(s_j, \colterm{j}) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
+			\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
 			\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal, i.e. $x_m = \lifboth{a} = \lifboth{b}$.
 			{\footnotesize
 
@@ -966,33 +966,44 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result. \mytodo{verify this after the proof of the lemma}
 \end{proof}
 
-\cbstart
 \begin{defi}[Unification algorithm]
+	Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable. 
+	Let $s$ and $t$ denote terms and $x$ a variable.
+
 	The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
 
-		Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable.
 
-		$\mgu$ for a set of pairs of terms $T$ is defined as follows:
+	The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
 
-		$
-		\mgu(\emptyset) = \id
-		$
+	$
+	\mgu(\emptyset) = \id
+	$
 
-		$
-		\mgu(\{t\} \cup T) =$
-
-		$ \begin{cases}
-			\mathbf{fail} 				& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
-			\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
-			\mathbf{fail} 				& \text{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
-			\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \text{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
-			\mgu(T) 							& \text{if $t=(s, s)$} \\
-		\end{cases}
-		$
+	\newcommand{\aatahfdgasdfg}{.4\textwidth}
+	$
+	\mbox{$\mgu(\{t\} \cup T)$} =
+	%\mgu(\{t\} \cup T) =$
+	 \begin{cases}
+		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
+		\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
+		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
+		\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
+		\mgu(T) 							& \text{if $t=(s, s)$} \\
+	\end{cases}
+	$
+	\qedhere
 \end{defi}
-\begin{conj}
-	A resolution derivation can only contain a $\Gamma$-colored term containing a $\Delta$-colored term if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in a clause.
-\end{conj}
+
+\begin{defi}
+	A term is called \defiemph{multicolored} if it contains both $\Gamma$- and $\Delta$-colored subterms.
+\end{defi}
+Note that a multicolored $\Phi$-term consequently is a term whose outermost symbol is $\Phi$-colored and contains a colored but not $\Phi$-colored subterm.
+
+
+\begin{lemma}
+	\label{lemma:mixed_colored_term_introduction}
+	A resolution derivation can only contain multicolored $\Gamma$-term if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in a clause.
+\end{lemma}
 \begin{proof}
 	Suppose no such variable exists in $\Gamma$ and $\Delta$.
 	By the definition of the colors, no $\Gamma$-colored term initially contains a $\Delta$-colored term. We show that no resolution rule application can introduce one.
@@ -1005,31 +1016,33 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Delta$-term $t$ in a $\Gamma$-term $s$ in $C_1$. 
 			Then a variable $x$ occurs in $s$ such that $x\sigma = t$.
 			By the unification algorithm, this implies that $x$ is directly unified with a term $t'$ which has the same outermost symbol as $t$.
-			Note that clauses involved in a resolution step are variable disjoint, so $x$ only occurs in $C_1$. 
+			Note that clauses involved in a resolution step are variable disjoint, so $x$ only occurs in $C_1$ and its preceding clauses, but not in $C_2$. 
 			Since $x$ has a $\Gamma$-colored occurrence, it does by assumption not have a grey occurrence. 
 			Hence all occurrences of $x$ are of the form $r\occur{x}$, where the outermost symbol of $r$ is colored.
-			As $x$ occurs in a $\Gamma$-term, it must originate from a clause in $\Gamma$. 
-
-			\mytodo{PROBLEM: ``rampen'' can put gamma terms in delta terms, then they are unifiable with other delta terms (which still is useless, but i state the opposite below}
+			As $x$ occurs in a $\Gamma$-term, it must originate from a clause in $\Gamma$.
+			As by Lemma~\ref{lemma:variable_never_added} variables are never added in a resolution derivation, all $r\occur{x}$ must be $\Gamma$-colored terms.
 
 
 			$\Gamma$- and $\Delta$-colored terms are not unifiable, so a unifier mapping $x$ to a $\Delta$-colored term must be created from a unification of a term of the form $r[x]$ and a $\Gamma$-term.
 			But by assumption, no $\Gamma$-colored term contains a $\Delta$-colored term. 
 
-			So by unification of a $\Gamma$-colored term containing $x$ with another $\Gamma$-colored term, it is not possible that the $\mgu$ maps $x$ to a $\Delta$-colored term, which is a contradiction.
+			Hence there cannot be an $\mgu$ of $l$ and $l'$ which maps $x$ to a $\Delta$-colored term.
 
 
 		\item
-			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Gamma$-term $s$, which contains a $\Delta$-term $t$.
+			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Gamma$-term~$s$, which contains a $\Delta$-term $t$.
 			As by assumption no such term $s$ exists in $C_1$ or $C_2$, the unification algorithm does not encounter it as term to unify a variable with directly. 
 
-			This does not exclude the case that a variable $y$ is unified first with a $\Gamma$-term containing a variable $x$, where later $x$ is unified with a $\Delta$-term. 
+			This however does not exclude the case that a variable $y$ is unified first with a $\Gamma$-term containing a variable $x$, where later $x$ is unified with a $\Delta$-term. 
 			However the argumentation in case~\ref{a5hsefdgsy6} excludes precisely the case that a variable, which is contained in a $\Gamma$-term, is unified with a $\Delta$-term.
 			\qedhere
 	\end{enumerate}
 \end{proof}
 
-\cbend
+\begin{conj}
+	Let $C$ be a clause which contains a multicolored $\Gamma$-term.
+\end{conj}
+
 
 \cbstart
 \begin{conj}
@@ -1038,7 +1051,6 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	Hence if they are present in a clause $C$ at some point in the derivation, their position in the original clause has been a variable or has been contained in a variable in case a varaiable has been added inside of a term.
 \end{conj}
 
-\mytodo{possibly show that only a variable with a grey and a colored occurrence introduce foreign terms and multiple colored occurrences don't introduce but propagate the terms. check which formulation the proof below would need.}
 
 \begin{conj}
 	\label{lemma:arrows_for_lifting_terms}

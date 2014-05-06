@@ -13,6 +13,7 @@ An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as su
 An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
 \todo{colors are only defined later}
 
+
 We denote $x_1, \ldots, x_n$ by $\bar x$.
 
 For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$.
@@ -114,4 +115,5 @@ As the notions of interpolation and reverse interpolation in this sense coincide
 In the context of interpolation, every non-logical symbol is assigned a color which indicates its origin(s). 
 \begin{defi}[Coloring]
 A non-logical symbol is said to be \emph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \emph{grey} in case it occurs in both $\Gamma$ and $\Delta$. A symbol is \emph{colored} if it is $\Gamma$- or $\Delta$-colored.
+A term is a $\Phi$-term if its outermost symbol is $\Phi$-colored.
 \end{defi}
