@@ -1,0 +1,220 @@
+\documentclass[,%fontsize=11pt,%
+	paper=a4,% 
+	%landscape,
+	%DIV12, % mehr text pro seite als defaultyyp
+	DIV14,
+	%DIV=calc,%
+	%twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+\newcommand{\res}{\ensuremath{\mathrm{res}}}
+
+\def\proofSkipAmount{ \vskip -0.3em}
+
+\begin{document}
+
+Need $I_1, I_2$, 
+$I_1', I_2'$, $l$, $l'$, $\sigma$
+such that there is no $\varphi_\res(X_1, X_2, l, l', \sigma)$ with
+\begin{itemize}
+	\item $\varphi_\res(I_1, I_2, l, l', \sigma)$ is interpolant for $\pi$
+	\item $\varphi_\res(I_1', I_2', l, l', \sigma)$ is interpolant for $\pi'$
+\end{itemize}
+
+$I_i^\circ$ is interpolant for $\pi_i^\circ$
+
+$\varphi_\res$ is ``formula scheme'', i.e.~a rigid formula with occurrences of arguments.
+
+it exists in prop, but not in fol.
+
+\begin{multicols}{2}
+$\pi$:
+\begin{prooftree}
+	\AxiomCm{[\pi_1]}
+	\noLine
+	\UnaryInfCm{C\lor l}
+
+	\AxiomCm{[\pi_2]}
+	\noLine
+	\UnaryInfCm{D\lor \lnot l'}
+	\BinaryInfCm{(C \lor D)\sigma}
+\end{prooftree}
+
+$\pi'$:
+\begin{prooftree}
+	\AxiomCm{[\pi'_1]}
+	\noLine
+	\UnaryInfCm{E\lor l}
+
+	\AxiomCm{[\pi'_2]}
+	\noLine
+	\UnaryInfCm{F\lor \lnot l'}
+	\BinaryInfCm{(E \lor F)\sigma}
+\end{prooftree}
+\end{multicols}
+
+
+\section*{Attempt 1}
+
+$\Sigma = \{P(u, f(u) \lor Q(u)), C(c)\}$
+
+$\Pi = \{ \lnot Q(a), \lnot P(a, y) \lor \lnot C(c)\}$
+
+
+	$\pi$:
+	\begin{prooftree}
+		\AxiomCm{ \sig{ P(u, f(u) \lor Q(u) }}
+
+		\AxiomCm{ \p{\lnot Q(a) }}
+
+		\BinaryInfCm{ \forall x_1 Q(x_1) \parallel P(a, f(a)) }
+
+		\AxiomCm{ \sig{C(c) }}
+		\AxiomCm{ \p{\lnot P(a, y) \lor \lnot C(c) }}
+
+		\BinaryInfCm{ C(c) \parallel \lnot P(a, y)}
+
+		\BinaryInfCm{ (P(a, f(a)) \land C(c)) \lor (\lnot P(a, f(a)) \land \forall x_1 Q(x_1))  \parallel \mathbf{\forall x_1 \exists x_2 (P(x_1, x_2) \land C(c)) \lor (\lnot P(x_1, x_2) \land \forall x_1 Q(x_1))}  \parallel \square}
+	\end{prooftree}
+	\bigskip
+
+$\Sigma' = \{ Q(a), P(a, y)\lor C(c) \}$
+
+$\Pi' = \{\lnot P(u, f(u) \lor \lnot Q(f(u))), \lnot C(c)\}$
+
+	$\pi'$:
+	\begin{prooftree}
+		\AxiomCm{ \p{ \lnot P(u, f(u) \lor \lnot Q(f(u))) }}
+
+		\AxiomCm{ \sig{Q(x) }}
+
+		\BinaryInfCm{ \forall x_1 Q(x_1) \parallel \lnot P(u, f(u)) }
+
+		\AxiomCm{\p{\lnot C(c) }}
+		\AxiomCm{\sig{ P(a, y) \lor C(c) } } 
+
+		\BinaryInfCm{ C(c) \parallel P(a, y)}
+
+		\BinaryInfCm{ (P(a,f(a)) \land \forall x_1 Q(x_1)) \lor (\lnot P(a, f(a)) \land C(c)) }
+
+		%\BinaryInfCm{ (P(a, f(a)) \land C(c)) \lor (\lnot P(a, f(a)) \land \forall x_1 Q(x_1))  \parallel \mathbf{\forall x_1 \exists x_2 (P(x_1, x_2) \land C(c)) \lor (\lnot P(x_1, x_2) \land \forall x_1 Q(x_1))}  \parallel \square}
+	\end{prooftree}
+
+
+
+Then we get:
+
+$\varphi_\res(\forall x_1 Q(x_1), C(c), P(a, f(a)), \lnot P(a, y), \sigma) =
+{\forall x_1 \exists x_2 (P(x_1, x_2) \land C(c)) \lor (\lnot P(x_1, x_2) \land \forall x_1 Q(x_1))}$
+
+
+TODO: this does not work out yet
+$\varphi_\res(\forall x_1 Q(x_1), \bot, P(a, f(a)), \lnot P(a, y), \sigma') = \exists x_2 \forall x_1 (Q(x_1) \lor P(x_1, x_2))$
+
+// NOTE: we merged the $x_1$ here which we can't do with a homomorphism
+
+
+\end{document}

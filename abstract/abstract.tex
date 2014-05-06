@@ -1,0 +1,286 @@
+\documentclass[,%fontsize=11pt,%
+			paper=a4,% 
+			%DIV12, % mehr text pro seite als defaultyyp
+			DIV10,
+			%DIV=calc,%
+			%twoside=false,%
+			liststotoc,
+			bibtotoc,
+			draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+			%titlepage,
+			numbers=noendperiod
+			]{scrartcl}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+		\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+ \begin{figure}[tbph]
+	 \centering
+	 \includegraphics[#3]{#1}
+	 \caption[#4]{#5}
+	 \label{fig:#2}
+ \end{figure}
+}
+
+\subject{Master Thesis Proposal}
+\title{Interpolation in First Order Logic with Equality}
+\author{Bernhard Mallinger\medskip \\
+Advisor: Ass.Prof.\ Stefan Hetzl}
+%\date{13. November 2007}
+
+%\usepackage{fancyhdr}
+%\setlength{\headrulewidth}{0.0pt}
+\pagestyle{plain}
+
+\definecolor{grey}{gray}{.35} % for grey commnts
+\lstset{language=Python,%
+escapeinside={@}{@},
+extendedchars=false,%
+%inputencoding=utf8x,%
+basicstyle=\ttfamily\small,%
+commentstyle=\color{grey},%
+%keywordstyle=,% no bold tt in standard font
+%captionpos=b,
+tabsize=2,
+showstringspaces=false,
+breaklines=true,
+breakindent=0pt,
+numbers=left
+}
+
+% just for screen-display!
+%\usepackage{newcent}
+
+%\newcommand{\ex}[2]{\section*{Exercise #1} \textbf{#2} }
+%\newcommand{\ex}[2]{\subsection*{Exercise #1: #2} }
+
+\newcommand{\myt}[1]{\ensuremath{\;\text{ #1 }\;}}
+\newcommand{\myts}[1]{\ensuremath{\text{ #1 }}}
+
+%\setlength{\parindent}{0em}
+
+
+%\theoremstyle{definition}
+%\newtheorem{thm}{Theorem}
+\declaretheorem[qed=$\dagger$,title=Theorem]{thm}
+%\declaretheoremstyle[qed=\qedsymbol]{thmstyle}
+%\declaretheorem[title=Theorem,style=thmstyle]{thm}
+%\declaretheorem[title=Theorem,shaded]{thm}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Motivation and problem statement}
+\label{motivation}
+
+
+The interpolation theorem is a long known basic result of mathematical logic \cite{craig57linear}.  Interpolants lay bare certain logical relations between formulas or sets of formulas in a concise way. 
+This process is fully analytic in the sense that interpolants can efficiently be calculated from proofs of the relations of the formulas.
+Leveraging the tremendous progress of automatic deduction systems in the last decades, obtaining the required proofs is feasible.
+
+For practical applicability, often relatively weak formalisms such as propositional logic or equational logic with uninterpreted function symbols are studied. 
+While considerable research has been conducted and is still ongoing in these areas, unrestricted first order logic with equality has received relatively little attention. 
+
+
+%TODO no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{craig57linear}.
+
+%However for first-order logic with equality, TODO no efficient algorithms for computing interpolants are known, even though a basic procedure is already provided in \cite{craig57linear}.
+
+
+\begin{comment}
+Software verification
+Model checking
+Derive invariants
+interpolation by its nature disregards all but the predicates relevant to a certain property
+can be used for predicate refinement in cegar
+
+often restricted to weaker logics, application to more powerful formalisms such as fol with equality is relevant 
+\end{comment}
+
+\section{Aim of the work}
+
+%TODO
+%This thesis aims to work towards finding an algorithm to calculate interpolants in first-order logic in the presence of equality.
+%Currently no procedures of practical applicability are known for this logic,  
+%This should be accomplished by either improving existing solutions such as the aforementioned procedure by Craig or exploring a novel approach.
+
+This thesis aims at giving comprehensive account of existing techniques and results with respect to interpolation in \textbf{full first order logic with equality}.
+This includes different proofs of interpolation results with a focus on constructive proofs which give rise to concrete and implementation-ready algorithms for finding interpolants.
+These algorithms, as listed in \S~\ref{algos}, will be presented, analysed and compared. 
+
+Depending on the respective findings, improvements or extensions of these algorithms will be investigated.
+More concretely, developing an efficient interpolation algorithm for LK and extending existing approaches without equality to include equality are among the central research interests.
+
+Non-constructive methods, especially of a model theoretic nature, will be treated in order to form a theoretical baseline and to give a broader picture.
+In this spirit, further corollaries and also applications of the interpolation theorem will be presented.
+
+
+
+\section{Methodology and approach}
+
+As the problem at hand is a well-defined mathematical task, standard mathematical methodology applies.
+
+Implementations of the algorithms are deemed scientifically valuable but most likely beyond the scope of this thesis.
+
+
+\section{State of the art}
+
+Current research and application is rooted in the fundamental result by Craig (\cite{craig57linear}), here given in a formulation suitable for resolution calculus\footnote{Also known as \emph{reverse interpolation}}:
+
+\begin{samepage}
+\begin{thm}[Interpolation]
+	Let $A$ and $B$ be first-order sentences such that $ A \land B $ is unsatisfiable. 
+	Then there exists an interpolant $I$ such that \nopagebreak[4]
+	\begin{compactenum}
+		\item $ A \limpl I$ is valid 
+		\item $I \land B$ is unsatisfiable
+		\item the non-logical symbols of $I$ are only those that occur in both $A$ and $B$. \qedhere
+	\end{compactenum}
+\end{thm}
+\end{samepage}
+
+This basic result has been proven in different formalisms using different syntactic methods (cf.~e.g.~\cite{craig57linear}; \cite{takeuti1987proof}), but also via semantic, model theoretic means (cf.~e.g.~\cite[section 5.2]{shoenfield1967mathematical}; \cite[theorem~2.2.20]{chang1990model}).
+In this respect, Robinson's joint consistency theorem is equivalent to the interpolation theorem.
+%
+%To this end, the interpolation theorem can be seen as a corollary Robinson's joint consistency theorem, but even more, latter can also be proven from the former. 
+%
+This suggest a close relation between one the one hand the proof-theoretic and on the other hand the model-theoretic view.
+
+A major corollary of the interpolation theorem is given by Beth in form of the definability theorem, which shows that the notions of implicit and explicit definability coincide in first order logic.
+In shallow terms, an implicit definitions refers to a definition by usage in a formula, whereas an explicit definition gives a definition in terms of another formula.
+The non-trivial direction of this theorem states that implicit definitions can be converted into explicit ones and can be proved by using an interpolant as explicit definition.
+
+
+\subsection{Interpolation algorithms}
+\label{algos}
+
+Constructive proofs of the interpolation theorem directly give rise to algorithms for computing interpolants.
+For instance in \cite[theorem 6.6]{takeuti1987proof}, the well known Maehara lemma is used in the proof, which forms an efficient procedure for extracting interpolants from first-order LK proofs, but does not consider equality and function symbols.
+It is unknown to the author whether the approach can be generalized to handle equality.
+
+\cite{Huang95} describes an algorithm for extracting interpolants from proofs from first order resolution calculus with equality.
+In a two stage approach, an initially constructed relational interpolant is later stripped of non-common constant and function symbols by overbinding them.
+
+In \cite{baaz2011methods}, also a two step approach is proposed for first order logic without equality.
+The interesting difference to \cite{Huang95} lies in the proof method:
+While in the latter the overbinding in the second stage only works for the kind of interpolants which have been constructed in the first stage of this very algorithm, the method of \cite{baaz2011methods} argues about correctness of the overbinding based directly on the properties of relational interpolants.
+This works for any interpolant and is therefore a more flexible and powerful approach.
+
+
+\subsection{Applications of interpolation}
+\label{application}
+
+In the area of software verification, deriving logical information about program states is essential for reasoning about real world programs.
+For instance in model checking, the set of reachable states of a program is described by overapproximations computed from interpolants.
+%by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
+In \cite{McMillan03}, the idea of using interpolation for finding suitable abstractions was proposed and successfully applied, which subsequently sparked further research interest. 
+
+Furthermore, in dealing with programs with loops with an a priori unknown number of iterations, it is necessary to infer loop invariants in order to be able to give a meaningful guarantee of the state of the program afterwards.
+In \cite{weissenbacher2010}, these invariants are deduced by means of interpolation.
+
+In contrast to this practical applications, interpolation also serves theoretical aspirations: In \cite{Pudlak97} as well as in \cite{krajivcek1997interpolation}, interpolation is employed in the process of proving lower bounds of the length of proofs of propositional proof systems.
+
+
+\begin{comment}
+After decades of continued research, the area of software verification still lacks effective methods for reasoning about real world programs, which is necessary to prove vital safety or liveness properties.
+The emergence of symbolic model checking and bounded model checking constitute considerable advances.
+Here, the set of reachable states of a program are described by means of abstraction, i.e.\ automatically derived predicates overapproximate them.
+However for actually finding suitable abstractions, sophisticated methods are required.
+
+
+In recent years, the approach of applying Craig interpolation to solve both of these problems enjoyed increasing popularity, especially after successful applications for instance in \cite{McMillan03} for use in abstraction or \cite{weissenbacher2010} for use in loop invariant generation.
+
+
+Another noteworthy and in fact one of the first interpolation algorithms of practical interest was introduced in \cite{McMillan03}, where it was also embedded in a model checking procedure.
+\end{comment}
+
+\section{Relevance to the curriculum of Computational Intelligence}
+
+Logic as core machinery of computer science is featured prominently in the curriculum of Computational Intelligence, first and foremost in the mandatory module ``Logic and Computability'' as well as the module ``Logic, Mathematics, and Theoretical Computer Science'', but also as essential theoretic foundations of other modules. 
+
+The logic used in this thesis, first-order logic with equality, clearly is among the most common and useful ones; the interpolation theorem is hereby a celebrated result.
+As argued in \S~\ref{application}, advancements in this field have direct consequences for the area of formal verification, which is also featured in the curriculum.
+
+The following courses possess the most direct relation to the topic of this thesis: 
+\begin{itemize}
+	\item Formal Methods in Computer Science
+	\item Proof Theory 1 
+	\item Logic and Computability 
+	\item Advanced Mathematical Logic 
+\end{itemize}
+
+
+%\nocite{*} % display all entries of bib-file
+
+\bibliography{bib}
+
+\end{document}

@@ -1,0 +1,1275 @@
+\documentclass[,%fontsize=11pt,%
+	paper=a4,% 
+	%landscape,
+	DIV12, % mehr text pro seite als defaultyyp
+	%DIV10, 
+	%DIV=calc,%
+	twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+% subsections also in toc
+\setcounter{tocdepth}{2}
+
+%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
+\newcommand{\thmqed}{$\square$} % for thms without proof
+\newcommand{\propqed}{$\square$} % for props without proof
+\declaretheorem[title=Theorem]{thm}
+\declaretheorem[title=Proposition,sibling=thm]{prop}
+%\declaretheorem[title=Lemma,parent=chapter]{lemma}
+\declaretheorem[sibling=thm]{lemma}
+\declaretheorem[title=Corollary,sibling=thm]{corr}
+\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
+%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
+\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
+
+\declaretheorem[sibling=thm,title=Conjecture]{conj}
+
+\declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
+
+%\def\proofSkipAmount{ \vskip -0.5em}
+
+
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+\def\proofSkipAmount{ \vskip -0.3em}
+
+\usepackage{refcheck}
+
+\begin{document}
+
+\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+
+
+	%\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
+
+\section{Arrow-Algo}
+
+\begin{enumerate}
+	\item
+		In the original clauses, find all occurrences of variables.
+
+		Common case:
+		If a variable appears as outermost symbol or only has grey ancestor-terms, add an arrow from it to all other occurrences.
+
+		Uncommon case:
+		if there is more than one occurrence of a variable under a $\Phi$-colored term, add a \emph{weak} dependency between them all (symmetric relation).
+
+
+		NOTE: this creates double arrows for occurrences at same depth. This appears to be necessary for terms which are only variables, and doesn't hurt if the variable is contained in a term.
+
+	\item For each step in the derivation:
+		\begin{enumerate}
+			\item Build propositional interpolant using $\PI(C_i)^*$, $i\in \{1,2\}$, i.e.~use ancestor $\PI$ without colored terms.
+			\item If ancestors of atom added to $\PI(C)$ had arrows, merge them to atom in $\PI(C)$ (i.e.~arrows starting in and leading to this atom).
+			\item Replace colored terms in $\PI(C)$ (from new atom and unifier applied to $\PI(C_i)^*$) with fresh variables, except if a term has a double ended arrow to another overbinding variable, then use that variable.
+
+				An arrow starts (ends) in one of the new variables if it starts (ends) somewhere in the term it replaced.
+			\item Collect quantifiers: from $\PI(C_i)^*$, $i\in \{1,2\}$ and ones from atom added to $\PI(C)$. Order such that arrows only point to variables to the right AND weakly connected variables appear in the same quantifier block.
+
+				$\bar Q_n = \operatorname{sort}( Q_{n_1} \cup Q_{n_2} \cup \operatorname{colored-terms}(l))$
+		\end{enumerate}
+\end{enumerate}
+
+\clearpage
+\subsection{algo more formally}
+
+Every literal in any initial clause set has a globally unique id/number
+
+Ex: $P(y, a, f(z, g(y, b)) ) \lor Q(x)$
+
+Term position:
+
+$0.2.1.0$ means first literal, 3rd arg, 2nd arg, fst arg: $y$
+
+$0.1$ is $a$
+
+$0.2.1$ is $g(z, b)$
+
+$\pos$ calculates the position of a term or the term of a position, depending on the argument type.
+
+for a position $p_i$, $\pos(p_i)$ denotes whatever $p_i$ refers to in its respective clause.
+
+for a term $t$, $\pos(t)$ denotes the position in $t$ in its respective clause.
+
+for a position $p$, $\poslit(p)$ denotes the position of the literal
+
+for a position $p$, $\posterm(p)$ denotes the position of the term in $p_i$ 
+
+$\Ra$ $p = \poslit(p).\posterm(p)$
+
+for a position $p$, $p \mod i$ denotes $p$ with $i$ least significant places cut off, $0.2.1.0 \mod 2 = 0.2$
+
+\subsection{Arrows:}
+
+\begin{defi}[Coloring of variable occurrences]
+	An occurrence of a variable $x$ is called \defiemph{$\Phi$-colored} if it is contained in a maximal $\Phi$-colored term. It is called \defiemph{colored} if it is of any color and \defiemph{grey} otherwise.
+\end{defi}
+
+$\arr$ is a set of ordered pairs of term positions which point to positions in terms in literals
+
+$\warr$ is a set of unordered pairs of term positions which point to positions in terms in literals
+
+Note that the ``anchor point'' for arrows are literals and not clauses.
+All literals occur in the initial clause sets.
+The literals in $\AI(C)$ are derived from these and the arrows apply to them.
+Literals of colored predicates to not occur in $\AI(C)$ but can be relevant by transitivity.
+
+w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
+
+\newcommand{\Phicol}{\Phi^{\operatorname{col}}}
+\newcommand{\Phigrey}{\Phi^{\operatorname{grey}}}
+\newcommand{\MaxCol}{\operatorname{MaxCol}}
+\begin{enumerate}
+	\item For each initial clause $C$ in $\Gamma \cup \Delta$:
+
+		For every variable $x$ in $C$:
+
+		Let $\Phi_x$ be the set of occurrences of a $x$ in $C$. 
+		Let $\Phicol_x = \{p \in \Phi_x \mid \text{$p$ is contained in a colored term} \}$
+		and $\Phigrey_x = \Phi_x \setminus \Phicol_x$.
+
+		Let $\MaxCol(\Phi) = \{p \mid \text{$p$ is a maximal colored term containing $q$ for $q \in \Phi$} \}$
+
+		Add to $\arr$ all $(p_1, p_2)$ such that $p_1\in\Phigrey_x$ and $p_2 \in \MaxCol(\Phicol_x)$.
+		
+		Add to $\warr$ all $(p_1, p_2)$ such that $p_1\in\MaxCol(\Phicol_x)$ and $p_2\in\MaxCol(\Phicol_x)$ and $p_1 \neq p_2$.
+
+
+		%Add to $\arr$ all $(p_1, p_2)$ in $C$ such that $p_1$ contains only grey symbol and $\pos(p_1)$ is a variable and $\pos(p_1) = \pos(p_2)$ but $p_1 \neq p_2$.
+
+		%Add to $\warr$ all $\{p_1, p_2\}$ such that there is a colored symbol in $p_1$ and a possible different one in $p_2$ and $\pos(p_1)$ is a var and $\pos(p_1) = \pos(p_2)$.
+
+	\item 
+		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
+
+		The literals $l$ and $l'$ are unified and henceforth considered to be the same literal.
+		Therefore the arrows of $l$ and $l'$ are merged.
+		%Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
+
+		%Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
+		%If $l$ and/or $l'$ is added to $\PI(C)$, it comes from both $l$ and $l'$.
+
+
+		%Add $(p_1, p_2)$ to $\arr$ if $\poslit{p_i}$ comes from literal $l_i$ in a clause $D$ in an original clause set, $i\in\{1, 2\}$, (both from same $D$), and $(l_1.\posterm{p_1}, l_2.\posterm{p_2}) \in \arr{D}$ 
+
+\end{enumerate}
+
+\subsection{algo}
+
+NOTE: for now, we assume that every colored-term has a globally unique id $i$ and will be replaced by a variable with this index. 
+This restriction is useful now and could potentially be lifted later, but it's not severe anyway.
+
+Note: when a literal is added to the interpolant, the colored terms in one literal might have already been replaced with a certain variable before. we definitely have to use the same variable for both literals, and if one literal has other dependencies, we should stick with the variable we have.
+
+PROBLEM: terms already replaced by variables still change! need to use same variable anyway, so note above not accurate!
+
+POSSIBLE SOLUTION: for resolution, it is vital that the resolved literals are the unified, but nothing else is vital. We however ensure that the literals also have the same lifting variables.   
+
+Furthermore, if variables are in the interpolant, then they have been present in both clauses, (e.g.~$f(x)$ in $C_1$, $f(y)$ in $C_2$, then it's fine to universally quantify).
+
+
+\subsubsection{$\AImatrix$ and $\AIclause$}
+
+Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be the interpolant, and $\AIclause$, which represents the \emph{clauses} in the refutation applied with the same unifications as $\AImatrix$.
+
+\begin{enumerate}
+	\item 
+		For each initial clause $C$, $\AImatrix(C) = \PI(C)$ and $\AIclause(C) = \lifboth{C}$.
+
+	\item
+		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = (D \lor E)\sigma$ with $l\sigma = l'\sigma$ with prop interpolant $\PI(\cdot)$:
+
+		$l.\dotsc$ literal in original clause
+
+		$l\fromclause\dotsc$ literal in $\AIclause$ (with unifications and liftings carried over, such that ind hyp goes through)
+
+		%literal to put in $\AImatrix$ is defined as $x_i =\lifboth{l\sigma} = \lifboth{l'\sigma}$
+		%$l^\circ\dotsc$ literal to put in $\AImatrix$ is defined as $x_i =\lifboth{l\sigma} = \lifboth{l'\sigma}$
+
+		$l\sigma = l'\sigma$, but $l\fromclause$ and $l\fromclause'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them.
+
+		Prose explanation of formal definition below: Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
+		($\Phi$-replacing-var vs $\Phi$-term cannot happen as $\Phi$-term is overbound as it has to be colored as otherwise the terms woudln't unify).
+		Also apply these to substitutions in $\AIclause$ and $\AImatrix$ here.
+
+		$\aiu$ is defined on lifted terms of $\lifboth{l\fromclause\sigma}$ and $\lifboth{l\cl'\sigma}$, where the literals $l\fromclause$ and $l\fromclause'$
+		occur in $\AIclause(C_1)$, $\AIclause(C_2)$ such that for their corresponding $l$ and $l'$, $l\sigma = l'\sigma$.
+		Note that if one of the arguments of $\aiu$ has assigned a color, the other one either has none or the same color.
+		There cannot be a conflict as otherwise their original form would not be unifiable.
+
+		Note that $\aiu(a, b)$ is well-defined, i.e.~never maps a variable to two different values as each occurrence of some $x_j$ refers to a term with possible free variables, and since across the definition of $\aiu$, always the same substitution $\sigma$ is used as reference, every occurrence of $x_j$ will be mapped to the same variable. (NOTE: this is what yet unproven conjectures in the other pdf are trying to formalize.)
+
+
+		$l\cl$ and $l'\cl$ are as they occur in $\AIclause{C_1}$ and $\AIclause{C_2}$. As the actual terms in the clause unify, we know that here, at least all terms have proper color after unification/lifting.
+
+		Let 
+		$\lifboth{l\cl\sigma} = A(a_1, \dotsc, a_n)$, $\lifboth{l\cl'\sigma} = A(b_1, \dotsc, b_n)$
+
+		$\aiu(A(a_1, \dotsc, a_n), A(b_1, \dotsc, b_n)) = \bigcup_{i=1}^n \aiu(a_i, b_i)$
+
+		$ \aiu (a\fromclause, b\fromclause) =
+		\begin{cases}
+			\bigcup_{j=1}^n \aiu(s_j, \colterm{j}) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
+			\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal, i.e. $x_m = \lifboth{a} = \lifboth{b}$.
+			{\footnotesize
+
+				More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
+
+		}}\\
+				\emptyset & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
+			\end{cases} $
+
+
+		$\AIclause(C) =
+		\lifboth{\Big( (\AIclause(C_1) \setminus \{l\fromclause\}) \lor (\AIclause(C_2)\setminus \{l\fromclause'\}) \Big)\sigma} \tau$ 
+
+		
+
+		\begin{itemize}
+			\item if $l$ and $l'$ don't have the same color:
+
+				$\AImatrix(C) =
+				(\lnot {\lifboth{l\fromclause\sigma}\tau} \land \lifboth{\AImatrix(C_1)\sigma}\tau) \lor
+				(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma) }\tau
+				$
+
+
+				%$\AImatrix(C) =
+				%\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma} $
+
+
+				%		$\left.\begin{tabular}{l}
+				%		$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
+
+				%		$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
+				%\end{tabular}\right\} \lifboth $ with same overbinding!
+
+
+				%				$\lifboth{ \AImatrix(C)' \lor \AIclause(C)' } = \underbrace{\lifboth{ \AImatrix(C)' }}_{\AImatrix(C)} \lor \underbrace{\lifboth{\AIclause(C)'}}_{\AIclause(C)}$ 
+
+
+			\item if $l$ and $l'$ are $\Gamma$-colored :
+
+				%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
+				%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
+				$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma} \tau$
+			\item if $l$ and $l'$ are $\Delta$-colored:
+
+				%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma$
+				$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma} \tau$
+
+
+		\end{itemize}
+
+\end{enumerate}
+
+\subsubsection{$\AI$}
+
+
+$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
+
+$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ PLUS all free variables in $\AImatrix(C)$.
+
+$Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
+For free variables, $Q_i$ as in $C_1/C_2$. if $u_i\sigma \neq u_i$, $u_i$ becomes one of $x_j$ or $y_j$ or grey term.
+
+Combine dependencies of positions which are connected by weak arrows:
+
+$\arr' =  \arr \union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
+
+$\arr'' = \operatorname{TransitiveClosure}(\arr')$
+
+$(p_1, p_2) \in \arr'' $ implies
+that $u_i < u_j$ if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ (positions in $\AI(C)$, not in $C$).
+
+
+\clearpage
+
+\section{proof of propositional aspect of $\AI$}
+
+The following lemma works in the other proof, but the remark below shows why it is not applicable here:
+
+\begin{lemma}[Restated from proof without propositional refutation, lemma 1] 
+	\label{lemma:lift_subst_commute}
+	Let $C$ be a clause and $\sigma$ a substitution.
+	Let $\colterm{1},\ldots,\colterm{n}$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and
+	$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $\colterm{i}$ (i.e.~none of the $x_i$ occur in $C$).
+	Define $\sigma'$ such that for a variable $z$,
+	\[
+		z \sigma' =
+		\begin{cases} 
+			x_l & \text{ if } z = x_k \text{ and } \colterm{k}\sigma = \colterm{l}  \\
+			\lif{z\sigma} & \text{ otherwise}
+		\end{cases} 
+	\]
+
+	Then
+	$\lif{C\sigma} =
+	\lif{C}\sigma'$.
+\end{lemma}
+
+\begin{remark}[Restriction of Lemma \ref{lemma:lift_subst_commute}]
+	Lemma \ref{lemma:lift_subst_commute} does not hold in case $x_i$ occurs in $C$.
+	This can easily be seen using the following counterexample:
+
+
+	Let $\sigma = \{x \mapsto a\}$ and $\colterm{1} = f(x)$ and $\colterm{2} = f(a)$. 
+	Then clearly $\colterm{1}\sigma = \colterm{2}$ and therefore $x_1\sigma' = x_2$.
+
+	But now consider $x_1 \sigma$. 
+	As $x_1$ has its place in the domain of variables to replace colored terms, and $\sigma$ is taken from a resolution refutation, they do not affect each other. 
+	Hence $x_1\sigma = x_1$ and therefore $\lifdelta{x_1\sigma} = x_1$, but $\lifdelta{x_1}\sigma' = \lifdelta{x_1}\sigma' = x_2$.
+
+
+	However such a situation arises naturally if we lift colored terms after every step of the interpolant extraction procedure, as there, the intermediate relative interpolants clearly contains variables to overbind terms, but we also need to treat terms that enter the interpolant by means of unification.
+\end{remark}
+
+\begin{lemma}[corresponds to Lemma 4.8 in thesis and Lemma 11 in Huang]
+	\label{lemma:lift_logic_commute}
+	Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
+	\begin{enumerate}
+		\item $\lift{\Phi}{\lnot A}{x} \semiff{} \lnot \lift{\Phi}{A}{x}$
+		\item $\lift{\Phi}{A \circ B}{x} \semiff{} ( \lift{\Phi}{A}{x} \circ \lift{\Phi}{B}{x} )$ for  $\circ \in     \{\land, \lor\}$
+		\item $\lift{\Phi}{s = t}{x} \semiff{} ( \lift{\Phi}{s}{x} = \lift{\Phi}{t}{x} )$
+	\end{enumerate}
+\end{lemma}
+
+
+
+\begin{lemma}
+	\label{lemma:no_colored_terms}
+	$\AImatrix(C)$ and $\AIclause(C)$ contain only grey terms and variables replacing colored terms. They do not contain colored terms.
+	\comm{true and used}
+\end{lemma}
+
+
+
+\begin{corr}
+	\label{corr:lift_ai}
+	For a clause $C$ in a resolution refutation $\pi$ of $\Gamma \cup \Delta$:
+	\begin{compactenum}
+	\item $\AImatrix(C) = \lifboth{\AImatrix(C)}$.
+
+	\item $\AIclause(C) = \lifboth{\AIclause(C)}$.
+	\end{compactenum}
+	\comm{true and unused}
+\end{corr}
+
+\begin{lemma}
+	\label{lemma:no_lifting_vars_in_subst}
+	Lifting variables do not occur in any substitution of a resolution refutation.
+	\comm{true and used, also generally relevant}
+\end{lemma}
+
+\begin{lemma}
+	\label{lemma:substitute_and_lift}
+	Let $F$ be a formula without colored terms such that for a set of formulas $\Phi$, $\Phi \entails F$.
+	Then $\Phi \entails \lifboth{F\sigma}$ for a substitution $\sigma$.
+\end{lemma}
+\begin{proof}
+	Note that substitutions only replace variables. Term positions, which are replaced by grey terms by $\sigma$ are not affected by the lifting and hold due to being special cases of~$F$.
+
+	Term positions, which are replaced by colored term by $\sigma$ are again reduced to variables.
+	All occurrences of a certain variable in $F$ are substituted by the same term, so as the lifting replaces a certain term always be the same variables, all these occurrences of the variable are replaced by the same variable.
+\end{proof}
+
+\begin{exa} 
+	\label{exa:lifting_var_refers_to_different_term}
+	We illustrate that the given procedure, if a lifting variable $x_k$ occurs in $\AIclause(C)$, it does not necessaily mean that $\colterm{k}$ occurs in $C$:
+
+	$\Gamma = \{P(f(x))\lor Q(x)\}$
+
+	$\Delta = \{\lnot P(y), \lnot Q(a)\}$
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid P(x_1)\lor Q(x) \comm{P(f(x) \lor Q(x) }}
+		\AxiomCm{ \top \mid \lnot P(y) }
+
+		\BinaryInfCm{ P(x_1) \mid Q(x) }
+
+		\AxiomCm{ \top \mid \lnot Q(y_1) \comm{Q(a)} }
+
+		\BinaryInfCm{  Q(y_2) \lor P(x_1) \mid \square }
+	\end{prooftree}
+	Here, $x_1$ first refers to $f(x)$ and later to $f(a)$.
+	This however is not essential for the correctness of the procedure, and it would be tedious to fix all such $x_1$ see also corresponding remark in case distinction in Lemma~\ref{lemma:literal_in_clause_similar}.
+\end{exa} 
+
+			\begin{conj}
+				$\aiu$ is well defined:
+				In a call of $\aiu(a\cl, b\cl)$, if one of the arguments is a lifting variable of a certain color, then so is the other.
+			\end{conj}
+
+
+\begin{lemma} 
+	\label{lemma:literal_in_clause_similar}
+	If a literal $l$ occurs in a clause $C$ from a resolution refutation,
+	then $\AIclause(C)$ contains a corresponding literal $l\fromclause$ such that $l\fromclause \sim \lifboth{l}$, where $\sim$ means equal up to the index of lifting variables.
+\comm{true and used}
+\end{lemma}
+\begin{proof}
+	Base case: By Definition of $\AIclause$.
+
+	Let $C$ be the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
+	Every literal of $C$ is derived from a literal in $C_1$ or $C_2$. Let $\lambda$ be a literal in $C_1$. The case for a literal in $C_2$ is analogous.
+	Note that $\lambda \neq l$ as otherwise $\lambda$ would not be contained in $C$.
+
+	By assumption $\lambda \in C_1$. Then by the resolution rule application, $\lambda\sigma \in C$.
+
+	\newcommand{\lclOne}{\lambda\cl}
+	By the induction hypothesis, there is a $\lclOne \in \AIclause(C_1)$ such that $\lclOne \sim \lifboth{\lambda}$.
+	By the definition of $\AIclause$, $\lifboth{\lclOne\sigma}\tau \in \AIclause(C)$ 
+	with $\tau = \aiu(l, l')$.
+
+	So we have to show that $\lifboth{ \lambda \sigma }  \sim \lifboth{\lambda\cl\sigma}\tau$.
+
+	Remark on $\tau$: $\tau$ only replaces lifting terms by other lifting by other lifting terms
+	\NB{this is where variable indices may not match.}
+
+	We perform an induction on the depth of terms in $\lambda$ (except the non-maximal colored terms). Note that as $\lambda$ occurs in a clause of the refutation, it does not contain lifting variables.
+	\begin{itemize}
+			\begin{comment} NO LIFTING VARS!
+		\item Suppose $t$ is a term of size $1$ in $\lambda$ and it is a lifting variable, say $z_i$.
+			Then by Lemma~\ref{lemma:no_lifting_vars_in_subst}, $t\sigma = t$ and also $\lifboth{t\sigma} = t$.
+
+			As by the induction hypothesis $t\fromclause \sim \lifboth{t}$, $t\fromclause =z_j$ for some $j$.
+			Hence, $\lifboth{t\cl\sigma} = t\cl$.
+			By the remark on~$\tau$,
+			$\lifboth{t\sigma} \sim \lifboth{t\cl\sigma}\tau$.
+		\end{comment}
+
+		\item Suppose $t$ is a term of size $1$ in $\lambda$ and it is a non-lifting variable, say $u$.
+			%Suppose that $\sigma$ is trivial on $u$. Then $\lifboth{u\sigma} = u \sim u\cl = \lifboth{u\cl\sigma} = \lifboth{u\cl\sigma}\tau$.
+
+			%Otherwise suppose that $\sigma$ is not trival on $u$.
+			As $\lifboth{u}\sim u\cl$ and $u$ is a variable, $u = u\cl$.
+			But then $u\sigma = u\cl\sigma$ and also $\lifboth{u \sigma} = \lifboth{u\cl\sigma}$, so clearly 
+			$\lifboth{u\sigma} \sim \lifboth{u\cl\sigma}\tau$.
+
+			%Note that by the induction hypothesis, we get the desired relation for possible subterms of $u\sigma$.
+			%Suppose that $u\sigma$ is a grey term. Then $\lifboth{u\sigma} = u\sigma$. 
+			%Furthermore as $\lifboth{u} = u$, $\lifboth{u}\sigma = u\sigma$. Hence $\lifboth{u\sigma} = \lifboth{\lifboth{u}\sigma}$. 
+			%As $\tau$ again only replaces variables which replace colored terms by other variables of the same kind, the induction holds in this case. \NB{$\tau$ stuff again}
+
+
+		\item Suppose $t$ is a term of size $1$ in $\lambda$ and it is a constant.
+
+			Suppose $t$ is grey. Then it is unaffected by both liftings and substitutions, so we are done.
+
+			Suppose $t$ is colored.
+			Then $\lifboth{t\sigma}$ is a lifting variable, but 
+			as $t\cl = \lifboth{t}$, so is $\lifboth{t\fromclause\sigma}\tau$.
+
+			\NB{From the point on where $t$ was lifted, $t\cl$ even always refers to exactly the lifting var $\lifboth{t} = x_k$ for some $k$ (just the term in the refutation may change).
+			Cf.\ Lemma~\ref{lemma:jka5a5halat}. Hence this case is no obstacle to showing the statement with $\lifboth{t}=t\fromclause$ (and not just $\lifboth{t}\sim t\cl$).}
+
+
+		\item Suppose $t$ is of the form $f(t_{1}, \dotsc, t_{n})$ in $\lambda$.
+			Then by the induction hypothesis, $\lifboth{t_{i}\sigma} \sim \lifboth{(t_{i})\fromclause\sigma}\tau$ for $1 \leq i \leq n$.
+			\begin{compactitem}
+			\item Suppose $f$ is grey.
+				Then $f$ is neither affected by substitutions nor by liftings.
+
+			\item Suppose $f$ is colored.
+				We only consider the case of occurrences of maximal colored terms as the other ones are discarded by the lifting.
+				As $t\cl \sim \lifboth{t}$, $t\cl$ is a lifting variable. Hence also $\lifboth{t\cl\sigma}\tau$ is a lifting variable.
+				But so is $\lifboth{t\sigma}$.
+				\qedhere
+
+				\NB{Note that even if it was the case that $\lifboth{t}=t\fromclause$ (and not just $\lifboth{t}\sim t\cl$), $\lifboth{t\sigma}$ might not be equal to $\lifboth{t\fromclause\sigma}$, but only $\lifboth{t\sigma} \sim \lifboth{t\fromclause\sigma}$.
+
+					E.g.\ $t = f(x)$, $\lifboth{t} = x_1$, $t\cl = x_1$, $\sigma = \{x\mapsto a\}$. 
+					Then $\lifboth{t\sigma} = \lifboth{f(a)} = x_2$, but $\lifboth{t\cl\sigma} = x_1$.
+					$\tau$ does not fix this, but could potentially if it is more careful than $\sigma'$.
+					See also Example~\ref{exa:lifting_var_refers_to_different_term}.
+				}
+
+			\end{compactitem}
+	\end{itemize}
+\end{proof}
+
+\begin{exa}
+	TODO: example with terms in $\pi$ vs $AI$, similar to 206a and last part of 208a:
+
+	$f(x)$ vs $ x_j $
+
+	$f(g(y))$ vs $ x_j $ (actual term is changed but lifting variable stays the same
+
+	$f(g(h(z)))$ vs $ x_k $ (now $x_j$ appears in resolution, either this occurrence or another occurrence of this var)
+
+	$f(g(h(a)))$ vs $ x_k $ (again actual term is changed without changing the lifting variable)
+\end{exa}
+
+\begin{lemma}
+	\label{lemma:lifting_var_refers_to_abstraction_of_term}
+	%$(z_j \mapsto z_k) \in \tau$ implies that there is a substitution $\rho$ such that $\colterm{j} \rho = \colterm{k}$.
+	Let $a\cl = z_j$ a lifting variable for a term position $a\cl$ in $\AIclause(C)$. Then $a = \colterm{j}\rho$ for some substitution $\rho$.
+	Even more, if a substitution $z_j\mapsto z_k$ for lifting variables $z_j$ and $z_k$ occurs,
+	$z_k$ refers to exactly $\colterm{k}$ and there exists a substitution $\rho'$ such that $\colterm{k} = \colterm{j}\rho'$.
+	\comm{used}
+\end{lemma}
+\NB{this probably also hold in $\AImatrix$ and for terms not occurring $\AIclause$ as well.}
+\begin{proof}
+	Base case:
+	$z_j$ is introduced to lift $\colterm{j}$, $\rho$ is the identity function.
+
+	Induction step:
+	Suppose $z_j$ refers to $\colterm{j}\rho$ for some $\rho$.
+
+	Suppose $\colterm{j}\rho$ changes in the course of the resolution derivation.
+	As it is a term in a resolution derivation, it changes only by means of unification, say by the unifier $\sigma$.
+	Hence it changes to $\colterm{j}\rho\sigma$ and $z_j$ refers to $\colterm{j}\rho\sigma$.
+
+	Suppose $z_j$ changes. By the construction of $\AIclause$/$\AImatrix$, lifting variables are not affected by the resolution unifications (cf.\ Lemma~\ref{lemma:no_lifting_vars_in_subst}) or the liftings, but only by $\tau$.
+
+	Suppose $(z_j\mapsto z_k)\in \tau$.
+	Then by the definition of $\aiu$, the term at position $a$ is now $\colterm{k}$. 
+	As by the induction hypothesis $a = \colterm{j}\rho$ in the preceding clause, $a\sigma = \colterm{k}$.
+	Hence $\colterm{j}\rho\sigma = \colterm{k}$.
+\end{proof}
+
+By Lemma~\ref{lemma:literal_in_clause_similar}, we have that $l\cl \sim \lifboth{l}$.
+But we can also show that the terms in $l$ only become more specialised, i.e.\ if a lifting variable $z_j$ occurs in $l\cl$, the corresponding term in $\lifboth{l}$ is a specialisation of $\colterm{j}$, 
+
+
+\begin{comment}
+	\cbstart
+	\begin{lemma}[Strenghtening of \ref{lemma:literal_in_clause_similar}]
+		\label{lemma:literal_in_clause_similar_strenghtened}
+
+		If $s\cl$ is a lifting variable $z_i$ and $\lifboth{s} = z_j$ (i.e.\ $s=\colterm{j}$),
+		then there is a substitution $\rho$ such that $\colterm{i}\rho = \colterm{j}$.
+	\end{lemma} 
+	\begin{proof}
+		Note that if $i=j$, the $\rho$ is the identity function.
+
+		Note that by Lemma~\ref{lemma:literal_in_clause_similar}, $s\cl \sim \lifboth{s}$.
+
+		At some point in the resolution proof, $s\cl = z_i$ was introduced in $\AIclause(C^*)$ for a clause $C^*$. 
+		Hence the corresponding term in $C^*$ is $\colterm{i}$.
+
+		In the resolution derivation, $\colterm{i}$ is, in general, changed by means of substitution, so $s$ in later stages of the proof refers to $\colterm{i}\sigma^*$ for some $\sigma^*$.
+
+		If $z_i$ is never affected by $\tau$, we are done.
+
+		Suppose that at the position of $s\cl$, $z_k$ is introduced and later changed to $z_i$.
+		We have to show that there is a substitution $\rho$ such that $\colterm{k}\rho = \colterm{i}$.
+		See Lemma~\ref{lemma:tau_is_specialisation}.
+	\end{proof}
+	\cbend
+\end{comment}
+
+
+
+\begin{lemma}
+	\label{lemma:disjoint_lifting_variables}
+	The set of lifting variables, which refer to terms which have free variables, is disjoint for every incomparable clause.
+	\comm{true but ok to have unused}
+\end{lemma}
+\begin{proof}
+	The free variables for every inital clause is disjoint.
+\end{proof}
+
+
+Apparently, $\tau$ establishes equality for the terms in the literals being resolved on (Lemma~\ref{lemma:literals_clauses_equal}) and quasi-equality for other literals in the remaining clause (Lemma~\ref{lemma:literal_in_clause_similar}).
+\begin{lemma}
+	\label{lemma:literals_clauses_equal}
+	Let $l\fromclause$, $l\fromclause'$ be the literal in $\AIclause(C_1)$ and $\AIclause(C_2)$ corresponding to $l$ and $l'$ where 
+	$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$
+	(i.e.~$l\sigma=l'\sigma$).
+	Let $\tau = \aiu(\lifboth{l\fromclause\sigma}, \lifboth{l\fromclause'\sigma})$. Then $\lifboth{l\fromclause\sigma}\tau = \lifboth{l\fromclause'\sigma}\tau$.
+	\comm{true and used}
+\end{lemma}
+\begin{proof} 
+	Let $s\fromclause$ be a (sub-)term of a parameter of $l\fromclause\sigma$ and $t\cl$ the term at the same term position in $l\fromclause'\sigma$.
+	Let $s$ and $t$ be their corresponding (sub)-term at the same term position in $l\sigma$ and $l'\sigma$.
+	We show that $\lifboth{s\fromclause\sigma}\tau = \lifboth{t\fromclause\sigma}\tau$ by induction on the structure of $s\fromclause$ and $t\fromclause$ respectively.
+
+	Note that by Lemma~\ref{lemma:no_colored_terms}, $s\fromclause$ and $t\fromclause$ do not contain colored terms. This also implies that only grey terms can contain subterms.
+
+	By Lemma~\ref{lemma:literal_in_clause_similar}, $l\cl \sim \lifboth{l}$ and
+	$l'\cl \sim \lifboth{l'}$. 
+
+	\begin{description}
+		\item[Lifting variables.]
+
+			Suppose that $s\fromclause = z_i$ and/or $t\fromclause = z_j$ for some $i$ and $j$.
+			Suppose that $s\fromclause \neq t\fromclause$ as otherwise we are done.
+			%Hence $s\neq t$, but
+			By the resolution rule application $s\sigma = t\sigma$. Cases:
+			\begin{compactitem}
+			\item $s\fromclause = z_i$ and $t\fromclause = z_j$ with $i\neq j$.
+				As $\sigma$ affects neither $s\fromclause$ nor $t\fromclause$,
+				$\lifboth{s\fromclause \sigma}  = s\fromclause$ and
+				$\lifboth{t\fromclause \sigma}  = t\fromclause$.
+				We show that $s\fromclause\tau = t\fromclause\tau$.
+
+				Note that the function $\aiu$ visits all subterms and combines all mappings it encounters.
+				Hence $\aiu(s\fromclause, t\fromclause)$ is part of the final substitution $\tau$.
+				However due to the just established circumstances, $\aiu(s\fromclause, t\fromclause) = \{z_i \mapsto z_m, z_j \mapsto z_m\}$ with $m$ as in the definition of $\aiu$, so $s\fromclause\tau = t\fromclause\tau$.
+				\NB{this is the somewhat crude step where all lifting variables in the resolved literal are just reset.}
+
+			\item W.l.o.g.~$s\fromclause = z_i$ and $t\fromclause$ is not a lifting variable.
+				As $t\cl \sim \lifboth{t}$, $t$ is not a colored term.
+				But due to $s\cl \sim \lifboth{s}$, $s$ is a colored term.
+				As $s\sigma = t\sigma$, $t$ must be a variable and $t\sigma$ a colored term.
+				So $\lifboth{t\sigma} = z_k$ for some $k$.
+				Note that the function $\aiu$ visits all subterms and combines all mappings it encounters.
+				By the construction of $\aiu$, at $\aiu(s\fromclause, t\fromclause)$, $\{ z_i \mapsto z_k \}$ is added.
+				Therefore $\lifboth{s\fromclause\sigma}\tau = \lifboth{z_i\sigma}\tau = \lifboth{z_i}\tau = z_i\tau = z_k$.
+
+				Due to $t\cl \sim \lifboth{t}$ and as $t$ is a variable, $t=t\cl$.
+				Then $\lifboth{t\cl\sigma}\tau = \lifboth{t\sigma}\tau = z_k\tau$.
+
+				It remains to show that $z_k\tau = z_k$.
+
+				As $t$ is a variable and due to $t\sigma = \colterm{k}$ and as $\sigma$ is the most general unifier, it is necessary to substitute $\colterm{k}$ in order to unify the literals. 
+
+				We continue with a proof by constradiction and suppose that $(z_k \mapsto z_l) \in \tau$. Let $k\neq l$ as otherwise we are done.
+				%This situation only arises if $z_k$ occurs elsewhere (i.e., besides from $\lifboth{s\fromclause\sigma}\tau$) in one of the direct ancestors of $C$, i.e.\ $C_1$ or $C_2$. 
+				By the definition of $\aiu$, $z_k$ must occur in either $\AIclause(C_1)$ or $\AIclause(C_2)$.
+				 Furthermore, at least one of the ancestors of $C_1$ or $C_2$, or $C_1$ or $C_2$ themselves, contains~$\colterm{k}$, as only this term is lifted using $z_k$.
+
+				By Lemma~\ref{lemma:lifting_var_refers_to_abstraction_of_term}, $z_l$ refers to precisely $\colterm{l}$. %and there exists a substitution $\rho''$ such that $\colterm{k}\sigma = t_l$.
+				As $z_l$ replaces $z_k$, and $z_k$ used to refer to $\colterm{k}$,
+				%but as at the same position now $z_l$ refers to $\colterm{l}$,
+				some sequence of substitutions occurred which changed $\colterm{k}$ to $\colterm{l}$.
+				This sequence of substitutions has substituted at least one variable of $\colterm{k}$ as $\colterm{k}\neq\colterm{l}$.
+				As the set of clauses is unique for a clause, this variable does not occur in the subsequent derivation.
+
+				As however $\sigma$ introduces $\colterm{k}$ and therefore all of its variables as subterms, 
+				$\colterm{k}$ has never been updated to $\colterm{l}$, but then $(z_k \mapsto z_l) \not\in \tau$.
+				%By Lemma~\ref{lemma:jus\colterm{i}ntroduced_lifting_vars_not_affected_by_tau}, $z_k\tau = z_k$.
+
+				%			But as $t\fromclause = \lifboth{t}$ and $t$ is a variable, $t\fromclause\sigma = s$.
+				%Note that $\sigma$ does not affect $s\fromclause$.
+				%So $\lifboth{t\fromclause\sigma} = \lifboth{s} =  s\fromclause = s\fromclause\sigma = \lifboth{s\fromclause\sigma}$ and also 
+				%$\lifboth{t\fromclause\sigma}\tau = \lifboth{s\fromclause\sigma}\tau$.
+			\end{compactitem}
+
+		\item[Grey terms.]
+			Suppose that at least one of $s\cl$ and $t\cl$ is a grey term.
+			\begin{itemize}
+				\item
+					Suppose that both $s\fromclause$ and $t\fromclause$ are grey terms:
+					By $s\fromclause = \lifboth{s}$ and 
+					$t\fromclause = \lifboth{t}$, and as $s\sigma = t\sigma$, their outermost symbol is the same in all these terms.
+					The equality of the parameters is established by the induction hypothesis.
+					Note that grey constants can be treated as grey functions without parameters.
+
+				\item
+					Suppose that exactly one of $s\fromclause$ and $t\fromclause$ is a grey terms. W.l.o.g.~let $s\fromclause$ be a grey term. Then as $s\sigma=t\sigma$, $s\fromclause = \lifboth{s}$ and $t\fromclause = \lifboth{t}$, $t\fromclause$ is a variable and $t=t\cl$.
+					Furthermore, $t\fromclause\sigma$ is a grey term. 
+					Due to $s\sigma = t\sigma$, the outermost symbol of $s\cl$ and $t\cl$ is the same.
+					Equality of potential parameters in $s\fromclause$ is established by the induction hypothesis.
+			\end{itemize}
+
+
+		\item[Variables.]
+			Suppose that both $s\fromclause$ and $t\fromclause$ are variables. 
+			Suppose that $\sigma$ is non-trivial on at least $s\fromclause$ or $t\fromclause$, as otherwise we are done.
+			Due to $s\fromclause = \lifboth{s}$ and $t\fromclause = \lifboth{t}$, $s = s\fromclause$ and $t=t\fromclause$.
+			As $s\sigma=t\sigma$,  the outermost symbol of both $s\fromclause\sigma$ is the same as the one of~$t\fromclause\sigma$. As the equality of potential parameters of $s\fromclause\sigma$ and $t\fromclause\sigma$ is established by the induction hypothesis, we are done.
+			\qedhere
+	\end{description}
+\end{proof}
+
+\newcommand{\clauseOnePrime}{\AIclause(C_1)^*}
+\newcommand{\clauseTwoPrime}{\AIclause(C_2)^*}
+
+
+\begin{lemma}
+	\label{ref:gamma_entails_delta_terms_lifted}
+	Let every $\Gamma$-term be grey. (To establish valid conditions, for each $\Gamma$-term $t$, add $P(t)$ to $\Delta$ where $P$ is a fresh predicate symbol. Then the resolution refutation is unaffected).
+	Then
+	$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$.
+\end{lemma}
+\begin{proof}
+	Proof by induction of the strenghtening:
+	$\Gamma \entails \AImatrix(C) \lor \AIclause(C_\Gamma)$.
+
+	Base case:
+
+	For $C \in \Gamma$, $\AImatrix(C) = \bot$ and $\AIclause(C) = \lifboth{C_\Gamma} = \lifgamma{C}$. As $\Gamma$-terms are not lifted, $\lifgamma{C} = C$ and $\Gamma \entails C$.
+
+	For $C \in \Delta$, $\AImatrix(C) = \top$.
+
+	Induction step:
+
+
+	\begin{description}
+		\item{Resolution.}
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor l}
+				\AxiomCm{C_2: E \lor \lnot l'}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\BinaryInfCm{C: (D\lor E)\sigma}
+			\end{prooftree}
+			We introduce the following abbreviations:
+
+			$ \clauseOnePrime = \AIclause((C_1)_\Gamma) \setminus \{\lifboth{(l{\fromclause})_\Gamma}\}$
+
+			$ \clauseTwoPrime = \AIclause((C_2)_\Gamma)\setminus \{\lifboth{\lnot (l{\fromclause'})_\Gamma}\}$
+
+			$\tau  = \aiu((l{\fromclause})_\Gamma, (l{\fromclause'})_\Gamma)$
+
+			$\AIclause(C_\Gamma) =
+			\lifboth{\Big( \clauseOnePrime \lor \clauseTwoPrime \Big)\sigma} \tau$.
+
+			By Lemma~\ref{lemma:lift_logic_commute},
+			$\AIclause(C_\Gamma) =
+			\lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma} \tau$.
+
+			By the induction hypothesis,
+			$\Gamma \entails \AImatrix(C_i) \lor \AIclause({C_i}_\Gamma)$, $i\in\{1,2\}$, or expressed differently:
+
+
+			$\Gamma \entails \AImatrix(C_1) \lor \clauseOnePrime \lor {(l{\fromclause})_\Gamma}$
+
+			$\Gamma \entails \AImatrix(C_2) \lor \clauseTwoPrime \lor {\lnot (l{\fromclause'})_\Gamma}$
+
+			By Lemma~\ref{lemma:no_colored_terms}, $\AImatrix(C_1)$ and $\AIclause(C_1)$ as well as $\AImatrix(C_2)$ and $\AIclause(C_2)$ do not contain colored terms.
+			Hence by Lemma~\ref{lemma:substitute_and_lift}, Lemma~\ref{lemma:lift_logic_commute} and applying $\tau$, we get that 
+
+			$\Gamma \stackrel{\markA}\entails \lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclause})_\Gamma\sigma}\tau$
+
+			$\Gamma \stackrel{\markB}\entails \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclause'})_\Gamma\sigma}\tau$
+
+
+			%Furthermore,
+			%$\sigma = \mgu(l, l')$, so $\lifboth{l\sigma} = \lifboth{l'\sigma}$ and $\lifboth{l}\sigma' = \lifboth{l'}\sigma'$ by Lemma \ref{lemma:lift_subst_commute}.
+
+			By Lemma~\ref{lemma:literals_clauses_equal}, $\lifboth{(l\fromclause)_\Gamma\sigma}\tau = \lifboth{(l{\fromclause'})_\Gamma\sigma} \tau$.
+
+			\begin{itemize}
+				\item If $l$ and $l'$ grey:
+
+					$\AImatrix(C) =
+					(\lnot {\lifboth{l\fromclause\sigma}\tau} \land \lifboth{\AImatrix(C_1)\sigma}\tau) \lor
+					(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma) }\tau
+					$
+
+					Suppose for a model $M$ of $\Gamma$ that $M \notentails \AIclause(C)$,
+					i.e.~$M \notentails \lifboth{\AIclause(C_1)\sigma}\tau$ and $M \notentails\nolinebreak \lifboth{\AIclause(C_2)\sigma}\tau$ as otherwise we would be done.
+					Then by \markA{} and \markB:
+
+					$M \entails \lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{l{\fromclause}\sigma}\tau$
+
+					$M \entails \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lnot \lifboth{l{\fromclause'}\sigma}\tau$
+
+					By Lemma~\ref{lemma:literals_clauses_equal}, $\lifboth{l\fromclause\sigma}\tau = \lifboth{l{\fromclause'}\sigma} \tau$.
+					By a case distinction on the truth value of $\lifboth{l\fromclause\sigma}\tau$ in $M$, we obtain that $M \entails \AImatrix(C)$.
+
+
+				\item If $l$ and $l'$ are $\Gamma$-colored:
+					$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma} \tau$
+
+					By Lemma~\ref{lemma:literals_clauses_equal}, we can do a resolution step on $\lifboth{l\fromclause\sigma}\tau$ of \markA{} and \markB{} to arrive at 
+
+					$\Gamma \entails \lifboth{\AImatrix(C_1)\sigma}\tau \spam\lor \lifboth{\clauseOnePrime\sigma}\tau\spam\lor 
+					\lifboth{\AImatrix(C_2)\sigma}\tau\spam\lor \lifboth{\clauseTwoPrime\sigma}\tau $
+
+					This however is by Lemma~\ref{lemma:lift_logic_commute} nothing else than
+					$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$
+
+				\item If $l$ and $l'$ are $\Delta$-colored:
+					$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma} \tau$
+
+					As $l$ is $\Delta$-colored, \markA{} and \markB{} reduce to:
+
+					$\Gamma \entails \lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau$
+
+					$\Gamma \entails \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau$
+
+					But this implies that 
+
+					$\Gamma \entails \Big(\lifboth{\AImatrix(C_1)\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma}\tau\Big) 
+					\spam\lor \lifboth{\clauseOnePrime\sigma}\tau
+					\spam\lor \lifboth{\clauseTwoPrime\sigma}\tau$
+
+					This however is by Lemma~\ref{lemma:lift_logic_commute} nothing else than 
+					$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$.
+					\qedhere
+			\end{itemize}
+
+	\end{description}
+\end{proof}
+
+\begin{lemma}
+	The previous lemma basically calculates $\AI^\Delta$, where in $\AIclause$ and $\AImatrix$ instead of $\lifboth{\cdot}$ $\lifdelta{\cdot}$ is employed.
+	\mytodo{NEEDS A PROOF}
+\end{lemma}
+
+
+\begin{conj}
+	$\Gamma \entails \AI(C)$. (Recall that $\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$.)
+\end{conj}
+\begin{proof}
+	\begin{comment}
+		\begin{description}
+			\item[Induction start.]
+				For $C\in\Gamma$, $\AImatrix(C) = \bot$ and $\AIclause(C) = \lifgamma{C}$.
+				Furthermore, the quantifier prefix is $\exists y_1 \dots \exists y_n $, where $y_1n\dotsc , y_n$ are the maximal $\Gamma$-terms of $C$.
+				Hence as $\Gamma \entails C$, $C$ acts as witness for the existential terms in $\AIclause(C)$ and we get that $\Gamma \entails \exists y_1 \dots \exists y_n \AIclause(C)$.
+
+				For $C\in \Delta$, $\Gamma \entails \AImatrix(C)$ as $\AImatrix(C) = \top$.
+
+				$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
+
+			\item[Induction step.]
+				$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
+
+				$ \clauseOnePrime = \AIclause((C_1)_\Gamma) \setminus \{\lifboth{(l{\fromclause})_\Gamma}\}$
+
+				$ \clauseTwoPrime = \AIclause((C_2)_\Gamma)\setminus \{\lifboth{\lnot (l{\fromclause'})_\Gamma}\}$
+
+				$\tau  = \aiu((l{\fromclause})_\Gamma, (l{\fromclause'})_\Gamma)$
+
+
+				$\AIclause(C_\Gamma) =
+				\lifboth{\Big( \clauseOnePrime \lor \clauseTwoPrime \Big)\sigma} \tau$.
+
+
+				By Lemma~\ref{lemma:lift_logic_commute},
+				$\AIclause(C_\Gamma) =
+				\lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma} \tau$.
+
+				By the induction hypothesis:
+
+				$\Gamma \entails Q_1 z_1 \dots Q_m z_m \Big( \AImatrix(C_1) \lor \AIclause(C_1)  \Big)$
+
+				$\Gamma \entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big( \AImatrix(C_2) \lor \AIclause(C_2) \Big)$
+
+				or, expressed differently:
+
+				$\Gamma \entails  Q_1 z_1 \dots Q_m z_m \Big( \AImatrix(C_1) \lor \clauseOnePrime \lor {(l{\fromclause})_\Gamma}\Big)$
+
+				$\Gamma \entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big( \AImatrix(C_2) \lor \clauseTwoPrime \lor {\lnot (l{\fromclause'})_\Gamma} \Big)$
+				\bigskip
+
+
+				By the previous proof:
+
+				$\Gamma \stackrel{\markA}\entails Q_1 z_1 \dots Q_m z_m \Big(\lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclause})_\Gamma\sigma}\tau \Big)$
+
+				$\Gamma \stackrel{\markB}\entails Q_1' z_1' \dots Q_{m'}' z_{m'}' \Big(  \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclause'})_\Gamma\sigma}\tau \Big)$
+
+		\end{description}
+	\end{comment}
+
+	By Lemma~\ref{ref:gamma_entails_delta_terms_lifted}, by considering $\Gamma$-terms to be grey, there is a ``witness formula'' 
+	$\AImatrix(C) \lor \AIclause(C)$ which contains all $\Gamma$-terms and all $\Delta$-terms are lifted and implicitly universally quantified.
+
+	If we now again consider $\Gamma$-terms to be $\Gamma$-terms, then in the ``witness formula'', the $\Gamma$-terms are lifted and existentially quantified.
+	As a $\Gamma$-term $\colterm{i}$ in general contains lifting variables which lift $\Delta$-terms, we have to ensure that these are quantified before $y_i$ is.
+	Note that this implies that in $C$, a $\Delta$-term is contained in a $\Gamma$-term.
+
+	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result. \mytodo{verify this after the proof of the lemma}
+\end{proof}
+
+\cbstart
+\begin{defi}[Unification algorithm]
+	The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
+
+		Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable.
+
+		$\mgu$ for a set of pairs of terms $T$ is defined as follows:
+
+		$
+		\mgu(\emptyset) = \id
+		$
+
+		$
+		\mgu(\{t\} \cup T) =$
+
+		$ \begin{cases}
+			\mathbf{fail} 				& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
+			\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
+			\mathbf{fail} 				& \text{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
+			\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \text{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
+			\mgu(T) 							& \text{if $t=(s, s)$} \\
+		\end{cases}
+		$
+\end{defi}
+\begin{conj}
+	A resolution derivation can only contain a $\Gamma$-colored term containing a $\Delta$-colored term if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in a clause.
+\end{conj}
+\begin{proof}
+	Suppose no such variable exists in $\Gamma$ and $\Delta$.
+	By the definition of the colors, no $\Gamma$-colored term initially contains a $\Delta$-colored term. We show that no resolution rule application can introduce one.
+
+	As terms in clauses are only changed by means of unification, we have to show that no most general unifier $\sigma$ exists for any clauses derived from $\Gamma$ and $\Delta$ which introduces a $\Delta$-term in an existing $\Gamma$-term or a new $\Gamma$-term, which contains a $\Delta$-term.
+
+	\begin{enumerate}
+		\item
+			\label{a5hsefdgsy6}
+			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Delta$-term $t$ in a $\Gamma$-term $s$ in $C_1$. 
+			Then a variable $x$ occurs in $s$ such that $x\sigma = t$.
+			By the unification algorithm, this implies that $x$ is directly unified with a term $t'$ which has the same outermost symbol as $t$.
+			Note that clauses involved in a resolution step are variable disjoint, so $x$ only occurs in $C_1$. 
+			Since $x$ has a $\Gamma$-colored occurrence, it does by assumption not have a grey occurrence. 
+			Hence all occurrences of $x$ are of the form $r\occur{x}$, where the outermost symbol of $r$ is colored.
+			As $x$ occurs in a $\Gamma$-term, it must originate from a clause in $\Gamma$. 
+
+			\mytodo{PROBLEM: ``rampen'' can put gamma terms in delta terms, then they are unifiable with other delta terms (which still is useless, but i state the opposite below}
+
+
+			$\Gamma$- and $\Delta$-colored terms are not unifiable, so a unifier mapping $x$ to a $\Delta$-colored term must be created from a unification of a term of the form $r[x]$ and a $\Gamma$-term.
+			But by assumption, no $\Gamma$-colored term contains a $\Delta$-colored term. 
+
+			So by unification of a $\Gamma$-colored term containing $x$ with another $\Gamma$-colored term, it is not possible that the $\mgu$ maps $x$ to a $\Delta$-colored term, which is a contradiction.
+
+
+		\item
+			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Gamma$-term $s$, which contains a $\Delta$-term $t$.
+			As by assumption no such term $s$ exists in $C_1$ or $C_2$, the unification algorithm does not encounter it as term to unify a variable with directly. 
+
+			This does not exclude the case that a variable $y$ is unified first with a $\Gamma$-term containing a variable $x$, where later $x$ is unified with a $\Delta$-term. 
+			However the argumentation in case~\ref{a5hsefdgsy6} excludes precisely the case that a variable, which is contained in a $\Gamma$-term, is unified with a $\Delta$-term.
+			\qedhere
+	\end{enumerate}
+\end{proof}
+
+\cbend
+
+\cbstart
+\begin{conj}
+	\label{lemma:variable_never_added}
+	Variables are never added in a resolution derivation. 
+	Hence if they are present in a clause $C$ at some point in the derivation, their position in the original clause has been a variable or has been contained in a variable in case a varaiable has been added inside of a term.
+\end{conj}
+
+\mytodo{possibly show that only a variable with a grey and a colored occurrence introduce foreign terms and multiple colored occurrences don't introduce but propagate the terms. check which formulation the proof below would need.}
+
+\begin{conj}
+	\label{lemma:arrows_for_lifting_terms}
+	In $\AI^\Delta(C)$, if a lifting variable $x_i$ (lifting a $\Delta$-term)
+	occurs inside of a maximal $\Gamma$-term $t$, 
+	then there is an arrow from an occurrence of $x_i$ to $t$ in $\AI^\Delta(C)$ in $\arr''$.
+\end{conj}
+\begin{proof}
+	For a term to occur in $\AI(C)$ means to occur in $\AImatrix(C) \lor \AIclause(C)$.
+
+	Base case: No foreign terms occur in the inital clauses.
+
+	Induction step:
+	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+	By the induction hypothesis, all $t$ which occur in $\AI(C_1)$ and $\AI(C_2)$ satisfy the condition.
+
+	Note that every $x_i$ from $\AI(C_1)$ or $\AI(C_2)$ is carried over to $\AI(C)$. $\tau$ might rename $x_i$ to another lifting variable, but as this applies to every occurrence of $x_i$, the statement of this lemma is not violated.
+
+	\newcommand{\newterm}{{^*}}
+	Hence we consider all introductions of new $t\newterm$ in $\AI(C)$, i.e.~those that have not been present in $\AI(C_1)$ or $\AI(C_2)$.
+	Let $t$ be the term in w.l.o.g.~$\AI(C_1)$ where $t\newterm$ originates from, i.e.~$t\sigma = t\newterm$
+
+	$\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
+
+	All terms of
+	$\AIclause(C)$ are contained in 
+	$\lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau$ or $\lifboth{ (\AIclause(C_2)\setminus\nolinebreak \{l\fromclause'\})\sigma} \tau$ 
+	and all terms of 
+	$\AImatrix(C)$ are contained in $\lifboth{l\fromclause\sigma}\tau$, $\lifboth{l'\fromclause\sigma}\tau$, $\lifboth{\AImatrix(C_1)\sigma}\tau$ or
+	$\lifboth{\AImatrix(C_2)\sigma) }\tau$.
+	%As by Lemma~\ref{lemma:literals_clauses_equal} $\lifboth{l\fromclause\sigma}\tau = \lifboth{l'\fromclause\sigma}\tau$, 
+	As by Lemma~\ref{lemma:no_lifting_vars_in_subst} $\sigma$ does not introduce lifting variables, $\sigma$ does not introduce $t$.
+	There are 2 cases, we show that in both of them, there is an arrow from an occurrence of $x_i$ to $t$ in $\arr''$
+	\begin{itemize}
+		\item $\sigma$ introduces the $\Delta$-colored term $\colterm{i}$ in $t\newterm$.
+			Hence $t$ contains a variable $u$ such that $u\sigma = \colterm{i}$.
+
+			\begin{itemize}
+				\item
+					Suppose $t$ does not occur in the literal being unified. 
+					Then $u$ is only set due to occurring in the literal being unified, say at position $p$.
+
+					The occurrence at $p$ is either grey or colored.
+					As variables are never added (cf.~\ref{lemma:variable_never_added}) and arrows never removed, the original arrows still apply.
+					$u$ in $t$ is a colored occurrence.
+					
+					Suppose $p$ is a grey occurrence. Then there is an arrow from $p$ to $u$ in $t$.
+
+					Otherwise suppose $p$ is a colored occurrence. Then there is a weak connection between $p$ and $u$ in $t$.
+					But as then the literal $p$ is unified to does not introduce the $\Delta$-term into a $\Gamma$-term, there has to be some kind of induction hypothesis which gives the result here.
+
+
+				\item
+					Suppose $t$ does occur in the literal being unified, say in $l$.
+					Let $t'$ be the term in $l'$ that $t$ is unified with.
+
+					\begin{itemize}
+						\item[\markA]
+							Suppose $t'$ is a variable
+							\mytodo{blablub}
+
+						\item[\markB]
+							Suppose 
+							$t'$ is not variable. 
+
+							We know that $t'$ is the lifting of an abstraction of $\colterm{i}$.
+							We assume it is not a variable.
+							Hence it is a maximal $\Gamma$-term.
+							If it contains a lifting var just like $t^*$, we get the result by the induction hypothesis as there must be an arrow towards $t'$ and the arrows of the literals are being merged.
+
+							Otherwise $t'$ does not contain a lifting variable.
+							As $t$ does not either, but $t\sigma = t'\sigma = t^*$ does, 
+							variables in $t$ or $t'$ or both are substituted for terms containing $\Delta$-terms.
+							These variables occur elsewhere in the respective clauses.
+
+							They occur either in colored terms as well.
+							Then this is the same situation as this case (if not one of the fast bailouts above applies, in which case we are done).
+							However there can only be finitely many such cases as formulas are finite and there cannot be a circle as the vars have proper substitutions, which must have originated somewhere.
+
+							Otherwise these variables occur as outermost symbol. Then case \markA{} applies.
+
+
+					\end{itemize}
+
+
+			\end{itemize}
+
+
+
+		\item $\sigma$ introduces the mixed-colored term $t'$.
+			\mytodo{}
+
+	\end{itemize}
+\end{proof}
+\cbend
+
+
+
+\begin{exa}
+	TODO: example showing that if lifting vars occur in both $\AIclause(C_1)$ and $\AIclause(C_2)$, combining them with the same quantifier is fine as they both have the same dependencies. $\forall x F(x)$ and $\exists y G(y)$ combines nicely to $\forall x\exists y (F(x) \lor G(y))$ anyway as the bound variables are different.
+\end{exa}
+
+\begin{conj}
+	Let $\colterm{i}$ be contained in some literal in $\Gamma$ and
+	a term $t$ derived from $\colterm{i}$ occurs in $\AI(C)$ for some $C$ as in Lemma~\ref{ref:gamma_entails_delta_terms_lifted}. 
+	Suppose $t_{\AI}$ contains some $\Delta$-colored $\colterm{j}$.
+	$t = \colterm{i}\rho$ for some $\rho$.
+	Then as $\Delta$-terms are lifted in $t$, it contains $z_j$ for some $j$.
+
+	There is an arrow from some occurrence of $z_j$ in $\AI(C)$ to the position of $\colterm{i}$ (where there's actually some kind of lifting variable)
+
+	\NB{this is what the proof above needs}
+
+\end{conj}
+
+\begin{conj}
+	Let $\colterm{i}$ be a term of some color and $\colterm{j}$ be a term of a different color, which contains $\colterm{i}$ as subterm.
+	If the corresponding lifting variables $z_i$ and $z_j$ occur in $\AI(C)$ for some $C$, then there is an arrow from an occurrence of $z_i$ to an occurrence of $z_j$ (or for different $i$, $j$, as the $z$'s can become more specialised).
+
+	\NB{this seems to be provable, but check what it actually implies/expresses}
+\end{conj}
+
+\section{arrow proof}
+
+\begin{conj}
+	Let $x$ be a variable in $\AIclause(C)$.
+	Suppose there is a colored and a grey occurrence of $x$.
+	Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$.
+\end{conj}
+
+\begin{conj}
+	If there is a term in $C$ which contains a subterm of a different color, then there is variable in an ancestor of $C$ which has a grey and a colored occurrence.
+\end{conj}
+
+If a variable occurs twice in colored terms, foreign terms can be propagated.
+If it's once as grey and once as colored occurrence, foreign terms can be introduced.
+
+
+
+
+\begin{lemma}
+	\label{lemma:arrow_for_same_variables}
+	Whenever the same variable appears multiple times in $\PI(C)\lor C$ for $C \in \pi$, there are arrows.
+
+	\begin{itemize}
+		\item If both variables are contained only in grey terms, there is a double arrow \comm{they unify to exactly the same}
+		\item If only one variable is only contained in grey terms, there is an arrow from it to the other one \comm{either unify the one in grey term, then other one must be overbound later. if otherwise var in the colored term is unified, we can still overbind the grey one first. }
+		\item otherwise there are weak arrows between them \comm{have same quantifier, so order does not matter, but want to keep dependencies on both the same}
+	\end{itemize}
+\end{lemma}
+\begin{proof}
+	By induction. Note: As required by resolution, all initial clauses are variable disjoint.
+
+	Base case:
+	In the initial clause sets, consider for a clause $C$ two different positions $p_1$ and $p_2$ pointing to the same variable. 
+	Then either:
+	\begin{itemize}
+		\item $p_1$ and $p_2$ contain only grey symbols. Then $(p_1, p_2) \in \arr$.
+		\item Only $p_i$, $i\in\{1,2\}$ contains only grey symbols. Then $(p_i, p_{(i \mod 2)+1}) \in \arr$.
+		\item There are not only grey symbols in both $p_1$ and $p_2$, i.e.~both contain at least a colored symbol. Then $\{p_1, p_2\} \in \warr$. 
+	\end{itemize}
+
+	Induction step:
+	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+	$\PI(C)$ is $[\PI(C_1) \circ \PI(C)]\sigma$ or $[(l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) ] \sigma $.
+
+	Assumption: $C_1$ and $C_2$ are variable disjoint, i.e.~variables are renamed in case $C_1$ and $C_2$ are derived from some common original clause and share variables.
+
+	By the induction hypothesis, there are appropriate arrows in both $\PI(C_i) \lor C_i$, $i \in \{1,2\}$.
+
+	If the variables were present in $C_1$ or $C_2$, the arrow is still there, either in $\PI(C)$ (in the case of $l$ or $l'$), $C$ (in case of $D$ and $E$) or in currently not shown literal (in case $l$ and $l'$ have the same color).
+
+	Otherwise, it was introduced by unification in $l\sigma$ or $\PI(C_i)\sigma$.
+	In this case, there is some term position $q$ in with $\pos(l).q$ a variable and $\pos(l').q$ a variable or a term containing variables (or other way around).
+	Hence unification maps a variable to a variable or a term containing variables.
+	The variable being unified is in $\PI(C_i)\lor C_i$ for some $i\in\{1,2\}$.
+	But by the induction hypothesis, all occurrences of each variable does already have appropriate arrows, which are still present. 
+\end{proof}
+
+
+
+\begin{lemma}
+	In $\PI(C)\lor C$ for $C \in \pi$, if there is a $\Delta$-colored term $s$ in a $\Gamma$-term $t$, then there is an arrow from $p_1$ to $p_2$ such that $\pos(p_1) = s$ and $\pos(p_2) = s$ and for some $i$, $\pos( p_2 \mod i ) = t$.
+\end{lemma}
+Note: $p_1$ might be in some clause, the prop interpolant or none of both. 
+\begin{proof}
+	By induction.
+
+	Base case: There are no foreign terms in the initial clause sets, so no arrows necessary.
+
+	Induction step:
+
+	\begin{itemize}
+		\item[Resolution.]
+			Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+
+			\begin{enumerate}
+				\item Suppose $l$ is colored. 
+					This case is similar to the grey one, with the exception that the cases applying to $l$ in $\PI$ do not apply.
+
+				\item Suppose $l$ is grey. Then  $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) ] \sigma $
+
+					By the induction hypothesis, there are appropriate arrows in $\PI(C_1) \lor C_1$ and $\PI(C_2) \lor C_2$.
+
+					We show that for all maximal $\Gamma$-terms in $\PI(C)\lor C$ with $\Delta$-terms in them which were not present in $\PI(C_i)\lor C_i$, $i \in \{1,2\}$, there is an arrow.
+
+					$\Gamma$-terms and $\Delta$-terms are not unifiable.
+					%Hence all pairs of terms $(\colterm{1}, \colterm{2})$ in the same positions in $l$ and $l'$ (if both positions exist) are both grey, or w.l.o.g.~$\colterm{1}$ is a variable and $\colterm{2}$ is a colored/grey term.
+					Hence all pairs of terms $(\colterm{1}, \colterm{2})$ in the same positions in $l$ and $l'$ (if both positions exist) either point to the same symbol or (w.l.o.g.) $\colterm{1}$ is a variable and $\colterm{2}$ is a term. \mytodo{or the outermost symbol is the same and contains variables.}
+					If there are $\Delta$-terms in $\Gamma$-terms in the prefix, they are present in both ancestors and handled by the induction hypothesis.
+
+					The only way a $\Delta$-colored term may enter a $\Gamma$-colored term is in the situation where $\colterm{1}$ is a variable and $\colterm{2}$ a colored term.
+					But then $\mgu(\colterm{1}, \colterm{2})$ applied to $\colterm{1}$ yields $\colterm{2}$, i.e.~``the parts of $\sigma$ concerned with unifying $\colterm{1}$ and $\colterm{2}$'' do not introduce new $\Delta$-terms in $\Gamma$-terms.
+					In other words, all such situation have been present in $\PI(C_i) \lor C_i$ for $i \in \{1,2\}$ and since the arrows for $l$ and $l'$ are merged, they are present for $l\sigma$ in $\PI(C)$.
+
+					This handles the case where terms $\colterm{1}$ and $\colterm{2}$ are unified. 
+					But unification also affects all other occurrences of variables, this means ``the parts of $\sigma$ not concerned with unifying $\colterm{1}$ and $\colterm{2}$''.
+					The relevant case for this lemma is when a $\Gamma$-term contains a variable, that is substituted by a term containing $\Delta$-terms.
+					But in this case, by Lemma \ref{lemma:arrow_for_same_variables}, there is an arrow from the other occurrence of the variable to the one in the $\Gamma$-term: either double arrow in $\arr$ if both prefixes are grey, one in $\arr$ if one of the prefixes is grey or one in $\warr$ if both prefixes contain a colored symbol.
+					\qedhere
+			\end{enumerate}
+	\end{itemize}
+\end{proof}
+
+\clearpage
+\section{thoughts}
+
+\begin{conj}
+	Double ended arrows are not important as terms are overbound with same variable anyway as always same unifier applies.
+\end{conj}
+
+
+
+\end{document}

@@ -1,0 +1,432 @@
+\usepackage{comment} 
+
+\usepackage{etex} % else error on too many packages
+
+% includes
+\usepackage{algorithm}
+%\usepackage{algorithmic} % conflicts with algpseudocode
+\usepackage{algpseudocode}
+%\newcommand*\Let[2]{\State #1 $\gets$ #2}
+\algrenewcommand\alglinenumber[1]{
+{\scriptsize #1}}
+\algrenewcommand{\algorithmicrequire}{\textbf{Input:}}
+\algrenewcommand{\algorithmicensure}{\textbf{Output:}}
+
+
+%\usepackage[multiple]{footmisc} % footnotes at the same character separated by ','
+
+\usepackage{multicol}
+
+\usepackage{afterpage}
+
+\usepackage{changepage} % for adjustwidth
+\usepackage{caption} % for \ContinuedFloat
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+positioning,fit,calc,decorations.text,shadows%
+}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb} % the reals
+\usepackage{mathtools} % smashoperator
+
+\usepackage{thm-restate} % restatable env
+
+% needs extra work and fails on some label here
+%\usepackage{cleveref} % cref, apparently better than autoref of hyperref 
+
+\usepackage{nicefrac} % nicefrac
+
+\usepackage{mathrsfs} % mathscr
+
+\usepackage{pst-node} % http://tex.stackexchange.com/questions/35717/how-to-draw-arrows-between-parts-of-an-equation-to-show-the-math-distributive-pr
+
+\usepackage{stackengine}
+
+\usepackage{thmtools} % advanced thm commands (declaretheorem)
+
+
+\usepackage{nameref} % reference name of thm instead of counter
+
+\usepackage{todonotes}
+
+% conflict with beamer
+%\usepackage{paralist} % compactenum
+
+\usepackage{hyperref}
+%\hypersetup{hidelinks}  % don't give options to usepackage, it doesn't work with beamer
+%\hypersetup{colorlinks=false}  % don't give options to usepackage, it doesn't work with beamer
+
+
+% \usepackage{enumitem} % labels for enumerate % breaks beamer and memoir itemize
+
+
+\usepackage{url} 
+
+
+\usepackage[format=hang,justification=raggedright]{caption}% or e.g. [format=hang]
+
+\usepackage{cancel} % \cancel
+
+\usepackage{lineno}
+
+
+% commands
+
+% logic etcs
+%\newcommand{\ex}[2]{\bigskip\section*{Exercise #1: \begin{minipage}[t]{.80\linewidth} \small \textnormal{\it #2} \end{minipage} } }
+
+\newcommand{\ex}[2]{\bigskip \noindent\textbf{Exercise #1.} #2 \smallskip}
+
+\newcommand{\comm}[1]{{\color{gray} // #1 }}
+
+
+\newcommand{\true}[0]{\textbf{1}}
+\newcommand{\false}[0]{\textbf{0}}
+\newcommand{\tr}{\true}
+\newcommand{\fa}{\false}
+
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\Lra}{\Leftrightarrow}
+
+\newcommand{\NKZ}{\textbf{NK2}}
+
+\DeclareMathOperator{\limpl}{\supset}
+\DeclareMathOperator{\liff}{\lra}
+\DeclareMathOperator{\semiff}{\Lra}
+\newcommand{\union}{\cup}
+\newcommand{\bigunion}{\bigcup}
+\newcommand{\intersection}{\cap}
+\newcommand{\bigintersection}{\bigcap}
+\newcommand{\intersect}{\intersection}
+\newcommand{\bigintersect}{\bigintersection}
+
+\newcommand{\powerset}{\mathcal{P}}
+
+\newcommand{\entails}{\models}
+\newcommand{\notentails}{\not\entails}
+\newcommand{\proves}{\vdash}
+
+\newcommand{\vm}{\ensuremath{\vv_\mathcal{M}}}
+\newcommand{\Dia}{\ensuremath{\lozenge}}
+
+\newcommand{\spaced}[1]{\ \ #1 \ \ }
+\newcommand{\spa}[1]{\spaced{#1}}
+\newcommand{\spas}[1]{\;{#1}\;}
+\newcommand{\spam}[1]{\;\,{#1}\;\,}
+
+% functions
+\DeclareMathOperator{\sk}{sk}
+\DeclareMathOperator{\mgu}{mgu}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Fun}{FS}
+\DeclareMathOperator{\Pred}{PS}
+\DeclareMathOperator{\Lang}{L}
+\DeclareMathOperator{\ar}{ar}
+\DeclareMathOperator{\PI}{PI}
+\DeclareMathOperator{\Congr}{Congr}
+\DeclareMathOperator{\Refl}{Refl}
+\DeclareMathOperator{\aiu}{au}
+
+%\newcommand{\sk}{\ensuremath{\mathrm{sk}}}
+%\newcommand{\mgu}{\ensuremath{\mathrm{mgu}}}
+%\newcommand{\Fun}{\ensuremath{\mathrm{FS}}}
+%\newcommand{\Pred}{\ensuremath{\mathrm{PS}}}
+%\newcommand{\PI}{\ensuremath{\mathrm{PI}}}
+%\newcommand{\Lang}{\ensuremath{\mathrm{L}}}
+%\newcommand{\ar}{\ensuremath{\mathrm{ar}}}
+
+\DeclareMathOperator{\AI}{AI}
+\newcommand{\AImatrix}{\ensuremath{\AI_\mathrm{mat}}}
+\newcommand{\AIclause}{\ensuremath{\AI_\mathrm{cl}}}
+\newcommand{\fromclause}{\ensuremath{_{\operatorname{AIcl}}}}
+\newcommand{\cl}{\fromclause}
+
+\newcommand{\PS}{\Pred}
+\newcommand{\FS}{\Fun}
+
+\DeclareMathOperator{\LangSym}{\mathcal{L}}
+
+%\newcommand{\Trans}{\ensuremath{\mathrm{T}}}
+%\newcommand{\Trans}{\ensuremath{\mathrm{T}}}
+\DeclareMathOperator{\Trans}{T}
+\DeclareMathOperator{\TransInv}{T^{-1}}
+
+\DeclareMathOperator{\FAX}{F_{Ax}}
+\DeclareMathOperator{\EAX}{E_{Ax}}
+%\newcommand{\FAX}{\ensuremath{\mathrm{F_{Ax}}}}
+%\newcommand{\EAX}{\ensuremath{\mathrm{E_{Ax}}}}
+
+%\newcommand{\TransAll}{\ensuremath{\Trans_{\mathrm{Ax}}}}
+\DeclareMathOperator{\TransAll}{\Trans_{Ax}}
+%\newcommand{\FAX}{\ensuremath{\mathrm{F_{Ax}}}}
+
+\DeclareMathOperator{\defeq}{\stackrel{\mathrm{def}}{=}}
+
+\newcommand{\subst}[1]{[#1]}
+\newcommand{\abstraction}[1]{\{#1\}}
+
+\newcommand{\subformdefinitional}[1]{\ensuremath{D_{\Sigma(#1)}}}
+
+
+%\newcommand{\lift}[3]{\operatorname{Lift}_{#1}(#2; #3)}
+%\newcommand{\lift}[3]{\operatorname{Lift}_{#1,#3}(#2)}
+%\newcommand{\lift}[3]{\operatorname{Lift}_{#1,#3}[#2]}
+%\newcommand{\lift}[3]{\overline{#2}_{#1,#3}}
+\newcommand{\lifsym}{\ell}
+\newcommand{\lift}[3]{\lifsym_{#1,#3}[#2]}
+
+\newcommand{\lft}[3]{\lifsym_{#1,#2}[#3]}
+\newcommand{\lifboth}[1]{\lifsym[#1]}
+
+\newcommand{\lifdelta}[1]{\lift{\Delta}{#1}{x}}
+\newcommand{\lifgamma}[1]{\lift{\Gamma}{#1}{y}}
+\newcommand{\lifphi}[1]{\lift{\Phi}{#1}{x}}
+
+\DeclareMathOperator{\arr}{\mathcal{A}}
+\DeclareMathOperator{\warr}{\mathcal{W}}
+
+%\usepackage{yfonts}
+\usepackage{upgreek}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+%\DeclareMathOperator{\pos}{\mathscr{P}}
+%\DeclareMathOperator{\pos}{\mathpzc{p}}
+%\DeclareMathOperator{\pos}{{\rho}}
+\DeclareMathOperator{\pos}{{\operatorname P}}
+%\DeclareMathOperator{\pos}{P}
+\DeclareMathOperator{\poslit}{\pos_\mathrm{lit}}
+\DeclareMathOperator{\posterm}{\pos_\mathrm{term}}
+%\newcommand{\poslit}[1]{\ensuremath{p_\text{lit}(#1)}}
+%\newcommand{\posterm}[1]{\ensuremath{p_\text{term}(#1)}}
+
+\newcommand{\UICm}[1]{\UnaryInfCm{#1}}
+\newcommand{\UnaryInfCm}[1]{\UnaryInfC{$#1$}}
+\newcommand{\BICm}[1]{\BinaryInfCm{#1}}
+\newcommand{\BinaryInfCm}[1]{\BinaryInfC{$#1$}}
+\newcommand{\RightLabelm}[1]{\RightLabel{$#1$}}
+\newcommand{\LeftLabelm}[1]{\LeftLabel{$#1$}}
+\newcommand{\AXCm}[1]{\AxiomCm{#1}}
+\newcommand{\AxiomCm}[1]{\AxiomC{$#1$}}
+\newcommand{\mt}[1]{\textnormal{#1}}
+
+\newcommand{\UnaryInfm}[1]{\UnaryInf$#1$}
+\newcommand{\BinaryInfm}[1]{\BinaryInf$#1$}
+\newcommand{\Axiomm}[1]{\Axiom$#1$}
+
+
+
+% math
+\newcommand{\calI}{\ensuremath{\mathcal{I}}}
+
+\newcommand{\tupleShort}[2]{\ensuremath{(#1_1,\dotsc,#1_{#2})}}
+\newcommand{\tuple}[2]{\ensuremath{(#1_1,\:#1_2\:,\dotsc,\:#1_{#2})}}
+\newcommand{\setelements}[2]{\ensuremath{\{#1_1,\:#1_2\:,\dotsc,\:#1_{#2}\}}}
+\newcommand{\pathelements}[2]{\ensuremath{ (#1_1,\:#1_2\:,\dotsc,\:#1_{#2}) }}
+
+\newcommand{\elems}[1]{\ensuremath{#1_1,\dotsc, #1_{n}) }}
+
+\newcommand{\defiemph}[1]{\emph{#1}}
+
+\newcommand{\setofbases}{\ensuremath{\mathcal{B}}}
+\newcommand{\setofcircuits}{\ensuremath{\mathcal{C}}}
+
+\newcommand{\reals}{\ensuremath{\mathbb{R}}}
+\newcommand{\integers}{\ensuremath{\mathbb{N}}}
+
+% general
+\newcommand{\zit}[3]{#1\ \cite{#2}, #3}
+\newcommand{\zitx}[2]{#1\ \cite{#2}}
+\newcommand{\footzit}[3]{\footnote{\zit{#1}{#2}{#3}}}
+\newcommand{\footzitx}[2]{\footnote{\zitx{#1}{#2}}}
+
+\newcommand{\ite}{\begin{itemize}}
+\newcommand{\ete}{\end{itemize}}
+
+\newcommand{\bfr}{\begin{frame}}
+\newcommand{\efr}{\end{frame}}
+
+\newcommand{\ilc}[1]{\texttt{#1}}
+
+
+% misc
+
+% multiframe
+\usepackage{xifthen}% provides \isempty test
+% new counter to now which frame it is within the sequence
+\newcounter{multiframecounter}
+% initialize buffer for previously used frame title
+\gdef\lastframetitle{\textit{undefined}}
+% new environment for a multi-frame
+\newenvironment{multiframe}[1][]{%
+\ifthenelse{\isempty{#1}}{%
+% if no frame title was set via optional parameter,
+% only increase sequence counter by 1
+\addtocounter{multiframecounter}{1}%
+}{%
+% new frame title has been provided, thus
+% reset sequence counter to 1 and buffer frame title for later use
+\setcounter{multiframecounter}{1}%
+\gdef\lastframetitle{#1}%
+}%
+% start conventional frame environment and
+% automatically set frame title followed by sequence counter
+\begin{frame}%
+\frametitle{\lastframetitle~{\normalfont \Roman{multiframecounter}}}%
+}{%
+\end{frame}%
+}
+
+
+
+
+% http://texfragen.de/hurenkinder_und_schusterjungen
+\usepackage[all]{nowidow}
+
+
+
+% force no overlong lines:
+%\tolerance=1
+%\emergencystretch=\maxdimen
+%\hyphenpenalty=10000
+%\hbadness=10000
+
+
+% http://tex.stackexchange.com/questions/35717/how-to-draw-arrows-between-parts-of-an-equation-to-show-the-math-distributive-pr
+\tikzset{square arrow/.style={to path={ -- ++(.0,-.15)  -| (\tikztotarget)}}}
+\tikzset{square arrow2/.style={to path={ -- ++(.0,-.25)  -| (\tikztotarget)}}}
+%\tikzset{square arrow/.style={to path={ -- ++(00,-.01) -- ++(0.5,-0.1) -- ++(0.5,-0.1) -| (\tikztotarget)},color=red}}
+
+
+% have arrows from a to b and from c to d here
+% just use: texttext\arrowA texttest \arrowB texttext
+\newcommand{\arrowA}{\tikz[overlay,remember picture] \node (a) {};}
+\newcommand{\arrowB}{\tikz[overlay,remember picture] \node (b) {};}
+\newcommand{\drawAB}{
+	\tikz[overlay,remember picture]
+	%{\draw[->,bend left=80] (a.north) to (b.north);}
+	{\draw[->,square arrow,color=red] (a.south) to (b.south);}
+}
+
+\newcommand{\arrowAB}{\tikz[overlay,remember picture] \node (ab) {};}
+\newcommand{\arrowBA}{\tikz[overlay,remember picture] \node (ba) {};}
+\newcommand{\drawAABB}{
+	\tikz[overlay,remember picture]
+	%{\draw[->,bend left=80] (a.north) to (b.north);}
+	{\draw[->,square arrow,color=brown] (ab.south) to (ba.south);
+	\draw[->,square arrow,color=brown] (ba.south) to (ab.south);}
+}
+
+
+\newcommand{\arrowCD}{\tikz[overlay,remember picture] \node (cd) {};}
+\newcommand{\arrowDC}{\tikz[overlay,remember picture] \node (dc) {};}
+\newcommand{\drawCCDD}{
+	\tikz[overlay,remember picture]
+	%{\draw[->,bend left=80] (a.north) to (b.north);}
+	{\draw[<->,dashed,square arrow,color=green] (cd.south) to (dc.south); }
+}
+
+
+
+\newcommand{\arrowC}{\tikz[overlay,remember picture] \node (c) {};}
+\newcommand{\arrowD}{\tikz[overlay,remember picture] \node (d) {};}
+\newcommand{\drawCD}{
+	\tikz[overlay,remember picture]
+	{\draw[->,square arrow,color=blue] (c.south) to (d.south);}
+}
+
+\newcommand{\arrowE}{\tikz[overlay,remember picture] \node (e) {};}
+\newcommand{\arrowF}{\tikz[overlay,remember picture] \node (f) {};}
+\newcommand{\drawEF}{
+	\tikz[overlay,remember picture]
+	{\draw[->,square arrow2,color=orange] (e.south) to (f.south);}
+}
+
+\newcommand{\refsub}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
+
+
+%\def\fCenter{\ \proves\ }
+\def\fCenter{\proves}
+
+
+\newcommand{\lkrule}[2]{\ensuremath{\operatorname{#1}:#2}} % operatorname fixes spacing issues for =
+
+\newcommand{\parti}[4]{\ensuremath{ \langle (#1; #2), (#3; #4)\rangle  }}
+
+\newcommand{\partisym}{\ensuremath{\chi}}
+
+\newcommand{\occur}[1]{\ensuremath{[#1]}}
+
+\newcommand{\occurat}[2]{\ensuremath{{\occur{#1}_{#2}}}}
+
+\newcommand{\colterm}[1]{\zeta_{#1}}
+
+
+
+% fix restateable spacing 
+%http://tex.stackexchange.com/questions/111639/extra-spacing-around-restatable-theorems
+
+\makeatletter
+
+\def\thmt@rst@storecounters#1{%
+%THIS IS THE LINE I ADDED:
+\vspace{-1.9ex}%
+  \bgroup
+        % ugly hack: save chapter,..subsection numbers
+        % for equation numbers.
+  %\refstepcounter{thmt@dummyctr}% why is this here?
+  %% temporarily disabled, broke autorefname.
+  \def\@currentlabel{}%
+  \@for\thmt@ctr:=\thmt@innercounters\do{%
+    \thmt@sanitizethe{\thmt@ctr}%
+    \protected@edef\@currentlabel{%
+      \@currentlabel
+      \protect\def\@xa\protect\csname the\thmt@ctr\endcsname{%
+        \csname the\thmt@ctr\endcsname}%
+      \ifcsname theH\thmt@ctr\endcsname
+        \protect\def\@xa\protect\csname theH\thmt@ctr\endcsname{%
+          (restate \protect\theHthmt@dummyctr)\csname theH\thmt@ctr\endcsname}%
+      \fi
+      \protect\setcounter{\thmt@ctr}{\number\csname c@\thmt@ctr\endcsname}%
+    }%
+  }%
+  \label{thmt@@#1@data}%
+  \egroup
+}%
+
+\makeatother
+
+
+
+
+\newcommand{\mymark}[1]{\ensuremath{(#1)}}
+\newcommand{\markA}{\mymark \circ}
+\newcommand{\markB}{\mymark *}
+\newcommand{\markC}{\mymark \divideontimes}
+
+\newcommand{\wrong}[1]{{\color{red}WRONG: #1}}
+\newcommand{\NB}[1]{{\color{blue}NB: #1}}
+\newcommand{\mytodo}[1]{{\color{red}TODO: #1}}
+
+\usepackage{ulem} %  \dotuline{dotty} \dashuline{dashing}
+\normalem
+
+\usepackage[color]{changebar} %  \cbstart, \cbend
+\cbcolor{red}
+
+
+
+% http://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}

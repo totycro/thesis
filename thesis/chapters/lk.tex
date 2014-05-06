@@ -1,0 +1,257 @@
+\section{Sequent Calculus}
+
+The famous sequent calculus was introduced in \cite{Gentzen}.
+Its use of sequents in lieu of plain formulas allows for a natural mapping of the logical relations expressed by the connectives to the structure of proofs.
+
+\begin{defi} 
+	For multisets of first-order formulas $\Gamma$ and $\Delta$,  $\Gamma \proves \Delta$ is called a \defiemph{sequent}. 
+	In this context $\Gamma$ forms the \defiemph{antecedent}, whereas $\Delta$ is referred to as \defiemph{succedent}.
+
+	A sequent $\Gamma \proves \Delta$ is called \defiemph{provable} if there is a sequent calculus proof of $\Gamma \proves \Delta$.
+\end{defi}
+
+The rules of sequent calculus are as follows:
+%\medskip
+
+\newcommand{\calculussec}[1]{ \textbf{#1}\nopagebreak}
+%\newcommand{\calculussec}[1]{\subsubsection*{#1}\nopagebreak}
+\newenvironment{lkdefsec}{
+	\begin{figure}[H]
+	%\begin{samepage}
+	%\ContinuedFloat
+		\begin{adjustwidth}{0.05\textwidth}{0.05\textwidth}
+		}{
+		\end{adjustwidth}
+	\end{figure}
+	%\end{samepage}
+}
+\begin{lkdefsec}
+	\calculussec{Axioms}
+	\begin{multicols}{2}
+		\begin{prooftree}
+			\AxiomCm{A \fCenter A}
+		\end{prooftree}
+		\begin{prooftree}
+			\AxiomCm{\fCenter t=t}
+		\end{prooftree}
+	\end{multicols}
+\end{lkdefsec}
+
+\begin{lkdefsec}
+	\calculussec{Cut}
+	\begin{prooftree}
+		\Axiomm{\Gamma \fCenter \Delta, A}
+		\Axiomm{A, \Sigma \fCenter \Pi}
+		\BinaryInfm{\Gamma, \Sigma \fCenter \Delta, \Pi}
+	\end{prooftree}
+\end{lkdefsec}
+
+\begin{lkdefsec}
+	\calculussec{Structural rules}
+	\begin{itemize}
+		\item Contraction
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiom$\Gamma, A, A \fCenter \Delta$
+					\RightLabelm{\lkrule{c}{l}}
+					\UnaryInf$\Gamma, A \fCenter \Delta$
+				\end{prooftree}
+
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta, A, A}
+					\RightLabelm{\lkrule{c}{r}}
+					\UnaryInfm{\Gamma \fCenter \Delta, A }
+				\end{prooftree}
+
+			\end{multicols}
+
+		\item Weakening
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta}
+					\RightLabelm{\lkrule{w}{l}}
+					\UnaryInfm{\Gamma, A \fCenter \Delta}
+				\end{prooftree}
+
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta}
+					\RightLabelm{\lkrule{w}{r}}
+					\UnaryInfm{\Gamma \fCenter \Delta,  A }
+				\end{prooftree}
+
+			\end{multicols}
+	\end{itemize}
+\end{lkdefsec}
+
+\begin{lkdefsec}
+
+	\calculussec{Propositional rules}
+
+	\begin{itemize}
+		\item Negation
+
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta,  A}
+					\RightLabelm{\lkrule{\lnot}{l}}
+					\UnaryInfm{\lnot A, \Gamma \fCenter \Delta }
+				\end{prooftree}
+				\begin{prooftree}
+					\Axiomm{A, \Gamma \fCenter \Delta}
+					\RightLabelm{\lkrule{\lnot}{r}}
+					\UnaryInfm{\Gamma \fCenter \Delta, \lnot  A }
+				\end{prooftree}
+			\end{multicols}
+
+		\item Conjunction
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma, A, B \fCenter \Delta}
+					\RightLabelm{\lkrule{\land}{l}}
+					\UnaryInfm{\Gamma, A\land B \fCenter \Delta }
+				\end{prooftree}
+
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta, A}
+					\Axiomm{\Sigma \fCenter \Pi, B}
+					\RightLabelm{\lkrule{\land}{r}}
+					\BinaryInfCm{\Gamma, \Sigma \fCenter \Delta, \Pi, A \land B }
+				\end{prooftree}
+			\end{multicols}
+
+		\item Disjunction\nopagebreak
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma, A \fCenter \Delta}
+					\Axiomm{\Sigma, B \fCenter \Pi}
+					\RightLabelm{\lkrule{\lor}{l}}
+					\BinaryInfm{\Gamma, \Sigma, A \lor B \fCenter \Delta, \Pi }
+				\end{prooftree}
+
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta, A, B}
+					\RightLabelm{\lkrule{\lor}{r}}
+					\UnaryInfm{\Gamma \fCenter \Delta, A \lor B  }
+				\end{prooftree}
+
+			\end{multicols}
+
+		\item Implication
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter A, \Delta}
+					\Axiomm{\Sigma, B \fCenter \Pi}
+					\RightLabelm{\lkrule{\limpl}{l}}
+					\BinaryInfm{\Gamma, \Sigma, A \limpl B \fCenter \Delta, \Pi }
+				\end{prooftree}
+
+				\begin{prooftree}
+					\Axiomm{\Gamma, A \fCenter \Delta, B}
+					\RightLabelm{\lkrule{\limpl}{r}}
+					\UnaryInfm{\Gamma \fCenter \Delta, A \limpl B}
+				\end{prooftree}
+
+			\end{multicols}
+
+	\end{itemize}
+\end{lkdefsec}
+\begin{lkdefsec}
+
+	\calculussec{Quantifier rules}
+
+	\begin{itemize}
+
+
+		\item Universal
+
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma, A[x/t] \fCenter \Delta}
+					\RightLabelm{\lkrule{\forall}{l}}
+					\UnaryInfm{\Gamma, \forall x A \fCenter \Delta }
+				\end{prooftree}
+
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta, A[x/y]}
+					\RightLabelm{\lkrule{\forall}{r}}
+					\UnaryInfm{\Gamma\fCenter \Delta, \forall x A  }
+				\end{prooftree}
+
+			\end{multicols}
+
+		\item Existential
+
+			\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma, A[x/y] \fCenter \Delta}
+					\RightLabelm{\lkrule{\exists}{l}}
+					\UnaryInfm{\Gamma, \exists x A \fCenter \Delta }
+				\end{prooftree}
+
+				\begin{prooftree}
+					\Axiomm{\Gamma \fCenter \Delta, A[x/t]}
+					\RightLabelm{\lkrule{\exists}{r}}
+					\UnaryInfm{\Gamma\fCenter \Delta, \exists x A  }
+				\end{prooftree}
+
+			\end{multicols}
+
+	\end{itemize}
+
+	(provided no free variable of $t$ becomes bound in $A[x/t]$ and
+	$y$ does not occur free in $\Gamma$, $\Delta$ or $A$)
+
+\end{lkdefsec}
+\begin{figure}[H]
+	\begin{lkdefsec}
+
+		\calculussec{Equality rules}
+		\begin{itemize}
+			\item Left rules
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A\occurat{t}{p} \fCenter \Delta}
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{l_1}}
+						\BinaryInfm{\Gamma, \Sigma, A\occurat{s}{p} \fCenter \Delta, \Pi }
+					\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A\occurat{s}{p} \fCenter \Delta}
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{l_2}}
+						\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
+					\end{prooftree}
+				\end{multicols}
+
+			\item Right rules
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma\fCenter \Delta, A\occurat{t}{p} }
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{r_1}}
+						\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{s}{p}  }
+					\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{\Gamma\fCenter \Delta, A\occurat{s}{p} }
+						\Axiomm{\Sigma \fCenter \Pi, s=t}
+						\RightLabelm{\lkrule{=}{r_2}}
+						\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{t}{p} }
+					\end{prooftree}
+				\end{multicols}
+		\end{itemize}
+
+		(provided no free variable of $s$ or $t$ becomes bound in $A\occurat{t}{p}$ or $A\occurat{s}{p}$)
+		\caption{The rules of sequent calculus}
+		\label{fig:lk}
+	\end{lkdefsec}
+\end{figure}
+For the purposes of this thesis, we usually consider the cut-free fragment of sequent calculus.
+
+\begin{thm}
+	Cut-free sequent calculus is sound and complete.
+\end{thm}
+
+
+
+
+
