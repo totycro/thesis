@@ -1706,6 +1706,101 @@ $\Pi \checkmark$
 
 \clearpage 
 
+\section*{example with multicolored term without arrow}
+
+\e{210a}
+\begin{prooftree}
+	\AxiomCm{ \sig{P(f(x)) \lor Q(x)}}
+	\AxiomCm{ \p{\lnot Q(y) \lor R(g(y)) }}
+	\BinaryInfCm{ P(f(x)) \lor R(g(x)) }
+	\AxiomCm{ \p{\lnot R(g(a)) }}
+	\BinaryInfCm{ P(f(a)) }
+\end{prooftree}
+
+$\AI^\Delta$:
+
+\begin{prooftree}
+	\AxiomCm{ \sig{P(f(x)) \lor Q(x)}}
+	\AxiomCm{ \p{\lnot Q(y) \lor R(x_2)) }}
+	\BinaryInfCm{ P(f(x)) \lor R(x_2)) }
+	\AxiomCm{ \p{\lnot R(x_3) }}
+	\BinaryInfCm{ P(f(x_4)) }
+\end{prooftree}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{\exists x_1 \mid \bot \mid \sig{P(x_1) \lor Q(x)}}
+	\AxiomCm{ \forall x_2 \mid \top \mid  \p{\lnot Q(y) \lor R(x_2) }}
+	\BinaryInfCm{ \stackrel{\exists x_1}{\forall x_2} \mid Q(x) \mid P(x_1) \lor R(x_2) }
+	\AxiomCm{ \forall x_3 \mid \top\mid \p{\lnot R(x_3) }}
+	\BinaryInfCm{\forall x_4 \stackrel{\exists x_1}{\forall x_3}  \mid R(x_3) \lor Q(x_4) \mid  P(x_1) }
+\end{prooftree}
+
+Gist of this example: a variable is contained once in a $\Gamma$- and once in a $\Delta$-term in the same clause. Then we can unify basically any foreign term into the differently colored terms.
+
+Here, the arrow actually exists since $Q(x)$ is in the interpolant.
+
+\e{210b}
+\begin{prooftree}
+	\AxiomCm{ \sig{P(f(x)) \lor Q(x)}}
+	\AxiomCm{ \p{\lnot Q(y) \lor R(g(y)) }}
+	\BinaryInfCm{ P(f(x)) \lor R(g(x)) }
+
+	\AxiomCm{ \p{\lnot R(g(z)) \lor T(z)}}
+
+	\AxiomCm{ \sig{\lnot S(z') \lor\lnot T(z')} }
+	\AxiomCm{ \p{\lnot S(a)} }
+	\BinaryInfCm{ \lnot T(a)}
+
+	\BinaryInfCm{ \lnot R(g(a)) }
+
+
+	\BinaryInfCm{ P(f(a)) }
+\end{prooftree}
+
+
+$\AI^\Delta:$
+
+\begin{prooftree}
+	\AxiomCm{ \sig{P(f(x)) \lor Q(x)}}
+	\AxiomCm{ \p{\lnot Q(y) \lor R(x_2) }}
+	\BinaryInfCm{ P(f(x)) \lor R(x_2) }
+
+	\AxiomCm{ \p{\lnot R(x_5) \lor T(z)}}
+
+	\AxiomCm{ \sig{\lnot S(z') \lor\lnot T(z')} }
+	\AxiomCm{ \p{\lnot S(x_4)} }
+	\BinaryInfCm{ \lnot T(x_4)}
+
+	\BinaryInfCm{ \lnot R(x_5) }
+
+	\BinaryInfCm{ P(f(x_4)) }
+\end{prooftree}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{\bot \mid \sig{P(f(x)) \lor Q(x)}}
+	\AxiomCm{\top \mid \p{\lnot Q(y) \lor R(x_2) }}
+	\BinaryInfCm{ Q(x) \mid  P(f(x)) \lor R(x_2) }
+
+	\AxiomCm{\top\mid \p{\lnot R(x_5) \lor T(z)}}
+
+	\AxiomCm{\bot\mid \sig{\lnot S(z') \lor\lnot T(z')} }
+	\AxiomCm{\top\mid \p{\lnot S(x_4)} }
+	\BinaryInfCm{ \lnot S(x_4) \mid  \lnot T(x_4)}
+
+	\BinaryInfCm{ \lnot T(x_4) \lor \lnot S(x_4) \mid \lnot R(x_5) }
+
+	\BinaryInfCm{ \big(R(x_3) \land (\lnot T(x_4) \lor \lnot S(x_4))\big)\spas\lor \big(\lnot R(x_3) \land Q(x_4)\big) \spa\mid    P(f(x_4)) }
+\end{prooftree}
+
+again have arrow from $Q(x_4)$ to $P(f(x_4))$
+
+
+\clearpage 
+
 \section*{$f(x) \lor g(x)$ with $f$, $g$ different colors}
 
 \e{207a}
@@ -1893,8 +1988,8 @@ Huang would produce: $\forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_1) $
 
 	\RightLabelm{y\mapsto f(a)}
 	\BinaryInfCm{\forall x_1 \exists x_2( P(x_1) \lor R(x_2)) \mid \square}
-\noLine
-\UnaryInfCm{\color{gray} P(a) \lor R(g(f(a))}
+	\noLine
+	\UnaryInfCm{\color{gray} P(a) \lor R(g(f(a))}
 \end{prooftree}
 
 {\huge
@@ -1921,8 +2016,8 @@ Huang would produce: $\forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_1) $
 
 	\RightLabelm{z \mapsto fa}
 	\BinaryInfCm{ P(fa) \lor R(a) \mid Q(gfa)  }
-	
-	
+
+
 	\AxiomCm{ \sig{ \lnot Q(\arrowA y) \lor S(h(\arrowB y)) \drawAB}}
 
 	\BinaryInfCm{ }
@@ -1934,4 +2029,4 @@ TODO
 
 
 
-		\end{document}
+\end{document}
