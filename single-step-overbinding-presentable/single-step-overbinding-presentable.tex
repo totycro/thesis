@@ -979,9 +979,11 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 		$
 
 		$
-		\mgu(\{t\} \cup T) = \begin{cases}
-			\mathbf{fail} 				& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$} \\
-			\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$} \\
+		\mgu(\{t\} \cup T) =$
+
+		$ \begin{cases}
+			\mathbf{fail} 				& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
+			\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \text{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
 			\mathbf{fail} 				& \text{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
 			\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \text{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
 			\mgu(T) 							& \text{if $t=(s, s)$} \\
@@ -989,11 +991,11 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 		$
 \end{defi}
 \begin{conj}
-	A $\Delta$-colored term can only be a subterm of a $\Gamma$-colored term in a subsequent clause if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in the current clause $C$.
+	A resolution derivation can only contain a $\Gamma$-colored term containing a $\Delta$-colored term if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in a clause.
 \end{conj}
 \begin{proof}
 	Suppose no such variable exists in $\Gamma$ and $\Delta$.
-	By the definition of the colors, no $\Gamma$-colored term initially contains a $\Delta$-colored term. We show that no resolution derivation can introduce one.
+	By the definition of the colors, no $\Gamma$-colored term initially contains a $\Delta$-colored term. We show that no resolution rule application can introduce one.
 
 	As terms in clauses are only changed by means of unification, we have to show that no most general unifier $\sigma$ exists for any clauses derived from $\Gamma$ and $\Delta$ which introduces a $\Delta$-term in an existing $\Gamma$-term or a new $\Gamma$-term, which contains a $\Delta$-term.
 
@@ -1002,13 +1004,19 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 			\label{a5hsefdgsy6}
 			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a $\Delta$-term $t$ in a $\Gamma$-term $s$ in $C_1$. 
 			Then a variable $x$ occurs in $s$ such that $x\sigma = t$.
-			By the unification algorithm, this implies that $x$ is directly unified with at least the outermost symbol of $t$.
+			By the unification algorithm, this implies that $x$ is directly unified with a term $t'$ which has the same outermost symbol as $t$.
 			Note that clauses involved in a resolution step are variable disjoint, so $x$ only occurs in $C_1$. 
 			Since $x$ has a $\Gamma$-colored occurrence, it does by assumption not have a grey occurrence. 
 			Hence all occurrences of $x$ are of the form $r\occur{x}$, where the outermost symbol of $r$ is colored.
+			As $x$ occurs in a $\Gamma$-term, it must originate from a clause in $\Gamma$. 
 
-			$\Gamma$- and $\Delta$-colored terms are not unifiable, so a unifier mapping $x$ to a $\Delta$-colored term must be created from a unification of $\Gamma$-terms.
-			But by assumption, no $\Gamma$-colored term contains a $\Delta$-colored term.  So by unification of a $\Gamma$-colored term containing $x$ with another $\Gamma$-colored term, it is not possible that the $\mgu$ maps $x$ to a $\Delta$-colored term, which is a contradiction.
+			\mytodo{PROBLEM: ``rampen'' can put gamma terms in delta terms, then they are unifiable with other delta terms (which still is useless, but i state the opposite below}
+
+
+			$\Gamma$- and $\Delta$-colored terms are not unifiable, so a unifier mapping $x$ to a $\Delta$-colored term must be created from a unification of a term of the form $r[x]$ and a $\Gamma$-term.
+			But by assumption, no $\Gamma$-colored term contains a $\Delta$-colored term. 
+
+			So by unification of a $\Gamma$-colored term containing $x$ with another $\Gamma$-colored term, it is not possible that the $\mgu$ maps $x$ to a $\Delta$-colored term, which is a contradiction.
 
 
 		\item
