@@ -209,7 +209,7 @@ $\arr$ is a set of ordered pairs of term positions which point to positions in t
 
 $\warr$ is a set of unordered pairs of term positions which point to positions in terms in literals
 
-Note that the ``anchor point'' for arrows are literals and not clauses.
+Note that the ``anchor point'' for arrows are \emph{literals} and not clauses.
 All literals occur in the initial clause sets.
 The literals in $\AI(C)$ are derived from these and the arrows apply to them.
 Literals of colored predicates to not occur in $\AI(C)$ but can be relevant by transitivity.
@@ -224,16 +224,25 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		For every variable $x$ in $C$:
 
-		Let $\Phi_x$ be the set of occurrences of a $x$ in $C$. 
+		\begin{quote}
+
+		Let $\Phi_x$ be the set of occurrences of $x$ in $C$. 
+
 		Let $\Phicol_x = \{p \in \Phi_x \mid \text{$p$ is contained in a colored term} \}$
 		and $\Phigrey_x = \Phi_x \setminus \Phicol_x$.
 
-		Let $\MaxCol(\Phi) = \{p \mid \text{$p$ is a maximal colored term containing $q$ for $q \in \Phi$} \}$
+		Let $\MaxCol(\Phi) = \{q \mid \text{$q$ is the occurrence of the maximal colored term containing $p$ for $p \in \Phi$} \}$
 
-		Add to $\arr$ all $(p_1, p_2)$ such that $p_1\in\Phigrey_x$ and $p_2 \in \MaxCol(\Phicol_x)$.
+		Add to $\arr$: $\Phigrey_x \times \MaxCol(\Phicol_x)$.
 		
-		Add to $\warr$ all $(p_1, p_2)$ such that $p_1\in\MaxCol(\Phicol_x)$ and $p_2\in\MaxCol(\Phicol_x)$ and $p_1 \neq p_2$.
+		%Add to $\warr$ all $(p_1, p_2)$ such that $p_1\in\MaxCol(\Phicol_x)$ and $p_2\in\MaxCol(\Phicol_x)$ and $p_1 \neq p_2$.
 
+		Add to $\warr$: $\MaxCol(\Phicol_x) \times \MaxCol(\Phicol_x)$.
+
+		Add to $\warr$: $\Phigrey_x \times \Phigrey_x$.
+
+		Possibly drop arrows of the form $(a, a)$ in $\warr$, but they do not do any harm.
+		\end{quote}
 
 		%Add to $\arr$ all $(p_1, p_2)$ in $C$ such that $p_1$ contains only grey symbol and $\pos(p_1)$ is a variable and $\pos(p_1) = \pos(p_2)$ but $p_1 \neq p_2$.
 
@@ -263,7 +272,7 @@ Note: when a literal is added to the interpolant, the colored terms in one liter
 
 PROBLEM: terms already replaced by variables still change! need to use same variable anyway, so note above not accurate!
 
-POSSIBLE SOLUTION: for resolution, it is vital that the resolved literals are the unified, but nothing else is vital. We however ensure that the literals also have the same lifting variables.   
+CONJECTURED SOLUTION: for resolution, it is vital that the resolved literals are the unified, but nothing else is vital. We however ensure that the literals also have the same lifting variables.   
 
 Furthermore, if variables are in the interpolant, then they have been present in both clauses, (e.g.~$f(x)$ in $C_1$, $f(y)$ in $C_2$, then it's fine to universally quantify).
 
@@ -310,14 +319,16 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 		$ \aiu (a\fromclause, b\fromclause) =
 		\begin{cases}
 			\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
-			\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both from lifting, and $x_m$ is the lifted term in the unified literal, i.e. $x_m = \lifboth{a} = \lifboth{b}$.
-			{\footnotesize
+			\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a} = \lifboth{b}$.
+			{\tiny
 
 				More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
 
 		}}\\
-				\emptyset & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
+				\id & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
 			\end{cases} $
+
+			$\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$
 
 
 		$\AIclause(C) =
@@ -368,19 +379,23 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 
 $\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
 
-$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ PLUS all free variables in $\AImatrix(C)$.
+$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ in $\AImatrix(C)$. \comm{there are free variables in $\AImatrix(C)$, which are ``implicitly'' universally quantified.}
 
 $Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
-For free variables, $Q_i$ as in $C_1/C_2$. if $u_i\sigma \neq u_i$, $u_i$ becomes one of $x_j$ or $y_j$ or grey term.
 
-Combine dependencies of positions which are connected by weak arrows:
+%Combine dependencies of positions which are connected by weak arrows:
+All ``nodes'' connected by weak arrows describe the same arrows, i.e.~collapse the nodes to a supernode merging the arrows:
 
-$\arr' =  \arr \union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
+%$\arr' =  \arr \union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
+
+$\arr' = \{ (a,c) \mid  (a,c) \in  \arr \spam\lor ((a,b) \in \arr \land \{b, c\} \in \warr ) \spam\lor  ((c, b) \in \arr \land \{a, c\} \in \warr) \}$
+	
+	%\union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
 
 $\arr'' = \operatorname{TransitiveClosure}(\arr')$
 
 $(p_1, p_2) \in \arr'' $ implies
-that $u_i < u_j$ if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ (positions in $\AI(C)$, not in $C$).
+that $u_i$ occurs before $u_j$ in the quantifier prefix if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ (positions in $\AI(C)$, not in $C$).
 
 
 \clearpage
@@ -967,7 +982,7 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 \end{proof}
 
 \begin{defi}[Unification algorithm]
-	Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable. 
+	Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable. Treat constants as $0$-ary functions.
 	Let $s$ and $t$ denote terms and $x$ a variable.
 
 	The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
@@ -1146,6 +1161,8 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 							NOTE: $r\occur{u}$ is maximal colored and $t\occur{u}$ is maximal $\Gamma$-colored. As no $\Delta$-terms occur in $\AI(C_1)$, but $t\occur{u}$ occurs in $\AI(C_1)$, it is a maximal colored term.
 
 							\mytodo{see example 210a/b, this is a problem}
+
+							\mytodo{how to apply fix properly? have to argue that grey occurrences of different variabes have to be involved $\ra$ in which case there are arrows}
 
 					\end{itemize}
 				\item

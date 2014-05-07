@@ -1741,7 +1741,7 @@ Gist of this example: a variable is contained once in a $\Gamma$- and once in a 
 
 Here, the arrow actually exists since $Q(x)$ is in the interpolant.
 
-\e{210b}
+\e{210b -- framework to get other (unrelated) terms into the interpolant}
 \begin{prooftree}
 	\AxiomCm{ \sig{P(f(x)) \lor Q(x)}}
 	\AxiomCm{ \p{\lnot Q(y) \lor R(g(y)) }}
@@ -1797,6 +1797,58 @@ $\AI^\Delta:$
 \end{prooftree}
 
 again have arrow from $Q(x_4)$ to $P(f(x_4))$
+
+\e{210c -- attempt to get it without any arrow}
+\begin{prooftree}
+	\AxiomCm{\sig{P(\arrowB f(x))\lor Q(\arrowA x)}} \drawAB
+	\noLine
+	\UnaryInfC{}
+
+	\AxiomCm{\sig{\lnot Q(\arrowCD y) \lor R(\arrowDC y)}}\drawCCDD
+	\noLine
+	\UnaryInfC{}
+
+	\BinaryInfCm{ \bot \mid P(\arrowB f(y)) \lor R(\arrowA y) } \drawAB
+	\noLine
+	\UnaryInfC{}
+
+	\AxiomCm{\p{\lnot R(\arrowE z) \lor S(\arrowF g(z)))}} \drawEF
+	\noLine
+	\UnaryInfC{}
+
+	\BinaryInfCm{ R(\arrowA\,\arrowE y) \mid P(\arrowB f(y)) \lor S(\arrowF g(y)) }\drawAB \drawEF
+\end{prooftree}
+
+
+$\Ra$ must port arrows on variable rename
+
+\circled{?} $R$ possibly disappearing ($Q$ disappearing) doesn't matter?)
+
+~
+
+slow motion:
+\begin{prooftree}
+	\AxiomCm{\sig{P(\arrowB f(x))\lor Q(\arrowA x)}} \drawAB
+	\noLine
+	\UnaryInfC{}
+
+	\AxiomCm{\sig{\lnot Q(\arrowCD y) \lor R(\arrowDC y)}}\drawCCDD
+	\noLine
+	\UnaryInfC{}
+
+	\BinaryInfCm{\sigma = \{x\mapsto y\}}
+	\noLine
+	\UnaryInfC{Merge arrows of $Q(x)$ and $Q(y)$}
+	\noLine
+	\UnaryInfCm{ \bot \mid P(\arrowB f(y)) \lor R(\arrowA y) } \drawAB
+	\noLine
+	\UnaryInfC{}
+\end{prooftree}
+
+
+
+
+
 
 
 \clearpage 
