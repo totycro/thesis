@@ -1,7 +1,7 @@
 \documentclass[,%fontsize=11pt,%
 	paper=a4,% 
 	%landscape,
-	DIV12, % mehr text pro seite als defaultyyp
+	DIV10, % mehr text pro seite als defaultyyp
 	%DIV10, 
 	%DIV=calc,%
 	twoside=false,%
@@ -1017,7 +1017,7 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 
 \begin{lemma}
 	\label{lemma:mixed_colored_term_introduction}
-	A resolution derivation can only contain multicolored $\Gamma$-term if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in a clause.
+	A resolution derivation can only contain multicolored $\Gamma$-term if there is a variable which has a $\Gamma$-colored occurrence and a grey occurrence in a clause. \comm{is nice and explains the approach, but is not used}
 \end{lemma}
 \begin{proof}
 	Suppose no such variable exists in $\Gamma$ and $\Delta$.
@@ -1028,7 +1028,7 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 	\begin{enumerate}
 		\item
 			\label{a5hsefdgsy6}
-			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a multicolored $\Gamma$-term $s$ in $C_1$. 
+			Suppose a unifier $\sigma$ of two literals $l$ and $l'$ of $C_1$ and $C_2$ respectively introduces a multicolored $\Gamma$-term $s$ in $C$. 
 			Then a variable $x$ occurs in $s$ such that $x\sigma = t$.
 			By the unification algorithm, this implies that $x$ is directly unified with a term $t'$ which has the same outermost symbol as $t$.
 			Note that clauses involved in a resolution step are variable disjoint, so $x$ only occurs in $C_1$ and its preceding clauses, but not in $C_2$. 
@@ -1060,15 +1060,112 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 	Hence if they are present in a clause $C$ at some point in the derivation, their position in the original clause has been a variable or has been contained in a variable in case a variable has been added inside of a term.
 \end{conj}
 
+\begin{conj}
+	In the course of a derivation, there always is an arrow between a grey occurrence of a variable $u$ and a colored occurrence of a variable $u$ in a clause. 
+	\mytodo{The proof probably requires a handling of renamings (unifications of vars with other vars) and a discussion of introductions of occurrences of $u$ via unification.}
+\end{conj}
 
-	\newcommand{\newterm}{{^*}}
+\begin{lemma}
+	\label{lemma:arrow_for_variables_in_differently_colored_terms}
+	Suppose that in a clause $C$ of a resolution derivation,
+	a variable $u$ occurs in a maximal colored term $t\occur{u}$ which is a $\Gamma$-term and $u$ also occurs in a maximal colored term $r\occur{u}$ which is a $\Delta$-term.
+	Then there is an arrow from a grey occurrence of $u$ to both $t\occur{u}$ and $r\occur{u}$.
+	\comm{fairly specialised but true \& used}
+\end{lemma}
+\begin{proof}
+	Note that initially, this situation does not occur.
+
+	Variables are only introduces by means of substitution.
+	Hence at some point in the derivation, w.l.o.g.\ some $\Gamma$-term $t\occur{u}$, containing a variable $u$, is applied a substitution $\sigma$ with $u\sigma = v$, where $v$ also occurs in a $\Delta$-term $r\occur{v}$ such that $t\occur{v}$ and $r\occur{v}$ occur in a clause $C$.
+
+	\begin{itemize}
+		\item
+			\mytodo{extract tacit assumption that there is a weak connection between the max col terms $c\occur{x}$ and $d\occur{x}$, if they occur in the same clause and make a lemma}
+
+			Suppose that $r\occur{v}$ and $t\occur{u}$ are in the same clause, say in $C_1$.
+			As clauses are variable disjoint, $u$ and $v$ only occur in $C_1$
+
+			$u$ and $v$ have to occur in the literal being unified, say $l$, as otherwise they would not be affected by the unification.
+			They are only unified if in $C_2$, a variable $x$ occurs in the respective positions of $v$ and $u$ in $C_2$.
+
+			If $u$ ($v$) occurs grey in $l$, then there is an arrow to $t\occur{u}$ ($r\occur{v}$).
+			If $u$ ($v$) occurs colored in $l$, then it is either $t\occur{u}$ ($r\occur{v}$) itself or there is weak arrow to $t\occur{u}$ ($r\occur{v}$) and they share arrows.
+			In any case, if there an arrow points towards $u$ ($v$), it by transitivity or by merging arrows, the arrow points to $t\occur{u}$ ($r\occur{v}$) as well.
+
+			We denote by $u'$ and $v'$ the terms in $l'$ that $u$ and $v$ in $l$ are unified with.
+			We know that $u'$ and $v'$ are occurrences of the same variable, say $x$.
+
+			\begin{itemize}
+				\item
+					Suppose $u'$ and $v'$ are contained in colored terms of opposite color.
+					Then this is the same situation as $t\occur{u}$ and $r\occur{u}$.
+					As this situation is not present initially and a resolution derivation is finite, a propagation like this can only happen finitely often.
+					Hence at some point, $u'$ and $v'$ are not terms of opposite color, which is handled by another case of the proof.
+					So we can assume that there are arrows from a grey occurrence of $x$ in $C_2$ to the respectve maximal colored terms containing $u'$ and $v'$.
+					However as $l$ and $l'$ are unified, their arrows are merged, so there is an arrow from $x$ to $t\occur{u}$ and $r\occur{v}$ respectively. As by assumption $u\sigma = v$, $x\sigma = v$.
+
+				\item
+					Suppose $u'$ and $v'$ are contained in colored terms of the same color.
+					Suppose the color is $\Gamma$. The other case can be argued analoguously.
+
+					As there is the same variable at both $u'$ and $v'$, there is a weak arrow between them.
+					Furthermore, $u$ and $v$ in $l$ are contained in $\Gamma$-terms as well as they are respectively unifiable with $u'$ and $v'$.
+					But $v$ already occurs in the $\Delta$-term $r\occur{v}$.
+					So we get that there are arrows from a grey occurrence of $v$ to $r\occur{v}$ and the maximal colored term containing $v$ in $l$ by the induction hypothesis.
+
+					As $u'$ and $v'$ are weakly connected and $l$ and $l'$ are resolved upon and hence their arrows are merged, the maximal colored terms containing $u$ and $v$ in $l$ are weakly connected.
+					As $u$ occursr in $t\occur{u}$ and in an as well $\Gamma$-colored term in $l$, there is a weak connection between them.
+
+					Hence there is a weak connection between all occurrences of these variables and an ``original'' arrow by induction hypothesis, so all other occurrences share these arrows.
+
+					Figure: $ P(r(v), t(u)) \lor Q(c(u), d(v));  \lnot Q(c(u'), d(v'))$; $\Gamma: r, c, d$; $\Delta: t$
+
+
+			\end{itemize}
+
+
+		\item
+			Suppose that $r\occur{v}$ and $t\occur{u}$ occur in different clauses, say $C_1$ and $C_2$
+			
+			\mytodo{
+				ICI ICI ICI
+
+				merge part below with sentence above.
+
+				ICI ICI ICI
+			}
+			Note that $r\occur{v}$ and $t\occur{u}$ are not unifiable as their outermost symbol is different.
+			As $u\sigma = v$, by the unification algorithm, there are terms $s\occur{u}$ and $s'\occur{v}$ being unified which agree on the ``path'' to $u$ and $v$ respectively.
+			Hence $s\occur{u}$ and $s'\occur{v}$ are of the same color.
+
+			\mytodo{same color -> get arrow by induction hypothesis}
+
+			Suppose that $u$ in $s\occur{u}$ and $v$ in $s'\occur{v}$ are grey occurrences of $u$ and $v$.
+			Then there is an arrow from $u$ in $s\occur{u}$ to $t\occur{u}$ and from $u$ in $s'\occur{v}$ to $r\occur{v}$. 
+			As $s\occur{u}$ and $s'\occur{v}$ are unified, they each occur in one of the literals being unified at the same position.
+			Therefore their arrows are merged.
+			\mytodo{this does not mean that the literal occurs anywhere, is this of relevance?}
+	\end{itemize}
+\end{proof}
+
+
+
+\newcommand{\newterm}{{^*}}
 \begin{conj}
 	\label{lemma:arrows_for_lifting_terms}
 	In $\AI^\Delta(C)$, if a lifting variable $x_i$ (lifting a $\Delta$-term)
 	occurs inside of a maximal $\Gamma$-term $t\newterm$, 
 	then there is an arrow from an occurrence of $x_i$ to $t\newterm$ in $\AI^\Delta(C)$ in $\arr''$.
+	\medskip
 
 	\mytodo{NOT from $x_i$, but from $x_j$ such that $\colterm{j}$ is an abstraction of $\colterm{i}$, i.e.~the actual term in the derivation is $\colterm{i}$, but here we might be imprecise but only since in the proof, the variable is quantified and we can put there whatever we want.} 
+	\medskip
+
+	\mytodo{ acutally, $x_i$ may not occur in $\AI^\Delta(C)$ but can disappear if the literal is not added to the interpolant.
+
+		We have to show that then, even if $x_i$ occurs elsewhere in $\AI^\Delta(C)$, it is not vital to quantify it earlier than $t\newterm$. 
+		There might however be a chain of arrows from other lifting vars, which do occur in $\AI^\Delta(C)$. I suspect that these have to be overbound earlier (check examples).
+	}
 \end{conj}
 \begin{proof}
 	For a term to occur in $\AI(C)$ means to occur in $\AImatrix(C) \lor \AIclause(C)$.
@@ -1134,35 +1231,37 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 
 			\begin{itemize}
 				\item
-					Suppose $t\occur{u}$ does not occur in the literal being unified, say $l$. 
+					Suppose $t\occur{u}$ does not occur in the literal being unified.
 					Then $u$ is changed because of an occurrence in literal being unified.
+					We show that there is an arrow from a grey occurrence of $u$ to $t\occur{u}$. As $u\sigma = \colterm{i}$ and the positions occupied by $u$ in $\AI^\Delta(C_1)$ are occupied by $\lifboth{u\sigma}\tau$ in $\AI^\Delta(C)$, the desired arrow is present in $\AI^\Delta(C)$.
 					\markA{}
 
 					\begin{itemize}
 						\item
-							Suppose the occurrence $u$ in the literal is grey.
+							Suppose the occurrence $u$ in the literal is grey. Call this occurrence $r$.
 							$u$ in $t\occur{u}$ is a colored occurrence.
 							As variables are never added (cf.~\ref{lemma:variable_never_added}) and arrows never removed, the original arrows still apply.
 							Then there is by construction an arrow from $r$ to $t\occur{u}$.
-							As in $\AI(C)$ , $\colterm{i}$, which $\sigma$ introduces for $u$ is lifted to $x_i$, and there is an arrow from the occurrence at $r$ to the one in $t\occur{x_i}$.
+
+							%As $u\sigma = \colterm{i}$, all occurrences of $u$ in in $\AI(C)$ are changed to $\lifboth{u\sigma}\tau = x_j$. \mytodo{possibly argue that $\tau$ doesn't change anything as it's exactly the term in the literal, is there some lemma for it?}
+							%$Hence there is an arrow from $r$ to $t\occur{x_j}$, which is ported over to $\AI(C)$, where the arrow points from $x_j$ to $\lifboth{t\occur{u}\sigma}\tau = t\newterm\occur{x_i}$.
 
 						\item
 							Otherwise suppose $u$ occurs in the maximal colored term $r\occur{u}$ in the literal.
-							Then there is a weak connection between $r\occur{u}$ and $t$, so by construction, $r$ and $t$ share all arrows.
+							Then there is a weak connection between $r\occur{u}$ and $t\occur{u}$, so by construction, $r$ and $t$ share all arrows.
 							Let $p$ be the position of $u$ in $r\occur{u}$ and $r'$ the term corresponding to $r$ in $l'$.
 							As $r$ is unified to $\colterm{i}$, $r'$ and $\colterm{i}$ must coincide on the position $p$ in the $C_2$, so in $\AI(C_2)$, where $r'$ actually lives, there is a lifting variable.
-							Since $r$ and $r'$ are unifiable, they must coincide on the path leading to $p$.
+							Since $r$ and $r'$ are unifiable, they must coincide on the ``path'' leading to $p$.
 
 							Suppose $r'$ is a $\Gamma$-term. Then it is a multicolored $\Gamma$-term which occurs in $C_2$ and there is an arrow from an appropriate lifting term by the induction hypothesis.
 
-							Otherwise suppose $r'$ is a $\Delta$-term. 
+							Otherwise suppose $r'$ is a $\Delta$-term (in the clause, so $r'$ in $\AIclause$ is a lifting var). 
 							Then $r\occur{u}$ is a $\Delta$-term as well.
 
-							NOTE: $r\occur{u}$ is maximal colored and $t\occur{u}$ is maximal $\Gamma$-colored. As no $\Delta$-terms occur in $\AI(C_1)$, but $t\occur{u}$ occurs in $\AI(C_1)$, it is a maximal colored term.
+							Note that $r\occur{u}$ is maximal colored and $t\occur{u}$ is maximal $\Gamma$-colored. As no $\Delta$-terms occur in $\AI(C_1)$, but $t\occur{u}$ occurs in $\AI(C_1)$, it is a maximal colored term.
+							Hence by Lemma~\ref{lemma:arrow_for_variables_in_differently_colored_terms}, there is an arrow from a grey occurrence of $u$ to $r\occur{u}$ and to $t\occur{u}$.
 
-							\mytodo{see example 210a/b, this is a problem}
 
-							\mytodo{how to apply fix properly? have to argue that grey occurrences of different variabes have to be involved $\ra$ in which case there are arrows}
 
 					\end{itemize}
 				\item
@@ -1171,20 +1270,20 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 					Let $p_u$ be the position of $u$ in $t$
 
 					\begin{itemize}
-							\item Suppose $t'$ is more specific on the position $p_u$, i.e.~there is a contant or a function symbol, but not a variable.
-								Then the unifier maps $u$ to whatever is on the respective position in $t'$. 
-								As $t'$ is a $\Gamma$-term (as $t$ is one and $t$ and $t'$ are unifiable) and whatever $u$ is mapped to has to be a $\Delta$-term (since $\colterm{i}$ is one), $t'$ has is a multicolored $\Gamma$-term.
-								Hence by the induction hypothesis, there is an arrow from an occurrence of the respective lifting var to $t'$. 
-								However the arrows of $t$ and $t'$ are merged.\mytodo{see TODO in lemma statement, we don't get exactly the right lifting var in general (i.e.~not an arrow from $x_i$ in this case), but that's ok.}
+						\item Suppose $t'$ is more specific on the position $p_u$, i.e.~there is a contant or a function symbol, but not a variable.
+							Then the unifier maps $u$ to whatever is on the respective position in $t'$. 
+							As $t'$ is a $\Gamma$-term (as $t$ is one and $t$ and $t'$ are unifiable) and whatever $u$ is mapped to has to be a $\Delta$-term (since $\colterm{i}$ is one), $t'$ has is a multicolored $\Gamma$-term.
+							Hence by the induction hypothesis, there is an arrow from an occurrence of the respective lifting var to $t'$. 
+							However the arrows of $t$ and $t'$ are merged.\mytodo{see TODO in lemma statement, we don't get exactly the right lifting var in general (i.e.~not an arrow from $x_i$ in this case), but that's ok.}
 
-							\item Suppose that at $p_u$ in $t'$, there is a variable, say $v$.
-								Then the unifier picks one variable arbitrarily to unify the other with. 
-								As $u\mapsto \colterm{i}$ and $v\mapsto \colterm{i}$, there must be another occurrence of $u$ or $v$.
-								This case however is handled at \markA{}.
+						\item Suppose that at $p_u$ in $t'$, there is a variable, say $v$.
+							Then the unifier picks one variable arbitrarily to unify the other with. 
+							As $u\mapsto \colterm{i}$ and $v\mapsto \colterm{i}$, there must be another occurrence of $u$ or $v$.
+							This case however is handled at \markA{}.
 
-							\item Suppose position $p_u$ does not exist at $t'$. As $t$ and $t'$ are unifiable, $t'$ must have a somewhere variable at the path to $p_u$, say $v$.
-								The unifier maps $v$ to the respective subterm of $t$, but as $u\sigma = \colterm{i}$, $u$ must occur elsewhere. 
-								This case again is handled at \markA{}.
+						\item Suppose position $p_u$ does not exist at $t'$. As $t$ and $t'$ are unifiable, $t'$ must have a somewhere variable at the path to $p_u$, say $v$.
+							The unifier maps $v$ to the respective subterm of $t$, but as $u\sigma = \colterm{i}$, $u$ must occur elsewhere. 
+							This case again is handled at \markA{}.
 					\end{itemize}
 
 
