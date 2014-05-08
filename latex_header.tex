@@ -140,6 +140,9 @@ positioning,fit,calc,decorations.text,shadows%
 \DeclareMathOperator{\Refl}{Refl}
 \DeclareMathOperator{\aiu}{au}
 
+%\DeclareMathOperator{\specialisation}{specialisation}
+%\DeclareMathOperator{\abstraction}{abstraction}
+
 %\newcommand{\sk}{\ensuremath{\mathrm{sk}}}
 %\newcommand{\mgu}{\ensuremath{\mathrm{mgu}}}
 %\newcommand{\Fun}{\ensuremath{\mathrm{FS}}}
@@ -152,6 +155,7 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\AImatrix}{\ensuremath{\AI_\mathrm{mat}}}
 \newcommand{\AIclause}{\ensuremath{\AI_\mathrm{cl}}}
 \newcommand{\fromclause}{\ensuremath{_{\operatorname{AIcl}}}}
+\newcommand{\fromclausede}{\ensuremath{_{\operatorname{AIcl}^\Delta}}}
 \newcommand{\cl}{\fromclause}
 
 \newcommand{\PS}{\Pred}
@@ -176,7 +180,7 @@ positioning,fit,calc,decorations.text,shadows%
 \DeclareMathOperator{\defeq}{\stackrel{\mathrm{def}}{=}}
 
 \newcommand{\subst}[1]{[#1]}
-\newcommand{\abstraction}[1]{\{#1\}}
+\newcommand{\abstractionOp}[1]{\{#1\}}
 
 \newcommand{\subformdefinitional}[1]{\ensuremath{D_{\Sigma(#1)}}}
 
@@ -187,12 +191,15 @@ positioning,fit,calc,decorations.text,shadows%
 %\newcommand{\lift}[3]{\overline{#2}_{#1,#3}}
 \newcommand{\lifsym}{\ell}
 \newcommand{\lift}[3]{\lifsym_{#1,#3}[#2]}
+\newcommand{\liftnovar}[2]{\lifsym_{#1}[#2]}
 
 \newcommand{\lft}[3]{\lifsym_{#1,#2}[#3]}
 \newcommand{\lifboth}[1]{\lifsym[#1]}
 
 \newcommand{\lifdelta}[1]{\lift{\Delta}{#1}{x}}
+\newcommand{\lifdeltanovar}[1]{\liftnovar{\Delta}{#1}}
 \newcommand{\lifgamma}[1]{\lift{\Gamma}{#1}{y}}
+\newcommand{\lifgammanovar}[1]{\liftnovar{\Gamma}{#1}}
 \newcommand{\lifphi}[1]{\lift{\Phi}{#1}{x}}
 
 \DeclareMathOperator{\arr}{\mathcal{A}}

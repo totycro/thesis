@@ -286,7 +286,7 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 		For each initial clause $C$, $\AImatrix(C) = \PI(C)$ and $\AIclause(C) = \lifboth{C}$.
 
 	\item
-		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = (D \lor E)\sigma$ with $l\sigma = l'\sigma$ with prop interpolant $\PI(\cdot)$:
+		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$ with $l\sigma = l'\sigma$ with prop interpolant $\PI(\cdot)$:
 
 		$l.\dotsc$ literal in original clause
 
@@ -340,7 +340,7 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 			\item if $l$ and $l'$ don't have the same color:
 
 				$\AImatrix(C) =
-				(\lnot {\lifboth{l\fromclause\sigma}\tau} \land \lifboth{\AImatrix(C_1)\sigma}\tau) \lor
+				(\lnot {\lifboth{l'\fromclause\sigma}\tau} \land \lifboth{\AImatrix(C_1)\sigma}\tau) \lor
 				(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma) }\tau
 				$
 
@@ -909,10 +909,53 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	\end{description}
 \end{proof}
 
-\begin{lemma}
-	The previous lemma basically calculates $\AI^\Delta$, where in $\AIclause$ and $\AImatrix$ instead of $\lifboth{\cdot}$ $\lifdelta{\cdot}$ is employed.
+\begin{conj}
+	Lemma~\ref{ref:gamma_entails_delta_terms_lifted} basically calculates $\AI^\Delta$, where in $\AIclause$ and $\AImatrix$ instead of $\lifboth{\cdot}$ $\lifdeltanovar{\cdot}$ is employed.
 	\mytodo{NEEDS A PROOF}
+\end{conj}
+
+\begin{lemma}
+	\label{lemma:lifting_gamma_terms_from_aidelta}
+	$\lifgamma{\AI^\Delta(C)} \sim \AI(C)$.
 \end{lemma}
+\begin{proof}
+	Base case:
+	\newcommand{\de}{^\Delta}
+	$\AImatrix$ and $\AImatrix^\Delta$ coincide for initial clauses.
+	$\AIclause(C) = \lifboth{C}$, $\AIclause\de(C) = \lifdeltanovar{C}$. By Lemma~4.9 (\verb+lemma:naming_of_colored_variables+) of the thesis, $\lifboth{C} \sim \lifgamma{\lifdeltanovar{C}}$.
+
+	Induction step.
+	$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
+	Suppose $\AI(C_1)\sim\AI\de(C_1)$ and $\AI(C_2)\sim\AI\de(C_2)$.
+
+	$\AIclause$ is defined as follows:
+
+	$\AIclause(C) = \lifboth{\Big( (\AIclause(C_1) \setminus \{l\fromclause\}) \lor (\AIclause(C_2)\setminus \{l\fromclause'\}) \Big)\sigma} \tau$ 
+
+	$\AIclause\de(C) = \lifdeltanovar{\Big( (\AIclause\de(C_1) \setminus \{l\fromclausede\}) \lor (\AIclause\de(C_2)\setminus \{l\fromclausede'\}) \Big)\sigma} \tau$ 
+
+	We consider the case of a grey literal $l$ for the induction step for $\AImatrix$ as it subsumes the others in this respect:
+
+	$\AImatrix(C) =
+	(\lnot {\lifboth{l\fromclause\sigma}\tau} \land \lifboth{\AImatrix(C_1)\sigma}\tau) \spam\lor
+	(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma) }\tau
+	$
+
+	$\AImatrix\de(C) =
+	(\lnot {\lifdeltanovar{l'\fromclausede\sigma}\tau} \land \lifdeltanovar{\AImatrix\de(C_1)\sigma}\tau) \spam\lor
+	(\lifdeltanovar{l\fromclausede\sigma}\tau \land \lifdeltanovar{\AImatrix\de(C_2)\sigma) }\tau
+	$
+
+	As $\AI(C_i)$ and $\AI\de(C_1)$ as well as
+	$\AI(C_2)$ and $\AI\de(C_2)$ only differ in the index of the lifting variables, and by Lemma~\ref{lemma:no_lifting_vars_in_subst} lifting variables do not occur in $\sigma$, $\sigma$ has the same effect on both.
+	Furthermore the lifting does not affect lifting variables and $\tau$ only renames lifting variables.
+
+	So $\AIclause(C)$ and $\AIclause\de(C)$ as well as
+	$\AImatrix(C)$ and $\AImatrix\de(C)$ 
+	differ only in the index of the lifting variables and the presence of $\Gamma$-terms in $\AIclause\de(C)$.
+	Hence lifing the $\Gamma$-terms gives the result.
+	\NB{(not sure how this remark applies to $\AImatrix$, but it does apply to $\AIclause$) Here, we do not have that the set of occurrences of some lifting variable $z_j$ in $\AIclause\de(C)$ is the same as the set of occurrences of some lifting variable $z_{j'}$ in $\AIclause(C)$ and the other way around. This is because in $\AIclause\de(C)$, all equal $\Gamma$-terms receive the same lifting variable, but in $\AIclause(C)$, they might be different since $\tau$ only refers to a term OR its specialisation.}
+\end{proof}
 
 
 \begin{conj}
@@ -974,11 +1017,14 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	By Lemma~\ref{ref:gamma_entails_delta_terms_lifted}, by considering $\Gamma$-terms to be grey, there is a ``witness formula'' 
 	$\AImatrix(C) \lor \AIclause(C)$ which contains all $\Gamma$-terms and all $\Delta$-terms are lifted and implicitly universally quantified.
 
-	If we now again consider $\Gamma$-terms to be $\Gamma$-terms, then in the ``witness formula'', the $\Gamma$-terms are lifted and existentially quantified.
+	By Lemma~\ref{lemma:lifting_gamma_terms_from_aidelta},
+	$\lifgammanovar{\AI^\Delta(C)} \sim \AI(C)$.
+	However if we now prefix $\lifgammanovar{\AI^\Delta(C)}$ with the quantifier block of $\AI(C)$ with the indices of lifting variables adapted, we obtain a formula which is equivalent to $\AI(C)$.
+	It remains to show that $\lifgammanovar{\AI^\Delta(C)}$ with said quantifier block is entailed by $\Gamma$.
+
 	As a $\Gamma$-term $\colterm{i}$ in general contains lifting variables which lift $\Delta$-terms, we have to ensure that these are quantified before $y_i$ is.
 	Note that this implies that in $C$, a $\Delta$-term is contained in a $\Gamma$-term.
-
-	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result. \mytodo{verify this after the proof of the lemma}
+	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result.
 \end{proof}
 
 \begin{defi}[Unification algorithm]
@@ -998,7 +1044,7 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	$
 	\mbox{$\mgu(\{t\} \cup T)$} =
 	%\mgu(\{t\} \cup T) =$
-	 \begin{cases}
+	\begin{cases}
 		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
 		\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
 		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
@@ -1060,10 +1106,13 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 	Hence if they are present in a clause $C$ at some point in the derivation, their position in the original clause has been a variable or has been contained in a variable in case a variable has been added inside of a term.
 \end{conj}
 
+
 \begin{conj}
 	In the course of a derivation, there always is an arrow between a grey occurrence of a variable $u$ and a colored occurrence of a variable $u$ in a clause. 
 	\mytodo{The proof probably requires a handling of renamings (unifications of vars with other vars) and a discussion of introductions of occurrences of $u$ via unification.}
 \end{conj}
+
+
 
 \begin{lemma}
 	\label{lemma:arrow_for_variables_in_differently_colored_terms}
@@ -1126,7 +1175,7 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 
 		\item
 			Suppose that $r\occur{v}$ and $t\occur{u}$ occur in different clauses, say $C_1$ and $C_2$
-			
+
 			\mytodo{
 				ICI ICI ICI
 
@@ -1148,35 +1197,185 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 	\end{itemize}
 \end{proof}
 
+\begin{prop}
+	Let $t \in \AI(C)$. Then there is either a corresponding term either in $C$ if $t$ is in $\AIclause(C)$ or 
+	in $t$ is in $\AImatrix(C)$ and the corresponding term is not present anymore.
+	There are however also terms in $C$, which in the course of the resolution derivation disappear without going into $\AI(\cdot)$ (i.e. the ones in colored predicate symbols).
+\end{prop}
 
 
-\newcommand{\newterm}{{^*}}
-\begin{conj}
-	\label{lemma:arrows_for_lifting_terms}
-	In $\AI^\Delta(C)$, if a lifting variable $x_i$ (lifting a $\Delta$-term)
-	occurs inside of a maximal $\Gamma$-term $t\newterm$, 
-	then there is an arrow from an occurrence of $x_i$ to $t\newterm$ in $\AI^\Delta(C)$ in $\arr''$.
-	\medskip
+\clearpage 
 
-	\mytodo{NOT from $x_i$, but from $x_j$ such that $\colterm{j}$ is an abstraction of $\colterm{i}$, i.e.~the actual term in the derivation is $\colterm{i}$, but here we might be imprecise but only since in the proof, the variable is quantified and we can put there whatever we want.} 
-	\medskip
+\newcommand{\newterm}{^*}
+	\newcommand{\de}{^\Delta}
+Ontology of cases of main lemma:
+	\begin{multicols}{3}
+		Resolution derivation:
+		\begin{prooftree}
+			\AxiomCm{C_1: D\lor l}
+			\AxiomCm{C_2: E\lor l'}
+			\BinaryInfCm{C: (D\lor E)\sigma}
+		\end{prooftree}
 
-	\mytodo{ acutally, $x_i$ may not occur in $\AI^\Delta(C)$ but can disappear if the literal is not added to the interpolant.
+		~
 
-		We have to show that then, even if $x_i$ occurs elsewhere in $\AI^\Delta(C)$, it is not vital to quantify it earlier than $t\newterm$. 
-		There might however be a chain of arrows from other lifting vars, which do occur in $\AI^\Delta(C)$. I suspect that these have to be overbound earlier (check examples).
-	}
-\end{conj}
-\begin{proof}
-	For a term to occur in $\AI(C)$ means to occur in $\AImatrix(C) \lor \AIclause(C)$.
+		~
 
-	Base case: No foreign terms occur in the initial clauses.
+		Relative interpolants:
+		\begin{prooftree}
+			%\AxiomCm{\AI(C_1) = \bar Q (\AIclause{C_1} \lor \AIclause{C_1})}
+			%\AxiomCm{\AI(C_2)= \bar Q (\AIclause{C_2} \lor \AIclause{C_2})}
+			\AxiomCm{\AI(C_1)}
+			\AxiomCm{\AI(C_2)}
+			\BinaryInfCm{\AI(C)}
+		\end{prooftree}
 
-	Induction step:
-	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
-	By the induction hypothesis, all $t$ which occur in $\AI(C_1)$ and $\AI(C_2)$ satisfy the condition.
+		~
 
-	Note that every $x_i$ from $\AI(C_1)$ or $\AI(C_2)$ is carried over to $\AI(C)$. $\tau$ might rename $x_i$ to another lifting variable, but as this applies to every occurrence of $x_i$, the statement of this lemma is not violated.
+		~
+
+		$\AI$ sketched:
+		\vspace{-2em}
+		\begin{prooftree}
+			\AxiomCm{\AImatrix(D\lor l) \lor \AIclause(D \lor l)}
+			%\AxiomCm{\AImatrix(E\lor l') \lor \AIclause(E \lor l')}
+			\AxiomCm{\AI(C_2)}
+			\BinaryInfCm{\AImatrix(D \lor E \lor l \lor l' ) \lor \AIclause(D \lor E)}
+			\noLine
+			\UnaryInfCm{\text{OR: }\AImatrix(D\lor E) \lor \AIclause(D \lor E)}
+		\end{prooftree}
+	\end{multicols}
+
+	We suppose that $\gamma_j\newterm\occur{x_i}$ is in $\AI\de(C)$ and it isn't in $\AI\de(C_1)$ or $\AI\de(C_2)$.
+	\mytodo{formulate this into a proper induction}
+
+	{\bfseries Suppose introduction of $\Delta$-term into $\Gamma$-term}
+
+	$\gamma\newterm_j$ has a predecessor in $\AI(C_1)$ or $\AI(C_2)$. Call it $\gamma_j\occur{u}$. It has a variable as otherwise a $\Delta$-term could not have entered (can't via $\tau$ alone), we call the variable $u$. We know that $\lifboth{\gamma_j\occur{u} \sigma} \tau = \gamma\newterm_j\occur{x_i}$.
+
+	If $\gamma_j\occur{u}$ occurs in $l\cl$, it has a corresponding term in $l$, which in gerneral is not $\gamma_j\occur{u}$ as $\Delta$-terms are not lifted there.
+
+	At some point of the unifcation algorithm, $u$ is substituted by an abstraction of $\delta_i$.
+	This occurrence of $u$ is in $l$. Call it $\hat u$.
+
+	2 phases: show that the occurrence of $u$ has a respective arrow, and show that there is an connection between $u$ and $u$ in the $\gamma_j\occur{u}$
+
+	If $\hat u$ is at position $p$ in $l$, let $\hat u'$ be the term at position $p$ in $l'$. $\hat u'$ is an abstraction of $\delta_i$, so a variable or a $\Delta$-term.
+
+	\textbf{Cases: $\hat u$ vs $\gamma_j\occur{u}$ first}
+	\begin{compactitem}
+	\item $\hat u$ is a grey occurrence 
+
+		$\Ra$ have arrow
+
+		\begin{compactitem}
+		\item $\hat u'$ is variable such that $u\sigma = u'\sigma$, which is $\delta_i$.
+
+			Then $\hat u$ becomes lifting of $\Delta$-term (check if it's the right one)
+		\item $\hat u'$ is $\Delta$-term
+
+			Then $\hat u$ becomes lifting of $\Delta$-term (check if it's the right one)
+		\end{compactitem}
+
+	\item $\hat u$ is in a maximal colored term which is a $\Gamma$-term
+
+		either $\hat u$ is in $\gamma_j\occur{u}$ \checkmark
+
+		OR: should have merge arrow (proof this in a lemma!)
+
+		\begin{compactitem}
+		\item $\hat u'$ is variable 
+
+			Then there is the same $\Gamma$-term on the other side, same situation, can only happen finitely often.
+
+		\item $\hat u'$ is $\Delta$-term
+
+			Then it's a $\Delta$-term in a $\Gamma$ term $\Ra$ ind hyp
+		\end{compactitem}
+	\item $\hat u$ is in a maximal colored term which is a $\Delta$-term
+
+		That extra lemma. Subcases of $\hat u'$ being var or $\Delta$-term should somehow be treated there as it would then mean that a $\Delta$-term is in a $\Delta$-term, which isn't overly fascinating.
+	\end{compactitem}
+
+
+	~
+
+	{\bfseries Suppose introduction of $\gamma_j\newterm\occur{x_i}$ via $\sigma$ and lifting directly}
+
+	$v\sigma = \gamma_j\newterm\occur{\delta_i}$ for some $v$.
+
+	As $v$ is affected by the unification, it occurs in the literal being unified, say in $l$.
+	At exactly one point in the unification algorithm, $v$ is substituted by an abstraction of $\gamma_j\newterm\occur{\delta_i}$.
+	Let $p$ be the position of the occurrence of $v$ in $l$ where this happens.
+
+	%Let $p$ be the position of $v$ in $l$ (there can be multiple ones), where the unification algorithm changes 
+	%at position $p$.
+	Let $v'$ be the term at position $p$ in the corresponding literal in $l'$.
+
+	\textbf{Cases}
+	\begin{compactitem}
+	\item $v'$ is a variable 
+
+		then same lemma + weak arrows
+
+	\item $v'$ is a $\Gamma$-term not containing a $\Delta$-term 
+
+		As $v'$ is an abstraction of $\gamma_j\newterm\occur{\delta_i}$, $v'$ contains variables which are unified to $\Delta$-terms (= other case) or multicolored $\Gamma$-terms (= same case but can't happen infinitely often as term shrinks).
+
+		+ have arrows since weak arrows
+
+	\item $v'$ is a $\Gamma$-term containing a $\Delta$-term 
+
+		$\Ra$ ind hyp + weak arrows
+	\end{compactitem}
+
+	\mytodo{ICI}
+
+	\mytodo{ICI}
+
+	\mytodo{ICI}
+
+	\mytodo{Reproof lemma below with new statement, then also include that other lemma.}
+
+	\mytodo{ICI}
+
+	\mytodo{ICI}
+
+	\mytodo{ICI}
+
+
+	new statement:
+	Suppose that in $\AI^\Delta(C)$, a lifting variable $x_i$ (lifting a $\Delta$-term $\delta_i$)
+	occurs inside of a maximal $\Gamma$-term $\gamma_j\occur{\delta_i}$.
+	Then there is an arrow from an occurrence of $x_k$ in $\AI^\Delta(C)$ to $\gamma_j\occur{\delta_i}$ in $\arr''$. $k$ is such that $\delta_i$ is a specialisation of $\delta_k$.
+
+
+	\begin{conj}
+		\label{lemma:arrows_for_lifting_terms}
+		In $\AI^\Delta(C)$, if a lifting variable $x_i$ (lifting a $\Delta$-term)
+		occurs inside of a maximal $\Gamma$-term $t\newterm$, 
+		then there is an arrow from an occurrence of $x_i$ to $t\newterm$ in $\AI^\Delta(C)$ in $\arr''$.
+		\medskip
+
+		\mytodo{NOT from $x_i$, but from $x_j$ such that $\colterm{j}$ is an abstraction of $\colterm{i}$, i.e.~the actual term in the derivation is $\colterm{i}$, but here we might be imprecise but only since in the proof, the variable is quantified and we can put there whatever we want.} 
+		\medskip
+
+		\mytodo{ acutally, $x_i$ may not occur in $\AI^\Delta(C)$ but can disappear if the literal is not added to the interpolant.
+
+			We have to show that then, even if $x_i$ occurs elsewhere in $\AI^\Delta(C)$, it is not vital to quantify it earlier than $t\newterm$. 
+			There might however be a chain of arrows from other lifting vars, which do occur in $\AI^\Delta(C)$. I suspect that these have to be overbound earlier (check examples).
+		}
+	\end{conj}
+	\begin{proof}
+		For a term to occur in $\AI(C)$ means to occur in $\AImatrix(C) \lor \AIclause(C)$.
+
+		Base case: No foreign terms occur in the initial clauses.
+
+		Induction step:
+		Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+		By the induction hypothesis, all $t$ which occur in $\AI(C_1)$ and $\AI(C_2)$ satisfy the condition.
+
+		Note that every $x_i$ from $\AI(C_1)$ or $\AI(C_2)$ is carried over to $\AI(C)$. $\tau$ might rename $x_i$ to another lifting variable, but as this applies to every occurrence of $x_i$, the statement of this lemma is not violated.
 
 	Hence we consider all introductions of new $t\newterm$ in $\AI(C)$, i.e.~those that have not been present in $\AI(C_1)$ or $\AI(C_2)$.
 	Let $t$ be the term in w.l.o.g.~$\AI(C_1)$ where $t\newterm$ originates from, i.e.~$\lifboth{t\sigma}\tau = t\newterm$.
