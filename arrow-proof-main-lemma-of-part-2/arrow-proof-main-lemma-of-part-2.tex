@@ -141,6 +141,18 @@
 \newcommand{\newterm}{^*}
 \newcommand{\de}{^\Delta}
 
+\newcommand{\substremarksym}{$\ast$}
+\newcommand{\substremarkref}{$(\ast)$}
+\begin{remark}[\substremarksym]
+	Any substitution, in particular $\sigma$, only changes a finite number of variables.
+	Furthermore a result of a run of the unification algorithm is acyclic in the sense that if a substitution $u\mapsto t$ is added to the resulting substitution, it is never the case that at a later stage $t\mapsto u$ is added.
+	This can easily be seen by considering that at the point when $u\mapsto t$ is added to the resulting substitution, every occurrence of $u$ is replaced by $t$, so $u$ is not encountered by the algorithm at a later stage.
+
+	Therefore in order to show that a statement holds for every $u\mapsto t$ in a unifier $\sigma$, 
+	it suffices to show by an induction argument that for every substitution $v\mapsto s$ which is added to the resulting unifier by the unification algorithm that it holds for $v\mapsto s$ under the assumption that it holds for every $w\mapsto r$ such that $w$ occurs in $s$ and $w\mapsto r$ is added to the resulting substitution at a later stage.
+\end{remark}
+
+
 \begin{conj}
 	Let $C$ be a clause in a resolution refutation. 
 	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{x_i}$ which contains a lifting variable $x_i$ (lifting a $\Delta$-term $\delta_i$).
@@ -151,28 +163,69 @@
 	For the base case, note that no multicolored terms occur in inital clauses, so no lifting term can occur inside of a $\Gamma$-term.
 
 	\newcommand{\oldgam}{\bm\tilde\gamma_j} 
-	\newcommand{\newgam}{\gamma_j} % this should correspond with the statement, and there, the symbol should be plain
+	\newcommand{\newgam}{\gamma_j} % this should correspond with the statement, and there, the symbol should be plain (also below)
 
 	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
 	Furthermore suppose that for every lifting term inside a $\Gamma$-term in the clauses $C_1$ and $C_2$ of the refutation the desired arrows exist.
 	We show that the same holds true for every new term of the form $\newgam\occ{x_i}$ for some $j, i$ in $\AI\de(C)$. By ``new'', we mean terms which are not present in $\AI\de(C_1)$ or $\AI\de(C_2)$.
 	Note that new terms in $\AI\de(C)$ are of the form $\lifdelta{t\sigma}\tau$ for some $t \in \AI\de(C_1) \cup \AI\de(C_2)$.
-	Hence a new term of the form $\newgam\occ{x_i}$ is created either by introducing a $\Delta$-term into a $\Gamma$-term or by introducing $\gamma_j\occ{\delta_i}$ via $\sigma$, both followed by lifting.
-	Note that $\tau$ only substitutes lifting variables by other lifting variables and hence does not change the form of the term.
+	By Lemma~\ref{lemma:no_lifting_vars_in_subst}, $\sigma$ does not introduce lifting variables.
+	Hence a new term of the form $\newgam\occ{x_i}$ is created either by introducing a $\Delta$-term into a $\Gamma$-term or by introducing $\newgam\occ{\delta_i}$ via $\sigma$, both followed by the lifting. 
+	Note that $\tau$ only substitutes lifting variables by other lifting variables and hence does not introduce lifting variables. Furthermore by Lemma~\ref{lemma:tau_is_specialisation}, $\tau$ only substitutes lifting variables for other lifting variables, whose corresponding term is more specialised. Hence if ther exists an arrow from a lifting variable to $\newgam\occ{x_i}$ according to this lemma, it is also an appropriate arrow if $\newgam\occ{x_i}$ is replaced by $\newgam\occ{x_i}\tau$.
 
-	Also note that a substitution, in particular $\sigma$, only changes a finite number of variables.
-	Furthermore a result of a run of the unification algorithm is acyclic in the sense that if a substitution $u\mapsto s$ is added to the resulting substitution, it is never the case that at a later stage $s\mapsto u$ is added.
-	This can easily be seen by considering that at the point when $u\mapsto s$ is added to the resulting substitution, every occurrence of $u$ is replaced by $s$, so $u$ is not encountered by the algorithm at a later stage.
-	Therefore considering the different cases which arise by substitution and reducing some cases to others is a valid proof strategy.
+
+	We now distinguish the two cases under which a new term $\newgam\occ{x_i}$ can occur in $\AI\de(C)$:
 
 	\begin{description}
-		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ occurring in $\AI\de(C_1)$ or $\AI\de(C_2)$, $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.]
+		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill
+
+			\textbf{The substitution can also introduce a grey term containing a delta term, make sure to handle that!}
+
+			\textbf{The substitution can also introduce a gamma term containing a delta term, make sure to handle that!}
+
+			\mytodo
+
+		\item[Suppose for some variable $v$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $v\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill
+
+			As $v$ is affected by the unifier, it occurs in the literal being unified, say w.l.o.g.~in $l$ in $C_1$.
+			At one point in the unification algorithm, $v$ is substituted by an abstraction of $\newgam\occ{\delta_i}$.
+			Let $p$ be the position of the occurrence of $v$ in $l$ which leads to this situation.
+			Furthermore, let $p'$ be the position corresponding to $p$ in $l'$.
+
+			Note that any arrow from or to $p'$ also applies to $p$ in $\arrFinal(C)$ and hence to $\newgam\occ{x_i}$ as they are merged due to occurring in the resolved literal.
+			So it suffices to show that there is an arrow from an appropriate lifting variable to $p'$. We denote the term at $p'$ by $t$.
+
+			Note that $t\sigma = \newgam\occ{\delta_i}$.
+			So $t$ is either a $\Gamma$-term containing a $\Delta$-term, in which case we know that there is an appropriate arrow by the induction hypothesis as $t$ occurs in $l'$ in $C_2$, or $t$ is an abstraction of $\newgam\occ{\delta_i}$, in which case we can assume the existence of an appropriate arrow by Remark~\substremarkref.
+			\qedhere
+
+			\begin{comment}
+				We distinguish cases based on the shape of the term at $p'$, which we denote by $t$:
+				\begin{itemize}
+					\item $t$ is a variable, say $x$. 
+						Then $x$ occurs elsewhere in $l'$ and $x\sigma = \newgam\occ{\delta_i}$.
+						By Remark~\substremarkref, we can assume that there is an appropriate arrow for $x\sigma$ ad $p'$.
+
+					\item $t$ is a $\Gamma$-term which does not contain a $\Delta$-term.
+						$t$ is however an abstraction of $\newgam\occ{\delta_i}$, so it contains at least one variable which is substituted by a term $s$.
+						Hence by Remark~\substremarkref, we can assume that an appropriate arrow pointing to $t$ exists.
+
+							We distinguish based on the shape $s$:
+							\begin{itemize}
+								\item $s$ is a grey or $\Delta$-colored term containing a $\Delta$-term.
+									Then a $\Delta$-term is introduced into a $\Gamma$-term by means of unification, so by the respective case of the proof, there is an arrow from an appropriate lifting variable to~$t$.
+
+								\item $s$ is a multicolored $\Gamma$-term.
+									Then by Remark~\substremarkref, we can assume that an appropriate arrow pointing to $t$ exists.
+							\end{itemize}
+					\item $t$ is a $\Gamma$-term containing a $\Delta$-term.
+				\end{itemize}
+			\end{comment}
+
+
 	\end{description}
 
 \end{proof}
 
-Suppose $\sigma$ introduces a term of the form $\gamma_j\occ{\delta_i}$. T
-
-	%\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
 
 \end{document}
