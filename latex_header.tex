@@ -37,6 +37,8 @@ positioning,fit,calc,decorations.text,shadows%
 \usepackage{amssymb} % the reals
 \usepackage{mathtools} % smashoperator
 
+\usepackage{bm} % bm, bold math symbols
+
 \usepackage{thm-restate} % restatable env
 
 % needs extra work and fails on some label here
@@ -203,7 +205,10 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\lifphi}[1]{\lift{\Phi}{#1}{x}}
 
 \DeclareMathOperator{\arr}{\mathcal{A}}
-\DeclareMathOperator{\warr}{\mathcal{M}}
+\DeclareMathOperator{\arrFinal}{\mathcal{A}^*}
+\DeclareMathOperator{\warr}{\marr}
+\DeclareMathOperator{\marr}{\mathcal{M}}
+
 
 %\usepackage{yfonts}
 \usepackage{upgreek}

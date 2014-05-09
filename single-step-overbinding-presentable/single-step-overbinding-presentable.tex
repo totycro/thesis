@@ -212,7 +212,7 @@ $\warr$ is a set of unordered pairs of term positions which point to positions i
 Note that the ``anchor point'' for arrows are \emph{literals} and not clauses.
 All literals occur in the initial clause sets.
 The literals in $\AI(C)$ are derived from these and the arrows apply to them.
-Literals of colored predicates to not occur in $\AI(C)$ but can be relevant by transitivity.
+Literals of colored predicates do not occur in $\AI(C)$ but can be relevant by transitivity.
 
 w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
@@ -222,6 +222,7 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 \begin{enumerate}
 	\item For each initial clause $C$ in $\Gamma \cup \Delta$:
 
+		\begin{quote}
 		For every variable $x$ in $C$:
 
 		\begin{quote}
@@ -233,15 +234,19 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		Let $\MaxCol(\Phi) = \{q \mid \text{$q$ is the occurrence of the maximal colored term containing $p$ for $p \in \Phi$} \}$
 
-		Add to $\arr$: $\Phigrey_x \times \MaxCol(\Phicol_x)$.
+		$\arr_x(C) \defeq \Phigrey_x \times \MaxCol(\Phicol_x)$. \comm{introduction of multicolored terms}
 		
 		%Add to $\warr$ all $(p_1, p_2)$ such that $p_1\in\MaxCol(\Phicol_x)$ and $p_2\in\MaxCol(\Phicol_x)$ and $p_1 \neq p_2$.
 
-		Add to $\warr$: $\MaxCol(\Phicol_x) \times \MaxCol(\Phicol_x)$.
+		$\warr_x(C) \defeq \MaxCol(\Phicol_x) \times \MaxCol(\Phicol_x) \spam\cup
+		\Phigrey_x\times\Phigrey_x$. \comm{travel route of multicolored terms}
 
-		Add to $\warr$: $\Phigrey_x \times \Phigrey_x$.
+		Arrows of the form $(a, a)$ in $\warr$ have no effect.
+		\end{quote}
 
-		Possibly drop arrows of the form $(a, a)$ in $\warr$, but they do not do any harm.
+		$\arr(C) \defeq\displaystyle \bigcup_{ x \text{ occurs in }C} \arr_x(C)$
+
+		$\warr(C) \defeq\displaystyle \bigcup_{x \text{ occurs in }C} \warr_x(C)$
 		\end{quote}
 
 		%Add to $\arr$ all $(p_1, p_2)$ in $C$ such that $p_1$ contains only grey symbol and $\pos(p_1)$ is a variable and $\pos(p_1) = \pos(p_2)$ but $p_1 \neq p_2$.
@@ -252,7 +257,7 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		For each $C$ resulting from a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l$ to $C = D \lor E$ with prop interpolant $\PI(\cdot)$:
 
 		The literals $l$ and $l'$ are unified and henceforth considered to be the same literal.
-		Therefore the arrows of $l$ and $l'$ are merged.
+		Therefore the arrows of $l$ and $l'$ are merged:
 
 		For $\mathcal{X} \in \{\arr, \warr\}$:
 
@@ -274,6 +279,11 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 
 \end{enumerate}
+
+\begin{prop}
+	The position of arrows always ``exists'', i.e.~is not destroyed by lifting. If the literal occurs in $C$ or $\AI(C)$, then it points to some term whereever it exists.
+	\mytodo{write about that if the position exists in $C$ and $\AI(C)$, then the terms are the same, probably it's best to refer to some lemma}
+\end{prop}
 
 \subsection{algo}
 
@@ -391,23 +401,23 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 
 $\AI(C) = Q_1 u_1 \ldots Q_m u_m \Big( \AImatrix(C) \lor \AIclause(C) \Big)$
 
-$u_1, \ldots, u_m$ are comprised of all $x_i$ and $y_i$ in $\AImatrix(C)$. \comm{there are free variables in $\AImatrix(C)$, which are ``implicitly'' universally quantified.}
+$u_1, \ldots, u_m$ are comprised of all lifting variables $x_i$ and $y_i$ in $\AImatrix(C)$. \comm{there are free variables in $\AImatrix(C)$, which are ``implicitly'' universally quantified.}
 
 $Q_i$ is $\exists$ if $u_i = y_i$ for some $i$, $\forall$ if $u_i = x_i$ for some $i$.
 
 %Combine dependencies of positions which are connected by weak arrows:
-All ``nodes'' connected by weak arrows describe the same arrows, i.e.~collapse the nodes to a supernode merging the arrows:
+All ``nodes'' connected by merge edges describe the same arrows, i.e.~collapse the nodes to a supernode merging the arrows:
 
 %$\arr' =  \arr \union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
 
-$\arr' = \{ (a,c) \mid  (a,c) \in  \arr \spam\lor ((a,b) \in \arr \land \{b, c\} \in \warr ) \spam\lor  ((c, b) \in \arr \land \{a, c\} \in \warr) \}$
+$\arr'(C) = \{ (a,c) \mid  (a,c) \in  \arr(C) \spam\lor ((a,b) \in \arr(C) \land \{b, c\} \in \warr(C) ) \spam\lor  ((c, b) \in \arr(C) \land \{a, c\} \in \warr(C)) \}$
 	
 	%\union \{(a, c) \mid (a, b) \in \arr \land \{b, c\} \in \warr\} \union \{(a, c) \mid (b, c) \in \arr \land \{a, b\} \in \warr\} $
 
-$\arr'' = \operatorname{TransitiveClosure}(\arr')$
+$\arrFinal(C) = \operatorname{TransitiveClosure}(\arr'(C))$
 
-$(p_1, p_2) \in \arr'' $ implies
-that $u_i$ occurs before $u_j$ in the quantifier prefix if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ (positions in $\AI(C)$, not in $C$).
+$(p_1, p_2) \in \arrFinal(C)$ implies
+that $u_i$ occurs before $u_j$ in the quantifier prefix if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ 
 
 
 \clearpage

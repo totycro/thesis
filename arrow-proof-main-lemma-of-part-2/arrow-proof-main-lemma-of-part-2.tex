@@ -144,14 +144,34 @@
 \begin{conj}
 	Let $C$ be a clause in a resolution refutation. 
 	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{x_i}$ which contains a lifting variable $x_i$ (lifting a $\Delta$-term $\delta_i$).
-	Then there is an arrow from an occurrence of $x_k$ in $\AI\de(C)$ such that $\delta_k$ is an abstraction of $\delta_i$ to $\gamma_j\occ{x_i}$.
+	Then there is an arrow in $\arrFinal(C)$ from an occurrence of $x_k$ in $\AI\de(C)$ such that $\delta_k$ is an abstraction of $\delta_i$ to $\gamma_j\occ{x_i}$.
 \end{conj}
 \begin{proof}
 	We proceed by induction.
 	For the base case, note that no multicolored terms occur in inital clauses, so no lifting term can occur inside of a $\Gamma$-term.
 
-	Now suppose that for every lifting term inside a $\Gamma$-term in the clauses $C_1$ and $C_2$ of the refutation the desired arrows exist.
+	\newcommand{\oldgam}{\bm\tilde\gamma_j} 
+	\newcommand{\newgam}{\gamma_j} % this should correspond with the statement, and there, the symbol should be plain
+
+	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
+	Furthermore suppose that for every lifting term inside a $\Gamma$-term in the clauses $C_1$ and $C_2$ of the refutation the desired arrows exist.
+	We show that the same holds true for every new term of the form $\newgam\occ{x_i}$ for some $j, i$ in $\AI\de(C)$. By ``new'', we mean terms which are not present in $\AI\de(C_1)$ or $\AI\de(C_2)$.
+	Note that new terms in $\AI\de(C)$ are of the form $\lifdelta{t\sigma}\tau$ for some $t \in \AI\de(C_1) \cup \AI\de(C_2)$.
+	Hence a new term of the form $\newgam\occ{x_i}$ is created either by introducing a $\Delta$-term into a $\Gamma$-term or by introducing $\gamma_j\occ{\delta_i}$ via $\sigma$, both followed by lifting.
+	Note that $\tau$ only substitutes lifting variables by other lifting variables and hence does not change the form of the term.
+
+	Also note that a substitution, in particular $\sigma$, only changes a finite number of variables.
+	Furthermore a result of a run of the unification algorithm is acyclic in the sense that if a substitution $u\mapsto s$ is added to the resulting substitution, it is never the case that at a later stage $s\mapsto u$ is added.
+	This can easily be seen by considering that at the point when $u\mapsto s$ is added to the resulting substitution, every occurrence of $u$ is replaced by $s$, so $u$ is not encountered by the algorithm at a later stage.
+	Therefore considering the different cases which arise by substitution and reducing some cases to others is a valid proof strategy.
+
+	\begin{description}
+		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ occurring in $\AI\de(C_1)$ or $\AI\de(C_2)$, $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.]
+	\end{description}
+
 \end{proof}
+
+Suppose $\sigma$ introduces a term of the form $\gamma_j\occ{\delta_i}$. T
 
 	%\newcommand{\lifboth}[1]{\lft{\Gamma\cup\Delta}{z}{#1}}
 
