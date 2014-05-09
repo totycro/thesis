@@ -1,7 +1,7 @@
 \documentclass[,%fontsize=11pt,%
 	paper=a4,% 
 	%landscape,
-	DIV10, % mehr text pro seite als defaultyyp
+	DIV14, % mehr text pro seite als defaultyyp
 	%DIV10, 
 	%DIV=calc,%
 	twoside=false,%
@@ -253,6 +253,17 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		The literals $l$ and $l'$ are unified and henceforth considered to be the same literal.
 		Therefore the arrows of $l$ and $l'$ are merged.
+
+		For $\mathcal{X} \in \{\arr, \warr\}$:
+
+		$\mathcal{X}^*(C) \stackrel{\operatorname{def}}{=} \mathcal{X}(C_1) \cup \mathcal{X}(C_2)$
+
+		$\mathcal{X}(C) \stackrel{\operatorname{def}}{=} \mathcal{X}^*(C) \cup \{(a,c) \mid ((a,b)\in\mathcal{X}^*(C) \land \poslit(c) = l \land \posterm(c) = \posterm(b) \land \poslit(b) = l') \lor \text{\dots~other cases \dots}\}$
+
+		Note that $C$ in $\mathcal{X}(C)$ denotes the position in the proof, not the set of possible positions of arrows.
+		This is because some literals are removed from the clause but not added to the interpolant, but their arrows can still matter by transitivity (cf.~example TODO).
+
+
 		%Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
 
 		%Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
@@ -260,6 +271,7 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 
 		%Add $(p_1, p_2)$ to $\arr$ if $\poslit{p_i}$ comes from literal $l_i$ in a clause $D$ in an original clause set, $i\in\{1, 2\}$, (both from same $D$), and $(l_1.\posterm{p_1}, l_2.\posterm{p_2}) \in \arr{D}$ 
+
 
 \end{enumerate}
 

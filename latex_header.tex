@@ -203,7 +203,7 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\lifphi}[1]{\lift{\Phi}{#1}{x}}
 
 \DeclareMathOperator{\arr}{\mathcal{A}}
-\DeclareMathOperator{\warr}{\mathcal{W}}
+\DeclareMathOperator{\warr}{\mathcal{M}}
 
 %\usepackage{yfonts}
 \usepackage{upgreek}
@@ -375,6 +375,7 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\partisym}{\ensuremath{\chi}}
 
 \newcommand{\occur}[1]{\ensuremath{[#1]}}
+\newcommand{\occ}[1]{\occur{#1}}
 
 \newcommand{\occurat}[2]{\ensuremath{{\occur{#1}_{#2}}}}
 
@@ -437,4 +438,6 @@ positioning,fit,calc,decorations.text,shadows%
 
 % http://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
-		            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+
