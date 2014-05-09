@@ -205,9 +205,16 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\lifphi}[1]{\lift{\Phi}{#1}{x}}
 
 \DeclareMathOperator{\arr}{\mathcal{A}}
-\DeclareMathOperator{\arrFinal}{\mathcal{A}^*}
+%\DeclareMathOperator{\arrFinal}{{\mathcal{A}^{\bm*}}}
+\DeclareMathOperator{\arrFinal}{{\mathcal{\bm{\hat}A}}}
 \DeclareMathOperator{\warr}{\marr}
 \DeclareMathOperator{\marr}{\mathcal{M}}
+
+\newcommand{\ltArrC}{<_{\arrFinal(C)}}
+\newcommand{\ltArrCOne}{<_{\arrFinal(C_1)}}
+\newcommand{\ltArrCTwo}{<_{\arrFinal(C_2)}}
+%\newcommand{\ltArrC}{<_{\scalebox{0.6}{$\arrFinal(C)$}}}
+\newcommand{\ltArr}{<_{\scalebox{0.6}{$\arrFinal$}}}
 
 
 %\usepackage{yfonts}

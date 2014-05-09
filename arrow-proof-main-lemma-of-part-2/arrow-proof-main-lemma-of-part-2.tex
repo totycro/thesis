@@ -155,8 +155,9 @@
 
 \begin{conj}
 	Let $C$ be a clause in a resolution refutation. 
-	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{x_i}$ which contains a lifting variable $x_i$ (lifting a $\Delta$-term $\delta_i$).
-	Then there is an arrow in $\arrFinal(C)$ from an occurrence of $x_k$ in $\AI\de(C)$ such that $\delta_k$ is an abstraction of $\delta_i$ to $\gamma_j\occ{x_i}$.
+	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{z_i}$ which contains a lifting variable $z_i$. %(lifting a $\Delta$-term $\delta_i$).
+	%Then there is an arrow in $\arrFinal(C)$ from a term containing $x_k$ in $\AI\de(C)$ such that $\delta_k$ is an abstraction of $\delta_i$ to $\gamma_j\occ{z_i}$.
+	Then $z_i \ltArrC y_j$.
 \end{conj}
 \begin{proof}
 	We proceed by induction.
@@ -166,37 +167,43 @@
 	\newcommand{\newgam}{\gamma_j} % this should correspond with the statement, and there, the symbol should be plain (also below)
 
 	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
-	Furthermore suppose that for every lifting term inside a $\Gamma$-term in the clauses $C_1$ and $C_2$ of the refutation the desired arrows exist.
-	We show that the same holds true for every new term of the form $\newgam\occ{x_i}$ for some $j, i$ in $\AI\de(C)$. By ``new'', we mean terms which are not present in $\AI\de(C_1)$ or $\AI\de(C_2)$.
+	Furthermore suppose that for every lifting term inside a $\Gamma$-term in the clauses $C_1$ and $C_2$ of the refutation, for every term of the form $\gamma_j\occ{z_i}$ we have that $z_i \ltArrCOne y_j$ or $z_i \ltArrCTwo y_j$ respectively. Hence there is an arrow $(p_1, p_2)$ in $\arrFinal(C_1)$ or $\arrFinal(C_2)$ such that $z_i$ is contained in $\pos(p_1)$ and $z_j$ is contained in $\pos(p_2)$.
+	In $\AI\de(C)$, $\pos(p_1)$ contains $\lifboth{z_i\sigma}\tau = z_i\tau$ and $\pos(p_2)$ contains $\lifboth{z_j\sigma}\tau = z_j\tau$.
+	Hence the indicies of the lifting variables might change, but this renaming does not affect the relation of the objects as $\arrFinal(C_1) \cup \arrFinal(C_2) \subseteq \arrFinal(C)$.
+
+
+	We show that $z_i \ltArrC z_j $ holds true also for every new term of the form $\newgam\occ{z_i}$ for some $j, i$ in $\AI\de(C)$. By ``new'', we mean terms which are not present in $\AI\de(C_1)$ or $\AI\de(C_2)$.
 	Note that new terms in $\AI\de(C)$ are of the form $\lifdelta{t\sigma}\tau$ for some $t \in \AI\de(C_1) \cup \AI\de(C_2)$.
 	By Lemma~\ref{lemma:no_lifting_vars_in_subst}, $\sigma$ does not introduce lifting variables.
-	Hence a new term of the form $\newgam\occ{x_i}$ is created either by introducing a $\Delta$-term into a $\Gamma$-term or by introducing $\newgam\occ{\delta_i}$ via $\sigma$, both followed by the lifting. 
-	Note that $\tau$ only substitutes lifting variables by other lifting variables and hence does not introduce lifting variables. Furthermore by Lemma~\ref{lemma:tau_is_specialisation}, $\tau$ only substitutes lifting variables for other lifting variables, whose corresponding term is more specialised. Hence if ther exists an arrow from a lifting variable to $\newgam\occ{x_i}$ according to this lemma, it is also an appropriate arrow if $\newgam\occ{x_i}$ is replaced by $\newgam\occ{x_i}\tau$.
+	Hence a new term of the form $\newgam\occ{z_i}$ is created either by introducing a $\Delta$-term into a $\Gamma$-term or by introducing $\newgam\occ{\delta_i}$ via $\sigma$, both followed by the lifting. 
+	Note that $\tau$ only substitutes lifting variables by other lifting variables and hence does not introduce lifting variables. Furthermore by Lemma~\ref{lemma:tau_is_specialisation}, $\tau$ only substitutes lifting variables for other lifting variables, whose corresponding term is more specialised. Hence if there exists an arrow from a lifting variable to $\newgam\occ{z_i}$ according to this lemma, it is also an appropriate arrow if $\newgam\occ{z_i}$ is replaced by $\newgam\occ{z_i}\tau$.
 
 
-	We now distinguish the two cases under which a new term $\newgam\occ{x_i}$ can occur in $\AI\de(C)$:
+	We now distinguish the two cases under which a new term $\newgam\occ{z_i}$ can occur in $\AI\de(C)$:
 
 	\begin{description}
 		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill
+
 
 			\textbf{The substitution can also introduce a grey term containing a delta term, make sure to handle that!}
 
 			\textbf{The substitution can also introduce a gamma term containing a delta term, make sure to handle that!}
 
-			\mytodo
+			\mytodo{continue here as soon as arrow pos issue is sorted out}
 
 		\item[Suppose for some variable $v$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $v\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill
 
 			As $v$ is affected by the unifier, it occurs in the literal being unified, say w.l.o.g.~in $l$ in $C_1$.
-			At one point in the unification algorithm, $v$ is substituted by an abstraction of $\newgam\occ{\delta_i}$.
-			Let $p$ be the position of the occurrence of $v$ in $l$ which leads to this situation.
-			Furthermore, let $p'$ be the position corresponding to $p$ in $l'$.
+			At some well-defined point in the unification algorithm, $v$ is substituted by an abstraction of $\newgam\occ{\delta_i}$.
+			Let $p$ be the position of the occurrence of $v$ in $l$ which causes this substitution.
+			Furthermore, let $p'$ be the position corresponding to $p$ in~$l'$.
 
-			Note that any arrow from or to $p'$ also applies to $p$ in $\arrFinal(C)$ and hence to $\newgam\occ{x_i}$ as they are merged due to occurring in the resolved literal.
+			Note that any arrow from or to $p'$ also applies to $p$ in $\arrFinal(C)$ and hence to $\newgam\occ{z_i}$ as they are merged due to occurring in the resolved literal.
 			So it suffices to show that there is an arrow from an appropriate lifting variable to $p'$. We denote the term at $p'$ by $t$.
 
 			Note that $t\sigma = \newgam\occ{\delta_i}$.
 			So $t$ is either a $\Gamma$-term containing a $\Delta$-term, in which case we know that there is an appropriate arrow by the induction hypothesis as $t$ occurs in $l'$ in $C_2$, or $t$ is an abstraction of $\newgam\occ{\delta_i}$, in which case we can assume the existence of an appropriate arrow by Remark~\substremarkref.
+			\todo{recheck this paragraphs w.r.t.~$\ltArrC$}
 			\qedhere
 
 			\begin{comment}

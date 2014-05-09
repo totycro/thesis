@@ -268,22 +268,12 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		Note that $C$ in $\mathcal{X}(C)$ denotes the position in the proof, not the set of possible positions of arrows.
 		This is because some literals are removed from the clause but not added to the interpolant, but their arrows can still matter by transitivity (cf.~example TODO).
 
-
-		%Merge the respective ids of $l$ and $\lnot l$ , i.e. their arrows. Their term structure will be the same, so all arrows point to valid positions.
-
-		%Each literal in $D$ ($E$) in $C$ is said to come from the respective literal in  $C_1$ ($C_2$). 
-		%If $l$ and/or $l'$ is added to $\PI(C)$, it comes from both $l$ and $l'$.
-
-
-		%Add $(p_1, p_2)$ to $\arr$ if $\poslit{p_i}$ comes from literal $l_i$ in a clause $D$ in an original clause set, $i\in\{1, 2\}$, (both from same $D$), and $(l_1.\posterm{p_1}, l_2.\posterm{p_2}) \in \arr{D}$ 
-
-
 \end{enumerate}
 
-\begin{prop}
+\begin{conj}
 	The position of arrows always ``exists'', i.e.~is not destroyed by lifting. If the literal occurs in $C$ or $\AI(C)$, then it points to some term whereever it exists.
 	\mytodo{write about that if the position exists in $C$ and $\AI(C)$, then the terms are the same, probably it's best to refer to some lemma}
-\end{prop}
+\end{conj}
 
 \subsection{algo}
 
@@ -416,8 +406,17 @@ $\arr'(C) = \{ (a,c) \mid  (a,c) \in  \arr(C) \spam\lor ((a,b) \in \arr(C) \land
 
 $\arrFinal(C) = \operatorname{TransitiveClosure}(\arr'(C))$
 
-$(p_1, p_2) \in \arrFinal(C)$ implies
-that $u_i$ occurs before $u_j$ in the quantifier prefix if $\pos(p_1) = u_i$ and $\pos(p_2) = u_j$ 
+The quantifiers are ordered such that $u_i \ltArrC u_j$ implies that $u_i$ is quantified before $u_j$ is.
+
+%$(p_1, p_2) \in \arrFinal(C)$ implies that $u_i$ occurs before $u_j$ in the quantifier prefix if $u_i$ is contained in $\pos(p_1)$ and  $u_j$ is contained in $\pos(p_2)$.
+
+\begin{defi}[Arrow-induced ordering on lifting variables]
+	For two lifting variables $u_i$ and $u_j$, $u_i \ltArrC u_j$ holds if there is some $(p_1, p_2) \in \arrFinal(C)$ such that $u_i$ is contained in $\pos(p_1)$ and  $u_j$ is contained in $\pos(p_2)$.
+\end{defi}
+
+\begin{conj}
+	$\arrFinal$ is acyclic and irreflexive.
+\end{conj}
 
 
 \clearpage
@@ -638,7 +637,6 @@ The following lemma works in the other proof, but the remark below shows why it 
 
 \begin{lemma}
 	\label{lemma:lifting_var_refers_to_abstraction_of_term}
-	%$(z_j \mapsto z_k) \in \tau$ implies that there is a substitution $\rho$ such that $\colterm{j} \rho = \colterm{k}$.
 	Let $a\cl = z_j$ a lifting variable for a term position $a\cl$ in $\AIclause(C)$. Then $a = \colterm{j}\rho$ for some substitution $\rho$.
 	Even more, if a substitution $z_j\mapsto z_k$ for lifting variables $z_j$ and $z_k$ occurs,
 	$z_k$ refers to exactly $\colterm{k}$ and there exists a substitution $\rho'$ such that $\colterm{k} = \colterm{j}\rho'$.
@@ -1045,8 +1043,16 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	It remains to show that $\lifgammanovar{\AI^\Delta(C)}$ with said quantifier block is entailed by $\Gamma$.
 
 	As a $\Gamma$-term $\colterm{i}$ in general contains lifting variables which lift $\Delta$-terms, we have to ensure that these are quantified before $y_i$ is.
-	Note that this implies that in $C$, a $\Delta$-term is contained in a $\Gamma$-term.
-	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result.
+	However by Lemma~\ref{lemma:arrows_for_lifting_terms}, $x_j \ltArrC y_i$ for $x_j$ occurring in $y_i$.
+
+
+%	Note that this implies that in $C$, a $\Delta$-term is contained in a $\Gamma$-term.
+%	As the quantifier prefix is ordered according to the arrows, Lemma~\ref{lemma:arrows_for_lifting_terms} gives the result.
+
+	\mytodo{In this formulation, all $\Gamma$-terms are overbound with the right lifting variable. 
+		in $\AI(C)$, $x_k$ might not stand for $\colterm{k}$, so we do need to show here that every $x_k$ can be replaced by the same $\colterm{i}$ for some $i$ (which is a specialisation, might be important for the proof). 
+		otherwise we can't generalise this to $\AI(C)$, it would only hold for $\lifgamma(\AI^\Delta(C))$
+	}
 \end{proof}
 
 \begin{defi}[Unification algorithm]
@@ -1284,7 +1290,7 @@ Ontology of cases of main lemma:
 
 	If $\hat u$ is at position $p$ in $l$, let $\hat u'$ be the term at position $p$ in $l'$. $\hat u'$ is an abstraction of $\delta_i$, so a variable or a $\Delta$-term.
 
-	\textbf{Cases: $\hat u$ vs $\gamma_j\occur{u}$ first}
+	\textbf{Cases: $\hat u$ vs $\gamma_j\occur{u}$}
 	\begin{compactitem}
 	\item $\hat u$ is a grey occurrence 
 
