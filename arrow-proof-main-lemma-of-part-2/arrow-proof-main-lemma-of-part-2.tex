@@ -182,14 +182,54 @@
 	We now distinguish the two cases under which a new term $\newgam\occ{z_i}$ can occur in $\AI\de(C)$:
 
 	\begin{description}
-		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill
+		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill\nopagebreak
 
+			Note that the position of $u$ in $\oldgam\occ{u}$ does not necessarily coincide with the position of $\delta_i$ in $\newgam\occ{\delta_i}$ as $u$ might be substituted for a grey term containing $\delta_i$, but we assume that $u$ is the variable which is substituted for a term containing $\delta_i$.
+
+			We have that $\lifboth{\oldgam\occ{u}\sigma}\tau = \newgam\occ{x_i}$.
+
+			\newcommand{\hatu}{\bm\hat u}
+			At some well-defined point of application of the unification algorithm, $u$ is substituted by an abstraction of a term which contains $\delta_i$. This occurrence of $u$ is in $l$ and we denote it by $\hatu$.
+			We furthermore denote the term at the corresponding position in $l'$ by~$\hatu'$.
+
+			We distinguish cases based on the occurrences of $\hatu$ and $\hatu'$.
+			\begin{itemize}
+					\item Suppose $\hatu$ is a grey occurrence.
+						Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, there is an arrow from $\hatu$ to $\gamma_j\occ{u}$ in $\arrFinal(C)$.
+						As $\hatu\sigma$ is a term containing the $\Delta$-term $\delta_i$, the term at the position of $\hatu$ in $\AI\de(C)$ is $\lifboth{\hatu\sigma}\tau$, which by assumption contains $x_i$. 
+						But there is an arrow from this term containing $x_i$ to $\newgam\occ{x_i}$, so $z_j \ltArrC x_i$.
+
+
+						\begin{comment}
+						As $\hatu$ and $\hatu'$ are at corresponding positions in the resolved literal, their arrows are merged, so it suffices to show that there is an arrow from a term containing an occurrence of $x_i$ to the position of $\hatu'$.
+
+						\begin{itemize}
+								\item Suppose $\hatu'$ is a term which does not contain a $\Delta$-term.
+									Then as $\hatu'\sigma$ is a term containing a $\Delta$-term, we know that $\hatu'$ contains a variable, say $v$, for which we have that $v\sigma$ is a term which contains a $\Delta$-term.
+									Then by Remark~\substremarkref, we can assume that there is an arrow from a term containing an occurrence of $x_i$ to the position of $\hatu'$.
+
+									\item Suppose that $\hatu'$ is a term containing a $\Delta$-term.
+										Then as $\hatu\sigma=\hatu'\sigma$, 
+
+						\end{itemize}
+					\end{comment}
+
+						
+
+					\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Gamma$-term.
+
+						\mytodo{}
+
+					\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Delta$-term.
+
+						\mytodo{}
+			\end{itemize}
 
 			\textbf{The substitution can also introduce a grey term containing a delta term, make sure to handle that!}
 
 			\textbf{The substitution can also introduce a gamma term containing a delta term, make sure to handle that!}
 
-			\mytodo{continue here as soon as arrow pos issue is sorted out}
+			\textbf{$\Ra$ what if it is overbound?}
 
 		\item[Suppose for some variable $v$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $v\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill
 
