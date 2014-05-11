@@ -131,7 +131,7 @@
 
 \newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
 
-\def\proofSkipAmount{ \vskip -0.3em}
+%\def\proofSkipAmount{ \vskip -0.3em}
 
 \usepackage{refcheck}
 
@@ -163,7 +163,7 @@
 	We proceed by induction.
 	For the base case, note that no multicolored terms occur in inital clauses, so no lifting term can occur inside of a $\Gamma$-term.
 
-	\newcommand{\oldgam}{\bm\tilde\gamma_j} 
+	\newcommand{\oldgam}{\bm\tilde\gamma_{j\bm'}} 
 	\newcommand{\newgam}{\gamma_j} % this should correspond with the statement, and there, the symbol should be plain (also below)
 
 	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
@@ -182,47 +182,92 @@
 	We now distinguish the two cases under which a new term $\newgam\occ{z_i}$ can occur in $\AI\de(C)$:
 
 	\begin{description}
-		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill\nopagebreak
+		\item[Suppose for some $\Gamma$-term $\oldgam\occ{u}$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $u\sigma$ contains a $\Delta$-term.]\hfill\nopagebreak
 
-			Note that the position of $u$ in $\oldgam\occ{u}$ does not necessarily coincide with the position of $\delta_i$ in $\newgam\occ{\delta_i}$ as $u$ might be substituted for a grey term containing $\delta_i$, but we assume that $u$ is the variable which is substituted for a term containing $\delta_i$.
+			Hence we have that $(\oldgam\occ{u})\sigma = \newgam\occ{\delta_i}$ for some $i$.
+			Note that the position of $u$ in $\oldgam\occ{u}$ does not necessarily coincide with the position of $\delta_i$ in $\newgam\occ{\delta_i}$ as $u$ might be substituted by $\sigma$ for a grey term containing $\delta_i$.
 
-			We have that $\lifboth{\oldgam\occ{u}\sigma}\tau = \newgam\occ{x_i}$.
+			We have that $\lifdeltanovar{\oldgam\occ{u}\sigma}\tau = \newgam\occ{x_i}$.
 
-			\newcommand{\hatu}{\bm\hat u}
+			\newcommand{\hatu}{{\bm\hat u}}
+			\newcommand{\hatuPrime}{t_{\bm\hat u}}
 			At some well-defined point of application of the unification algorithm, $u$ is substituted by an abstraction of a term which contains $\delta_i$. This occurrence of $u$ is in $l$ and we denote it by $\hatu$.
-			We furthermore denote the term at the corresponding position in $l'$ by~$\hatu'$.
+			We furthermore denote the term at the corresponding position in $l'$ by~$\hatuPrime$.
 
-			We distinguish cases based on the occurrences of $\hatu$ and $\hatu'$.
+			We distinguish cases based on the occurrences of $\hatu$ and $\hatuPrime$.
 			\begin{itemize}
-					\item Suppose $\hatu$ is a grey occurrence.
-						Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, there is an arrow from $\hatu$ to $\gamma_j\occ{u}$ in $\arrFinal(C)$.
-						As $\hatu\sigma$ is a term containing the $\Delta$-term $\delta_i$, the term at the position of $\hatu$ in $\AI\de(C)$ is $\lifboth{\hatu\sigma}\tau$, which by assumption contains $x_i$. 
-						But there is an arrow from this term containing $x_i$ to $\newgam\occ{x_i}$, so $z_j \ltArrC x_i$.
+				\item Suppose $\hatu$ is a grey occurrence.
+
+					\begin{figure}[h]
+						\begin{prooftree}
+							\AxiomCm{C_1: P(\oldgam\occ{u}) \lor Q(\hatu)}
+							\AxiomCm{C_2: \lnot Q(\hatuPrime)}
+							\BinaryInfCm{C: P(\newgam\occ{\delta_i})}
+						\end{prooftree} 
+						\caption{Example for this case}
+					\end{figure}
+
+					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, there is an arrow from $\hatu$ to $\gamma_j\occ{u}$ in $\arrFinal(C)$.
+					As $\hatu\sigma$ is a term containing the $\Delta$-term $\delta_i$, the term at the position of $\hatu$ in $\AI\de(C)$ is $\lifboth{\hatu\sigma}\tau$, which by assumption contains $x_i$. 
+					But there is an arrow from this term containing $x_i$ to $\newgam\occ{x_i}$, so $z_j \ltArrC x_i$.
 
 
-						\begin{comment}
-						As $\hatu$ and $\hatu'$ are at corresponding positions in the resolved literal, their arrows are merged, so it suffices to show that there is an arrow from a term containing an occurrence of $x_i$ to the position of $\hatu'$.
+					\begin{comment}% version with "less induction hypothesis"
+						As $\hatu$ and $\hatuPrime$ are at corresponding positions in the resolved literal, their arrows are merged, so it suffices to show that there is an arrow from a term containing an occurrence of $x_i$ to the position of $\hatuPrime$.
 
-						\begin{itemize}
-								\item Suppose $\hatu'$ is a term which does not contain a $\Delta$-term.
-									Then as $\hatu'\sigma$ is a term containing a $\Delta$-term, we know that $\hatu'$ contains a variable, say $v$, for which we have that $v\sigma$ is a term which contains a $\Delta$-term.
-									Then by Remark~\substremarkref, we can assume that there is an arrow from a term containing an occurrence of $x_i$ to the position of $\hatu'$.
+						\begin{itemize} 
+							\item Suppose $\hatuPrime$ is a term which does not contain a $\Delta$-term.
+								Then as $\hatuPrime\sigma$ is a term containing a $\Delta$-term, we know that $\hatuPrime$ contains a variable, say $v$, for which we have that $v\sigma$ is a term which contains a $\Delta$-term.
+								Then by Remark~\substremarkref, we can assume that there is an arrow from a term containing an occurrence of $x_i$ to the position of $\hatuPrime$.
 
-									\item Suppose that $\hatu'$ is a term containing a $\Delta$-term.
-										Then as $\hatu\sigma=\hatu'\sigma$, 
+							\item Suppose that $\hatuPrime$ is a term containing a $\Delta$-term.
+								Then as $\hatu\sigma=\hatuPrime\sigma$, 
 
 						\end{itemize}
 					\end{comment}
 
-						
 
-					\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Gamma$-term.
+				\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Gamma$-term.
 
-						\mytodo{}
+					\begin{figure}[h]
+						\begin{prooftree}
+							\AxiomCm{C_1: P(\oldgam\occ{u}) \lor Q(\gamma_k\occurat{\hatu}{p}) }
+							\AxiomCm{C_2: \lnot Q(\gamma_{m}\occurat{\hatuPrime}{p})}
+							\BinaryInfCm{C: P(\newgam\occ{\delta_i})}
+						\end{prooftree} 
+						\begin{prooftree}
+							\AxiomCm{C_1: Q(\oldgam\occ{\hatu}) }
+							\AxiomCm{C_2: \lnot Q(\gamma_k\occ{\hatuPrime})}
+							\BinaryInfCm{C: \square }
+							\noLine
+							\UnaryInfCm{\comm{\newgam\occ{\delta_i}\text{ occurs in the interpolant}}}
+						\end{prooftree} 
+						\caption{Examples for this case}
+					\end{figure}
 
-					\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Delta$-term.
+					Then either $\hatu$ is the occurrence of $u$ in $\oldgam\occ{\hatu}$ or it occurs in a different $\Gamma$-term~$\gamma_j\occ{\hatu}$.
+					In the latter case, by Lemma~\ref{lemma:arrow_from_colored_to_colored}, there is a merge edge between $\oldgam\occ{\hatu}$ and $\gamma_j\occ{\hatu}$. 
+					Hence in both cases, it suffices to show that there is an arrow from a term containing an occurrence of $z_i$ to $\hatuPrime$.
 
-						\mytodo{}
+					We distinguish on the shape of $\hatuPrime$:
+					\begin{itemize}
+						\item $\hatuPrime$ is a variable or a grey term.
+							If $\hatuPrime$ is a grey term, then it contains a variable that is be substituted by $\sigma$ by a term which contains a $\Delta$-term as $u\sigma = \hatuPrime\sigma$ is a term containing a $\Delta$-term.                                                                                                                              
+							However this is true for the case where $\hatuPrime$ is a variable.
+							We denote by $v$ either $\hatuPrime$ if it is a variable, or the variable in $\hatuPrime$ which is substituted by a term containing a $\Delta$-term in case $\hatuPrime$ is a grey term.
+
+							In the course of the unification algorithm, there are further unifications of $v$ since we know that $u\sigma = v\sigma$ is a term containing a $\Delta$-term. 
+							Therefore by Remark~\substremarkref, we can assume that there is an appropriate arrow to $\hatuPrime$.
+
+						\item $\hatuPrime$ is a grey term.
+
+
+					\end{itemize}
+
+
+				\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Delta$-term.
+
+					\mytodo{}
 			\end{itemize}
 
 			\textbf{The substitution can also introduce a grey term containing a delta term, make sure to handle that!}
@@ -231,8 +276,7 @@
 
 			\textbf{$\Ra$ what if it is overbound?}
 
-		\item[Suppose for some variable $v$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $v\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill
-
+		\item[Suppose for some variable $v$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $v\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill\\
 			As $v$ is affected by the unifier, it occurs in the literal being unified, say w.l.o.g.~in $l$ in $C_1$.
 			At some well-defined point in the unification algorithm, $v$ is substituted by an abstraction of $\newgam\occ{\delta_i}$.
 			Let $p$ be the position of the occurrence of $v$ in $l$ which causes this substitution.
@@ -257,14 +301,14 @@
 						$t$ is however an abstraction of $\newgam\occ{\delta_i}$, so it contains at least one variable which is substituted by a term $s$.
 						Hence by Remark~\substremarkref, we can assume that an appropriate arrow pointing to $t$ exists.
 
-							We distinguish based on the shape $s$:
-							\begin{itemize}
-								\item $s$ is a grey or $\Delta$-colored term containing a $\Delta$-term.
-									Then a $\Delta$-term is introduced into a $\Gamma$-term by means of unification, so by the respective case of the proof, there is an arrow from an appropriate lifting variable to~$t$.
+						We distinguish based on the shape $s$:
+						\begin{itemize}
+							\item $s$ is a grey or $\Delta$-colored term containing a $\Delta$-term.
+								Then a $\Delta$-term is introduced into a $\Gamma$-term by means of unification, so by the respective case of the proof, there is an arrow from an appropriate lifting variable to~$t$.
 
-								\item $s$ is a multicolored $\Gamma$-term.
-									Then by Remark~\substremarkref, we can assume that an appropriate arrow pointing to $t$ exists.
-							\end{itemize}
+							\item $s$ is a multicolored $\Gamma$-term.
+								Then by Remark~\substremarkref, we can assume that an appropriate arrow pointing to $t$ exists.
+						\end{itemize}
 					\item $t$ is a $\Gamma$-term containing a $\Delta$-term.
 				\end{itemize}
 			\end{comment}
