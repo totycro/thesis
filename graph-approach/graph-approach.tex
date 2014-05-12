@@ -31,7 +31,7 @@
 
 \input{../latex_header.tex}
 
-% subsections also in toc
+% sections also in toc
 \setcounter{tocdepth}{2}
 
 %\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
@@ -129,7 +129,7 @@
 \newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
 \newcommand{\p}[1]{\stackrel{\Pi}{#1}}
 
-\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+\newcommand{\e}[1]{\vskip .7em   \section*{#1}}
 
 %\def\proofSkipAmount{ \vskip -0.3em}
 
@@ -155,7 +155,7 @@ color of component is color of some term in it (all the same)
 per resolution step: 
 oppositely colored components are not unifiable
 
-\subsection*{Components}
+\section*{Components}
 
 nodes: max col term occurrences and variables in grey occurrences.
 
@@ -175,11 +175,11 @@ nodes: max col term occurrences and variables in grey occurrences.
 
 \end{enumerate}
 
-quantifier ordering: Build condensation of $G(C)$. If in the condensation there is a path from a node containing a term containing $u_i$ to a node containing term containing $u_j$, then $u_i \ltArrC u_j$.
+quantifier ordering: Build $\arr(C)$, which is the condensation of $G(C)$. If in the condensation there is a path from a node containing a term containing $u_i$ to a node containing term containing $u_j$, then $u_i \ltAC u_j$.
 
-\subsection*{graph components visualised}
+\section*{graph components visualised}
 
-\subsubsection*{initially}
+\subsection*{initially}
 \begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
 	\node[mynode] (1) {$\Gamma$-$t\occ{x}$};
 	\node[mynode] (2) [below of=1] {$x$};
@@ -197,16 +197,17 @@ quantifier ordering: Build condensation of $G(C)$. If in the condensation there 
 
 Note: initially, all colored terms are in one component
 
-\subsubsection*{in the derivation, single color}
+\subsection*{in the derivation, single color}
 \begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
 	\node[mynode] (1) {$\Gamma$-$t\occ{x, y}$};
 	\node[mynode] (2) [below left of=1] {$x$};
 	\node[mynode] (3) [below right of=1] {$y$};
 	\node[mynode] (4) [below of=2]{$\Gamma$-$t\occ{x, y}$};
-	\node[mynode] (5) [below of=3]{$\Delta$-$t\occ{x}$};
+	\node[mynode] (5) [below of=3]{$\Delta$-$t\occ{y}$};
 	\node[mynode] (6) [above left of=2] {$\Delta$-$t\occ{x}$};
 	\node[mynode] (7) [right of=3] {$z$};
 	\node[mynode] (8) [above of=7] {$\Gamma$-$t\occ{z}$};
+	\node[mynode] (9) [below of=6] {$x$};
 
 	\draw[->] (2) to (1);
 	\draw[->] (3) to (1);
@@ -215,12 +216,13 @@ Note: initially, all colored terms are in one component
 	\draw[->] (3) to (5);
 	\draw[->] (2) to (6);
 	\draw[->] (7) to (8);
+	\draw[->] (9) to (6);
 \end{tikzpicture}
 
 Note: $\Gamma$- and $\Delta$-terms can not be merged (unified). All other combinations are possible.
 
 
-\subsubsection*{in the derivation}
+\subsection*{in the derivation}
 $C_1$:
 \begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
 	\node[mynode] (1) {$\Gamma$-$t\occ{x}$};
@@ -247,9 +249,82 @@ $C$ with $x$ unified with a $\Delta$-term, say $g\occ{y}$:\newline
 	\draw[->] (1) to (0);
 \end{tikzpicture}
 
+\section*{proofs}
+\begin{conj}[Lemma 1]
+	If a variable has a grey and a colored occurrence, there is an arrow between the component containing the grey occurrence and the component containing the colored occurrence (in the condensation graph).
+\end{conj}
+\begin{proof}
+	Induction start is easy.
+	
+	Induction step:
+	Suppose the statement holds $C_1$ and $C_2$.
+
+	Note that no new grey components can be added, just merged.
+	Hence it suffices to show that the component of an arbitrary in $C$ newly added colored occurrence of a variable, say $x$, has an arrow starting from a grey component.
+
+	No component is ever added. $x$ is not unified as otherwise it would not exist anymore (the lemma statment requires the variable to occur).
+	A new colored occurrence of $x$ can be created by either putting $x$ into a colored term or by a colored occurrence of $x$ in the codomain of the unifier.
+
+	\begin{enumerate}
+			\item Putting $x$ into a colored term.
+				Then there is some $\gamma\occ{y}$ with $y\sigma = t\occ{x}$.
+				In the easy case, $y$ is just unified with $t\occ{x}$.\todo{``induction'' until we hit a term containing~$x$}{}
+				Let $\bhat y $ be the occurrence of $y$ in the resolved literal which causes a change of $y$ in the unification algorithm and $\bhat t\occ{x}$ the corresponding term at the same position in the other resolved literal.
+
+				Then the component of $\bhat y$ is merged with the component of $\bhat t\occ{x}$.
+				
+				Afterwards, we have some other component of $x$ as well. This could be:
+				\begin{enumerate}
+					\item in the same clause as $\bhat t\occ{x}$.
+
+						Then distinguish on the the shape of $\bhat t\occ{x}$:
+						
+						\begin{itemize}
+								\item
+						Either it is grey, then $\bhat y$ is grey as well and we have an arrow by the induction hypothesis from $\bhat y$ to $\gamma\occ{y}$.
+
+					\item Otherwise it is colored. Then by the induction hypothesis, as there exists a grey component of $x$ in this clause, there is an arrow to $\bhat t\occ{x}$. By some Lemma yet to define, there either is a merge arrow between $\gamma\occ{y}$ and $\bhat y$, which is also a colored term, or there is a grey occurrence of $y$ with arrows to the two colored occurrences. in the first case, we are done, and in the second ???
+
+						\mytodo{ICI}
+
+						\mytodo{ICI}
+
+						\mytodo{ICI}
+
+						\mytodo{ICI}
+
+						\mytodo{sheet}
+
+						\mytodo{ICI}
+
+						\mytodo{ICI}
+
+						\mytodo{ICI}
+
+						\mytodo{ICI}
+
+						\mytodo{ICI}
+						\end{itemize}
 
 
-\subsection*{random notes}
+						?? as some var which is unified to $x$ ???
+					\item in the same clause as $\bhat y$ in the form of a component which is called $y$ in $C_i$ for some $i$.
+						By the subst, it's now $x$.
+						Then we have an arrow by the induction hypothesis from the component of $y$ to the component of $\gamma\occ{y}$.
+
+						\mytodo{what if $y$ is substituted by a colored term containing $x$?}
+
+				\end{enumerate}
+
+		\end{enumerate}
+
+\end{proof}
+
+\begin{conj}[Conjecture 4]
+	Suppose in $\AI\de(C)$ a maximal $\Gamma$-term $\gamma_j\occ{z_i}$ contains a lifting variable $z_i$. Then $z_i \ltAC z_j$.
+\end{conj}
+
+\section*{random notes}
 \begin{enumerate}
 		\item
 			if two variable-nodes in the condensation are connected when disregarding the arrow direction, they occur in the same clause.
