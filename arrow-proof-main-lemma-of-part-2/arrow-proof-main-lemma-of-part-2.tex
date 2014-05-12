@@ -141,16 +141,62 @@
 \newcommand{\newterm}{^*}
 \newcommand{\de}{^\Delta}
 
+unification is for resolved literals.
+
+connections between resolved literals and the rest of the clauses is covered by arrows.
+
+if a term enters, merge arrows ensure that everything is propagated.
+
+the special thing about colored occurrences is the fact that they can create multicolored terms in cooperation with grey occurrences..
+
+a variable only occurs in a clause if it was never substituted by anything. Hence in particular all grey occurrences are ``original'' (TODO: renamings of variables)
+
+Let $u$ be a grey occurrence.
+let $f(u)$ be a colored occurrence.
+either it is original, then we are fine by arrow propagation.
+otherwise it has been introduced, but then it has used the network of another variable.
+
+more precisely: %a variable from another clause occurs in a related literal 
+a variable $v$ occurs in a related literal in a related position in another clause as $u$ in $f(u)$.
+so the variable is substituted by a term containing $u$, say $t\occ{u}$
+the arrows at the entry points are merged.
+
+effect: 
+$t\occ{u}$ occurs at every grey occurrence of $v$. all arrows mentioning them are merged with the ones mentioning the entry point.
+this is justified as the terms there appear ``as they are'', i.e.\ as they are produced at the entry point.
+
+however a colored occurrence cannot be produced from a grey occurrence ($\mgu(x, f(u))$) but only if a grey occ is in the literal and a colored occ is elsewhere in the clause (the network of the other var). but then there are (directed) arrows.
+
+
+Every variable has a connected network in a clause. 
+
+there is a barrier between colored terms.
+
+~
+
+~
+
 
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_colored}
-	Let $x$ be a variable in $\AIclause\de(C)$.
-	Suppose there is a colored and a grey occurrence of $x$.
-	Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$.
+	Let $x$ be a variable in $\AIclause\de(C)$ which has a grey occurrence $p$ and a colored occurrence $q$. 
+	Then there is an arrow in $\arr(C)$ from a term containing $p$ to a term containing $q$.
+	%Suppose there is a colored and a grey occurrence of $x$.
+	%Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$ in \mytodo{}.
 	\comm{Should also hold for all of $\AI\de$, but is currently not needed in the proof}
 \end{lemma}
 \begin{proof}
-	\mytodo{}
+	For clauses $C$ in the initial clause set, $\arr(C)$ is defined to contain an arrow from every grey occurrence to every colored occurrence for every variable occurring in the clause.  
+
+	For the induction step, suppose the lemma holds for $C_1$ and $C_2$. 
+	Note that $C_1$ and $C_2$ are variable disjoint.
+	\mytodo{how to continue without checking every single case?}
+
+	Note that terms are only changed by means of substitution. 
+
+	If a variable is substituted, it does not occur any further in the derivation. 
+
+	If a variable is substituted by a term containing variables, this is fine because the original arrows still apply for the new terms. 
 \end{proof}
 
 \begin{lemma}
@@ -215,7 +261,7 @@
 \end{conj}
 \begin{proof}
 	We proceed by induction.
-	For the base case, note that no multicolored terms occur in inital clauses, so no lifting term can occur inside of a $\Gamma$-term.
+	For the base case, note that no multicolored terms occur in initial clauses, so no lifting term can occur inside of a $\Gamma$-term.
 
 	\newcommand{\oldgam}{\bm\tilde\gamma_{j\bm'}} 
 	\newcommand{\newgam}{\gamma_j} % this should correspond with the statement, and there, the symbol should be plain (also below)
@@ -223,7 +269,7 @@
 	Suppose a clause $C$ is the result of a resolution of $C_1: D \lor l$ and $C_2: E \lor \lnot l$ with $l\sigma = l'\sigma$.
 	Furthermore suppose that for every lifting term inside a $\Gamma$-term in the clauses $C_1$ and $C_2$ of the refutation, for every term of the form $\gamma_j\occ{z_i}$ we have that $z_i \ltArrCOne z_j$ or $z_i \ltArrCTwo z_j$ respectively. Hence there is an arrow $(p_1, p_2)$ in $\arrFinal(C_1)$ or $\arrFinal(C_2)$ such that $z_i$ is contained in $\pos(p_1)$ and $z_j$ is contained in $\pos(p_2)$.
 	In $\AI\de(C)$, $\pos(p_1)$ contains $\lifboth{z_i\sigma}\tau = z_i\tau$ and $\pos(p_2)$ contains $\lifboth{z_j\sigma}\tau = z_j\tau$.
-	Hence the indicies of the lifting variables might change, but this renaming does not affect the relation of the objects as $\arrFinal(C_1) \cup \arrFinal(C_2) \subseteq \arrFinal(C)$.
+	Hence the indices of the lifting variables might change, but this renaming does not affect the relation of the objects as $\arrFinal(C_1) \cup \arrFinal(C_2) \subseteq \arrFinal(C)$.
 
 
 	We show that $z_i \ltArrC z_j $ holds true also for every new term of the form $\newgam\occ{z_i}$ for some $j, i$ in $\AI\de(C)$. By ``new'', we mean terms which are not present in $\AI\de(C_1)$ or $\AI\de(C_2)$.
@@ -261,7 +307,7 @@
 						\caption{Example for this case}
 					\end{figure}
 
-					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, there is an arrow from $\hatu$ to $\gamma_j\occ{u}$ in $\arrFinal(C)$.
+					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, there is an arrow from a term containing $\hatu$ to a term containing $\gamma_j\occ{u}$ in $\arrFinal(C)$.
 					As $\hatu\sigma$ is a term containing the $\Delta$-term $\delta_i$, the term at the position of $\hatu$ in $\AI\de(C)$ is $\lifboth{\hatu\sigma}\tau$, which by assumption contains $z_i$. 
 					But there is an arrow from this term containing $z_i$ to $\newgam\occ{z_i}$, so $z_i \ltArrC z_j$.
 
