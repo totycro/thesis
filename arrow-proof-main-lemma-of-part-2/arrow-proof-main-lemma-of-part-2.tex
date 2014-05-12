@@ -141,6 +141,60 @@
 \newcommand{\newterm}{^*}
 \newcommand{\de}{^\Delta}
 
+
+\begin{lemma}
+	\label{lemma:arrow_from_grey_to_colored}
+	Let $x$ be a variable in $\AIclause\de(C)$.
+	Suppose there is a colored and a grey occurrence of $x$.
+	Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$.
+	\comm{Should also hold for all of $\AI\de$, but is currently not needed in the proof}
+\end{lemma}
+\begin{proof}
+	\mytodo{}
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:arrow_from_colored_to_colored}
+	Let $x$ be a variable which occurs colored in $\AIclause\de(C)$ and again colored somewhere else in $\AI\de(C)$.
+	Then there is a merge edge between the maximal colored terms containing the two occurrences.
+	\comm{This is exactly the case we need, possibly show something more general}
+\end{lemma}
+\begin{proof}
+	\mytodo{}
+\end{proof}
+
+\begin{exa}
+	\label{exa:lifting_var_only_abstraction_in_arrow_proof}
+	$\Gamma = \{ Q(\gamma(x)) \lor P(x), \lnot Q(\gamma(z)), R(\dots)\}$\todo{$R$ only for coloring}
+
+	$\Delta = \{ \lnot P(\delta(y)) \lor R(y), \lnot R(a), Q(\dots) \}$\todo{$Q$ only for coloring}
+
+	$ a \sim x_k, \delta(y) \sim x_i, \delta(a) \sim x_j $
+
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid Q(\gamma(x)) \lor P(x) }
+		\AxiomCm{ \top \mid \lnot P(x_i) \lor R(y) }
+
+		\BinaryInfCm{ P(x_i) \mid Q(\gamma(x_i)) \lor R(y) }
+
+		\AxiomCm{ \top \mid \lnot R(x_k) }
+
+		\BinaryInfCm{ (\lnot R(x_k) \land P(x_i) ) \lor (R(x_k) \land \top)  \mid Q(\gamma(x_i)) }
+		\noLine
+		\UnaryInfCm{ P(x_i) \lor R(x_k)  \mid Q(\gamma(x_i)) }
+
+		\AxiomCm{ \bot \mid \lnot Q(\gamma(z)) }
+
+		\BinaryInfCm{ ( \lnot Q(x_j) \land ( P(x_i) \lor R(x_k) )) \lor (Q(x_j) \land \top)   \mid \square }
+		\noLine
+		\UnaryInfCm{   \lnot Q(x_j) \land (P(x_i) \lor R(x_k)) \mid \square }
+
+	\end{prooftree}
+
+	Gist: When $Q(\gamma(x_i))$ is the only symbol in $\AI\de(\cdot)$, the lifting var means $\delta(x)$, but in the actual derivation, it's $\delta(a)$. however $\tau$ fixes this.
+	So before $Q$ is resolved, there is an arrow, but with the wrong lifting var ($x_i$ instead of $x_j$)
+\end{exa}
+
 \newcommand{\substremarksym}{$\ast$}
 \newcommand{\substremarkref}{$(\ast)$}
 \begin{remark}[\substremarksym]
@@ -251,15 +305,14 @@
 
 					We distinguish on the shape of $\hatuPrime$:
 					\begin{itemize}
-						\item $\hatuPrime$ is a variable or a grey term.
-							If $\hatuPrime$ is a grey term, then it contains a variable that is be substituted by $\sigma$ by a term which contains a $\Delta$-term as $u\sigma = \hatuPrime\sigma$ is a term containing a $\Delta$-term.                                                                                                                              
-							However this is true for the case where $\hatuPrime$ is a variable.
-							We denote by $v$ either $\hatuPrime$ if it is a variable, or the variable in $\hatuPrime$ which is substituted by a term containing a $\Delta$-term in case $\hatuPrime$ is a grey term.
+							\item $\hatuPrime$ is a term which does not contain a $\Delta$-term.
+								Then it contains a variable that is be substituted by $\sigma$ by a term which contains a $\Delta$-term as $u\sigma = \hatuPrime\sigma$ is a term containing a $\Delta$-term.
+							We denote by $v$ the variable in $\hatuPrime$ which is substituted by a term containing a $\Delta$-term in case $\hatuPrime$ is a grey term.
 
 							In the course of the unification algorithm, there are further unifications of $v$ since we know that $u\sigma = v\sigma$ is a term containing a $\Delta$-term. 
 							Therefore by Remark~\substremarkref, we can assume that there is an appropriate arrow to $\hatuPrime$.
 
-						\item $\hatuPrime$ is a $\Delta$-term.
+						\item $\hatuPrime$ is a term which contains a $\Delta$-term.
 							As $\hatuPrime$ occurs in a $\Gamma$-term in $C_1$, say in $\gamma_m\occ{\hatuPrime}$, $C_1$ contains a multicolored $\Gamma$-term.
 							Hence the corresponding term in $\AI\de(C_1)$, is of the form $\gamma_m\occ{z_{i\bm '}}$ for some $i\bm'$. 
 							Observe that $i\bm'$ in general is not equal to $i$ as demonstrated in Example~\ref{exa:lifting_var_only_abstraction_in_arrow_proof}, even though we have that $\hatuPrime\sigma = u\sigma$.
@@ -276,29 +329,27 @@
 
 							Since $\tau$ is applied to every literal in $\AI\de(C)$ and in $\AI\de(C_1)$ an arrow from a term containing $z_{i\bm'}$ to $\hatuPrime$ exists,
 							the same arrow applied to $\AI\de(C)$ points from a term containing $z_{i\bm'}\tau = z_i$ to $\hatuPrime$.
-							Therefore $z_i \ltArrC z_j$
-							
-
-
-
-
-
-
+							Therefore $z_i \ltArrC z_j$.
 
 
 					\end{itemize}
 
 
 				\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Delta$-term.
+						\begin{prooftree}
+							\AxiomCm{C_1: P(\oldgam\occ{u}) \lor Q(\delta_k\occurat{\hatu}{p}) }
+							\AxiomCm{C_2: \lnot Q(\delta_{m}\occurat{\hatuPrime}{p})}
+							\BinaryInfCm{C: P(\newgam\occ{\delta_i})}
+						\end{prooftree} 
 
-					\mytodo{}
+						By Lemma~\ref{lemma:arrow_for_variables_in_differently_colored_terms}, \mytodo{}
+
+
 			\end{itemize}
 
 			\textbf{The substitution can also introduce a grey term containing a delta term, make sure to handle that!}
 
 			\textbf{The substitution can also introduce a gamma term containing a delta term, make sure to handle that!}
-
-			\textbf{$\Ra$ what if it is overbound?}
 
 		\item[Suppose for some variable $v$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $v\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill\\
 			As $v$ is affected by the unifier, it occurs in the literal being unified, say w.l.o.g.~in $l$ in $C_1$.
