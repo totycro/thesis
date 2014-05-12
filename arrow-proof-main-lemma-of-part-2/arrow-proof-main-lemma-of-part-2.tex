@@ -179,8 +179,8 @@ there is a barrier between colored terms.
 
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_colored}
-	Let $x$ be a variable in $\AIclause\de(C)$ which has a grey occurrence $p$ and a colored occurrence $q$. 
-	Then there is an arrow in $\arr(C)$ from a term containing $p$ to a term containing $q$.
+	Let $x$ be a variable in $\AIclause\de(C)$ which has a grey occurrence and a colored occurrence. 
+	Then there is an arrow in $\arr(C)$ from a term containing a grey occurrence to a term containing a colored occurrence.
 	%Suppose there is a colored and a grey occurrence of $x$.
 	%Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$ in \mytodo{}.
 	\comm{Should also hold for all of $\AI\de$, but is currently not needed in the proof}
@@ -201,7 +201,7 @@ there is a barrier between colored terms.
 
 \begin{lemma}
 	\label{lemma:arrow_from_colored_to_colored}
-	Let $x$ be a variable which occurs colored in $\AIclause\de(C)$ and again colored somewhere else in $\AI\de(C)$.
+	Let $x$ be a variable which occurs colored in $\AIclause\de(C)$ and again colored in the same color somewhere else in $\AI\de(C)$.
 	Then there is a merge edge between the maximal colored terms containing the two occurrences.
 	\comm{This is exactly the case we need, possibly show something more general}
 \end{lemma}

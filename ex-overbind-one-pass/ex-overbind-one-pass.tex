@@ -2043,7 +2043,7 @@ Huang would produce: $\forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_1) $
 	\RightLabelm{y\mapsto f(a)}
 	\BinaryInfCm{\forall x_1 \exists x_2( P(x_1) \lor R(x_2)) \mid \square}
 	\noLine
-	\UnaryInfCm{\color{gray} P(a) \lor R(g(f(a))}
+	\UnaryInfCm{\color{gray} P(a) \lor R(g(f(a)))}
 \end{prooftree}
 
 {\huge
@@ -2055,31 +2055,66 @@ Huang would produce: $\forall x_1 \exists x_2 P(x_1, x_2) \lor R(x_1) $
 }
 
 \clearpage
-\e{203b' -- many $\Sigma$-literals, coloring per symbol, all predicates grey}
+\section*{border cases: arrows not within supposedly connected components}
+
+\e{211a}
 
 \begin{prooftree}
-	\AxiomCm{ \p{\lnot S(x_1)}}
-
-	\AxiomCm{\p{ \lnot R(a)}}
-	\AxiomCm{\sig{ R(\arrowA x) \lor  \lnot P(f(\arrowB x)) \drawAB}}
-
-	\RightLabelm{x \mapsto a}
-	\BinaryInfCm{ R(a) \mid \lnot P(fa) }
-
-	\AxiomCm{ \sig{ P(\arrowA z) \lor Q(g(\arrowB z)) \drawAB} }
-
-	\RightLabelm{z \mapsto fa}
-	\BinaryInfCm{ P(fa) \lor R(a) \mid Q(gfa)  }
-
-
-	\AxiomCm{ \sig{ \lnot Q(\arrowA y) \lor S(h(\arrowB y)) \drawAB}}
-
-	\BinaryInfCm{ }
-	\BinaryInfCm{ }
-
+	\AxiomCm{Q(\hb x) \lor P(f(\hb x, a))}
+	\AxiomCm{\lnot Q(\ha y) \lor R(f(\ha y, b))}
+	\BinaryInfCm{Q(\arrowA\,\arrowE x) \mid P(\arrowB f(x, a))  \lor R(\arrowF f(x, b))}\drawAB\drawEF
+	\noLine\UnaryInfC{}\noLine\UnaryInfC{$\Ra$ no arr between $P$ and $R$}
 \end{prooftree}
-TODO
 
+\e{211a'}
+
+\begin{prooftree}
+	\AxiomCm{\sig{Q(\hb x) \lor P(f(\hb x, a))}}
+	\AxiomCm{\sig{\lnot Q(\ha y) \lor R(f(\ha y, b))}}
+	\BinaryInfCm{Q(\arrowA\,\arrowE x) \mid P(\arrowB f(x, a))  \lor R(\arrowF f(x, b))}\drawAB\drawEF
+	\noLine\UnaryInfC{}
+
+	\AxiomCm{\sig{ \lnot P(\arrowD f(\hc u, z)) \lor S(\arrowC \hc u))}} \drawCD
+	\noLine\UnaryInfC{}
+	\AxiomCm{\p{\lnot S(c) }}
+	\BinaryInfCm{{ S(\arrowC c) \mid \lnot P(\arrowD f(c, z)) }} \drawCD
+	\noLine\UnaryInfC{}
+	\BinaryInfCm{ (P(f(c, a) \land S(c)) \lor (\lnot P(f(c, a)) \land Q(c))) \mid R(f(c, b))}
+\end{prooftree}
+
+\begin{multicols}{6}
+$ c \sim x_1$
+
+$ f(c, a) \sim y_2$
+
+$ f(c, b) \sim y_3$
+\end{multicols}
+$ (P(\arrowD y_2) \land S(\arrowC x_1)) \lor (\lnot P(\arrowF y_2) \land Q(\arrowA\,\arrowE x_1)) \mid R(\arrowB y_3) $ \drawAB \drawEF \drawCD
+
+$ \forall x_1 \exists y_2 \exists y_3$
+
+\textbf{this is not valid per se as the left hand side only contains $\Sigma$-formulas, but it probably could be fixed by adding some $\Pi$-inferences}
+
+Lesson is: no extra arrows needed, if a term enters, it does so via $x$, but there is a variable from the grey $x$ to both colored $x$.
+
+\e{211b}
+\begin{prooftree}
+	\AxiomCm{Q(\hb x) \lor P(f(\hb x))}
+	\AxiomCm{R(\ha y) \lor \lnot P(f(\ha y))}
+	\BinaryInfCm{ P(\arrowB\,\arrowF f(x)) \mid Q(\arrowA x) \lor R(\arrowE x)  }\drawAB\drawEF
+	\noLine\UnaryInfC{}\noLine\UnaryInfC{$\Ra$ no arr between $Q$ and $R$}
+\end{prooftree}
+
+\e{211b'}
+\begin{prooftree}
+	\AxiomCm{\sig{Q(\hb x) \lor P(f(\hb x))}}
+	\AxiomCm{\sig{R(\ha y) \lor \lnot P(f(\ha y))}}
+	\BinaryInfCm{ P(\arrowB\,\arrowF f(x)) \mid Q(\arrowA x) \lor R(\arrowE x)  }\drawAB\drawEF
+	\noLine\UnaryInfC{}
+	\AxiomCm{\p{\lnot Q(a)}}
+	\BinaryInfCm{ P(\arrowB\,\arrowF f(a)) \lor  Q(\arrowA a) \mid  R(\arrowE a)  }\drawAB\drawEF
+	\noLine\UnaryInfC{}\noLine\UnaryInfC{conjecture: $Q$ and $R$ do not need arrows as they are lifted by the same variable anyway, so constraints on $Q$ do the work}
+\end{prooftree}
 
 
 

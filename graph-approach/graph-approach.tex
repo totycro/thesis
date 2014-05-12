@@ -1,0 +1,258 @@
+\documentclass[,%fontsize=11pt,%
+	paper=a4,% 
+	%landscape,
+	DIV10, % mehr text pro seite als defaultyyp
+	%DIV10, 
+	%DIV=calc,%
+	twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+% subsections also in toc
+\setcounter{tocdepth}{2}
+
+%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
+\newcommand{\thmqed}{$\square$} % for thms without proof
+\newcommand{\propqed}{$\square$} % for props without proof
+\declaretheorem[title=Theorem]{thm}
+\declaretheorem[title=Proposition,sibling=thm]{prop}
+%\declaretheorem[title=Lemma,parent=chapter]{lemma}
+\declaretheorem[sibling=thm]{lemma}
+\declaretheorem[title=Corollary,sibling=thm]{corr}
+\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
+%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
+\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
+
+\declaretheorem[sibling=thm,title=Conjecture]{conj}
+
+\declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
+
+%\def\proofSkipAmount{ \vskip -0.5em}
+
+
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+%\def\proofSkipAmount{ \vskip -0.3em}
+
+\usepackage{refcheck}
+
+\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+\newcommand{\newterm}{^*}
+\newcommand{\de}{^\Delta}
+
+\begin{document}
+
+undirected edges (from $\marr$) are to be interpreted as two directed edges.
+
+$E(C) = \arr(C)\cup\marr(C)$
+
+$V(C) = V(E(C))$
+
+$G(C) = (V(C), E(C))$
+
+
+color of component is color of some term in it (all the same)
+
+per resolution step: 
+oppositely colored components are not unifiable
+
+\subsection*{Components}
+
+nodes: max col term occurrences and variables in grey occurrences.
+
+\begin{enumerate}
+	\item
+
+		components initially:
+		for every variable, all grey occurrences and all colored occurrences 
+
+	\item
+		resolution: 
+		components of $C_1$ and $C_2$ are carried over, some are merged.
+
+		$l\sigma = l'\sigma$
+
+		For each max col term $t$ in $l\sigma$: merge component of $t$ and $t'$.
+
+\end{enumerate}
+
+quantifier ordering: Build condensation of $G(C)$. If in the condensation there is a path from a node containing a term containing $u_i$ to a node containing term containing $u_j$, then $u_i \ltArrC u_j$.
+
+\subsection*{graph components visualised}
+
+\subsubsection*{initially}
+\begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
+	\node[mynode] (1) {$\Gamma$-$t\occ{x}$};
+	\node[mynode] (2) [below of=1] {$x$};
+
+	\draw[->] (2) to (1);
+\end{tikzpicture}
+\begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
+	\node[mynode] (1) {$\Gamma$-$t\occ{z, y}$};
+	\node[mynode] (2) [below left of=1] {$z$};
+	\node[mynode] (3) [below right of=1] {$y$};
+
+	\draw[->] (2) to (1);
+	\draw[->] (3) to (1);
+\end{tikzpicture}
+
+Note: initially, all colored terms are in one component
+
+\subsubsection*{in the derivation, single color}
+\begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
+	\node[mynode] (1) {$\Gamma$-$t\occ{x, y}$};
+	\node[mynode] (2) [below left of=1] {$x$};
+	\node[mynode] (3) [below right of=1] {$y$};
+	\node[mynode] (4) [below of=2]{$\Gamma$-$t\occ{x, y}$};
+	\node[mynode] (5) [below of=3]{$\Delta$-$t\occ{x}$};
+	\node[mynode] (6) [above left of=2] {$\Delta$-$t\occ{x}$};
+	\node[mynode] (7) [right of=3] {$z$};
+	\node[mynode] (8) [above of=7] {$\Gamma$-$t\occ{z}$};
+
+	\draw[->] (2) to (1);
+	\draw[->] (3) to (1);
+	\draw[->] (2) to (4);
+	\draw[->] (3) to (4);
+	\draw[->] (3) to (5);
+	\draw[->] (2) to (6);
+	\draw[->] (7) to (8);
+\end{tikzpicture}
+
+Note: $\Gamma$- and $\Delta$-terms can not be merged (unified). All other combinations are possible.
+
+
+\subsubsection*{in the derivation}
+$C_1$:
+\begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
+	\node[mynode] (1) {$\Gamma$-$t\occ{x}$};
+	\node[mynode] (2) [below of=1] {$x$};
+
+	\draw[->] (2) to (1);
+\end{tikzpicture}
+$C_2$:
+\begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
+	\node[mynode] (1) {$\Delta$-$t\occ{y}$};
+	\node[mynode] (2) [below of=1] {$y$};
+
+	\draw[->] (2) to (1);
+\end{tikzpicture}
+
+$C$ with $x$ unified with a $\Delta$-term, say $g\occ{y}$:\newline
+\begin{tikzpicture}[mynode/.style={draw,circle},auto,node distance=2cm,shorten >=1pt,thick,>=stealth']
+
+	\node[mynode] (1) {$\Delta$-$t\occ{y}$};
+	\node[mynode] (2) [below of=1] {$y$};
+	\node[mynode] (0) [left of=1]{$\Gamma$-$t\occ{g\occ{y}}$};
+
+	\draw[->] (2) to (1);
+	\draw[->] (1) to (0);
+\end{tikzpicture}
+
+
+
+\subsection*{random notes}
+\begin{enumerate}
+		\item
+			if two variable-nodes in the condensation are connected when disregarding the arrow direction, they occur in the same clause.
+\end{enumerate}
+
+\end{document}
