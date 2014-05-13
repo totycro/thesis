@@ -247,12 +247,42 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		Note that $C$ in $\mathcal{X}(C)$ denotes the position in the proof, not the set of possible positions of arrows.
 		This is because some literals are removed from the clause but not added to the interpolant, but their arrows can still matter by transitivity (cf.~example TODO).
 
+	\item Factorisation. $C_1: D \lor l \lor l'$, $\sigma = \mgu(l, l')$, then $C: (D\lor l)\sigma$.
+
+		Merge arrows in literal.
+
+		For $\mathcal{X} \in \{\arr, \warr\}$:
+
+		$\mathcal{X}(C) \stackrel{\operatorname{def}}{=} \mathcal{X}(C_1) \cup \{(a,c) \mid ((a,b)\in\mathcal{X}(C_1) \land \poslit(c) = l \land \posterm(c) = \posterm(b) \land \poslit(b) = l') \lor \text{\dots~other cases \dots}\}$
+
+
 \end{enumerate}
 
 \begin{conj}
 	The position of arrows always ``exists'', i.e.~is not destroyed by lifting. If the literal occurs in $C$ or $\AI(C)$, then it points to some term whereever it exists.
 	\mytodo{write about that if the position exists in $C$ and $\AI(C)$, then the terms are the same, probably it's best to refer to some lemma}
 \end{conj}
+
+\subsection{$\aiu$}
+
+$\aiu$ is a function which calculates a substitution, which is used to ensure that the lifting variables occurring $\AIclause$ are equal when the corresponding literals in the derivation are. This is necessary for resolved literals or factorised literals.
+
+Let $A(a_1, \dotsc, a_n)$ and $A(b_1, \dotsc, b_n)$ be literals.
+
+$\aiu(A(a_1, \dotsc, a_n), A(b_1, \dotsc, b_n)) \defeq \bigcup_{i=1}^n \aiu(a_i, b_i)$
+
+$ \aiu (a\fromclause, b\fromclause) \defeq$\newline
+$
+\begin{cases}
+	\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
+	\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$.
+	{\tiny
+
+		%More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
+
+}}\\
+\id & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
+\end{cases} $
 
 
 \subsection{$\AImatrix$ and $\AIclause$}
@@ -279,84 +309,78 @@ Here, we define $\AImatrix$, which represents the \emph{matrix} of what will be 
 				Let 
 				$\lifboth{l\cl\sigma} = A(a_1, \dotsc, a_n)$, $\lifboth{l\cl'\sigma} = A(b_1, \dotsc, b_n)$
 
-				$\aiu(A(a_1, \dotsc, a_n), A(b_1, \dotsc, b_n)) = \bigcup_{i=1}^n \aiu(a_i, b_i)$
+				$\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$
 
-				$ \aiu (a\fromclause, b\fromclause) =$\newline
-				$
-				\begin{cases}
-					\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
-					\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$.
-					{\tiny
-
-						%More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
-
-				}}\\
-				\id & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
-			\end{cases} $
-
-			$\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$
-
-
-			$\AIclause(C) =
-			\lifboth{\Big( (\AIclause(C_1) \setminus \{l\fromclause\}) \lor (\AIclause(C_2)\setminus \{l\fromclause'\}) \Big)\sigma} \tau$ 
+				$\AIclause(C) =
+				\lifboth{\Big( (\AIclause(C_1) \setminus \{l\fromclause\}) \lor (\AIclause(C_2)\setminus \{l\fromclause'\}) \Big)\sigma} \tau$ 
 
 
 
-			\begin{itemize}
-				\item if $l$ and $l'$ don't have the same color:
+				\begin{itemize}
+					\item if $l$ and $l'$ don't have the same color:
 
-					$\AImatrix(C) =
-					(\lnot {\lifboth{l'\fromclause\sigma}\tau} \land \lifboth{\AImatrix(C_1)\sigma}\tau) \lor
-					(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma) }\tau
-					$
-
-
-					%$\AImatrix(C) =
-					%\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma} $
+						$\AImatrix(C) =
+						(\lnot {\lifboth{l'\fromclause\sigma}\tau} \land \lifboth{\AImatrix(C_1)\sigma}\tau) \lor
+						(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma) }\tau
+						$
 
 
-					%		$\left.\begin{tabular}{l}
-					%		$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
-
-					%		$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
-					%\end{tabular}\right\} \lifboth $ with same overbinding!
+						%$\AImatrix(C) =
+						%\lifboth{\Big( (\lnot l \land \AImatrix(C_1)) \lor (l \land \AImatrix(C_2)) \Big) \sigma} $
 
 
-					%				$\lifboth{ \AImatrix(C)' \lor \AIclause(C)' } = \underbrace{\lifboth{ \AImatrix(C)' }}_{\AImatrix(C)} \lor \underbrace{\lifboth{\AIclause(C)'}}_{\AIclause(C)}$ 
+						%		$\left.\begin{tabular}{l}
+						%		$\AImatrix(C) = \lifboth{\AImatrix(C)' \sigma}$\\
+
+						%		$\AIclause(C) = \lifboth{\AIclause(C)' \sigma}$
+						%\end{tabular}\right\} \lifboth $ with same overbinding!
 
 
-				\item if $l$ and $l'$ are $\Gamma$-colored :
-
-					%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
-					%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
-					$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma} \tau$
-				\item if $l$ and $l'$ are $\Delta$-colored:
-
-					%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma$
-					$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma} \tau$
+						%				$\lifboth{ \AImatrix(C)' \lor \AIclause(C)' } = \underbrace{\lifboth{ \AImatrix(C)' }}_{\AImatrix(C)} \lor \underbrace{\lifboth{\AIclause(C)'}}_{\AIclause(C)}$ 
 
 
-			\end{itemize}
+					\item if $l$ and $l'$ are $\Gamma$-colored :
 
-		\item[Prose explanation of formal definition.]
-			$l\sigma = l'\sigma$, but $l\fromclause$ and $l\fromclause'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them.
+						%$\AImatrix(C) = \lifboth{( \AImatrix(C_1) \lor/\land \AImatrix(C_2) )\sigma}$
+						%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma$
+						$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \lor \AImatrix(C_2)\Big)\sigma} \tau$
+					\item if $l$ and $l'$ are $\Delta$-colored:
 
-			Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
-			($\Phi$-replacing-var vs $\Phi$-term cannot happen as $\Phi$-term is overbound as it has to be colored as otherwise the terms wouldn't unify).
-			Also apply these to substitutions in $\AIclause$ and $\AImatrix$ here.
-
-			$\aiu$ is defined on lifted terms of $\lifboth{l\fromclause\sigma}$ and $\lifboth{l\cl'\sigma}$, where the literals $l\fromclause$ and $l\fromclause'$
-			occur in $\AIclause(C_1)$, $\AIclause(C_2)$ such that for their corresponding $l$ and $l'$, $l\sigma = l'\sigma$.
-			Note that if one of the arguments of $\aiu$ has assigned a color, the other one either has none or the same color.
-			There cannot be a conflict as otherwise their original form would not be unifiable.
-
-			Note that $\aiu(a, b)$ is well-defined, i.e.~never maps a variable to two different values as each occurrence of some $x_j$ refers to a term with possible free variables, and since across the definition of $\aiu$, always the same substitution $\sigma$ is used as reference, every occurrence of $x_j$ will be mapped to the same variable. (NOTE: this is what yet unproven conjectures in the other pdf are trying to formalize.)
+						%as above but with  $\AImatrix(C)' = \Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma$
+						$\AImatrix(C) = \lifboth{\Big(\AImatrix(C_1) \land \AImatrix(C_2)\Big)\sigma} \tau$
 
 
-			$l\cl$ and $l'\cl$ are as they occur in $\AIclause(C_1)$ and $\AIclause(C_2)$. As the actual terms in the clause unify, we know that here, at least all terms have proper color after unification/lifting.
+				\end{itemize}
+
+			\item[Prose explanation of formal definition.]
+				$l\sigma = l'\sigma$, but $l\fromclause$ and $l\fromclause'$ might have been overbound with different variables. Still, they in a sense refer to the same ground literal, so we ``can just'' ``unify'' them.
+
+				Shape must be the same in the sense that grey terms are the same, otherwise there is $\Phi$-replacing-var vs $\Phi$-replacing-var (let arbitrary one win) or $\Phi$-term and $\Phi$-term (replace both with same var). 
+				($\Phi$-replacing-var vs $\Phi$-term cannot happen as $\Phi$-term is overbound as it has to be colored as otherwise the terms wouldn't unify).
+				Also apply these to substitutions in $\AIclause$ and $\AImatrix$ here.
+
+				$\aiu$ is defined on lifted terms of $\lifboth{l\fromclause\sigma}$ and $\lifboth{l\cl'\sigma}$, where the literals $l\fromclause$ and $l\fromclause'$
+				occur in $\AIclause(C_1)$, $\AIclause(C_2)$ such that for their corresponding $l$ and $l'$, $l\sigma = l'\sigma$.
+				Note that if one of the arguments of $\aiu$ has assigned a color, the other one either has none or the same color.
+				There cannot be a conflict as otherwise their original form would not be unifiable.
+
+				Note that $\aiu(a, b)$ is well-defined, i.e.~never maps a variable to two different values as each occurrence of some $x_j$ refers to a term with possible free variables, and since across the definition of $\aiu$, always the same substitution $\sigma$ is used as reference, every occurrence of $x_j$ will be mapped to the same variable. (NOTE: this is what yet unproven conjectures in the other pdf are trying to formalize.)
 
 
-	\end{description}
+				$l\cl$ and $l'\cl$ are as they occur in $\AIclause(C_1)$ and $\AIclause(C_2)$. As the actual terms in the clause unify, we know that here, at least all terms have proper color after unification/lifting.
+
+
+		\end{description}
+
+	\item Factorisation. $C_1: D \lor l \lor l'$, $\sigma = \mgu(l, l')$, then $C: (D\lor l)\sigma$.
+
+		$\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$
+
+		$\AImatrix(C) = \lifboth{\AImatrix(C_1)\sigma}\tau$
+
+		$\AIclause(C) = \lifboth{ \big(\AIclause(C_1) \setminus \{l'\cl\}\big)\sigma}\tau$
+
+
 
 \end{enumerate}
 
@@ -458,6 +482,10 @@ The following lemma works in the other proof, but the remark below shows why it 
 	$\AImatrix(C)$ and $\AIclause(C)$ contain only grey terms and variables replacing colored terms. They do not contain colored terms.
 	\comm{true and used}
 \end{lemma}
+\begin{proof}
+	$\AImatrix(C)$ and $\AIclause(C)$ contain only terms of the form $\lifboth{t}\tau$ for some term $t$.
+	The lifting replaces any colored term by a lifting variable, and $\tau$ merely exchanges lifting variables for other lifting variables.
+\end{proof}
 
 
 
@@ -519,16 +547,27 @@ The following lemma works in the other proof, but the remark below shows why it 
 
 \begin{lemma} 
 	\label{lemma:literal_in_clause_similar}
-	If a literal $l$ occurs in a clause $C$ from a resolution refutation,
+	If a literal $l$ occurs in a clause $C$ of a resolution refutation,
 	then $\AIclause(C)$ contains a corresponding literal $l\fromclause$ such that $l\fromclause \sim \lifboth{l}$, where $\sim$ means equal up to the index of lifting variables.
 	\comm{true and used}
 \end{lemma}
 \begin{proof}
 	Base case: By Definition of $\AIclause$.
 
-	Let $C$ be the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
-	Every literal of $C$ is derived from a literal in $C_1$ or $C_2$. Let $\lambda$ be a literal in $C_1$. The case for a literal in $C_2$ is analogous.
-	Note that $\lambda \neq l$ as otherwise $\lambda$ would not be contained in $C$.
+	The induction cases for resolution and factorisation are very similar. These are the different beginnings, the rest of the proof is the same for both:\todo{how to write this more formally?}
+
+	\begin{itemize}
+		\item
+			Let $C$ be the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$.
+			Let $\lambda$ be a literal w.l.o.g.\ in $C_1$ such that a literal derived from it occurs in $C$ (hence $\lambda \neq l$). 
+			%Every literal of $C$ is derived from a literal in $C_1$ or $C_2$. Let $\lambda$ be a literal in $C_1$. The case for a literal in $C_2$ is analogous.
+			%Note that $\lambda \neq l$ as otherwise $\lambda$ would not be contained in $C$.
+
+		\item
+			Let $C$ be the result of a factorisation of $C_1: D \lor l \lor l'$ with $\sigma = \mgu(l, l')$ to $C = (D \lor l)\sigma$. 
+			Let $\lambda$ be a literal w.l.o.g.\ in $C_1$ such that a literal derived from it occurs in $C$ (hence $\lambda \neq l'$). 
+	\end{itemize}
+
 
 	By assumption $\lambda \in C_1$. Then by the resolution rule application, $\lambda\sigma \in C$.
 
@@ -616,6 +655,8 @@ The following lemma works in the other proof, but the remark below shows why it 
 	$f(g(h(a)))$ vs $ x_k $ (again actual term is changed without changing the lifting variable)
 \end{exa}
 
+By Lemma~\ref{lemma:literal_in_clause_similar}, we have that $l\cl \sim \lifboth{l}$.
+But we can also show that the terms in $l$ only become more specialised, i.e.\ if a lifting variable $z_j$ occurs in $l\cl$, the corresponding term in $\lifboth{l}$ is a specialisation of $\colterm{j}$, 
 \begin{lemma}
 	\label{lemma:lifting_var_refers_to_abstraction_of_term}
 	Let $a\cl = z_j$ a lifting variable for a term position $a\cl$ in $\AIclause(C)$. Then $a = \colterm{j}\rho$ for some substitution $\rho$.
@@ -643,8 +684,6 @@ The following lemma works in the other proof, but the remark below shows why it 
 	Hence $\colterm{j}\rho\sigma = \colterm{k}$.
 \end{proof}
 
-By Lemma~\ref{lemma:literal_in_clause_similar}, we have that $l\cl \sim \lifboth{l}$.
-But we can also show that the terms in $l$ only become more specialised, i.e.\ if a lifting variable $z_j$ occurs in $l\cl$, the corresponding term in $\lifboth{l}$ is a specialisation of $\colterm{j}$, 
 
 
 \begin{comment}
@@ -686,13 +725,16 @@ But we can also show that the terms in $l$ only become more specialised, i.e.\ i
 \end{proof}
 
 
-Apparently, $\tau$ establishes equality for the terms in the literals being resolved on (Lemma~\ref{lemma:literals_clauses_equal}) and quasi-equality for other literals in the remaining clause (Lemma~\ref{lemma:literal_in_clause_similar}).
+The substitution $\tau$ establishes equality for the terms in the literals being resolved on (Lemma~\ref{lemma:literals_clauses_equal}) and a relation close to equality for other literals in the remaining clause (Lemma~\ref{lemma:literal_in_clause_similar}).
 \begin{lemma}
 	\label{lemma:literals_clauses_equal}
-	Let $l\fromclause$, $l\fromclause'$ be the literal in $\AIclause(C_1)$ and $\AIclause(C_2)$ corresponding to $l$ and $l'$ where 
-	$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$
-	(i.e.~$l\sigma=l'\sigma$).
-	Let $\tau = \aiu(\lifboth{l\fromclause\sigma}, \lifboth{l\fromclause'\sigma})$. Then $\lifboth{l\fromclause\sigma}\tau = \lifboth{l\fromclause'\sigma}\tau$.
+	%Let $l\fromclause$, $l\fromclause'$ be the literal in $\AIclause(C_1)$ and $\AIclause(C_2)$ corresponding to $l$ and $l'$ where 
+	%$C$ is the result of a resolution step from $C_1: D\lor l$ and $C_2: E\lor \lnot l'$ to $C = (D \lor E)\sigma$
+	%(i.e.~$l\sigma=l'\sigma$).
+
+
+	Let $l$ and $l'$ be the literals resolved on in a resolution step with $l\sigma = l'\sigma$ or literals factorised in a factorisation step with $l\sigma = l'\sigma$.
+	Let $\tau$ be as in the respective deduction step, i.e.\ $\tau = \aiu(\lifboth{l\fromclause\sigma}, \lifboth{l\fromclause'\sigma})$. Then $\lifboth{l\fromclause\sigma}\tau = \lifboth{l\fromclause'\sigma}\tau$.
 	\comm{true and used}
 \end{lemma}
 \begin{proof} 
@@ -711,7 +753,7 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 			Suppose that $s\fromclause = z_i$ and/or $t\fromclause = z_j$ for some $i$ and $j$.
 			Suppose that $s\fromclause \neq t\fromclause$ as otherwise we are done.
 			%Hence $s\neq t$, but
-			By the resolution rule application $s\sigma = t\sigma$. Cases:
+			By the respective rule application $s\sigma = t\sigma$. Cases:
 			\begin{compactitem}
 			\item $s\fromclause = z_i$ and $t\fromclause = z_j$ with $i\neq j$.
 				As $\sigma$ affects neither $s\fromclause$ nor $t\fromclause$,
@@ -810,10 +852,8 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 	For $C \in \Delta$, $\AImatrix(C) = \top$.
 
 	Induction step:
-
-
 	\begin{description}
-		\item{Resolution.}
+		\item[Resolution.]\hfill
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor l}
 				\AxiomCm{C_2: E \lor \lnot l'}
@@ -904,9 +944,32 @@ Apparently, $\tau$ establishes equality for the terms in the literals being reso
 
 					This however is by Lemma~\ref{lemma:lift_logic_commute} nothing else than 
 					$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$.
-					\qedhere
 			\end{itemize}
 
+
+		\item[Factorisation.]\hfill
+			\begin{prooftree} 
+				\AxiomCm{C_1: D\lor l \lor l'}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\UnaryInfCm{C: (D\lor l)\sigma}
+			\end{prooftree} 
+
+			$\AImatrix(C) = \lifboth{\AImatrix(C_1)\sigma}\tau$
+
+			$\AIclause(C) = \lifboth{ \big(\AIclause(C_1) \setminus \{l'\cl\}\big)\sigma}\tau$
+
+			We define:
+			$ \clauseOnePrime = \AIclause((C_1)_\Gamma) \setminus \{\lifboth{(l{\fromclause})_\Gamma}, \lifboth{(l'{\fromclause})_\Gamma}\}$
+
+			By the induction hypothesis, we get that 
+			$\Gamma \entails \AImatrix(C_1) \spam\lor \clauseOnePrime \spam\lor (l\cl)_\Gamma \spam\lor (l'\cl)_\Gamma $.
+			By Lemma~\ref{lemma:no_colored_terms} and \ref{lemma:substitute_and_lift} and after applying $\tau$, we also have that
+			$\Gamma \entails \lifboth{\AImatrix(C_1)\sigma}\tau \spam\lor\allowbreak \lifboth{\clauseOnePrime\sigma}\tau \spam\lor\allowbreak \lifboth{(l\cl)_\Gamma\sigma}\tau \spam\lor\allowbreak \lifboth{(l'\cl)_\Gamma\sigma}\tau $.
+
+			By Lemma~\ref{lemma:literals_clauses_equal} and due to $l\sigma = l'\sigma$, we have that $\lifboth{l\sigma}\tau = \lifboth{l'\sigma}\tau$.
+			Hence it is easy to see that 
+			$\Gamma \entails \lifboth{\AImatrix(C_1)\sigma}\tau \spam\lor \lifboth{\clauseOnePrime\sigma}\tau \spam\lor \lifboth{(l\cl)_\Gamma\sigma}\tau $, which is nothing else than $\Gamma\entails\nolinebreak \AImatrix(C) \spam\lor \AIclause(C)$.
+					\qedhere
 	\end{description}
 \end{proof}
 
