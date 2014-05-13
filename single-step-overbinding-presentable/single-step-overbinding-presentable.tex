@@ -980,7 +980,25 @@ The substitution $\tau$ establishes equality for the terms in the literals being
 
 			$\AImatrix(C) = (\lifboth{(s=t)\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma}\tau ) \spam\lor (\lifboth{(s\neq t)\sigma}\tau \land \lifboth{\AImatrix(C_1)\sigma}\tau )$
 
-		$\AIclause(C) = \lifboth{ \big(\AIclause(C_1) \setminus \{(s=t)\cl\}\big)\sigma}\tau$
+			$\AIclause(C) = \lifboth{ \Big(\AIclause(C_1) \setminus \{(s=t)\cl\} \lor \AIclause(C_2) \Big)\sigma}\tau $
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
+
+			\mytodo{ICI}
 
 
 
@@ -1311,8 +1329,6 @@ Ontology of cases of main lemma:
 
 	Relative interpolants:
 	\begin{prooftree}
-		%\AxiomCm{\AI(C_1) = \bar Q (\AIclause{C_1} \lor \AIclause{C_1})}
-		%\AxiomCm{\AI(C_2)= \bar Q (\AIclause{C_2} \lor \AIclause{C_2})}
 		\AxiomCm{\AI(C_1)}
 		\AxiomCm{\AI(C_2)}
 		\BinaryInfCm{\AI(C)}
