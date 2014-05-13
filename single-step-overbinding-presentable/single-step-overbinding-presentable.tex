@@ -969,6 +969,21 @@ The substitution $\tau$ establishes equality for the terms in the literals being
 			By Lemma~\ref{lemma:literals_clauses_equal} and due to $l\sigma = l'\sigma$, we have that $\lifboth{l\sigma}\tau = \lifboth{l'\sigma}\tau$.
 			Hence it is easy to see that 
 			$\Gamma \entails \lifboth{\AImatrix(C_1)\sigma}\tau \spam\lor \lifboth{\clauseOnePrime\sigma}\tau \spam\lor \lifboth{(l\cl)_\Gamma\sigma}\tau $, which is nothing else than $\Gamma\entails\nolinebreak \AImatrix(C) \spam\lor \AIclause(C)$.
+
+		\item[Paramodulation.]\hfill
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor s=t}
+				\AxiomCm{C_2: E\occat{r}{p}}
+				\RightLabelm{\quad\sigma = \mgu(s, r)}
+				\BinaryInfCm{C: (D \lor E\occat{t}{p})\sigma}
+			\end{prooftree}
+
+			$\AImatrix(C) = (\lifboth{(s=t)\sigma}\tau \land \lifboth{\AImatrix(C_2)\sigma}\tau ) \spam\lor (\lifboth{(s\neq t)\sigma}\tau \land \lifboth{\AImatrix(C_1)\sigma}\tau )$
+
+		$\AIclause(C) = \lifboth{ \big(\AIclause(C_1) \setminus \{(s=t)\cl\}\big)\sigma}\tau$
+
+
+
 					\qedhere
 	\end{description}
 \end{proof}

@@ -229,10 +229,11 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			Suppose the last rule application is an instance of paramodulation. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
-				\AxiomCm{C_2: E[r]}
+				\AxiomCm{C_2: E\occurat{s}{p}}
 				\RightLabel{$\quad \sigma = \mgu(s, r)$}
-				\BinaryInfCm{C: (D \lor E\occur{t})\sigma}
+				\BinaryInfCm{C: D \lor E\occurat{t}{p}}
 			\end{prooftree}
+
 
 			By the induction hypothesis, we have:
 
@@ -248,8 +249,8 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
 
-			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E\occur{t}\sigma$. Otherwise we are done.
-			Furthermore, assume that $M \entails (s=t)\sigma$. Then $M \cancel \entails E[r]\sigma$, but then necessarily $M \entails \PI(C_2)\sigma$. \\
+			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E\occurat{t}{p}\sigma$. Otherwise we are done.
+			Furthermore, assume that $M \entails (s=t)\sigma$. Then $M \cancel \entails E\occurat{r}{p}\sigma$, but then necessarily $M \entails \PI(C_2)\sigma$. \\
 			On the other hand, suppose $M \entails (s\neq t)\sigma$. As also $M \cancel \entails D\sigma$, $M \entails \PI(C_1)\sigma$.
 			Consequently, $M \entails [(s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))]\sigma \lor [(D \lor E)_\Gamma]\sigma$
 
