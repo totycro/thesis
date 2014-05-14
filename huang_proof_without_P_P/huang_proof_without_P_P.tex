@@ -140,6 +140,8 @@
 
 \section{Proof of the correctness of Huang's algorithm without propositional refutations}
 
+\mytodo{Notation: $\lif{t} = x_t$, then $x_t\sigma' = x_{t\sigma}$}
+
 \subsection{Lemmas}
 
 Intuition of $\sigma'$:
@@ -158,11 +160,18 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 	Let $C$ be a clause and $\sigma$ a substitution.
 	Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
 	$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
-	Define $\sigma'$ such that for a variable $z$, 
+	Define $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ x_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
+	\begin{comment}
+	\[ z \sigma' =
+		\begin{cases} 
+			x_l & \text{ if } z = x_k \text{ and } t_k\sigma = t_l \text{ for some $k$}  \\
+			\lif{z\sigma} & \text{ otherwise}
+		\end{cases} \]
+	\end{comment}
 	\[
 		z \sigma' =
 		\begin{cases} 
-			x_l & \text{ if } z = x_k \text{ and } t_k\sigma = t_l  \\
+			x_{t\sigma} & \text{ if } z = x_t \text{ and } t\sigma \neq t \\
 			\lif{z\sigma} & \text{ otherwise}
 		\end{cases} 
 	\]
@@ -171,43 +180,37 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 	$\lif{C\sigma} =
 	\lif{C}\sigma'$.
 \end{lemma}
-Note that the definition of $\sigma'$ only depends on the $x_i$ and $t_i$.
 \begin{proof}
-	We prove this for an atom $P(s_1, \ldots, s_m)$ in $C$, which works since lifting and substitution commute over binary connectives and into an atom.
-
-	We show that 
-	$\lif{s_j \sigma} = \lif{s_j}\sigma'$ for $1 \leq j \leq m$.
+	As substitutions and liftings only affect the terms of a clause, it suffices to  show that 
+	$\lif{t\sigma} = \lif{t}\sigma'$ for for a term $t$ in $C$.
 
 	%Let $\phi \sigma^{t}$ denote $\phi[t/y]\sigma[t/x]$ for a fresh variable $y$.
 
 	Note that anything in the term structure above a maximal $\Delta$-term is unaffected by both substitution and the lifting.
 
-	Let $t_i$ be a maximal $\Delta$-term in $s_i \sigma$.
+	Let $t$ be a maximal $\Delta$-term in $C$.
 
-	We show that $ \lif{ t_i \sigma } = \lif{ t_i } \sigma'$, which proves the lemma.
+	We show that $ \lif{ t \sigma } = \lif{ t } \sigma'$, which proves the lemma.
 
-	Let $t_i\sigma = t_j$. Then $\lif{ t_i\sigma} = \lif{t_j} = x_j$.
+	Let $t\sigma = s$.
+	Note that as $t$ is a $\Delta$-term, its outermost symbol is a $\Delta$-symbol.
+	As variables are not colored, the outermost symbol of $t$ is not a variable. 
+	But then $s$ has the same outermost symbol as $t$ and hence also is a $\Delta$-term.
+	
+	Then $\lif{ t\sigma} = \lif{s} = x_s$.
 
-	We show that $x_j = \lif{t_i}\sigma'$.
+	We show that $x_s = \lif{t}\sigma'$.
 
-	Suppose that $t_i = t_j$, i.e.\ $\sigma$ is trivial on $t_i$.
-	Then $i=j$ as the $\Delta$-terms have a unique number.
-	Hence $\lif{t_i}\sigma' = x_i \sigma' = x_i = x_j$.
-	Note that $x_k$ must not occur in $t_i$ for some $k$, as $x_k\sigma = x_k$, but potentially $x_k\sigma' \neq x_k$.
+	Suppose that $t\sigma = t$, i.e.\ $\sigma$ is trivial on $t$.
+	Then $t\equiv s$ and  $x_t \equiv x_s$.
+	%Then $i=j$ as the $\Delta$-terms have a unique number.
+	Hence $\lif{t}\sigma' = x_t \sigma' = x_t = x_s$.
+	Note that $x_r$ must not occur in $t$ for some term $r$, as $x_r\sigma = x_r$, but potentially $x_r\sigma' \neq x_r$.
 
+	Otherwise $t \neq s$. Then $x_t\neq x_s$.
 
-	Otherwise $t_i \neq t_j$. Then $i\neq j$ and  $x_j \neq x_i$.\newline
-	$\lif{t_i}\sigma' = x_i \sigma'$.
-	By the definition of $\sigma'$, as $t_i\sigma = t_j$, $x_i\sigma' = x_j$.
-	%
-	%
-	\begin{comment}
-		Suppose no $\Delta$-colored symbol occurs in $s_j$ or $s_j\sigma$. Then $\lif{s_j\sigma} = s_j\sigma $. this equals $  s_j\sigma'$ as there, only the second case applies, where the lifting doesn't affect the term.
-
-		Suppose a maximal $\Delta$-colored term $t_i$ occurs in $s_j\sigma$ but not in $s_j$ and suppose it's the only one in $s_j\sigma$.
-		Then $\lif{ s_j\sigma } = \lif{ s_j\sigma^{t_i} }= s_j\sigma^{t_i} \abstraction{t_i/x_i} = \lif{s_j} \sigma^{t_i} \abstraction{t_i/x_i}$
-	\end{comment}
-	%Note that if a $\Delta$-term $t_i$ occurs in $s_j$, a $\Delta$-term with the same outermost symbol occurs in $s_j$ at the same position.
+	$\lif{t}\sigma' = x_t \sigma'$.
+	By the definition of $\sigma'$, as $t\sigma = s$, $x_t\sigma' = x_s$.
 \end{proof}
 
 
@@ -301,7 +304,7 @@ Note that the definition of $\sigma'$ only depends on the $x_i$ and $t_i$.
 \end{lemma}
 \begin{proof} 
 	Suppose that $t$ at $p$ in $E\occurat{t}{p}$ is not contained in a $\Delta$-colored term.
-	Then $\lif{E\occurat{t}{p}}$ and $\lif{E\occurat{s}{p}}$ only differ at position $p$, where at the first, there is $\lif{t}$, and at the latter, there is $\lif{s}$. But in $M$, they are interpreted the same way, hence $M\entails \lif{E\occurat{s}{p}} \semiff \lif{E\occurat{t}{p}}$, which implies the result.
+	Then $\lif{E\occurat{t}{p}}$ and $\lif{E\occurat{s}{p}}$ only differ at position $p$, where at the first, there is $\lif{t}$, and at the latter, there is $\lif{s}$. But in $M$, they are interpreted the same way, hence $M\entails \lif{E\occurat{s}{p}} \spas\semiff M \entails \lif{E\occurat{t}{p}}$, which implies the result.
 
 	Otherwise $t$ at $p$ in $E\occurat{t}{p}$ is contained in the maximal $\Delta$-colored term $h\occur{t}$.
 	%Suppose that $s$ and $t$ are syntactically equal. Then $h\occur{t}$ and $h\occur{s}$ are lifted by the same variable and $\lif{E\occurat{t}{p}} \semiff{} \lif{E\occurat{s}{p}}$.

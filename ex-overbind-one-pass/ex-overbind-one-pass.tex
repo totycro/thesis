@@ -2117,5 +2117,27 @@ Lesson is: no extra arrows needed, if a term enters, it does so via $x$, but the
 \end{prooftree}
 
 
+\clearpage
+
+\section*{Example: no nice arrow start/end points}
+
+\e{212a}
+
+\begin{prooftree}
+	\AxiomCm{ \bot \mid P(g(\arrowB f(y))) \lor Q(\arrowA y) }\drawAB
+	\noLine\UnaryInfC{}
+	\AxiomCm{ \top \mid \lnot Q(g(\arrowE x)) \lor R(h(\arrowF x))} \drawEF
+	\noLine\UnaryInfC{}
+	\BinaryInfCm{ Q(\arrowA g(\arrowE x)) \mid P(g(\arrowB f( g(x)))) \lor R(\arrowF h(x)) } \drawAB\drawEF
+\end{prooftree}
+
+	
+{ \huge \bfseries
+
+how to handle with components? problem with lifting vars? is this ok due to ``contains lifting term''-semantics?  
+
+merge all terms which are contained in each other?
+
+}
 
 \end{document}
