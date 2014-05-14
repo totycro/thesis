@@ -183,34 +183,22 @@ The first case of the definition of $x_j$ then fixes this by replacing $x_j$ wit
 \begin{proof}
 	As substitutions and liftings only affect the terms of a clause, it suffices to  show that 
 	$\lif{t\sigma} = \lif{t}\sigma'$ for for a term $t$ in $C$.
+	More precisely, only variables of $\dom(\sigma)$ and maximal $\Delta$-terms are affected. 
+	We show that for terms $t$ of either kind that
+	$ \lif{ t \sigma } = \lif{ t } \sigma'$ holds, which proves the lemma.
 
-	%Let $\phi \sigma^{t}$ denote $\phi[t/y]\sigma[t/x]$ for a fresh variable $y$.
+	For the first kind of affected terms, suppose that $v$ is a variable in $\dom(\sigma)$, which occurs in $C$. Then $\lif{v\sigma} = x_{v\sigma}$. But $\lif{v}\sigma' = v\sigma' = \lif{v\sigma} =\nolinebreak x_{v\sigma}$.
 
-	Note that anything in the term structure above a maximal $\Delta$-term is unaffected by both substitution and the lifting.
+	For the second kind of affected terms,
+	let $t$ be a maximal $\Delta$-term in $C$.
+	Then $\lif{ t\sigma} = x_{t\sigma}$.
+	We show that $x_{t\sigma} = \lif{t}\sigma'$.
 
-	Let $t$ be a maximal $\Delta$-term in $C$.
-
-	We show that $ \lif{ t \sigma } = \lif{ t } \sigma'$, which proves the lemma.
-
-	Let $t\sigma = s$.
-	Note that as $t$ is a $\Delta$-term, its outermost symbol is a $\Delta$-symbol.
-	As variables are not colored, the outermost symbol of $t$ is not a variable. 
-	But then $s$ has the same outermost symbol as $t$ and hence also is a $\Delta$-term.
-	
-	Then $\lif{ t\sigma} = \lif{s} = x_s$.
-
-	We show that $x_s = \lif{t}\sigma'$.
-
-	Suppose that $t\sigma = t$, i.e.\ $\sigma$ is trivial on $t$.
-	Then $t\equiv s$ and  $x_t \equiv x_s$.
-	%Then $i=j$ as the $\Delta$-terms have a unique number.
-	Hence $\lif{t}\sigma' = x_t \sigma' = x_t = x_s$.
+	Suppose that $t\sigma = t$. Then $\lif{t}\sigma' = x_t\sigma' = x_t = x_{t\sigma}$.
 	Note that $x_r$ must not occur in $t$ for some term $r$, as $x_r\sigma = x_r$, but potentially $x_r\sigma' \neq x_r$.
 
-	Otherwise $t \neq s$. Then $x_t\neq x_s$.
-
-	$\lif{t}\sigma' = x_t \sigma'$.
-	By the definition of $\sigma'$, as $t\sigma = s$, $x_t\sigma' = x_s$.
+	Otherwise it is the case that $t\sigma \neq t$.
+	Then $\lif{t}\sigma' = x_t\sigma'$, and by the definition of $\sigma'$, $x_t\sigma' = x_{t\sigma}$.
 \end{proof}
 
 

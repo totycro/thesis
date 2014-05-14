@@ -2,8 +2,7 @@
 	a4paper,
 	11pt,
 	oneside,
-	%twoside,
-	%openany % no blank page after chapter such that chapters start on odd pages
+	%twoside, openany % no blank page after chapter such that chapters start on odd pages
 ]{memoir}
 
 
@@ -143,43 +142,75 @@
 \makeevenfoot{numberCorner}{\thepage}{}{}
 \makeoddfoot{numberCorner}{}{}{\thepage}
 
-%\makepagestyle{numberCenter}
+\makepagestyle{numberCenter}
 %\makeevenfoot{numberCenter}{}{\thepage}{}
 %\makeoddfoot{numberCenter}{}{\thepage}{}
 %
 %\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
-%\makeoddhead{numberCenter}{\sffamily \thesection}{}{\sffamily \thechapter}
-%    \makeheadrule{numberCenter}{\textwidth}{1pt}
-		   
+%\makeoddhead{numberCenter}{\thesection }{}{\thechapter}
+\makeheadrule{numberCenter}{\textwidth}{1pt}
+
+\makeevenhead{numberCenter}{\thepage}{}{\leftmark}
+\makeoddhead{numberCenter}{\rightmark}{}{\thepage}
+
+
+\makeatletter
+\makepsmarks{numberCenter}{
+  \def\chaptermark##1{\markboth{%
+        \ifnum \value{secnumdepth} > -1
+          \if@mainmatter
+            \chaptername\ \thechapter\ --- %
+          \fi
+        \fi
+        ##1}{}}
+  \def\sectionmark##1{\markright{%
+        \ifnum \value{secnumdepth} > 0
+          \thesection. \ %
+        \fi
+        ##1}}
+}
+\makeatother
 
 \newcommand{\mysetpagestyle}{ 
-%\pagestyle{numberCorner}
-%\pagestyle{numberCenter}
+	%\pagestyle{numberCorner}
+	\pagestyle{numberCenter}
 }
-%\mysetpagestyle
+\mysetpagestyle
 
 
 \newcommand{\proofcontent}{
 
-\input{chapters/proofs}
+	\input{chapters/huang_proof_without_P_P}
 
 }
+
 
 \newcommand{\content}{
-\chapter{Introduction}
-\input{chapters/interpolation}
+	\chapter{Introduction}
+	\input{chapters/interpolation}
 
-\chapter{Calculi}
-In this chapter, we introduce the calculi that are used subsequently. These are resolution and sequent calculus.
+	\chapter{Calculi}
+	In this chapter, we introduce the calculi that are used subsequently. These are resolution and sequent calculus.
 
-\input{chapters/resolution}
-\input{chapters/lk}
+	\input{chapters/resolution}
+	\input{chapters/lk}
 
-\input{chapters/reduction}
+	\input{chapters/reduction}
 
-\proofcontent
+	\proofcontent
 
 }
+
+\newcommand{\appendixcontent}{
+
+	\appendix
+
+	\input{chapters/proofs}
+	\nocite{*}
+	\bibliography{bib}
+}
+
+
 
 
 %\setulmarginsandblock{1.5cm}{1.5cm}{*}
@@ -202,7 +233,7 @@ In this chapter, we introduce the calculi that are used subsequently. These are 
 \else
 
 	%\pagenumbering{arabic}
-	%\mysetpagestyle
+	\mysetpagestyle
 
 	\ifdefined\contentonly 
 	\selectlanguage{english}
@@ -211,86 +242,83 @@ In this chapter, we introduce the calculi that are used subsequently. These are 
 	\tableofcontents
 	
 	\content
-	
-	\nocite{*}
-	\bibliography{bib}
+
+	\appendixcontent 
 
 	\else 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   FRONTMATTER    %%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frontmatter
-\pagenumbering{roman}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   TITLEPAGES    %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% the german title page is required as first page
-\include{titlepage}
-
-% an english translation may follow
-\include{titlepage_en} % optional
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   ERKLAERUNG DER SELBSTAENDIGKEIT   %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\cleardoublepage
-\selectlanguage{ngerman}
-\input{chapters/erklaerung}
-\selectlanguage{english}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   ACKNOWLEDGEMENTS    %%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% optional acknowledgements may be included in german or in english
-%\input{chapters/danksagung} 		% optional
-\input{chapters/acknowledgements}	% optional
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   ABSTRACT    %%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/abstract_en}
-\cleardoublepage
-\selectlanguage{ngerman}
-\input{chapters/abstract_de}
-\selectlanguage{english}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   CONTENTS    %%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% uncomment to set document language to german (results in "Inhaltsverzeichnis", "Kapitel", "Abbildung", etc. instead of "Contents", "Chapter", and "Figure"), otherwise the document's language is english
-%\selectlanguage{ngerman}
-
-\cleardoublepage
-\mysetpagestyle
-\tableofcontents*
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   MAINMATTER    %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\mainmatter
-\pagenumbering{arabic}
-\mysetpagestyle
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\content
-
-%\chapter{Notes}
-%\input{chapters/lk_algo}
-
-\appendix
-
-\nocite{*}
-\bibliography{bib}
-
-\fi
+	
+	
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%   FRONTMATTER    %%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\frontmatter
+		\pagenumbering{roman}
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%   TITLEPAGES    %%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		% the german title page is required as first page
+		\include{titlepage}
+		
+		% an english translation may follow
+		\include{titlepage_en} % optional
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%   ERKLAERUNG DER SELBSTAENDIGKEIT   %
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\cleardoublepage
+		\selectlanguage{ngerman}
+		\input{chapters/erklaerung}
+		\selectlanguage{english}
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%   ACKNOWLEDGEMENTS    %%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		% optional acknowledgements may be included in german or in english
+		%\input{chapters/danksagung} 		% optional
+		\input{chapters/acknowledgements}	% optional
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%   ABSTRACT    %%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		\input{chapters/abstract_en}
+		\cleardoublepage
+		\selectlanguage{ngerman}
+		\input{chapters/abstract_de}
+		\selectlanguage{english}
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%   CONTENTS    %%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		% uncomment to set document language to german (results in "Inhaltsverzeichnis", "Kapitel", "Abbildung", etc. instead of "Contents", "Chapter", and "Figure"), otherwise the document's language is english
+		%\selectlanguage{ngerman}
+		
+		\cleardoublepage
+		\mysetpagestyle
+		\tableofcontents*
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%   MAINMATTER    %%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		\mainmatter
+		\pagenumbering{arabic}
+		\mysetpagestyle
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		\content
+		
+		%\chapter{Notes}
+		%\input{chapters/lk_algo}
+		
+		\appendixcontent
+		
+		
+		\fi
 \fi
 
 \end{document}

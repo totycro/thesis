@@ -205,7 +205,8 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\lifdeltanovar}[1]{\liftnovar{\Delta}{#1}}
 \newcommand{\lifgamma}[1]{\lift{\Gamma}{#1}{y}}
 \newcommand{\lifgammanovar}[1]{\liftnovar{\Gamma}{#1}}
-\newcommand{\lifphi}[1]{\lift{\Phi}{#1}{x}}
+\newcommand{\lifphinovar}[1]{\liftnovar{\Phi}{#1}}
+\newcommand{\lifphi}[1]{\lift{\Phi}{#1}{z}}
 
 \DeclareMathOperator{\arr}{\mathcal{A}}
 %\DeclareMathOperator{\arrFinal}{{\mathcal{A}^{\bm*}}}
@@ -459,3 +460,21 @@ positioning,fit,calc,decorations.text,shadows%
 \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
 
 
+
+% http://tex.stackexchange.com/questions/43346/how-do-i-get-sub-numbering-for-theorems-theorem-1-a-theorem-1-b-theorem-2
+
+\makeatletter
+\newenvironment{subtheorem}[1]{%
+  \def\subtheoremcounter{#1}%
+  \refstepcounter{#1}%
+  \protected@edef\theparentnumber{\csname the#1\endcsname}%
+  \setcounter{parentnumber}{\value{#1}}%
+  \setcounter{#1}{0}%
+  \expandafter\def\csname the#1\endcsname{\theparentnumber.\Alph{#1}}%
+  \ignorespaces
+}{%
+  \setcounter{\subtheoremcounter}{\value{parentnumber}}%
+  \ignorespacesafterend
+}
+\makeatother
+\newcounter{parentnumber}
