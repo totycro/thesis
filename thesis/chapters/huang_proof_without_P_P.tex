@@ -20,6 +20,8 @@ These are eliminated (lifted) by replacing them with bound variables whose quant
 \section{Extraction of propositional interpolants}
 
 We define a procedure $\PI$, which produces propositional interpolants from resolution refutations. It only differs marginally from the ``Interpolation Algorithm'' in \cite{Huang95}.
+\mytodo{adapt this when final version is decided}
+
 \begin{defi}[Propositional interpolant extraction.]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
@@ -59,17 +61,15 @@ We define a procedure $\PI$, which produces propositional interpolants from reso
       Then $\PI(C)$ is defined according to the following case distinction:
       \begin{enumerate}
 
-        \item If $h\occur{r}$ is $\Delta$-colored: 
-          \comm{Huang has the additional clause (not applied here): $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$}
+        \item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
           \label{def:PI_paramod_1}
           \newline
           $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
-        \item If $h\occur{r}$ is $\Gamma$-colored:
-          \comm{Huang has the additional clause (not applied here): $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$}
+        \item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
           \label{def:PI_paramod_2}
           \newline
           $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} =     h\occur{t})\sigma$
-        \item If $r$ does not occur in a colored term in $D\occur{r}$:
+				\item If $r$ does not occur in a colored term in $D\occur{r}$ {\color{red} or $s\syneq t$}:
           \label{def:PI_paramod_3}
           \newline
           $\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
@@ -317,15 +317,17 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 \end{proof}
 
 \begin{proof}[Proof of Lemma~\ref{lemma:gamma_entails_interpolant}]
-	By induction on the resolution refutation of the strengthening: $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$, i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
+	We proceed by induction on the resolution refutation of the strengthening $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$,
+	where $D_\Phi$ denotes the clause created from $D$ by removing all literals which are not contained $\Lang(\Phi)$.
+	%i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
 
-	Base case:
+	\begin{description}
+		\item{Base case.}
 	Either $C \in \Gamma$, then it does not contain $\Delta$-terms.
 	Otherwise $C \in \Delta$ and $\PI(C) = \top$.
 
-	Induction step:
-	\begin{description}
 		\item{Resolution.}
+			Suppose the last rule application is an instance of resolution. Then it is of the following form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor l}
 				\AxiomCm{C_2: E \lor \lnot l'}
@@ -333,82 +335,54 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 				\BinaryInfCm{C: (D\lor E)\sigma}
 			\end{prooftree}
 
-			By the induction hypothesis, we can assume that:
+			By the induction hypothesis, we can assume that
+			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{\PI(C_2) \lor (E\lor \lnot l')_\Gamma}$,
+			which by Lemma \ref{lemma:lift_commute} implies 
+			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ and \markB{} $\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
+			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif}.
 
-			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{\PI(C_2) \lor (E\lor \lnot l')_\Gamma}$
-
-			which by Lemma \ref{lemma:lift_commute} implies that
-
-			$\Gamma \stackrel{(*)}\entails \lifdelta{\PI(C_1)} \lor \lifdelta{D_\Gamma} \lor \lifdelta{l_\Gamma}$ and $\Gamma \stackrel{(\circ)}\entails \lifdelta{\PI(C_2)} \lor \lifdelta{E_\Gamma} \lor \lnot \lifdelta{l'_\Gamma}$
-
-			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif} with $t_1, \ldots, t_n$ all $\Delta$-terms in this context (we need that every maximal $\Delta$-term has a distinct index, so take all occurring in $C_1$, $C_2$, $\PI(C_1)$, $\PI(C_2)$, with and without $\sigma$ applied to them).
-
-			Case distinction:
-
+			We proceed by a case distinction on the color of $l$:
 			\begin{enumerate}
-				\item $l$ is $\Gamma$-colored.
-					Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$. 
-
-					We show that $\Gamma \entails \lifdelta{ (\PI(C_1) \lor \PI(C_2))\sigma \lor (D \lor E)_\Gamma\sigma}$,
-					\newline 
-					i.e.~$\Gamma \entails \lifdelta{ \Big(\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma\Big)\sigma} $.
-
-
-					Hence by Lemma \ref{lemma:lif},
-					$\Gamma \entails \lifdelta{(\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma)}\sigma' $.
-
-					Since $\sigma = \mgu(l, l')$, $l\sigma$ and $l'\sigma$ are syntactically equal and so $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
+				\item $l$ is $\Gamma$-colored. Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$.
 					
-					As by Lemma \ref{lemma:lif} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
+					Since $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and therefore $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
+					As by Lemma~\ref{lemma:lif} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
 					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.\label{aou5jklah}
+					Hence by applying $\sigma'$ to \markA{} and \markB{} (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and obtain
+					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma} \sigma' \spas\lor \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma} \sigma'$.
+					Now we apply Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute} in the other direction 
+					and get that 
+					$\Gamma \entails \lifdelta{\PI(C_1)\sigma \lor \PI(C_2)\sigma \lor\allowbreak (D \lor E)_\Gamma \sigma}$.
+					This however is nothing else than 
+					$\Gamma \entails \lifdelta{\PI(C) \lor C_\Gamma}$.
 
-					So by applying $\sigma'$ to $(*)$ and $(\circ)$ (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and get
+				\item $l$ is $\Delta$-colored. Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$.
 
-					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \lor \lifdelta{D_\Gamma} \sigma' \lor \lifdelta{\PI(C_2)}\sigma' \lor \lifdelta{E_\Gamma} \sigma'$.
+					As $l$ and $l'$ are $\Delta$-colored, we can simplify \markA{} and \markB{} as follows and apply $\sigma'$:
+					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma}\sigma' $ and $\Gamma \entails \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma}\sigma'$.
+					These together imply that 
+					$\Gamma \entails \Big(\lifdelta{\PI(C_1)}\sigma' \spas\land \lifdelta{\PI(C_2)}\sigma'\Big) \spas\lor \lifdelta{D_\Gamma}\sigma' \spas\lor \lifdelta{E_\Gamma}\sigma'$.
+					By Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif}, this is equivalent to 
+					$\Gamma \entails \lifdelta{(\PI(C_1) \land \PI(C_2))\sigma \spas\lor (D \lor E)_\Gamma\sigma}$, which is nothing else than
+					$\Gamma \entails \lifdelta{\PI(C) \lor C_\Gamma}$.
 
-					and consequently
-				$\Gamma \entails \lifdelta{ \PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma}\sigma' $.
-
-				So by Lemma \ref{lemma:lif},
-
-				$\Gamma \entails \lifdelta{ \Big(\PI(C_1) \lor \PI(C_2) \lor D_\Gamma \lor E_\Gamma \Big) \sigma } $.
-
-
-				\item $l$ is $\Delta$-colored.
-					Then $\PI(C) = (\PI(C_1) \land \PI(C_2))\sigma$. 
-
-					We show that $\Gamma \entails \lifdelta{(\PI(C_1) \land \PI(C_2))\sigma \lor (D_\Gamma \lor E_\Gamma)\sigma}$
-
-					which by Lemma \ref{lemma:lift_commute} is equivalent to\newline
-					$\Gamma \entails \Big(\lifdelta{\PI(C_1)\sigma} \land \lifdelta{\PI(C_2)\sigma}\Big) \lor \lifdelta{D_\Gamma\sigma} \lor \lifdelta{E_\Gamma\sigma}$
-
-					and by Lemma \ref{lemma:lif} is equivalent to\newline
-					$\Gamma \stackrel{\markC}\entails \Big(\lifdelta{\PI(C_1)}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\Big) \lor \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$
-
-					As $l$ and $l'$ are $\Delta$-colored, we can simplify $(*)$ and $(\circ)$ as follows and apply $\sigma'$:
-
-					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \lor \lifdelta{D_\Gamma}\sigma' $ and $\Gamma \entails \lifdelta{\PI(C_2)}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$
-
-					These clearly imply \markC.
-
-				\item $l$ is grey. Then $\PI(C) = [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2))]\sigma$.
+				\item $l$ is grey. Then $\PI(C) = [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_1))]\sigma$.
 
 					We show that $\Gamma \entails \lifdelta{ \Big((l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2)) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} is equivalent to
-
-					$\Gamma \entails \Big(\lifdelta{l}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\Big)\lor\Big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\Big)\lor\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
-
+					$\Gamma \entails \big(\lifdelta{l}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
 					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lifdelta{D_\Gamma}\sigma'$ and $M\notentails \lifdelta{E_\Gamma}\sigma'$ as otherwise we would be done.
-					But then by $(*)$ and $(\circ)$,
+					But then by \markA{} and \markB{}, we get that 
 					$M \entails \lifdelta{\PI(C_1)}\sigma' \lor \lifdelta{l}\sigma'$ and
 					$M \entails\nolinebreak \lifdelta{\PI(C_2)}\sigma' \lor \lnot\lifdelta{l'}\sigma'$.
-
-					As observed in case \ref{aou5jklah}, $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$. By a case distinction on the truth value of $\lifdelta{l}\sigma'$, we obtain the result.
+					As observed in case \ref{aou5jklah}, $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
+					We obtain the result by a case distinction on the truth value of $\lifdelta{l}\sigma'$, 
 
 
 
 			\end{enumerate}
 
 		\item{Factorisation.}
+			Suppose the last rule application is an instance of factorisation. Then it is of the following form:
 			\begin{prooftree}
 				\AxiomCm{C_1: l \lor l' \lor D}
 				\RightLabelm{\quad \sigma = \mgu(l, l')}
@@ -418,72 +392,121 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 
 			The induction hypothesis gives that
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}$.
-			Let $\sigma'$ be as in Lemma \ref{lemma:lif}.
+			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif}.
+			Then $\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}\sigma'$ and by Lemma \ref{lemma:lif} and Lemma~\ref{lemma:lift_commute},
+			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \spas\lor \lifdelta{l\sigma} \spas\lor \lifdelta{l'\sigma} \spas\lor \lifdelta{D\sigma}$.
 
-			Then $\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}\sigma'$ and by Lemma \ref{lemma:lif},
-			$\Gamma \entails \lifdelta{\PI(C_1)\sigma \lor l\sigma \lor l'\sigma \lor D\sigma}$.
-
-			By Lemma \ref{lemma:lift_commute},
-			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \lor \lifdelta{l\sigma} \lor \lifdelta{l'\sigma} \lor \lifdelta{D\sigma}$.
-
-			As $\sigma = \mgu(l, l')$, $l\sigma$ and $l'\sigma$ are syntactically equal, hence $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.%\todo[noline,size=\tiny]{syntactically equal? does ``equal'' suffice?. see also $s\sigma=r\sigma$ below}
-
-			But then we can apply a factorisation step and get
-			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \lor \lifdelta{l\sigma} \lor \lifdelta{D\sigma}$ and by Lemma \ref{lemma:lif} and Lemma \ref{lemma:lift_commute}, 
+			As $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and hence $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
+			But then we can apply a factorisation step and get that
+			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \spas\lor \lifdelta{l\sigma} \spas\lor \lifdelta{D\sigma}$
+			which by Lemma \ref{lemma:lif} and Lemma \ref{lemma:lift_commute} is equivalent to 
 			$\Gamma \entails\nolinebreak \lifdelta{\PI(C_1)\sigma \lor l\sigma \lor D\sigma}$.
-
-
+			This in turn is nothing else than $\Gamma \entails \lifdelta{\PI(C) \lor C}$.
 
 		\item{Paramodulation.}
+			Suppose the last rule application is an instance of paramodulation. Then it is of the following form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
 				\AxiomCm{C_2: E\occurat{r}{p}}
 				\RightLabel{$\quad \sigma = \mgu(s, r)$}
 				\BinaryInfCm{C: (D \lor E\occurat{t}{p})\sigma}
 			\end{prooftree}
-			By the induction hypothesis, we have:
+			By the induction hypothesis, we get that 
+			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor s=t)_\Gamma}$ and 
+			$\Gamma \entails \lifdelta{\PI(C_2) \lor (E\occurat{r}{p})_\Gamma}$.
+			This is by Lemma~\ref{lemma:lift_commute} equivalent to
+			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor \lifdelta{s} = \lifdelta{t}$
+			and \markB{} 
+			$\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{(E\occurat{r}{p})_\Gamma}$ respectively.
 
-			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor s=t)_\Gamma}$
 
-			$\Gamma \entails \lifdelta{\PI(C_2) \lor (E\occurat{r}{p})_\Gamma}$
+				We distinguish two cases:\nopagebreak
+				\begin{enumerate}
+					\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$, which occurs more than once in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
+						\label{klehjy}
 
-			By Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute}, we get that:
+						Let $M$ be a model of $\Gamma$.
+						First, assume that $M \entails \lifdelta{s} \neq \lifdelta{t}$.
+						Then by \markA{} we have that $M \entails \lifdelta{\PI(C_1)} \lor \lifdelta{D_\Gamma}$.
+						By applying $\sigma'$ and Lemma~\ref{lemma:lif}, we hence can conclude from 
+						$M \entails \lifdelta{s\sigma} \neq \lifdelta{t\sigma}$ that 
+						$M \entails \lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma\sigma}$.
 
-			$\Gamma \stackrel{\markA}\entails \lifdelta{\PI(C_1)} \lor \lifdelta{D_\Gamma} \lor \lifdelta{s} = \lifdelta{t}$
 
-			$\Gamma \stackrel{\markB}\entails \lifdelta{\PI(C_2)} \lor \lifdelta{(E\occurat{r}{p})_\Gamma}$
-\bigskip
-		
+						Second, assume to the contrary that $M \entails \lifdelta{s} = \lifdelta{t}$.
+						We distinguish cases:
+						\begin{itemize}
+							\item
+								Suppose that $r$ does not occur in a maximal $\Delta$-term in $(E\occat{r}{p})_\Gamma$.
+								Then by Lemma~\ref{aga5tg5ba} $M\entails \lifdelta{(E\occat{t}{p})_\Gamma} \semiff M \entails \lifdelta{(E\occat{s}{t})_\Gamma}$.
 
-	
-			We distinguish two cases:\nopagebreak
-			\begin{enumerate}
-				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$
-\label{klehjy}
+								Due to $\sigma=\mgu(s, r)$, $s\sigma \syneq r\sigma$.
+								Suppose they are both not $\Delta$-colored.
+								Then the lifting does not affect them and 
+								$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
+								Otherwise the lifting will replace them with the same variable and we as well get that
+								$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
+								Hence $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma\sigma} \semiff\allowbreak M\entails 
+								\lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$
 
-					We show that $\Gamma \entails \lifdelta{ \Big((s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))\Big)\sigma \lor \Big((D \lor E\occurat{t}{p})_\Gamma\Big)\sigma}$, which subsumes the cases 2 and 3 of the definition of $\PI$ for paramodulation.
-					By Lemma~\ref{lemma:lift_commute}, we can pull the liftings inwards and by Lemma~\ref{lemma:lif}, we can commute substitution and lifting by employing $\sigma'$ to arrive at
+							\item
+								\cbstart
+								Otherwise $r$ occurs in a maximal $\Delta$-term $h\occ{r}$ in $(E\occat{r}{p})_\Gamma$, but $h(r)$ does not occur elsewhere in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
+								Then the lifting variable $x_r$ occurs only once in \markB{}.
+								Hence $\Gamma$ does not pose any restriction on $x_r$ and we can substitute it in  by $x_t$. 
+								So in $M$ we have that $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma} \semiff\allowbreak M\entails \lifdelta{(E\occurat{r}{p})_\Gamma}$.
+								\cbend
 
-				$\Gamma \entails
-				\Big((\lifdelta{s}\sigma')=(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_2)}\sigma'\Big) \lor
-				\Big((\lifdelta{s}\sigma')\neq(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_1)}\sigma'\Big) \lor
-				\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
 
-				Let $M$ be a model of $\Gamma$. Let $M \notentails \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'$ as otherwise we would be done. We show that depending on the truth value of  $\lifdelta{s} = \lifdelta{t}$ in $M$, either the first or second conjunct of the above formula holds.
+						\end{itemize}
 
-				Suppose that $M \entails \lifdelta{s} \neq \lifdelta{t}$. 
-				Then by~\markA, $M \entails \lifdelta{\PI(C_1)}$ and hence $M \entails \lifdelta{\PI(C_1)}\sigma'$.
+						So in any of these cases, by \markB{} and by applying $\sigma'$ and Lemma~\ref{lemma:lif}
+						it follows from $M\entails \lifdelta{s\sigma} = \lifdelta{t\sigma}$ 
+						that $M \entails \lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occurat{t}{p})_\Gamma\sigma}$. 
+						\medskip
 
-				On the other hand, suppose that $M \entails \lifdelta{s} = \lifdelta{t}$.
-				Then by Lemma~\ref{aga5tg5ba}, as $s$ at $p$ in $E\occurat{s}{p}$ does not occur in a maximal $\Delta$-term, 
-				$M \notentails \lifdelta{E\occurat{s}{p}}$.
-				Hence also $M \notentails \lifdelta{E\occurat{s}{p}}\sigma'$ and
-				by Lemma \ref{lemma:lif}, $M\notentails \lifdelta{(E\occurat{s}{p})\sigma}$. 
+						In conclusion, we can derive that 
+						$\Gamma \entails
+						(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land\allowbreak (\lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma}\sigma))
+						\spas{\lor}\allowbreak
+						(\lifdelta{s\sigma} = \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}))$.
+						This however entails that
+						$\Gamma \entails
+						\Big(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_1)\sigma} )\Big)
+						\spas{\lor}\allowbreak
+						\Big(\lifdelta{s\sigma} =\nolinebreak \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma}) \Big)
+						\spas\lor \Big(\lifdelta{D_\Gamma\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}\Big)$, 
+					which by Lemma~\ref{lemma:lift_commute} is nothing else than
+						$\Gamma \entails \lifdelta{\PI(C) \lor C}$.
 
-				Due to $\sigma=\mgu(s, r)$, $s\sigma$ and $r\sigma$ are syntactically equal.
-				Suppose they are both not $\Delta$-colored.
-				Then the lifting does not affect them and 
-				$\lifdelta{(E\occurat{s}{p})\sigma}$ and $\lifdelta{(E\occurat{r}{p})\sigma}$ are the same formula.
+
+						\mytodo{PROOF OF FIRST CASE IS DONE HERE. RECHECK LEMMA 4.7. THEN CONTINUE WITH OTHER CASE}
+
+						\bigskip
+
+						We show that $\Gamma \entails \lifdelta{ \Big((s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))\Big)\sigma \lor \Big((D \lor E\occurat{t}{p})_\Gamma\Big)\sigma}$, which subsumes the cases 2 and 3 of the definition of $\PI$ for paramodulation.
+						By Lemma~\ref{lemma:lift_commute}, we can pull the liftings inwards and by Lemma~\ref{lemma:lif}, we can commute substitution and lifting by employing $\sigma'$ to arrive at
+
+						$\Gamma \entails
+						\Big((\lifdelta{s}\sigma')=(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_2)}\sigma'\Big) \lor
+						\Big((\lifdelta{s}\sigma')\neq(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_1)}\sigma'\Big) \lor
+						\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
+
+						Let $M$ be a model of $\Gamma$. Let $M \notentails \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'$ as otherwise we would be done. We show that depending on the truth value of  $\lifdelta{s} = \lifdelta{t}$ in $M$, either the first or second disjunct of the above formula holds.
+
+						Suppose that $M \entails \lifdelta{s} \neq \lifdelta{t}$. 
+						Then by~\markA, $M \entails \lifdelta{\PI(C_1)}$ and hence $M \entails \lifdelta{\PI(C_1)}\sigma'$.
+
+						On the other hand, suppose that $M \entails \lifdelta{s} = \lifdelta{t}$.
+						Then by Lemma~\ref{aga5tg5ba}, as $s$ at $p$ in $E\occurat{s}{p}$ does not occur in a maximal $\Delta$-term, 
+						$M \notentails \lifdelta{E\occurat{s}{p}}$.
+						Hence also $M \notentails \lifdelta{E\occurat{s}{p}}\sigma'$ and
+						by Lemma \ref{lemma:lif}, $M\notentails \lifdelta{(E\occurat{s}{p})\sigma}$. 
+
+						Due to $\sigma=\mgu(s, r)$, $s\sigma$ and $r\sigma$ are syntactically equal.
+						Suppose they are both not $\Delta$-colored.
+						Then the lifting does not affect them and 
+						$\lifdelta{(E\occurat{s}{p})\sigma}$ and $\lifdelta{(E\occurat{r}{p})\sigma}$ are the same formula.
 				Otherwise the lifting will replace them with the same variable and we as well get that
 				$\lifdelta{(E\occurat{s}{p})\sigma}$ and $\lifdelta{(E\occurat{r}{p})\sigma}$ are the same formula.
 
