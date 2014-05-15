@@ -148,7 +148,7 @@ $.
 \end{subtheorem}
 
 
-\begin{lemma}
+\begin{lemma}[Commutativity of lifting and substitution]
 	\label{lemma:lif}
 	Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
 	%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
@@ -275,20 +275,49 @@ $.
 
 
 
-\section{Adaption of central lemma}
+\section{Main lemma}
 
-Now we show the ``main'' lemma of Huang's proof without using a propositional deduction $P_P$.
-The remaining part of his proof after this lemma does not use the restriction to propositional deductions and hence goes through.
 
-\begin{lemma}[corresponds to Lemma 12 in Huang and Lemma 4.9 in the thesis]
+By lifting the propositional interpolant, we are able to already obtain a formula fulfilling partially the requirements for interpolants:
+
+
+%Now we show the ``main'' lemma of Huang's proof without using a propositional deduction $P_P$.
+%The remaining part of his proof after this lemma does not use the restriction to propositional deductions and hence goes through.
+
+\begin{lemma}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
-	Then for $C \in \pi$,
-	$ \Gamma \entails \lifdelta{\PI(C) \lor C} $.
+	Then for a clause $C$ in $\pi$,
+	$ \Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C} $.
 	\label{lemma:gamma_entails_interpolant}
 \end{lemma}
 
+Before we proceed with the proof of this lemma, we give a corollary which demonstrates that $\PI$ already exhibits some of the properties required for interpolants:
+
+\begin{cor}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	Then
+	\begin{enumerate}
+		\item$\Gamma\entails \PI(\pi)$
+		\item$\Delta\entails \PI(\pi)$
+			\label{ths6hrh}
+		\item $\PS(\PI(\pi)) \subseteq \PS(\Gamma) \cap \PS(\Delta)$.
+		\end{enumerate}
+\end{cor}
 \begin{proof}
-	By induction on the resolution refutation of the strengthening: $\Gamma \entails \lifdelta{\PI(C) \lor C_\Gamma}$, i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
+	By the definition of $\PI$, 
+	$\PI(\pi)$ denotes $\PI(\square)$, where $\square$ is the empty clause derived in $\PI$.
+	By Lemma~\ref{lemma:gamma_entails_interpolant}, we get that 
+	$ \Gamma \entails \lifdelta{\PI(\pi)}$.
+	As the lifting replaces terms by variables which are then implicitly universally quantified, $\PI(\pi)$ is an instance of $\lifdelta{\PI(\pi)}$.
+	Therefore $\Gamma \entails \PI(\pi)$.
+
+	Item~\ref{ths6hrh} can be argued analogously as $\pi$ is also a refutation of $\bhat \Gamma \cup \bhat \Delta$, where $\bhat\Gamma = \Delta$ and $\bhat\Delta = \Gamma$.
+
+	By the construction of $\PI$, only grey predicates are added.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lemma:gamma_entails_interpolant}]
+	By induction on the resolution refutation of the strengthening: $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$, i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
 
 	Base case:
 	Either $C \in \Gamma$, then it does not contain $\Delta$-terms.
