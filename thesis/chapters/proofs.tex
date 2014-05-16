@@ -370,7 +370,7 @@ Some elementary properties of liftings are described by the following lemmas:
 	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }$ and 
 	$ \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$
 	differ only in the naming of the variables replacing maximal colored terms.
-	\label{lemma:naming_of_colored_variables}
+	\label{lemma:naming_of_colored_variablesHuang}
 
 \end{lemma}
 \begin{proof}
@@ -391,7 +391,7 @@ Some elementary properties of liftings are described by the following lemmas:
 First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 \begin{lemma}
-	\label{lemma:gamma_entails_lifted_interpolant}
+	\label{lemma:gamma_entails_lifted_interpolantHuang}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
 	Then $\Gamma \entails \lift{\Delta}{ \PI(C) \lor C }{x} $ for $C$ in $\pi$.
 \end{lemma}
@@ -583,20 +583,20 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 
 
-The definition $\PI$ possesses a convenient property which is termed \emph{symmetry} in \cite[Definition 5]{interpolantStrenth} and can be stated formally as follows:
+The interpolant extraction procedure $\PI$ exhibits a convenient property which is termed \emph{symmetry} in \cite[Definition 5]{interpolantStrenth} and can be stated formally as follows:
 
-\newcommand{\primex}[1]{\ensuremath{\hat{#1}}}
+\newcommand{\primexHuang}[1]{\ensuremath{\bhat{#1}}}
 \begin{lemma}
-	\label{lemma:symmetry}
+	\label{lemma:symmetryHuang}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	Then $\PI(\pi) \semiff \lnot \PI(\primex\pi)$.
+	$\primexHuang\pi$ be $\pi$ with $\primexHuang\Gamma = \Delta$ and $\primexHuang\Delta = \Gamma$.
+	Then $\PI(\pi) \semiff \lnot \PI(\primexHuang\pi)$.
 \end{lemma}
 \begin{proof}
 	We prove this lemma by induction on $\pi$.
-	Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
+	Let $\primexHuang\varphi$ denote the clause/formula/literal/term in $\primexHuang\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
 
-	\newcommand{\p}[1]{\primex{#1}}
+	\newcommand{\p}[1]{\primexHuang{#1}}
 	\begin{itemize}
 		\item[Base case.]
 			If $C \in \Gamma$, then $C' \in \Delta'$ and $\PI(C) = \bot \semiff \lnot \top = \lnot \PI(C')$. 
@@ -608,16 +608,16 @@ The definition $\PI$ possesses a convenient property which is termed \emph{symme
 
 			We distinguish the following cases:
 			\begin{enumerate}
-					\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
+					\item $l$ is $\Gamma$-colored. Then $\primexHuang l$ is $\Delta$-colored.
 						\begin{align*}
 							\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
 														 &\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
-														 &= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
-														 &= \lnot \PI(\primex C)  
+														 &= \lnot ( \PI(\primexHuang C_1) \land \PI(\primexHuang C_2) ) \\
+														 &= \lnot \PI(\primexHuang C)  
 						\end{align*}
 					\item $l$ is $\Delta$-colored. This case can be argued analogously.
 
-					\item $l$ is grey. Then $\primex l$ is grey.\nopagebreak 
+					\item $l$ is grey. Then $\primexHuang l$ is grey.\nopagebreak 
 			\begin{align*}
 				\PI(C) 
 				&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
@@ -641,13 +641,13 @@ The definition $\PI$ possesses a convenient property which is termed \emph{symme
 
 			\begin{enumerate}
 				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$ and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
-					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex D\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex D\occur{r} \lor \PI(\primex D\occur{r})$.
+					Then $\primexHuang r$ occurs in a maximal $\Gamma$-term $\primexHuang h\occur{r}$ in $\primexHuang D\occur{r}$ and $\primexHuang h\occur{r}$ occurs more than once in $\primexHuang D\occur{r} \lor \PI(\primexHuang D\occur{r})$.
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-						 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-						 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-						 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-						 &= \lnot \PI(\primex C)
+						 &= [ ( s=t \land \lnot \PI(\primexHuang C_2) ) \lor (s\neq t \land \lnot \PI(\primexHuang C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+						 &\semiff \lnot [ ( s\neq t \lor \PI(\primexHuang C_2) ) \land (s= t \lor \PI(\primexHuang C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+						 &\semiff \lnot [ ( s = t \land \PI(\primexHuang C_2) ) \lor (s\neq t \land \PI(\primexHuang C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+						 &= \lnot \PI(\primexHuang C)
 					\end{align*}
 
 				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
@@ -655,10 +655,10 @@ The definition $\PI$ possesses a convenient property which is termed \emph{symme
 				\item Otherwise:
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
-									 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
-									 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
-									 &\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
-									 &= \lnot \PI(\primex C)
+									 &= [ ( s=t \land \lnot \PI(\primexHuang C_2) ) \lor (s\neq t \land \lnot \PI(\primexHuang C_1)) ]\sigma \\
+									 &\semiff \lnot [ ( s\neq t \lor \PI(\primexHuang C_2) ) \land (s=t \lor \PI(\primexHuang C_1)) ]\sigma \\
+									 &\semiff \lnot [ ( s=t \land \PI(\primexHuang C_2) ) \lor (s\neq t \land \PI(\primexHuang C_1)) ]\sigma \\
+									 &= \lnot \PI(\primexHuang C)
 					\qedhere
 					\end{align*}
 			\end{enumerate}
@@ -668,20 +668,20 @@ The definition $\PI$ possesses a convenient property which is termed \emph{symme
 
 \end{proof}
 
-This lemma can be leveraged to show a counterpart of Lemma \ref{lemma:gamma_entails_lifted_interpolant} for $\Delta$:\nopagebreak
+This lemma can be leveraged to show a counterpart of Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang} for $\Delta$:\nopagebreak
 
 \begin{cor}
-	\label{cor:delta_entails_lifted_interpolant}
+	\label{cor:delta_entails_lifted_interpolantHuang}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
 	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
 \end{cor}
 \begin{proof}
-	Build $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause set partition.
+	Build $\primexHuang \pi$ from $\pi$ using $\primexHuang \Gamma = \Delta$ and $\primexHuang \Delta = \Gamma$ as initial clause set partition.
 	\newline
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$.
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\primexHuang \Gamma \entails \lft{\primexHuang\Delta}{x}{ \PI(\primexHuang C) \lor \primexHuang C }$ for $\primexHuang C$ in $\primexHuang \pi$.
 	\newline
-	By Lemma \ref{lemma:symmetry},
-$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
+	By Lemma \ref{lemma:symmetryHuang},
+$\primexHuang \Gamma \entails \lft{\primexHuang\Delta}{x}{ \lnot \PI(C) \lor \primexHuang C }$ for the clause $C$ in $\pi$ corresponding to $\primexHuang C$ in $\primexHuang \pi$. 
 	This however is nothing else than 
 $\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 \end{proof}
@@ -694,7 +694,7 @@ $\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_i$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
 \end{thm}
 \begin{proof}
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{\PI(\pi)}$ where $m$ is the number of maximal $\Delta$-colored terms in $\PI(\pi)$.
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{\PI(\pi)}$ where $m$ is the number of maximal $\Delta$-colored terms in $\PI(\pi)$.
 
 	A term in $\lifdelta{\PI(\pi)}$ is either $x_i$, $1 \leq i \leq m$, a grey term or a $\Gamma$-terms.
 	Let $t$ be a maximal $\Gamma$-term in $\lifdelta{\PI(\pi)}$ and $x_{j_1}, \dots, x_{j_k}$ the variables replacing $\Delta$-terms in~$t$.
@@ -707,12 +707,12 @@ $\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 	the existential quantification of $z_j$ is in the scope of the quantifiers of $x_{j_1}, \ldots, x_{j_k}$ respectively.
 	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
 
-	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $m$ is the number of $\Gamma$-colored terms in $\PI(\pi)$.
+	By Corollary \ref{cor:delta_entails_lifted_interpolantHuang} $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $m$ is the number of $\Gamma$-colored terms in $\PI(\pi)$.
 	By a similar line of argumentation as above, we can replace the maximal $\Delta$-terms by existentially quantified variables and arrive at
 	$\Delta \entails\nolinebreak{} \overline Q_1 z_1 \dots \overline Q_n z_n\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also
 	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$.
-	By Lemma \ref{lemma:naming_of_colored_variables} and as all variables which replace colored terms are bound, 
+	By Lemma \ref{lemma:naming_of_colored_variablesHuang} and as all variables which replace colored terms are bound, 
 	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
 
 	As it is now easy to see that $Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
