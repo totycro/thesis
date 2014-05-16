@@ -221,56 +221,29 @@ $.
 	Then ?????
 \end{exa}
 
-\mytodo{ICI}
-
-\mytodo{ICI}
-
-\mytodo{ICI}
-
-\mytodo{ICI}
-
-\mytodo{check out what we actually have/need for equality of $s$ and $t$}
-
-\mytodo{ICI}
-
-\mytodo{ICI}
-
-\mytodo{ICI}
-
-\mytodo{ICI}
 
 \begin{lemma}
 	\label{aga5tg5ba}
 	Let $M$ be a model, $E$ a formula and $s$ and $t$ terms such that
-	$M\notentails \lifdelta{E\occurat{t}{p}}$ 
-	and
 	$M \entails \lifdelta{s} = \lifdelta{t}$.
-
-	Let $h\occur{t}$ be a maximal $\Delta$-colored term containing $t$ at $p$ in $E\occurat{t}{p}$, if such a term exists.
+	Let $h\occur{t}$ be a maximal $\Delta$-colored term containing $t$ at $p$ in $E\occurat{t}{p}$, if such a term exists. Then it holds that:
 \begin{itemize}
 \item If $h\occur{t}$ does not exists, then
-		$M\notentails \lifdelta{E\occurat{s}{p}}$.
+	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{s}{p}}$.
 \item Otherwise
-		$M\notentails \lifdelta{E\occurat{s}{p}}$
+	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{s}{p}}$
 	or $M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$ holds.
 \end{itemize}
 \end{lemma}
 \begin{proof} 
-	Suppose that $t$ at $p$ in $E\occurat{t}{p}$ is not contained in a $\Delta$-colored term.
-	Then $\lifdelta{E\occurat{t}{p}}$ and $\lifdelta{E\occurat{s}{p}}$ only differ at position $p$, where at the first, there is $\lifdelta{t}$, and at the latter, there is $\lifdelta{s}$. But in $M$, they are interpreted the same way, hence $M\entails \lifdelta{E\occurat{s}{p}} \spas\semiff M \entails \lifdelta{E\occurat{t}{p}}$, which implies the result.
+	Suppose that the position $p$ in $E\occurat{s}{p}$ is not contained in a $\Delta$-colored term.
+	Then $\lifdelta{E\occurat{t}{p}}$ and $\lifdelta{E\occurat{s}{p}}$ only differ at position $p$,
+	where for the first, $\lifdelta{t}$ is at $p$, and for the latter, $\lifdelta{s}$ is at $p$.
+	But in $M$, they are interpreted the same way, hence $M\entails\nolinebreak \lifdelta{E\occurat{s}{p}} \spas\semiff M \entails \lifdelta{E\occurat{t}{p}}$.
 
-	Otherwise $t$ at $p$ in $E\occurat{t}{p}$ is contained in the maximal $\Delta$-colored term $h\occur{t}$.
-	%Suppose that $s$ and $t$ are syntactically equal. Then $h\occur{t}$ and $h\occur{s}$ are lifted by the same variable and $\lifdelta{E\occurat{t}{p}} \semiff{} \lifdelta{E\occurat{s}{p}}$.
-	%Otherwise $s$ and $t$ are distinct terms.
-	%Then they are replaced by distinct variables by the lifting.
+	Otherwise the position $p$ in $E\occurat{t}{p}$ is contained in the maximal $\Delta$-colored term $h\occur{t}$.
 	Suppose that $M\entails \lifdelta{h\occur{s}}  = \lifdelta{h\occur{t}}$ as otherwise we would be done.
-	%Then as by Lemma~\ref{lemma:lift_equality} $M\entails s=t$,  $M \entails\nolinebreak s=\nolinebreak t \;\land\;\lifdelta{h\occur{s}}  \neq \lifdelta{h\occur{t}}$ and we are done.
-	%Then $M \entails\nolinebreak s=\nolinebreak t \;\land\;\lifdelta{h\occur{s}}  \neq \lifdelta{h\occur{t}}$ and we are done.
-	%Otherwise $M\entails \lifdelta{h\occur{s}} = \lifdelta{h\occur{t}}$.
-	But then $M \entails \lifdelta{E\occurat{s}{p}} \semiff{} \lifdelta{E\occurat{t}{p}}$.
-	%If $s$ and $t$ are syntactically equal, then $\lifdelta{h\occur{s}} = \lifdelta{h\occur{t}}$ and $\lifdelta{E\occurat{s}{p}} \semiff{} \lifdelta{E\occurat{t}{p}}$, which implies that $M\notentails \lifdelta{E\occurat{s}{p}}$.
-	%Otherwise, as by Lemma \ref{lemma:lift_equality} it holds that $M\entails s=t$,
-	%we get that $M \entails\nolinebreak s=\nolinebreak t \;\land\;\lifdelta{h\occur{s}}  \neq \lifdelta{h\occur{t}}$.
+	But then $M \entails\nolinebreak \lifdelta{E\occurat{s}{p}} \semiff{} M\entails \lifdelta{E\occurat{t}{p}}$.
 \end{proof} 
 
 
@@ -278,7 +251,7 @@ $.
 \section{Main lemma}
 
 
-By lifting the propositional interpolant, we are able to already obtain a formula fulfilling partially the requirements for interpolants:
+By lifting the propositional interpolant, we are able to already obtain a formula partially fulfilling the requirements for interpolants:
 
 
 %Now we show the ``main'' lemma of Huang's proof without using a propositional deduction $P_P$.
@@ -291,7 +264,9 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 	\label{lemma:gamma_entails_interpolant}
 \end{lemma}
 
-Before we proceed with the proof of this lemma, we give a corollary which demonstrates that $\PI$ already exhibits some of the properties required for interpolants:
+Before we proceed with the proof of this lemma, we give a corollary which demonstrates that $\PI$ 
+extracts propositional interpolants in the sense that besides potentially containing colored terms, they are proper interpolants:
+
 
 \begin{cor}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
@@ -323,8 +298,8 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 
 	\begin{description}
 		\item{Base case.}
-	Either $C \in \Gamma$, then it does not contain $\Delta$-terms.
-	Otherwise $C \in \Delta$ and $\PI(C) = \top$.
+			Either $C \in \Gamma$, then $\lifdelta{C} = C$ and $\Gamma \entails C$.
+			Otherwise $C \in \Delta$ and $\PI(C) = \top$.
 
 		\item{Resolution.}
 			Suppose the last rule application is an instance of resolution. Then it is of the following form:
@@ -368,16 +343,15 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 
 				\item $l$ is grey. Then $\PI(C) = [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_1))]\sigma$.
 
-					We show that $\Gamma \entails \lifdelta{ \Big((l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_2)) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} is equivalent to
-					$\Gamma \entails \big(\lifdelta{l}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
-					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lifdelta{D_\Gamma}\sigma'$ and $M\notentails \lifdelta{E_\Gamma}\sigma'$ as otherwise we would be done.
+					We show that $\Gamma \entails\allowbreak \lifdelta{ \Big((l \land \PI(C_2) ) \lor\allowbreak (\lnot l' \land \PI(C_2)) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, for which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} it suffices to show that 
+					$\Gamma \entails\allowbreak \big(\lifdelta{l}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
+
+					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lifdelta{D_\Gamma}\sigma'$ and $M\notentails \lifdelta{E_\Gamma}\sigma'$ as otherwise we are done.
 					But then by \markA{} and \markB{}, we get that 
 					$M \entails \lifdelta{\PI(C_1)}\sigma' \lor \lifdelta{l}\sigma'$ and
 					$M \entails\nolinebreak \lifdelta{\PI(C_2)}\sigma' \lor \lnot\lifdelta{l'}\sigma'$.
 					As observed in case \ref{aou5jklah}, $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
-					We obtain the result by a case distinction on the truth value of $\lifdelta{l}\sigma'$, 
-
-
+					We obtain the result by a case distinction on the truth value of $\lifdelta{l}\sigma'$.
 
 			\end{enumerate}
 
@@ -388,7 +362,7 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 				\RightLabelm{\quad \sigma = \mgu(l, l')}
 				\UnaryInfCm{C: (l \lor D)\sigma}
 			\end{prooftree}
-			Then $\PI(C) = \PI(C_1)\sigma$.
+			% Then $\PI(C) = \PI(C_1)\sigma$.
 
 			The induction hypothesis gives that
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}$.
@@ -437,7 +411,7 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 						We distinguish cases:
 						\begin{itemize}
 							\item
-								Suppose that $r$ does not occur in a maximal $\Delta$-term in $(E\occat{r}{p})_\Gamma$.
+								Suppose that $s$ does not occur in a maximal $\Delta$-term in $(E\occat{s}{p})_\Gamma$.
 								Then by Lemma~\ref{aga5tg5ba} $M\entails \lifdelta{(E\occat{t}{p})_\Gamma} \semiff M \entails \lifdelta{(E\occat{s}{t})_\Gamma}$.
 
 								Due to $\sigma=\mgu(s, r)$, $s\sigma \syneq r\sigma$.
@@ -450,17 +424,14 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 								\lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$
 
 							\item
-								\cbstart
 								Otherwise $r$ occurs in a maximal $\Delta$-term $h\occ{r}$ in $(E\occat{r}{p})_\Gamma$, but $h(r)$ does not occur elsewhere in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
 								Then the lifting variable $x_r$ occurs only once in \markB{}.
 								Hence $\Gamma$ does not pose any restriction on $x_r$ and we can substitute it in  by $x_t$. 
 								So in $M$ we have that $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma} \semiff\allowbreak M\entails \lifdelta{(E\occurat{r}{p})_\Gamma}$.
-								\cbend
-
 
 						\end{itemize}
 
-						So in any of these cases, by \markB{} and by applying $\sigma'$ and Lemma~\ref{lemma:lif}
+						Hence in any of the cases, by \markB{} and by applying $\sigma'$ and Lemma~\ref{lemma:lif}
 						it follows from $M\entails \lifdelta{s\sigma} = \lifdelta{t\sigma}$ 
 						that $M \entails \lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occurat{t}{p})_\Gamma\sigma}$. 
 						\medskip
@@ -468,101 +439,35 @@ Before we proceed with the proof of this lemma, we give a corollary which demons
 						In conclusion, we can derive that 
 						$\Gamma \entails
 						(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land\allowbreak (\lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma}\sigma))
-						\spas{\lor}\allowbreak
+						\spam{\lor}\allowbreak
 						(\lifdelta{s\sigma} = \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}))$.
-						This however entails that
+						This however implies that
 						$\Gamma \entails
 						\Big(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_1)\sigma} )\Big)
 						\spas{\lor}\allowbreak
 						\Big(\lifdelta{s\sigma} =\nolinebreak \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma}) \Big)
-						\spas\lor \Big(\lifdelta{D_\Gamma\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}\Big)$, 
+						\spas\lor\allowbreak \Big(\lifdelta{D_\Gamma\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}\Big)$, 
 					which by Lemma~\ref{lemma:lift_commute} is nothing else than
 						$\Gamma \entails \lifdelta{\PI(C) \lor C}$.
 
+					\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$, which occurs more than once in $E\occat{s}{p}$.
 
-						\mytodo{PROOF OF FIRST CASE IS DONE HERE. RECHECK LEMMA 4.7. THEN CONTINUE WITH OTHER CASE}
-
-						\bigskip
-
-						We show that $\Gamma \entails \lifdelta{ \Big((s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))\Big)\sigma \lor \Big((D \lor E\occurat{t}{p})_\Gamma\Big)\sigma}$, which subsumes the cases 2 and 3 of the definition of $\PI$ for paramodulation.
-						By Lemma~\ref{lemma:lift_commute}, we can pull the liftings inwards and by Lemma~\ref{lemma:lif}, we can commute substitution and lifting by employing $\sigma'$ to arrive at
-
-						$\Gamma \entails
-						\Big((\lifdelta{s}\sigma')=(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_2)}\sigma'\Big) \lor
-						\Big((\lifdelta{s}\sigma')\neq(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_1)}\sigma'\Big) \lor
-						\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
-
-						Let $M$ be a model of $\Gamma$. Let $M \notentails \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'$ as otherwise we would be done. We show that depending on the truth value of  $\lifdelta{s} = \lifdelta{t}$ in $M$, either the first or second disjunct of the above formula holds.
-
-						Suppose that $M \entails \lifdelta{s} \neq \lifdelta{t}$. 
-						Then by~\markA, $M \entails \lifdelta{\PI(C_1)}$ and hence $M \entails \lifdelta{\PI(C_1)}\sigma'$.
-
-						On the other hand, suppose that $M \entails \lifdelta{s} = \lifdelta{t}$.
-						Then by Lemma~\ref{aga5tg5ba}, as $s$ at $p$ in $E\occurat{s}{p}$ does not occur in a maximal $\Delta$-term, 
-						$M \notentails \lifdelta{E\occurat{s}{p}}$.
-						Hence also $M \notentails \lifdelta{E\occurat{s}{p}}\sigma'$ and
-						by Lemma \ref{lemma:lif}, $M\notentails \lifdelta{(E\occurat{s}{p})\sigma}$. 
-
-						Due to $\sigma=\mgu(s, r)$, $s\sigma$ and $r\sigma$ are syntactically equal.
-						Suppose they are both not $\Delta$-colored.
-						Then the lifting does not affect them and 
-						$\lifdelta{(E\occurat{s}{p})\sigma}$ and $\lifdelta{(E\occurat{r}{p})\sigma}$ are the same formula.
-				Otherwise the lifting will replace them with the same variable and we as well get that
-				$\lifdelta{(E\occurat{s}{p})\sigma}$ and $\lifdelta{(E\occurat{r}{p})\sigma}$ are the same formula.
-
-				By Lemma $\ref{lemma:lif}$, 
-				$\lifdelta{(E\occurat{s}{p})}\sigma' = \lifdelta{(E\occurat{r}{p})}\sigma'$,
-				so from $M \notentails \lifdelta{E\occurat{s}{p}}\sigma'$, it follows that $M \notentails \lifdelta{(E\occurat{r}{p})}\sigma'$
-
-				Then by~\markB{}, we arrive at $M\entails \lifdelta{\PI(C_2)}\sigma'$
-
-
-				%The following two lemmas show that $M \notentails \lifdelta{E\occurat{r}{p}}\sigma'$, which by~\markB{} implies that $M\entails \lifdelta{\PI(C_2)}\sigma'$, or $M \entails s=t \;\land\;\lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$.
-
-				%\begin{lemma} $\sigma=\mgu(s, r)$ and $M\notentails \lifdelta{E\occurat{s}{p}}\sigma'$ imply that $M\notentails \lifdelta{E\occurat{r}{p}}\sigma'$.  \end{lemma}\nopagebreak 
-
-
-
-			\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$.
-
-				Then a similar line of argument as in case~\ref{klehjy} can be employed, with the difference that the application of Lemma~\ref{aga5tg5ba} yields the extra case that 
+						Then a similar line of argument as in case~\ref{klehjy} can be employed, with the difference that the application of Lemma~\ref{aga5tg5ba} in the case of $M\entails \lifdelta{s} = \lifdelta{t}$ yields the additional possibility that 
 			$M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$.
-				\begin{comment}
-				\newenvironment{lemmaCustomNo}[1]
-				{\renewcommand{\thelemma}{\ref{#1}$'$}%
-					\addtocounter{lemma}{-1}%
-				\begin{lemma}}
-				{\end{lemma}}
-
-
-				Then we have to replace Lemma \ref{aga5tg5ba} by:
-				\bigskip
-
-				\begin{lemmaCustomNo}{aga5tg5ba}
-					$M \entails \lifdelta{s} = \lifdelta{t}$ and $M\notentails \lifdelta{E\occurat{t}{p}}\sigma'$ imply that $M\notentails \lifdelta{E\occurat{s}{p}}\sigma'$ or that $\lifdelta{h\occurat{s}{q}} \neq \lifdelta{h\occurat{t}{q}}$.
-				\end{lemmaCustomNo}
-				\begin{proof}
-					If $\lifdelta{E\occurat{t}{p}}$ and $\lifdelta{E\occurat{s}{p}}$ differ only at position $p$, then the proof of Lemma \ref{aga5tg5ba} applies.
-					
-					Otherwise position $p$ is in a maximal $\Delta$-term $h\occurat{t}{q}$, such that $h\occurat{t}{q}$ and $h\occurat{s}{q}$ are replaced with distinct variables.
-					But then clearly $\lifdelta{h\occurat{s}{q}} \neq \lifdelta{h\occurat{t}{q}}$.
-				\end{proof}
-
-				\end{comment}
- Hence the following holds:
+ Hence we arrive at:
 
 				$\Gamma \entails
-				\Big((\lifdelta{s}\sigma')=(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_2)}\sigma'\Big) \lor
-				\Big((\lifdelta{s}\sigma')\neq(\lifdelta{t}\sigma') \land \lifdelta{\PI(C_1)}\sigma'\Big) \lor
-				\Big((\lifdelta{s}\sigma')=(\lifdelta{t}\sigma') \land (\lifdelta{h\occur{s}}\sigma') \neq (\lifdelta{h\occur{t}}\sigma' )\Big) \lor
+				\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\Big) \spas\lor\allowbreak
+				\Big(\lifdelta{s}\sigma'\neq\lifdelta{t}\sigma' \land \lifdelta{\PI(C_1)}\sigma'\Big) \spas\lor\allowbreak
+				\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land (\lifdelta{h\occur{s}}\sigma') \neq (\lifdelta{h\occur{t}}\sigma' )\Big) \spas\lor\allowbreak
 				\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
+
+				This however is by Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute} equivalent to $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
 				\qedhere
 		\end{enumerate}
 
 
 		\begin{comment}
-
-
 
 			easy case:
 			$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$
