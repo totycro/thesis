@@ -1800,7 +1800,7 @@ $\AI^\Delta:$
 
 again have arrow from $Q(x_4)$ to $P(f(x_4))$
 
-\e{210c -- attempt to get it without any arrow}
+\e{210c -- attempt to get var once in $\Delta$ and once in $\Gamma$-term without any arrow (seems to not work)}
 \begin{prooftree}
 	\AxiomCm{\sig{P(\arrowB f(x))\lor Q(\arrowA x)}} \drawAB
 	\noLine
@@ -1826,8 +1826,6 @@ $\Ra$ must port arrows on variable rename
 
 \circled{?} $R$ possibly disappearing ($Q$ disappearing) doesn't matter?)
 
-~
-
 slow motion:
 \begin{prooftree}
 	\AxiomCm{\sig{P(\arrowB f(x))\lor Q(\arrowA x)}} \drawAB
@@ -1848,9 +1846,45 @@ slow motion:
 \end{prooftree}
 
 
+~
+\section*{Further special cases which arose in proof}
+
+\e{210f -- disappearing connection}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{\sig{\bot \mid P(f(\ha x)) \lor Q(\ha x)}}
+	\AxiomCm{\sig{\bot \mid \lnot Q(\hb y) \lor R(g(\hb y))}}
+	\BinaryInfCm{ \bot \mid P(f(x)) \lor R(g(x)) }
+	\AxiomCm{ \sig{\bot \mid \lnot P(f(\hc z)) \lor S(\hc z)}}
+	\AxiomCm{ \p{\top \mid \lnot S(a)}}
+	\BinaryInfCm{ S(\arrowA a) \mid \lnot P(\arrowB f(a))} \drawAB
+	\noLine\UnaryInfC{}
+	\BinaryInfCm{ S(a)  \mid R(g(a))}
+	\AxiomCm{\p{\top \mid \lnot R(u)}}
+	\BinaryInfCm{ R(g(a)) \lor  S(a)  \mid \square}
+\end{prooftree}
+
+Gist: NEED MERGE ARROW for $P$ and $R$ OR COUNT disappearing literals, which is less effort
 
 
+\e{210g -- unhandled backwards arrow}
 
+~
+
+\begin{prooftree}
+	\AxiomCm{\sig{\bot \mid P(\arrowB f( y)) \lor Q(\arrowA y)}} \drawAB
+	\noLine\UnaryInfC{}
+	\AxiomCm{\sig{\bot \mid \lnot P(\arrowD f(g( x))) \lor R(\arrowC x)}} \drawCD
+	\noLine\UnaryInfC{}
+	\BinaryInfCm{{\bot \mid Q(g(x)) \lor R( x) }}
+\end{prooftree}
+Hidden literal: $P(f(g(x)))$
+
+Suppose continuation with $\lnot R(a)$, $a$ is $\Delta$-term.
+Then need $\forall x_1 \exists x_2 ( R(x_1) \lor Q(x_2))$
+Cannot just merge $R$ and $Q$.
 
 
 \clearpage 

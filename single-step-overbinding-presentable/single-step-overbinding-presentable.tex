@@ -244,7 +244,11 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		$\mathcal{X}(C) \stackrel{\operatorname{def}}{=} \mathcal{X}^*(C) \cup \{(a,c) \mid ((a,b)\in\mathcal{X}^*(C) \land \poslit(c) = l \land \posterm(c) = \posterm(b) \land \poslit(b) = l') \lor \text{\dots~other cases \dots}\}$
 
-		In the graph-theoretic view, this should mean that if terms $t$ and $t'$ are from $l$ and $l'$ respectively and unified, then their components are to be merged. \mytodo{formalise this}.
+		Then (backwards merging): \circled{42} If $(a, c)$ and $(b, c)$ are in $\arr(C)$, add $\{a, b\}$ to $\warr(C)$ in case it is not there already.
+
+		Also (forward merging): \circled{43} If $(a, b)$ and $(a, c)$ are in $\arr(C)$, add $\{b, c\}$ to $\warr(C)$ in case it is not there already.
+
+		In the graph-theoretic view, this should mean that if terms $t$ and $t'$ are from $l$ and $l'$ respectively and unified, then their components are to be merged.
 
 		Note that $C$ in $\mathcal{X}(C)$ denotes the position in the proof, not the set of possible positions of arrows.
 		This is because some literals are removed from the clause but not added to the interpolant, but their arrows can still matter by transitivity (cf.~example TODO).

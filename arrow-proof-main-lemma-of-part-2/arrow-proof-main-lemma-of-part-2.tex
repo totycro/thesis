@@ -137,13 +137,104 @@
 
 \begin{document}
 
-Ideas for simplification:
-
-* Lemma for all cases about what is on the other side
+\newcommand{\substremarksym}{$\ast$}
+\newcommand{\substremarkref}{$(\ast)$}
 
 \newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
 \newcommand{\newterm}{^*}
 \newcommand{\de}{^\Delta}
+
+\section{version with merging of reachable components}
+
+
+\begin{lemma}
+	Let $x$ be a variable in $\AIclausede(C)$ which has a grey occurrence and a colored occurrence $\bhat x$.
+	Then \circled{1} there is an path from a term containing $x$ to a term containing $\bhat x$ using arrows from $\arr(C)$.
+	%Also, \circled{2} there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$.
+\end{lemma}
+\begin{proof}
+	\newcommand{\one}{\circled{1}}
+	\newcommand{\two}{\circled{2}}
+	Proof by induction; base case obvious; suppose resolution with usual notation.
+	Suppose the paths exist for $C_1$ and $C_2$.
+
+	We consider the different possibilities of introduction of colored occurrences of $x$ and show that in each of them, there is a path from a term containing a grey occurrence to a term containing the colored occurrence, as well as merge paths between existing colored occurrences and the new one.
+
+	\newcommand{\haty}{\bhat y}
+	\newcommand{\hatyPrime}{\bhat y'}
+	\begin{description}
+		\item[Suppose $x$ is introduced into a colored term $t$ by means of unification.]
+			So $t$ is not ground, say it contains $y$.
+			$y\sigma$ is a term containing $x$.
+
+			Let $\haty$ be the occurrence of $y$ which causes the variable to be changed by the unification algorithm.
+			$\haty$ is in $l$.
+			There term at the same position in $l'$ is denoted by~$\hatyPrime$.
+
+			\begin{itemize}
+					\item Suppose $\haty$ is a grey occurrence.
+
+						Then by the induction hypothesis, there is an arrow from a term containing a grey $y$ to a term containing $y$ in $t$. (We don't even need to consider $\hatyPrime$ for~\one.)
+
+
+					\item Suppose $\haty$ occurs in a maximal colored term, say $s\occ{y}$.
+						Then it is either $t\occ{y}$ or not. In case it is not $t\occ{y}$, there is by induction hypothesis (\two) (in case it's the same color) or that other lemma (in case it's differently colored) a merge path from $y$ in $t\occ{y}$ to $y$ in $s\occ{y}$.
+
+						As the arrows from terms containing $\haty$ and terms containing $\hatyPrime$ are merged, we need to show for \one{} that there is an arrow in the other clause. $\hatyPrime$ is an abstraction from a term containing $x$.
+
+						\markC
+						\begin{itemize}
+							\item 
+								Suppose $\hatyPrime$ contains $x$. 
+
+								If there is a grey occurrence of $x$ in $C_2$, we are done as the arrows between $\haty$ and $\hatyPrime$ are merged. 
+
+								If there is a grey occurrence of $y$ in $C_1$ and $\hatyPrime$ is contains a grey occurrence of $x$, we are done.
+
+								Otherwise there are no grey occurrences of $x$ and there is nothing to prove.
+
+							\item 
+								Suppose $\hatyPrime$ does not contains $x$.
+								Then it contains a variable $v$ such that $v\sigma$ is a term containing $x$.
+
+								As $\hatyPrime$ is by assumption contained in a colored term, where $x$ is introduced, we know that there is an appropriate arrow by Remark~\substremarkref.
+
+
+						\end{itemize}
+				\end{itemize}
+
+			\item [Suppose a term containing $t\occ{x}$ with $t$ colored is in $\ran(\sigma)$.]
+				So $y\sigma$ contains $t\occ{x}$ for some $y$, which occurs in w.l.o.g.\ $C_1$.
+
+				There is an occurrence $\bhat y$ of $y$ in $l$, whose corresponding term $\bhat y'$ in $l'$ is an abstraction of $t\occ{x}$. Note that the arrows of $\bhat y$ and $\bhat y'$ are merged.
+
+				Now we can argue quite like starting at \markC.
+
+				This establishes that there are appropriate arrows for $\bhat y$.
+				If $y$ and $\bhat y$ are grey occurrences, then by Lemma~\ref{lemma:arrow_from_grey_to_grey}, there is a merge edge and we are done.
+
+				If $\bhat y$ is grey and $y$ is colored, then there is a path from $y$ to $\bhat y$ by the induction hypothesis.
+
+				If $\bhat y$ is colored and $y$ is grey, and then by the induction hypothesis, there is a path from $y$ to 
+				$\bhat y$.
+				As we have shown that an appropriate arrow to a term containing $\bhat y$ exists, \mytodo{THIS DOES NOT WORK OUT. REVERT TO CREATING ARROWS VIA UNIFIER?!?}
+
+				If $\bhat y$ is colored and $y$ is colored, 
+
+
+
+
+
+		\end{description}
+\end{proof}
+
+
+
+\section{original proof}
+
+Ideas for simplification:
+
+* Lemma for all cases about what is on the other side
 
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_colored}
@@ -223,8 +314,6 @@ Ideas for simplification:
 	So before $Q$ is resolved, there is an arrow, but with the wrong lifting var ($x_i$ instead of $x_j$)
 \end{exa}
 
-\newcommand{\substremarksym}{$\ast$}
-\newcommand{\substremarkref}{$(\ast)$}
 \begin{remark}[\substremarksym]
 	Any substitution, in particular $\sigma$, only changes a finite number of variables.
 	Furthermore a result of a run of the unification algorithm is acyclic in the sense that if a substitution $u\mapsto t$ is added to the resulting substitution, it is never the case that at a later stage $t\mapsto u$ is added.
