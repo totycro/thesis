@@ -137,45 +137,13 @@
 
 \begin{document}
 
+Ideas for simplification:
+
+* Lemma for all cases about what is on the other side
+
 \newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
 \newcommand{\newterm}{^*}
 \newcommand{\de}{^\Delta}
-
-unification is for resolved literals.
-
-connections between resolved literals and the rest of the clauses is covered by arrows.
-
-if a term enters, merge arrows ensure that everything is propagated.
-
-the special thing about colored occurrences is the fact that they can create multicolored terms in cooperation with grey occurrences..
-
-a variable only occurs in a clause if it was never substituted by anything. Hence in particular all grey occurrences are ``original'' (TODO: renamings of variables)
-
-Let $u$ be a grey occurrence.
-let $f(u)$ be a colored occurrence.
-either it is original, then we are fine by arrow propagation.
-otherwise it has been introduced, but then it has used the network of another variable.
-
-more precisely: %a variable from another clause occurs in a related literal 
-a variable $v$ occurs in a related literal in a related position in another clause as $u$ in $f(u)$.
-so the variable is substituted by a term containing $u$, say $t\occ{u}$
-the arrows at the entry points are merged.
-
-effect: 
-$t\occ{u}$ occurs at every grey occurrence of $v$. all arrows mentioning them are merged with the ones mentioning the entry point.
-this is justified as the terms there appear ``as they are'', i.e.\ as they are produced at the entry point.
-
-however a colored occurrence cannot be produced from a grey occurrence ($\mgu(x, f(u))$) but only if a grey occ is in the literal and a colored occ is elsewhere in the clause (the network of the other var). but then there are (directed) arrows.
-
-
-Every variable has a connected network in a clause. 
-
-there is a barrier between colored terms.
-
-~
-
-~
-
 
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_colored}
@@ -207,6 +175,13 @@ there is a barrier between colored terms.
 \end{proof}
 
 \begin{lemma}
+{
+
+	\LARGE\bfseries\color{red} (same as above)
+		not true in this formulation, we can have $x$, $f(x)$ and $g(x)$ with arrows just from $x$ to the two colored occurrences, even if $f$ and $g$ of same color.
+
+
+	}
 	\label{lemma:arrow_from_colored_to_colored}
 	Let $x$ be a variable which occurs colored in $\AIclause\de(C)$ and again colored in the same color somewhere else in $\AI\de(C)$.
 	Then there is a merge edge between the maximal colored terms containing the two occurrences.
@@ -314,7 +289,7 @@ there is a barrier between colored terms.
 						\caption{Example for this case}
 					\end{figure}
 
-					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, there is an arrow from a term containing $\hatu$ to a term containing $\gamma_j\occ{u}$ in $\arrFinal(C)$.
+					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, there is an arrow from a term containing $u$ to a term containing $\gamma_j\occ{u}$ in $\arrFinal(C)$.
 					As $\hatu\sigma$ is a term containing the $\Delta$-term $\delta_i$, the term at the position of $\hatu$ in $\AI\de(C)$ is $\lifboth{\hatu\sigma}\tau$, which by assumption contains $z_i$. 
 					But there is an arrow from this term containing $z_i$ to $\newgam\occ{z_i}$, so $z_i \ltArrC z_j$.
 
@@ -353,7 +328,7 @@ there is a barrier between colored terms.
 					\end{figure}
 
 					Then either $\hatu$ is the occurrence of $u$ in $\oldgam\occ{\hatu}$ or it occurs in a different $\Gamma$-term~$\gamma_j\occ{\hatu}$.
-					In the latter case, by Lemma~\ref{lemma:arrow_from_colored_to_colored}, there is a merge edge between $\oldgam\occ{\hatu}$ and $\gamma_j\occ{\hatu}$. 
+					In the latter case, by Lemma~\ref{lemma:arrow_from_colored_to_colored}, there is a merge edge between $\oldgam\occ{\hatu}$ and $\gamma_j\occ{\hatu}$. \mytodo{or that other combination, which is fine as well}
 					Hence in both cases, it suffices to show that there is an arrow from a term containing an occurrence of $z_i$ to $\hatuPrime$.
 
 					We distinguish on the shape of $\hatuPrime$:
@@ -445,6 +420,44 @@ there is a barrier between colored terms.
 	\end{description}
 
 \end{proof}
+
+\section*{something about when i started with connected components}
+
+unification is for resolved literals.
+
+connections between resolved literals and the rest of the clauses is covered by arrows.
+
+if a term enters, merge arrows ensure that everything is propagated.
+
+the special thing about colored occurrences is the fact that they can create multicolored terms in cooperation with grey occurrences..
+
+a variable only occurs in a clause if it was never substituted by anything. Hence in particular all grey occurrences are ``original'' (TODO: renamings of variables)
+
+Let $u$ be a grey occurrence.
+let $f(u)$ be a colored occurrence.
+either it is original, then we are fine by arrow propagation.
+otherwise it has been introduced, but then it has used the network of another variable.
+
+more precisely: %a variable from another clause occurs in a related literal 
+a variable $v$ occurs in a related literal in a related position in another clause as $u$ in $f(u)$.
+so the variable is substituted by a term containing $u$, say $t\occ{u}$
+the arrows at the entry points are merged.
+
+effect: 
+$t\occ{u}$ occurs at every grey occurrence of $v$. all arrows mentioning them are merged with the ones mentioning the entry point.
+this is justified as the terms there appear ``as they are'', i.e.\ as they are produced at the entry point.
+
+however a colored occurrence cannot be produced from a grey occurrence ($\mgu(x, f(u))$) but only if a grey occ is in the literal and a colored occ is elsewhere in the clause (the network of the other var). but then there are (directed) arrows.
+
+
+Every variable has a connected network in a clause. 
+
+there is a barrier between colored terms.
+
+~
+
+~
+
 
 
 \end{document}
