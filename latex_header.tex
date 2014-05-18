@@ -137,8 +137,8 @@ positioning,fit,calc,decorations.text,shadows%
 % functions
 \DeclareMathOperator{\sk}{sk}
 \DeclareMathOperator{\mgu}{mgu}
-\DeclareMathOperator{\dom}{Dom}
-\DeclareMathOperator{\ran}{Ran}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
 
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\Fun}{FS}
@@ -350,8 +350,8 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\arrowB}{\tikz[overlay,remember picture] \node (b) {};}
 \newcommand{\drawAB}{
 	\tikz[overlay,remember picture]
-	%{\draw[->,bend left=80] (a.north) to (b.north);}
-	{\draw[->,square arrow,color=red] (a.south) to (b.south);}
+	{\draw[->,bend left=5,color=red] (a.south) to (b.south);}
+	%{\draw[->,square arrow,color=red] (a.south) to (b.south);}
 }
 
 \newcommand{\arrowAB}{\tikz[overlay,remember picture] \node (ab) {};}
@@ -387,6 +387,14 @@ positioning,fit,calc,decorations.text,shadows%
 	\tikz[overlay,remember picture]
 	{\draw[->,square arrow2,color=orange] (e.south) to (f.south);}
 }
+
+
+\newcommand{\arrA}{\arrowA}
+\newcommand{\arrB}{\arrowB}
+\newcommand{\arrC}{\arrowC}
+\newcommand{\arrD}{\arrowD}
+\newcommand{\arrE}{\arrowE}
+\newcommand{\arrF}{\arrowF}
 
 \newcommand{\refsub}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
 

@@ -1886,6 +1886,71 @@ Suppose continuation with $\lnot R(a)$, $a$ is $\Delta$-term.
 Then need $\forall x_1 \exists x_2 ( R(x_1) \lor Q(x_2))$
 Cannot just merge $R$ and $Q$.
 
+\begin{samepage}
+CONT:\nopagebreak
+\begin{prooftree}
+
+	\AxiomCm{\p{\top \mid \lnot R(a) }}
+
+	\AxiomCm{\sig{\bot \mid P(\arrowB f( y)) \lor Q(\arrowA y)}} \drawAB
+	\noLine\UnaryInfC{}
+	\AxiomCm{\sig{\bot \mid \lnot P(\arrowD f(g( x))) \lor R(\arrowC x)}} \drawCD
+	\noLine\UnaryInfC{}
+	\BinaryInfCm{{\bot \mid Q(g(x)) \lor R( x) }}
+
+	\BinaryInfCm{R(a)  \mid Q(g(a)) }
+
+\end{prooftree}
+\end{samepage}
+
+$\exists y_2 \forall x_1 ( R(x_1) \mid Q(y_2) )$
+
+\begin{multicols}{6}
+	$ x_1 \sim a$
+
+	$ y_2 \sim g(a)$
+
+	$ y_3 \sim f(y)$
+	
+	$ y_4 \sim f(g(x))$
+
+	$ y_5 \sim g(x)$
+\end{multicols}
+\begin{prooftree}
+	\AxiomCm{\p{\forall x_1 \mid \lnot R(x_1) }}
+
+	\AxiomCm{\sig{\exists y_3 \mid P(\arrowB y_3) \lor Q(\arrowA y)}} \drawAB
+	\noLine\UnaryInfC{}
+	\AxiomCm{\sig{\exists y_4 \mid \lnot P(\arrowD y_4) \lor R(\arrowC x)}} \drawCD
+	\noLine\UnaryInfC{}
+	\BinaryInfCm{{P(y_4)\mid \exists y_5 \exists y_4 \mid Q(y_5) \lor R( x) }}
+
+	\BinaryInfCm{P(y_4)\mid   \exists \arrowA y_5 \forall \arrowC x_1 \exists \arrowD\,\arrowB y_4   \mid  R(x_1)  \mid Q(y_5) } \drawAB\drawCD
+
+\end{prooftree}
+
+
+\e{210g' -- same but more elaborate}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ \bot \mid \lnot S(b)}}
+
+	\AxiomCm{\sig{\bot \mid P(f(x)) \lor R(x)}}
+	\AxiomCm{\p{\top \mid \lnot R(g(y)) \lor S(y)}}
+	\BinaryInfCm{ R(\arrB\,\arrE g(y)) \mid S(\arrA y) \lor P(\arrF f(g(y))) } \drawAB \drawEF
+	\noLine\UnaryInfC{}
+
+	\AxiomCm{ \sig{ \bot \mid Q(\arrowC z) \lor \lnot  P(\arrowD f(z))} } \drawCD
+	\noLine\UnaryInfC{}
+	\BinaryInfCm{ R(\arrB\,\arrE g(y)) \lor \lnot P(\arrF\,\arrD f(g(y))) \mid S(\arrA y) \lor Q(\arrC g(y)) } \drawAB \drawEF\drawCD
+	\noLine\UnaryInfC{}
+
+	\BinaryInfCm{ \lnot S( \arrA b) \land \Big( R(\arrB\,\arrE g(b)) \lor \lnot P(\arrF\,\arrD f(g(b)))\Big) \mid Q(\arrC g(b)) } \drawAB \drawEF\drawCD
+\end{prooftree}
+
+$ \exists y_1 \forall x_2 \exists y_3 ( \lnot S(y_1) \land ( R(x_2) \lor \lnot P(y_3)) \mid Q(x_2) )$
+
+
 
 \clearpage 
 
