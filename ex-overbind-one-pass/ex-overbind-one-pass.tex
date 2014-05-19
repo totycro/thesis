@@ -1192,6 +1192,40 @@ Direct:
 
 \end{prooftree}
 
+\largered{all combinations of quantifiers appear to work, arrows meaningless}
+
+$\AIde$:
+
+\mycols[5]{
+	$x_2 \sim g(z))$&
+	$x_5 \sim h(g(f(x)))$
+}
+\smallskip
+
+\begin{prooftree}
+
+	\AxiomCm{ \top \mid S(u)}
+
+	\AxiomCm{\top \mid R(x_0) }
+
+	\AxiomCm{\bot \mid R(x) \lor \lnot P(f(x))}
+	\AxiomCm{ \top \mid P(z) \lor Q(x_2)}
+	\BinaryInfCm{ P(f(x)) \mid R(x) \lor Q(x_2)  }
+
+	\AxiomCm{ \bot \mid \lnot Q(y) \lor S(h(y)) }
+	\BinaryInfCm{ Q(x_2) \land P(f(x)) \mid R(x) \lor S(h(x_5))  }
+
+	\BinaryInfCm{
+	\big(Q(x_2) \land P(f(x))\big) \lor R(x_0) \mid S(h(x_5))  }
+
+	\BinaryInfCm{ 
+	\big(Q(x_2) \land P(f(x))\big) \lor R(x_0) \lor S(h(x_5))  }
+
+\end{prooftree}
+
+
+$ \forall x_0 \forall x_2 \forall x_5 \big(\lnot Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \lor S(h(x_5))$ 
+
 
 \e{203b -- many $\Sigma$-literals, coloring per occurrence}
 
@@ -1903,19 +1937,20 @@ CONT:\nopagebreak
 \end{prooftree}
 \end{samepage}
 
+\NB{This does not follow the alleged invariant, the invariant holds without special quantifier ordering}
+
 $\exists y_2 \forall x_1 ( R(x_1) \mid Q(y_2) )$
 
-\begin{multicols}{6}
-	$ x_1 \sim a$
+IN MORE DETAIL:
 
-	$ y_2 \sim g(a)$
 
-	$ y_3 \sim f(y)$
-	
-	$ y_4 \sim f(g(x))$
-
+\mycols[5]{
+	$ x_1 \sim a$   &
+	$ y_2 \sim g(a)$ &
+	$ y_3 \sim f(y)$&
+	$ y_4 \sim f(g(x))$&
 	$ y_5 \sim g(x)$
-\end{multicols}
+}
 \begin{prooftree}
 	\AxiomCm{\p{\forall x_1 \mid \lnot R(x_1) }}
 

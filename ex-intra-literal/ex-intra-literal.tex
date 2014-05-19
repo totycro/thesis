@@ -1,0 +1,204 @@
+\documentclass[,%fontsize=11pt,%
+	paper=25cm:25cm,% 
+	%landscape,
+	%DIV12, % mehr text pro seite als defaultyyp
+	DIV22,
+	%DIV=calc,%
+	%twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+\def\proofSkipAmount{ \vskip -2em}
+
+\begin{document}
+
+\newcommand{\ha}[1]{ {\color{red} #1} }
+\newcommand{\hb}[1]{ {\color{blue} #1} }
+\newcommand{\hc}[1]{ {\color{violet} #1} }
+\section*{necessary and unnecessary arrows in literal}
+
+\e{Ex 301a}
+\begin{prooftree}
+	\AxiomCm{ \p{\lnot P(a, z)}}
+
+	\AxiomCm{ \sig{P(x, f(y)) \lor Q(y) } }
+	\AxiomCm{ \p{\lnot Q(a)}}
+	\BinaryInfCm{ Q(a) \mid P(x, f(a)) }
+
+	\BinaryInfCm{ Q(a) \lor P(a, f(a)) \mid \square }
+\end{prooftree}
+
+\mycols[2]{
+\begin{prooftree}
+	\AxiomCm{ \forall x_1 \p{\lnot P(x_1, z)}}
+
+	\AxiomCm{ \sig{P(x, f(y)) \lor Q(y) } }
+	\AxiomCm{\forall x_1 \p{\lnot Q(x_1)}}
+	\BinaryInfCm{ \forall x_1( Q(x_1) \mid P(x, f(x_1))) }
+
+	\BinaryInfCm{ \forall x_1 ( Q(x_1) \lor P(x_1, f(x_1))) \mid \square }
+\end{prooftree} &
+\begin{prooftree} 
+\AxiomCm{ \forall x_1 \p{\lnot P(x_1, z)}}
+
+	\AxiomCm{ \exists y_2 \sig{P(x, y_2) \lor Q(y) } }
+	\AxiomCm{\forall x_1 \p{\lnot Q(x_1)}}
+	\BinaryInfCm{ \stackrel{\forall x_1}{\exists y_2}( Q(x_1) \mid P(x, y_2)) }
+
+	\BinaryInfCm{ \stackrel{\forall x_1}{\exists y_3} ( Q(x_1) \lor P(x_1, y_3)) \mid \square }
+\end{prooftree} 
+}
+
+~
+
+~
+
+all orderings work:
+
+$\forall x_1 \exists y_2 (Q(x_1) \lor P(x_1, y_2))$ \comm{need not be $x_1$ both times, that's just an accident of this example}
+
+$\exists y_2 \forall x_1 (Q(x_1) \lor P(x_1, y_2))$ 
+
+\e{Ex 302a}
+\begin{prooftree}
+	\AxiomCm{ \sig{P(u, f(u))}}
+	\AxiomCm{ \p{\lnot P(a, z)}}
+	\BinaryInfCm{ {P(a, f(a))\mid \square}}
+\end{prooftree}
+
+\mycols[2]{
+\begin{prooftree}
+	\AxiomCm{ \sig{P(u, f(u))}}
+	\AxiomCm{ \forall x_1 \p{\lnot P(x_1, z)}}
+	\BinaryInfCm{ \forall x_1 {P(x_1, f(x_1))\mid \square}}
+\end{prooftree}
+& 
+\begin{prooftree}
+	\AxiomCm{ \forall u \exists y_2 \sig{P(u, y_1))}}
+	\AxiomCm{ \forall x_1 \p{\lnot P(x_1, z)}}
+	\BinaryInfCm{ \forall x_1 \exists y_3 {P(x_1, y_3)\mid \square}}
+	\noLine\UnaryInfC{(order matters)}
+\end{prooftree}
+}
+~
+
+
+
+$\forall x_1 \exists y_2 (P(x_1, y_2))$ 
+
+\sout{${\exists y_2 \forall x_1 (P(x_1, y_2))}$ }
+
+\e{Ex 302a' -- inverse coloring}
+
+\begin{prooftree}
+	\AxiomCm{ \forall y_2 \p{P(u, y_2)}}
+	\AxiomCm{ \sig{\lnot P(a, z)}}
+	\BinaryInfCm{ \forall y_3 {P(a, y_3)\mid \square}}
+	\noLine\UnaryInfC{(can't really fix order, but matters)}
+\end{prooftree}
+
+
+\end{document}

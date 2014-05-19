@@ -162,6 +162,7 @@ positioning,fit,calc,decorations.text,shadows%
 %\newcommand{\ar}{\ensuremath{\mathrm{ar}}}
 
 \DeclareMathOperator{\AI}{AI}
+\newcommand{\AIde}{\ensuremath{\AI^\Delta}}
 \newcommand{\AImatrix}{\ensuremath{\AI_\mathrm{mat}}}
 \newcommand{\AIclause}{\ensuremath{\AI_\mathrm{cl}}}
 \newcommand{\AIclausede}{\ensuremath{\AIclause^\Delta}}
@@ -471,7 +472,7 @@ positioning,fit,calc,decorations.text,shadows%
 }}
 
 
-\usepackage{ulem} %  \dotuline{dotty} \dashuline{dashing}
+\usepackage{ulem} %  \dotuline{dotty} \dashuline{dashing} \sout{strikethrough}
 \normalem
 
 \usepackage[color]{changebar} %  \cbstart, \cbend
@@ -502,3 +503,14 @@ positioning,fit,calc,decorations.text,shadows%
 }
 \makeatother
 \newcounter{parentnumber}
+
+
+\usepackage{tabularx}% http://ctan.org/pkg/tabularx
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\newcommand{\mycols}[2][3]{
+	\noindent\begin{tabularx}{\textwidth}{*{#1}{Y}}
+		#2
+	\end{tabularx}%
+}
+
