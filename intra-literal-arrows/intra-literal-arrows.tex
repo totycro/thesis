@@ -39,6 +39,7 @@
 \newcommand{\propqed}{$\square$} % for props without proof
 \declaretheorem[title=Theorem]{thm}
 \declaretheorem[title=Proposition,sibling=thm]{prop}
+\declaretheorem[title=Conjectured Proposition,sibling=thm]{cprop}
 %\declaretheorem[title=Lemma,parent=chapter]{lemma}
 \declaretheorem[sibling=thm]{lemma}
 \declaretheorem[title=Corollary,sibling=thm]{corr}
@@ -148,6 +149,18 @@ We show:
 \end{itemize}
 This shows that $\Gamma \entails \AI(C)$. 
 
-ad \circled{1}:
+Ad 1)
+
+\begin{cprop}[Witness terms]
+\end{cprop}
+\begin{proof}
+	cf.~examples.
+
+	* for $P(u, f(u))$, to show $\forall u \exists x_1 P(u, x_1)$, $u$ must be contained in the witness term.
+	Hence we can not prove $\exists x_1 \forall u P(y, x_1)$ (this is not valid).
+
+	* for $P(x, f(u)) \lor Q(u)$, to show $\exists x_1 \forall x \forall u (P(x, x_1) \lor Q(u))$, $u$ does not need to be (can not be?) contained in the witness term.
+	$\forall x \forall y \exists x_1 (P(x, x_1) \lor Q(u))$ is easy to see (as above).
+\end{proof}
 
 \end{document}
