@@ -119,7 +119,8 @@
 \newcommand{\hb}[1]{ {\color{blue} #1} }
 \newcommand{\hc}[1]{ {\color{violet} #1} }
 \section*{necessary and unnecessary arrows in literal}
-
+{\tiny
+ 
 \e{Ex 301a}
 \begin{prooftree}
 	\AxiomCm{ \p{\lnot P(a, z)}}
@@ -161,6 +162,50 @@ all orderings work:
 $\forall x_1 \exists y_2 (Q(x_1) \lor P(x_1, y_2))$ \comm{need not be $x_1$ both times, that's just an accident of this example}
 
 $\exists y_2 \forall x_1 (Q(x_1) \lor P(x_1, y_2))$ 
+
+}
+
+\e{Ex 301a' -- simplified }
+\begin{prooftree}
+	\AxiomCm{ \p{\lnot P(z)}}
+
+	\AxiomCm{ \sig{P(f(y)) \lor Q(y) } }
+	\AxiomCm{ \p{\lnot Q(a)}}
+	\BinaryInfCm{ Q(a) \mid P(f(a)) }
+
+	\BinaryInfCm{ Q(a) \lor P(f(a)) \mid \square }
+\end{prooftree}
+
+\mycols[2]{
+\begin{prooftree}
+	\AxiomCm{ \p{\lnot P(z)}}
+
+	\AxiomCm{ \sig{P(f(y)) \lor Q(y) } }
+	\AxiomCm{\forall x_1 \p{\lnot Q(x_1)}}
+	\BinaryInfCm{ \forall x_1( Q(x_1) \mid P(f(x_1))) }
+
+	\BinaryInfCm{ \forall x_1 ( Q(x_1) \lor P(f(x_1))) \mid \square }
+\end{prooftree} &
+\begin{prooftree} 
+\AxiomCm{ \p{\lnot P( z)}}
+
+	\AxiomCm{ \exists y_2 \sig{P(y_2) \lor Q(y) } }
+	\AxiomCm{\forall x_1 \p{\lnot Q(x_1)}}
+	\BinaryInfCm{ \stackrel{\forall x_1}{\exists y_2}( Q(x_1) \mid P(y_2)) }
+
+	\BinaryInfCm{ \stackrel{\forall x_1}{\exists y_3} ( Q(x_1) \lor P(y_3)) \mid \square }
+\end{prooftree} 
+}
+
+~
+
+all orderings work:
+
+$\forall x_1 \exists y_2 (Q(x_1) \lor P(y_2))$ 
+
+$\exists y_2 \forall x_1 (Q(x_1) \lor P(y_2))$ 
+
+
 
 \e{Ex 302a}
 \begin{prooftree}

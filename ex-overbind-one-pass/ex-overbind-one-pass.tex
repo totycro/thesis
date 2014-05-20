@@ -1192,13 +1192,13 @@ Direct:
 
 \end{prooftree}
 
-\largered{all combinations of quantifiers appear to work, arrows meaningless}
+\largered{all combinations of quantifiers work, arrows not relevant}
 
 $\AIde$:
 
 \mycols[5]{
 	$x_2 \sim g(z))$&
-	$x_5 \sim h(g(f(x)))$
+	$x_5 \sim g(f(x))$
 }
 \smallskip
 
@@ -1213,18 +1213,18 @@ $\AIde$:
 	\BinaryInfCm{ P(f(x)) \mid R(x) \lor Q(x_2)  }
 
 	\AxiomCm{ \bot \mid \lnot Q(y) \lor S(h(y)) }
-	\BinaryInfCm{ Q(x_2) \land P(f(x)) \mid R(x) \lor S(h(x_5))  }
+	\BinaryInfCm{ Q(x_2) \land P(f(x)) \mid R(x) \lor S(h(x_2))  }
 
 	\BinaryInfCm{
-	\big(Q(x_2) \land P(f(x))\big) \lor R(x_0) \mid S(h(x_5))  }
+	\big(Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \mid S(h(x_2))  }
 
 	\BinaryInfCm{ 
-	\big(Q(x_2) \land P(f(x))\big) \lor R(x_0) \lor S(h(x_5))  }
+	\big(Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \lor S(h(x_2))  }
 
 \end{prooftree}
 
 
-$ \forall x_0 \forall x_2 \forall x_5 \big(\lnot Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \lor S(h(x_5))$ 
+$ \forall x_0 \forall x_2 \forall x_5 \big(\lnot Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \lor S(h(x_2))$ 
 
 
 \e{203b -- many $\Sigma$-literals, coloring per occurrence}

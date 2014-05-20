@@ -163,4 +163,36 @@ Ad 1)
 	$\forall x \forall y \exists x_1 (P(x, x_1) \lor Q(u))$ is easy to see (as above).
 \end{proof}
 
+Thoughts on the proof:
+
+Can't just do it as in Huang, if some existential quantifiers are before universal ones, we cannot argue that it's fine without talking about the formula structure, which can be quite arbitrary. 
+But we can handle the formula structure by induction, possibly a proof that makes use of witness terms. 
+
+We know that $\Gamma \entails Q_i \AI(C_i)$ for $i\in\{1,2\}$ and $\Gamma \entails \AIde(C)$.
+
+\newcommand{\clauseOnePrime}{\AIclause(C_1)^*}
+\newcommand{\clauseTwoPrime}{\AIclause(C_2)^*}
+
+Ind.Hyp.:
+
+$\Gamma \entails Q_1 \AImatrix(C_1) \lor \clauseOnePrime \lor {(l{\fromclause})_\Gamma}$
+
+$\Gamma \entails Q_2 \AImatrix(C_2) \lor \clauseTwoPrime \lor {\lnot (l{\fromclause'})_\Gamma}$
+
+In these formulas, some variables are free and hence implicitly quantified. 
+$\sigma$ adds some terms, which is fine. The lifting lifts them again adding new variables, which is also fine (cf.{} corresponding Lemma).
+
+Universally quantifying these new variables is generally fine as long as the universal quantifier isn't moved as far inwards that it overtakes an existential quantifier (because else it's just exchanging same quantifiers, which is fine).
+This is supposed to be exactly the known situation. 
+
+it's not easy for existential quantification.
+\mytodo{ici}
+
+
+
+
+
+			$\Gamma \stackrel{\markA}\entails \lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclause})_\Gamma\sigma}\tau$
+
+			$\Gamma \stackrel{\markB}\entails \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclause'})_\Gamma\sigma}\tau$
 \end{document}
