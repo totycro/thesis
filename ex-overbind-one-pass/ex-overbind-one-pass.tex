@@ -1210,21 +1210,23 @@ $\AIde$:
 
 	\AxiomCm{\bot \mid R(x) \lor \lnot P(f(x))}
 	\AxiomCm{ \top \mid P(z) \lor Q(x_2)}
-	\BinaryInfCm{ P(f(x)) \mid R(x) \lor Q(x_2)  }
+	\BinaryInfCm{ \lnot P(f(x)) \mid R(x) \lor Q(x_2)  }
 
 	\AxiomCm{ \bot \mid \lnot Q(y) \lor S(h(y)) }
-	\BinaryInfCm{ Q(x_2) \land P(f(x)) \mid R(x) \lor S(h(x_2))  }
+	\BinaryInfCm{ Q(x_2) \land \lnot P(f(x)) \mid R(x) \lor S(h(x_2))  }
 
 	\BinaryInfCm{
-	\big(Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \mid S(h(x_2))  }
+	\big(Q(x_2) \land \lnot P(f(x_0))\big) \lor R(x_0) \mid S(h(x_2))  }
 
 	\BinaryInfCm{ 
-	\big(Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \lor S(h(x_2))  }
+	\big(Q(x_2) \land \lnot P(f(x_0))\big) \lor R(x_0) \lor S(h(x_2))  }
 
 \end{prooftree}
 
 
-$ \forall x_0 \forall x_2 \forall x_5 \big(\lnot Q(x_2) \land P(f(x_0))\big) \lor R(x_0) \lor S(h(x_2))$ 
+$ \forall x_0 \forall x_2 \forall x_5 \big(\lnot Q(x_2) \land \lnot P(f(x_0))\big) \lor R(x_0) \lor S(h(x_2))$ 
+
+
 
 
 \e{203b -- many $\Sigma$-literals, coloring per occurrence}
@@ -2273,5 +2275,13 @@ how to handle with components? problem with lifting vars? is this ok due to ``co
 merge all terms which are contained in each other?
 
 }
+
+~
+
+~
+
+~
+
+
 
 \end{document}

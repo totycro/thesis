@@ -244,9 +244,17 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		$\mathcal{X}(C) \stackrel{\operatorname{def}}{=} \mathcal{X}^*(C) \cup \{(a,c) \mid ((a,b)\in\mathcal{X}^*(C) \land \poslit(c) = l \land \posterm(c) = \posterm(b) \land \poslit(b) = l') \lor \text{\dots~other cases \dots}\}$
 
-		Then (backwards merging): \circled{42} If $(a, c)$ and $(b, c)$ are in $\arr(C)$, add $\{a, b\}$ to $\warr(C)$ in case it is not there already.
+		\wrong{
+		Then (backwards merging): \circled{42} If $(a, c)$ and $(b, c)$ are in $\arr(C)$, add $\{a, b\}$ to $\warr(C)$ in case it is not there already.}
+		\NB{Cannot do this as it would create merge arrows between e.g. $x$ and $g(x)$, $g$ colored (see 210g and 210g')}
 
-		Also (forward merging): \circled{43} If $(a, b)$ and $(a, c)$ are in $\arr(C)$, add $\{b, c\}$ to $\warr(C)$ in case it is not there already.
+		Also (forward merging): \circled{43} If $(a, b)$ and $(a, c)$ are in $\arr(C)$, add $\{b, c\}$ to $\warr(C)$ in case it is not there already. \NB{not sure if we can do this actually}
+
+		special case 210g':
+		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.
+		
+		%If a variable $x$ occurs grey in $C_i$ and a variable $y$ occurs grey in $C_{(i-3)*-1}$ such that $x\sigma = x$ and $y\sigma = t\occ{x}$ with $t$ colored, 
+		%then add an arrow from (every|a) grey occurrence of $x$ to (every|every grey) occurrence of $y$.
 
 		In the graph-theoretic view, this should mean that if terms $t$ and $t'$ are from $l$ and $l'$ respectively and unified, then their components are to be merged.
 

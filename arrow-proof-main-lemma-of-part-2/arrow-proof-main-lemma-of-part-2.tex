@@ -34,21 +34,7 @@
 % subsections also in toc
 \setcounter{tocdepth}{2}
 
-%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
-\newcommand{\thmqed}{$\square$} % for thms without proof
-\newcommand{\propqed}{$\square$} % for props without proof
-\declaretheorem[title=Theorem]{thm}
-\declaretheorem[title=Proposition,sibling=thm]{prop}
-%\declaretheorem[title=Lemma,parent=chapter]{lemma}
-\declaretheorem[sibling=thm]{lemma}
-\declaretheorem[title=Corollary,sibling=thm]{corr}
-\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
-%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
-\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
-
-\declaretheorem[sibling=thm,title=Conjecture]{conj}
-
-\declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
+\definethms
 
 %\def\proofSkipAmount{ \vskip -0.5em}
 
@@ -146,12 +132,16 @@
 
 \section{version with merging of reachable components}
 
+\mytodo{CHECK UP ON THIS PROOF, then tackle next two.}
 
-\begin{lemma}
+\mytodo{Fix up major proof below with the three new lemmas}
+
+
+\begin{clemma}
 	Let $x$ be a variable in $\AIclausede(C)$ which has a grey occurrence and a colored occurrence $\bhat x$.
-	Then \circled{1} there is an path from a term containing $x$ to a term containing $\bhat x$ using arrows from $\arr(C)$.
+	Then  there is an path from a term containing $x$ to a term containing $\bhat x$ using arrows from $\arr(C)$.
 	%Also, \circled{2} there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$.
-\end{lemma}
+\end{clemma}
 \begin{proof}
 	\newcommand{\one}{\circled{1}}
 	\newcommand{\two}{\circled{2}}
@@ -194,7 +184,7 @@
 								Otherwise there are no grey occurrences of $x$ and there is nothing to prove.
 
 							\item 
-								Suppose $\hatyPrime$ does not contains $x$.
+								Suppose $\hatyPrime$ does not contain $x$.
 								Then it contains a variable $v$ such that $v\sigma$ is a term containing $x$.
 
 								As $\hatyPrime$ is by assumption contained in a colored term, where $x$ is introduced, we know that there is an appropriate arrow by Remark~\substremarkref.
@@ -208,6 +198,10 @@
 
 				There is an occurrence $\bhat y$ of $y$ in $l$, whose corresponding term $\bhat y'$ in $l'$ is an abstraction of $t\occ{x}$. Note that the arrows of $\bhat y$ and $\bhat y'$ are merged.
 
+				figure:
+				$C_1: Q(\dots y \dots) \lor l\occ{\bhat y}\quad$
+				$C_2: \lnot l\occ{\bhat y'}\quad(\bhat y' \text{ is abstraction of } t\occur{x})$
+
 				Now we can argue quite like starting at \markC.
 
 				This establishes that there is a path from a term containing $x$ to $\bhat y$ (from $C_2$).
@@ -216,18 +210,30 @@
 
 				If $\bhat y$ is grey and $y$ is colored, then there is a path from $y$ to $\bhat y$ by the induction hypothesis.
 
-				If $\bhat y$ is colored and $y$ is grey, and then by the induction hypothesis, there is a path from $y$ to 
-				$\bhat y$.
-				As we have shown that an appropriate arrow to a term containing $\bhat y$ exists, \mytodo{THIS DOES NOT WORK OUT. REVERT TO CREATING ARROWS VIA UNIFIER?!?}
-
-				If $\bhat y$ is colored and $y$ is colored, 
+				If $\bhat y$ is colored and $y$ is grey,
+				%and then by the induction hypothesis, there is a path from $y$ to $\bhat y$.
+				then by construction of $\arr(C)$, in particular the special treatment of 210g' and as $y\sigma = t\occ{x}$ there is an arrow from any grey occurrence of $x$ to $y$ (if there is one; if there are none, we are done anyway).
 
 
 
-
-
+				If $\bhat y$ is colored and $y$ is colored, then by Lemma~\ref{lemma:arrow_from_all_colored_to_all_colored}, there is a merge edge between $\bhat y$ and $y$ and we are done.
+\qedhere
 		\end{description}
 \end{proof}
+
+\begin{clemma}
+	\label{lemma:arrow_from_all_colored_to_all_colored}
+	Let $x$ be a variable in $\AIclausede(C)$.
+	Then there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$ in $C$.
+	\NB{in this version, we merge also terms of different color. \mytodo{check if this works out }}
+\end{clemma}
+
+\begin{clemma}
+	\label{lemma:arrow_from_grey_to_grey}
+	Let $x$ be a variable in $\AIclausede(C)$.
+	Then there is a merge path from every grey occurrence of $x$ to every other grey occurrence of $x$ in $C$.
+\end{clemma}
+
 
 
 
@@ -238,7 +244,7 @@ Ideas for simplification:
 * Lemma for all cases about what is on the other side
 
 \begin{lemma}
-	\label{lemma:arrow_from_grey_to_colored}
+	\label{DEPR:lemma:arrow_from_grey_to_colored}
 	{
 
 		\LARGE\bfseries\color{red}
@@ -274,7 +280,7 @@ Ideas for simplification:
 
 
 	}
-	\label{lemma:arrow_from_colored_to_colored}
+	\label{DEPR:lemma:arrow_from_colored_to_colored}
 	Let $x$ be a variable which occurs colored in $\AIclause\de(C)$ and again colored in the same color somewhere else in $\AI\de(C)$.
 	Then there is a merge edge between the maximal colored terms containing the two occurrences.
 	\comm{This is exactly the case we need, possibly show something more general}

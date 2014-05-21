@@ -514,3 +514,27 @@ positioning,fit,calc,decorations.text,shadows%
 	\end{tabularx}%
 }
 
+
+\newcommand{\definethms}{
+
+	%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
+	\newcommand{\thmqed}{$\square$} % for thms without proof
+	\newcommand{\propqed}{$\square$} % for props without proof
+	\declaretheorem[title=Theorem]{thm}
+	\declaretheorem[title=Proposition,sibling=thm]{prop}
+	\declaretheorem[title=Conjectured Proposition,sibling=thm]{cprop}
+
+	%\declaretheorem[title=Lemma,parent=chapter]{lemma}
+	\declaretheorem[sibling=thm]{lemma}
+	\declaretheorem[sibling=thm,title=Conjectured Lemma]{clemma}
+	\declaretheorem[title=Corollary,sibling=thm]{corr}
+	\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
+	%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
+	\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
+
+	\declaretheorem[sibling=thm,title=Conjecture]{conj}
+
+	\declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
+
+
+}
