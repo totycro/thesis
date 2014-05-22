@@ -429,8 +429,16 @@ The quantifiers are ordered such that $u_i \ltArrC u_j$ implies that $u_i$ is qu
 
 %$(p_1, p_2) \in \arrFinal(C)$ implies that $u_i$ occurs before $u_j$ in the quantifier prefix if $u_i$ is contained in $\pos(p_1)$ and  $u_j$ is contained in $\pos(p_2)$.
 
+
+
+\begin{defi}[Arrow paths]
+	For two terms $s$ and $t$, $s\apath t$ holds if there is some $(p_1, p_2) \in \arrFinal(C)$ such that $s$ is contained in $\pos(p_1)$ and $t$ is contained in $\pos(p_2)$.
+
+	For two terms $s$ and $t$, $s\mpath t$ holds if there is some $(p_1, p_2) \in \marr(C)$ such that $s$ is contained in $\pos(p_1)$ and $t$ is contained in $\pos(p_2)$.
+\end{defi}
+
 \begin{defi}[Arrow-induced ordering on lifting variables]
-	For two lifting variables $u_i$ and $u_j$, $u_i \ltArrC u_j$ holds if there is some $(p_1, p_2) \in \arrFinal(C)$ such that $u_i$ is contained in $\pos(p_1)$ and  $u_j$ is contained in $\pos(p_2)$.
+	For two lifting variables $u_i$ and $u_j$, $u_i \ltArrC u_j$ holds if $u_i \apath u_j$.
 \end{defi}
 
 \begin{conj}
