@@ -244,17 +244,26 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		$\mathcal{X}(C) \stackrel{\operatorname{def}}{=} \mathcal{X}^*(C) \cup \{(a,c) \mid ((a,b)\in\mathcal{X}^*(C) \land \poslit(c) = l \land \posterm(c) = \posterm(b) \land \poslit(b) = l') \lor \text{\dots~other cases \dots}\}$
 
-		\wrong{
-		Then (backwards merging): \circled{42} If $(a, c)$ and $(b, c)$ are in $\arr(C)$, add $\{a, b\}$ to $\warr(C)$ in case it is not there already.}
-		\NB{Cannot do this as it would create merge arrows between e.g. $x$ and $g(x)$, $g$ colored (see 210g and 210g')}
+		Variable renamings:\todo{necessary special case}{} For $\marr(C)$, we also add $\{p_1, p_2\}$
+		for
+		$\pos(p_1)$ and $\pos(p_2)$ grey occurrences of variables,
+		$\pos(p_1) \neq\nolinebreak \pos(p_2)$,
+		$\pos(p_1) \sigma = \pos(p_2)$.
+		This is only necessary if the renaming is caused due to unification of colored terms which contain the two variables.
 
-		Also (forward merging): \circled{43} If $(a, b)$ and $(a, c)$ are in $\arr(C)$, add $\{b, c\}$ to $\warr(C)$ in case it is not there already. \NB{not sure if we can do this actually}
+		%\wrong{
+		%Then (backwards merging): \circled{42} If $(a, c)$ and $(b, c)$ are in $\arr(C)$, add $\{a, b\}$ to $\warr(C)$ in case it is not there already.}
+		%\NB{Cannot do this as it would create merge arrows between e.g. $x$ and $g(x)$, $g$ colored (see 210g and 210g')}
 
-		special case 210g':
+		%Also (forward merging): \circled{43} If $(a, b)$ and $(a, c)$ are in $\arr(C)$, add $\{b, c\}$ to $\warr(C)$ in case it is not there already. \NB{not sure if we can do this actually and if it's used somewhere}
+
+		If $y$ occurs grey in $C_i$ and colored at $\bhat y$ in the resolved literal, 
+		$y \sigma = t\occur{x}$ for some variable $x$, then add an arrow to $\arr(C)$
+
+		special case 210g':\todo{necessary special case}{}
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.
 		
-		%If a variable $x$ occurs grey in $C_i$ and a variable $y$ occurs grey in $C_{(i-3)*-1}$ such that $x\sigma = x$ and $y\sigma = t\occ{x}$ with $t$ colored, 
-		%then add an arrow from (every|a) grey occurrence of $x$ to (every|every grey) occurrence of $y$.
+	
 
 		In the graph-theoretic view, this should mean that if terms $t$ and $t'$ are from $l$ and $l'$ respectively and unified, then their components are to be merged.
 
