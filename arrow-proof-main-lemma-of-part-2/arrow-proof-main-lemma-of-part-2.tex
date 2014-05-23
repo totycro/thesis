@@ -132,11 +132,18 @@
 
 \section{current version}
 
-\mytodo{need to replace lemma 2 (colored to colored). Plan: adapt lemma for variable in both gamma- and delta-colored terms, then add lemma for multiple variable occurrences, all in single color terms.}
+
+\mytodo{finish new version of lemma 1}
+
+\mytodo{show: merge arrow if no grey occurrence lemma in in spe results}
+
+\mytodo{check if old lemma 2 occurs anywhere else}
 
 \mytodo{Fix up major proof below with the new lemmas}
 
+
 \begin{clemma}
+	\label{lemma:arrow_from_grey_to_colored}
 	Let $x$ be a variable in $\AIclausede(C)$ occurs in the maximal colored term $t\occ{x}$.
 	If it has a grey occurrence in some literal ($\AI(C)$ or or also in literals with colored predicates), then $x\apath t\occ{x}$.
 \end{clemma}
@@ -150,16 +157,67 @@
 	$\bhat y$ is in a resolved literal, say $l$, so we denote it by $l\at{\bhat y}$ and its counterpart in $l'$ by $l'\at{\bhat y}$. 
 
 	\begin{description}
-		\item[Suppose $y\sigma$ is a grey occurrence of $x$ and a colored $t\occ{y}$ occurs in $C_1$.]
+		\item[Suppose $x$ occurs grey in $y\sigma$ and a colored $t\occ{y}$ occurs in $C_1$.]
+			Then $t\occ{x}$ occurs in $C$ and we have to show that $x\apath t\occ{x}$.
 
 			\begin{itemize}
 				\item Suppose $l\at{\bhat y}$ is a grey occurrence.
-				\item Suppose $l\at{\bhat y}$ is a colored occurrence.
+					Then by the induction hypothesis, $y\apath t\occ{y}$. 
+					As $\sigma$ is applied in $C$, $y\sigma\occ{x}\apath t\sigma\occ{x}$.
+				\item Suppose $l\at{\bhat y}$ is a colored occurrence and contained in the maximal colored term $s\occ{y}$.
+
+					figure: $Q(\dots t\occ{y} \dots) \lor P(\dots s\occat{y}{p} \dots)\quad\quad \lnot P(\dots s\occat{x}{p})$
+
+					\mytodo{}
+					STEPS:
+
+					* either grey $y$ in $C_1$, then have other arrow here
+
+					* otherwise merge arrow -> new lemma?
+
+					* then: show that $l'\occ{\bhat y}$ has arrow, as below.
+
+
 			\end{itemize}
 
-		\item[Suppose $y\sigma$ is a colored occurrence of $x$ and $y$ occurs in $C_1$.]
+		\item[Suppose $x$ occurs colored in $y\sigma$ and $y$ occurs in $C_1$ (colored or grey).]
+			~
+
+				figure:
+				$C_1: Q(\dots \bdot y \dots) \lor l\occat{\bhat y}{p}\quad\quad$
+				$C_2: \lnot l\occat{\bhat y'}{p}\quad(\bhat y' \text{ is abstraction of } t\occur{x})$
+
+
+				\begin{itemize}
+					\item Suppose $l'\at{\bhat y}$ contains $x$.
+						If $x$ occurs grey in $C_2$, then by the induction hypothesis,
+						$x\apath l'\at{\bhat y}$.
+
+
+						Otherwise figure: $ y \lor z \lor l[f(y), g(z)]\quad\quad \lnot l[f(h(x)), g(x)]$
+
+						Otherwise $x$ occurs only colored in $C_2$. 
+						If $x$ occurs grey in $C$, then it is derived from a grey occurrence of a variable $z$ in $C_1$ (such that $x$ occurs grey in $z\sigma$), and $x$ occurs colored in $l'\at{\bhat x}$ and $z$ occurs colored in $l\at{\bhat x}$ (with the same prefix).
+						As $z$ occurs grey in $C_1$ and colored in $l\at{\bhat x}$, $z\apath l\at{\bhat x}$ by the induction hypothesis, which in $C$ applies to $x$. 
+						By Lemma~\ref{lemma:merge_arrow_between_same_colored_terms}, $l'\at{\bhat x} \mpath l'\at{\bhat y}$, so $x\apath l\at{\bhat y}$ in $C$.
+
+
+						\mytodo{ this shows that $x\apath l'\at{\bhat y}$ in any case, it remains to show that it applies to the occurrence $y$ in $C_1$ (in general not in the literal )}
+
+
+
+					\item Suppose $l'\at{\bhat y}$ does not contain $x$.
+						Then it contains a variable $u$ such that $x$ occurs grey in $u\sigma$. 
+						So the situation repeats in $C_2$ as $l'\at{\bhat y}$ is contained in a colored term and $u$ is what $y$ was now.
+						Hence we obtain the result by Remark~\substremarkref.
+
+				\end{itemize}
+
+
+
 	\end{description}
 \end{proof}
+
 
 \begin{clemma}
 	\largered{deprecated to version above}
@@ -649,9 +707,10 @@ there is a barrier between colored terms.
 
 ~
 
-\section*{results in spe}
+\section{results in spe}
 
 \begin{clemma}
+	\label{lemma:merge_arrow_between_same_colored_terms}
 	Let $x$ be a variable $s\occ{x}$ and $t\occ{x}$ be terms containing $x$ such that $x\notapath s\occ{x}$ and $x\notapath t\occ{x}$.
 	Then $s\occ{x} \mpath t\occ{x}$.
 \end{clemma}
@@ -661,7 +720,7 @@ there is a barrier between colored terms.
 
 \end{proof}
 
-\section*{missteps}
+\section{missteps}
 
 \begin{lemma}
 	\label{DEPR:lemma:arrow_from_grey_to_colored}
