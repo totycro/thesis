@@ -130,16 +130,41 @@
 \newcommand{\newterm}{^*}
 \newcommand{\de}{^\Delta}
 
-\section{version with merging of reachable components}
+\section{current version}
 
 \mytodo{need to replace lemma 2 (colored to colored). Plan: adapt lemma for variable in both gamma- and delta-colored terms, then add lemma for multiple variable occurrences, all in single color terms.}
 
 \mytodo{Fix up major proof below with the new lemmas}
 
+\begin{clemma}
+	Let $x$ be a variable in $\AIclausede(C)$ occurs in the maximal colored term $t\occ{x}$.
+	If it has a grey occurrence in some literal ($\AI(C)$ or or also in literals with colored predicates), then $x\apath t\occ{x}$.
+\end{clemma}
+\begin{proof}
+	Induction start by definition.
+
+	Induction step with usual notation.
+
+	We consider introductions of $t\occ{x}$ by changing the variable $y$.
+	Let $\bhat y$ be the position of $y$ which causes the variable to be changed by the unification algorithm.
+	$\bhat y$ is in a resolved literal, say $l$, so we denote it by $l\at{\bhat y}$ and its counterpart in $l'$ by $l'\at{\bhat y}$. 
+
+	\begin{description}
+		\item[Suppose $y\sigma$ is a grey occurrence of $x$ and a colored $t\occ{y}$ occurs in $C_1$.]
+
+			\begin{itemize}
+				\item Suppose $l\at{\bhat y}$ is a grey occurrence.
+				\item Suppose $l\at{\bhat y}$ is a colored occurrence.
+			\end{itemize}
+
+		\item[Suppose $y\sigma$ is a colored occurrence of $x$ and $y$ occurs in $C_1$.]
+	\end{description}
+\end{proof}
 
 \begin{clemma}
+	\largered{deprecated to version above}
 	Let $x$ be a variable in $\AIclausede(C)$ which has a grey occurrence and a colored occurrence.
-	Then for every grey occurrence $\bhat x$ of $x$, there is an path from a term containing some grey occurrence to a term containing $\bhat x$ using arrows from $\arr(C)$.
+	Then for every colored occurrence $\bhat x$ of $x$, there is an path from a term containing some grey occurrence to a term containing $\bhat x$ using arrows from $\arr(C)$.
 	%Also, \circled{2} there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$.
 \end{clemma}
 \begin{proof}
@@ -156,7 +181,7 @@
 			Let $y$ be a variable in $t$ such that $y\sigma$ is a term containing $x$.
 
 			Let $\bhat y$ be the position of $y$ which causes the variable to be changed by the unification algorithm.
-			$\bhat y$ is in a resolved literal, say $l$, so we denote it by $l\at{\bhat y}$ and its counterpart in $l'$ by $l'\at{\bhat y}$
+			$\bhat y$ is in a resolved literal, say $l$, so we denote it by $l\at{\bhat y}$ and its counterpart in $l'$ by $l'\at{\bhat y}$. 
 
 			\begin{itemize}
 					\item Suppose $l\at{\bhat y}$ is a grey occurrence.
@@ -184,7 +209,17 @@
 
 
 					\item Suppose $l\at{\bhat y}$ is contained in a maximal colored term, say $s\occ{y}$.
-						Then in case $t\occ{y} \neq\nolinebreak s\occ{y}$, by Lemma~\ref{lemma:arrow_from_all_colored_to_all_colored}, there is a merge arrow between a term containing $t\occ{y}$ and a term containing $s\occ{y}$.
+						\cbstart
+						Then in case $t\occ{y} \neq\nolinebreak s\occ{y}$,
+
+						if $y$ occurs grey in $C_1$, since $y\sigma$ 
+
+						by the induction hypothesis, $y\apath s\occ{y}$
+
+
+						by Lemma~\ref{lemma:arrow_from_all_colored_to_all_colored},
+						there is a merge arrow between a term containing $t\occ{y}$ and a term containing $s\occ{y}$.
+						\cbend
 
 						As the arrows from terms containing $l\at{\bhat y}$ and the corresponding terms containing $l'\at{\bhat y}$ are merged, we need to show that there is an arrow in the other clause. $l'\at{\bhat y}$ is an abstraction from a term containing $x$.
 
@@ -241,11 +276,12 @@
 
 \begin{clemma}
 	\label{lemma:arrow_from_all_colored_to_all_colored}
+	\wrong{does not work out}
 	Let $x$ be a variable in $\AIclausede(C)$.
 	Then there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$ in $C$.
 \end{clemma}
+\begin{comment}
 \begin{proof}
-	\NB{in this version, we merge also terms of different color. \mytodo{check if this works out }}
 
 	Induction start: by definition.
 
@@ -281,6 +317,7 @@
 	\end{description}
 
 \end{proof}
+\end{comment}
 
 
 
@@ -313,6 +350,32 @@
 
 \end{proof}
 
+\begin{clemma}
+	If a variable $x$ occurs in a maximal colored term $s\occ{x}$ which is a $\Gamma$-term as well as in a maximal colored term $t\occ{x}$ which is a $\Delta$-term in $C$, then $x\apath s\occ{x}$ and $x\apath t\occ{x}$.
+\end{clemma}
+\begin{proof}
+	This situation does not occur in the induction start.
+
+	Induction step, usual notation.
+
+	We consider resolution steps which create this situation. 
+	Clauses are variable disjoint, so if a variable occurs in a term of a color, it can only also occur in a term of another color by entering the other term via unification.
+
+	\mytodo{case distinction: var $x$ introduced into $t$ or $y\sigma$ gives such a term ?}
+	\begin{description}
+			\item 
+	\end{description}
+
+
+\end{proof}
+
+\begin{clemma}
+	Let $s\occ{x}$ and $t\occ{x}$ be maximal colored terms of the same color containing a variable $x$. 
+	Then $s\occ{x} \mpath t\occ{x}$
+\end{clemma}
+\begin{proof}
+\end{proof}
+
 
 
 \section{original proof}
@@ -320,52 +383,6 @@
 Ideas for simplification:
 
 * Lemma for all cases about what is on the other side
-
-\begin{lemma}
-	\label{DEPR:lemma:arrow_from_grey_to_colored}
-	{
-
-		\LARGE\bfseries\color{red}
-		not true in this formulation, we can have $x$, $f(x)$ and $g(x)$ with arrows just from $x$ to the two colored occurrences, even if $f$ and $g$ of same color.
-
-
-	}
-	Let $x$ be a variable in $\AIclause\de(C)$ which has a grey occurrence and a colored occurrence. 
-	Then there is an arrow in $\arr(C)$ from a term containing a grey occurrence to a term containing a colored occurrence.
-	%Suppose there is a colored and a grey occurrence of $x$.
-	%Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$ in \mytodo{}.
-	\comm{Should also hold for all of $\AI\de$, but is currently not needed in the proof}
-\end{lemma}
-\begin{proof}
-	For clauses $C$ in the initial clause set, $\arr(C)$ is defined to contain an arrow from every grey occurrence to every colored occurrence for every variable occurring in the clause.  
-
-	For the induction step, suppose the lemma holds for $C_1$ and $C_2$. 
-	Note that $C_1$ and $C_2$ are variable disjoint.
-	\mytodo{how to continue without checking every single case?}
-
-	Note that terms are only changed by means of substitution. 
-
-	If a variable is substituted, it does not occur any further in the derivation. 
-
-	If a variable is substituted by a term containing variables, this is fine because the original arrows still apply for the new terms. 
-\end{proof}
-
-\begin{lemma}
-{
-
-	\LARGE\bfseries\color{red} (same as above)
-		not true in this formulation, we can have $x$, $f(x)$ and $g(x)$ with arrows just from $x$ to the two colored occurrences, even if $f$ and $g$ of same color.
-
-
-	}
-	\label{DEPR:lemma:arrow_from_colored_to_colored}
-	Let $x$ be a variable which occurs colored in $\AIclause\de(C)$ and again colored in the same color somewhere else in $\AI\de(C)$.
-	Then there is a merge edge between the maximal colored terms containing the two occurrences.
-	\comm{This is exactly the case we need, possibly show something more general}
-\end{lemma}
-\begin{proof}
-	\mytodo{}
-\end{proof}
 
 \begin{exa}
 	\label{exa:lifting_var_only_abstraction_in_arrow_proof}
@@ -632,6 +649,65 @@ there is a barrier between colored terms.
 
 ~
 
+\section*{results in spe}
+
+\begin{clemma}
+	Let $x$ be a variable $s\occ{x}$ and $t\occ{x}$ be terms containing $x$ such that $x\notapath s\occ{x}$ and $x\notapath t\occ{x}$.
+	Then $s\occ{x} \mpath t\occ{x}$.
+\end{clemma}
+\begin{proof}
+	Initially, this clearly holds.
+
+
+\end{proof}
+
+\section*{missteps}
+
+\begin{lemma}
+	\label{DEPR:lemma:arrow_from_grey_to_colored}
+	{
+
+		\LARGE\bfseries\color{red}
+		not true in this formulation, we can have $x$, $f(x)$ and $g(x)$ with arrows just from $x$ to the two colored occurrences, even if $f$ and $g$ of same color.
+
+
+	}
+	Let $x$ be a variable in $\AIclause\de(C)$ which has a grey occurrence and a colored occurrence. 
+	Then there is an arrow in $\arr(C)$ from a term containing a grey occurrence to a term containing a colored occurrence.
+	%Suppose there is a colored and a grey occurrence of $x$.
+	%Then for every colored occurrence $p$ of $x$ there is an arrow from some grey occurrence to~$p$ in \mytodo{}.
+	\comm{Should also hold for all of $\AI\de$, but is currently not needed in the proof}
+\end{lemma}
+\begin{proof}
+	For clauses $C$ in the initial clause set, $\arr(C)$ is defined to contain an arrow from every grey occurrence to every colored occurrence for every variable occurring in the clause.  
+
+	For the induction step, suppose the lemma holds for $C_1$ and $C_2$. 
+	Note that $C_1$ and $C_2$ are variable disjoint.
+	\mytodo{how to continue without checking every single case?}
+
+	Note that terms are only changed by means of substitution. 
+
+	If a variable is substituted, it does not occur any further in the derivation. 
+
+	If a variable is substituted by a term containing variables, this is fine because the original arrows still apply for the new terms. 
+\end{proof}
+
+\begin{lemma}
+{
+
+	\LARGE\bfseries\color{red} (same as above)
+		not true in this formulation, we can have $x$, $f(x)$ and $g(x)$ with arrows just from $x$ to the two colored occurrences, even if $f$ and $g$ of same color.
+
+
+	}
+	\label{DEPR:lemma:arrow_from_colored_to_colored}
+	Let $x$ be a variable which occurs colored in $\AIclause\de(C)$ and again colored in the same color somewhere else in $\AI\de(C)$.
+	Then there is a merge edge between the maximal colored terms containing the two occurrences.
+	\comm{This is exactly the case we need, possibly show something more general}
+\end{lemma}
+\begin{proof}
+	\mytodo{}
+\end{proof}
 
 
 \end{document}

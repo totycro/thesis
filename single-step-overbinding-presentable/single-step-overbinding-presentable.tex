@@ -439,11 +439,13 @@ The quantifiers are ordered such that $u_i \ltArrC u_j$ implies that $u_i$ is qu
 %$(p_1, p_2) \in \arrFinal(C)$ implies that $u_i$ occurs before $u_j$ in the quantifier prefix if $u_i$ is contained in $\pos(p_1)$ and  $u_j$ is contained in $\pos(p_2)$.
 
 
+\largered{conjecture: arrow matters for maximal colored terms which are subterms of where the arrow points to}
 
 \begin{defi}[Arrow paths]
-	For two terms $s$ and $t$, $s\apath t$ holds if there is some $(p_1, p_2) \in \arrFinal(C)$ such that $s$ is contained in $\pos(p_1)$ and $t$ is contained in $\pos(p_2)$.
+	For two terms $s$ and $t$, $s\apath t$ holds if there is some $(p_1, p_2) \in \arrFinal(C)$ such that $s$ is contained in $\pos(p_1)$ and $t$ is contained in $\pos(p_2)$. $s\notapath t$ holds if $s\apath t$ does not hold.
 
 	For two terms $s$ and $t$, $s\mpath t$ holds if there is some $(p_1, p_2) \in \marr(C)$ such that $s$ is contained in $\pos(p_1)$ and $t$ is contained in $\pos(p_2)$.
+ $s\notmpath t$ holds if $s\mpath t$ does not hold.
 \end{defi}
 
 \begin{defi}[Arrow-induced ordering on lifting variables]
