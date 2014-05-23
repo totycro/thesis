@@ -257,8 +257,14 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		%Also (forward merging): \circled{43} If $(a, b)$ and $(a, c)$ are in $\arr(C)$, add $\{b, c\}$ to $\warr(C)$ in case it is not there already. \NB{not sure if we can do this actually and if it's used somewhere}
 
-		If $y$ occurs grey in $C_i$ and colored at $\bhat y$ in the resolved literal, 
-		$y \sigma = t\occur{x}$ for some variable $x$, then add an arrow to $\arr(C)$
+		\comm{not finished: If $y$ occurs grey in $C_i$ and colored at $\bhat y$ in the resolved literal, 
+		$y \sigma = t\occur{x}$ for some variable $x$, then add an arrow to $\arr(C)$}
+
+		Backwards merging case 1:\todo{necessary special case}{} if for variable $x,y,z$
+		and the unifier $\sigma$ of the resolution step we have that $x$ occurs grey in $z\sigma$ and $x$ occurs colored in $y\sigma$, then add an arrow from every grey occurrence of $z$ to every grey occurrence of $y$.
+
+		Backwards merging case 2:\todo{necessary special case}{} 
+		same as 1, but also add arrows from every grey occurrence of $z$ to every colored occurrence of $y$ (which is not visible after lifting).
 
 		special case 210g':\todo{necessary special case}{}
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.
