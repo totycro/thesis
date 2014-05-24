@@ -1,4 +1,4 @@
-\documentclass[,%fontsize=11pt,%
+\documentclass[,%fontsize=10pt,%
 	paper=25cm:25cm,% 
 	%landscape,
 	%DIV12, % mehr text pro seite als defaultyyp
@@ -2225,11 +2225,11 @@ $ f(c, a) \sim y_2$
 
 $ f(c, b) \sim y_3$
 \end{multicols}
-$ (P(\arrowD y_2) \land S(\arrowC x_1)) \lor (\lnot P(\arrowF y_2) \land Q(\arrowA\,\arrowE x_1)) \mid R(\arrowB y_3) $ \drawAB \drawEF \drawCD
+$ (P(\arrowD y_2) \land S(\arrowC x_1)) \lor (\lnot P(\arrowF y_2) \land Q(\arrowA\,\arrowE x_1)) \mid R(\arrowB y_3) $ \drawAB \drawEF \drawCD NOTE: arrow merge on resolution is not drawn here (but is necessary)
 
 $ \forall x_1 \exists y_2 \exists y_3$
 
-\textbf{this is not valid per se as the left hand side only contains $\Sigma$-formulas, but it probably could be fixed by adding some $\Pi$-inferences}
+this is not valid per se as the left hand side only contains $\Sigma$-formulas, but it probably could be fixed by adding some $\Pi$-inferences
 
 Lesson is: no extra arrows needed, if a term enters, it does so via $x$, but there is a variable from the grey $x$ to both colored $x$.
 
@@ -2240,6 +2240,7 @@ Lesson is: no extra arrows needed, if a term enters, it does so via $x$, but the
 	\BinaryInfCm{ P(\arrowB\,\arrowF f(x)) \mid Q(\arrowA x) \lor R(\arrowE x)  }\drawAB\drawEF
 	\noLine\UnaryInfC{}\noLine\UnaryInfC{$\Ra$ no arr between $Q$ and $R$}
 \end{prooftree}
+\NB{should be fixed by backwards merging special case}
 
 \e{211b'}
 \begin{prooftree}
@@ -2249,10 +2250,18 @@ Lesson is: no extra arrows needed, if a term enters, it does so via $x$, but the
 	\noLine\UnaryInfC{}
 	\AxiomCm{\p{\lnot Q(a)}}
 	\BinaryInfCm{ P(\arrowB\,\arrowF f(a)) \lor  Q(\arrowA a) \mid  R(\arrowE a)  }\drawAB\drawEF
-	\noLine\UnaryInfC{}\noLine\UnaryInfC{conjecture: $Q$ and $R$ do not need arrows as they are lifted by the same variable anyway, so constraints on $Q$ do the work}
+	\noLine\UnaryInfC{}\noLine\UnaryInfC{\wrong{conjecture: $Q$ and $R$ do not need arrows as they are lifted by the same variable anyway, so constraints on $Q$ do the work}}
 \end{prooftree}
 
-
+\e{211c}
+\begin{prooftree}
+	\AxiomCm{ \sig{ Q(\arrowB f(x))\lor R(\arrowA x) } }\drawAB
+	\noLine\UnaryInfC{}
+	\AxiomCm{ \p{ \lnot R(g(y)) } }
+	\BinaryInfCm{ Q(\arrowB f(g(y))) \lor R(\arrowA g(y)) }\drawAB
+	\noLine\UnaryInfC{}
+\end{prooftree}
+Have same var but no merge arrow. The whole term $g(y)$ is somehow the ``travelling term'', there is no ``renaming''.
 \clearpage
 
 \section*{Example: no nice arrow start/end points}

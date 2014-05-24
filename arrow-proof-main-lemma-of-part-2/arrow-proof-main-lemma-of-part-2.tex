@@ -139,6 +139,15 @@
 
 ** a possibly useful criterion: $z\sigma$ occurs in $y\sigma$ for $y, z \in C_1 \cup C_2$.
 
+* what about label for arrows containing the variable, which is manipulated by the unifier?
+
+\subsection*{basic facts which should be used in the algorithm}
+
+* variables only occur per clause and are only changed by unification. Hence need to establish conditions at beginning which are not violated by unification.
+
+* without $x \lra f(x)$ situation, no mixed-colored terms can occur
+
+* other unifications transfer mixed-colored terms without producing them.
 
 
 
@@ -402,7 +411,7 @@
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_grey}
 	Let $x$ be a variable in $\AIclausede(C)$.
-	Then there is a merge arrow between every pair of distinct grey occurrences of $x$.
+	Then there is a merge arrow between every pair of distinct grey occurrences of $x$. \comm{possibly not really needed as same var is always lifted by same lifting var, they can never diverge syntactically}
 \end{lemma}
 \begin{proof}
 	Induction start: by definition.
@@ -702,12 +711,24 @@ there is a barrier between colored terms.
 \section{results in spe}
 
 \begin{clemma}
-	there is a merge edge between all occurrences of a variable $x$ in all colored terms of the same ``stage''.
+	there is a merge edge between all occurrences of a variable $x$ in all colored terms of the same ``stage'' (and directed arrows between stages).
 \end{clemma}
 \begin{proof}
 	a stage means the color alternation level: only $\Gamma$, $1 \Gamma + 1 \Delta$, and so on.
 
 	more formally: on the prefix to $x$ in a maximal colored term $t$, iterate in order and increase counter whenever the current symbol has a different color than the previously encountered color. the counter is increased for the first colored symbol. this number plus the color of $t$ define the stage.
+
+	induction start: by def.
+
+	induction step, usual notation.
+
+	Suppose a term $t\occ{y}$ changes its stage. 
+	So it contains a variable $y$ h
+
+
+
+
+
 \end{proof}
 
 
