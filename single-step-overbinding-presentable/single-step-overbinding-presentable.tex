@@ -264,7 +264,10 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		and the unifier $\sigma$ of the resolution step we have that $x$ occurs grey in $z\sigma$ and $x$ occurs colored in $y\sigma$, then add an arrow from every grey occurrence of $z$ to every grey occurrence of $y$.
 
 		Backwards merging case 2:\todo{necessary special case}{} 
-		same as 1, but also add arrows from every grey occurrence of $z$ to every colored occurrence of $y$ (which is not visible after lifting).
+		same as 1, but also add arrows from every grey occurrence of $z$ to every $\Gamma$-colored occurrence of $y$ (which is not visible after lifting, but is visible in $\AIde$).
+
+		Backwards merging case 3:\todo{necessary special case}{} 
+		If $x$ occurs in $y\sigma$, then add an arrow from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$.
 
 		special case 210g':\todo{necessary special case}{}
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.

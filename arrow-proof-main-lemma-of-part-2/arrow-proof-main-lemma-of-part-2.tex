@@ -133,6 +133,11 @@
 
 \subsection*{noteworthy thoughts}
 
+{\large
+
+* if $x$ occurs in $y\sigma$, then add an arrow from every grey occurrence of $x$ to the network of $y$-occurrences. It should be possible to have this network reach every occurrence. not sure how widereaching this is as it does not cover any color-alternating terms.
+
+}
 * seem to not be able to construct $Q(f(h(x)), g(x))$ without arrow between arguments (either merge or a directed one) 
 
 * need some kind of backwards merging
@@ -157,7 +162,7 @@
 
 \mytodo{finish new version of lemma 1}
 
-\mytodo{show: merge arrow if no grey occurrence lemma in in spe results}
+\mytodo{find formulation of merge arrows: lemma about how terms of color are related when they share variables} 
 
 \mytodo{check if old lemma 2 occurs anywhere else}
 
@@ -180,24 +185,32 @@
 
 	\begin{description}
 		\item[Suppose $x$ occurs grey in $y\sigma$ and a colored $t\occ{y}$ occurs in $C_1$.]
-			Then $t\occ{x}$ occurs in $C$ and we have to show that $x\apath t\occ{x}$.
+			Then $t\occ{x}$ occurs in $C$ and we have to show that $x\apath t\occ{x}$ if $x$ occurs grey in $C$.
 
 			\begin{itemize}
-				\item Suppose $l\at{\bhat y}$ is a grey occurrence.
-					Then by the induction hypothesis, $y\apath t\occ{y}$. 
-					As $\sigma$ is applied in $C$, $y\sigma\occ{x}\apath t\sigma\occ{x}$.
-				\item Suppose $l\at{\bhat y}$ is a colored occurrence and contained in the maximal colored term $s\occ{y}$.
+				\item Suppose $y$ has a grey occurrence $\bdot y$ in $C_1$.
+					Then by the induction hypothesis, $\bdot y\apath t\occ{y}$. 
+					As $\sigma$ is applied in $C$, $\bdot y\sigma\occ{x}\apath t\sigma\occ{x}$.
+
+				\item Otherwise there are only colored occurrences of $y$, so also $l\at{\bhat y}$ is a colored occurrence. Let it be contained in the maximal colored term $s\occ{y}$.
 
 					figure: $Q(\dots t\occ{y} \dots) \lor P(\dots s\occat{y}{p} \dots)\quad\quad \lnot P(\dots s\occat{x}{p})$
 
-					\mytodo{}
-					STEPS:
+					\begin{itemize}
+						\item Suppose that $x$ occurs grey in $C_2$. Then by the induction hypothesis, $x\apath l'\at{\bhat y}$ and so
+							$x\apath l\at{\bhat y}$.
 
-					* either grey $y$ in $C_1$, then have other arrow here
+							As all other occurences of $y$ are contained in colored terms, \mytodo{merge arrows}
+							
+						\item Suppose that $x$ does not occur grey in $C_2$.
+							Suppose that it does occur grey in $x$ as otherwise we are done.
 
-					* otherwise merge arrow -> new lemma?
+							Then there exists a grey occurrence of a variable $z$ in $C_i$ such that $x$ occurs grey in $z\sigma$.
 
-					* then: show that $l'\occ{\bhat y}$ has arrow, as below.
+							\mytodo{ICI}
+
+					\end{itemize}
+
 
 
 			\end{itemize}
@@ -212,26 +225,41 @@
 
 			\begin{itemize}
 				\item Suppose $l'\at{\bhat y}$ contains $x$.
+					\begin{itemize}
+							\item
 					If $x$ occurs grey in $C_2$, then by the induction hypothesis,
-					$x\apath l'\at{\bhat y}$.
+					$x\apath l'\at{\bhat y}$ and hence 
+					$x\apath l\at{\bhat y}$. Let $\bdot y$ be an occurrence of $y$ in $C_1$ different from $l\at{\bhat y}$.
 
+					If $l\at{\bhat y}$ is a grey occurrence and $\bdot y$ occurs colored in $C_1$, then by the induction hypothesis, $l\at{\bhat y} \apath \bdot y$. By combining the paths, we get that $x\apath \bdot y$.
+
+					If $l\at{\bhat y}$ is a grey occurrence and $\bdot y$ occurs grey in $C_1$, then by Lemma~\ref{lemma:arrow_from_grey_to_grey}, there is a merge path between $l\at{\bhat y}$ and $\bdot y$ and hence $x\apath \bdot y$.
+
+
+					If $l\at{\bhat y}$ is a colored occurrence and $\bdot y$ occurs grey in $C_1$, then by the backwards merging case 3, $x\apath \bdot y$.
+
+					If $l\at{\bhat y}$ is a colored occurrence and $\bdot y$ occurs colored in $C_1$,  \mytodo{apply merge arrows}
+
+					\item
 					\mbox{Otherwise figure: $ r\occ{y} \lor z \lor l[f(y), g(z)]\quad\; \lnot l[f(h(x)), g(x)]\;\quad z\sigma = x;y\sigma=h(x)$}
+
+					\mytodo{ check case when $z$ is in $C_2$ }
 
 					Otherwise $x$ occurs only colored in $C_2$.
 					If $x$ does not occur grey in $C$, we are done, so assume it does.
-					Then the grey occurrence of $x$ in $C$ is derived from a grey occurrence of a variable $z$ in $C_1$ (such that $x$ occurs grey in $z\sigma$), and $x$ occurs colored in $l'\at{\bhat x}$ and $z$ occurs colored in $l\at{\bhat x}$ (with the same prefix).
+					Then the grey occurrence of $x$ in $C$ is derived from a grey occurrence of a variable $z$ in $C_1$ (as $x$ occurs in $C_2$, and $C_1$ and $C_2$ are variable disjoint)   (such that $x$ occurs grey in $z\sigma$), and $x$ occurs colored in $l'\at{\bhat x}$ and $z$ occurs colored in $l\at{\bhat x}$ (with the same prefix).
 					%As $z$ occurs grey in $C_1$ and colored in $l\at{\bhat x}$, $z\apath l\at{\bhat x}$ by the induction hypothesis, which in $C$ applies to $x$. 
 
 					Suppose $y$ occurs grey in $C_1$.
 					As $x$ occurs grey in $z\sigma$ and $x$ occurs colored in $y\sigma$, by the backwards merging 1 special case, we have an arrow from $z$ to $y$. Full stop as in $C$, $x\apath y\sigma$.
 					%As $y$ occurs grey in $C_1$, by the induction hypothesis, $y\apath l\at{\bhat y}$ and hence $z\apath l\at{\bhat y}$, so in $C$, we have that $x \apath l\at{\bhat y}$.
 
-					Otherwise $y$ occurs colored in $C_1$.
-					\mytodo{ we need some connection betwen $r\occ{y}$ and $f(y)$ in $l$}
+					Otherwise $y$ occurs colored in $C_1$. Then a similar reasoning goes through by backwards merging case 2.\todo{need to see variable here}
+
+			\end{itemize}
 
 
 
-					\mytodo{ this shows that $x\apath l'\at{\bhat y}$ in any case, it remains to show that it applies to the occurrence $y$ in $C_1$ (in general not in the literal )}
 
 
 
@@ -708,6 +736,19 @@ there is a barrier between colored terms.
 
 ~
 
+\clearpage
+\section{misc results}
+
+\begin{prop}
+	\label{prop:no_delta_term_in_ai_delta}
+	In $\AIde(C)$, all terms are either variables, grey, $\Gamma$-terms or $\Delta$-lifting variables. 
+	In particular, no $\Gamma$-term is contained in a $\Delta$-term and there is at most one color alternation. 
+
+	In other words, the coloring of all terms follows this grammar:
+	(grey | gamma )* [delta]
+
+	\comm{not sure how this is really useful in the end of the proof where we have to switch colors and show that it also works from the $\Delta$-side}
+\end{prop}
 \section{results in spe}
 
 \begin{clemma}
