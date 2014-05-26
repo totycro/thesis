@@ -126,12 +126,25 @@
 
 \section*{Arrows only in literals}
 
+\NB{ it's possible to introduce a variable occurring grey and colored in a literal:
+
+	$P(f(x), y) \lor Q(x) \lor Q(y)$ and factorisation
+
+	OR
+
+	$P(f(x), y) \lor Q(g(x), h(y)) \quad\quad \lnot Q(g(z), h(z))$ and resolution
+
+	However, Lemma 1 with full arrows implies that there are arrows from grey to colored variables in literals.
+
+
+}
+
 Suppose $\Gamma \entails \AIde(C)$.
 We show:
 \begin{itemize}
 		\item if in the original clause set, a variable occurs grey and colored in a literal, whatever is contained at the position of the grey occurrence is quantified before whatever is contained at the position of the colored literal.
 	
-	\item[\circled{2}] Quantifier order among other lifting variables is not relevant.
+	\item   Quantifier order among other lifting variables is not relevant.
 \end{itemize}
 This shows that $\Gamma \entails \AI(C)$. 
 
@@ -178,7 +191,8 @@ it's not easy for existential quantification.
 
 
 
-			$\Gamma \stackrel{\markA}\entails \lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclause})_\Gamma\sigma}\tau$
+$\Gamma \stackrel{\markA}\entails \lifboth{\AImatrix(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclause})_\Gamma\sigma}\tau$
 
-			$\Gamma \stackrel{\markB}\entails \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclause'})_\Gamma\sigma}\tau$
+$\Gamma \stackrel{\markB}\entails \lifboth{\AImatrix(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclause'})_\Gamma\sigma}\tau$
+
 \end{document}

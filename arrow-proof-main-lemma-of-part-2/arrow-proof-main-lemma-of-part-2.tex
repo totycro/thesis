@@ -152,7 +152,7 @@
 
 * without $x \lra f(x)$ situation, no mixed-colored terms can occur
 
-* other unifications transfer mixed-colored terms without producing them.
+* other unifications transfer mixed-colored terms without producing them, but they also modify the mixed-colored terms
 
 
 
@@ -169,11 +169,11 @@
 \mytodo{basically check A, B and C for which new lemma 2 we need; consider longer NB comment in lemma 1 }
 
 
-\begin{clemma}
+\begin{lemma}
 	\label{lemma:arrow_from_grey_to_colored}
 	Let $x$ be a variable in $\AIclausede(C)$ occurs in the maximal colored term $t\occ{x}$.
 	If it has a grey occurrence in some literal ($\AI(C)$ or or also in literals with colored predicates), then $x\apath t\occ{x}$.
-\end{clemma}
+\end{lemma}
 \begin{proof}
 	Induction start by definition.
 
@@ -350,123 +350,6 @@
 \end{proof}
 
 
-{\tiny
-
-	\begin{clemma}
-		\largered{deprecated to version above}
-		Let $x$ be a variable in $\AIclausede(C)$ which has a grey occurrence and a colored occurrence.
-		Then for every colored occurrence $\bhat x$ of $x$, there is an path from a term containing some grey occurrence to a term containing $\bhat x$ using arrows from $\arr(C)$.
-		%Also, \circled{2} there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$.
-	\end{clemma}
-	\begin{proof}
-		\newcommand{\one}{\circled{1}}
-		\newcommand{\two}{\circled{2}}
-		Proof by induction; base case obvious; suppose resolution with usual notation.
-		Suppose the paths exist for $C_1$ and $C_2$.
-
-		We consider the different possibilities of introduction of colored occurrences of $x$ and show that in each of them, there is a path from a term containing a grey occurrence to a term containing the colored occurrence.
-
-		\begin{description}
-			\item[Suppose $x$ is introduced into a maximal colored term $t$ by means of unification.]
-				So $t\sigma$ is a term containing $x$.
-				Let $y$ be a variable in $t$ such that $y\sigma$ is a term containing $x$.
-
-				Let $\bhat y$ be the position of $y$ which causes the variable to be changed by the unification algorithm.
-				$\bhat y$ is in a resolved literal, say $l$, so we denote it by $l\at{\bhat y}$ and its counterpart in $l'$ by $l'\at{\bhat y}$. 
-
-				\begin{itemize}
-					\item Suppose $l\at{\bhat y}$ is a grey occurrence.
-
-						figure: $P(f(y)) \lor Q(\bhat y)\quad\quad\lnot Q(\cdot)$
-
-						Then by the induction hypothesis, there is an path from a term containing some grey occurrence of $y$ to a term containing $y$ in $t$.
-						After applying $\sigma$, the path leads from $y\sigma\occ{x}$ to~$t\sigma\occ{x}$.
-						If $y\sigma\occ{x}$ has a grey occurrence of $x$, we are done.
-						Otherwise it has a colored occurrence of $x$.
-						But as $l\at{\bhat y}\sigma = l'\at{\bhat y}\sigma$, there is a colored occurrence of $x$ in $C_2$. 
-						If there also is a grey occurrence, then by the induction hypothesis, there is an arrow from some grey occurrence of $x$ to $l'\at{\bhat y}$ and hence there is a path from that grey occurrence to $t\sigma\occ{x}$.
-						If there is no grey occurrence of $x$ in $C_2$, suppose that $x$ originates from $C_1$ and there is a grey occurrence of $x$ in $C_1$, as otherwise we are done.
-						As $l'\at{\bhat y}\sigma$ contains $x$ but $l\at{\bhat y}\sigma$, $x$ must occur in $l$, say at $\bdot x$ and its corresponding term in $l'$ is a variable, say $z$, such that $z\sigma = x$.
-						$z$ also occurs in $l'\at{\bhat y}\sigma$.
-						\begin{itemize}
-							\item
-								Suppose $l\at{\bdot x}$ is a grey occurrence. Then $l'\at{\bdot x}$ is so as well and by the induction hypothesis, there is a path from a term containing a grey occurrence of $z$ in $C_1$ to $l'\at{\bhat y}\sigma$ and we are done.
-							\item
-								Otherwise $l\at{\bdot x}$ is a colored occurrence.
-								Then so is $l'\at{\bdot x}$ and by Lemma~\ref{lemma:arrow_from_all_colored_to_all_colored}, there is a merge edge between a term containing $l'\at{\bdot x}$ and a term containing $l'\at{\bhat y}\sigma$.
-								As there is a grey occurrence of $x$ in $C_1$, by the induction hypothesis, there is a path from a term containing a grey occurrence of $x$ to $l'\at{\bdot x}$ and we are done.
-						\end{itemize}
-
-
-
-					\item Suppose $l\at{\bhat y}$ is contained in a maximal colored term, say $s\occ{y}$.
-						\cbstart
-					Then in case $t\occ{y} \neq\nolinebreak s\occ{y}$,
-
-					if $y$ occurs grey in $C_1$, since $y\sigma$ 
-
-					by the induction hypothesis, $y\apath s\occ{y}$
-
-
-					by Lemma~\ref{lemma:arrow_from_all_colored_to_all_colored},
-					there is a merge arrow between a term containing $t\occ{y}$ and a term containing $s\occ{y}$.
-					\cbend
-
-					As the arrows from terms containing $l\at{\bhat y}$ and the corresponding terms containing $l'\at{\bhat y}$ are merged, we need to show that there is an arrow in the other clause. $l'\at{\bhat y}$ is an abstraction from a term containing $x$.
-
-					\markC
-					\begin{itemize}
-						\item 
-							Suppose $l'\at{\bhat y}$ contains $x$. 
-
-							If there is a grey occurrence of $x$ in $C_2$, we are done as the arrows between $l\at{\bhat y}$ and $l'\at{\bhat y}$ are merged and by the induction hypothesis, $x \apath l'\at{\bhat y}$.
-
-							If there is a grey occurrence of $y$ in $C_1$ and $y\sigma$ contains a grey occurrence of $x$, we are done as by the induction hypothesis, $y \apath t\occ{y}$,
-							and after applying $\sigma$, this path leads from a grey occurrence of $x$ to $t\occ{y}\sigma$.
-
-							Otherwise there are no grey occurrences of $x$ and there is nothing to prove.
-
-						\item 
-							Suppose $l'\at{\bhat y}$ does not contain $x$.
-							Then it contains a variable $v$ such that $v\sigma$ is a term containing $x$.
-
-
-							As $l'\at{\bhat y}$ is by assumption contained in a colored term, where $x$ is introduced, we know that there is an appropriate arrow by Remark~\substremarkref.
-
-
-					\end{itemize}
-			\end{itemize}
-
-		\item [Suppose a term containing $t\occ{x}$ with $t$ colored is in $\ran(\sigma)$.]
-			So $y\sigma$ contains $t\occ{x}$ for some $y$, which occurs in w.l.o.g.\ $C_1$.
-			Let $\bdot y$ be an arbitrary occurrence of $y$.
-
-			There is an occurrence of $y$ in $l$, say $l\at{\bhat y}$, whose corresponding term $l'\at{\bhat y}$ is an abstraction of $t\occ{x}$. Note that the arrows of $l\at{\bhat y}$ and $l'\at{\bhat y}$ are merged.
-
-			figure:
-			$C_1: Q(\dots \bdot y \dots) \lor l\occ{\bhat y}\quad\quad$
-			$C_2: \lnot l\occ{\bhat y'}\quad(\bhat y' \text{ is abstraction of } t\occur{x})$
-
-			Now we can argue quite like starting at \markC.
-			This establishes that $x \apath l'\at{\bhat y}$ and also $x \apath l\at{\bhat y}$.
-
-			If $y$ and $\bhat y$ are grey occurrences, then by Lemma~\ref{lemma:arrow_from_grey_to_grey}, there is a merge edge and we are done.
-
-			If $\bhat y$ is grey and $\bdot y$ is colored, then by the induction hypothesis, $y \apath \bhat y$ \NB{(which is fine if we order by symbols, not their occurrences)}. 
-
-			If $\bhat y$ is colored and $y$ is grey,
-			%and then by the induction hypothesis, there is a path from $y$ to $\bhat y$.
-			then by construction of $\arr(C)$, in particular the special treatment of 210g' and as $y\sigma = t\occ{x}$ there is an arrow from any grey occurrence of $x$ to $y$ (if there is one; if there are none, we are done anyway).
-
-
-
-			If $\bhat y$ is colored and $y$ is colored, then by Lemma~\ref{lemma:arrow_from_all_colored_to_all_colored}, there is a merge edge between $\bhat y$ and $y$ and we are done.
-			\qedhere
-	\end{description}
-\end{proof}
-
-}
-
 \begin{clemma}
 	\label{lemma:arrow_from_all_colored_to_all_colored}
 	\wrong{does not work out}
@@ -543,6 +426,8 @@
 	\end{itemize}
 
 \end{proof}
+
+\section{proof for $\AIde$}
 
 \section{original proof}
 
