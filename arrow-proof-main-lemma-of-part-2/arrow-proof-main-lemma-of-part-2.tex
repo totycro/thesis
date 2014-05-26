@@ -344,8 +344,6 @@
 
 	\end{itemize}
 
-
-
 	\end{description}
 \end{proof}
 
@@ -427,45 +425,85 @@
 
 \end{proof}
 
+\clearpage
 \section{proof for $\AIde$}
+
+\begin{clemma}(this is actually what the procedure should establish. Make sure to have some kind of network of all colored occurrences of a variable.)\nopagebreak 
+	\label{lemma:colored_merge_ai_de}
+	\begin{itemize}
+		\item
+			If some colored occurrence of $x$ in $s\occ{x}$ in $\AIde(C)$ is unified with a term $t$ such that for a variable $y$, it holds that $y\apath t$, then add an arrow from every grey occurrence of $y$ in $C$ to $s\occ{x}$.
+	\comm{for the upper lemmas}
+		\item 
+			If some colored occurrence of $x$ in $s\occ{x}$ in $\AIde(C)$ is unified with a term $t$ such that for a lifting variable $x_i$, it holds that $x_i \apath t$, then add an arrow from every grey occurrence of $x_i$ in $C$ to $s\occ{x}$.
+			\comm{for $\AIde$ lemma (probably needs to be applied to $\AI^\Gamma$ separately)}
+	\end{itemize}
+
+\end{clemma}
+
+\begin{conj}
+	Let $C$ be a clause in a resolution refutation. 
+	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{z_i}$ which contains a lifting variable $z_i$
+	and that $z_i$ occurs in $\AIde(C)$.
+	Then $z_i \apath \gamma_j\occ{z_i}$.
+\end{conj}
+\begin{proof}
+	Induction, usual notation, induction step:
+
+	(Notation: $\lifdeltanovar{\gamma_{j\bm '}\occ{u}\sigma}\tau = \gamma_j\occ{z_i}$; i.e.\ $\lifdeltanovar{u\sigma}\tau$ contains $z_i$)
+
+	\begin{description}
+		\item[Suppose for some $\gamma_{j\bm '}\occ{u}$ in (w.l.o.g.) $\AIde(C_1)$ that a maximal colored term] which is a $\Delta$-term occurs in $u\sigma$.
+
+			Then there is an occurrence of $u$ in the resolved literal, say at $l\at{\bhat u}$, such that the unification algorithm modifies $u$ .
+
+			\begin{itemize}
+				\item
+					Suppose $u$ occurs grey in $C_1$.
+					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, $u\apath \gamma_{j\bm '}\occ{u}$.
+					But $\lifdeltanovar{u\sigma}\tau$ contains $z_i$,
+					the same lifting variable as $\lifdeltanovar{\gamma_j\occ{u}\sigma}\tau$.
+					So $z_i\apath \gamma_j\occ{z_i}$.
+
+				\item
+					Suppose $u$ does not occur grey in $C_1$.
+					Then $l\at{\bhat{u}}$ is a colored occurrence of $u$. As there are no $\Delta$-terms, $u$ is a $\Gamma$-colored occurrence. 
+					$l'\at{\bhat u}$ is an abstraction of a term which contains a $\Gamma$-colored term containing $z_i$ at the position $\bhat u$. 
+
+					\begin{itemize}
+						\item Suppose that $z_i$ occurs grey in $C_2$.
+							\begin{itemize}
+								\item Suppose that $l'\at{\bhat u}$ does not contain a lifting variable. Let $s\occ{u}$ be the maximal colored term containing $l'\at{\bhat u}$.
+									Then $l'\at{\bhat u}$ contains a variable $v$ such that $v\sigma$ contains a lifting variable.
+									This is handled by another case (Remark~\substremarkref) and we assume that $z_i\apath s\occ{u}$.
+
+								\item Suppose that $l'\at{\bhat u}$ contains a lifting variable.
+									As $l'\at{\bhat u}$ is a $\Gamma$-colored occurrence of $u$, by the induction hypothesis, $z_i\apath s\occ{u}$.
+							\end{itemize}
+
+						\item Suppose that $z_i$ does not occur grey in $C_2$ but in $C$ (if it does not occur in $C$, there is nothing to prove).
+							Hence there is a variable $z$ in $C_i$ such that $z_i$ occurs grey in $\lifdeltanovar{z\sigma}\tau$.
+							\mytodo{ICI ICI ICI}
+					\end{itemize}
+
+
+					By Lemma~\ref{lemma:colored_merge_ai_de}, we also have that $z_i\apath \gamma_{j\bm '}\occ{u}$ and hence $z_i \apath \gamma_j\occ{z_i}$.
+			\end{itemize}
+
+		\item[other main case]
+							\mytodo{ICI ICI ICI}
+	\end{description}
+
+\end{proof}
+
+
+
 
 \section{original proof}
 
 Ideas for simplification:
 
 * Lemma for all cases about what is on the other side
-
-\begin{exa}
-	\label{exa:lifting_var_only_abstraction_in_arrow_proof}
-	$\Gamma = \{ Q(\gamma(x)) \lor P(x), \lnot Q(\gamma(z)), R(\dots)\}$\todo{$R$ only for coloring}
-
-	$\Delta = \{ \lnot P(\delta(y)) \lor R(y), \lnot R(a), Q(\dots) \}$\todo{$Q$ only for coloring}
-
-	$ a \sim x_k, \delta(y) \sim x_i, \delta(a) \sim x_j $
-
-	\begin{prooftree}
-		\AxiomCm{ \bot \mid Q(\gamma(x)) \lor P(x) }
-		\AxiomCm{ \top \mid \lnot P(x_i) \lor R(y) }
-
-		\BinaryInfCm{ P(x_i) \mid Q(\gamma(x_i)) \lor R(y) }
-
-		\AxiomCm{ \top \mid \lnot R(x_k) }
-
-		\BinaryInfCm{ (\lnot R(x_k) \land P(x_i) ) \lor (R(x_k) \land \top)  \mid Q(\gamma(x_i)) }
-		\noLine
-		\UnaryInfCm{ P(x_i) \lor R(x_k)  \mid Q(\gamma(x_i)) }
-
-		\AxiomCm{ \bot \mid \lnot Q(\gamma(z)) }
-
-		\BinaryInfCm{ ( \lnot Q(x_j) \land ( P(x_i) \lor R(x_k) )) \lor (Q(x_j) \land \top)   \mid \square }
-		\noLine
-		\UnaryInfCm{   \lnot Q(x_j) \land (P(x_i) \lor R(x_k)) \mid \square }
-
-	\end{prooftree}
-
-	Gist: When $Q(\gamma(x_i))$ is the only symbol in $\AI\de(\cdot)$, the lifting var means $\delta(x)$, but in the actual derivation, it's $\delta(a)$. however $\tau$ fixes this.
-	So before $Q$ is resolved, there is an arrow, but with the wrong lifting var ($x_i$ instead of $x_j$)
-\end{exa}
 
 \begin{remark}[\substremarksym]
 	Any substitution, in particular $\sigma$, only changes a finite number of variables.
@@ -482,7 +520,8 @@ Ideas for simplification:
 	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{z_i}$ which contains a lifting variable $z_i$. %(lifting a $\Delta$-term $\delta_i$).
 	%Then there is an arrow in $\arrFinal(C)$ from a term containing $z_k$ in $\AI\de(C)$ such that $\delta_k$ is an abstraction of $\delta_i$ to $\gamma_j\occ{z_i}$.
 	Then $z_i \ltArrC z_j$.
-	\mytodo{there still is the case that $z_i$ does not occur. also, it can be randomly introduced with no logical connection}
+	\mytodo{there still is the case that $z_i$ does not occur. also, it can be randomly introduced with no logical connection 
+	\textbf{\emph{possible fix: add grey occurrence of each variable in some place and apply everything to these and consider them when doing the ordering }}}
 \end{conj}
 \begin{proof}
 	We proceed by induction.
@@ -608,6 +647,8 @@ Ideas for simplification:
 
 
 				\item Suppose $\hatu$ occurs in a maximal colored term which is a $\Delta$-term.
+
+					\largered{no $\Delta$-terms in $\AIde(C)$.}
 					\begin{prooftree}
 						\AxiomCm{C_1: P(\oldgam\occ{u}) \lor Q(\delta_k\occurat{\hatu}{p}) }
 						\AxiomCm{C_2: \lnot Q(\delta_{m}\occurat{\hatuPrime}{p})}
@@ -616,7 +657,6 @@ Ideas for simplification:
 
 					By Lemma~\ref{lemma:arrow_for_variables_in_differently_colored_terms}, \mytodo{}
 					\todo{B (check how we need colored term arrows)}
-
 
 			\end{itemize}
 
@@ -661,6 +701,39 @@ Ideas for simplification:
 	\end{description}
 
 \end{proof}
+
+\begin{exa}
+	\label{exa:lifting_var_only_abstraction_in_arrow_proof}
+	$\Gamma = \{ Q(\gamma(x)) \lor P(x), \lnot Q(\gamma(z)), R(\dots)\}$\todo{$R$ only for coloring}
+
+	$\Delta = \{ \lnot P(\delta(y)) \lor R(y), \lnot R(a), Q(\dots) \}$\todo{$Q$ only for coloring}
+
+	$ a \sim x_k, \delta(y) \sim x_i, \delta(a) \sim x_j $
+
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid Q(\gamma(x)) \lor P(x) }
+		\AxiomCm{ \top \mid \lnot P(x_i) \lor R(y) }
+
+		\BinaryInfCm{ P(x_i) \mid Q(\gamma(x_i)) \lor R(y) }
+
+		\AxiomCm{ \top \mid \lnot R(x_k) }
+
+		\BinaryInfCm{ (\lnot R(x_k) \land P(x_i) ) \lor (R(x_k) \land \top)  \mid Q(\gamma(x_i)) }
+		\noLine
+		\UnaryInfCm{ P(x_i) \lor R(x_k)  \mid Q(\gamma(x_i)) }
+
+		\AxiomCm{ \bot \mid \lnot Q(\gamma(z)) }
+
+		\BinaryInfCm{ ( \lnot Q(x_j) \land ( P(x_i) \lor R(x_k) )) \lor (Q(x_j) \land \top)   \mid \square }
+		\noLine
+		\UnaryInfCm{   \lnot Q(x_j) \land (P(x_i) \lor R(x_k)) \mid \square }
+
+	\end{prooftree}
+
+	Gist: When $Q(\gamma(x_i))$ is the only symbol in $\AI\de(\cdot)$, the lifting var means $\delta(x)$, but in the actual derivation, it's $\delta(a)$. however $\tau$ fixes this.
+	So before $Q$ is resolved, there is an arrow, but with the wrong lifting var ($x_i$ instead of $x_j$)
+\end{exa}
+
 
 \section*{something about when i started with connected components}
 
