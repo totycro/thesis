@@ -268,7 +268,7 @@
 				\item Suppose $l'\at{\bhat y}$ contains $x$.
 					\begin{itemize}
 							\item
-					If $x$ occurs grey in $C_2$, then by the induction hypothesis,
+					Suppose that  $x$ occurs grey in $C_2$. then by the induction hypothesis,
 					$x\apath l'\at{\bhat y}$ and hence 
 					$x\apath l\at{\bhat y}$. Let $\bdot y$ be an occurrence of $y$ in $C_1$ different from $l\at{\bhat y}$.
 
@@ -517,14 +517,14 @@
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_grey}
 	Let $x$ be a variable in $\AIclausede(C)$.
-	Then there is a merge arrow between every pair of distinct grey occurrences of $x$. \comm{possibly not really needed as same var is always lifted by same lifting var, they can never diverge syntactically}
+	Then there is a merge arrow between every pair of distinct grey occurrences of $x$. \comm{possibly not really needed as same var is always lifted by same lifting var, they can never diverge syntactically. Still this is used in the proof.}
 \end{lemma}
 \begin{proof}
 	Induction start: by definition.
 
-	Suppose holds for $C_1$ and $C_2$, usual notation.
+	Suppose it holds for $C_1$ and $C_2$, usual notation.
 
-	Suppose for some grey variable occurrence $x$ that $x\sigma = y$ for some variable $y$ which has a grey occurrence in $C$ (so either it was there in $C_i$ and $y\sigma = y$ or $z\sigma = y$ for some z,  but then some $y$ occurs elsewhere). 
+	Suppose for some grey variable occurrence $x$ that $y$ occurs grey in $x\sigma$ for some variable $y$ which has a grey occurrence in $C$ (so either it was there in $C_i$ and $y\sigma = y$ or $y$ occurs grey in $z\sigma$ for some $z$, but then some $y$ occurs elsewhere). 
 
 	Then there is a position $\bhat x$ in a resolved literal, say w.l.o.g.\ $l$, such that $l\at{\bhat x} = x$ and $l'\at{\bhat x} = y$.
 
@@ -537,7 +537,8 @@
 
 		\item
 			Otherwise suppose that $l\at{\bhat x}$ is a colored occurrence.
-			Then there are merge edges between all occurrences of $x$ in $C_1$ and $y$ in $C_2$ by construction of the edges, in particular by the special handling of variable renamings.
+			There are merge edges between all grey occurrences of $x$ in $C_1$ and $y$ in $C_2$ by the induction hypothesis.
+			As $y$ occurs grey in $x\sigma$, by backwards merge case 4, there is a merge edge between every grey occurrence of $x$ and $y$.
 			\qedhere
 	\end{itemize}
 
@@ -596,6 +597,7 @@ Ideas for simplification:
 	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{z_i}$ which contains a lifting variable $z_i$. %(lifting a $\Delta$-term $\delta_i$).
 	%Then there is an arrow in $\arrFinal(C)$ from a term containing $z_k$ in $\AI\de(C)$ such that $\delta_k$ is an abstraction of $\delta_i$ to $\gamma_j\occ{z_i}$.
 	Then $z_i \ltArrC z_j$.
+	\mytodo{there still is the case that $z_i$ does not occur. also, it can be randomly introduced with no logical connection}
 \end{conj}
 \begin{proof}
 	We proceed by induction.
@@ -732,10 +734,6 @@ Ideas for simplification:
 
 
 			\end{itemize}
-
-			\textbf{The substitution can also introduce a grey term containing a delta term, make sure to handle that!}
-
-			\textbf{The substitution can also introduce a gamma term containing a delta term, make sure to handle that!}
 
 		\item[Suppose for some variable $v$ in $\AI\de(C_1)$ or $\AI\de(C_2)$, $v\sigma = \newgam\occ{\delta_i}$ for some $i$.]\hfill\\
 			As $v$ is affected by the unifier, it occurs in the literal being unified, say w.l.o.g.~in $l$ in $C_1$.
