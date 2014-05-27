@@ -252,6 +252,7 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		This is only necessary if the renaming is caused due to unification of colored terms which contain the two variables.
 	}
 
+	\paragraph{Special cases.}
 		%\wrong{
 		%Then (backwards merging): \circled{42} If $(a, c)$ and $(b, c)$ are in $\arr(C)$, add $\{a, b\}$ to $\warr(C)$ in case it is not there already.}
 		%\NB{Cannot do this as it would create merge arrows between e.g. $x$ and $g(x)$, $g$ colored (see 210g and 210g')}
@@ -262,7 +263,7 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		$y \sigma = t\occur{x}$ for some variable $x$, then add an arrow to $\arr(C)$}
 
 		\hl{feasible} Backwards merge case 1:\todo{necessary special case}{} if for variables $x,y,z$
-		and the unifier $\sigma$ of the resolution step we have that $x$ occurs grey in $z\sigma$ and $x$ occurs \emph{colored} in $y\sigma$, then add an arrow from every grey occurrence of $z$ to every \emph{grey} occurrence of $y$. \NB{this is a composition of case 3 and case 4, if merge edges are interpreted as needed here.}
+		and the unifier $\sigma$ of the resolution step we have that $x$ occurs grey in $z\sigma$ and $x$ occurs \emph{colored} in $y\sigma$, then add an arrow from every grey occurrence of $z$ to every \emph{grey} occurrence of $y$.
 
 		\hl{infeasible} Backwards merge case 1':\todo{necessary special case}{} if for variables $x,y,z$
 		and the unifier $\sigma$ of the resolution step we have that $x$ occurs grey in $z\sigma$ and $x$ occurs \emph{grey} in $y\sigma$, then add an arrow from every grey occurrence of $z$ to every \emph{colored} occurrence of $y$ (this is also not visible after lifting).
@@ -277,8 +278,8 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		If $x$ occurs \emph{grey} in $y\sigma$, then add a merge edge from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$ (this is a renaming).
 
 		\hl{feasible} Unifier-induced arrow 1:\todo{necessary special case}{} 
-		If $y$ occurs in $x\sigma$, add an arrow from every grey occurrence of $y$ in $C_i$ to every colored occurrence of $x$ in $C$.
-		The colored occurrences of $x$ can be deduced by subtracting the grey occurrences from the connected components of $x$-occurrences (Lemma~\ref{prop:colored_variables_connected}). 
+		If $x$ occurs in $y\sigma$, add an arrow from every grey occurrence of $x$ in $C_i$ to every colored occurrence of $y$ in $C$.
+		The colored occurrences of $y$ can be deduced by subtracting the grey occurrences from the connected components of $y$-occurrences (Lemma~\ref{prop:colored_variables_connected}). 
 
 		\hl{feasible} Unifier-induced arrow 2:\todo{necessary special case}{} 
 		If a lifting variable $z_i$ occurs in $x\sigma$, add an arrow from every grey occurrence of $z_i$ (?$C$ or $C_i$?) to every colored occurrence of $x$ in $C_i$.
@@ -287,9 +288,39 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.
 	}
 		
-	
+	\paragraph{Special cases generalised.}
 
-		In the graph-theoretic view, this should mean that if terms $t$ and $t'$ are from $l$ and $l'$ respectively and unified, then their components are to be merged.
+	Backwards merge case 1:
+	\begin{quote}
+		Have $x$ occurs grey in $z\sigma$ and $x$ occurs colored in $y\sigma$
+
+		Then add arrow from every grey occurrence of $z$ to every grey occurrence of $y$
+
+		By merge case 4, have merge edge from grey occ of $x$ to grey occ of $z$.
+		By merge case 3, have arrow from grey occ $x$ to every grey occ of $y$. 
+	\end{quote}
+
+	Backwards merge case 1':
+	\begin{quote}
+		Have $x$ occurs grey in $z\sigma$ and $x$ occurs grey in $y\sigma$
+
+		Then arrow from grey occ of $z$ to colored occ of $y$. 
+
+		By merge case 4, have merge edge from grey occ of $x$ to grey occ of $z$.
+		By unifier-induced arrow 1, have arrow from $x$ to every colored occ of $y$.
+	\end{quote}
+
+	Backwards merge case 2:
+	\begin{quote}
+		Have $x$ occurs grey in $z\sigma$ and $x$ occurs colored in $y\sigma$
+
+		Then add arrow from every grey occurrence of $z$ to every colored occurrence of $y$
+	\end{quote}
+
+
+
+
+	In the graph-theoretic view, this should mean that if terms $t$ and $t'$ are from $l$ and $l'$ respectively and unified, then their components are to be merged.
 
 		Note that $C$ in $\mathcal{X}(C)$ denotes the position in the proof, not the set of possible positions of arrows.
 		This is because some literals are removed from the clause but not added to the interpolant, but their arrows can still matter by transitivity (cf.~example TODO).

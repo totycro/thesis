@@ -135,7 +135,7 @@
 
 {\large
 
-* if $x$ occurs in $y\sigma$, then add an arrow from every grey occurrence of $x$ to the network of $y$-occurrences. It should be possible to have this network reach every occurrence. not sure how widereaching this is as it does not cover any color-alternating terms.
+* if $x$ occurs in $y\sigma$, then add an arrow from every grey occurrence of $x$ to the network of $y$-occurrences. It should be possible to have this network reach every occurrence. not sure how wide-reaching this is as it does not cover any color-alternating terms.
 
 }
 * seem to not be able to construct $Q(f(h(x)), g(x))$ without arrow between arguments (either merge or a directed one) 
@@ -200,7 +200,7 @@
 						\item Suppose that $x$ occurs grey in $C_2$. Then by the induction hypothesis, $x\apath l'\at{\bhat y}$ and so
 							$x\apath l\at{\bhat y}$.
 
-							As all other occurences of $y$ are contained in colored terms and $x$ occurs in $y\sigma$, there is a unifier-induced arrow such that $x\apath y$. \NB{don't need ind hyp anymore here}
+							As all other occurrences of $y$ are contained in colored terms and $x$ occurs in $y\sigma$, there is a unifier-induced arrow such that $x\apath y$. \NB{don't need ind hyp anymore here}
 							
 						\item Suppose that $x$ does not occur grey in $C_2$.
 							Suppose that $x$ does occur grey in $C$ as otherwise we are done.
@@ -279,7 +279,10 @@
 
 					If $l\at{\bhat y}$ is a colored occurrence and $\bdot y$ occurs grey in $C_1$, then by the backwards merging case 3, $x\apath \bdot y$.
 
-					If $l\at{\bhat y}$ is a colored occurrence and $\bdot y$ occurs colored in $C_1$,  \mytodo{apply merge arrows}
+					If $l\at{\bhat y}$ is a colored occurrence and $\bdot y$ occurs colored in $C_1$, <merge arrows>;
+					Subsumed by:
+					If $l\at{\bhat y}$ is a colored occurrence, then $x\apath l\at{\bhat y}$ since $x$ occurs in $y\sigma$ by unifier-induced arrow 1.
+
 
 					\item
 
@@ -348,52 +351,6 @@
 \end{proof}
 
 
-\begin{clemma}
-	\label{lemma:arrow_from_all_colored_to_all_colored}
-	\wrong{does not work out}
-	Let $x$ be a variable in $\AIclausede(C)$.
-	Then there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$ in $C$.
-\end{clemma}
-\begin{comment}
-	\begin{proof}
-
-		Induction start: by definition.
-
-		Suppose holds for $C_1$ and $C_2$, usual notation.
-
-		We consider introductions of colored occurrences of $x$.
-
-		\begin{description}
-			\item [Suppose $x$ is introduced in $t$ by means of unification.]
-				$t\sigma$ contains $x$, hence there is a variable $y$ in $t$ such that $y\sigma = s\occ{x}$.
-
-				\cbstart
-				Let $\bhat y$ be the position of $y$ which causes the variable to be changed by the unification algorithm.
-				$\bhat y$ is in a resolved literal, say $l$, so we denote it by $l\at{\bhat y}$ and its counterpart in $l'$ by $l'\at{\bhat y}$
-				\cbend\comm{copied}
-
-				\begin{itemize}
-					\item 
-						Suppose $l\at{\bhat y}$ is a grey occurrence.
-						$l'\at{\bhat y}$ is an abstraction of $s\occ{x}$.
-						\mytodo{}
-
-					\item
-						Suppose $l\at{\bhat y}$ is a colored occurrence.
-						Then by the induction hypothesis, $l\at{\bhat y} \mpath \bdot y$ for every other colored occurrence $\bdot y$ of $y$. As the substitution $s\occ{x}$ for $y$, there are merge edges between all these occurrences.
-
-						For the grey occurrences of $y$ \mytodo{}
-
-				\end{itemize}
-
-
-			\item [Suppose a colored term $t\occ{x}$ containing $x$ is in $\ran(\sigma)$.]
-		\end{description}
-
-	\end{proof}
-\end{comment}
-
-
 
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_grey}
@@ -429,7 +386,7 @@
 
 \begin{prop}
 	\label{prop:colored_variables_connected}
-	Consider the edges of $\marr(C)$ and $\arr(C)$ as edgeset of an undirected graph $G$.
+	Consider the edges of $\marr(C)$ and $\arr(C)$ as edge-set of an undirected graph $G$.
 	Then all occurrences of a variable $x$ are connected in $G$.
 \end{prop}
 \begin{proof}
@@ -441,7 +398,7 @@
 
 	Only variables are changed which occur in the resolved literal.
 	They are unified with the term at the corresponding literal in the other clause.
-	This is the only way that new variables can be introduced, but the arrows of the correpsonding terms in the resolved literals are merged.
+	This is the only way that new variables can be introduced, but the arrows of the corresponding terms in the resolved literals are merged.
 \end{proof}
 
 \begin{lemma}(this is actually what the procedure should establish. Make sure to have some kind of network of all colored occurrences of a variable.)\nopagebreak 
@@ -865,6 +822,51 @@ there is a barrier between colored terms.
 
 
 \section{missteps}
+
+\begin{clemma}
+	\label{lemma:arrow_from_all_colored_to_all_colored}
+	\wrong{does not work out}
+	Let $x$ be a variable in $\AIclausede(C)$.
+	Then there is a merge path from every colored occurrence of $x$ to every other colored occurrence of $x$ in $C$.
+\end{clemma}
+	\begin{proof}
+
+		Induction start: by definition.
+
+		Suppose holds for $C_1$ and $C_2$, usual notation.
+
+		We consider introductions of colored occurrences of $x$.
+
+		\begin{description}
+			\item [Suppose $x$ is introduced in $t$ by means of unification.]
+				$t\sigma$ contains $x$, hence there is a variable $y$ in $t$ such that $y\sigma = s\occ{x}$.
+
+				\cbstart
+				Let $\bhat y$ be the position of $y$ which causes the variable to be changed by the unification algorithm.
+				$\bhat y$ is in a resolved literal, say $l$, so we denote it by $l\at{\bhat y}$ and its counterpart in $l'$ by $l'\at{\bhat y}$
+				\cbend\comm{copied}
+
+				\begin{itemize}
+					\item 
+						Suppose $l\at{\bhat y}$ is a grey occurrence.
+						$l'\at{\bhat y}$ is an abstraction of $s\occ{x}$.
+						\mytodo{}
+
+					\item
+						Suppose $l\at{\bhat y}$ is a colored occurrence.
+						Then by the induction hypothesis, $l\at{\bhat y} \mpath \bdot y$ for every other colored occurrence $\bdot y$ of $y$. As the substitution $s\occ{x}$ for $y$, there are merge edges between all these occurrences.
+
+						For the grey occurrences of $y$ \mytodo{}
+
+				\end{itemize}
+
+
+			\item [Suppose a colored term $t\occ{x}$ containing $x$ is in $\ran(\sigma)$.]
+		\end{description}
+
+	\end{proof}
+
+
 \begin{clemma}
 	\wrong{$Q(f(x))\lor R(x); \lnot R(g(y))$}
 	\label{lemma:arrow_from_one_color_to_other_color}
