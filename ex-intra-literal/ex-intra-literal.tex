@@ -119,7 +119,7 @@
 \newcommand{\hb}[1]{ {\color{blue} #1} }
 \newcommand{\hc}[1]{ {\color{violet} #1} }
 \section*{necessary and unnecessary arrows in literal}
-{\tiny
+\begin{comment}{\tiny
  
 \e{Ex 301a}
 \begin{prooftree}
@@ -164,6 +164,7 @@ $\forall x_1 \exists y_2 (Q(x_1) \lor P(x_1, y_2))$ \comm{need not be $x_1$ both
 $\exists y_2 \forall x_1 (Q(x_1) \lor P(x_1, y_2))$ 
 
 }
+\end{comment}
 
 \e{Ex 301a' -- simplified }
 \begin{prooftree}
@@ -250,5 +251,35 @@ $\forall x_1 \exists y_2 (P(x_1, y_2))$
 
 LK-proof for $P(x, f(y)) \lor Q(y)$ works by multiple instantiations $\Ra$ not possible for $P(x, f(x))$, as $x$ is always instantiated with same thing.
 it really does mean something different) first version has in some sense more liberty (it really does mean something different).
+
+\clearpage
+
+\section*{situations arise where arrows should be present but aren't}
+
+\e{Ex 303}
+
+\begin{prooftree}
+	\AxiomCm{ P(f(x), y) \lor Q(g(x), h(y))}
+	\AxiomCm{ \lnot  Q(g(z), h(z))}
+	\BinaryInfCm{ P(f(z), z) }
+\end{prooftree}
+
+\largered{no arrow but $\exists x \forall z P(x, z) $ NOT valid.}
+
+countermodel:
+
+$\mathcal{U} = \{0,1\}$
+
+$P^\calI = \{ (1,0), (0,1) \}$
+
+$Q^\calI = \{ (1,0), (0,1) \}$
+
+$f^\calI =
+g^\calI =
+h^\calI =
+\id$
+
+
+
 
 \end{document}

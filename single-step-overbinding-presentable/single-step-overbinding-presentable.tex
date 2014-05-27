@@ -276,6 +276,13 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		\hl{feasible} Backwards merge case 4:\todo{necessary special case}{} 
 		If $x$ occurs \emph{grey} in $y\sigma$, then add a merge edge from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$ (this is a renaming).
 
+		\hl{feasible} Unifier arrow 1:\todo{necessary special case}{} 
+		If $y$ occurs in $x\sigma$, add an arrow from every grey occurrence of $y$ to every colored occurrence of $x$.
+		The colored occurrences of $x$ can be deduced by subtracting the grey occurrences from the connected components of $x$-occurrences (Lemma~\ref{prop:colored_variables_connected}). 
+
+		\hl{feasible} Unifier arrow 2:\todo{necessary special case}{} 
+		If a lifting variable $z_i$ occurs in $x\sigma$, add an arrow from every grey occurrence of $z_i$ to every colored occurrence of $x$.
+
 		\comm{(deprecated, unused) special case 210g':
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.
 	}
@@ -315,7 +322,7 @@ $ \aiu (a\fromclause, b\fromclause) \defeq$\newline
 $
 \begin{cases}
 	\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
-	\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.6\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$.
+	\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$.\newline If the terms were lifting variables before and we do not know what the actual term is, choose any fresh lifting variable. \mytodo{last sentence is unconfirmed}
 	{\tiny
 
 		%More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.

@@ -160,13 +160,13 @@
 \section{current version}
 
 
-\mytodo{finish new version of lemma 1}
-
 \mytodo{find formulation of merge arrows: lemma about how terms of color are related when they share variables} 
 
 \mytodo{check if old lemma 2 occurs anywhere else}
 
 \mytodo{basically check A, B and C for which new lemma 2 we need; consider longer NB comment in lemma 1 }
+
+\mytodo{for rewriting, make sure to handle coloring correctly (lifting vars are not colored) and make sure to be clear on whether we talk about $C$, $\AI(C)$ or $\AIde(C)$.}
 
 
 \begin{lemma}
@@ -427,20 +427,45 @@
 
 \section{proof for $\AIde$}
 
-\begin{clemma}(this is actually what the procedure should establish. Make sure to have some kind of network of all colored occurrences of a variable.)\nopagebreak 
+\begin{prop}
+	\label{prop:colored_variables_connected}
+	Consider the edges of $\marr(C)$ and $\arr(C)$ as edgeset of an undirected graph $G$.
+	Then all occurrences of a variable $x$ are connected in $G$.
+\end{prop}
+\begin{proof}
+	Initially, this clearly holds.
+
+	Usual induction step:
+
+	By the induction hypothesis, variable occurrences in the resolving clauses are connected.
+
+	Only variables are changed which occur in the resolved literal.
+	They are unified with the term at the corresponding literal in the other clause.
+	This is the only way that new variables can be introduced, but the arrows of the correpsonding terms in the resolved literals are merged.
+\end{proof}
+
+\begin{lemma}(this is actually what the procedure should establish. Make sure to have some kind of network of all colored occurrences of a variable.)\nopagebreak 
 	\label{lemma:colored_merge_ai_de}
-			Let a variable $x$ occur colored in $s\occ{x}$ in $\AIde(C)$.
+
 	\begin{itemize}
 		\item
-			If $x$ also occurs in the resolved literal and is unified with a term $t$ of the other resolved literal such that for a variable $y$, it holds that $y\apath t$, then add an arrow from every grey occurrence of $y$ in $C$ to $s\occ{x}$.
+			Let a variable $x$ occur colored in $s\occ{x}$ in $\AIde(C)$.
+			If $x$ also occurs in a colored term in the resolved literal which is unified with a term $t$ of the other resolved literal such that for a variable $y$, it holds that $y\apath t$, then add an arrow from every grey occurrence of $y$ in $C$ to $s\occ{x}$.
 	\comm{for the upper lemmas}
 		\item 
-			If $x$ also occurs in the resolved literal and is unified with a term $t$ of the other resolved literal 
+
+			Let $s\occ{x}$ be a maximal colored term containing an occurrence of $x$ or the occurrence of $x$ itself in case it is grey.
+			If $x$ also occurs in a colored term in the resolved literal which is unified with a term $t$ of the other resolved literal 
 			such that for a lifting variable $x_i$, it holds that $x_i \apath t$, then add an arrow from every grey occurrence of $x_i$ in $C$ to $s\occ{x}$.
 			\comm{for $\AIde$ lemma (probably needs to be applied to $\AI^\Gamma$ separately)}
 	\end{itemize}
 
-\end{clemma}
+	\NB{\normalfont intuition of difference: grey variable changes are handled elsewhere}
+
+\end{lemma}
+\begin{proof}
+	By unifier arrows 1 and 2.
+\end{proof}
 
 \begin{conj}
 	Let $C$ be a clause in a resolution refutation. 
@@ -488,7 +513,7 @@
 
 
 
-		\item[Suppose for some variable $u$ in (w.l.o.g.) $\AIde(C_1)$ that $u\sigma$ contains a mixed-colored $\Gamma$-term.]
+		\item[Suppose for some variable $u$ in (w.l.o.g.) $\AIde(C_1)$ that $u\sigma$ contains a mixed-colored $\Gamma$-term containing $z_i$.]
 			Then $u$ occurs in the resolved literal, say at $\bhat u$, and $l'\at{\bhat u}$ is an abstraction of $u\sigma$ but $l'\at{\bhat u} \neq u$. 
 			Note that $u\sigma = l'\at{\bhat u}\sigma$ 
 
@@ -515,9 +540,10 @@
 					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, $\bhat u \apath \bdot u$.
 
 				\item Suppose $\bdot u$ is a grey occurrence and $\bhat u$ is a colored occurrence.
+					Then by Lemma~\ref{lemma:colored_merge_ai_de}, $z_i \apath \bdot u$.
 
+				%\item Suppose $\bdot u$ is a colored occurrence and $\bhat u$ is a colored occurrence.
 
-				\item Suppose $\bdot u$ is a colored occurrence and $\bhat u$ is a colored occurrence.
 			\end{itemize}
 
 
@@ -549,8 +575,6 @@ Ideas for simplification:
 	Suppose that $\AI\de(C)$ contains a maximal $\Gamma$-term $\gamma_j\occ{z_i}$ which contains a lifting variable $z_i$. %(lifting a $\Delta$-term $\delta_i$).
 	%Then there is an arrow in $\arrFinal(C)$ from a term containing $z_k$ in $\AI\de(C)$ such that $\delta_k$ is an abstraction of $\delta_i$ to $\gamma_j\occ{z_i}$.
 	Then $z_i \ltArrC z_j$.
-	\mytodo{there still is the case that $z_i$ does not occur. also, it can be randomly introduced with no logical connection 
-	\textbf{\emph{possible fix: add grey occurrence of each variable in some place and apply everything to these and consider them when doing the ordering }}}
 \end{conj}
 \begin{proof}
 	We proceed by induction.
@@ -801,7 +825,6 @@ there is a barrier between colored terms.
 
 ~
 
-\clearpage
 \section{misc results}
 
 \begin{prop}
