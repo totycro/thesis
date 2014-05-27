@@ -276,12 +276,12 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		\hl{feasible} Backwards merge case 4:\todo{necessary special case}{} 
 		If $x$ occurs \emph{grey} in $y\sigma$, then add a merge edge from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$ (this is a renaming).
 
-		\hl{feasible} Unifier arrow 1:\todo{necessary special case}{} 
-		If $y$ occurs in $x\sigma$, add an arrow from every grey occurrence of $y$ to every colored occurrence of $x$.
+		\hl{feasible} Unifier-induced arrow 1:\todo{necessary special case}{} 
+		If $y$ occurs in $x\sigma$, add an arrow from every grey occurrence of $y$ in $C_i$ to every colored occurrence of $x$ in $C$.
 		The colored occurrences of $x$ can be deduced by subtracting the grey occurrences from the connected components of $x$-occurrences (Lemma~\ref{prop:colored_variables_connected}). 
 
-		\hl{feasible} Unifier arrow 2:\todo{necessary special case}{} 
-		If a lifting variable $z_i$ occurs in $x\sigma$, add an arrow from every grey occurrence of $z_i$ to every colored occurrence of $x$.
+		\hl{feasible} Unifier-induced arrow 2:\todo{necessary special case}{} 
+		If a lifting variable $z_i$ occurs in $x\sigma$, add an arrow from every grey occurrence of $z_i$ (?$C$ or $C_i$?) to every colored occurrence of $x$ in $C_i$.
 
 		\comm{(deprecated, unused) special case 210g':
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.

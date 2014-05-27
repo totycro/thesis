@@ -200,7 +200,7 @@
 						\item Suppose that $x$ occurs grey in $C_2$. Then by the induction hypothesis, $x\apath l'\at{\bhat y}$ and so
 							$x\apath l\at{\bhat y}$.
 
-							As all other occurences of $y$ are contained in colored terms, \mytodo{merge arrows} \NB{this case is contained in the blue notes below}
+							As all other occurences of $y$ are contained in colored terms and $x$ occurs in $y\sigma$, there is a unifier-induced arrow such that $x\apath y$. \NB{don't need ind hyp anymore here}
 							
 						\item Suppose that $x$ does not occur grey in $C_2$.
 							Suppose that $x$ does occur grey in $C$ as otherwise we are done.
@@ -446,6 +446,8 @@
 
 \begin{lemma}(this is actually what the procedure should establish. Make sure to have some kind of network of all colored occurrences of a variable.)\nopagebreak 
 	\label{lemma:colored_merge_ai_de}
+
+	\NB{it seems to be more useful to just write ``unifier arrow 1/2''}
 
 	\begin{itemize}
 		\item
