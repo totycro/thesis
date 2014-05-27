@@ -1,7 +1,7 @@
 \documentclass[,%fontsize=12pt,%
 	paper=a4,% 
 	%landscape,
-	DIV10, % mehr text pro seite als defaultyyp
+	DIV9, % mehr text pro seite als defaultyyp
 	%DIV10, 
 	%DIV=calc,%
 	twoside=false,%
@@ -28,6 +28,9 @@
 	positioning,fit,calc,decorations.text,shadows%
 }
 
+
+\addtolength{\textheight}{5cm}
+\addtolength{\headheight}{-2cm}
 
 \input{../latex_header.tex}
 
@@ -355,7 +358,9 @@
 \begin{lemma}
 	\label{lemma:arrow_from_grey_to_grey}
 	Let $x$ be a variable in $\AIclausede(C)$.
-	Then there is a merge arrow between every pair of distinct grey occurrences of $x$. \comm{possibly not really needed as same var is always lifted by same lifting var, they can never diverge syntactically. Still this is used in the proof.}
+	Then there is a merge arrow between every pair of distinct grey occurrences of $x$.
+	\comm{possibly not really needed as same var is always lifted by same lifting var, they can never diverge syntactically. Still this is used in the proof.}
+	\NB{possibly get rid of it by interpreting arrows as from term to term, not from occurrence to occurrence. This way, there is an implicit connection between every grey occurrence of a variable}
 \end{lemma}
 \begin{proof}
 	Induction start: by definition.
@@ -439,7 +444,12 @@
 	\begin{description}
 		\item[Suppose for some $\gamma_{j\bm '}\occ{u}$ in (w.l.o.g.) $\AIde(C_1)$ that a maximal colored term] which is a $\Delta$-term occurs in $u\sigma$.
 
+			\NB{
+					By unifier-induced arrows 2, we have that $z_i \apath \gamma_{j\bm '}\occ{u}$ straight away in case there is a grey occurrence of $z_i$. The induction hypothesis seems to make sure that it actually exists.
+				}
+
 			Then there is an occurrence of $u$ in the resolved literal, say at $l\at{\bhat u}$, such that the unification algorithm modifies $u$ .
+
 
 			\begin{itemize}
 				\item
@@ -456,6 +466,7 @@
 				\item
 					Suppose $u$ does not occur grey in $C_1$.
 					Then $l\at{\bhat{u}}$ is a colored occurrence of $u$. As there are no $\Delta$-terms, $u$ is a $\Gamma$-colored occurrence. 
+					\todo{only mention of "no $\Delta$-terms" here, looks somewhat generalisable}
 					$l'\at{\bhat u}$ is an abstraction of a term which contains a $\Gamma$-colored term containing $z_i$ at the position $\bhat u$. 
 
 					\begin{itemize}
@@ -464,17 +475,23 @@
 							This is handled by another case (Remark~\substremarkref) and we assume that $z_i\apath s\occ{u}$.
 
 						\item Suppose that $l'\at{\bhat u}$ contains a lifting variable.
-							As $l'\at{\bhat u}$ is a $\Gamma$-colored occurrence of $u$, by the induction hypothesis, $z_i\apath s\occ{u}$.
+							As $l\at{\bhat u}$ is a $\Gamma$-colored occurrence of $u$ and
+							$l\at{\bhat u}\sigma = l'\at{\bhat u}\sigma$,
+							$l'\at{\bhat u}$ is contained in a $\Gamma$-term and contains a $\Delta$-term, so 
+							by the induction hypothesis, $z_i\apath s\occ{u}$.
 					\end{itemize}
 
 					By Lemma~\ref{lemma:colored_merge_ai_de}, we also have that $z_i\apath \gamma_{j\bm '}\occ{u}$ and hence $z_i \apath \gamma_j\occ{z_i}$.
+
 			\end{itemize}
 
 
 
-		\item[Suppose for some variable $u$ in (w.l.o.g.) $\AIde(C_1)$ that $u\sigma$ contains a mixed-colored $\Gamma$-term containing $z_i$.]
+	\item[Suppose for some variable $u$ in (w.l.o.g.) $\AIde(C_1)$ that] $u\sigma$ contains a mixed-colored $\Gamma$-term containing $z_i$.
 			Then $u$ occurs in the resolved literal, say at $\bhat u$, and $l'\at{\bhat u}$ is an abstraction of $u\sigma$ but $l'\at{\bhat u} \neq u$. 
 			Note that $u\sigma = l'\at{\bhat u}\sigma$ 
+
+			\NB{unifier-induced arrows seem to replace all this as in the other case}
 
 			\begin{itemize}
 				\item Suppose $l'\at{\bhat u}$ contains a mixed-colored term.
@@ -498,11 +515,11 @@
 				\item Suppose $\bdot u$ is a colored occurrence and $\bhat u$ is a grey occurrence.
 					Then by Lemma~\ref{lemma:arrow_from_grey_to_colored}, $\bhat u \apath \bdot u$.
 
-				\item Suppose $\bdot u$ is a grey occurrence and $\bhat u$ is a colored occurrence.
-					Then by Lemma~\ref{lemma:colored_merge_ai_de}, $z_i \apath \bdot u$.
-
+				\item Suppose $\bdot u$ is a grey occurrence (irrespective of the  $\bhat u$ occurrence).
+					%Then by Lemma~\ref{lemma:colored_merge_ai_de}, $z_i \apath \bdot u$.
+					Then by unifier-induced arrows 2b, $z_i \apath \bdot u$.
 				%\item Suppose $\bdot u$ is a colored occurrence and $\bhat u$ is a colored occurrence.
-
+					\qedhere
 			\end{itemize}
 
 

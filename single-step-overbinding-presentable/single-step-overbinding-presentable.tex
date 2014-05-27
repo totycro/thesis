@@ -262,13 +262,13 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		\comm{not finished: If $y$ occurs grey in $C_i$ and colored at $\bhat y$ in the resolved literal, 
 		$y \sigma = t\occur{x}$ for some variable $x$, then add an arrow to $\arr(C)$}
 
-		\hl{feasible} Backwards merge case 1:\todo{necessary special case}{} if for variables $x,y,z$
+		\hl{reduced} Backwards merge case 1:\todo{necessary special case}{} if for variables $x,y,z$
 		and the unifier $\sigma$ of the resolution step we have that $x$ occurs grey in $z\sigma$ and $x$ occurs \emph{colored} in $y\sigma$, then add an arrow from every grey occurrence of $z$ to every \emph{grey} occurrence of $y$.
 
-		\hl{infeasible} Backwards merge case 1':\todo{necessary special case}{} if for variables $x,y,z$
+		\hl{reduced} Backwards merge case 1':\todo{necessary special case}{} if for variables $x,y,z$
 		and the unifier $\sigma$ of the resolution step we have that $x$ occurs grey in $z\sigma$ and $x$ occurs \emph{grey} in $y\sigma$, then add an arrow from every grey occurrence of $z$ to every \emph{colored} occurrence of $y$ (this is also not visible after lifting).
 
-		\hl{infeasible} Backwards merge case 2:\todo{necessary special case}{} 
+		\hl{reduced} Backwards merge case 2:\todo{necessary special case}{} 
 		same as 1, but also add arrows from every grey occurrence of $z$ to every \emph{colored} occurrence of $y$ (which is not visible after lifting. Maybe we can work in $\AIde$/$\AI^\Gamma$).
 
 		\hl{feasible} Backwards merge case 3:\todo{necessary special case}{} 
@@ -278,11 +278,14 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		If $x$ occurs \emph{grey} in $y\sigma$, then add a merge edge from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$ (this is a renaming).
 
 		\hl{feasible} Unifier-induced arrow 1:\todo{necessary special case}{} 
-		If $x$ occurs in $y\sigma$, add an arrow from every grey occurrence of $x$ in $C_i$ to every colored occurrence of $y$ in $C$.
+		If $x$ occurs in $y\sigma$, add an arrow from every grey occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$.
 		The colored occurrences of $y$ can be deduced by subtracting the grey occurrences from the connected components of $y$-occurrences (Lemma~\ref{prop:colored_variables_connected}). 
 
-		\hl{feasible} Unifier-induced arrow 2:\todo{necessary special case}{} 
-		If a lifting variable $z_i$ occurs in $x\sigma$, add an arrow from every grey occurrence of $z_i$ (?$C$ or $C_i$?) to every colored occurrence of $x$ in $C_i$.
+		\hl{feasible} Unifier-induced arrow 2a:\todo{necessary special case}{} 
+		If a lifting variable $z_i$ occurs \emph{grey} $x\sigma$, add an arrow from every grey occurrence of $z_i$ (?$C$ or $C_i$?) to \emph{every colored} occurrence of $x$ in $C_i$.
+
+		\hl{feasible} Unifier-induced arrow 2b:\todo{necessary special case}{} 
+		If a lifting variable $z_i$ occurs \emph{colored} in $x\sigma$, add an arrow from every grey occurrence of $z_i$ (?$C$ or $C_i$?) to \emph{every} occurrence of $x$ in $C_i$.
 
 		\comm{(deprecated, unused) special case 210g':
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.
@@ -314,9 +317,12 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 	\begin{quote}
 		Have $x$ occurs grey in $z\sigma$ and $x$ occurs colored in $y\sigma$
 
-		Then add arrow from every grey occurrence of $z$ to every colored occurrence of $y$
-	\end{quote}
+		Then add arrow from every grey occurrence of $z$ to every colored occurrence of $y$.
 
+		By merge case 4, have merge edge from grey occ of $x$ to grey occ of $z$.
+		By unifier-induced arrow 1, have arrow from $x$ to every colored occ of $y$.
+
+	\end{quote}
 
 
 
