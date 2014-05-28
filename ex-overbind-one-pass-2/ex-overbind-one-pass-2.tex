@@ -23,6 +23,7 @@
 
 
 %\input{../latex_header.tex}
+\usepackage{bm}
 
 %\usepackage[doublespacing]{setspace}
 \usepackage[onehalfspacing]{setspace}
@@ -344,6 +345,59 @@ Problem case 2: $x$ colored and colored, not sure what the connection is suppose
 	\RightLabelm{y \mapsto h(x), z \mapsto x}
 	\BinaryInfCm{ R(\arrB g(h(x)), g'(x)) \mid Q'(\arrA k(x)) \lor P(f(h(x))) } \drawAB
 \end{prooftree}
+
+
+\clearpage
+
+\section*{lifting var doesn't correspond to actual term exactly in context of  unifier arrows}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{Q(u) \lor  \lnot P(h(u)) } }
+
+	\AxiomCm{ \p{ R(g(x)) \lor S(x) } }
+	\AxiomCm{ \p{ \lnot S(a) } }
+
+	\RightLabelm{ x\mapsto a}
+	\BinaryInfCm{ S(a) \mid \mid R(g(a)) }
+
+	\AxiomCm{ \sig{ P(h(f(y))) \lor \lnot R(y) } }
+
+	\RightLabelm{ y\mapsto g(a)}
+	\BinaryInfCm{ S(a) \mid R(g(a)) \mid P(h(f(g(a)))) }
+
+	\RightLabelm{ u\mapsto g(f(g(a)))}
+	\BinaryInfCm{ S(a) \mid R(g(a)),  P(h(f(g(a)))) \mid Q(f(g(a))) }
+
+\end{prooftree}
+
+lifted:
+\begin{prooftree}
+	\AxiomCm{ \sig{Q(u) \lor  \lnot P(y_{h(u)}) } }
+
+	\AxiomCm{ \p{ R(x_{g(x)}) \lor S(x) } }
+	\AxiomCm{ \p{ \lnot S(x_a) } }
+
+	\RightLabelm{ x\mapsto a}
+	\BinaryInfCm{ S(x_a) \mid \mid R(x_{g(x)}) }
+
+	\AxiomCm{ \sig{ P(y_{h(f(y))}) \lor \lnot R(y) } }
+
+	\RightLabelm{ y\mapsto g(a)\; \bm\ast}
+	\BinaryInfCm{ S(x_a) \mid R(x_{g(a)}) \mid P(y_{h(f(y))}) }
+
+	\RightLabelm{ u\mapsto g(f(g(a)))}
+	\BinaryInfCm{ S(x_a) \mid R(x_{g(a)}),  P(y_{h(f(g(a)))}) \mid Q(y_{f(g(a))}) }
+
+\end{prooftree}
+
+~
+
+\textbf{at $\bm\ast$, $R(x_g(x))$ is not known to refer to $g(a)$. can we resort to check grey occurrences of $g(a)$?}
+
+\textbf{need arrow from $R$ to $P$ (this situation should be more critical if it is a backwards arrow)}
+
+\textbf{thought: concerns only stuff in literal, maybe can leverage something here (all lifting vars $x_i$ point to same term or so)}
+
 
 
 

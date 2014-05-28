@@ -274,8 +274,8 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 		\hl{feasible} Backwards merge case 3:\todo{necessary special case}{} 
 		If $x$ occurs \emph{colored} in $y\sigma$, then add an arrow from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$.
 
-		\hl{feasible} Backwards merge case 4:\todo{necessary special case}{} 
-		If $x$ occurs \emph{grey} in $y\sigma$, then add a merge edge from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$ (this is a renaming).
+		\hl{feasible} \NB{only for merge arrows between grey vars, possibly not needed} Backwards merge case 4:\todo{necessary special case}{} 
+		If $x$ occurs \emph{grey} in $y\sigma$, then add a merge edge from every grey occurrence of $x$ in $C$ to every grey occurrence of $y$ in $C_i$ (this is a renaming).
 
 		\hl{feasible} Unifier-induced arrow 1:\todo{necessary special case}{} 
 		If $x$ occurs in $y\sigma$, add an arrow from every grey occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$.
@@ -286,6 +286,8 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 		\hl{feasible} Unifier-induced arrow 2b:\todo{necessary special case}{} 
 		If a lifting variable $z_i$ occurs \emph{colored} in $x\sigma$, add an arrow from every grey occurrence of $z_i$ (?$C$ or $C_i$?) to \emph{every} occurrence of $x$ in $C_i$.
+
+		\mytodo{are there double arrows for lifting variables containing variables? yes, think so }
 
 		\comm{(deprecated, unused) special case 210g':
 		If a variable $x$ occurs grey in $C$ and for some other variable $y$ in $C$ with a grey occurrence we have that $y\sigma = t\occ{x}$, then add $(x, y)$ to $\arr(C)$.
@@ -351,21 +353,22 @@ w.r.t a refutation $\pi$ of $\Gamma \cup \Delta$:
 
 $\aiu$ is a function which calculates a substitution, which is used to ensure that the lifting variables occurring $\AIclause$ are equal when the corresponding literals in the derivation are. This is necessary for resolved literals or factorised literals.
 
+$\aiu$ is to be calculated \textbf{after} applying $\sigma$ and $\lifsym$.
+
 Let $A(a_1, \dotsc, a_n)$ and $A(b_1, \dotsc, b_n)$ be literals.
 
 $\aiu(A(a_1, \dotsc, a_n), A(b_1, \dotsc, b_n)) \defeq \bigcup_{i=1}^n \aiu(a_i, b_i)$
 
-$ \aiu (a\fromclause, b\fromclause) \defeq$\newline
-$
+$ \aiu (a\fromclause, b\fromclause) \defeq $\newline $
 \begin{cases}
 	\bigcup_{j=1}^n \aiu(s_j, t_j) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
-	\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$.\newline If the terms were lifting variables before and we do not know what the actual term is, choose any fresh lifting variable. \mytodo{last sentence is unconfirmed}
+\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the literal in the actual clause.
 	{\tiny
 
 		%More formally, $p = \pos(a) = \pos(b)$ and $\pos(\poslit(\lifboth{l\sigma}).\posterm(p)) = \pos(\poslit(\lifboth{l'\sigma}).\posterm(p)) = t_m$ and $\lifboth{t_m} = x_m$.
 
 }}\\
-\id & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ }
+\id & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ (this basically is a special case of the upper one}
 \end{cases} $
 
 
@@ -928,14 +931,15 @@ The substitution $\tau$ establishes equality for the terms in the literals being
 \newcommand{\clauseOnePrime}{\AIclause(C_1)^*}
 \newcommand{\clauseTwoPrime}{\AIclause(C_2)^*}
 
+\mytodo{define $\AIde$ from this: }
+	Let every $\Gamma$-term be grey. (To establish valid conditions, for each $\Gamma$-term $t$, add $P(t)$ to $\Delta$ where $P$ is a fresh predicate symbol. Then the resolution refutation is unaffected).
 
 \begin{lemma}
 	\label{ref:gamma_entails_delta_terms_lifted}
-	Let every $\Gamma$-term be grey. (To establish valid conditions, for each $\Gamma$-term $t$, add $P(t)$ to $\Delta$ where $P$ is a fresh predicate symbol. Then the resolution refutation is unaffected).
-	Then
-	$\Gamma \entails \AImatrix(C) \lor \AIclause(C)$.
+	$\Gamma \entails \AImatrix^\Delta(C) \lor \AIclause^\Delta(C)$.
 \end{lemma}
 \begin{proof}
+	\mytodo{ add $^\Delta$ everyhwere}
 	Proof by induction of the strengthening:
 	$\Gamma \entails \AImatrix(C) \lor \AIclause(C_\Gamma)$.
 
