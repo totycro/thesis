@@ -164,11 +164,19 @@ positioning,fit,calc,decorations.text,shadows%
 \DeclareMathOperator{\AI}{AI}
 \newcommand{\AIde}{\ensuremath{\AI^\Delta}}
 \newcommand{\AImatrix}{\ensuremath{\AI_\mathrm{mat}}}
+\newcommand{\AImatrixde}{\ensuremath{\AI_\mathrm{mat}^\Delta}}
+\newcommand{\AImat}{\AImatrix}
+\newcommand{\AImatde}{\AImatrixde}
 \newcommand{\AIclause}{\ensuremath{\AI_\mathrm{cl}}}
+\newcommand{\AIcl}{\AIclause}
+\newcommand{\AIclde}{\AIclausede}
 \newcommand{\AIclausede}{\ensuremath{\AIclause^\Delta}}
 \newcommand{\fromclause}{\ensuremath{_{\operatorname{AIcl}}}}
 \newcommand{\fromclausede}{\ensuremath{_{\operatorname{AIcl}^\Delta}}}
 \newcommand{\cl}{\fromclause}
+
+\newcommand{\AIclpre}{\AIclause^\bullet}
+\newcommand{\AImatpre}{\AImatrix^\bullet}
 
 \newcommand{\PS}{\Pred}
 \newcommand{\FS}{\Fun}
@@ -409,7 +417,13 @@ positioning,fit,calc,decorations.text,shadows%
 %\def\fCenter{\ \proves\ }
 \def\fCenter{\proves}
 
+\newcommand{\prflbl}[2]{\RightLabel{\footnotesize $#1, #2$} }
+%\newcommand{\prflblid}[1]{\RightLabel{$#1, \id$} }
+\newcommand{\prflblid}[1]{\RightLabel{\footnotesize $#1$} }
 
+\DeclareMathOperator{\resruleres}{res}
+\DeclareMathOperator{\resrulefac}{fac}
+\DeclareMathOperator{\resrulepar}{par}
 \newcommand{\lkrule}[2]{\ensuremath{\operatorname{#1}:#2}} % operatorname fixes spacing issues for =
 
 \newcommand{\parti}[4]{\ensuremath{ \langle (#1; #2), (#3; #4)\rangle  }}

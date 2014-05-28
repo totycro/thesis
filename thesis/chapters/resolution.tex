@@ -17,14 +17,14 @@ Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$ and posit
 		\LeftLabel{\textit{Resolution:}\quad}
 		\AxiomCm{ C \lor l }
 		\AxiomCm{ D \lor \lnot l' }
-		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\RightLabelm{\resruleres \quad \sigma = \mgu(l, l')}
 		\BinaryInfCm{ (C \lor D)\sigma }
 	\end{prooftree}
 
 	\begin{prooftree}
 		\LeftLabel{\textit{Factorisation:}\quad}
 		\AxiomCm{ C \lor l \lor l' }
-		\RightLabelm{\quad \sigma = \mgu(l, l')}
+		\RightLabelm{\resrulefac \quad \sigma = \mgu(l, l')}
 		\UnaryInfCm{ (C \lor l)\sigma }
 	\end{prooftree}
 
@@ -32,7 +32,7 @@ Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$ and posit
 		\LeftLabel{\textit{Paramodulation:}\quad}
 		\AxiomCm{ C \lor s=t }
 		\AxiomCm{ D\occurat{r}{p} }
-		\RightLabel{$\quad \sigma = \mgu(s, r)$}
+		\RightLabelm{\resrulepar \quad \sigma = \mgu(s, r)}
 		\BinaryInfCm{ (C \lor D\occurat{t}{p})\sigma }
 	\end{prooftree}
 

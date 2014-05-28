@@ -142,10 +142,10 @@ $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 \end{proof}
 
 \begin{defi}[Translation of formulas including axioms]
-	For first-order formulas $A$, let $\TransAll(A) =
+	For first-order formulas $A$, let $\TransAll(A) \defeq
 	\left(\bigwedge_{B\in\FAX(\Lang(A))} B \right) \land
 	\left(\bigwedge_{B\in\EAX(\Lang(A))} B \right) \land
-	\Trans(A)$ and for sets of first-order formulas $\Phi$, let $\TransAll(\Phi) = \FAX(\Lang(\Phi)) \cup  \EAX(\Lang(\Phi)) \cup \Trans(\Phi)$.
+	\Trans(A)$ and for sets of first-order formulas $\Phi$, let $\TransAll(\Phi) \defeq \FAX(\Lang(\Phi)) \cup  \EAX(\Lang(\Phi)) \cup \Trans(\Phi)$.
 \end{defi}
 
 
@@ -197,7 +197,7 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	hence $M$ is a model of $\FAX(\Lang(\Phi))$.
 
 	Lastly, we show that $M \entails \Trans(A)$ for all $A \in \Phi$.
-	By the above definition of $E$ in $M$, step $\ref{def:trans_step1}$ of the algorithm in definition \ref{def:trans} yields a formula that is satisfied by $M$ as it satisfies every formula of $\Phi$.
+	By the above definition of $E$ in $M$, step $\ref{def:trans_step1}$ of the algorithm in Definition \ref{def:trans} yields a formula that is satisfied by $M$ as it satisfies every formula of $\Phi$.
 	For step \ref{def:trans_step2}, suppose $P(s_1, \ldots, s_{j-1}, f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ does (not) hold under $M$.
 	Let $y$ be such that $M \entails f(\bar t)=y$.
 	By our definition of $F_f$ under $M$, $M\entails F_f(\bar t, y)$ with this unique $y$.

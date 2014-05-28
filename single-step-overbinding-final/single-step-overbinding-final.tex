@@ -1,8 +1,8 @@
 \documentclass[,%fontsize=11pt,%
 	paper=a4,% 
 	%landscape,
-	DIV12, % mehr text pro seite als defaultyyp
-	%DIV10, 
+	%DIV8, % mehr text pro seite als defaultyyp
+	DIV10, 
 	%DIV=calc,%
 	twoside=false,%
 	liststotoc,
@@ -116,27 +116,230 @@
 	\end{figure}
 }
 
-\setlength{\parindent}{0em}
 %\usepackage{thmtools} % actually already in latex_header.tex ...
 
 \usepackage{amsthm}
 
 
-\usepackage{tikz-qtree}
-
-%\newcommand{\sig}[1]{{#1}_\Sigma}
-%\newcommand{\p}[1]{{#1}_\Pi}
-\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
-\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
-
-\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
-
-\def\proofSkipAmount{ \vskip -0.3em}
-
 \usepackage{refcheck}
 
 \begin{document}
 
-x
+\part{Interpolant extraction from resolution proofs in one phase} 
+
+While the previous chapter demonstrates that it is possible to extract propositional interpolants and lift them from the colored symbols later in order to obtain a proper interpolant, we now present a novel approach, which only operates with grey intermediary interpolants.
+
+
+\section{Definition of the extraction algorithm}
+
+The extracted interpolants are prenex formulas, where 
+the quantifier block and the matrix of the formula are calculated separately in each step of the traversal of the resolution refutation.
+
+
+
+\subsection{Extraction of the interpolant matrix $\AImat$ and calculation of $\AIcl$}
+
+$\AImat$ is inspired by the propositional interpolants $\PI$ from Definition \ref{def:PI}.
+Its difference lies in the fact that the lifting occurs in every step of the extraction.
+This however necessiates applying these liftings to the clauses of the resolution refutation as well.
+For a clause $C$ of the resolution refutation, we will denote the clause with the respective liftings applied by $\AIcl(C)$ (a formal definition will be given below), and for a term $t$ at position $p$ in $C$, we denote $\AIcl(C)\at{p}$ by $t\cl$.
+
+Now we can define preliminary versions of $\AImatpre$ and $\AIclpre$:
+
+\begin{defi}[$\AImatpre$ and $\AIclpre$]
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+
+	For a clause $C$ in $\pi$, \defiemph{$\AImatpre(C)$} and \defiemph{$\AIclpre(C)$} are defined as follows:
+	\begin{itemize}
+		\item[Base case.]
+			If $C \in \Gamma$, $\AImatpre(C) \defeq \bot$.
+			If otherwise $C \in \Delta$, $\AImatpre(C) \defeq \top$.
+
+			In any case, $\AIclpre(C) \defeq \lifboth{C}$.
+		\item[Resolution.]
+
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then $\AImatpre(C)$ and $\AIclpre$ are defined as follows:
+
+			$\AIclpre(C) \defeq \lifboth{(\AIclpre(C_1) \setminus \{l\fromclause\})\sigma} \spam\lor \lifboth{(\AIclpre(C_2)\setminus \{l\fromclause'\})\sigma} $
+
+			\begin{enumerate}
+
+				\item If $l$ is $\Gamma$-colored:
+					$\AImatpre(C) \defeq \lifboth{\AImatpre(C_1)\sigma}\spas\lor \lifboth{\AImatpre(C_2)\sigma} $
+
+				\item If $l$ is $\Delta$-colored:
+					$\AImatpre(C) \defeq \lifboth{\AImatpre(C_1)\sigma}\spas\land \lifboth{\AImatpre(C_2)\sigma} $
+
+				\item If $l$ is grey:
+					$\AImatpre(C) \defeq
+					(\lnot {\lifboth{l'\fromclause\sigma}} \land \lifboth{\AImatpre(C_1)\sigma}) \spam\lor
+					(\lifboth{l\fromclause\sigma}\land \lifboth{\AImatpre(C_2)\sigma })
+					$
+
+			\end{enumerate}
+
+		\item[Factorisation.]
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\AImatpre(C) \defeq \lifboth{\AImatpre(C_1)\sigma}$ and $\AIclpre(C) \defeq \lifboth{ (\AIclause(C_1) \setminus\nolinebreak \{l'\cl\})\sigma}$.
+			\qedhere
+
+	\end{itemize}
+\end{defi}
+
+Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored term $t$ in $C$ that $t\cl \neq z_t$ as illustrated by the following examples:
+
+\begin{subtheorem}{exa}
+	\begin{exa}
+		We consider a resolution refutation of the initial clause sets
+		$\Gamma = \{ R(c), \lnot Q(v) \}$
+		and
+		$\Delta = \{ \lnot R(u) \lor Q(g(u)) \}$:
+
+		\begin{prooftree}
+			\AxiomCm{ R(c) }
+			\AxiomCm{ \lnot R(u) \lor Q(g(u)) }
+			\prflbl{\resruleres}{y\mapsto c}
+			\BinaryInfCm{ Q(g(c)) }
+
+			\AxiomCm{ \lnot Q(v) }
+			\prflbl{\resruleres}{v\mapsto g(c)}
+			\BinaryInfCm{ \square }
+		\end{prooftree}
+
+		We now replace every clause $C$ by $\AImatpre(C) \mid \AIclpre(C)$ in order to visualise the steps of the algorithm:
+
+		\begin{prooftree}
+			\AxiomCm{ \bot \mid  R(y_c) }
+			\AxiomCm{ \top \mid \lnot R(u) \lor \lnot Q(x_{g(u)}) }
+			\prflbl{\resruleres}{y\mapsto c}
+			\BinaryInfCm{ R(y_c) \mid  Q(x_{g(u)}) }
+
+			\AxiomCm{ \bot \mid \lnot Q(v) }
+			\prflbl{\resruleres}{v\mapsto g(c)} 
+			\BinaryInfCm{ \lnot Q(x_{g(c)}) \land R(y_c) \mid  \square }
+		\end{prooftree}
+
+		By quantifying $y_c$ existentially and $x_{g(c)}$ universally\footnote{The procedure for calculating the quantifer block is defined in section \ref{sec:arrow_quantifier_block}}, we can obtain an interpolant for $\Gamma \cup \Delta$:
+		$\exists y_c \forall x_{g(c)} (\lnot Q(x_{g_c}) \land R(y_c))$.
+		Note however that $\lifboth{Q(g(c))} = Q(x_{g(c)})$, but $\AImat(Q(g(c))) = Q(x_{g(u)})$.
+		This example shows that this circumstance is not necessarily a problem for this algorithm.
+	\end{exa}
+	\begin{exa}
+		\label{exa:2b}
+		We consider a resolution refutation of the initial clause sets
+		$\Gamma = \{ R(c), P(c) \}$
+		and
+		$\Delta = \{ \lnot R(u) \lor \lnot Q(g(u)), \lnot P(v) \lor Q(g(v))\}$:
+
+		\begin{prooftree}
+			\AxiomCm{ \lnot R(u) \lor \lnot Q(g(u)) }
+			\AxiomCm{ R(c) }
+			\prflbl{\resruleres}{u\mapsto c}
+			\BinaryInfCm{ \lnot Q(g(c)) }
+
+
+			\AxiomCm{ \lnot P(v) \lor Q(g(v)) }
+			\AxiomCm{ P(c) }
+			\prflbl{\resruleres}{v\mapsto c}
+			\BinaryInfCm{ Q(g(c)) }
+
+			\prflblid{\resruleres}
+			\BinaryInfCm{\square}
+
+		\end{prooftree}
+
+		We now again show $\AImatpre(C) \mid \AIclpre(C)$ for every clause $C$:
+
+		\begin{prooftree}
+			\AxiomCm{ \top \mid  \lnot R(u) \lor \lnot Q(x_{g(u)}) }
+			\AxiomCm{ \bot \mid R(y_c) }
+			\prflbl{\resruleres}{u\mapsto c}
+			\BinaryInfCm{ R(y_c) \mid  \lnot Q(x_{g(u)}) }
+
+			\AxiomCm{ \top \mid \lnot P(v) \lor Q(x_{g(v)}) }
+			\AxiomCm{ \bot \mid P(y_c) }
+			\prflbl{\resruleres}{v\mapsto c}
+			\BinaryInfCm{ P(y_c) \mid  Q(x_{g(v)}) }
+
+			\prflblid{\resruleres}
+			\BinaryInfCm{ (Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c))  \mid \square}
+
+		\end{prooftree}
+
+		Note again that
+		$\lifboth{\lnot Q(g(c))} \neq \AImatpre(\lnot Q(g(c))) = \lnot Q(x_{g(u)})$
+		and
+		$\lifboth{Q(g(c))} \neq \AImatpre(Q(g(c))) =  Q(x_{g(v)})$.
+		However in this instance, it is not possible to find quantifiers for the free variables of $\AImatpre(\square)$ such that by binding them an interpolant is produced.
+		For the naive approach, namely
+		$\exists y_c \forall x_{g(v)} \forall x_{g(u)} ((Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c)))$, 
+		the problem lies in the fact that $\Gamma \notentails \exists y_c \forall x_{g(v)} \forall x_{g(u)} ((Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c)))$.
+		This is possible as intuitively, resolution deductions are valid by virtue of the resolved literals being equal, which the interpolation extraction procedure in some sense exploit.
+	\end{exa}
+\end{subtheorem}
+
+In order to avoid the pitfall shown in Example \ref{exa:2b}, we define a substitution which ensures that for literals $l$ and $l'$, which are required to be equal by the calculus, it holds that $l\cl$ and $l'\cl$ are equal.
+
+\begin{defi}[$\aiu$]
+$ \aiu (a\fromclause, b\fromclause) \defeq $\newline $
+\begin{cases}
+	  \bigcup_{i=1}^n \aiu(s_i, t_i) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
+	\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}\\
+	\id & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ (this basically is a special case of the upper one}
+\end{cases}
+$
+\mytodo{fix up def}
+
+\end{defi}
+
+
+
+\begin{defi}[$\AImat$ and $\AIcl$]
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+
+	For a clause $C$ in $\pi$, \defiemph{$\AImat(C)$} and \defiemph{$\AIcl(C)$} are defined as follows:
+	\begin{itemize}
+		\item[Base case.]
+			If $C \in \Gamma$, $\AImat(C) \defeq \bot$.
+			If otherwise $C \in \Delta$, $\AImat(C) \defeq \top$.
+
+			In any case, $\AIcl(C) \defeq \lifboth{C}$.
+		\item[Resolution.]
+
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then $\AImat(C)$ and $\AIcl(C)$ are defined as follows:
+
+			$\AIcl(C) \defeq \lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau \spam\lor \lifboth{(\AIclause(C_2)\setminus \{l\fromclause'\})\sigma}\tau $
+
+			$\tau \defeq \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$
+			\begin{enumerate}
+
+				\item If $l$ is $\Gamma$-colored:
+					$\AImat(C) \defeq \lifboth{\AImat(C_1)\sigma}\tau\spas\lor \lifboth{\AImat(C_2)\sigma}\tau $
+
+				\item If $l$ is $\Delta$-colored:
+					$\AImat(C) \defeq \lifboth{\AImat(C_1)\sigma}\tau\spas\land \lifboth{\AImat(C_2)\sigma}\tau $
+
+				\item If $l$ is grey:
+					$\AImat(C) \defeq
+					(\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor
+					(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImat(C_2)\sigma}\tau)
+					$
+
+			\end{enumerate}
+
+		\item[Factorisation.]
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then:
+
+			$\tau \defeq \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+
+			$\AImat(C) \defeq{} \lifboth{\AImat(C_1)\sigma}\tau$
+
+			$\AIcl(C) \defeq \lifboth{ (\AIclause(C_1) \setminus\nolinebreak \{l'\cl\})\sigma}\tau$
+			\qedhere
+
+	\end{itemize}
+\end{defi}
+
+
+\label{sec:arrow_quantifier_block} 
 
 \end{document}
