@@ -148,7 +148,8 @@ $.
 \end{subtheorem}
 
 
-\begin{lemma}[Commutativity of lifting and substitution]
+%\begin{lemma}[Commutativity of lifting and substitution]
+\begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
 	\label{lemma:lif}
 	Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
 	%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
@@ -165,7 +166,7 @@ $.
 	Then
 	$\lifphi{C\sigma} =
 	\lifphi{C}\sigma'$.
-\end{lemma}
+\end{restatable}
 \begin{proof}
 	As substitutions and liftings only affect the terms of a clause, it suffices to  show that 
 	$\lifphi{t\sigma} = \lifphi{t}\sigma'$ for for a term $t$ in $C$.
@@ -218,7 +219,7 @@ $.
 
 \begin{exa}
 	Let $M$ be a model and $c$ and $d$ be $\Phi$-colored constants such that $M\entails c=d$.  
-	Then ?????
+	Then \todo[inline]{?????}
 \end{exa}
 
 

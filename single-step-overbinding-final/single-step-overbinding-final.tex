@@ -125,16 +125,60 @@
 
 \begin{document}
 
+{ \color{white} \tiny
+\begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
+	\label{lemma:lif}
+	Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
+	%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
+	%$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
+	Define $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
+	\[
+		x \sigma' =
+		\begin{cases} 
+			z_{t\sigma} & \text{ if } x = z_t \text{ and } t\sigma \neq t \\
+			\lifphi{x\sigma} & \text{ otherwise}
+		\end{cases} 
+	\]
+
+	Then
+	$\lifphi{C\sigma} =
+	\lifphi{C}\sigma'$.
+\end{restatable}
+
+}
+
 \part{Interpolant extraction from resolution proofs in one phase} 
 
 While the previous chapter demonstrates that it is possible to extract propositional interpolants and lift them from the colored symbols later in order to obtain a proper interpolant, we now present a novel approach, which only operates with grey intermediary interpolants.
+This is established by lifting any term which is added to the interpolant. 
+
+By its nature, this approach requires an alternate strategy as a commutation of substitution and lifting is no longer possible if lifting variables are present.
+In order to make this notion more precise, recall the corresponding lemma from the previous chapter:
+\lemmaCommutLiftSubst*
+Consider the following illustration of a problem of the notion of applying this lemma to terms containing lifting variables:
+
+\begin{exa}
+Let $\sigma = \{x \mapsto a\}$
+and consider the terms $f(x)$ and $f(a)$, where $f$ and $a$ are colored symbols.
+Clearly $f(x)\sigma = f(a)$ and therefore necessarily $z_{f(x)}\sigma' = z_{f(a)}$.
+
+But now consider $x_{f(x)} \sigma$.
+As $z_{f(x)}$ is a lifting variable, it is not affected by unifiers from resolution derivations and also not by $\sigma$.
+Hence $z_{f(x)}\sigma = z_{f(x)}$ and therefore $\lifboth{z_{f(x)}\sigma} = \lifboth{z_{f(x)}} = z_{f(x)}$, but $\lifboth{z_{f(x)}}\sigma' = z_{f(x)}\sigma' = z_{f(a)}$.
+So $\lifboth{z_{f(x)}\sigma} \neq \lifboth{z_{f(x)}}\sigma'$.
+
+We see here that there are circumstances under which in order to commute lifting and substitution,
+the altered substitution $\sigma'$ is required to conform to the equation
+$z_{f(x)}\sigma' =\nolinebreak z_{f(a)}$, 
+whereas in others, the definition must be that
+$z_{f(x)}\sigma' = z_{f(x)}$.
+\end{exa}
 
 
 \section{Definition of the extraction algorithm}
 
 The extracted interpolants are prenex formulas, where 
 the quantifier block and the matrix of the formula are calculated separately in each step of the traversal of the resolution refutation.
-
 
 
 \subsection{Extraction of the interpolant matrix $\AImat$ and calculation of $\AIcl$}
@@ -187,110 +231,136 @@ Now we can define preliminary versions of $\AImatpre$ and $\AIclpre$:
 
 Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored term $t$ in $C$ that $t\cl \neq z_t$ as illustrated by the following examples:
 
-\begin{subtheorem}{exa}
-	\begin{exa}
-		We consider a resolution refutation of the initial clause sets
-		$\Gamma = \{ R(c), \lnot Q(v) \}$
-		and
-		$\Delta = \{ \lnot R(u) \lor Q(g(u)) \}$:
+\begin{exa}
+	We consider a resolution refutation of the initial clause sets
+	$\Gamma = \{ R(c), \lnot Q(v) \}$
+	and
+	$\Delta = \{ \lnot R(u) \lor Q(g(u)) \}$:
 
-		\begin{prooftree}
-			\AxiomCm{ R(c) }
-			\AxiomCm{ \lnot R(u) \lor Q(g(u)) }
-			\prflbl{\resruleres}{y\mapsto c}
-			\BinaryInfCm{ Q(g(c)) }
+	\begin{prooftree}
+		\AxiomCm{ R(c) }
+		\AxiomCm{ \lnot R(u) \lor Q(g(u)) }
+		\prflbl{\resruleres}{y\mapsto c}
+		\BinaryInfCm{ Q(g(c)) }
 
-			\AxiomCm{ \lnot Q(v) }
-			\prflbl{\resruleres}{v\mapsto g(c)}
-			\BinaryInfCm{ \square }
-		\end{prooftree}
+		\AxiomCm{ \lnot Q(v) }
+		\prflbl{\resruleres}{v\mapsto g(c)}
+		\BinaryInfCm{ \square }
+	\end{prooftree}
 
-		We now replace every clause $C$ by $\AImatpre(C) \mid \AIclpre(C)$ in order to visualise the steps of the algorithm:
+	We now replace every clause $C$ by $\AImatpre(C) \mid \AIclpre(C)$ in order to visualise the steps of the algorithm:
 
-		\begin{prooftree}
-			\AxiomCm{ \bot \mid  R(y_c) }
-			\AxiomCm{ \top \mid \lnot R(u) \lor \lnot Q(x_{g(u)}) }
-			\prflbl{\resruleres}{y\mapsto c}
-			\BinaryInfCm{ R(y_c) \mid  Q(x_{g(u)}) }
+	\begin{prooftree}
+		\AxiomCm{ \bot \mid  R(y_c) }
+		\AxiomCm{ \top \mid \lnot R(u) \lor \lnot Q(x_{g(u)}) }
+		\prflbl{\resruleres}{y\mapsto c}
+		\BinaryInfCm{ R(y_c) \mid  Q(x_{g(u)}) }
 
-			\AxiomCm{ \bot \mid \lnot Q(v) }
-			\prflbl{\resruleres}{v\mapsto g(c)} 
-			\BinaryInfCm{ \lnot Q(x_{g(c)}) \land R(y_c) \mid  \square }
-		\end{prooftree}
+		\AxiomCm{ \bot \mid \lnot Q(v) }
+		\prflbl{\resruleres}{v\mapsto g(c)} 
+		\BinaryInfCm{ \lnot Q(x_{g(c)}) \land R(y_c) \mid  \square }
+	\end{prooftree}
 
-		By quantifying $y_c$ existentially and $x_{g(c)}$ universally\footnote{The procedure for calculating the quantifer block is defined in section \ref{sec:arrow_quantifier_block}}, we can obtain an interpolant for $\Gamma \cup \Delta$:
-		$\exists y_c \forall x_{g(c)} (\lnot Q(x_{g_c}) \land R(y_c))$.
-		Note however that $\lifboth{Q(g(c))} = Q(x_{g(c)})$, but $\AImat(Q(g(c))) = Q(x_{g(u)})$.
-		This example shows that this circumstance is not necessarily a problem for this algorithm.
-	\end{exa}
-	\begin{exa}
-		\label{exa:2b}
-		We consider a resolution refutation of the initial clause sets
-		$\Gamma = \{ R(c), P(c) \}$
-		and
-		$\Delta = \{ \lnot R(u) \lor \lnot Q(g(u)), \lnot P(v) \lor Q(g(v))\}$:
+	By quantifying $y_c$ existentially and $x_{g(c)}$ universally\footnote{The procedure for calculating the quantifer block is defined in section \ref{sec:arrow_quantifier_block}}, we obtain an interpolant for $\Gamma \cup \Delta$:
+	$\exists y_c \forall x_{g(c)} (\lnot Q(x_{g_c}) \land R(y_c))$.
+	Note however that $\lifboth{Q(g(c))} = Q(x_{g(c)})$, but $\AImat(Q(g(c))) = Q(x_{g(u)})$.
+	This example shows that this circumstance is not necessarily an obstacle for the correctness of this algorithm.
+\end{exa}
+\begin{exa}
+	\label{exa:2b}
+	We consider a resolution refutation of the initial clause sets
+	$\Gamma = \{ R(c), P(c) \}$
+	and
+	$\Delta = \{ \lnot R(u) \lor \lnot Q(g(u)), \lnot P(v) \lor Q(g(v))\}$:
 
-		\begin{prooftree}
-			\AxiomCm{ \lnot R(u) \lor \lnot Q(g(u)) }
-			\AxiomCm{ R(c) }
-			\prflbl{\resruleres}{u\mapsto c}
-			\BinaryInfCm{ \lnot Q(g(c)) }
+	\begin{prooftree}
+		\AxiomCm{ \lnot R(u) \lor \lnot Q(g(u)) }
+		\AxiomCm{ R(c) }
+		\prflbl{\resruleres}{u\mapsto c}
+		\BinaryInfCm{ \lnot Q(g(c)) }
 
 
-			\AxiomCm{ \lnot P(v) \lor Q(g(v)) }
-			\AxiomCm{ P(c) }
-			\prflbl{\resruleres}{v\mapsto c}
-			\BinaryInfCm{ Q(g(c)) }
+		\AxiomCm{ \lnot P(v) \lor Q(g(v)) }
+		\AxiomCm{ P(c) }
+		\prflbl{\resruleres}{v\mapsto c}
+		\BinaryInfCm{ Q(g(c)) }
 
-			\prflblid{\resruleres}
-			\BinaryInfCm{\square}
+		\prflblid{\resruleres}
+		\BinaryInfCm{\square}
 
-		\end{prooftree}
+	\end{prooftree}
 
-		We now again show $\AImatpre(C) \mid \AIclpre(C)$ for every clause $C$:
+	We now again display $\AImatpre(C) \mid \AIclpre(C)$ for every clause $C$ of the refutation:
 
-		\begin{prooftree}
-			\AxiomCm{ \top \mid  \lnot R(u) \lor \lnot Q(x_{g(u)}) }
-			\AxiomCm{ \bot \mid R(y_c) }
-			\prflbl{\resruleres}{u\mapsto c}
-			\BinaryInfCm{ R(y_c) \mid  \lnot Q(x_{g(u)}) }
+	\begin{prooftree}
+		\AxiomCm{ \top \mid  \lnot R(u) \lor \lnot Q(x_{g(u)}) }
+		\AxiomCm{ \bot \mid R(y_c) }
+		\prflbl{\resruleres}{u\mapsto c}
+		\BinaryInfCm{ R(y_c) \mid  \lnot Q(x_{g(u)}) }
 
-			\AxiomCm{ \top \mid \lnot P(v) \lor Q(x_{g(v)}) }
-			\AxiomCm{ \bot \mid P(y_c) }
-			\prflbl{\resruleres}{v\mapsto c}
-			\BinaryInfCm{ P(y_c) \mid  Q(x_{g(v)}) }
+		\AxiomCm{ \top \mid \lnot P(v) \lor Q(x_{g(v)}) }
+		\AxiomCm{ \bot \mid P(y_c) }
+		\prflbl{\resruleres}{v\mapsto c}
+		\BinaryInfCm{ P(y_c) \mid  Q(x_{g(v)}) }
 
-			\prflblid{\resruleres}
-			\BinaryInfCm{ (Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c))  \mid \square}
+		\prflblid{\resruleres}
+		\BinaryInfCm{ (Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c))  \mid \square}
 
-		\end{prooftree}
+	\end{prooftree}
 
-		Note again that
-		$\lifboth{\lnot Q(g(c))} \neq \AImatpre(\lnot Q(g(c))) = \lnot Q(x_{g(u)})$
-		and
-		$\lifboth{Q(g(c))} \neq \AImatpre(Q(g(c))) =  Q(x_{g(v)})$.
-		However in this instance, it is not possible to find quantifiers for the free variables of $\AImatpre(\square)$ such that by binding them an interpolant is produced.
-		For the naive approach, namely
-		$\exists y_c \forall x_{g(v)} \forall x_{g(u)} ((Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c)))$, 
-		the problem lies in the fact that $\Gamma \notentails \exists y_c \forall x_{g(v)} \forall x_{g(u)} ((Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c)))$.
-		This is possible as intuitively, resolution deductions are valid by virtue of the resolved literals being equal, which the interpolation extraction procedure in some sense exploit.
-	\end{exa}
-\end{subtheorem}
+	Note again that here,
+	%\[
+	$
+	\lifboth{\lnot Q(g(c))} = \lnot Q(x_{g(c)}) \spam\neq \AIclpre(\lnot Q(g(c))) = \lnot Q(x_{g(u)})
+	$
+	%\]
+	and
+	%\[
+	$
+	\lifboth{Q(g(c))} = Q(x_{g(c)}) \spam\neq \AIclpre(Q(g(c))) =  Q(x_{g(v)}).
+	$
+	%\]
+	However in this instance, it is not possible to find quantifiers for the free variables of $\AImatpre(\square)$ such that by binding them, an interpolant is produced.
+	For the naive approach, namely to use $\exists y_c \forall x_{g(v)} \forall x_{g(u)}$ as prefix, it holds that 
+	$\Gamma \notentails \exists y_c \forall x_{g(v)} \forall x_{g(u)} ((Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c)))$.
+	This is possible as intuitively, resolution deductions are valid by virtue of the resolved literals being equal, which the interpolation extraction procedure in some sense exploits. 
+	Note that by ensuring that for resolved literals $l$ and $l'$, it holds that $l\cl = l'\cl$, we can obtain an interpolant, for instance: 
+	$
+	\exists y_c \forall x^\ast ((Q(x^\ast) \land R(y_c)) \spam\lor (\lnot Q(x^\ast) \land P(y_c)))
+	$.
+\end{exa}
 
-In order to avoid the pitfall shown in Example \ref{exa:2b}, we define a substitution which ensures that for literals $l$ and $l'$, which are required to be equal by the calculus, it holds that $l\cl$ and $l'\cl$ are equal.
+In order to avoid the pitfall shown in Example \ref{exa:2b} and to generalise the indicated solution,
+we define a function on resolved literals calculating a substitution, which ensures that the resolved literals are equal.
 
-\begin{defi}[$\aiu$]
-$ \aiu (a\fromclause, b\fromclause) \defeq $\newline $
-\begin{cases}
-	  \bigcup_{i=1}^n \aiu(s_i, t_i) & \text{if $a\cl=f_s(\bar s)$ grey and $b\cl = f_t(\bar t)$ (includes $f_s$ being a constant)} \\
-	\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}\\
-	\id & \text{if $\lifboth{a\sigma} = \lifboth{b\sigma} = x_j$ (this basically is a special case of the upper one}
-\end{cases}
-$
-\mytodo{fix up def}
-
+\begin{defi}[$\aiu$] 
+	For resolve literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
+	and $\lifboth{l\cl\sigma} = P(s_1, \dots, s_n)$ and $\lifboth{l'\cl\sigma} = P(t_1, \dots, t_n)$, we define:
+	\[
+		\aiu (\lifboth{l\fromclause\sigma}, \lifboth{l'\fromclause\sigma}) \defeq \bigcup_{i=1}^n \aiu(s_i, t_i)
+\]
+For terms $s$ and $t$ where
+$s = \lifboth{l\fromclause\sigma}\at{p}$
+and 
+$t = \lifboth{l'\fromclause\sigma}\at{p}$
+for some position $p$, we define:
+\[
+	\aiu (s, t) \defeq
+	\begin{cases}
+		\bigcup_{i=1}^n \aiu(s_i, t_i) & \text{if $s$ is grey and $s=f_s(s_1, \dots, s_n)$, $t = f_{t}(t_1,\dots, t_n)$\footnotemark} \\
+		\{z_{s'} \mapsto z_{\lifboth{s\sigma}}, z_{t'} \mapsto z_{\lifboth{s\sigma}}\} &
+		%\parbox[t]{.70\textwidth}{
+		\text{if $s$ is a lifting variable $z_{s'}$, $t = z_{t'}$,
+		and $\lifboth{s\sigma} = \lifboth{t\sigma} = z_{\lifboth{s\sigma}}$}
+	%}
+		%\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}
+		\qedhere
+	\end{cases}
+\]
+\footnotetext{Note that constants are treated as function symbols of arity zero.}
 \end{defi}
 
+\todo[inline]{possibly argue here why $\aiu$ is well-defined (but it follows more or less directly from a later lemma)}
 
 
 \begin{defi}[$\AImat$ and $\AIcl$]
@@ -305,11 +375,12 @@ $
 			In any case, $\AIcl(C) \defeq \lifboth{C}$.
 		\item[Resolution.]
 
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then $\AImat(C)$ and $\AIcl(C)$ are defined as follows:
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, 
+			then 
+			let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$ and define
+$\AImat(C)$ and $\AIcl(C)$ as follows:
 
 			$\AIcl(C) \defeq \lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau \spam\lor \lifboth{(\AIclause(C_2)\setminus \{l\fromclause'\})\sigma}\tau $
-
-			$\tau \defeq \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$
 			\begin{enumerate}
 
 				\item If $l$ is $\Gamma$-colored:
