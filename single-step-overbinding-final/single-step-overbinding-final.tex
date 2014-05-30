@@ -50,8 +50,7 @@
 
 \declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
 
-%\def\proofSkipAmount{ \vskip -0.5em}
-
+\def\proofSkipAmount{ \vskip -0.1em } 
 
 
 %\usepackage{bussproof}
@@ -169,9 +168,21 @@
 
 
 \begin{document}
-\chapter{Interpolant extraction from resolution proofs in one phase} 
 
-{ \color{white} \tiny
+
+\section{referenced lemmas from previous sections}
+\begin{quote}
+\begin{lemma}[Commutativity of lifting and logical operators]
+	\label{lemma:lift_commute}
+	\label{lemma:lift_logic_commute}
+	Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it     holds that:
+	\begin{enumerate}
+		\item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
+		\item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ   \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land, \lor\}$
+		\item $\lift{\Phi}{s = t}{z} \spas\semiff{} ( \lift{\Phi}{s}{z} =           \lift{\Phi}{t}{z} )$
+	\end{enumerate}
+\end{lemma}
+
 \begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
 	\label{lemma:lif}
 	Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
@@ -190,9 +201,9 @@
 	$\lifphi{C\sigma} =
 	\lifphi{C}\sigma'$.
 \end{restatable}
+\end{quote}
 
-}
-
+\chapter{Interpolant extraction from resolution proofs in one phase} 
 
 
 While the previous chapter demonstrates that it is possible to extract propositional interpolants and lift them from the colored symbols later in order to obtain a proper interpolant, we now present a novel approach, which only operates with grey intermediary interpolants.
@@ -204,20 +215,20 @@ Let us recall the corresponding lemma from the previous chapter:
 Consider the following illustration of a problem of the notion of applying this lemma to terms containing lifting variables:
 
 \begin{exa}
-Let $\sigma = \{x \mapsto a\}$
-and consider the terms $f(x)$ and $f(a)$, where $f$ and $a$ are colored symbols.
-Clearly $f(x)\sigma = f(a)$ and therefore necessarily $z_{f(x)}\sigma' = z_{f(a)}$.
+	Let $\sigma = \{x \mapsto a\}$
+	and consider the terms $f(x)$ and $f(a)$, where $f$ and $a$ are colored symbols.
+	Clearly $f(x)\sigma = f(a)$ and therefore necessarily $z_{f(x)}\sigma' = z_{f(a)}$.
 
-But now consider $x_{f(x)} \sigma$.
-As $z_{f(x)}$ is a lifting variable, it is not affected by unifiers from resolution derivations and also not by $\sigma$.
-Hence $z_{f(x)}\sigma = z_{f(x)}$ and therefore $\lifboth{z_{f(x)}\sigma} = \lifboth{z_{f(x)}} = z_{f(x)}$, but $\lifboth{z_{f(x)}}\sigma' = z_{f(x)}\sigma' = z_{f(a)}$.
-So $\lifboth{z_{f(x)}\sigma} \neq \lifboth{z_{f(x)}}\sigma'$.
+	But now consider $x_{f(x)} \sigma$.
+	As $z_{f(x)}$ is a lifting variable, it is not affected by unifiers from resolution derivations and also not by $\sigma$.
+	Hence $z_{f(x)}\sigma = z_{f(x)}$ and therefore $\lifboth{z_{f(x)}\sigma} = \lifboth{z_{f(x)}} = z_{f(x)}$, but $\lifboth{z_{f(x)}}\sigma' = z_{f(x)}\sigma' = z_{f(a)}$.
+	So $\lifboth{z_{f(x)}\sigma} \neq \lifboth{z_{f(x)}}\sigma'$.
 
-We see here that there are circumstances under which in order to commute lifting and substitution,
-the substitution $\sigma'$ is required to conform to the equation
-$z_{f(x)}\sigma' =\nolinebreak z_{f(a)}$, 
-whereas in others, it must hold that
-$z_{f(x)}\sigma' = z_{f(x)}$.
+	We see here that there are circumstances under which in order to commute lifting and substitution,
+	the substitution $\sigma'$ is required to conform to the equation
+	$z_{f(x)}\sigma' =\nolinebreak z_{f(a)}$, 
+	whereas in others, it must hold that
+	$z_{f(x)}\sigma' = z_{f(x)}$.
 \end{exa}
 
 
@@ -282,7 +293,6 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 	$\Gamma = \{ R(c), \lnot Q(v) \}$
 	and
 	$\Delta = \{ \lnot R(u) \lor Q(g(u)) \}$:
-
 	\begin{prooftree}
 		\AxiomCm{ R(c) }
 		\AxiomCm{ \lnot R(u) \lor Q(g(u)) }
@@ -295,7 +305,6 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 	\end{prooftree}
 
 	We now replace every clause $C$ by $\AImatpre(C) \mid \AIclpre(C)$ in order to visualise the steps of the algorithm:
-
 	\begin{prooftree}
 		\AxiomCm{ \bot \mid  R(y_c) }
 		\AxiomCm{ \top \mid \lnot R(u) \lor \lnot Q(x_{g(u)}) }
@@ -318,7 +327,6 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 	$\Gamma = \{ R(c), P(c) \}$
 	and
 	$\Delta = \{ \lnot R(u) \lor \lnot Q(g(u)), \lnot P(v) \lor Q(g(v))\}$:
-
 	\begin{prooftree}
 		\AxiomCm{ \lnot R(u) \lor \lnot Q(g(u)) }
 		\AxiomCm{ R(c) }
@@ -337,7 +345,6 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 	\end{prooftree}
 
 	We now again display $\AImatpre(C) \mid \AIclpre(C)$ for every clause $C$ of the refutation:
-
 	\begin{prooftree}
 		\AxiomCm{ \top \mid  \lnot R(u) \lor \lnot Q(x_{g(u)}) }
 		\AxiomCm{ \bot \mid R(y_c) }
@@ -382,31 +389,38 @@ In order to avoid the pitfall shown in Example \ref{exa:2b} and to generalise th
 we define a function on resolved literals calculating a substitution, which ensures that the literals in the lifted clause, which correspond to the resolved literals, are equal.
 
 \begin{defi}[$\aiu$] 
-	For resolve literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
+	For resolved literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
 	and $\lifboth{l\cl\sigma} = P(s_1, \dots, s_n)$ and $\lifboth{l'\cl\sigma} = P(t_1, \dots, t_n)$, we define:
 	\[
 		\aiu (\lifboth{l\fromclause\sigma}, \lifboth{l'\fromclause\sigma}) \defeq \bigcup_{i=1}^n \aiu(s_i, t_i)
-\]
-For terms $s$ and $t$ where
-$s = \lifboth{l\fromclause\sigma}\at{p}$
-and 
-$t = \lifboth{l'\fromclause\sigma}\at{p}$
-for some position $p$, we define:
-\[
-	\aiu (s, t) \defeq
-	\begin{cases}
-		\bigcup_{i=1}^n \aiu(s_i, t_i) & \text{if $s$ is grey and $s=f_s(s_1, \dots, s_n)$, $t = f_{t}(t_1,\dots, t_n)$\footnotemark} \\
-		\{z_{s'} \mapsto z_{\lifboth{s\sigma}}, z_{t'} \mapsto z_{\lifboth{s\sigma}}\} &
-		%\parbox[t]{.70\textwidth}{
-		\text{if $s$ is a lifting variable $z_{s'}$, $t = z_{t'}$,
-		and $\lifboth{s\sigma} = \lifboth{t\sigma} = z_{\lifboth{s\sigma}}$}
-	%}
-		%\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}
-		\qedhere
-	\end{cases}
-\]
-\footnotetext{Note that constants are treated as function symbols of arity zero.}
+	\]
+	For terms $s$ and $t$ where
+	$s = \lifboth{l\fromclause\sigma}\at{p}$
+	and 
+	$t = \lifboth{l'\fromclause\sigma}\at{p}$
+	for some position $p$, we define:
+	\[
+		\aiu (s, t) \defeq
+		\begin{cases}
+			\bigcup_{i=1}^n \aiu(s_i, t_i) & \text{if $s$ is grey and $s=f_s(s_1, \dots, s_n)$, $t = f_{t}(t_1,\dots, t_n)$\footnotemark} \\
+			\{z_{s'} \mapsto z_{\lifboth{s\sigma}}, z_{t'} \mapsto z_{\lifboth{s\sigma}}\} &
+			%\parbox[t]{.70\textwidth}{
+			\text{if $s$ is a lifting variable $z_{s'}$, $t = z_{t'}$,
+			and $\lifboth{s\sigma} = \lifboth{t\sigma} = z_{\lifboth{s\sigma}}$}
+			%}
+			%\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}
+			\qedhere
+		\end{cases}
+	\]
+	\footnotetext{Note that constants are treated as function symbols of arity zero.}
 \end{defi}
+
+\begin{prop}
+	\label{prop:tau_dom_ran}
+	Let $l$ and $l'$ be the resolved literals of a resolution step and $\sigma$ the unifier employed in this step.
+	Furthermore let $\tau = \aiu(\lifboth{l\fromclause\sigma}, \lifboth{l'\fromclause\sigma})$.
+	Then $\dom(\tau)$ consists exactly of the lifting variables of $\lifboth{l\fromclause\sigma}$ and $\lifboth{l'\fromclause\sigma}$ and $\ran(\tau)$ consists exactly of the lifting variables of $\lifboth{l\sigma}$.
+\end{prop}
 
 \todo[inline]{possibly argue here why $\aiu$ is well-defined (but it follows more or less directly from a later lemma)}
 
@@ -427,7 +441,7 @@ for some position $p$, we define:
 			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, 
 			then 
 			let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$ and define
-$\AImat(C)$ and $\AIcl(C)$ as follows:
+			$\AImat(C)$ and $\AIcl(C)$ as follows:
 
 			$\AIcl(C) \defeq \lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau \spam\lor \lifboth{(\AIclause(C_2)\setminus \{l\fromclause'\})\sigma}\tau $
 			\begin{enumerate}
@@ -463,6 +477,42 @@ $\AImat(C)$ and $\AIcl(C)$ as follows:
 	$\AImatde(C)$ ($\AIclde(C)$) for a clause $C$ is defined as $\AImat(C)$ ($\AIcl(C)$) with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
 \end{defi}
 
+\begin{lemma}
+	\label{lemma:no_colored_terms}
+	Let $C$ be a clause of a resolution refutation of $\Gamma\cup\Delta$.
+	$\AImat(C)$ and $\AIcl(C)$ do not contain colored symbols. 
+	$\AImatde(C)$ and $\AIclde(C)$ do not contain \mbox{$\Delta$-c}olored symbols. 
+\end{lemma}
+\begin{proof}
+	For $\AImat(C)$ and $\AIcl(C)$, consider the following:
+	In the base case of the inductive definitions of $\AImat(C)$ and $\AIcl(C)$, no colored symbols occur.
+	In the inductive steps, any colored symbol which is added by $\sigma$ to intermediary formulas is lifted.
+	By Proposition~\ref{prop:tau_dom_ran}, $\ran(\tau)$ only consists of lifting variables.
+
+	For $\AImatde(C)$ and $\AIclde(C)$, a similar argument goes through by reading colored as $\Delta$-colored. 
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:substitute_and_lift}
+	Let $\sigma$ be a substitution and $F$ a formula without $\Phi$-colored terms such that for a set of formulas $\Psi$, $\Psi \entails F$.
+	Then $\Psi \entails \lifphi{F\sigma}$.
+\end{lemma}
+\begin{proof}
+	$\lifphi{F\sigma}$ is an instance of $F$: 
+	$\sigma$ substitutes variables either for terms not containing $\Phi$-colored symbols or by terms containing $\Phi$-colored symbols.
+	For the first kind, the lifting has no effect.
+	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
+\end{proof}
+
+\begin{lemma}
+	Let $l$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
+\end{lemma}
+
+\begin{lemma}
+	\label{lemma:lifted_literal_equal}
+	lifted literal equal
+\end{lemma}
+
 
 \begin{lemma}
 	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
@@ -470,8 +520,93 @@ $\AImat(C)$ and $\AIcl(C)$ as follows:
 	$\Gamma\entails\nolinebreak \AImatde(C) \lor\nolinebreak \AIclde(C)$.
 \end{lemma}
 \begin{proof}
-	We proceed by induction of the strengthening
+	We proceed by induction of the strengthening $\Gamma\entails \AImatde(C) \lor \AIclde(C_\Gamma)$\footnotemark.\footnotetext{Recall that as in Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}
+
+	\begin{description}
+		\item{Base case.}
+			For $C\in \Gamma$, $\AIclde(C_\Gamma) = \AIclde(C) = \lifdeltanovar{C} = C$, so $\Gamma \entails \AIclde(C_\Gamma)$.
+			Otherwise $C \in \Delta$ and hence $\AImatde(C) = \top$.
+
+		\item{Resolution.}
+			Suppose the last rule application is an instance of resolution. Then it is of the following form:
+			\begin{prooftree}
+				\AxiomCm{C_1: D \lor l}
+				\AxiomCm{C_2: E \lor \lnot l'}
+				\RightLabelm{\quad l\sigma = l'\sigma}
+				\BinaryInfCm{C: (D\lor E)\sigma}
+			\end{prooftree}
+			We introduce the following abbreviations:
+
+			\newcommand{\clauseOnePrime}{\AIclausede((C_1)_\Gamma)^*}
+			\newcommand{\clauseTwoPrime}{\AIclausede((C_2)_\Gamma)^*}
+
+			$ \clauseOnePrime = \AIclausede((C_1)_\Gamma) \setminus \{\lifboth{(l{\fromclausede})_\Gamma}\}$
+
+			$ \clauseTwoPrime = \AIclausede((C_2)_\Gamma)\setminus \{\lifboth{\lnot (l{\fromclausede'})_\Gamma}\}$
+
+			Note that $\AIclde(C) = \lifdeltanovar{ \clauseOnePrime\sigma} \tau \lor \lifdeltanovar{ \clauseTwoPrime\sigma} \tau$, where $\tau$ is defined as in the interpolant extraction procedure as
+			$\aiu ( \lifboth{ l\clde \sigma}, \lifboth{ l'\clde \sigma} )$.
+
+			Employing these, the induction hypothesis yields 
+			$\Gamma \entails \AImatrixde(C_1) \lor \clauseOnePrime \lor {(l{\fromclausede})_\Gamma}$
+			as well as
+			$\Gamma \entails \AImatrixde(C_2) \lor \clauseTwoPrime \lor {\lnot (l'{\fromclausede})_\Gamma}$.
+			By Lemma~\ref{lemma:no_colored_terms}, $\AImatrixde(C_i)$ and $\AIclde(C_i)$ for $i\in\{1,2\}$ do not contain $\Delta$-colored symbols.
+			Hence by Lemma~\ref{lemma:substitute_and_lift}, pulling the lifting inwards using Lemma~\ref{lemma:lift_logic_commute} and applying $\tau$, we obtain:
+
+			$\Gamma \stackrel{\markA}\entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{(l{\fromclausede})_\Gamma\sigma}\tau$
+
+			$\Gamma \stackrel{\markB}\entails \lifboth{\AImatrixde(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau \lor \lnot \lifboth{(l{\fromclausede'})_\Gamma\sigma}\tau$
+
+			We continue by a case distinction on the color of $l$:
+			\begin{enumerate}
+				\item Suppose that $l$ is $\Gamma$-colored. Then $\AImatde(C) = \lifboth{\AImatde(C_1)\sigma}\tau\spas\lor \lifboth{\AImatde(C_2)\sigma}\tau$.
+					As $l$ is $\Gamma$-colored, $(l{\fromclausede})_\Gamma = l\clde$ and
+					as $l\sigma = l'\sigma$, also $(l{\fromclausede'})_\Gamma = l'\clde$.
+					By Lemma~\ref{lemma:lifted_literal_equal}, $\lifboth{l{\fromclausede}\sigma}\tau = \lifboth{l{\fromclausede'}\sigma}\tau$. 
+					Hence we can perform a resolution step on \markA{} and \markB{} to arrive at
+					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau 
+					\lor \lifboth{\AImatrixde(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau$.
+					This is however by Lemma~\ref{lemma:lift_logic_commute} nothing else than $\Gamma \entails \AImatde(C) \lor \AIclde(C)$.
+
+				\item Suppose that $l$ is $\Delta$-colored. Then $\AImatde(C) = \lifboth{\AImatde(C_1)\sigma}\tau\spas\land \lifboth{\AImatde(C_2)\sigma}\tau$.
+					As $l$ and $l'$ are $\Delta$-colored, \markA{} and \markB{} reduce to
+					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau $ and
+					$\Gamma \entails \lifboth{\AImatrixde(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau $ respectively.
+					These however imply that 
+					$\Gamma \entails (\lifboth{\AImatrixde(C_1)\sigma}\tau \land  \lifboth{\AImatrixde(C_2)\sigma}\tau) \spas\lor\allowbreak \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau$,
+					which in turn is nothing else than $\Gamma \entails\nolinebreak \AImatde(C) \lor \AIclde(C)$.
+
+				\item Suppose that $l$ is grey. Then $\AImatde(C) = 
+					(\lnot {\lifboth{l'\fromclausede\sigma}}\tau \land \lifboth{\AImatde(C_1)\sigma}\tau) \spam\lor\allowbreak
+					(\lifboth{l\fromclausede\sigma}\tau \land \lifboth{\AImatde(C_2)\sigma}\tau)
+					$.
+
+					Let $M$ be a model of $\Gamma$. Suppose that $M \notentails \AIclde(C)$ as otherwise we are done. Hence $M \notentails \lifboth{\clauseOnePrime\sigma}\tau$ and $M \notentails \lifboth{\clauseTwoPrime\sigma}\tau$ and \markA{} and \markB{} reduce to 
+					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{l{\fromclausede}\sigma}\tau$ 
+					and 
+					$\Gamma \entails \lifboth{\AImatrixde(C_2)\sigma}\tau \lor \lifboth{l{\fromclausede'}\sigma}\tau$ respectively.
+					As by Lemma~\ref{lemma:lifted_literal_equal} $\lifboth{l{\fromclausede}\sigma}\tau = \lifboth{l{\fromclausede'}\sigma}\tau$, a case distinction on the truth value of $\lifboth{l{\fromclausede}\sigma}\tau$ in $M$ shows that $M\entails \AImatde(C)$.
+
+
+			\end{enumerate}
+
+
+
+		\item{Factorisation.}
+			Suppose the last rule application is an instance of factorisation. Then it is of the following form:
+			\begin{prooftree}
+				\AxiomCm{C_1: l \lor l' \lor D}
+				\RightLabelm{\quad \sigma = \mgu(l, l')}
+				\UnaryInfCm{C: (l \lor D)\sigma}
+			\end{prooftree}
+
+			\mytodo{ continue after literal equal lemma has been formalised }
+
+	\end{description}
+
 \end{proof}
+
 
 \label{sec:arrow_quantifier_block} 
 
