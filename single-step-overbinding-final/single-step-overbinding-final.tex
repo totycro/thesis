@@ -1,16 +1,16 @@
 \documentclass[,%fontsize=11pt,%
-	paper=a4,% 
 	%landscape,
 	%DIV8, % mehr text pro seite als defaultyyp
-	DIV10, 
+	%DIV10, 
 	%DIV=calc,%
-	twoside=false,%
-	liststotoc,
-	bibtotoc,
 	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
 	%titlepage,
 	numbers=noendperiod
-]{scrartcl}
+	oneside,openany
+	a4paper,
+	11pt,
+%]{scrartcl}
+]{memoir}
 
 \usepackage{lscape}
 \usepackage{stackengine}
@@ -66,40 +66,33 @@
 
 %\usepackage[doublespacing]{setspace}
 %\usepackage[onehalfspacing]{setspace}
-\usepackage[singlespacing]{setspace}
-\usepackage{tabularx}
-\usepackage{hyperref}
-\usepackage{comment}
-\usepackage{color}
-\usepackage[final]{listings} % sourcecode in document
-\usepackage{url}      % for urls
-\usepackage{multicol}
-\usepackage{float}
-\usepackage{caption}
-\usepackage{subfigure}
-\usepackage{amsmath}
-\usepackage{amssymb}
-
-\usepackage{graphicx}
-
-\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[singlespacing]{setspace}
+%\usepackage{tabularx}
+%\usepackage{hyperref}
+%\usepackage{comment}
+%\usepackage{color}
+%\usepackage[final]{listings} % sourcecode in document
+%\usepackage{url}      % for urls
+%\usepackage{multicol}
+%\usepackage{float}
+%\usepackage{caption}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%
+%\usepackage{graphicx}
+%
+%\usepackage[authoryear]{natbib} % \cite ; square|round etc.
 %\usepackage[numbers,square]{natbib}
 %\usepackage[square, authoryear]{natbib}
 %\usepackage[language=english]{biblatex}
 
 %\bibliographystyle{plain}
-\bibliographystyle{alpha}
+%\bibliographystyle{alpha}
 %\bibliographystyle{alphadin}
 %\bibliographystyle{dinat}
 %\bibliographystyle{chicago}
 %\bibliographystyle{plainnat}
 
-\bibdata{bib.bib}
-
-\renewcommand*{\partformat}{\partname\ \thepart\ -}
-\let\partheadmidvskip\
-
-\newcommand{\comp}{\ensuremath{\text{comp}}}
 % smaller url style
 \makeatletter
 \def\url@leostyle{%
@@ -121,9 +114,62 @@
 \usepackage{amsthm}
 
 
+\chapterstyle{madsen}
+
+% define page numbering styles
+\makepagestyle{numberCorner}
+\makeevenfoot{numberCorner}{\thepage}{}{}
+\makeoddfoot{numberCorner}{}{}{\thepage}
+
+\makepagestyle{numberCenter}
+%\makeevenfoot{numberCenter}{}{\thepage}{}
+%\makeoddfoot{numberCenter}{}{\thepage}{}
+%
+%\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
+%\makeoddhead{numberCenter}{\thesection }{}{\thechapter}
+\makeheadrule{numberCenter}{\textwidth}{1pt}
+
+\makeevenhead{numberCenter}{\thepage}{}{\leftmark}
+\makeoddhead{numberCenter}{\rightmark}{}{\thepage}
+
+
+\makeatletter
+\makepsmarks{numberCenter}{
+  \def\chaptermark##1{\markboth{%
+        \ifnum \value{secnumdepth} > -1
+          \if@mainmatter
+            \chaptername\ \thechapter\ --- %
+          \fi
+        \fi
+        ##1}{}}
+  \def\sectionmark##1{\markright{%
+        \ifnum \value{secnumdepth} > 0
+          \thesection. \ %
+        \fi
+        ##1}}
+}
+\makeatother
+\newcommand{\mysetpagestyle}{ 
+  %\pagestyle{numberCorner}
+  \pagestyle{numberCenter}
+}
+\mysetpagestyle
+
+
+
+
+
 \usepackage{refcheck}
 
+\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
+\setlrmargins{*}{*}{1.2}
+\setulmargins{*}{*}{1.4}
+\checkandfixthelayout[nearest]
+
+
+
 \begin{document}
+\chapter{Interpolant extraction from resolution proofs in one phase} 
 
 { \color{white} \tiny
 \begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
@@ -147,7 +193,7 @@
 
 }
 
-\part{Interpolant extraction from resolution proofs in one phase} 
+
 
 While the previous chapter demonstrates that it is possible to extract propositional interpolants and lift them from the colored symbols later in order to obtain a proper interpolant, we now present a novel approach, which only operates with grey intermediary interpolants.
 This is established by lifting any term which is added to the interpolant. 
@@ -185,7 +231,7 @@ the quantifier block and the matrix of the formula are calculated separately in 
 
 $\AImat$ is inspired by the propositional interpolants $\PI$ from Definition \ref{def:PI}.
 Its difference lies in the fact that the lifting occurs in every step of the extraction.
-This however necessiates applying these liftings to the clauses of the resolution refutation as well.
+This however necessitates applying these liftings to the clauses of the resolution refutation as well.
 For a clause $C$ of the resolution refutation, we will denote the clause with the respective liftings applied by $\AIcl(C)$ (a formal definition will be given below), and for a term $t$ at position $p$ in $C$, we denote $\AIcl(C)\at{p}$ by $t\cl$.
 
 Now we can define preliminary versions of $\AImatpre$ and $\AIclpre$:
@@ -261,7 +307,7 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 		\BinaryInfCm{ \lnot Q(x_{g(c)}) \land R(y_c) \mid  \square }
 	\end{prooftree}
 
-	By quantifying $y_c$ existentially and $x_{g(c)}$ universally\footnote{The procedure for calculating the quantifer block is defined in section \ref{sec:arrow_quantifier_block}}, we obtain an interpolant for $\Gamma \cup \Delta$:
+	By quantifying $y_c$ existentially and $x_{g(c)}$ universally\footnote{The procedure for calculating the quantifier block is defined in section \ref{sec:arrow_quantifier_block}}, we obtain an interpolant for $\Gamma \cup \Delta$:
 	$\exists y_c \forall x_{g(c)} (\lnot Q(x_{g_c}) \land R(y_c))$.
 	Note however that $\lifboth{Q(g(c))} = Q(x_{g(c)})$, but $\AImat(Q(g(c))) = Q(x_{g(u)})$.
 	This example shows that this circumstance is not necessarily an obstacle for the correctness of this algorithm.
@@ -367,8 +413,9 @@ for some position $p$, we define:
 
 \begin{defi}[$\AImat$ and $\AIcl$]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	\defiemph{$\AImat(\pi)$} is defined to be $\AImat(\square)$, where $\square$ is the empty box derived in $\pi$.
 
-	For a clause $C$ in $\pi$, \defiemph{$\AImat(C)$} and \defiemph{$\AIcl(C)$} are defined as follows:
+	For a clause $C$ in $\pi$, \defiemph{$\AImat(C)$} and \defiemph{$\AIcl(C)$} are defined inductively as follows:
 	\begin{itemize}
 		\item[Base case.]
 			If $C \in \Gamma$, $\AImat(C) \defeq \bot$.
@@ -412,7 +459,28 @@ $\AImat(C)$ and $\AIcl(C)$ as follows:
 	\end{itemize}
 \end{defi}
 
+\begin{defi}
+	$\AImatde(C)$ ($\AIclde(C)$) for a clause $C$ is defined as $\AImat(C)$ ($\AIcl(C)$) with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
+\end{defi}
+
+
+\begin{lemma}
+	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
+	Then for clauses $C$ in $\pi$,
+	$\Gamma\entails\nolinebreak \AImatde(C) \lor\nolinebreak \AIclde(C)$.
+\end{lemma}
+\begin{proof}
+	We proceed by induction of the strengthening
+\end{proof}
 
 \label{sec:arrow_quantifier_block} 
+
+\begin{thm}
+	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
+	Then $\AImat( \pi )$ is an interpolant.
+\end{thm}
+\begin{proof}
+	\todo[inline]{This needs to many things I don't yet know how to make precise, so let's start with $\Gamma \entails \dots$}
+\end{proof}
 
 \end{document}
