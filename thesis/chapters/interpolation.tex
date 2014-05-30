@@ -21,7 +21,7 @@ For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$
 A substitution is a mapping of variables to terms. It is denoted by $\phi\subst{x/t}$, where $\phi$ is a formula or term where each occurrence of the variable $x$ is replaced by the term $t$.
 A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
 
-An abstraction on the other hand is a mapping of terms to variables. It is denoted by $\phi\abstractionOp{t/x}$, where $\phi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
+An \defiemph{abstraction} on the other hand is a mapping of terms to variables. It is denoted by $\phi\abstractionOp{t/x}$, where $\phi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
 
 A term $s$ is a \defiemph{specialisation} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
 If $s$ is a specialisation of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that abstraction and specialisation are reflexive. 

@@ -166,7 +166,6 @@
 \checkandfixthelayout[nearest]
 
 
-
 \begin{document}
 
 
@@ -392,7 +391,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 	For resolved literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
 	and $\lifboth{l\cl\sigma} = P(s_1, \dots, s_n)$ and $\lifboth{l'\cl\sigma} = P(t_1, \dots, t_n)$, we define:
 	\[
-		\aiu (\lifboth{l\fromclause\sigma}, \lifboth{l'\fromclause\sigma}) \defeq \bigcup_{i=1}^n \aiu(s_i, t_i)
+		\aiu (P(s_1, \dots, s_n), P(t_1, \dots, t_n)) \defeq \bigcup_{i=1}^n \aiu(s_i, t_i)
 	\]
 	For terms $s$ and $t$ where
 	$s = \lifboth{l\fromclause\sigma}\at{p}$
@@ -403,10 +402,10 @@ we define a function on resolved literals calculating a substitution, which ensu
 		\aiu (s, t) \defeq
 		\begin{cases}
 			\bigcup_{i=1}^n \aiu(s_i, t_i) & \text{if $s$ is grey and $s=f_s(s_1, \dots, s_n)$, $t = f_{t}(t_1,\dots, t_n)$\footnotemark} \\
-			\{z_{s'} \mapsto z_{\lifboth{s\sigma}}, z_{t'} \mapsto z_{\lifboth{s\sigma}}\} &
+			\{z_{s'} \mapsto z_r, z_{t'} \mapsto z_r\} &
 			%\parbox[t]{.70\textwidth}{
 			\text{if $s$ is a lifting variable $z_{s'}$, $t = z_{t'}$,
-			and $\lifboth{s\sigma} = \lifboth{t\sigma} = z_{\lifboth{s\sigma}}$}
+			and $r = \lifboth{l\sigma}\at{p}$} 
 			%}
 			%\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}
 			\qedhere
@@ -505,8 +504,56 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{proof}
 
 \begin{lemma}
-	Let $l$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
+	Let $\lambda$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
+	Then $\AIcl(C)$ contains a literal $\lambda\cl$ such that $\lambda\cl \simgeq \lifboth{\lambda}$, where $\simgeq$ is defined as follows:
+	\[
+		\varphi \simgeq \varphi' \semiff
+		\begin{cases}
+			P = P' \land \bigwedge_{i=1}^n s_i \simgeq s'_i &  \text{ if $\varphi = P(s_1, \dots, s_n)$ and $\varphi' = P'(s'_1, \dots, s'_n)$} \\
+			f = f' \land \bigwedge_{i=1}^n s_i \simgeq s'_i &  \text{ if $\varphi = f(s_1, \dots, s_n)$ and $\varphi' = f'(s'_1, \dots, s'_n)$} \\
+			x = x' & \text{ if $\varphi, \varphi'$ are non-lifting variables, $\varphi = x$ and $\varphi' = x'$} \\
+			s' \text{ is a specialisation of } s  & \text{ if $\varphi, \varphi'$ are lifting variables, $\varphi = z_s$ and $\varphi' = z_{s'}$} \\
+		\end{cases}
+	\]
 \end{lemma}
+\begin{proof}
+	We proceed by induction on the resolution refutation.
+	\begin{description}
+		\item{Base case.}
+			If for a clause $C$ either $C\in \Gamma$ or $C \in \Delta$ holds, then $\AIcl(C) = \lifboth(C)$.
+			Therefore for every literal $l$ in $C$, there exists a literal $l\cl$ in $\AIcl(C)$ such that $\lifboth{l} = l\cl$, which implies $l\cl \simgeq \lifboth{l}$.
+
+		\item{Resolution.}
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
+			then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+			Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$ or $\lambda \in C_2$. Without loss of generality let $\lambda \in C_1$.
+			By the inductilon hypothesis, there is a literal in $\AIcl(C_1)$ such that $\lambda\cl \simgeq \lifboth{\lambda\cl}$.
+			As $\lambda \neq l$, by the definition of $\AIcl$, $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
+			It remains to show that $\lifboth{l\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
+
+		\item{Factorisation.}
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+			The rest of this proof resembles the case of resolution:
+			Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$.
+			By the induction hypothesis, there is a literal in $\AIcl(C_1)$ such that $\lambda\cl \simgeq \lifboth{\lambda}$.
+			As $\lambda \neq l$, by the definition of $\AIcl$, $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
+			It remains to show that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
+
+	\end{description}
+
+	\mytodo{ ICI: it seems that we need something special, move this to the resolution case and claim at factorisation that something similar goes through}
+
+We perform an induction on the structure of $\lifboth{t}$ for a term $t$ to show that $\lifboth{t'} \simgeq t$ implies that $\lifboth{t'\sigma}\tau \simgeq \lifboth{t\sigma}$.
+	\begin{itemize}
+		\item{ Suppose $t$ is a non-lifting variable. }
+			Then $\lifboth{t} = t$, which in conjunction with $\lifboth{t'} \simgeq t$ implies that $t'=t$.
+			But then $\lifboth{t'\sigma} = \lifboth{t\sigma}$.
+			If $\tau$ is trivial on $\lifboth{t'\sigma}$, we are done as then $\lifboth{t'\sigma}\tau = \lifboth{t\sigma}$.
+			Hence assume that $\lifboth{t'\sigma}\tau \neq \lifboth{t'\sigma}$.
+			By the definition of $\aiu$, this entails that $\lifboth{t'\sigma}\tau = z_s$ for some term $s$ such that $s = ????$
+	\end{itemize}
+
+\end{proof}
 
 \begin{lemma}
 	\label{lemma:lifted_literal_equal}
