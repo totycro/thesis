@@ -152,8 +152,8 @@
 While the previous chapter demonstrates that it is possible to extract propositional interpolants and lift them from the colored symbols later in order to obtain a proper interpolant, we now present a novel approach, which only operates with grey intermediary interpolants.
 This is established by lifting any term which is added to the interpolant. 
 
-By its nature, this approach requires an alternate strategy as a commutation of substitution and lifting is no longer possible if lifting variables are present.
-In order to make this notion more precise, recall the corresponding lemma from the previous chapter:
+By its nature, this approach requires an alternate strategy than the proof of the extraction in two phases as a commutation of substitution and lifting is no longer possible if lifting variables are present.
+Let us recall the corresponding lemma from the previous chapter:
 \lemmaCommutLiftSubst*
 Consider the following illustration of a problem of the notion of applying this lemma to terms containing lifting variables:
 
@@ -168,9 +168,9 @@ Hence $z_{f(x)}\sigma = z_{f(x)}$ and therefore $\lifboth{z_{f(x)}\sigma} = \lif
 So $\lifboth{z_{f(x)}\sigma} \neq \lifboth{z_{f(x)}}\sigma'$.
 
 We see here that there are circumstances under which in order to commute lifting and substitution,
-the altered substitution $\sigma'$ is required to conform to the equation
+the substitution $\sigma'$ is required to conform to the equation
 $z_{f(x)}\sigma' =\nolinebreak z_{f(a)}$, 
-whereas in others, the definition must be that
+whereas in others, it must hold that
 $z_{f(x)}\sigma' = z_{f(x)}$.
 \end{exa}
 
@@ -308,12 +308,13 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 
 	\end{prooftree}
 
-	Note again that here,
+	Note again that here, we have that
 	%\[
 	$
 	\lifboth{\lnot Q(g(c))} = \lnot Q(x_{g(c)}) \spam\neq \AIclpre(\lnot Q(g(c))) = \lnot Q(x_{g(u)})
 	$
 	%\]
+	%as well as a similar discrepancy for the other clause $Q(x_{g(c)})$.
 	and
 	%\[
 	$
@@ -323,7 +324,8 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 	However in this instance, it is not possible to find quantifiers for the free variables of $\AImatpre(\square)$ such that by binding them, an interpolant is produced.
 	For the naive approach, namely to use $\exists y_c \forall x_{g(v)} \forall x_{g(u)}$ as prefix, it holds that 
 	$\Gamma \notentails \exists y_c \forall x_{g(v)} \forall x_{g(u)} ((Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c)))$.
-	This is possible as intuitively, resolution deductions are valid by virtue of the resolved literals being equal, which the interpolation extraction procedure in some sense exploits. 
+	This failure is possible as intuitively, resolution deductions are valid by virtue of the resolved literals being equal.
+	The interpolant extraction procedure exploits this property not directly on the clauses but on the lifted clause, i.e.\ on $\AIcl(C)$ for a clause $C$.
 	Note that by ensuring that for resolved literals $l$ and $l'$, it holds that $l\cl = l'\cl$, we can obtain an interpolant, for instance: 
 	$
 	\exists y_c \forall x^\ast ((Q(x^\ast) \land R(y_c)) \spam\lor (\lnot Q(x^\ast) \land P(y_c)))
@@ -331,7 +333,7 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 \end{exa}
 
 In order to avoid the pitfall shown in Example \ref{exa:2b} and to generalise the indicated solution,
-we define a function on resolved literals calculating a substitution, which ensures that the resolved literals are equal.
+we define a function on resolved literals calculating a substitution, which ensures that the literals in the lifted clause, which correspond to the resolved literals, are equal.
 
 \begin{defi}[$\aiu$] 
 	For resolve literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
