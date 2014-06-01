@@ -348,9 +348,12 @@ positioning,fit,calc,decorations.text,shadows%
 
 
 % force no overlong lines:
-%\tolerance=1
+%\tolerance=1 % tolerance for how badly spaced lines are allowed, less means "better" lines
+\tolerance=500 %  need more tolerance for equations
 %\emergencystretch=\maxdimen
-%\hyphenpenalty=10000
+%\emergencystretch=200pt
+%\setlength{\emergencystretch}{3em}
+%\hyphenpenalty=10000 % forces no hyphenation
 %\hbadness=10000
 
 
