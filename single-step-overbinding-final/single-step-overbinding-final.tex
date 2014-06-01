@@ -504,6 +504,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{proof}
 
 \begin{lemma}
+	\label{lemma:literals_clause_simgeq}
 	Let $\lambda$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
 	Then $\AIcl(C)$ contains a literal $\lambda\cl$ such that $\lambda\cl \simgeq \lifboth{\lambda}$, where $\simgeq$ is defined as follows:
 	\[
@@ -581,7 +582,20 @@ we define a function on resolved literals calculating a substitution, which ensu
 	Furthermore let $\tau =\nolinebreak \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
 	Then $\lifboth{l\cl\sigma}\tau = \lifboth{l\cl'\sigma}\tau$.
 \end{lemma}
-	\mytodo{check if thought to outsource in previous lemma has anything to do with this}
+\mytodo{check if thought to outsource in previous lemma has anything to do with this}
+\begin{proof}
+	As 
+	$l\sigma = l'\sigma$, it also holds that 
+	$\lifboth{l\sigma} = \lifboth{l'\sigma}$.
+	By Lemma~\ref{lemma:literals_clause_simgeq}, we obtain that 
+	$l\cl \simgeq \lifboth{l}$ and
+	$l'\cl \simgeq \lifboth{l'}$. 
+	Furthermore note that the $\simgeq$-relation guarantees that pairs of predicates and terms in this relatiion are equal up to the index of their lifting variables.
+
+
+	We proceed by induction on the structure of 
+
+\end{proof}
 
 
 \begin{lemma}
