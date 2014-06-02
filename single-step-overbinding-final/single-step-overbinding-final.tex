@@ -751,4 +751,37 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 \label{sec:arrow_quantifier_block} 
 
+\chapter{outline of arrow part}
+
+\begin{defi}
+	arrows 1: if $x$ occurs in $y\sigma$, add arrow from every \emph{grey} occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$.
+
+	arrows 2: if a maximal colored term $t$ occurs grey in $x\sigma$, add arrow from every grey occurrence of $t$ in (?$C$ or $C_i$?) to every \emph{colored} occurrence of $x$ in $C_i$.
+
+	arrows 3: if a maximal $\Phi$-colored term $t$ occurs inside a maximal $\Psi$-colored term $s$ in $x\sigma$, add an arrow from every grey occurrence of $t$ in (?$C$ or $C_i$?) to every occurrence of $x$ in $C_i$.
+\end{defi}
+
+\begin{lemma}
+	If in $\AImatde(C) \lor \AIclde(C)$ a $\Gamma$-colored term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s \apath t\occ{x_s}$.
+\end{lemma}
+\begin{proof}
+	\begin{description}
+		\item{} Suppose term containing max colored term which is $\Delta$-term is introduced into $\Gamma$-colored term.
+
+			Then colored $u$ in $C_i$ s.t. $\delta_i$ in $u\sigma$.
+			Hence by arrow 2, arrow from every grey $\delta_i$ to every colored $u$.
+			\mytodo{as below, need existence}
+
+
+		\item{} Suppose multicolored $\Gamma$-term introduced.
+
+			Then $u$ in $C_i$ s.t.\ $\gamma\occ{\delta_i}$ in $u\sigma$.
+			Hence by arrow 3, arrow from every grey $\delta_i$ to every $u$.
+			\mytodo{need make sure that grey $\delta_i$ exists (exaclty $\delta_i$? what if lifted)}
+
+	\end{description}
+
+\end{proof}
+
+
 \end{document}
