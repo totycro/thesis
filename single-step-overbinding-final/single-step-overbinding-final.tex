@@ -727,14 +727,28 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{proof}
 
 
-\label{sec:arrow_quantifier_block} 
+\begin{lemma}
+	Let $\overline x$ be the $\Delta$-lifting variables and $\overline y$ be the $\Gamma$-lifting variables of $\AI(C)$.
+	Let $\overline {x'}$ be the $\Delta$-lifting vairables of $\AIde(C)$.
+
+	$\Gamma \entails \overline{\forall x} \AIde(C)$ implies
+	$\Gamma \entails \overline{\forall x | \exists y} \AI(C)$.
+\end{lemma}
+\begin{proof}
+	wie auf zettel
+
+\end{proof}
+
 
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
 	Then $\AImat( \pi )$ is an interpolant.
 \end{thm}
 \begin{proof}
+
 	\todo[inline]{This needs too many things I don't yet know how to make precise, so let's start with $\Gamma \entails \dots$}
 \end{proof}
+
+\label{sec:arrow_quantifier_block} 
 
 \end{document}
