@@ -460,9 +460,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 			\end{enumerate}
 
 		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then:
-
-			$\tau \defeq \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$ and define 
+			$\AImat(C)$ and $\AIcl(C)$ as follows:
 
 			$\AImat(C) \defeq{} \lifboth{\AImat(C_1)\sigma}\tau$
 
@@ -504,11 +503,22 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{proof}
 
 \begin{lemma}
-	possibly outsource something
+	Let $l$ and $l'$ be resolved or factorised literals in a resolution derivation step creating a clause $C$ and 
+	$\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+	For any substitution $(z_s \mapsto z_t) \in \tau$, 
+
+
+
+
+	\mytodo{check which statment we actually need (resolved literal, clause?)}
+
+	make sure that it works for positions in the resolved literals as well as in the clause
+
 
 \end{lemma}
 
 \begin{lemma}
+	\largered{ either reduce to ``equal up to index of lifting variables'' or use elaborate version as given below with additional lemma about how every $x_s$ refers to the same term PLUS variable renaming convention } 
 	\label{lemma:literals_clause_simgeq}
 	Let $\lambda$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
 	Then $\AIcl(C)$ contains a literal $\lambda\cl$ such that $\lambda\cl \simgeq \lifboth{\lambda}$, where $\simgeq$ is defined as follows:
@@ -521,7 +531,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 			s' \text{ is a specialisation of } s  & \text{ if $\varphi, \varphi'$ are lifting variables, $\varphi = z_s$ and $\varphi' = z_{s'}$} \\
 		\end{cases}
 	\]
-	\todo[inline]{introduce definition for ``characterising the relation between $C$ and $\AIcl(C)$}
+	For resolved or factorised literals $\lambda$ we furthermore have that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
+	\todo[inline]{introduce definition for characterising the relation between $C$ and $\AIcl(C)$}
 \end{lemma}
 \begin{proof}
 	We proceed by induction on the resolution refutation.
@@ -533,10 +544,18 @@ we define a function on resolved literals calculating a substitution, which ensu
 		\item{Resolution.}
 			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
 			then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
-			Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$ or $\lambda \in C_2$. Without loss of generality let $\lambda \in C_1$.
-			By the induction hypothesis, there is a literal in $\AIcl(C_1)$ such that $\lambda\cl \simgeq \lifboth{\lambda\cl}$.
-			As $\lambda \neq l$, by the definition of $\AIcl$, $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
-			It remains to show that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
+			Let $\lambda$ be a literal in $C_1$ or $C_2$. 
+			Note that every literal in $C$ is of the form $\lambda\sigma$.
+			By the induction hypothesis, there is a literal in $\AIcl(C_1)$ or $\AIcl(C_2)$ respectively such that $\lambda\cl \simgeq \lifboth{\lambda\cl}$.
+			If $\lambda \not\in\{l,l'\}$, then $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
+			Hence in any case, it remains to show that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$. 
+
+
+			%Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$ or $\lambda \in C_2$. Without loss of generality let $\lambda \in C_1$.
+			%By the induction hypothesis, there is a literal in $\AIcl(C_1)$ such that $\lambda\cl \simgeq \lifboth{\lambda\cl}$.
+
+			%As $\lambda \neq l$, by the definition of $\AIcl$, $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
+			%It remains to show that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
 
 			We perform an induction on the structure of $\lambda\cl$ and $\lambda$ 
 			by letting $p$ be the position of the current term in the induction and $t\cl = \lambda\cl\at{p}$ as well as $t=\lambda\at{p}$.
@@ -545,7 +564,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 					Suppose that $t$ is a non-lifting variable.
 					As by the induction hypothesis $\lifboth{t\cl} \simgeq t$, $t\cl$ is a non-lifting variable as well and $t = t\cl$.
 					But then $\lifboth{t\cl\sigma} = \lifboth{t\sigma}$.
-					If $\tau$ is trivial on $\lifboth{t\cl\sigma}$, we are done as then $\lifboth{t\cl\sigma}\tau = \lifboth{t\sigma}$.
+					If $\tau$ is trivial on $\lifboth{t\cl\sigma}$, we are done as then $\lifboth{t\cl\sigma}\tau = \lifboth{t\sigma}$, so assume that it is not.
+
 					But by the definition of $\aiu$, the substitutions in $\tau$ only update lifting variables to correspond to the terms in the clause of the actual resolution derivation.
 					More formally, $\lifboth{t\cl\sigma}\tau = z_s$ for some term $s$ implies that $\lifboth{\lambda\sigma}\at{p} = z_s$, but then $z_s = t$.
 					\todo[inline]{outsource this thought to lemma after definition of $\aiu$ in case needed elsewhere}
@@ -556,6 +576,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 					$\lifboth{t}$ is a specialisation of $t\cl$.
 					As lifting variables are not affected by the unifications occurring in resolution derivations, we only need to consider modifications by means of $\tau$. 
 					But as we have seen in the previous case, if $\tau$ substitutes $\lifboth{t\cl\sigma}$, then it does so by $t$.
+					\todo[inline]{lemma}
 					Hence we obtain that $\lifboth{t\cl\sigma}\tau \simgeq \lifboth{t\sigma}$.
 
 				\item
@@ -570,12 +591,13 @@ we define a function on resolved literals calculating a substitution, which ensu
 			\end{itemize}
 
 		\item{Factorisation.}
-			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
-			The rest of this proof resembles the case of resolution:
-			Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$.
-			By the induction hypothesis, there is a literal in $\AIcl(C_1)$ such that $\lambda\cl \simgeq \lifboth{\lambda}$.
-			As $\lambda \neq l$, by the definition of $\AIcl$, $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
-			A similar induction argument as for the case of resolution shows that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
+			If the clause $C$ is the result of a factorisation, then we can argue analoguously as for resolution.
+			%If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+			%The rest of this proof resembles the case of resolution:
+			%Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$.
+			%By the induction hypothesis, there is a literal in $\AIcl(C_1)$ such that $\lambda\cl \simgeq \lifboth{\lambda}$.
+			%As $\lambda \neq l$, by the definition of $\AIcl$, $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
+			%A similar induction argument as for the case of resolution shows that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
 			\qedhere
 	\end{description}
 
@@ -587,20 +609,17 @@ we define a function on resolved literals calculating a substitution, which ensu
 	Furthermore let $\tau =\nolinebreak \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
 	Then $\lifboth{l\cl\sigma}\tau = \lifboth{l\cl'\sigma}\tau$.
 \end{lemma}
-\mytodo{check if thought to outsource in previous lemma has anything to do with this}
 \begin{proof}
 	As 
 	$l\sigma = l'\sigma$, it also holds that 
 	$\lifboth{l\sigma} = \lifboth{l'\sigma}$.
 	By Lemma~\ref{lemma:literals_clause_simgeq}, we obtain that 
-	$l\cl \simgeq \lifboth{l}$ and
-	$l'\cl \simgeq \lifboth{l'}$. 
+	$\lifboth{l\cl\sigma}\tau \simgeq \lifboth{l\sigma}$ and
+	$\lifboth{l'\cl\sigma}\tau \simgeq \lifboth{l'\sigma}$. 
 	Furthermore note that the $\simgeq$-relation guarantees that pairs of predicates and terms in this relation are equal up to the index of their lifting variables.
-	Hence  NOTHING
-
-
-	We proceed by induction on the structure of 
-
+	Hence it only remains to show that the lifting variables of $\lifboth{l\cl\sigma}\tau$ and $\lifboth{l'\cl\sigma}\tau$ match.
+	But by the definition of $\aiu$, $\tau$ substitutes any lifting variable at position $p$ of $\lifboth{l\cl\sigma}$ and $\lifboth{l'\cl\sigma}$ by the lifting variable $\lifboth{l\sigma}\at{p}$, 
+	thus making them equal.
 \end{proof}
 
 
@@ -630,9 +649,9 @@ we define a function on resolved literals calculating a substitution, which ensu
 			\newcommand{\clauseOnePrime}{\AIclausede((C_1)_\Gamma)^*}
 			\newcommand{\clauseTwoPrime}{\AIclausede((C_2)_\Gamma)^*}
 
-			$ \clauseOnePrime = \AIclausede((C_1)_\Gamma) \setminus \{\lifboth{(l{\fromclausede})_\Gamma}\}$
+			$ \clauseOnePrime = \AIclausede((C_1)_\Gamma) \setminus \{{(l{\fromclausede})_\Gamma}\}$
 
-			$ \clauseTwoPrime = \AIclausede((C_2)_\Gamma)\setminus \{\lifboth{\lnot (l{\fromclausede'})_\Gamma}\}$
+			$ \clauseTwoPrime = \AIclausede((C_2)_\Gamma)\setminus \{{\lnot (l{\fromclausede'})_\Gamma}\}$
 
 			Note that $\AIclde(C) = \lifdeltanovar{ \clauseOnePrime\sigma} \tau \lor \lifdeltanovar{ \clauseTwoPrime\sigma} \tau$, where $\tau$ is defined as in the interpolant extraction procedure as
 			$\aiu ( \lifboth{ l\clde \sigma}, \lifboth{ l'\clde \sigma} )$.
@@ -691,7 +710,17 @@ we define a function on resolved literals calculating a substitution, which ensu
 				\UnaryInfCm{C: (l \lor D)\sigma}
 			\end{prooftree}
 
-			\mytodo{ continue after literal equal lemma has been formalised }
+			We introduce the abbreviation $\AIclde( (C_1)_\Gamma)^* \defeq \AIclde( (C_1)_\Gamma) \setminus \{ (l\cl)_\Gamma , (l'\cl)_\Gamma \}$ and express the induction hypothesis as follows:
+			$\Gamma \entails \AImatde(C_1) \lor \AIclde( (C_1)_\Gamma)^* \lor (l\cl)_\Gamma \lor (l'\cl)_\Gamma $.
+			By Lemma~\ref{lemma:no_colored_terms}, Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lift_logic_commute} and after applying $\tau$ to the induction hypothesis, we obtain that 
+			$\Gamma \entails \lifboth{\AImatde(C_1)\sigma}\tau \lor \lifboth{\AIclde( (C_1)_\Gamma)^*\sigma}\tau \lor \lifboth{(l\cl)_\Gamma \sigma}\tau \lor \lifboth{(l'\cl)_\Gamma\sigma}\tau $.
+
+			However by Lemma~\ref{lemma:lifted_literal_equal},
+			$\lifboth{(l\cl)_\Gamma\sigma}\tau = 
+			\lifboth{(l'\cl)_\Gamma\sigma}\tau$, hence we can perform a factorisation step to arrive at 
+			$\Gamma \entails \lifboth{\AImatde(C_1)\sigma}\tau \lor \lifboth{\AIclde( (C_1)_\Gamma)^*\sigma}\tau \lor \lifboth{(l\cl)_\Gamma \sigma}\tau$.
+			This however is nothing else than $\Gamma\entails \AImatde(C) \lor \AIclde(C)$.
+			\qedhere
 
 	\end{description}
 
@@ -705,7 +734,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 	Then $\AImat( \pi )$ is an interpolant.
 \end{thm}
 \begin{proof}
-	\todo[inline]{This needs to many things I don't yet know how to make precise, so let's start with $\Gamma \entails \dots$}
+	\todo[inline]{This needs too many things I don't yet know how to make precise, so let's start with $\Gamma \entails \dots$}
 \end{proof}
 
 \end{document}
