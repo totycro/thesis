@@ -26,8 +26,8 @@ bib:
 	bibtex tmp
 
 pdf:
-	(make pdf1now ; make pdf1now) >/dev/null & # because of arrows
-	#(make pdf1now ) >/dev/null & 
+	#(make pdf1now ; make pdf1now) >/dev/null & # because of arrows
+	(make pdf1now ) >/dev/null & 
 
 pdf1now:
 	pdflatex -file-line-error -jobname tmp ${TEXFILE} | tee /tmp/pdflatexer 

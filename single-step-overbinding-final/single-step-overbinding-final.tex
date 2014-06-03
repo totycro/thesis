@@ -160,10 +160,10 @@
 
 \usepackage{refcheck}
 
-\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
-\setlrmargins{*}{*}{1.2}
-\setulmargins{*}{*}{1.4}
-\checkandfixthelayout[nearest]
+%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
+%\setlrmargins{*}{*}{1.2}
+%\setulmargins{*}{*}{1.4}
+%\checkandfixthelayout[nearest]
 
 
 \begin{document}
@@ -729,14 +729,18 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 \begin{lemma}
 	Let $\overline x$ be the $\Delta$-lifting variables and $\overline y$ be the $\Gamma$-lifting variables of $\AI(C)$.
-	Let $\overline {x'}$ be the $\Delta$-lifting vairables of $\AIde(C)$.
+	Let $\overline {x'}$ be the $\Delta$-lifting variables of $\AIde(C)$.
 
 	$\Gamma \entails \overline{\forall x} \AIde(C)$ implies
 	$\Gamma \entails \overline{\forall x | \exists y} \AI(C)$.
 \end{lemma}
 \begin{proof}
-	wie auf zettel
+	\cbstart
+	(sketch)
+	We need to show that every $y$ in $\AI$ corresponds to the same term in $\AIde$ and that every $x$ in $\AIde$ corresponds to the same $x'$ in $\AI$
 
+	Then we can insert the terms for $y$ in $\AI$ and they will be equal to $\AIde$. Then as there are less restrictions on the $\AIde$ than there are on the $\AI$, we are done.
+	\cbend
 \end{proof}
 
 
@@ -753,24 +757,70 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 \chapter{outline of arrow part}
 
-\begin{defi}
-	arrows 1: if $x$ occurs in $y\sigma$, add arrow from every \emph{grey} occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$.
 
-	arrows 2: if a maximal colored term $t$ occurs grey in $x\sigma$, add arrow from every grey occurrence of $t$ in (?$C$ or $C_i$?) to every \emph{colored} occurrence of $x$ in $C_i$.
+\subsection{Variable occurrences}
+Need for var $x$ the set of colored occs and grey occs in initial clauses.
+lift clauses as usual s.t. to not see any of the colored structure, hence remember only in which max colored term the var is.
 
-	arrows 3: if a maximal $\Phi$-colored term $t$ occurs inside a maximal $\Psi$-colored term $s$ in $x\sigma$, add an arrow from every grey occurrence of $t$ in (?$C$ or $C_i$?) to every occurrence of $x$ in $C_i$.
+for resolution/factorisation, check unifier:
+\begin{compactitem}
+	\item
+		if $x$ occurs grey in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col to col and grey to grey
+	\item
+		if $x$ occurs colored in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col and grey to col
+\end{compactitem}
+
+
+\begin{defi}~ 
+
+	arrows 1: if $x$ occurs in $y\sigma$, add arrow from every \emph{grey} occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$. \mytodo{NOT YET NEEDED anywhere, pretend it does not exist}
+
+	arrows 2: if a maximal $\Phi$-colored term $t$ occurs grey in $x\sigma$, add arrow from every grey occurrence of $t$ in $C$ to every \emph{$\Psi$-colored} occurrence of $x$ in $C_i$.
+
+	arrows 3: if a maximal $\Phi$-colored term $t$ occurs inside a maximal $\Psi$-colored term $s$ in $x\sigma$, add an arrow from every grey occurrence of $t$ in $C$ to every occurrence of $x$ in $C_i$.
 \end{defi}
 
 \begin{lemma}
 	If in $\AImatde(C) \lor \AIclde(C)$ a $\Gamma$-colored term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s \apath t\occ{x_s}$.
 \end{lemma}
 \begin{proof}
+	~
 	\begin{description}
 		\item{} Suppose term containing max colored term which is $\Delta$-term is introduced into $\Gamma$-colored term.
 
-			Then colored $u$ in $C_i$ s.t. $\delta_i$ in $u\sigma$.
+			Then $\Gamma$-colored occ of $u$ in $C_i$ s.t.\ $\delta_i$ grey in $u\sigma$ ($\delta_i$ is max col term).
 			Hence by arrow 2, arrow from every grey $\delta_i$ to every colored $u$.
 			\mytodo{as below, need existence}
+
+			existence 1:
+			If $u$ occurs grey in $C_i$, then there, $\delta_i$ occurs grey in $C$ (this is the necessary color change case $x, f(x)$) and hence the arrow actually exists.
+
+			existence 2:
+			Otherwise $u$ only occurs colored in $C_i$.
+			As it is affected by $\sigma$, it must occur in the resolved literal, say at $l\at{\bhat u}$. $l'\at{\bhat u}$ is an abstraction of $u\sigma$ different from $u$.
+			If $l'\at{\bhat u}$ contains a $\Delta$-term $\Ra$ ind hyp. 
+			Otw induction, $\Delta$-term must come at some point.
+
+			existence 2 proper:
+			\begin{quote}
+				need to show that $\delta_i$ occurs grey given the assumptions.
+
+				unification algo produces a chain: $u\mapsto t$, $v \mapsto s$, \dots
+
+				$u$ only occurs colored in $C_i$.
+				Hence also at $l\at{\bhat u}$. 
+				Therefore $l'\at{\bhat u}$ is a colored occurrence as well.
+
+				chain of colored variables:
+				
+				if var occurs at some point grey s.t.\ $\Delta$-term is still complete, then we are done.
+
+				if var occurs at some point at position we are unifying with, then we are done by the induction hypothesis.
+
+				\mytodo{ICI; check example}
+
+
+			\end{quote}
 
 
 		\item{} Suppose multicolored $\Gamma$-term introduced.
@@ -778,6 +828,14 @@ we define a function on resolved literals calculating a substitution, which ensu
 			Then $u$ in $C_i$ s.t.\ $\gamma\occ{\delta_i}$ in $u\sigma$.
 			Hence by arrow 3, arrow from every grey $\delta_i$ to every $u$.
 			\mytodo{need make sure that grey $\delta_i$ exists (exaclty $\delta_i$? what if lifted)}
+
+			existence:
+			$l'\at{\bhat u}$ is an abstraction of $u\sigma$ different from $u$.
+			if contains multicolored term $\Ra$ ind hyp.
+			Otw induction, $\Delta$-term must come at some point.
+
+
+
 
 	\end{description}
 

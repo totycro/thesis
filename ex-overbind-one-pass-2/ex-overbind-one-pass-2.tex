@@ -1,5 +1,6 @@
 \documentclass[,fontsize=10pt,%
-	paper=25cm:25cm,% 
+	paper=27cm:25cm,% 
+	%a4paper,
 	%landscape,
 	%DIV12, % mehr text pro seite als defaultyyp
 	DIV22,
@@ -351,6 +352,8 @@ Problem case 2: $x$ colored and colored, not sure what the connection is suppose
 
 \section*{lifting var doesn't correspond to actual term exactly in context of  unifier arrows}
 
+\e{212a}
+
 \begin{prooftree}
 	\AxiomCm{ \sig{Q(u) \lor  \lnot P(h(u)) } }
 
@@ -390,14 +393,160 @@ lifted:
 
 \end{prooftree}
 
-~
-
 \textbf{at $\bm\ast$, $R(x_g(x))$ is not known to refer to $g(a)$. can we resort to check grey occurrences of $g(a)$?}
 
 \textbf{need arrow from $R$ to $P$ (this situation should be more critical if it is a backwards arrow)}
 
 \textbf{thought: concerns only stuff in literal, maybe can leverage something here (all lifting vars $x_i$ point to same term or so)}
 
+\e{212b -- same but more info not present}
+
+\begin{prooftree}
+	\AxiomCm{ \p{ R(g'(g(x))) \lor S(x) } }
+	\AxiomCm{ \p{ \lnot S(a) } }
+
+	\RightLabelm{ x\mapsto a}
+	\BinaryInfCm{ S(a) \mid \mid R(g'(g(a))) }
+
+	\AxiomCm{ \sig{ P({h(f(y))}) \lor \lnot T(y) } }
+	\AxiomCm{ \p{ T(z) \lor \lnot R(g'(z))}}
+	\RightLabelm{ z\mapsto y}
+
+	\BinaryInfCm{ T(y) \mid P({h(f(y))}) \lor \lnot R(g'(y)) }
+
+	\RightLabelm{y \mapsto g(a)\;\bm\ast}
+
+	\BinaryInfCm{ S(a) \mid \lnot R(g'(g(a))) \lor T(g(a)) \mid P(h(f(g(a))))   }
+\end{prooftree}
+
+lifted w unifier arrows:
+
+\begin{prooftree}
+	\AxiomCm{ \p{ R(x_{g'(g(x))}) \lor S(x) } }
+	\AxiomCm{ \p{ \lnot S(x_a) } }
+
+	\RightLabelm{ x\mapsto a}
+	\BinaryInfCm{ S(x_a) \mid \mid R(x_{g'(g(x))}) }
+
+	\AxiomCm{ \sig{ P(y_{h(f(y))}) \lor \lnot T(y) } }
+	\AxiomCm{ \p{ T(z) \lor \lnot R(x_{g'(z)})}}
+	\RightLabelm{ z\mapsto y}
+
+	\BinaryInfCm{ T(y) \mid P(y_{h(f(y))}) \lor \lnot R(x_{g'(y)}) }
+
+	\RightLabelm{y \mapsto g(a)\;\bm\ast}
+
+	\BinaryInfCm{ S(x_a) \mid \lnot R(x_{g'(g(a))}) \lor T(x_{g(a)}) \mid P(y_{h(f(y))})    }
+\end{prooftree}
+
+\textbf{$\bm\ast$ is similar here, but the grey occurrence of $y$ isn't even in the literal}
+
+\clearpage
+
+\e{212c -- other approach}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ P(f(x), u) \lor Q(x) \lor R(u) }}
+	\AxiomCm{ \p{\lnot Q(g(z)) \lor R(z) }}
+	\RightLabelm{ x\mapsto g(z)}
+	\BinaryInfCm{ Q(g(z)) \mid P(f(g(z)), u) \lor R(u) \lor R(z) }
+	\RightLabelm{ u\mapsto z}
+	\UnaryInfCm{ Q(g(z)) \mid P(f(g(z)), z) \lor R(z) }
+
+	\AxiomCm{ \sig{ S(h(u)) \lor \lnot P(f(u), c) } }
+	\RightLabelm{ u\mapsto g(c), z\mapsto c}
+	\BinaryInfCm{ P(f(g(c)), c) \mid Q(g(c)) \mid S(h(g(c))) \lor R(c) }
+
+\end{prooftree}
+
+lifted:
+\begin{prooftree}
+	\AxiomCm{ \sig{ P(y_{f(x)}, u) \lor Q(x) \lor R(u) }}
+	\AxiomCm{ \p{\lnot Q(x_{g(z)}) \lor R(z) }}
+	\BinaryInfCm{ Q(x_{g(z)}) \mid P(y_{f(g(z))}, u) \lor R(u) \lor R(z) }
+	\UnaryInfCm{ Q(x_{g(z)}) \mid P(y_{f(g(z)}), z) \lor R(z) }
+
+	\AxiomCm{ \sig{ S(y_{h(u)}) \lor \lnot P(y_{f(u)}, y_c) } }
+	\BinaryInfCm{ P(y_{f(g(c))}, y_c) \mid Q(x_{g(z)}) \mid S(y_{h(u)})) \lor R(y_c) }
+
+\end{prooftree}
+
+{\color{red}\bfseries
+
+{Need arrow to $S$. possibly work in $C$, not lifted variants.}
+
+{Problem 2: lifting var in $P$ is updated, but the one in $Q$ is not, hence index of lifting vars don't match, which per se isn't a problem}
+
+}
+
+$\Delta$-lifted:
+\begin{prooftree}
+	\AxiomCm{ \sig{ P(f(x), u) \lor Q(x) \lor R(u) }}
+	\AxiomCm{ \p{\lnot Q(x_{g(z)}) \lor R(z) }}
+	\BinaryInfCm{ Q(x_{g(z)}) \mid P(f(x_{g(z)}), u) \lor R(u) \lor R(z) }
+	\UnaryInfCm{ Q(x_{g(z)}) \mid P(f(x_{g(z)}), z) \lor R(z) }
+
+	\AxiomCm{ \sig{ S(h(u)) \lor \lnot P(f(u), c) } }
+	\BinaryInfCm{ P(f(x_{g(c)}), y_c) \mid Q(x_{g(z)}) \mid S(h(x_{g(z)})) \lor R(c) }
+
+\end{prooftree}
+
+
+\largered{can prove something here which doesn't work when both are lifted? don't think so}
+
+
+
+\clearpage
+
+\section*{term unified which is just produced}
+~
+\begin{prooftree}
+	\AxiomCm{ P(g(x), x) }
+	\AxiomCm{ \lnot P(y, a) }
+	\RightLabelm{y \mapsto g(a), x\mapsto a}
+	\BinaryInfCm{ P(g(a), a) }
+\end{prooftree}
+
+$\Ra$ can only add arrow from terms in $C$, as they do not exist before.
+
+~
+
+~
+
+\section*{old examples with unifier arrows}
+
+\e{214a (210f)}
+
+\begin{prooftree}
+  \AxiomCm{\sig{\bot \mid P(f(\ha x)) \lor Q(\ha x)}}
+  \AxiomCm{\sig{\bot \mid \lnot Q(\hb y) \lor R(g(\hb y))}}
+	\RightLabelm{ y\mapsto x }
+  \BinaryInfCm{ Q(x) \mid \bot \mid P(f(x)) \lor R(g(x)) }
+  \AxiomCm{ \sig{\bot \mid \lnot P(f(\hc z)) \lor S(\hc z)}}
+  \AxiomCm{ \p{\top \mid \lnot S(a)}}
+	\RightLabelm{ z\mapsto a}
+  \BinaryInfCm{ S(\arrowA a) \mid \lnot P(\arrowB f(a))} 
+  %\noLine\UnaryInfC{}
+	\RightLabelm{ x\mapsto a}
+  \BinaryInfCm{ Q(a), P(f(a) \mid  S(a)  \mid R(g(a))}
+  \AxiomCm{\p{\top \mid \lnot R(u)}}
+  \BinaryInfCm{ Q(a), P(f(a)) \mid  S(a) \lor  R(g(a))}
+\end{prooftree}
+
+
+what if different starting point:
+\begin{prooftree}
+	\AxiomCm{ \sig{\bot \mid P(f(x)) \lor R(g(x)) } }
+  \AxiomCm{ \sig{\bot \mid \lnot P(f(\hc z)) \lor S(\hc z)}}
+  \AxiomCm{ \p{\top \mid \lnot S(a)}}
+	\RightLabelm{ z\mapsto a}
+  \BinaryInfCm{ S(\arrowA a) \mid \lnot P(\arrowB f(a))} 
+  %\noLine\UnaryInfC{}
+	\RightLabelm{ x\mapsto a}
+  \BinaryInfCm{  P(f(a) \mid  S(a)  \mid R(g(a))}
+  \AxiomCm{\p{\top \mid \lnot R(u)}}
+  \BinaryInfCm{  P(f(a) \mid  S(a) \lor  R(g(a))}
+\end{prooftree}
 
 
 
