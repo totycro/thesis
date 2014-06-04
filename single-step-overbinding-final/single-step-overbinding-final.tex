@@ -13,14 +13,16 @@
 %]{scrartcl}
 ]{memoir}
 
-\usepackage{lscape}
-\usepackage{stackengine}
 
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 
+%\usepackage[urw-garamond]{mathdesign}
+
+\usepackage{lscape}
+\usepackage{stackengine}
 \usepackage{enumerate}
 \usepackage{paralist}
 \usepackage{tikz}
@@ -59,7 +61,7 @@
 %\usepackage{bussproof}
 
 %\usepackage{vaucanson-g}
-\usepackage{amssymb}
+%\usepackage{amssymb}
 \usepackage{latexsym}
 
 % for color-highlighted code
@@ -766,13 +768,16 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$ formula.
 \end{prop}
 \begin{proof}
-	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$
-	By Lemma~\ref{lemma:gamma_entails_aide}, $\Gamma \entails \AImatde(\pi) \lor \AIclde(\pi)$.
+	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
+	By Lemma~\ref{lemma:gamma_entails_aide}, $\Gamma \entails \AImatde(\pi) \lor \AIclde(\pi)$,
+	or in other words 
+	$\Gamma \entails \forall x_1 \dots \forall x_n  \AImatde(\pi) \lor \AIclde(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\AImatde(\pi) \lor \AIclde(\pi)$.
 	%Let $x_1, \dots, x_n$ be the $\Delta$-lifting variables in $I$.
-	By Lemma~\ref{lemma:no_colored_terms}, $\AImatde(\pi) \lor \AIclde(\pi)$ does not contain $\Delta$-colored symbols.
+	By Lemma~\ref{lemma:no_colored_terms}, the formula $\AImatde(\pi) \lor \AIclde(\pi)$ does not contain $\Delta$-colored symbols.
 
-	Let $x_1, \dots x_n$ be the $\Delta$-lifting variables of $\AImatde(\pi) \lor \AIclde(\pi)$ and $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}$.
-	Let \[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}.\]
+	Let $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}$ 
+	and
+	\[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}.\]
 	Note that $I$ does not contain any $\Gamma$-terms.
 	As $\AImatde(\pi) \lor \AIclde(\pi)$ contains witness terms for every existential quantifier in $I$ with respect to $\Gamma$, $\Gamma \entails I$.
 	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
@@ -781,11 +786,88 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 
 \section{Arrows}
 
-graph as annotation; else as in outline below
+
+\mytodo{transition to ordering of quantified lifting vars}
+
+In order to establish the required ordering on the lifting variables, we annotate the literals with arrows.
+More formally:
+
+\begin{defi}[$\AIcol$]
+	The set of colored literals with respect to a clause $C$ in a resolution derivation is defined as follows:
+
+	\begin{itemize}
+		\item[Base case.]
+			For $C \in \Gamma\cup\Delta$, $\AIcol(C) \defeq \emptyset$.
+
+		\item[Resolution.]
+			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
+			If $l$ is a colored literal, then
+			$\AIcol(C) \defeq \AIcol(C_1) \cup \AIcol(C_2) \cup \{ \lifboth{l\cl\sigma}\tau, \lifboth{l'\cl\sigma}\tau \}$.
+			Otherwise $l$ is a grey literal and 
+			$\AIcol(C) \defeq \AIcol(C_1) \cup \AIcol(C_2)$.
+
+		\item[Factorisation.]
+			If the clause $C$ is the result of a factorisation of $C_1$, then 
+			$\AIcol(C) \defeq \AIcol(C_1) \cup \AIcol(C_2)$.
+			\qedhere
+	\end{itemize}
+\end{defi}
+
+\mytodo{define: descendant (usual stuff, factorisation is merge, resolution is de-facto merge which happens implicitly so no actual merge required)}
+
+\begin{defi}
+	We define a directed graph $G_C$ for every clause $C$ of the derivation.
+	The nodes are of the form $l.tp$, where $l$ denotes a literal and $tp$ a position of a term in $l$, which is not contained in a colored term.
+	The node $l.tp$ in a graph $G_C$ refers to the literal in $\AImat(C)$, $\AIcl(C)$ or $\AIcol(C)$
+	which is a descendant of $l$.
+	Note that there exists exactly one for every literal of every clause which is a predecessor of $C$.
+	Hence given $C$, $l.tp$ is a well-defined position and the position will usually just be denoted by $p$ or $q$ as abbreviation of $l.tp$.
+ 	For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$. 
+	Note that set of literals in $\AIcl(C)$ is exactly the set of literals of $C$.
+
+	Note that term positions are well defined since arcs do not point into colored terms and are hence not removed by liftings and in the course of the derivation, terms in literals are only modified by substitutions, which does not remove any term which might invalidate a term position.
+
+	\begin{itemize}
+		\item[Base case.]
+				For $C \in \Gamma\cup\Delta$, we define $G_C$ to be the empty graph.
+
+		\item[Resolution.]
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, we define:
+
+			$\arr_1 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ $\Psi$-colored occurrence of $x$ in $C_1$ or $C_2$, $(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
+
+			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey or colored occurrence of $x$ in $C_1$ or $C_2$,
+$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
+
+			$G_C \defeq G_{C_1} \cup G_{C_2} \cup \arr_1 \cup \arr_2$
+
+
+		\item[Factorisation.]
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then 
+
+			$G_C \defeq G_{C_1} \cup G_{C_2}$\footnote{Note however that the literal $l$ in $C$ has $l$ as well as $l'$ in $C_1$ as predecessors, i.e.~the arrows from both of these literals apply implicitly.}
+			\qedhere
+	\end{itemize}
+
+\end{defi}
+
+\begin{defi}
+	For terms $s, t$, $s\apath_{G_C} t$ holds if there is some $p, q$ in the edge set of $G_C$ such that $s$ is a subterm of the term at $p$ and $t$ is a subterm of the term at $t$ such that $s$ and $t$ are not contained in colored terms. (NOTE: in $\AIde$, $\Gamma$-terms are not colored terms in this sense.)
+\end{defi}
+
+
+\begin{lemma}
+	If in $\AImatde(C) \lor \AIclde(C)$ a
+	$\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_? \apath t\occ{x_s}$
+\end{lemma}
+\begin{proof}
+\end{proof}
 
 
 
 \section{Combining the results}
+
+there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifgammanovar{ \AIde(C) } $
 
 \begin{lemma}
 	Let $\overline x$ be the $\Delta$-lifting variables and $\overline y$ be the $\Gamma$-lifting variables of $\AI(C)$.
