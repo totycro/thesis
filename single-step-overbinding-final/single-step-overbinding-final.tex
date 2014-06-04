@@ -389,37 +389,47 @@ In order to avoid the pitfall shown in Example \ref{exa:2b} and to generalize th
 we define a function on resolved literals calculating a substitution, which ensures that the literals in the lifted clause, which correspond to the resolved literals, are equal.
 
 \begin{defi}[$\aiu$] 
-	For resolved or factorised literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
-	and $\lifboth{l\cl\sigma} = P(s_1, \dots, s_n)$ and $\lifboth{l'\cl\sigma} = P(t_1, \dots, t_n)$, we define:
-	\[
-		\aiu (P(s_1, \dots, s_n), P(t_1, \dots, t_n)) \defeq \bigcup_{i=1}^n \aiu(s_i, t_i)
-	\]
+	Let $\inference$ be a resolution or factorisation rule application with $l$ and $l'$ as resolved or factorised literals, $\sigma = \mgu(\inference)$
+
+	\newcommand{\aiuP}{\aiu'}
+
 	For terms $s$ and $t$ where
 	$s = \lifboth{l\fromclause\sigma}\at{p}$
 	and 
 	$t = \lifboth{l'\fromclause\sigma}\at{p}$
 	for some position $p$, we define:
 	\[
-		\aiu (s, t) \defeq
+		\aiuP (s, t) \defeq
 		\begin{cases}
-			\bigcup_{i=1}^n \aiu(s_i, t_i) & \text{if $s$ is grey and $s=f_s(s_1, \dots, s_n)$, $t = f_{t}(t_1,\dots, t_n)$\footnotemark} \\
+			\bigcup_{i=1}^n \aiuP(s_i, t_i) &
+			\parbox[t]{.50\textwidth}{
+			%\text{
+			if $s$ is grey, $s=f_s(s_1, \dots, s_n)$ and\newline$t = f_{t}(t_1,\dots, t_n)$\footnotemark} \\
 			\{z_{s'} \mapsto z_r, z_{t'} \mapsto z_r\} &
-			%\parbox[t]{.70\textwidth}{
-			\text{if $s$ is a lifting variable $z_{s'}$, $t = z_{t'}$,
-			and $z_r = \lifboth{l\sigma}\at{p}$}
-			%}
+			\parbox[t]{.50\textwidth}{
+			%\text{
+				if $s$ is a lifting variable $z_{s'}$, $t = z_{t'}$,
+			and $z_r = \lifboth{l\sigma}\at{p}$
+			}
 			%\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}
-			\qedhere
 		\end{cases}
 	\]
 	\footnotetext{Note that constants are treated as function symbols of arity zero.}
-\end{defi}
+	For $\lifboth{l\cl\sigma} = P(s_1, \dots, s_n)$ and $\lifboth{l'\cl\sigma} = P(t_1, \dots, t_n)$, we define:
+	\[
+\aiuP(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma}) = 
+\aiuP(P(\overline s), P(\overline t)) \defeq \bigcup_{i=1}^n \aiuP(s_i, t_i)
+	\]
+	\[
+		\aiu(\inference) \defeq \aiuP(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma}) \qedhere
+	\]
+	%For resolved or factorised literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
+	\end{defi}
 
 \begin{prop}
 	\label{prop:tau_dom_ran}
-	Let $l$ and $l'$ be the resolved or factorised literals of a resolution derivation step and $\sigma$ the unifier employed in this step.
-	Furthermore let $\tau = \aiu(\lifboth{l\fromclause\sigma}, \lifboth{l'\fromclause\sigma})$.
-	Then $\dom(\tau)$ consists exactly of the lifting variables of $\lifboth{l\fromclause\sigma}$ and $\lifboth{l'\fromclause\sigma}$ and $\ran(\tau)$ consists exactly of the lifting variables of $\lifboth{l\sigma}$.
+	Let $\inference$ be a resolution or factorisation rule application with $l$ and $l'$ as resolved or factorised literals, $\sigma = \mgu(\inference)$
+	Then $\dom(\aiu(\inference))$ consists exactly of the lifting variables of $\lifboth{l\fromclause\sigma}$ and $\lifboth{l'\fromclause\sigma}$ and $\ran(\aiu(\inference))$ consists exactly of the lifting variables of $\lifboth{l\sigma}$.
 \end{prop}
 
 \todo[inline]{possibly argue here why $\aiu$ is well-defined (but it follows more or less directly from a later lemma)}
@@ -438,10 +448,10 @@ we define a function on resolved literals calculating a substitution, which ensu
 			In any case, $\AIcl(C) \defeq \lifboth{C}$.
 		\item[Resolution.]
 
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, 
+			If the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, 
 			then 
-			let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$ and define
-			$\AImat(C)$ and $\AIcl(C)$ as follows:
+			let $\tau = \aiu(\inference)$ and  
+			define $\AImat(C)$ and $\AIcl(C)$ as follows:
 
 			$\AIcl(C) \defeq \lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau \spam\lor \lifboth{(\AIclause(C_2)\setminus \{l\fromclause'\})\sigma}\tau $
 			\begin{enumerate}
@@ -461,7 +471,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 			\end{enumerate}
 
 		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$ and define 
+			If the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
+			then let $\tau = \aiu(\inference)$ and define 
 			$\AImat(C)$ and $\AIcl(C)$ as follows:
 
 			$\AImat(C) \defeq{} \lifboth{\AImat(C_1)\sigma}\tau$
@@ -478,7 +489,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 \begin{lemma}
 	\label{lemma:no_colored_terms}
-	Let $C$ be a clause of a resolution refutation of $\Gamma\cup\Delta$.
+	Let $C$ be a clause of a resolution refutation $\pi$ of $\Gamma\cup\Delta$.
 	$\AImat(C)$ and $\AIcl(C)$ do not contain colored symbols. 
 	$\AImatde(C)$ and $\AIclde(C)$ do not contain \mbox{$\Delta$-c}olored symbols. 
 \end{lemma}
@@ -486,7 +497,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 	For $\AImat(C)$ and $\AIcl(C)$, consider the following:
 	In the base case of the inductive definitions of $\AImat(C)$ and $\AIcl(C)$, no colored symbols occur.
 	In the inductive steps, any colored symbol which is added by $\sigma$ to intermediary formulas is lifted.
-	By Proposition~\ref{prop:tau_dom_ran}, $\ran(\tau)$ only consists of lifting variables.
+	By Proposition~\ref{prop:tau_dom_ran}, $\ran(\aiu(\inference))$ for inferences $\inference$ in $\pi$ only consists of lifting variables.
 
 	For $\AImatde(C)$ and $\AIclde(C)$, a similar argument goes through by reading colored as $\Delta$-colored. 
 \end{proof}
@@ -504,8 +515,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{proof}
 
 \begin{lemma}
-	Let $l$ and $l'$ be resolved or factorised literals in a resolution derivation step creating a clause $C$ and 
-	$\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+	Let $l$ and $l'$ be resolved or factorised literals in a resolution derivation step $\inference$ creating a clause $C$ and 
+	$\tau = \aiu(\inference)$.
 	For any substitution $(z_s \mapsto z_t) \in \tau$, 
 
 
@@ -529,10 +540,10 @@ we define a function on resolved literals calculating a substitution, which ensu
 			P = P' \land \bigwedge_{i=1}^n s_i \simgeq s'_i &  \text{ if $\varphi = P(s_1, \dots, s_n)$ and $\varphi' = P'(s'_1, \dots, s'_n)$} \\
 			f = f' \land \bigwedge_{i=1}^n s_i \simgeq s'_i &  \text{ if $\varphi = f(s_1, \dots, s_n)$ and $\varphi' = f'(s'_1, \dots, s'_n)$} \\
 			x = x' & \text{ if $\varphi, \varphi'$ are non-lifting variables, $\varphi = x$ and $\varphi' = x'$} \\
-			s' \text{ is a specialisation of } s  & \text{ if $\varphi, \varphi'$ are lifting variables, $\varphi = z_s$ and $\varphi' = z_{s'}$} \\
+			s' \text{ is an instance of } s  & \text{ if $\varphi, \varphi'$ are lifting variables, $\varphi = z_s$ and $\varphi' = z_{s'}$} \\
 		\end{cases}
 	\]
-	For resolved or factorised literals $\lambda$ we furthermore have that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
+	For resolved or factorised literals $\lambda$ of an inference $\inference$ with $\tau = \aiu(\inference)$ we furthermore have that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
 	\todo[inline]{introduce definition for characterising the relation between $C$ and $\AIcl(C)$}
 \end{lemma}
 \begin{proof}
@@ -543,8 +554,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 			Therefore for every literal $l$ in $C$, there exists a literal $l\cl$ in $\AIcl(C)$ such that $\lifboth{l} = l\cl$, which implies $l\cl \simgeq \lifboth{l}$.
 
 		\item{Resolution.}
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
-			then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
+			then let $\tau = \aiu(\inference)$.
 			Let $\lambda$ be a literal in $C_1$ or $C_2$. 
 			Note that every literal in $C$ is of the form $\lambda\sigma$.
 			By the induction hypothesis, there is a literal in $\AIcl(C_1)$ or $\AIcl(C_2)$ respectively such that $\lambda\cl \simgeq \lifboth{\lambda\cl}$.
@@ -575,7 +586,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 				\item
 					Suppose that $t$ is colored term.
 					Then $\lifboth{t}$ is a lifting variable and by the induction hypothesis, $t\cl$ is one as well such that 
-					$\lifboth{t}$ is a specialisation of $t\cl$.
+					$\lifboth{t}$ is an instance of $t\cl$.
 					As lifting variables are not affected by the unifications occurring in resolution derivations, we only need to consider modifications by means of $\tau$. 
 					But as we have seen in the previous case, if $\tau$ substitutes $\lifboth{t\cl\sigma}$, then it does so by $t$.
 					\todo[inline]{lemma}
@@ -607,8 +618,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 \begin{lemma}
 	\label{lemma:lifted_literal_equal}
-	Let $l$ and $l'$ be the resolved or factorised literals of a resolution derivation step employing the unifier $\sigma$ such that $l\sigma = l'\sigma$.
-	Furthermore let $\tau =\nolinebreak \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
+	Let $l$ and $l'$ be the resolved or factorised literals of a resolution derivation step $\inference$ employing the unifier $\sigma$ such that $l\sigma = l'\sigma$.
+	Furthermore let $\tau =\nolinebreak \aiu(\inference)$.
 	Then $\lifboth{l\cl\sigma}\tau = \lifboth{l\cl'\sigma}\tau$.
 \end{lemma}
 \begin{proof}
@@ -639,24 +650,27 @@ we define a function on resolved literals calculating a substitution, which ensu
 			Otherwise $C \in \Delta$ and hence $\AImatde(C) = \top$.
 
 		\item{Resolution.}
-			Suppose the last rule application is an instance of resolution. Then it is of the following form:
+			Suppose the last rule application is an instance $\inference$ of resolution. Then it is of the following form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor l}
 				\AxiomCm{C_2: E \lor \lnot l'}
 				\RightLabelm{\quad l\sigma = l'\sigma}
 				\BinaryInfCm{C: (D\lor E)\sigma}
 			\end{prooftree}
+
+			Let 
+			$\tau = \aiu(\inference)$.
 			We introduce the following abbreviations:
 
 			\newcommand{\clauseOnePrime}{\AIclausede((C_1)_\Gamma)^*}
 			\newcommand{\clauseTwoPrime}{\AIclausede((C_2)_\Gamma)^*}
 
+
 			$ \clauseOnePrime = \AIclausede((C_1)_\Gamma) \setminus \{{(l{\fromclausede})_\Gamma}\}$
 
 			$ \clauseTwoPrime = \AIclausede((C_2)_\Gamma)\setminus \{{\lnot (l{\fromclausede'})_\Gamma}\}$
 
-			Note that $\AIclde(C) = \lifdeltanovar{ \clauseOnePrime\sigma} \tau \lor \lifdeltanovar{ \clauseTwoPrime\sigma} \tau$, where $\tau$ is defined as in the interpolant extraction procedure as
-			$\aiu ( \lifboth{ l\clde \sigma}, \lifboth{ l'\clde \sigma} )$.
+			Note that $\AIclde(C) = \lifdeltanovar{ \clauseOnePrime\sigma} \tau \lor \lifdeltanovar{ \clauseTwoPrime\sigma} \tau$.
 
 			Employing these, the induction hypothesis yields 
 			$\Gamma \entails \AImatrixde(C_1) \lor \clauseOnePrime \lor {(l{\fromclausede})_\Gamma}$
@@ -712,6 +726,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 				\UnaryInfCm{C: (l \lor D)\sigma}
 			\end{prooftree}
 
+			Let $\tau = \aiu(\inference)$.
 			We introduce the abbreviation $\AIclde( (C_1)_\Gamma)^* \defeq \AIclde( (C_1)_\Gamma) \setminus \{ (l\cl)_\Gamma , (l'\cl)_\Gamma \}$ and express the induction hypothesis as follows:
 			$\Gamma \entails \AImatde(C_1) \lor \AIclde( (C_1)_\Gamma)^* \lor (l\cl)_\Gamma \lor (l'\cl)_\Gamma $.
 			By Lemma~\ref{lemma:no_colored_terms}, Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lift_logic_commute} and after applying $\tau$ to the induction hypothesis, we obtain that 

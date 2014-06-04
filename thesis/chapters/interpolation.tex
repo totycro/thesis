@@ -23,9 +23,9 @@ A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it 
 
 An \defiemph{abstraction} on the other hand is a mapping of terms to variables. It is denoted by $\phi\abstractionOp{t/x}$, where $\phi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
 
-A term $s$ is a \defiemph{specialisation} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
-If $s$ is a specialisation of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that abstraction and specialisation are reflexive. 
-$s$ is a \defiemph{proper} specialisation (abstraction) of $t$ if $s$ is an specialisation (abstraction) of $t$ and $s\neq t$.
+A term $s$ is an \defiemph{instance} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
+If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that the abstraction- and instance-relation are reflexive. 
+$s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$.
 
 
 The length of a term or formula $\phi$ is the number of logical and non-logical symbols in $\phi$.
