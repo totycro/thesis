@@ -848,7 +848,6 @@ $(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 			$G_C \defeq G_{C_1} \cup G_{C_2}$\footnote{Note however that the literal $l$ in $C$ has $l$ as well as $l'$ in $C_1$ as predecessors, i.e.~the arrows from both of these literals apply implicitly.}
 			\qedhere
 	\end{itemize}
-
 \end{defi}
 
 \begin{defi}
@@ -861,6 +860,32 @@ $(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 	$\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_? \apath t\occ{x_s}$
 \end{lemma}
 \begin{proof}
+	We proceed by induction.
+
+	\begin{description}
+		\item{}Base case.
+			For $C \in \Gamma\cup\Delta$, no mixed-colored term occurs in $C$ and hence also not in $\lifdeltanovar{C} = \AIclde(C)$.
+			As $\AImatde(C)$ is either $\top$ or $\bot$, this situation does not arise here as well.
+
+		\item{}Resolution.
+			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
+			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occ{x_s}$ in $C$:
+			\begin{itemize}
+				\item Suppose a $\Gamma$-colored term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
+
+
+				\item Suppose a variable $u$ occurs in $C_1$ or $C_2$ such that $u\sigma$ is a multi-colored $\Delta$-term.
+					\mytodo{}
+			\end{itemize}
+
+
+		\item{}Factorisation.
+			If the clause $C$ is the result of a factorisation of $C_1$, then 
+			\mytodo{}
+			\qedhere
+	\end{description}
+
+
 \end{proof}
 
 
@@ -906,10 +931,10 @@ lift clauses as usual s.t. to not see any of the colored structure, hence rememb
 
 for resolution/factorisation, check unifier:
 \begin{compactitem}
-	\item
-		if $x$ occurs grey in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col to col and grey to grey
-	\item
-		if $x$ occurs colored in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col and grey to col
+\item
+	if $x$ occurs grey in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col to col and grey to grey
+\item
+	if $x$ occurs colored in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col and grey to col
 \end{compactitem}
 
 
@@ -948,7 +973,7 @@ for resolution/factorisation, check unifier:
 				Therefore $l'\at{\bhat u}$ is a colored occurrence as well.
 
 				chain of colored variables:
-				
+
 				if var occurs at some point grey s.t.\ $\Delta$-term is still complete, then we are done.
 
 				if var occurs at some point at position we are unifying with, then we are done by the induction hypothesis.
@@ -989,7 +1014,7 @@ for resolution/factorisation, check unifier:
 			\end{quote}
 
 
-		\item{} Suppose multicolored $\Gamma$-term introduced.
+		\item{} Suppose multi-colored $\Gamma$-term introduced.
 
 			Then $u$ in $C_i$ s.t.\ $\gamma\occ{\delta_i}$ in $u\sigma$.
 			Hence by arrow 3, arrow from every grey $\delta_i$ to every $u$.
@@ -997,7 +1022,7 @@ for resolution/factorisation, check unifier:
 
 			existence:
 			$l'\at{\bhat u}$ is an abstraction of $u\sigma$ different from $u$.
-			if contains multicolored term $\Ra$ ind hyp.
+			if contains multi-colored term $\Ra$ ind hyp.
 			Otw induction, $\Delta$-term must come at some point.
 			we either have other case, or some multi-colored term appears.
 
