@@ -125,6 +125,15 @@
 	%{\draw[->,square arrow,color=red] (a.south) to (b.south);}
 }
 
+\newcommand{\arrowAP}{\tikz[overlay,remember picture] \node (ap) {};}
+\newcommand{\arrowBP}{\tikz[overlay,remember picture] \node (bp) {};}
+\newcommand{\drawABP}{
+	\tikz[overlay,remember picture]
+	{\draw[->,bend right=5,color=red] (ap.south) to (bp.south);}
+	%{\draw[->,square arrow,color=red] (ap.south) to (bp.south);}
+}
+
+
 \newcommand{\arrowAB}{\tikz[overlay,remember picture] \node (ab) {};}
 \newcommand{\arrowBA}{\tikz[overlay,remember picture] \node (ba) {};}
 \newcommand{\drawAABB}{
@@ -158,6 +167,11 @@
 	\tikz[overlay,remember picture]
 	{\draw[->,square arrow2,color=orange] (e.south) to (f.south);}
 }
+
+
+\newcommand{\arrAP}{\arrowAP}
+\newcommand{\arrBP}{\arrowBP}
+
 
 
 \newcommand{\arrA}{\arrowA}
@@ -449,15 +463,18 @@ lifted w unifier arrows:
 	\AxiomCm{ \sig{ P(f(x), u) \lor Q(x) \lor R(u) }}
 	\AxiomCm{ \p{\lnot Q(g(z)) \lor R(z) }}
 	\RightLabelm{ x\mapsto g(z)}
-	\BinaryInfCm{ Q(g(z)) \mid P(f(g(z)), u) \lor R(u) \lor R(z) }
+	\BinaryInfCm{ Q(\arrowAP g(z)) \mid P(\arrowBP f(g(z)), u) \lor R(u) \lor R(z) } \drawABP
 	\RightLabelm{ u\mapsto z}
-	\UnaryInfCm{ Q(g(z)) \mid P(f(g(z)), z) \lor R(z) }
+	\UnaryInfCm{ Q(\arrowAP g(z)) \mid P(\arrBP f(g(z)), z) \lor R(z) }\drawABP
 
-	\AxiomCm{ \sig{ S(h(u)) \lor \lnot P(f(u), c) } }
+	\AxiomCm{ \sig{ \mathbf S(h(u)) \lor \lnot P(f(u), c) } }
 	\RightLabelm{ u\mapsto g(c), z\mapsto c}
-	\BinaryInfCm{ P(f(g(c)), c) \mid Q(g(c)) \mid S(h(g(c))) \lor R(c) }
+	\BinaryInfCm{ P(\arrowB f(g(c)), c) \mid Q(\arrowA\,\arrE g(c)) \mid S(\arrF h(g(c))) \lor R(c) } \drawAB\drawEF
+	\noLine\UnaryInfC{}
+	\noLine\UnaryInfC{(arrows for $c$ not shown)}
 
 \end{prooftree}
+(the bold $S$ receives the $\Delta$-term here, the rest is technical details. it's about how $S$ receives the arrow)
 
 lifted:
 \begin{prooftree}
@@ -487,12 +504,12 @@ $\Delta$-lifted:
 	\UnaryInfCm{ Q(x_{g(z)}) \mid P(f(x_{g(z)}), z) \lor R(z) }
 
 	\AxiomCm{ \sig{ S(h(u)) \lor \lnot P(f(u), c) } }
-	\BinaryInfCm{ P(f(x_{g(c)}), y_c) \mid Q(x_{g(z)}) \mid S(h(x_{g(z)})) \lor R(c) }
+	\BinaryInfCm{ P(f(x_{g(c)}), y_c) \mid Q(x_{g(c)}) \mid S(h(x_{g(c)})) \lor R(c) }
+	\noLine\UnaryInfC{ \textbf{ lifting var in $Q$ is fixed here } }
 
 \end{prooftree}
 
 
-\largered{can prove something here which doesn't work when both are lifted? don't think so}
 
 
 
@@ -525,7 +542,7 @@ $\Ra$ can only add arrow from terms in $C$, as they do not exist before.
   \AxiomCm{ \sig{\bot \mid \lnot P(f(\hc z)) \lor S(\hc z)}}
   \AxiomCm{ \p{\top \mid \lnot S(a)}}
 	\RightLabelm{ z\mapsto a}
-  \BinaryInfCm{ S(\arrowA a) \mid \lnot P(\arrowB f(a))} 
+  \BinaryInfCm{ S(a) \mid \lnot P(f(a))} 
   %\noLine\UnaryInfC{}
 	\RightLabelm{ x\mapsto a}
   \BinaryInfCm{ Q(a), P(f(a) \mid  S(a)  \mid R(g(a))}

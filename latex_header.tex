@@ -372,6 +372,13 @@ positioning,fit,calc,decorations.text,shadows%
 	{\draw[->,bend left=5,color=red] (a.south) to (b.south);}
 	%{\draw[->,square arrow,color=red] (a.south) to (b.south);}
 }
+\newcommand{\arrowAP}{\tikz[overlay,remember picture] \node (ap) {};}
+\newcommand{\arrowBP}{\tikz[overlay,remember picture] \node (bp) {};}
+\newcommand{\drawABP}{
+	\tikz[overlay,remember picture]
+	{\draw[->,bend right=5,color=red] (ap.south) to (bp.south);}
+	%{\draw[->,square arrow,color=red] (a.south) to (b.south);}
+}
 
 \newcommand{\arrowAB}{\tikz[overlay,remember picture] \node (ab) {};}
 \newcommand{\arrowBA}{\tikz[overlay,remember picture] \node (ba) {};}
@@ -408,6 +415,8 @@ positioning,fit,calc,decorations.text,shadows%
 }
 
 
+\newcommand{\arrAP}{\arrowAP}
+\newcommand{\arrBP}{\arrowBP}
 \newcommand{\arrA}{\arrowA}
 \newcommand{\arrB}{\arrowB}
 \newcommand{\arrC}{\arrowC}

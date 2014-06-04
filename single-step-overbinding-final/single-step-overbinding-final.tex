@@ -6,9 +6,10 @@
 	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
 	%titlepage,
 	numbers=noendperiod
-	oneside,openany
-	a4paper,
 	11pt,
+	a4paper,
+	oneside,% apparently, this should stay below some other parameter to have an effect 
+	openany,
 %]{scrartcl}
 ]{memoir}
 
@@ -568,6 +569,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 					But by the definition of $\aiu$, the substitutions in $\tau$ only update lifting variables to correspond to the terms in the clause of the actual resolution derivation.
 					More formally, $\lifboth{t\cl\sigma}\tau = z_s$ for some term $s$ implies that $\lifboth{\lambda\sigma}\at{p} = z_s$, but then $z_s = t$.
+					\largered{this argument only holds for terms in the resolved literals, see remark in lemma statement}
 					\todo[inline]{outsource this thought to lemma after definition of $\aiu$ in case needed elsewhere}
 
 				\item
@@ -616,7 +618,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 	By Lemma~\ref{lemma:literals_clause_simgeq}, we obtain that 
 	$\lifboth{l\cl\sigma}\tau \simgeq \lifboth{l\sigma}$ and
 	$\lifboth{l'\cl\sigma}\tau \simgeq \lifboth{l'\sigma}$. 
-	Furthermore note that the $\simgeq$-relation guarantees that pairs of predicates and terms in this relation are equal up to the index of their lifting variables.
+	Furthermore note that the $\simgeq$-\nolinebreak{}relation guarantees that pairs of predicates and terms in this relation are equal up to the index of their lifting variables.
 	Hence it only remains to show that the lifting variables of $\lifboth{l\cl\sigma}\tau$ and $\lifboth{l'\cl\sigma}\tau$ match.
 	But by the definition of $\aiu$, $\tau$ substitutes any lifting variable at position $p$ of $\lifboth{l\cl\sigma}$ and $\lifboth{l'\cl\sigma}$ by the lifting variable $\lifboth{l\sigma}\at{p}$, 
 	thus making them equal.
@@ -795,12 +797,6 @@ for resolution/factorisation, check unifier:
 			existence 1:
 			If $u$ occurs grey in $C_i$, then there, $\delta_i$ occurs grey in $C$ (this is the necessary color change case $x, f(x)$) and hence the arrow actually exists.
 
-			existence 2:
-			Otherwise $u$ only occurs colored in $C_i$.
-			As it is affected by $\sigma$, it must occur in the resolved literal, say at $l\at{\bhat u}$. $l'\at{\bhat u}$ is an abstraction of $u\sigma$ different from $u$.
-			If $l'\at{\bhat u}$ contains a $\Delta$-term $\Ra$ ind hyp. 
-			Otw induction, $\Delta$-term must come at some point.
-
 			existence 2 proper:
 			\begin{quote}
 				need to show that $\delta_i$ occurs grey given the assumptions.
@@ -817,7 +813,20 @@ for resolution/factorisation, check unifier:
 
 				if var occurs at some point at position we are unifying with, then we are done by the induction hypothesis.
 
+				AUX LEMMA: if a $\Delta$-term enters a $\Gamma$-term, there is an arrow. Later, the terms always look the same as they are affected by the same unifications. 
+
 				\mytodo{ICI; check example}
+
+				\bigskip
+
+				NEW THING:
+
+				chain: either contain variables $v$ s.t. $v\sigma$ contains $\Delta$-term, or term contains $\Delta$-term already (such that outermost symbol matches with the one we get in the end)
+
+				in both cases: if term occurs grey, we are done. in this case, we get exactly the lifting var we want.
+
+				if term occurs colored (can only be in $\Gamma$), then if we hit a $\Delta$-symbol, we can use the ind hyp.
+				Here, we get the lifting var which just is there. NOTE: different from whether both colors are lifted or just $\Delta$-terms (see 212c).
 
 
 			\end{quote}
@@ -833,6 +842,9 @@ for resolution/factorisation, check unifier:
 			$l'\at{\bhat u}$ is an abstraction of $u\sigma$ different from $u$.
 			if contains multicolored term $\Ra$ ind hyp.
 			Otw induction, $\Delta$-term must come at some point.
+			we either have other case, or some multi-colored term appears.
+
+
 
 
 
