@@ -34,6 +34,8 @@
 
 % subsections also in toc
 \setcounter{tocdepth}{2}
+\setsecnumdepth{subsection}
+
 
 %\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
 \newcommand{\thmqed}{$\square$} % for thms without proof
@@ -169,6 +171,7 @@
 
 \begin{document}
 
+\tableofcontents
 
 \section{referenced lemmas from previous sections}
 \begin{quote}
@@ -238,7 +241,7 @@ The extracted interpolants are prenex formulas, where
 the quantifier block and the matrix of the formula are calculated separately in each step of the traversal of the resolution refutation.
 
 
-\subsection{Extraction of the interpolant matrix $\AImat$ and calculation of $\AIcl$}
+\subsection{Extraction of the interpolant formula matrix $\AImat$ and calculation of $\AIcl$}
 
 $\AImat$ is inspired by the propositional interpolants $\PI$ from Definition \ref{def:PI}.
 Its difference lies in the fact that the lifting occurs in every step of the extraction.
@@ -437,7 +440,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 \begin{defi}[$\AImat$ and $\AIcl$]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
-	\defiemph{$\AImat(\pi)$} is defined to be $\AImat(\square)$, where $\square$ is the empty box derived in $\pi$.
+	\defiemph{$\AImat(\pi)$} is defined to be $\AImat(\square)$, where $\square$ is the empty clause derived in $\pi$.
 
 	For a clause $C$ in $\pi$, \defiemph{$\AImat(C)$} and \defiemph{$\AIcl(C)$} are defined inductively as follows:
 	\begin{itemize}
@@ -482,6 +485,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 	\end{itemize}
 \end{defi}
+
+\section{Lifting the $\Delta$-terms}
 
 \begin{defi}
 	$\AImatde(C)$ ($\AIclde(C)$) for a clause $C$ is defined as $\AImat(C)$ ($\AIcl(C)$) with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
@@ -637,8 +642,9 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 
 \begin{lemma}
+	\label{lemma:gamma_entails_aide}
 	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
-	Then for clauses $C$ in $\pi$,
+	Then for clauses $C$ in\nolinebreak{} $\pi$,
 	$\Gamma\entails\nolinebreak \AImatde(C) \lor\nolinebreak \AIclde(C)$.
 \end{lemma}
 \begin{proof}
@@ -738,11 +744,48 @@ we define a function on resolved literals calculating a substitution, which ensu
 			$\Gamma \entails \lifboth{\AImatde(C_1)\sigma}\tau \lor \lifboth{\AIclde( (C_1)_\Gamma)^*\sigma}\tau \lor \lifboth{(l\cl)_\Gamma \sigma}\tau$.
 			This however is nothing else than $\Gamma\entails \AImatde(C) \lor \AIclde(C)$.
 			\qedhere
-
 	\end{description}
-
 \end{proof}
 
+
+As we have just seen, the formula $\AImatde(C) \lor \AIclde(C)$ now satisfies one condition of interpolants.
+Using this, we are able to formulate a result on one-sided interpolants, which are defined as follows:
+
+\begin{defi}
+	Let $\Gamma$ and $\Delta$ be sets of first-order forumulas.
+	A \defiemph{one-sided interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that 
+	\begin{enumerate}
+		\item $\Gamma \entails I$
+		\item $\Lang(I) \subseteq \Lang(\Gamma) \cap \Lang(\Delta)$
+			\qedhere
+	\end{enumerate}
+\end{defi}
+
+\begin{prop}
+	Let $\Gamma$ and $\Delta$ be sets of first-order forumulas such that $\Gamma\cup\Delta$ is unsatisfiable.
+	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$ formula.
+\end{prop}
+\begin{proof}
+	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$
+	By Lemma~\ref{lemma:gamma_entails_aide}, $\Gamma \entails \AImatde(\pi) \lor \AIclde(\pi)$.
+	%Let $x_1, \dots, x_n$ be the $\Delta$-lifting variables in $I$.
+	By Lemma~\ref{lemma:no_colored_terms}, $\AImatde(\pi) \lor \AIclde(\pi)$ does not contain $\Delta$-colored symbols.
+
+	Let $x_1, \dots x_n$ be the $\Delta$-lifting variables of $\AImatde(\pi) \lor \AIclde(\pi)$ and $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}$.
+	Let \[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}.\]
+	Note that $I$ does not contain any $\Gamma$-terms.
+	As $\AImatde(\pi) \lor \AIclde(\pi)$ contains witness terms for every existential quantifier in $I$ with respect to $\Gamma$, $\Gamma \entails I$.
+	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
+\end{proof}
+
+
+\section{Arrows}
+
+graph as annotation; else as in outline below
+
+
+
+\section{Combining the results}
 
 \begin{lemma}
 	Let $\overline x$ be the $\Delta$-lifting variables and $\overline y$ be the $\Gamma$-lifting variables of $\AI(C)$.
@@ -753,7 +796,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{lemma}
 \begin{proof}
 	\cbstart
-	(sketch)
+	(sketch) (TODO: don't use $\AIde$)
 	We need to show that every $y$ in $\AI$ corresponds to the same term in $\AIde$ and that every $x$ in $\AIde$ corresponds to the same $x'$ in $\AI$
 
 	Then we can insert the terms for $y$ in $\AI$ and they will be equal to $\AIde$. Then as there are less restrictions on the $\AIde$ than there are on the $\AI$, we are done.
@@ -790,7 +833,7 @@ for resolution/factorisation, check unifier:
 
 \begin{defi}~ 
 
-	arrows 1: if $x$ occurs in $y\sigma$, add arrow from every \emph{grey} occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$. \mytodo{NOT YET NEEDED anywhere, pretend it does not exist}
+	\comm{(apparently not needed) arrows 1: if $x$ occurs in $y\sigma$, add arrow from every \emph{grey} occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$.}
 
 	arrows 2: if a maximal $\Phi$-colored term $t$ occurs grey in $x\sigma$, add arrow from every grey occurrence of $t$ in $C$ to every \emph{$\Psi$-colored} occurrence of $x$ in $C_i$.
 
@@ -842,6 +885,23 @@ for resolution/factorisation, check unifier:
 
 				if term occurs colored (can only be in $\Gamma$), then if we hit a $\Delta$-symbol, we can use the ind hyp.
 				Here, we get the lifting var which just is there. NOTE: different from whether both colors are lifted or just $\Delta$-terms (see 212c).
+
+				\bigskip
+
+				NEW THING MORE FORMAL:
+
+				If for some $u$, $\delta_i$ grey in $u\sigma$ and $u$ occurs in $\Gamma$-term, then $\delta_i$ occurs grey somewhere.
+
+				Prf. 
+				either $u$ occurs grey, then we are done.
+				Otw. $u$ only occurs colored in $\Gamma$-terms.
+				so $l'\at{\bhat u}$ also colored.
+
+				Note: arguing along subst run.
+
+				If $l'\at{\bhat u}$ contains outermost symbol of $\delta_i$, then have $\Delta$-term in $\Gamma$-term and ind hyp.
+				Otw. $l'\at{\bhat u}$ contains var $v$ s.t. $\delta_i$ grey in $v\sigma$.
+				Note that now, we can apply the same argument to $v$ and this recursion terminates as $\mgu$ algo has terminated.
 
 
 			\end{quote}
