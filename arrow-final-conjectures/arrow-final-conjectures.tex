@@ -1,0 +1,158 @@
+\documentclass[,%fontsize=11pt,%
+	paper=a4,% 
+	%landscape,
+	DIV10, % mehr text pro seite als defaultyyp
+	%DIV10, 
+	%DIV=calc,%
+	twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+% sections also in toc
+\setcounter{tocdepth}{2}
+
+\definethms
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{color}
+\usepackage[final]{listings} % sourcecode in document
+\usepackage{url}      % for urls
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage[authoryear]{natbib} % \cite ; square|round etc.
+%\usepackage[numbers,square]{natbib}
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\bibdata{bib.bib}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+\usepackage{amsthm}
+
+
+\usepackage{tikz-qtree}
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \section*{#1}}
+
+%\def\proofSkipAmount{ \vskip -0.3em}
+
+\usepackage{refcheck}
+
+\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
+\newcommand{\newterm}{^*}
+\newcommand{\de}{^\Delta}
+
+\begin{document}
+\begin{clemma}
+	Let a variable $x$ occur twice in $C$ such that in one occ, the smallest colored term containing $x$ is a $\Gamma$-term and for the other, the smallest colored term containing $x$ is a $\Delta$-term.
+	Then $x$ occurs grey in $\AIany(C)$.
+\end{clemma}
+\begin{proof}
+	~
+	\begin{itemize}
+		\item
+			Suppose that in $C_i$, $\gamma\occ{x}$ occurs and in $C_j$, we have $\delta\occ{y}$ such that $x$ occurs grey in $y\sigma$.
+
+			Then $y$ occurs in $l$ at $l\at{\bhat y}$ such that $l'\at{\bhat y}$ is an abstraction of a term containing a grey occurrence of $x$.
+
+			Suppose that $l\at{\bhat y}$ (and therefore also $l\at{\bhat y}$) is not a grey occurrence as otherwise we are done. 
+
+			So either both are $\Gamma$ or $\Delta$; suppose $\Delta$ because symmetric. 
+
+			Then induction hypothesis.
+
+			\mytodo{ what if var occurs in multiple colors (as below) ? }
+
+		\item 
+			Suppose that in $C_i$, $\gamma\occ{z}$ occurs and in $C_j$, $\delta\occ{y}$ occurs such that $x$ occurs grey in $y\sigma$ and in $z\sigma$.
+
+			Then $\lambda\at{\bhat z}$ such that $\lambda'\at{\bhat z}$ is abstraction of term with grey occ of $x$ 
+
+			and $\kappa\at{\bhat y}$ such that $\kappa'\at{\bhat y}$ is abstraction of term with grey occ of $x$.
+
+			Suppose that $x$ does not occur grey as otherwise we are done.
+
+			By the variable convention, it only occurs in one clause.
+
+			Suppose $x$ does not occur such that induction hypothesis would kick in.
+
+			As $x$ must occur grey in both $y\sigma$ and $z\sigma$, 
+
+			INTUITION: either induction hypothesis, or we end up with terms which do not unify.
+
+	\end{itemize}
+\end{proof}
+\end{document}

@@ -562,7 +562,39 @@ what if different starting point:
 	\RightLabelm{ x\mapsto a}
   \BinaryInfCm{  P(f(a) \mid  S(a)  \mid R(g(a))}
   \AxiomCm{\p{\top \mid \lnot R(u)}}
-  \BinaryInfCm{  P(f(a) \mid  S(a) \lor  R(g(a))}
+	\BinaryInfCm{  P(f(a)) \mid  S(a) \lor  R(g(a))}
+\end{prooftree}
+
+\clearpage
+
+More special cases from proof:
+
+\e{215a}
+
+
+\begin{prooftree}
+	\AxiomCm{ P(f(g(v)), f(v)  ) }
+	\AxiomCm{ \lnot P(f(g(a)), f(u) ) \lor S(h(u))}
+	\BinaryInfCm{ P(f(g(a)), f(a)) \mid S(h(a)) }
+	\noLine\UnaryInfC{need arrow to $S$}
+\end{prooftree}
+
+prequel to this situation:
+
+RHS:
+\begin{prooftree}
+	\AxiomCm{ \p{R(g(a))} }
+	\AxiomCm{ \sig{\lnot R(x) \lor \lnot P(f(x), f(u)) \lor S(h(u))} }
+	\BinaryInfCm{ \lnot R(g(a)) \mid \lnot P(f(g(a)), f(u)) \lor S(h(u))} 
+\end{prooftree}
+
+LHS1:
+\begin{prooftree}
+	\AxiomCm{ \sig{ R(y) \lor  P(f(y), f(v)) \lor Q(v) } }
+	\AxiomCm{ \p{ \lnot R(g(z)) \lor Q(z)}}
+	\BinaryInfCm{ R(g(z)) \mid P(f(g(z)), f(v)) \lor Q(v) \lor Q(z) }
+	\UnaryInfCm{ R(g(v)) \mid P(f(g(v)), f(v)) \lor Q(v) }
+	\noLine\UnaryInfC{ $\Ra$ have grey occ of v, it is only a problem if there isn't one}
 \end{prooftree}
 
 

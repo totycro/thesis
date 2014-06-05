@@ -531,7 +531,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 
 
-	\mytodo{check which statment we actually need (resolved literal, clause?)}
+	\mytodo{check which statement we actually need (resolved literal, clause?)}
 
 	make sure that it works for positions in the resolved literals as well as in the clause
 
@@ -756,7 +756,7 @@ As we have just seen, the formula $\AImatde(C) \lor \AIclde(C)$ now satisfies on
 Using this, we are able to formulate a result on one-sided interpolants, which are defined as follows:
 
 \begin{defi}
-	Let $\Gamma$ and $\Delta$ be sets of first-order forumulas.
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
 	A \defiemph{one-sided interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that 
 	\begin{enumerate}
 		\item $\Gamma \entails I$
@@ -895,7 +895,7 @@ This definition is convenient as it adheres to the following proposition:
 	We now consider the execution of the $\mgu$ algorithm as defined in \ref{def:mgu_algo} 
 	and show that for an $x_i$ in the sequence, either we can find an element $x_{i+1}$ which matches the requirement for the sequence or there is an occurrence of $x_i$ in the resolved literal which is unified with a term containing the outermost symbol of $t$.
 
-	As the $\mgu$ algorithm produces a unifer which modifies $x_i$, $x_i$ must occur in a resolved or factorised literal, say in $l$ at $l\at{\bhat x_i}$, such that at the other resolved or factorised literal $l'$,  $l'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
+	As the $\mgu$ algorithm produces a unifier which modifies $x_i$, $x_i$ must occur in a resolved or factorised literal, say in $l$ at $l\at{\bhat x_i}$, such that at the other resolved or factorised literal $l'$,  $l'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
 	We distinguish two cases:
 	\begin{itemize}
 			\item Suppose that $l'\at{\bhat x_i}$ contains the outermost symbol of $t$.
@@ -938,20 +938,13 @@ This definition is convenient as it adheres to the following proposition:
 					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.\todo{this is the ramp!}{}
 					Therefore suppose that $u_1, \dots, u_n$ occur only colored in $C_1$ and $C_2$.
 					
-					\begin{quote}
-
-
-
-						reasoning for when there are only gamma-terms containing children:
-					\end{quote}
-
 					Lemma~\ref{lemma:proof_along_mgu} furthermore asserts that $u_n$ occurs in a resolved or factorised literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the respective other resolved or factorised literal.
-					As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda{}'\sigma$, $\lambda{}'\at{\bhat u_n}$ is a colored occurrence as well.
+					As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda'\sigma$, $\lambda'\at{\bhat u_n}$ is a colored occurrence as well.
 
 					\begin{itemize}
 						\item
-							Suppose $\lambda{}'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
-							Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda{}'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
+							Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
+							Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
 							So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
 							As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
 							as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
@@ -959,15 +952,19 @@ This definition is convenient as it adheres to the following proposition:
 							Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
 
 						\item 
-							Suppose $\lambda{}'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
+							Suppose that $u_i$ for $1\varleq i \varleq n$ is contained in a $\Delta$-term which is contained in a $\Gamma$-term.
+
+						\item 
+							Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Delta$-term.
+							Due to $\lambda \sigma = \lambda'\sigma$, $\lambda\at{\bhat u_n}$ is also contained in a $\Delta$-term.
+							As by assumption none of the $u_i$, $1\varleq i \varleq n$ is a grey occurrence, there must be a clause which contains two occurrences of $u_i$ such that one of them is a $\Gamma$-occurrence and one is a $\Delta$-occurrence.
+
+							\begin{itemize}
+								\item Suppose that one is only gamma and the other only delta
+								\item Suppose that mixed
+							\end{itemize}
 
 					\end{itemize}
-
-
-
-					\mytodo{term containing $u_n$ must be $\Gamma$}
-
-
 
 
 					\clearpage
@@ -1138,7 +1135,7 @@ for resolution/factorisation, check unifier:
 
 			Then $u$ in $C_i$ s.t.\ $\gamma\occ{\delta_i}$ in $u\sigma$.
 			Hence by arrow 3, arrow from every grey $\delta_i$ to every $u$.
-			\mytodo{need make sure that grey $\delta_i$ exists (exaclty $\delta_i$? what if lifted)}
+			\mytodo{need make sure that grey $\delta_i$ exists (exactly $\delta_i$? what if lifted)}
 
 			existence:
 			$l'\at{\bhat u}$ is an abstraction of $u\sigma$ different from $u$.
