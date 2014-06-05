@@ -10,7 +10,7 @@
 	a4paper,
 	oneside,% apparently, this should stay below some other parameter to have an effect 
 	openany,
-%]{scrartcl}
+	%]{scrartcl}
 ]{memoir}
 
 
@@ -139,23 +139,23 @@
 
 \makeatletter
 \makepsmarks{numberCenter}{
-  \def\chaptermark##1{\markboth{%
-        \ifnum \value{secnumdepth} > -1
-          \if@mainmatter
-            \chaptername\ \thechapter\ --- %
-          \fi
-        \fi
-        ##1}{}}
-  \def\sectionmark##1{\markright{%
-        \ifnum \value{secnumdepth} > 0
-          \thesection. \ %
-        \fi
-        ##1}}
+	\def\chaptermark##1{\markboth{%
+			\ifnum \value{secnumdepth} > -1
+			\if@mainmatter
+			\chaptername\ \thechapter\ --- %
+			\fi
+			\fi
+	##1}{}}
+	\def\sectionmark##1{\markright{%
+			\ifnum \value{secnumdepth} > 0
+			\thesection. \ %
+			\fi
+	##1}}
 }
 \makeatother
 \newcommand{\mysetpagestyle}{ 
-  %\pagestyle{numberCorner}
-  \pagestyle{numberCenter}
+	%\pagestyle{numberCorner}
+	\pagestyle{numberCenter}
 }
 \mysetpagestyle
 
@@ -177,35 +177,35 @@
 
 \section{referenced lemmas from previous sections}
 \begin{quote}
-\begin{lemma}[Commutativity of lifting and logical operators]
-	\label{lemma:lift_commute}
-	\label{lemma:lift_logic_commute}
-	Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it     holds that:
-	\begin{enumerate}
-		\item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
-		\item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ   \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land, \lor\}$
-		\item $\lift{\Phi}{s = t}{z} \spas\semiff{} ( \lift{\Phi}{s}{z} =           \lift{\Phi}{t}{z} )$
-	\end{enumerate}
-\end{lemma}
+	\begin{lemma}[Commutativity of lifting and logical operators]
+		\label{lemma:lift_commute}
+		\label{lemma:lift_logic_commute}
+		Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it     holds that:
+		\begin{enumerate}
+			\item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
+			\item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ   \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land, \lor\}$
+			\item $\lift{\Phi}{s = t}{z} \spas\semiff{} ( \lift{\Phi}{s}{z} =           \lift{\Phi}{t}{z} )$
+		\end{enumerate}
+	\end{lemma}
 
-\begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
-	\label{lemma:lif}
-	Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
-	%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
-	%$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
-	Define $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
-	\[
-		x \sigma' =
-		\begin{cases} 
-			z_{t\sigma} & \text{ if } x = z_t \text{ and } t\sigma \neq t \\
-			\lifphi{x\sigma} & \text{ otherwise}
-		\end{cases} 
-	\]
+	\begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
+		\label{lemma:lif}
+		Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
+		%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
+		%$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
+		Define $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
+		\[
+			x \sigma' =
+			\begin{cases} 
+				z_{t\sigma} & \text{ if } x = z_t \text{ and } t\sigma \neq t \\
+				\lifphi{x\sigma} & \text{ otherwise}
+			\end{cases} 
+		\]
 
-	Then
-	$\lifphi{C\sigma} =
-	\lifphi{C}\sigma'$.
-\end{restatable}
+		Then
+		$\lifphi{C\sigma} =
+		\lifphi{C}\sigma'$.
+	\end{restatable}
 \end{quote}
 
 \chapter{Interpolant extraction from resolution proofs in one phase} 
@@ -408,13 +408,13 @@ we define a function on resolved literals calculating a substitution, which ensu
 		\begin{cases}
 			\bigcup_{i=1}^n \aiuP(s_i, t_i) &
 			\parbox[t]{.50\textwidth}{
-			%\text{
+				%\text{
 			if $s$ is grey, $s=f_s(s_1, \dots, s_n)$ and\newline$t = f_{t}(t_1,\dots, t_n)$\footnotemark} \\
 			\{z_{s'} \mapsto z_r, z_{t'} \mapsto z_r\} &
 			\parbox[t]{.50\textwidth}{
-			%\text{
+				%\text{
 				if $s$ is a lifting variable $z_{s'}$, $t = z_{t'}$,
-			and $z_r = \lifboth{l\sigma}\at{p}$
+				and $z_r = \lifboth{l\sigma}\at{p}$
 			}
 			%\{x_j \mapsto x_m, x_k \mapsto x_m\} & \parbox[t]{.75\textwidth}{if $a\cl = x_j$ and $b\cl = x_k$, both lifting variables, and $x_m$ is the       corresponding lifted term in the unified literal, i.e. $x_m = \lifboth{a\sigma} = \lifboth{b\sigma}$. This means to just take the term from the   literal in the actual clause.}
 		\end{cases}
@@ -422,14 +422,14 @@ we define a function on resolved literals calculating a substitution, which ensu
 	\footnotetext{Note that constants are treated as function symbols of arity zero.}
 	For $\lifboth{l\cl\sigma} = P(s_1, \dots, s_n)$ and $\lifboth{l'\cl\sigma} = P(t_1, \dots, t_n)$, we define:
 	\[
-\aiuP(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma}) = 
-\aiuP(P(\overline s), P(\overline t)) \defeq \bigcup_{i=1}^n \aiuP(s_i, t_i)
+		\aiuP(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma}) = 
+		\aiuP(P(\overline s), P(\overline t)) \defeq \bigcup_{i=1}^n \aiuP(s_i, t_i)
 	\]
 	\[
 		\aiu(\inference) \defeq \aiuP(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma}) \qedhere
 	\]
 	%For resolved or factorised literals $l $ and $l'$ of a resolution derivation step with a unifier $\sigma$ such that $l\sigma = l'\sigma$,
-	\end{defi}
+\end{defi}
 
 \begin{prop}
 	\label{prop:tau_dom_ran}
@@ -822,22 +822,28 @@ More formally:
 	which is a descendant of $l$.
 	Note that there exists exactly one for every literal of every clause which is a predecessor of $C$.
 	Hence given $C$, $l.tp$ is a well-defined position and the position will usually just be denoted by $p$ or $q$ as abbreviation of $l.tp$.
- 	For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$. 
+	For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$. 
 	Note that set of literals in $\AIcl(C)$ is exactly the set of literals of $C$.
 
 	Note that term positions are well defined since arcs do not point into colored terms and are hence not removed by liftings and in the course of the derivation, terms in literals are only modified by substitutions, which does not remove any term which might invalidate a term position.
 
+	\label{def:arrows}
 	\begin{itemize}
 		\item[Base case.]
-				For $C \in \Gamma\cup\Delta$, we define $G_C$ to be the empty graph.
+			For $C \in \Gamma\cup\Delta$, we define $G_C$ to be the empty graph.
 
 		\item[Resolution.]
 			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, we define:
 
-			$\arr_1 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ $\Psi$-colored occurrence of $x$ in $C_1$ or $C_2$, $(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
+			\mytodo{find meaningful name for index when usage of $\arr_1$ is clear}
+			$\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$
 
-			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey or colored occurrence of $x$ in $C_1$ or $C_2$,
-$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
+			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey occurrence of $x$ or maximal colored term containing colored occurrence of $x$ in $C_1$ or $C_2$,
+			$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
+
+			% old version:
+			%$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey or colored occurrence of $x$ in $C_1$ or $C_2$,
+			%$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
 
 			$G_C \defeq G_{C_1} \cup G_{C_2} \cup \arr_1 \cup \arr_2$
 
@@ -854,10 +860,14 @@ $(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 	For terms $s, t$, $s\apath_{G_C} t$ holds if there is some $p, q$ in the edge set of $G_C$ such that $s$ is a subterm of the term at $p$ and $t$ is a subterm of the term at $t$ such that $s$ and $t$ are not contained in colored terms. (NOTE: in $\AIde$, $\Gamma$-terms are not colored terms in this sense.)
 \end{defi}
 
+\begin{lemma}
+	Let $x$ be a variable such that in a resolution step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
+	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that $t$ occurs grey in  $x_i \sigma$ for $1\leq i \leq n$ and $x_n$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_n}$ such that $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, where $l'$ is the other resolved or factorised literal.
+\end{lemma}
 
 \begin{lemma}
 	If in $\AImatde(C) \lor \AIclde(C)$ a
-	$\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_? \apath t\occ{x_s}$
+	$\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_? \apath_{G_C} t\occ{x_s}$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction.
@@ -869,9 +879,52 @@ $(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 
 		\item{}Resolution.
 			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
-			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occ{x_s}$ in $C$:
+			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occ{x_s}$ in $\AImatde(C)\lor \AIclde(C)$:
+
 			\begin{itemize}
-				\item Suppose a $\Gamma$-colored term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
+
+				\item Suppose a maximal colored $\Gamma$-term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
+
+					By Lemma~\ref{}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ such that $s$ occurs grey in $u_i \sigma$ for $1\leq i \leq n$. 
+					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, say at $p$,
+					then $\arr_1$ of Definition~\ref{def:arrows} contains $(p, q)$ and $C\at{q}$ is $t\occ{x_s}$.
+					As $\arr_1 \subseteq G_C$, clearly $x_s \apath_{G_C} t\occ{x_s}$.
+
+					Therefore suppose that $u_1, \dots, u_n$ occur only colored in $C_1$ and $C_2$.
+					Lemma~\ref{} furthermore asserts that $u_n$ occurs in a resolved or factorised literal $l^*$ at $l^*\at{\bhat u_n}$ such that $l^*{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $l^*{}'$ is the other resolved or factorised literal.
+					As $u_n$ is a colored occurrence and $l^*\sigma = l^*{}'\sigma$, $l^*{}'\at{\bhat u_n}$ is a $\Delta$-term contained in a $\Gamma$-term.
+					So by the induction hypothesis, 
+					$x_? \apath_{G_{C_1}} r$, where $r$ is the maximal colored term containing $l^*{}'\at{\bhat u_n}$.
+					This however implies that $x_?$ occurs grey in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$.
+					So by arr_2
+
+					\mytodo{must be $\Gamma$}
+
+
+
+
+					\clearpage
+
+
+					Hence if there is a grey occurrence of $u$, we are done, so suppose $u$ only occurs colored in $C_1$.
+
+					As $\sigma$ is the result of the $\mgu$ algorithm as defined in \ref{def:mgu_algo},
+					there must be an occurrence of $u$ in the resolved literal, say w.l.o.g.\ at $l\at{\bhat u}$,
+					such that $l'\at{\bhat u}$ is an abstraction of $u\sigma$ which is different from $u$ and as $l\sigma = l'\sigma$, $l'\at{\bhat u}$ is contained in a $\Gamma$-colored term.
+					\begin{itemize}
+						\item Suppose that $l'\at{\bhat u}$ contains the outermost symbol of $s$.
+							Then it is a $\Delta$-term contained in a $\Gamma$-term, so by the induction hypothesis, 
+							$x_? \apath_{G_{C_1}} r$, where $r$ is the maximal colored term containing $l'\at{\bhat u}$.
+							\mytodo{}
+
+						\item Otherwise $l'\at{\bhat u}$ contains a variable $v$ such that $v\sigma$ contains $s$.
+
+							same circumstances as $u$, only finitely often
+
+
+					\end{itemize}
+					%Either $u\sigma$ contains the outermost symbol of $s$, or it contains a variable $v$ such that $v\sigma$ contains the outermost symbol of $s$. But in the latter case, $v$ must occur elsewhere in $l'$, say at $l'\at{\bhat v}$, such that again $l\at{\bhat v}$ either contains the outermost symbol of $s$ or a variable $w$ such that $w\sigma$ contains the outermost symbol of $s$.
+					%Since the $\mgu$ algorithm has terminated, we know that there 
 
 
 				\item Suppose a variable $u$ occurs in $C_1$ or $C_2$ such that $u\sigma$ is a multi-colored $\Delta$-term.
