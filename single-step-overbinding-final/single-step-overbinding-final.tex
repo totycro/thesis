@@ -861,9 +861,27 @@ More formally:
 \end{defi}
 
 \begin{lemma}
-	Let $x$ be a variable such that in a resolution step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
+	Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
 	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that $t$ occurs grey in  $x_i \sigma$ for $1\leq i \leq n$ and $x_n$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_n}$ such that $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, where $l'$ is the other resolved or factorised literal.
 \end{lemma}
+\begin{proof}
+	Let $x_1 = x$ and note that $t$ occurs in $x\sigma$ by assumption.
+	We now consider the execution of the $\mgu$ algorithm as defined in \ref{def:mgu_algo} 
+	and show that for an $x_i$ in the sequence, either we can find an element $x_{i+1}$ which matches the requirement for the sequence or there is an occurrence of $x_i$ in the resolved literal which is unified with a term containing the outermost symbol of $t$.
+
+	As the $\mgu$ algorithm produces a unifer which modifies $x_i$, $x_i$ must occur in a resolved or factorised literal, say in $l$ at $l\at{\bhat x_i}$, such that at the other resolved or factorised literal $l'$,  $l'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
+	We distinguish two cases:
+	\begin{itemize}
+			\item Suppose that $l'\at{\bhat x_i}$ contains the outermost symbol of $t$.
+				Then $x_i = x_n$ is the last element in the sequence.
+
+			\item Otherwise $l'\at{\bhat x_i}$ contains a variable $v$ such that $t$ occurs grey in $v\sigma$.
+				Then let $x_{i+1} = v$.
+				\qedhere
+	\end{itemize}
+
+	
+\end{proof}
 
 \begin{lemma}
 	If in $\AImatde(C) \lor \AIclde(C)$ a
@@ -896,7 +914,7 @@ More formally:
 					So by the induction hypothesis, 
 					$x_? \apath_{G_{C_1}} r$, where $r$ is the maximal colored term containing $l^*{}'\at{\bhat u_n}$.
 					This however implies that $x_?$ occurs grey in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$.
-					So by arr_2
+					So by $arr_2$ ???
 
 					\mytodo{must be $\Gamma$}
 
