@@ -873,19 +873,20 @@ More formally:
 	We distinguish two cases:
 	\begin{itemize}
 			\item Suppose that $l'\at{\bhat x_i}$ contains the outermost symbol of $t$.
-				Then $x_i = x_n$ is the last element in the sequence.
+				Then let $x_n = x_i$.
 
 			\item Otherwise $l'\at{\bhat x_i}$ contains a variable $v$ such that $t$ occurs grey in $v\sigma$.
-				Then let $x_{i+1} = v$.
+				Let $x_{i+1} = v$.
 				\qedhere
 	\end{itemize}
 
 	
 \end{proof}
 
+
 \begin{lemma}
 	If in $\AImatde(C) \lor \AIclde(C)$ a
-	$\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_? \apath_{G_C} t\occ{x_s}$.
+	$\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s \apath_{G_C} t\occ{x_s}$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction.
@@ -903,20 +904,26 @@ More formally:
 
 				\item Suppose a maximal colored $\Gamma$-term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
 
-					By Lemma~\ref{}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ such that $s$ occurs grey in $u_i \sigma$ for $1\leq i \leq n$. 
-					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, say at $p$,
+					Note that if $s$ occurs grey in $C$, then 
+					say at $p$,
 					then $\arr_1$ of Definition~\ref{def:arrows} contains $(p, q)$ and $C\at{q}$ is $t\occ{x_s}$.
 					As $\arr_1 \subseteq G_C$, clearly $x_s \apath_{G_C} t\occ{x_s}$.
 
+					By Lemma~\ref{}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ such that $s$ occurs grey in $u_i \sigma$ for $1\leq i \leq n$. 
+					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.
 					Therefore suppose that $u_1, \dots, u_n$ occur only colored in $C_1$ and $C_2$.
-					Lemma~\ref{} furthermore asserts that $u_n$ occurs in a resolved or factorised literal $l^*$ at $l^*\at{\bhat u_n}$ such that $l^*{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $l^*{}'$ is the other resolved or factorised literal.
-					As $u_n$ is a colored occurrence and $l^*\sigma = l^*{}'\sigma$, $l^*{}'\at{\bhat u_n}$ is a $\Delta$-term contained in a $\Gamma$-term.
-					So by the induction hypothesis, 
-					$x_? \apath_{G_{C_1}} r$, where $r$ is the maximal colored term containing $l^*{}'\at{\bhat u_n}$.
-					This however implies that $x_?$ occurs grey in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$.
-					So by $arr_2$ ???
+					Lemma~\ref{} furthermore asserts that $u_n$ occurs in a resolved or factorised literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the other resolved or factorised literal.
+					As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda{}'\sigma$, $\lambda{}'\at{\bhat u_n}$ is a $\Delta$-term contained in a $\Gamma$-term.
+					Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda{}'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
+					So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
+					As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
+					as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
 
-					\mytodo{must be $\Gamma$}
+					Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
+
+
+
+					\mytodo{term containing $u_n$ must be $\Gamma$}
 
 
 
