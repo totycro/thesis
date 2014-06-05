@@ -19,6 +19,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 
+
 %\usepackage[urw-garamond]{mathdesign}
 
 \usepackage{lscape}
@@ -33,6 +34,7 @@
 
 
 \input{../latex_header.tex}
+
 
 % subsections also in toc
 \setcounter{tocdepth}{2}
@@ -801,17 +803,35 @@ More formally:
 
 		\item[Resolution.]
 			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
-			If $l$ is a colored literal, then
-			$\AIcol(C) \defeq \AIcol(C_1) \cup \AIcol(C_2) \cup \{ \lifboth{l\cl\sigma}\tau, \lifboth{l'\cl\sigma}\tau \}$.
-			Otherwise $l$ is a grey literal and 
-			$\AIcol(C) \defeq \AIcol(C_1) \cup \AIcol(C_2)$.
+			Then:
+
+			$\AIcol(C) \defeq \{ \lifboth{\varphi\sigma}\tau \mid \varphi \in \AIcol'(C) \}$, where 
+
+			$\AIcol'(C) \defeq 
+			\begin{cases}
+				\AIcol(C_1) \cup \AIcol(C_2) \cup \{ l\cl, l'\cl \}  & \text{ if $l$ is a colored literal} \\
+				\AIcol(C_1) \cup \AIcol(C_2) & \text{ if $l$ is a grey literal} 
+			\end{cases} $
 
 		\item[Factorisation.]
 			If the clause $C$ is the result of a factorisation of $C_1$, then 
-			$\AIcol(C) \defeq \AIcol(C_1) \cup \AIcol(C_2)$.
+			$\AIcol(C) \defeq \{ \lifboth{\varphi\sigma}\tau \mid \varphi \in \AIcol(C_1) \}$.
 			\qedhere
 	\end{itemize}
 \end{defi}
+
+\begin{defi}[$\AIany$]
+	For a clause $C$, $\AIany(C)$ denotes $\AImat(C)$, $\AIcl(C)$, $\AIcol(C)$.
+\end{defi}
+
+This definition is convenient as it adheres to the following proposition:
+
+\begin{prop}
+	Let $l$ be a literal in a clause in $\Gamma \cup \Delta$. 
+	Then for a clause $C$ in a resolution refutation of $\Gamma\cup\Delta$, 
+	$\AIany(C)$ contains a literal derived from $l$.
+\end{prop}
+
 
 \mytodo{define: descendant (usual stuff, factorisation is merge, resolution is de-facto merge which happens implicitly so no actual merge required)}
 
@@ -820,7 +840,7 @@ More formally:
 	The nodes are of the form $l.tp$, where $l$ denotes a literal and $tp$ a position of a term in $l$, which is not contained in a colored term.
 	The node $l.tp$ in a graph $G_C$ refers to the literal in $\AImat(C)$, $\AIcl(C)$ or $\AIcol(C)$
 	which is a descendant of $l$.
-	Note that there exists exactly one for every literal of every clause which is a predecessor of $C$.
+	Note that there exists exactly one for every literal of every clause which is an ancestor of $C$.
 	Hence given $C$, $l.tp$ is a well-defined position and the position will usually just be denoted by $p$ or $q$ as abbreviation of $l.tp$.
 	For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$. 
 	Note that set of literals in $\AIcl(C)$ is exactly the set of literals of $C$.
@@ -836,7 +856,12 @@ More formally:
 			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, we define:
 
 			\mytodo{find meaningful name for index when usage of $\arr_1$ is clear}
-			$\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$
+
+			\comm{old idea, basically requires to know term behind lifting var \tiny $\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$ (NOTE: does not only mean $C$ actually), $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$}
+
+			\NB{this will only work for $\AIde$, c.f.\ 212c:}
+
+			$\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $z_t$ in $\AIany(C)$, $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$
 
 			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey occurrence of $x$ or maximal colored term containing colored occurrence of $x$ in $C_1$ or $C_2$,
 			$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
@@ -861,6 +886,7 @@ More formally:
 \end{defi}
 
 \begin{lemma}
+	\label{lemma:proof_along_mgu}
 	Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
 	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that $t$ occurs grey in  $x_i \sigma$ for $1\leq i \leq n$ and $x_n$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_n}$ such that $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, where $l'$ is the other resolved or factorised literal.
 \end{lemma}
@@ -893,33 +919,49 @@ More formally:
 
 	\begin{description}
 		\item{}Base case.
-			For $C \in \Gamma\cup\Delta$, no mixed-colored term occurs in $C$ and hence also not in $\lifdeltanovar{C} = \AIclde(C)$.
-			As $\AImatde(C)$ is either $\top$ or $\bot$, this situation does not arise here as well.
+			For $C \in \Gamma\cup\Delta$, consider that no mixed-colored terms occur in $C$ and hence no $\Gamma$-term in $\AImatde(C) \lor \AIclde(C)$ can contain a $\Delta$-lifting variable.
 
 		\item{}Resolution.
 			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
-			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occ{x_s}$ in $\AImatde(C)\lor \AIclde(C)$:
+			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occ{x_s}$ in $\AImatde(C)\lor \AIclde(C)$ such that this has not been the case in $C_1$ or $C_2$:
 
 			\begin{itemize}
 
 				\item Suppose a maximal colored $\Gamma$-term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
 
-					Note that if $s$ occurs grey in $C$, then 
-					say at $p$,
-					then $\arr_1$ of Definition~\ref{def:arrows} contains $(p, q)$ and $C\at{q}$ is $t\occ{x_s}$.
-					As $\arr_1 \subseteq G_C$, clearly $x_s \apath_{G_C} t\occ{x_s}$.
+					Note that it suffices to show that $x_s$ occurs grey in $\AIanyde(C)$,
+					since if we suppose that it does so at position $p$,
+					then $\arr_1$ as defined in Definition~\ref{def:arrows} contains $(p, q)$ such that $\AIclde(C)\at{q}$ is $t\occ{x_s}$.
+					As $\arr_1 \subseteq G_C$, this implies $x_s \apath_{G_C} t\occ{x_s}$.
 
-					By Lemma~\ref{}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ such that $s$ occurs grey in $u_i \sigma$ for $1\leq i \leq n$. 
-					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.
+					By Lemma~\ref{lemma:proof_along_mgu}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ and $s$ occurs grey in $u_i \sigma$ for $1\varleq i \varleq n$. 
+					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.\todo{this is the ramp!}{}
 					Therefore suppose that $u_1, \dots, u_n$ occur only colored in $C_1$ and $C_2$.
-					Lemma~\ref{} furthermore asserts that $u_n$ occurs in a resolved or factorised literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the other resolved or factorised literal.
-					As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda{}'\sigma$, $\lambda{}'\at{\bhat u_n}$ is a $\Delta$-term contained in a $\Gamma$-term.
-					Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda{}'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
-					So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
-					As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
-					as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
+					
+					\begin{quote}
 
-					Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
+
+
+						reasoning for when there are only gamma-terms containing children:
+					\end{quote}
+
+					Lemma~\ref{lemma:proof_along_mgu} furthermore asserts that $u_n$ occurs in a resolved or factorised literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the respective other resolved or factorised literal.
+					As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda{}'\sigma$, $\lambda{}'\at{\bhat u_n}$ is a colored occurrence as well.
+
+					\begin{itemize}
+						\item
+							Suppose $\lambda{}'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
+							Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda{}'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
+							So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
+							As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
+							as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
+
+							Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
+
+						\item 
+							Suppose $\lambda{}'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
+
+					\end{itemize}
 
 
 

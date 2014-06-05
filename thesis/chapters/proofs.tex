@@ -365,7 +365,7 @@ Some elementary properties of liftings are described by the following lemmas:
 	%Then 
 	%$ Q_1 z_1 \ldots Q_n z_n \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }
 	%\;\liff\;
-	%Q_1 z_1 \ldots Q_n z_n \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$ for $Q_i \in \{\forall, \exists\}$ for $1\leq i\leq n$.
+	%Q_1 z_1 \ldots Q_n z_n \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$ for $Q_i \in \{\forall, \exists\}$ for $1\varleq i\varleq n$.
 
 	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }$ and 
 	$ \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$
@@ -696,11 +696,11 @@ $\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 \begin{proof}
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{\PI(\pi)}$ where $m$ is the number of maximal $\Delta$-colored terms in $\PI(\pi)$.
 
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_i$, $1 \leq i \leq m$, a grey term or a $\Gamma$-terms.
+	A term in $\lifdelta{\PI(\pi)}$ is either $x_i$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-terms.
 	Let $t$ be a maximal $\Gamma$-term in $\lifdelta{\PI(\pi)}$ and $x_{j_1}, \dots, x_{j_k}$ the variables replacing $\Delta$-terms in~$t$.
 	Note that the $\Delta$-terms, which are replaced by $x_{j_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
 
-	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\leq j \leq n_u$ are grey terms and the $v_j$, $1\leq j\leq n_v$ are $\Gamma$-terms.
+	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are grey terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
 
 	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is replaced by some $z_j$, which is existentially quantified.
 	Hence $t$ is a witness for $z_j$ as due to the quantifier ordering,
