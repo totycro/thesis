@@ -605,7 +605,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 					Suppose that $t$ is a grey term of the form $f(s_1, \dots, s_n)$.
 					Then $\lifboth{t} = f(\lifboth{s_1}, \dots, \lifboth{s_n})$ and by the induction hypothesis, $t\cl = f(r_1, \dots, r_n)$ such that 
 					$\bigwedge_{i=1}^n r_i \simgeq \lifboth{s_i}$ .
-					By the induction hypothesis applied to the parameters of $\lifboth{t}$ and $\lifboth{t\cl}$, we obtain that  $\lifboth{r_i\sigma}\tau \simgeq \lifboth{s_i\sigma}$ for $1\nolinebreak \leq\nolinebreak i\nolinebreak \leq\nolinebreak n$.
+					By the induction hypothesis applied to the parameters of $\lifboth{t}$ and $\lifboth{t\cl}$, we obtain that  $\lifboth{r_i\sigma}\tau \simgeq \lifboth{s_i\sigma}$ for $1\nolinebreak \varleq\nolinebreak i\nolinebreak \varleq\nolinebreak n$.
 					Hence $  f(\lifboth{r_1\sigma}, \dots, \lifboth{r_n\sigma}) \simgeq f(\lifboth{s_1\sigma}, \dots, \lifboth{s_n\sigma})$, 
 					which however is nothing else than 
 					$\lifboth{t\cl\sigma} \simgeq \lifboth{t\sigma} $.
@@ -887,8 +887,16 @@ This definition is convenient as it adheres to the following proposition:
 
 \begin{lemma}
 	\label{lemma:proof_along_mgu}
+	% OLD formulation, subset of current one:
+	%Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
+	%Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that $t$ occurs grey in  $x_i \sigma$ for $1\varleq i \varleq n$ and $x_n$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_n}$ such that $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, where $l'$ is the other resolved or factorised literal.
+
 	Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
-	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that $t$ occurs grey in  $x_i \sigma$ for $1\leq i \leq n$ and $x_n$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_n}$ such that $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, where $l'$ is the other resolved or factorised literal.
+
+	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
+	$t$ occurs grey in $x_i \sigma$  and
+	$x_i$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_i}$ such that $l'\at{\bhat x_n}$ contains $x_{i+1}$ for $1\varleq i \varleq n-1$ and $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, 
+	where $l'$ is the other resolved or factorised literal.
 \end{lemma}
 \begin{proof}
 	Let $x_1 = x$ and note that $t$ occurs in $x\sigma$ by assumption.
