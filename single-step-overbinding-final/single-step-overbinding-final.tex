@@ -919,6 +919,85 @@ This definition is convenient as it adheres to the following proposition:
 
 \end{proof}
 
+%\begin{lemma}
+%	If $x$ occurs grey in $y\sigma$, then the seq of vars in 24 are all contained in single-colored terms of the same color or there is a grey occurrence of $x$.
+%\end{lemma}
+
+\begin{lemma}
+	\label{lemma:smallest_colored_container}
+
+	Let a variable $x$ occur in $C$ once in a single-colored $\Gamma$-term and once in a single-colored $\Delta$-term.
+	Then $x$ occurs grey in $\AIany(C)$.
+
+	% equivalent formulation:
+	%Let a variable $x$ occur in $C$ such that there is one occurrence which is contained in a smallest colored term which is a $\Gamma$-term and another occurrence which is contained in a smallest colored term which is a $\Delta$-term.
+	%Then $x$ occurs grey in $\AIany(C)$.
+
+	% equivalent formulation:
+	%Let $s\occ{x}$ and $t\occ{x}$ be terms occurring in $C$ such that
+	%$x$ occurs in $s\occ{x}$ and $t\occ{x}$
+	%and $s$ is a $\Gamma$-term and all symbols of $s\occ{x}$ are either grey or $\Gamma$-colored,
+	%and $t$ is a $\Delta$-term and all symbols of $t\occ{x}$ are either grey or $\Delta$-colored.
+	%Then $x$ occurs grey in $\AIany(C)$.
+\end{lemma}
+\begin{proof}
+	We proceed by induction on the resolution refutation:
+
+	\begin{description}
+		\item{}Base case.
+			Clauses contained in $\Gamma$ do not contain $\Delta$-terms and clauses contained in $\Delta$ do not contain $\Gamma$-terms.
+
+		\item{}Resolution.
+			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
+
+			We start by making an observation \markC:
+			If $x$ occurs grey in $y\sigma$, then by Lemma~\ref{lemma:proof_along_mgu}, there exists a sequence $x_1,\dots, x_n$ such that for $1\varleq i \varleq n-1$, $u_i$ occurs in $\lambda\at{\bhat u_i}$ in a resolved literal $\lambda$ such that the other resolved literal $\lambda'$ has a grey occurrence of $u_{i+1}$ at $\lambda'\at{\bhat u_i}$.
+			Hence if $u_i$ occurs in a single-colored $\Phi$-term in $\lambda\at{\bhat u_i}$, then $u_{i+1}$ does so as well in $\lambda'\at{\bhat u_i}$.
+			As $u_{i+1}$ also occurs in $\lambda'\at{\bhat u_{i+1}}$ for $1\varleq 1 \varleq n-1$, 
+			i.e.\ in the same clause as $\lambda'\at{\bhat u_i}$, then by the induction hypothesis, $u_{i+1}$ occurs grey in $\AIany(C_i)$ for $i\in \{1,2\}$ and as $u_{i+1}\sigma$ contains a grey occurrence of $x$, 
+			$x$ occurs grey in $\AIany(C)$.
+			Therefore we assume that all variable of the sequence $x_1, \dots, x_n$ occur only colored and the smallest colored term containing them is a single-colored $\Phi$-term, as otherwise we are done.
+
+
+			We distinguish between all four cases which produce a clause on which the lemma applies:
+
+			\begin{itemize}
+
+				\item
+					Suppose that w.l.o.g.\ $C_1$ contains a single-colored $\Gamma$-term $s\occ{x}$ which contains $x$ and $C_1$ or $C_2$ contains a single-colored $\Delta$-term containing a variable $y$ such that $x$ occurs grey or in a single-colored $\Delta$-colored in $y\sigma$.
+
+					Let $r$ be $x$ in the first case or the maximal colored term in $y\sigma$ containing $x$ in the second case.
+
+					\begin{itemize}
+						\item
+							Suppose that $x$ occurs grey in $y\sigma$:
+							Then by Lemma~\ref{lemma:proof_along_mgu}, there is a variable $y_n$ which occurs in a resolved literal $\lambda$ at $\lambda\at{\bhat y_n}$ such that $\lambda'\at{\bhat y_n}$ contains a grey occurrence of $x$.
+							By observation \markC, $\lambda\at{\bhat y_n}$ is contained in a single-colored $\Delta$-term.
+							But then so is $\lambda'\at{\bhat y_n}$, and as clauses are variable-disjoint, $s\occ{x}$ also occurs in this clause. So by the induction hypothesis, there is a grey occurrence of $x$ in $\AIany(C_i)$ where $C_i$ is the clause containing $s\occ{x}$, and as $x$ is not affected by $\sigma$, there is one in $\AIany(C)$.
+
+						\item
+							Suppose that $x$ occurs in a single-colored $\Delta$-term $y\sigma$:
+
+							If a single-colored $\Delta$-term $t\occ{x}$ containing $x$ occurs in $C_1$ or $C_2$, say in $C_j$, then as clauses are variable disjoint, it must be the same clause as $s\occ{x}$.
+							But then $x$ occurs grey in $\AIany(C_j)$ by the induction hypothesis, so assume that no such $t\occ{x}$ occurs in $C_1$ or $C_2$.
+
+							But as a single-colored $\Delta$-term containing $x$ occurs in $y\sigma$, there must be a single-colored $\Delta$-term in $C_1$ or $C_2$ which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
+							Hence this case is repeated, but as $z\sigma$ is strictly smaller than $y\sigma$, this case can only repeat finitely often.
+
+					\end{itemize}
+
+					\mytodo{ ICI; recheck above and finish below }
+
+
+					\item 3 other items from arrow-final-conjectures.
+
+			\end{itemize}
+
+		\item{}Factorisation.
+			\mytodo{}
+
+	\end{description}
+\end{proof}
 
 \begin{lemma}
 	If in $\AImatde(C) \lor \AIclde(C)$ a
@@ -935,9 +1014,10 @@ This definition is convenient as it adheres to the following proposition:
 			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
 			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occatp{x_s}$ in $\AImatde(C)\lor \AIclde(C)$ such that this has not been the case in $C_1$ or $C_2$:
 
-			\begin{itemize}
+			\begin{enumerate}
 
 				\item Suppose a maximal colored $\Gamma$-term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
+					\label{25_1}
 
 					Note that it suffices to show that $x_s$ occurs grey in $\AIanyde(C)$,
 					since if we suppose that it does so at position $r$,
@@ -1033,9 +1113,16 @@ This definition is convenient as it adheres to the following proposition:
 
 					\end{comment}
 
-				\item Suppose a variable $u$ occurs in $C_1$ or $C_2$ such that $u\sigma$ is a multi-colored $\Gamma$-term.
-					
-			\end{itemize}
+				\item Suppose a variable $u$ occurs in $C_1$ or $C_2$ such that $u\sigma$ contains a multi-colored $\Gamma$-term $t$.
+
+					Then by Lemma~\ref{lemma:proof_along_mgu},
+					a variable $u_n$ occurs in a resolved literal $l$ at $l\at{\bhat u_n}$ such that in the other resolved literal $l'$, $l'\at{\bhat u_n}$ contains the outermost symbol of $t$.
+
+					If $l'\at{\bhat u_n}$ is a multi-colored $\Gamma$-term, then by the induction hypothesis, dots
+
+					Otherwise as the outermost symbol of $t$ is $\Gamma$-colored, $l'\at{\bhat u_n}$ contains a $\Gamma$-colored term which contains a variable $v$ such that a $\Delta$-term occurs grey in $v\sigma$, where case~\ref{25_1} gives the result, or a multi-colored $\Gamma$-term $s$ occurs grey in $v$. But as $s$ is strictly smaller than $t$, this case can only repeat finitely often before the other case is reached.
+
+			\end{enumerate}
 
 
 		\item{}Factorisation.
