@@ -27,7 +27,6 @@ A term $s$ is an \defiemph{instance} of a term $t$ if there exists a substitutio
 If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that the abstraction- and instance-relation are reflexive. 
 $s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$.
 
-
 The length of a term or formula $\phi$ is the number of logical and non-logical symbols in $\phi$.
 
 $A\occurat{s}{p}$ denotes $A$ with an occurrence of $s$ at position $p$.
@@ -50,6 +49,8 @@ TODO: define infinite-domain unifiers
 TODO: define range and domain of substitutions
 
 TODO: define prenex formulas with matrix and prefix
+
+TODO: define prefix of term position: e.g. u in f(c, g(u, x, h(a))) has the prefix f(., g(., ., .)), or possible written as sequence of symbols (algo: always go to parent starting at u)
 
 \section{Craig Interpolation}
 

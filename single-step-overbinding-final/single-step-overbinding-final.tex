@@ -894,33 +894,35 @@ This definition is convenient as it adheres to the following proposition:
 	Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
 
 	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
-	$t$ occurs grey in $x_i \sigma$  and
-	$x_i$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_i}$ such that $l'\at{\bhat x_n}$ contains $x_{i+1}$ for $1\varleq i \varleq n-1$ and $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, 
-	where $l'$ is the other resolved or factorised literal.
+	$t$ occurs grey in $x_i \sigma$ and
+	$x_i$ occurs in a resolved or factorised literal $l_i$ at $l_i\at{\bhat x_i}$ such that 
+	if $l_i'$ is the other resolved or factorised literal,
+	$l_i'\at{\bhat x_i}$ contains $x_{i+1}$ for $1\varleq i \varleq n-1$ and $l_n'\at{\bhat x_n}$ contains the outermost symbol of $t$, 
+	where 
 \end{lemma}
 \begin{proof}
 	Let $x_1 = x$ and note that $t$ occurs in $x\sigma$ by assumption.
 	We now consider the execution of the $\mgu$ algorithm as defined in \ref{def:mgu_algo} 
 	and show that for an $x_i$ in the sequence, either we can find an element $x_{i+1}$ which matches the requirement for the sequence or there is an occurrence of $x_i$ in the resolved literal which is unified with a term containing the outermost symbol of $t$.
 
-	As the $\mgu$ algorithm produces a unifier which modifies $x_i$, $x_i$ must occur in a resolved or factorised literal, say in $l$ at $l\at{\bhat x_i}$, such that at the other resolved or factorised literal $l'$,  $l'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
+	As the $\mgu$ algorithm produces a unifier which modifies $x_i$, $x_i$ must occur in a resolved or factorised literal, say in $l_i$ at $l_i\at{\bhat x_i}$, such that at the other resolved or factorised literal $l_i'$,  $l_i'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
 	We distinguish two cases:
 	\begin{itemize}
-			\item Suppose that $l'\at{\bhat x_i}$ contains the outermost symbol of $t$.
-				Then let $x_n = x_i$.
+		\item Suppose that $l_i'\at{\bhat x_i}$ contains the outermost symbol of $t$.
+			Then let $x_n = x_i$.
 
-			\item Otherwise $l'\at{\bhat x_i}$ contains a variable $v$ such that $t$ occurs grey in $v\sigma$.
-				Let $x_{i+1} = v$.
-				\qedhere
+		\item Otherwise $l_i'\at{\bhat x_i}$ contains a variable $v$ such that $t$ occurs grey in $v\sigma$.
+			Let $x_{i+1} = v$.
+			\qedhere
 	\end{itemize}
 
-	
+
 \end{proof}
 
 
 \begin{lemma}
 	If in $\AImatde(C) \lor \AIclde(C)$ a
-	$\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s \apath_{G_C} t\occ{x_s}$.
+	$\Gamma$-term $t\occatp{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s \apath_{G_C} t\occatp{x_s}$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction.
@@ -931,76 +933,108 @@ This definition is convenient as it adheres to the following proposition:
 
 		\item{}Resolution.
 			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
-			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occ{x_s}$ in $\AImatde(C)\lor \AIclde(C)$ such that this has not been the case in $C_1$ or $C_2$:
+			There are two possible cases in which a $\Delta$-lifting variable $x_s$ can be subterm of a $\Gamma$-colored term $t\occatp{x_s}$ in $\AImatde(C)\lor \AIclde(C)$ such that this has not been the case in $C_1$ or $C_2$:
 
 			\begin{itemize}
 
 				\item Suppose a maximal colored $\Gamma$-term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
 
 					Note that it suffices to show that $x_s$ occurs grey in $\AIanyde(C)$,
-					since if we suppose that it does so at position $p$,
-					then $\arr_1$ as defined in Definition~\ref{def:arrows} contains $(p, q)$ such that $\AIclde(C)\at{q}$ is $t\occ{x_s}$.
-					As $\arr_1 \subseteq G_C$, this implies $x_s \apath_{G_C} t\occ{x_s}$.
+					since if we suppose that it does so at position $r$,
+					then $\arr_1$ as defined in Definition~\ref{def:arrows} contains $(r, q)$ such that $\AIclde(C)\at{q}$ is $t\occatp{x_s}$.
+					As $\arr_1 \subseteq G_C$, this implies $x_s \apath_{G_C} t\occatp{x_s}$.
 
 					By Lemma~\ref{lemma:proof_along_mgu}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ and $s$ occurs grey in $u_i \sigma$ for $1\varleq i \varleq n$. 
 					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.\todo{this is the ramp!}{}
 					Therefore suppose that $u_1, \dots, u_n$ occur only colored in $C_1$ and $C_2$.
+
+					\begin{comment}
+
+						alternate version (unfinished)
+
+						Lemma~\ref{lemma:proof_along_mgu} furthermore asserts that $u_n$ occurs in a resolved literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the respective other resolved literal.
+						As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda'\sigma$, $\lambda'\at{\bhat u_n}$ is a colored occurrence as well.
+
+						\begin{itemize}
+							\item
+								Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
+								Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
+								So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
+								As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
+								as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
+
+								Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
+
+							\item 
+								Suppose that $u_i$ for $1\varleq i \varleq n$ is contained in a $\Delta$-term which is contained in a $\Gamma$-term.
+
+								\mytodo{}
+
+							\item 
+								Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Delta$-term.
+								Due to $\lambda \sigma = \lambda'\sigma$, $\lambda\at{\bhat u_n}$ is also contained in a $\Delta$-term.
+								As by assumption none of the $u_i$, $1\varleq i \varleq n$ is a grey occurrence, there must be a clause which contains two occurrences of $u_i$ such that one of them is a $\Gamma$-occurrence and one is a $\Delta$-occurrence.
+
+								\begin{itemize}
+									\item Suppose that one is only gamma and the other only delta
+									\item Suppose that mixed
+								\end{itemize}
+
+						\end{itemize}
+
+					\end{comment}
+
+
+
+					Note that in the prefix of $x_s$ in $t\occatp{x_s}$, no $\Delta$-colored symbol occurs as otherwise $x_s$ would not occur in this term.
+					Hence the smallest colored term containing the occurrence of $u$ in the predecessor of $t\occ{x_s}$ is a $\Gamma$-term.
+
+					Lemma~\ref{lemma:proof_along_mgu} furthermore asserts that $u_i$ occurs in a resolved literal $l_i$ at $l_i\at{\bhat u_i}$ such that in the respective opposite resolved literal $l_i'$, $l_i'\at{\bhat u_i}$ contains $u_{i+1}$ for $1\varleq i\varleq n-1$ and $l_n'\at{\bhat u_n}$ contains the outermost symbol of $s$.
+					Note that for $1\varleq i \varleq n$, $u_i$ occurs at least twice in its respective clause.
+					Note also that as $l_i\sigma = l_i'\sigma$, $l\at{\bhat u_i}$ and $l'\at{\bhat u_i}$ share the prefix of $\bhat u_i$, so if $l\at{\bhat u_i}$ is contained in a $\Phi$-colored term, then so is the grey occurrence of $u_{i+1}$ in $l'\at{\bhat u_i}$.
+
+					If one of the $u_i$ occurs in a clause twice such that for one occurrence, the smallest colored term containing it is $\Gamma$-colored and for the other one, the smallest colored term containing it is $\Delta$-colored, then by Lemma~\ref{lemma:smallest_colored_container}, $u_i$ occurs grey in $\AIany(C)$ and we are done.
+					Therefore assume that this situation does not arise for any $u_i$, $1\varleq i \varleq n$.
+
+					Hence as the smallest colored term containing the occurrences of $u_1$ must be $\Gamma$-terms, the same holds for $u_n$.
+					But as $l'_n\at{ \bhat u_n }$ contains the outermost symbol of $s$, which is a $\Delta$-term, and $l_n\sigma = l_n'\sigma$ and the smallest colored term containing $l_n\at{ \bhat u_n }$ is a $\Gamma$-term, 
+					$l'_n\at{ \bhat u_n }$ is contained in a $\Gamma$-term.
+					Let $r\occ{x_\varphi}$ be hte maximal colored term containing $l'_n\at{ \bhat u_n }$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $l'_n{}\cl\at{ \bhat u_n }$.
+					Let $C_j$ be the clause containing $l'_n$.
+
+					Then by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$.
+					As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
+					as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
+
+					Hence there is a grey occurrence of $x_s$ in $\AIanyde(C)$.
+
+
+					\begin{comment}
+
+						Hence if there is a grey occurrence of $u$, we are done, so suppose $u$ only occurs colored in $C_1$.
+
+						As $\sigma$ is the result of the $\mgu$ algorithm as defined in \ref{def:mgu_algo},
+						there must be an occurrence of $u$ in the resolved literal, say w.l.o.g.\ at $l\at{\bhat u}$,
+						such that $l'\at{\bhat u}$ is an abstraction of $u\sigma$ which is different from $u$ and as $l\sigma = l'\sigma$, $l'\at{\bhat u}$ is contained in a $\Gamma$-colored term.
+						\begin{itemize}
+							\item Suppose that $l'\at{\bhat u}$ contains the outermost symbol of $s$.
+								Then it is a $\Delta$-term contained in a $\Gamma$-term, so by the induction hypothesis, 
+								$x_? \apath_{G_{C_1}} r$, where $r$ is the maximal colored term containing $l'\at{\bhat u}$.
+								\mytodo{}
+
+							\item Otherwise $l'\at{\bhat u}$ contains a variable $v$ such that $v\sigma$ contains $s$.
+
+								same circumstances as $u$, only finitely often
+
+
+						\end{itemize}
+						%Either $u\sigma$ contains the outermost symbol of $s$, or it contains a variable $v$ such that $v\sigma$ contains the outermost symbol of $s$. But in the latter case, $v$ must occur elsewhere in $l'$, say at $l'\at{\bhat v}$, such that again $l\at{\bhat v}$ either contains the outermost symbol of $s$ or a variable $w$ such that $w\sigma$ contains the outermost symbol of $s$.
+						%Since the $\mgu$ algorithm has terminated, we know that there 
+
+					\end{comment}
+
+				\item Suppose a variable $u$ occurs in $C_1$ or $C_2$ such that $u\sigma$ is a multi-colored $\Gamma$-term.
 					
-					Lemma~\ref{lemma:proof_along_mgu} furthermore asserts that $u_n$ occurs in a resolved or factorised literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the respective other resolved or factorised literal.
-					As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda'\sigma$, $\lambda'\at{\bhat u_n}$ is a colored occurrence as well.
-
-					\begin{itemize}
-						\item
-							Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
-							Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
-							So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
-							As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
-							as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
-
-							Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
-
-						\item 
-							Suppose that $u_i$ for $1\varleq i \varleq n$ is contained in a $\Delta$-term which is contained in a $\Gamma$-term.
-
-						\item 
-							Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Delta$-term.
-							Due to $\lambda \sigma = \lambda'\sigma$, $\lambda\at{\bhat u_n}$ is also contained in a $\Delta$-term.
-							As by assumption none of the $u_i$, $1\varleq i \varleq n$ is a grey occurrence, there must be a clause which contains two occurrences of $u_i$ such that one of them is a $\Gamma$-occurrence and one is a $\Delta$-occurrence.
-
-							\begin{itemize}
-								\item Suppose that one is only gamma and the other only delta
-								\item Suppose that mixed
-							\end{itemize}
-
-					\end{itemize}
-
-
-					\clearpage
-
-
-					Hence if there is a grey occurrence of $u$, we are done, so suppose $u$ only occurs colored in $C_1$.
-
-					As $\sigma$ is the result of the $\mgu$ algorithm as defined in \ref{def:mgu_algo},
-					there must be an occurrence of $u$ in the resolved literal, say w.l.o.g.\ at $l\at{\bhat u}$,
-					such that $l'\at{\bhat u}$ is an abstraction of $u\sigma$ which is different from $u$ and as $l\sigma = l'\sigma$, $l'\at{\bhat u}$ is contained in a $\Gamma$-colored term.
-					\begin{itemize}
-						\item Suppose that $l'\at{\bhat u}$ contains the outermost symbol of $s$.
-							Then it is a $\Delta$-term contained in a $\Gamma$-term, so by the induction hypothesis, 
-							$x_? \apath_{G_{C_1}} r$, where $r$ is the maximal colored term containing $l'\at{\bhat u}$.
-							\mytodo{}
-
-						\item Otherwise $l'\at{\bhat u}$ contains a variable $v$ such that $v\sigma$ contains $s$.
-
-							same circumstances as $u$, only finitely often
-
-
-					\end{itemize}
-					%Either $u\sigma$ contains the outermost symbol of $s$, or it contains a variable $v$ such that $v\sigma$ contains the outermost symbol of $s$. But in the latter case, $v$ must occur elsewhere in $l'$, say at $l'\at{\bhat v}$, such that again $l\at{\bhat v}$ either contains the outermost symbol of $s$ or a variable $w$ such that $w\sigma$ contains the outermost symbol of $s$.
-					%Since the $\mgu$ algorithm has terminated, we know that there 
-
-
-				\item Suppose a variable $u$ occurs in $C_1$ or $C_2$ such that $u\sigma$ is a multi-colored $\Delta$-term.
-					\mytodo{}
 			\end{itemize}
 
 
@@ -1016,6 +1050,8 @@ This definition is convenient as it adheres to the following proposition:
 
 
 \section{Combining the results}
+
+\largered{ doesn't it work to add arrows based on $C$ (actual clause), then prove correctness via $\AI^\Delta$ and $\AI^\Gamma$, then just use $\AI$ wihout actually needing the one-sided ones? }
 
 there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifgammanovar{ \AIde(C) } $
 
