@@ -928,6 +928,19 @@ This definition is convenient as it adheres to the following proposition:
 
 
 \begin{lemma}
+	If $x$ occurs in a single-colored $\Delta$-term in $y\sigma$, then there is a sequence $y_1, \dots, y_n$ such that for each $y_i$, $y_i\sigma$ contains a grey occ of $x$ or single-colored $\Delta$-term containing $x$.
+	Furtheremore, either
+
+	(1) some single-colored $\Delta$-term containing $x$ occurs in $l$ or $l'$
+
+	(2) some single-colored $\Gamma$-term containing $x$ occurs in $l$ or $l'$ and there is a color change: some $y_i$ is contained in a $\Delta$-term and some $y_{i+1}$ is contained in a $\Gamma$-term. (hence $y_i$ and $y_{i+1}$ have a grey occ of $x$).
+
+	(3) $x$ occs grey.
+
+	additional conjecture: for the first $y_i$, but not $y_1$, the terms are contained in single-col $\Delta$-terms. when the colored tiers are peeled off, the remaining $y_i$ are grey occs of $x$. this is where color changes are possible.
+\end{lemma}
+
+\begin{lemma}
 	\label{lemma:smallest_colored_container}
 
 	Let a variable $x$ occur in $C$ once in a single-colored $\Gamma$-term and once in a single-colored $\Delta$-term.\footnote{Note that these terms may be subterms of other terms.}
@@ -972,9 +985,11 @@ This definition is convenient as it adheres to the following proposition:
 
 			Suppose for the induction start that $s\occ{x}$ is of size $2$. Note that this is the smallest size for a single-colored term containing a variable.
 			Then $\lambda'\at{\bhat y_n}$ either is $s\occ{x}$, in which case we are done, or $\lambda'\at{\bhat y_n}$ is $s\occ{z}$ for a variable $z$ such that $z\sigma = x$.
-			Hence $z$ occurs elsewhere in $\lambda'$, say in $\lambda'\at{\bhat z}$.
-			If $\lambda'\at{\bhat z}$ is a grey occurrence or $\lambda'\at{\bhat z}$ is contained in a single-colored $\Delta$-term, 
-			there is a corresponding occurrence of $x$ in g
+			Hence $z$ occurs elsewhere in $\lambda'$, say in $\lambda'\at{\bhat z}$, such that $\lambda\at{\bhat z}$ is $x$.
+			So if $\lambda'\at{\bhat z}$ is a grey occurrence or $\lambda'\at{\bhat z}$ is contained in a single-colored $\Delta$-term, then due to $\lambda\sigma = \lambda'\sigma$, $\lambda\at{\bhat z}$ is a corresponding occurrence of $x$.
+			Otherwise $\lambda'\at{\bhat z}$ is contained in a single-colored $\Gamma$-term. 
+			\largered{meh}
+
 
 			\mytodo{ICI: ind hyp should work for when z/x occur in a single-colored $\Gamma$-term, otw check what we need to have as lemma statement. all is in the resolved literal, so it's gone from the clause in the next step.}
 
