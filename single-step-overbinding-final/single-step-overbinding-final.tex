@@ -1,14 +1,14 @@
 \documentclass[,%fontsize=11pt,%
 	%landscape,
 	%DIV8, % mehr text pro seite als defaultyyp
-	%DIV10, 
+	%DIV10,
 	%DIV=calc,%
 	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
 	%titlepage,
 	numbers=noendperiod
 	11pt,
 	a4paper,
-	oneside,% apparently, this should stay below some other parameter to have an effect 
+	oneside,% apparently, this should stay below some other parameter to have an effect
 	openany,
 	%]{scrartcl}
 ]{memoir}
@@ -57,7 +57,7 @@
 
 \declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
 
-\def\proofSkipAmount{ \vskip -0.1em } 
+\def\proofSkipAmount{ \vskip -0.1em }
 
 
 %\usepackage{bussproof}
@@ -155,7 +155,7 @@
 	##1}}
 }
 \makeatother
-\newcommand{\mysetpagestyle}{ 
+\newcommand{\mysetpagestyle}{
 	%\pagestyle{numberCorner}
 	\pagestyle{numberCenter}
 }
@@ -193,15 +193,15 @@
 	\begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
 		\label{lemma:lif}
 		Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
-		%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
+		%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and
 		%$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
-		Define $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
+		Define $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$,
 		\[
 			x \sigma' =
-			\begin{cases} 
+			\begin{cases}
 				z_{t\sigma} & \text{ if } x = z_t \text{ and } t\sigma \neq t \\
 				\lifphi{x\sigma} & \text{ otherwise}
-			\end{cases} 
+			\end{cases}
 		\]
 
 		Then
@@ -210,11 +210,11 @@
 	\end{restatable}
 \end{quote}
 
-\chapter{Interpolant extraction from resolution proofs in one phase} 
+\chapter{Interpolant extraction from resolution proofs in one phase}
 
 
 While the previous chapter demonstrates that it is possible to extract propositional interpolants and lift them from the colored symbols later in order to obtain a proper interpolant, we now present a novel approach, which only operates with grey intermediary interpolants.
-This is established by lifting any term which is added to the interpolant. 
+This is established by lifting any term which is added to the interpolant.
 
 By its nature, this approach requires an alternate strategy than the proof of the extraction in two phases as a commutation of substitution and lifting is no longer possible if lifting variables are present.
 Let us recall the corresponding lemma from the previous chapter:
@@ -233,7 +233,7 @@ Consider the following illustration of a problem of the notion of applying this 
 
 	We see here that there are circumstances under which in order to commute lifting and substitution,
 	the substitution $\sigma'$ is required to conform to the equation
-	$z_{f(x)}\sigma' =\nolinebreak z_{f(a)}$, 
+	$z_{f(x)}\sigma' =\nolinebreak z_{f(a)}$,
 	whereas in others, it must hold that
 	$z_{f(x)}\sigma' = z_{f(x)}$.
 \end{exa}
@@ -241,7 +241,7 @@ Consider the following illustration of a problem of the notion of applying this 
 
 \section{Definition of the extraction algorithm}
 
-The extracted interpolants are prenex formulas, where 
+The extracted interpolants are prenex formulas, where
 the quantifier block and the matrix of the formula are calculated separately in each step of the traversal of the resolution refutation.
 
 
@@ -319,7 +319,7 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 		\BinaryInfCm{ R(y_c) \mid  Q(x_{g(u)}) }
 
 		\AxiomCm{ \bot \mid \lnot Q(v) }
-		\prflbl{\resruleres}{v\mapsto g(c)} 
+		\prflbl{\resruleres}{v\mapsto g(c)}
 		\BinaryInfCm{ \lnot Q(x_{g(c)}) \land R(y_c) \mid  \square }
 	\end{prooftree}
 
@@ -382,11 +382,11 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 	$
 	%\]
 	However in this instance, it is not possible to find quantifiers for the free variables of $\AImatpre(\square)$ such that by binding them, an interpolant is produced.
-	For the naive approach, namely to use $\exists y_c \forall x_{g(v)} \forall x_{g(u)}$ as prefix, it holds that 
+	For the naive approach, namely to use $\exists y_c \forall x_{g(v)} \forall x_{g(u)}$ as prefix, it holds that
 	$\Gamma \notentails \exists y_c \forall x_{g(v)} \forall x_{g(u)} ((Q(x_{g(v)}) \land R(y_c)) \spam\lor (\lnot Q(x_{g(u)}) \land P(y_c)))$.
 	This failure is possible as intuitively, resolution deductions are valid by virtue of the resolved literals being equal.
 	The interpolant extraction procedure exploits this property not directly on the clauses but on the lifted clause, i.e.\ on $\AIcl(C)$ for a clause $C$.
-	Note that by ensuring that for resolved literals $l$ and $l'$, it holds that $l\cl = l'\cl$, we can obtain an interpolant, for instance: 
+	Note that by ensuring that for resolved literals $l$ and $l'$, it holds that $l\cl = l'\cl$, we can obtain an interpolant, for instance:
 	$
 	\exists y_c \forall x^\ast ((Q(x^\ast) \land R(y_c)) \spam\lor (\lnot Q(x^\ast) \land P(y_c)))
 	$.
@@ -395,14 +395,14 @@ Note that in $\AImatpre$ and $\AIclpre$, it is possible that there for a colored
 In order to avoid the pitfall shown in Example \ref{exa:2b} and to generalize the indicated solution,
 we define a function on resolved literals calculating a substitution, which ensures that the literals in the lifted clause, which correspond to the resolved literals, are equal.
 
-\begin{defi}[$\aiu$] 
+\begin{defi}[$\aiu$]
 	Let $\inference$ be a resolution or factorisation rule application with $l$ and $l'$ as resolved or factorised literals, $\sigma = \mgu(\inference)$
 
 	\newcommand{\aiuP}{\aiu'}
 
 	For terms $s$ and $t$ where
 	$s = \lifboth{l\fromclause\sigma}\at{p}$
-	and 
+	and
 	$t = \lifboth{l'\fromclause\sigma}\at{p}$
 	for some position $p$, we define:
 	\[
@@ -424,7 +424,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 	\footnotetext{Note that constants are treated as function symbols of arity zero.}
 	For $\lifboth{l\cl\sigma} = P(s_1, \dots, s_n)$ and $\lifboth{l'\cl\sigma} = P(t_1, \dots, t_n)$, we define:
 	\[
-		\aiuP(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma}) = 
+		\aiuP(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma}) =
 		\aiuP(P(\overline s), P(\overline t)) \defeq \bigcup_{i=1}^n \aiuP(s_i, t_i)
 	\]
 	\[
@@ -455,9 +455,9 @@ we define a function on resolved literals calculating a substitution, which ensu
 			In any case, $\AIcl(C) \defeq \lifboth{C}$.
 		\item[Resolution.]
 
-			If the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, 
-			then 
-			let $\tau = \aiu(\inference)$ and  
+			If the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
+			then
+			let $\tau = \aiu(\inference)$ and
 			define $\AImat(C)$ and $\AIcl(C)$ as follows:
 
 			$\AIcl(C) \defeq \lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau \spam\lor \lifboth{(\AIclause(C_2)\setminus \{l\fromclause'\})\sigma}\tau $
@@ -479,7 +479,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 		\item[Factorisation.]
 			If the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
-			then let $\tau = \aiu(\inference)$ and define 
+			then let $\tau = \aiu(\inference)$ and define
 			$\AImat(C)$ and $\AIcl(C)$ as follows:
 
 			$\AImat(C) \defeq{} \lifboth{\AImat(C_1)\sigma}\tau$
@@ -499,8 +499,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 \begin{lemma}
 	\label{lemma:no_colored_terms}
 	Let $C$ be a clause of a resolution refutation $\pi$ of $\Gamma\cup\Delta$.
-	$\AImat(C)$ and $\AIcl(C)$ do not contain colored symbols. 
-	$\AImatde(C)$ and $\AIclde(C)$ do not contain \mbox{$\Delta$-c}olored symbols. 
+	$\AImat(C)$ and $\AIcl(C)$ do not contain colored symbols.
+	$\AImatde(C)$ and $\AIclde(C)$ do not contain \mbox{$\Delta$-c}olored symbols.
 \end{lemma}
 \begin{proof}
 	For $\AImat(C)$ and $\AIcl(C)$, consider the following:
@@ -508,7 +508,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 	In the inductive steps, any colored symbol which is added by $\sigma$ to intermediary formulas is lifted.
 	By Proposition~\ref{prop:tau_dom_ran}, $\ran(\aiu(\inference))$ for inferences $\inference$ in $\pi$ only consists of lifting variables.
 
-	For $\AImatde(C)$ and $\AIclde(C)$, a similar argument goes through by reading colored as $\Delta$-colored. 
+	For $\AImatde(C)$ and $\AIclde(C)$, a similar argument goes through by reading colored as $\Delta$-colored.
 \end{proof}
 
 \begin{lemma}
@@ -517,16 +517,16 @@ we define a function on resolved literals calculating a substitution, which ensu
 	Then $\Psi \entails \lifphi{F\sigma}$.
 \end{lemma}
 \begin{proof}
-	$\lifphi{F\sigma}$ is an instance of $F$: 
+	$\lifphi{F\sigma}$ is an instance of $F$:
 	$\sigma$ substitutes variables either for terms not containing $\Phi$-colored symbols or by terms containing $\Phi$-colored symbols.
 	For the first kind, the lifting has no effect.
 	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
 \end{proof}
 
 \begin{lemma}
-	Let $l$ and $l'$ be resolved or factorised literals in a resolution derivation step $\inference$ creating a clause $C$ and 
+	Let $l$ and $l'$ be resolved or factorised literals in a resolution derivation step $\inference$ creating a clause $C$ and
 	$\tau = \aiu(\inference)$.
-	For any substitution $(z_s \mapsto z_t) \in \tau$, 
+	For any substitution $(z_s \mapsto z_t) \in \tau$,
 
 
 
@@ -539,7 +539,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{lemma}
 
 \begin{lemma}
-	\largered{ either reduce to ``equal up to index of lifting variables'' or use elaborate version as given below with additional lemma about how every $x_s$ refers to the same term PLUS variable renaming convention } 
+	\largered{ either reduce to ``equal up to index of lifting variables'' or use elaborate version as given below with additional lemma about how every $x_s$ refers to the same term PLUS variable renaming convention }
 	\label{lemma:literals_clause_simgeq}
 	Let $\lambda$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
 	Then $\AIcl(C)$ contains a literal $\lambda\cl$ such that $\lambda\cl \simgeq \lifboth{\lambda}$, where $\simgeq$ is defined as follows:
@@ -565,11 +565,11 @@ we define a function on resolved literals calculating a substitution, which ensu
 		\item{Resolution.}
 			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
 			then let $\tau = \aiu(\inference)$.
-			Let $\lambda$ be a literal in $C_1$ or $C_2$. 
+			Let $\lambda$ be a literal in $C_1$ or $C_2$.
 			Note that every literal in $C$ is of the form $\lambda\sigma$.
 			By the induction hypothesis, there is a literal in $\AIcl(C_1)$ or $\AIcl(C_2)$ respectively such that $\lambda\cl \simgeq \lifboth{\lambda\cl}$.
 			If $\lambda \not\in\{l,l'\}$, then $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
-			Hence in any case, it remains to show that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$. 
+			Hence in any case, it remains to show that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
 
 
 			%Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$ or $\lambda \in C_2$. Without loss of generality let $\lambda \in C_1$.
@@ -578,7 +578,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 			%As $\lambda \neq l$, by the definition of $\AIcl$, $\lifboth{\lambda\cl\sigma}\tau$ is contained in $\AIcl(C)$.
 			%It remains to show that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
 
-			We perform an induction on the structure of $\lambda\cl$ and $\lambda$ 
+			We perform an induction on the structure of $\lambda\cl$ and $\lambda$
 			by letting $p$ be the position of the current term in the induction and $t\cl = \lambda\cl\at{p}$ as well as $t=\lambda\at{p}$.
 			\begin{itemize}
 				\item
@@ -594,20 +594,20 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 				\item
 					Suppose that $t$ is colored term.
-					Then $\lifboth{t}$ is a lifting variable and by the induction hypothesis, $t\cl$ is one as well such that 
+					Then $\lifboth{t}$ is a lifting variable and by the induction hypothesis, $t\cl$ is one as well such that
 					$\lifboth{t}$ is an instance of $t\cl$.
-					As lifting variables are not affected by the unifications occurring in resolution derivations, we only need to consider modifications by means of $\tau$. 
+					As lifting variables are not affected by the unifications occurring in resolution derivations, we only need to consider modifications by means of $\tau$.
 					But as we have seen in the previous case, if $\tau$ substitutes $\lifboth{t\cl\sigma}$, then it does so by $t$.
 					\todo[inline]{lemma}
 					Hence we obtain that $\lifboth{t\cl\sigma}\tau \simgeq \lifboth{t\sigma}$.
 
 				\item
 					Suppose that $t$ is a grey term of the form $f(s_1, \dots, s_n)$.
-					Then $\lifboth{t} = f(\lifboth{s_1}, \dots, \lifboth{s_n})$ and by the induction hypothesis, $t\cl = f(r_1, \dots, r_n)$ such that 
+					Then $\lifboth{t} = f(\lifboth{s_1}, \dots, \lifboth{s_n})$ and by the induction hypothesis, $t\cl = f(r_1, \dots, r_n)$ such that
 					$\bigwedge_{i=1}^n r_i \simgeq \lifboth{s_i}$ .
 					By the induction hypothesis applied to the parameters of $\lifboth{t}$ and $\lifboth{t\cl}$, we obtain that  $\lifboth{r_i\sigma}\tau \simgeq \lifboth{s_i\sigma}$ for $1\nolinebreak \varleq\nolinebreak i\nolinebreak \varleq\nolinebreak n$.
-					Hence $  f(\lifboth{r_1\sigma}, \dots, \lifboth{r_n\sigma}) \simgeq f(\lifboth{s_1\sigma}, \dots, \lifboth{s_n\sigma})$, 
-					which however is nothing else than 
+					Hence $  f(\lifboth{r_1\sigma}, \dots, \lifboth{r_n\sigma}) \simgeq f(\lifboth{s_1\sigma}, \dots, \lifboth{s_n\sigma})$,
+					which however is nothing else than
 					$\lifboth{t\cl\sigma} \simgeq \lifboth{t\sigma} $.
 
 			\end{itemize}
@@ -632,15 +632,15 @@ we define a function on resolved literals calculating a substitution, which ensu
 	Then $\lifboth{l\cl\sigma}\tau = \lifboth{l\cl'\sigma}\tau$.
 \end{lemma}
 \begin{proof}
-	As 
-	$l\sigma = l'\sigma$, it also holds that 
+	As
+	$l\sigma = l'\sigma$, it also holds that
 	$\lifboth{l\sigma} = \lifboth{l'\sigma}$.
-	By Lemma~\ref{lemma:literals_clause_simgeq}, we obtain that 
+	By Lemma~\ref{lemma:literals_clause_simgeq}, we obtain that
 	$\lifboth{l\cl\sigma}\tau \simgeq \lifboth{l\sigma}$ and
-	$\lifboth{l'\cl\sigma}\tau \simgeq \lifboth{l'\sigma}$. 
+	$\lifboth{l'\cl\sigma}\tau \simgeq \lifboth{l'\sigma}$.
 	Furthermore note that the $\simgeq$-\nolinebreak{}relation guarantees that pairs of predicates and terms in this relation are equal up to the index of their lifting variables.
 	Hence it only remains to show that the lifting variables of $\lifboth{l\cl\sigma}\tau$ and $\lifboth{l'\cl\sigma}\tau$ match.
-	But by the definition of $\aiu$, $\tau$ substitutes any lifting variable at position $p$ of $\lifboth{l\cl\sigma}$ and $\lifboth{l'\cl\sigma}$ by the lifting variable $\lifboth{l\sigma}\at{p}$, 
+	But by the definition of $\aiu$, $\tau$ substitutes any lifting variable at position $p$ of $\lifboth{l\cl\sigma}$ and $\lifboth{l'\cl\sigma}$ by the lifting variable $\lifboth{l\sigma}\at{p}$,
 	thus making them equal.
 \end{proof}
 
@@ -668,7 +668,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 				\BinaryInfCm{C: (D\lor E)\sigma}
 			\end{prooftree}
 
-			Let 
+			Let
 			$\tau = \aiu(\inference)$.
 			We introduce the following abbreviations:
 
@@ -682,7 +682,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 			Note that $\AIclde(C) = \lifdeltanovar{ \clauseOnePrime\sigma} \tau \lor \lifdeltanovar{ \clauseTwoPrime\sigma} \tau$.
 
-			Employing these, the induction hypothesis yields 
+			Employing these, the induction hypothesis yields
 			$\Gamma \entails \AImatrixde(C_1) \lor \clauseOnePrime \lor {(l{\fromclausede})_\Gamma}$
 			as well as
 			$\Gamma \entails \AImatrixde(C_2) \lor \clauseTwoPrime \lor {\lnot (l'{\fromclausede})_\Gamma}$.
@@ -698,9 +698,9 @@ we define a function on resolved literals calculating a substitution, which ensu
 				\item Suppose that $l$ is $\Gamma$-colored. Then $\AImatde(C) = \lifboth{\AImatde(C_1)\sigma}\tau\spas\lor \lifboth{\AImatde(C_2)\sigma}\tau$.
 					As $l$ is $\Gamma$-colored, $(l{\fromclausede})_\Gamma = l\clde$ and
 					as $l\sigma = l'\sigma$, also $(l{\fromclausede'})_\Gamma = l'\clde$.
-					By Lemma~\ref{lemma:lifted_literal_equal}, $\lifboth{l{\fromclausede}\sigma}\tau = \lifboth{l{\fromclausede'}\sigma}\tau$. 
+					By Lemma~\ref{lemma:lifted_literal_equal}, $\lifboth{l{\fromclausede}\sigma}\tau = \lifboth{l{\fromclausede'}\sigma}\tau$.
 					Hence we can perform a resolution step on \markA{} and \markB{} to arrive at
-					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau 
+					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau
 					\lor \lifboth{\AImatrixde(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau$.
 					This is however by Lemma~\ref{lemma:lift_logic_commute} nothing else than $\Gamma \entails \AImatde(C) \lor \AIclde(C)$.
 
@@ -708,18 +708,18 @@ we define a function on resolved literals calculating a substitution, which ensu
 					As $l$ and $l'$ are $\Delta$-colored, \markA{} and \markB{} reduce to
 					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{\clauseOnePrime\sigma}\tau $ and
 					$\Gamma \entails \lifboth{\AImatrixde(C_2)\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau $ respectively.
-					These however imply that 
+					These however imply that
 					$\Gamma \entails (\lifboth{\AImatrixde(C_1)\sigma}\tau \land  \lifboth{\AImatrixde(C_2)\sigma}\tau) \spas\lor\allowbreak \lifboth{\clauseOnePrime\sigma}\tau \lor \lifboth{\clauseTwoPrime\sigma}\tau$,
 					which in turn is nothing else than $\Gamma \entails\nolinebreak \AImatde(C) \lor \AIclde(C)$.
 
-				\item Suppose that $l$ is grey. Then $\AImatde(C) = 
+				\item Suppose that $l$ is grey. Then $\AImatde(C) =
 					(\lnot {\lifboth{l'\fromclausede\sigma}}\tau \land \lifboth{\AImatde(C_1)\sigma}\tau) \spam\lor\allowbreak
 					(\lifboth{l\fromclausede\sigma}\tau \land \lifboth{\AImatde(C_2)\sigma}\tau)
 					$.
 
-					Let $M$ be a model of $\Gamma$. Suppose that $M \notentails \AIclde(C)$ as otherwise we are done. Hence $M \notentails \lifboth{\clauseOnePrime\sigma}\tau$ and $M \notentails \lifboth{\clauseTwoPrime\sigma}\tau$ and \markA{} and \markB{} reduce to 
-					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{l{\fromclausede}\sigma}\tau$ 
-					and 
+					Let $M$ be a model of $\Gamma$. Suppose that $M \notentails \AIclde(C)$ as otherwise we are done. Hence $M \notentails \lifboth{\clauseOnePrime\sigma}\tau$ and $M \notentails \lifboth{\clauseTwoPrime\sigma}\tau$ and \markA{} and \markB{} reduce to
+					$\Gamma \entails \lifboth{\AImatrixde(C_1)\sigma}\tau \lor \lifboth{l{\fromclausede}\sigma}\tau$
+					and
 					$\Gamma \entails \lifboth{\AImatrixde(C_2)\sigma}\tau \lor \lifboth{l{\fromclausede'}\sigma}\tau$ respectively.
 					As by Lemma~\ref{lemma:lifted_literal_equal} $\lifboth{l{\fromclausede}\sigma}\tau = \lifboth{l{\fromclausede'}\sigma}\tau$, a case distinction on the truth value of $\lifboth{l{\fromclausede}\sigma}\tau$ in $M$ shows that $M\entails \AImatde(C)$.
 
@@ -739,12 +739,12 @@ we define a function on resolved literals calculating a substitution, which ensu
 			Let $\tau = \aiu(\inference)$.
 			We introduce the abbreviation $\AIclde( (C_1)_\Gamma)^* \defeq \AIclde( (C_1)_\Gamma) \setminus \{ (l\cl)_\Gamma , (l'\cl)_\Gamma \}$ and express the induction hypothesis as follows:
 			$\Gamma \entails \AImatde(C_1) \lor \AIclde( (C_1)_\Gamma)^* \lor (l\cl)_\Gamma \lor (l'\cl)_\Gamma $.
-			By Lemma~\ref{lemma:no_colored_terms}, Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lift_logic_commute} and after applying $\tau$ to the induction hypothesis, we obtain that 
+			By Lemma~\ref{lemma:no_colored_terms}, Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lift_logic_commute} and after applying $\tau$ to the induction hypothesis, we obtain that
 			$\Gamma \entails \lifboth{\AImatde(C_1)\sigma}\tau \lor \lifboth{\AIclde( (C_1)_\Gamma)^*\sigma}\tau \lor \lifboth{(l\cl)_\Gamma \sigma}\tau \lor \lifboth{(l'\cl)_\Gamma\sigma}\tau $.
 
 			However by Lemma~\ref{lemma:lifted_literal_equal},
-			$\lifboth{(l\cl)_\Gamma\sigma}\tau = 
-			\lifboth{(l'\cl)_\Gamma\sigma}\tau$, hence we can perform a factorisation step to arrive at 
+			$\lifboth{(l\cl)_\Gamma\sigma}\tau =
+			\lifboth{(l'\cl)_\Gamma\sigma}\tau$, hence we can perform a factorisation step to arrive at
 			$\Gamma \entails \lifboth{\AImatde(C_1)\sigma}\tau \lor \lifboth{\AIclde( (C_1)_\Gamma)^*\sigma}\tau \lor \lifboth{(l\cl)_\Gamma \sigma}\tau$.
 			This however is nothing else than $\Gamma\entails \AImatde(C) \lor \AIclde(C)$.
 			\qedhere
@@ -757,7 +757,7 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 
 \begin{defi}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
-	A \defiemph{one-sided interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that 
+	A \defiemph{one-sided interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that
 	\begin{enumerate}
 		\item $\Gamma \entails I$
 		\item $\Lang(I) \subseteq \Lang(\Gamma) \cap \Lang(\Delta)$
@@ -772,12 +772,12 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 \begin{proof}
 	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
 	By Lemma~\ref{lemma:gamma_entails_aide}, $\Gamma \entails \AImatde(\pi) \lor \AIclde(\pi)$,
-	or in other words 
+	or in other words
 	$\Gamma \entails \forall x_1 \dots \forall x_n  \AImatde(\pi) \lor \AIclde(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\AImatde(\pi) \lor \AIclde(\pi)$.
 	%Let $x_1, \dots, x_n$ be the $\Delta$-lifting variables in $I$.
 	By Lemma~\ref{lemma:no_colored_terms}, the formula $\AImatde(\pi) \lor \AIclde(\pi)$ does not contain $\Delta$-colored symbols.
 
-	Let $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}$ 
+	Let $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}$
 	and
 	\[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\AImatde(\pi) \lor \AIclde(\pi)}.\]
 	Note that $I$ does not contain any $\Gamma$-terms.
@@ -805,16 +805,16 @@ More formally:
 			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
 			Then:
 
-			$\AIcol(C) \defeq \{ \lifboth{\varphi\sigma}\tau \mid \varphi \in \AIcol'(C) \}$, where 
+			$\AIcol(C) \defeq \{ \lifboth{\varphi\sigma}\tau \mid \varphi \in \AIcol'(C) \}$, where
 
-			$\AIcol'(C) \defeq 
+			$\AIcol'(C) \defeq
 			\begin{cases}
 				\AIcol(C_1) \cup \AIcol(C_2) \cup \{ l\cl, l'\cl \}  & \text{ if $l$ is a colored literal} \\
-				\AIcol(C_1) \cup \AIcol(C_2) & \text{ if $l$ is a grey literal} 
+				\AIcol(C_1) \cup \AIcol(C_2) & \text{ if $l$ is a grey literal}
 			\end{cases} $
 
 		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation of $C_1$, then 
+			If the clause $C$ is the result of a factorisation of $C_1$, then
 			$\AIcol(C) \defeq \{ \lifboth{\varphi\sigma}\tau \mid \varphi \in \AIcol(C_1) \}$.
 			\qedhere
 	\end{itemize}
@@ -827,8 +827,8 @@ More formally:
 This definition is convenient as it adheres to the following proposition:
 
 \begin{prop}
-	Let $l$ be a literal in a clause in $\Gamma \cup \Delta$. 
-	Then for a clause $C$ in a resolution refutation of $\Gamma\cup\Delta$, 
+	Let $l$ be a literal in a clause in $\Gamma \cup \Delta$.
+	Then for a clause $C$ in a resolution refutation of $\Gamma\cup\Delta$,
 	$\AIany(C)$ contains a literal derived from $l$.
 \end{prop}
 
@@ -842,7 +842,7 @@ This definition is convenient as it adheres to the following proposition:
 	which is a descendant of $l$.
 	Note that there exists exactly one for every literal of every clause which is an ancestor of $C$.
 	Hence given $C$, $l.tp$ is a well-defined position and the position will usually just be denoted by $p$ or $q$ as abbreviation of $l.tp$.
-	For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$. 
+	For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$.
 	Note that set of literals in $\AIcl(C)$ is exactly the set of literals of $C$.
 
 	Note that term positions are well defined since arcs do not point into colored terms and are hence not removed by liftings and in the course of the derivation, terms in literals are only modified by substitutions, which does not remove any term which might invalidate a term position.
@@ -864,17 +864,17 @@ This definition is convenient as it adheres to the following proposition:
 			$\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $z_t$ in $\AIany(C)$, $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$
 
 			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey occurrence of $x$ or maximal colored term containing colored occurrence of $x$ in $C_1$ or $C_2$,
-			$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
+			$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 
 			% old version:
 			%$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey or colored occurrence of $x$ in $C_1$ or $C_2$,
-			%$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $ 
+			%$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 
 			$G_C \defeq G_{C_1} \cup G_{C_2} \cup \arr_1 \cup \arr_2$
 
 
 		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then 
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then
 
 			$G_C \defeq G_{C_1} \cup G_{C_2}$\footnote{Note however that the literal $l$ in $C$ has $l$ as well as $l'$ in $C_1$ as predecessors, i.e.~the arrows from both of these literals apply implicitly.}
 			\qedhere
@@ -896,16 +896,24 @@ This definition is convenient as it adheres to the following proposition:
 	Let $l$ and $l'$ be variable-disjoint literals and $\sigma = \mgu(l, l')$
 	such that for a variable $x$, $x\sigma$ contains a grey occurrence of a term $t$.
 
+	\hl{old text:}
 	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
 	$t$ occurs grey in $x_i \sigma$ and
-	$x_i$ occurs in one of the literals, say $l_i$, at $l_i\at{\bhat x_i}$ such that 
-	with $l_i'$ being the respective other literal, 
-	$l_i'\at{\bhat x_i}$ contains $x_{i+1}$ for $1\varleq i \varleq n-1$ and $l_n'\at{\bhat x_n}$ contains the outermost symbol of $t$, 
-	where 
+	$x_i$ occurs in one of the literals, say $l_i$, at $l_i\at{\bhat x_i}$ such that
+	with $l_i'$ being the respective other literal,
+	$l_i'\at{\bhat x_i}$ contains $x_{i+1}$ for $1\varleq i \varleq n-1$ and $l_n'\at{\bhat x_n}$ contains the outermost symbol of $t$.
+
+	\hl{new text:}
+	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
+	$t$ occurs grey in $x_i \sigma$ and
+	$x_i \mguarr r\occ{x_{i+1}}$ or
+	$i=n \land x_n \mguarr r_t$, where $r_t$ and $t$ agree on the outermost symbol.
+	%$x_i$ occurs in one of the literals, say $l_i$, at $l_i\at{\bhat x_i}$ such that
+	%with $l_i'$ being the respective other literal,
 \end{lemma}
 \begin{proof}
 	Let $x_1 = x$ and note that $t$ occurs in $x\sigma$ by assumption.
-	We now consider the execution of the $\mgu$ algorithm as defined in \ref{def:mgu_algo} 
+	We now consider the execution of the $\mgu$ algorithm as defined in \ref{def:mgu_algo}
 	and show that for an $x_i$ in the sequence, either we can find an element $x_{i+1}$ which matches the requirement for the sequence or there is an occurrence of $x_i$ which is unified with a term containing the outermost symbol of $t$.
 
 	As the $\mgu$ algorithm produces a unifier which modifies $x_i$, $x_i$ must occur in a literal, say in $l_i$ at $l_i\at{\bhat x_i}$, such that at the other literal $l_i'$, $l_i'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
@@ -928,17 +936,60 @@ This definition is convenient as it adheres to the following proposition:
 
 
 \begin{lemma}
-	If $x$ occurs in a single-colored $\Delta$-term in $y\sigma$, then there is a sequence $y_1, \dots, y_n$ such that for each $y_i$, $y_i\sigma$ contains a grey occ of $x$ or single-colored $\Delta$-term containing $x$.
-	Furtheremore, either
+	\label{lemma:single_col_x_in_unif_range}
+	Let $l$ and $l'$ be variable-disjoint literals and $\sigma = \mgu(l, l')$
+	and $x$ and $y$ be variables such that
+	$x$ occurs in a single-colored $\Delta$-term in $y\sigma$.
 
-	(1) some single-colored $\Delta$-term containing $x$ occurs in $l$ or $l'$
+	Then there is a sequence $y_1, \dots, y_n$ and some $k$ such that $1\varleq k \varleq n$, for $1\varleq i \varleq k$,
+	$y_i\sigma$ contains a single-colored $\Delta$-term containing $x$ and $y_i\sigma$ does not contain $\Gamma$-symbols,
+	and for $k+1\varleq i \varleq n$,
+	$y_i\sigma$ contains a grey occurrence of $x$.
 
-	(2) some single-colored $\Gamma$-term containing $x$ occurs in $l$ or $l'$ and there is a color change: some $y_i$ is contained in a $\Delta$-term and some $y_{i+1}$ is contained in a $\Gamma$-term. (hence $y_i$ and $y_{i+1}$ have a grey occ of $x$).
+	Furthermore, at least one of the following statements holds:
 
-	(3) $x$ occs grey.
+	\begin{compactenum}
+	\item some single-colored $\Delta$-term containing $x$ occurs in $l$ or $l'$
+	\label{25_delta_x}
+
+	\item some single-colored $\Gamma$-term containing $x$ occurs in $l$ or $l'$ and there is a color change: some $y_i$ is contained in a single-col $\Delta$-term and some $y_{i+1}$ is contained in a single-col $\Gamma$-term %. (hence $y_i$ and $y_{i+1}$ have a grey occ of $x$).
+	\label{25_gamma_x}
+
+	\hl{possible new text: $y_i$ (and also $y_{i+1}$ occurs grey, and they are unified to $x$ as $i > k$}
+
+	\item $x$ occs grey.
+	\label{25_grey_x}
+	\end{compactenum}
 
 	additional conjecture: for the first $y_i$, but not $y_1$, the terms are contained in single-col $\Delta$-terms. when the colored tiers are peeled off, the remaining $y_i$ are grey occs of $x$. this is where color changes are possible.
 \end{lemma}
+\begin{proof}
+	Let $y_1 = y$.
+
+
+	that for some single-colored $\Delta$-term $r$, $y \mguarr r$.
+	$r$ furthermore contains $x$ or a variable $z$ such that $z\sigma$ does not contain a $\Gamma$-symbol and contains a grey occurrence of $x$ or a single-colored $\Delta$-term containing $x$.
+
+	We build the sequence inductively:
+	By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence of $y_{i_n}$ of $y_i$ such that $y_{i_n} \mguarr r$, where $r$ shares the outermost symbol with $y_i\sigma$.
+	As $y_i\sigma$ is a single-colored $\Delta$-term containing $x$, $r$ either contains $x$ in which case $i = k = n$ and item \ref{25_delta_x} holds and we are done.
+	Otherwise $r$ contains a variable $z$ such that $z\sigma$ contains a grey occurrence of $x$ or $z\sigma$ does not contain $\Gamma$-terms and contains a single-colored $\Delta$-term which contains $x$.
+	Hence $y_{i+1} = z$ and in the first case, $k=i+1$.
+	Note that the length of $z\sigma$ is a strictly smaller than the length of $y\sigma$, hence the second case can not occur infinitely often.
+
+	If we hit the first case and $k=i+1$, then we continue defining the sequence inductively.
+	Let $y_j$ be such that $y_j\sigma$ contains a grey occurrence of $x$.
+	By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence $y_{j_n}$ of $y_j$ such that $y_{j_n} \mguarr s\occ{x}$, where $s\occ{x}$ contains a grey occurrence of $x$.
+	If $s\occ{x}$ occurs grey or in a single-colored $\Delta$-term, when we are done, so suppose it occurs in a single-colored $\Gamma$-term.
+	Note that $y_{j_n}$ is contained in a single-colored $\Phi$-term if and only if $s\occ{x}$ is.
+	Note that $y_k$ is contained in a single-colored $\Delta$-term\todo{when we have finished peeling, there is at least one peeling step}.
+	As single-colored $\Delta$-terms and single-colored $\Gamma$-terms are not unifiable, there is some $i$, $i< k \varleq n$\todo{varlt?} such that $y_i$ and $y_{i+1}$ occur grey in either $l$ or $l'$, so \ref{25_gamma_x} is the case.
+
+
+	\mytodo{check indices of $i$, $k$}
+\end{proof}
+
+	\mytodo{make sure that lemma 24 isn't misused: in lemma 25, terms can occur in any colored terms, check how that works out for 24}
 
 \begin{lemma}
 	\label{lemma:smallest_colored_container}
@@ -971,11 +1022,13 @@ This definition is convenient as it adheres to the following proposition:
 			We start by making an observation \markC:
 			If for two variables $x$ and $y$ it holds that $x$ occurs grey in $y\sigma$, then by Lemma~\ref{lemma:proof_along_mgu}, there exists a sequence $x_1,\dots, x_n$ such that for $1\varleq i \varleq n-1$, $u_i$ occurs in $\lambda\at{\bhat u_i}$ for a resolved literal $\lambda$ such that the other resolved literal $\lambda'$ has a grey occurrence of $u_{i+1}$ at $\lambda'\at{\bhat u_i}$.
 			Hence if $u_i$ occurs in a single-colored $\Phi$-\nolinebreak{}colored term in $\lambda\at{\bhat u_i}$, then $u_{i+1}$ does so too in $\lambda'\at{\bhat u_i}$ as $\lambda\sigma = \lambda'\sigma$.
-			As $u_{i+1}$ also occurs in $\lambda'\at{\bhat u_{i+1}}$ for $1\varleq 1 \varleq n-1$, 
-			i.e.\ in the same clause as $\lambda'\at{\bhat u_i}$, then if $\lambda'\at{\bhat u_{i+1}}$ occurs in a single-colored term which is not $\Phi$-colored, then by the induction hypothesis, $u_{i+1}$ occurs grey in $\AIany(C_i)$ for $i\in \{1,2\}$ and as $u_{i+1}\sigma$ contains a grey occurrence of $x$, 
+			As $u_{i+1}$ also occurs in $\lambda'\at{\bhat u_{i+1}}$ for $1\varleq 1 \varleq n-1$,
+			i.e.\ in the same clause as $\lambda'\at{\bhat u_i}$, then if $\lambda'\at{\bhat u_{i+1}}$ occurs in a single-colored term which is not $\Phi$-colored, then by the induction hypothesis, $u_{i+1}$ occurs grey in $\AIany(C_i)$ for $i\in \{1,2\}$ and as $u_{i+1}\sigma$ contains a grey occurrence of $x$,
 			$x$ occurs grey in $\AIany(C)$.
 			Therefore we can assume that all variable of the sequence $x_1, \dots, x_n$ occur only colored and each of the $x_i$, $1\varleq i \varleq n$ is contained in some single-colored $\Phi$-term, as otherwise we are done.
 
+
+			{ \tiny
 
 			We make another observation \markB:
 			If for two variables $x$ an $y$ it holds that $y\sigma = s\occ{x}$ a single-colored $\Delta$-term, then we can assume that $x$ occurs grey or in some single-colored $\Delta$-term in $C_1$ or $C_2$.
@@ -987,12 +1040,13 @@ This definition is convenient as it adheres to the following proposition:
 			Then $\lambda'\at{\bhat y_n}$ either is $s\occ{x}$, in which case we are done, or $\lambda'\at{\bhat y_n}$ is $s\occ{z}$ for a variable $z$ such that $z\sigma = x$.
 			Hence $z$ occurs elsewhere in $\lambda'$, say in $\lambda'\at{\bhat z}$, such that $\lambda\at{\bhat z}$ is $x$.
 			So if $\lambda'\at{\bhat z}$ is a grey occurrence or $\lambda'\at{\bhat z}$ is contained in a single-colored $\Delta$-term, then due to $\lambda\sigma = \lambda'\sigma$, $\lambda\at{\bhat z}$ is a corresponding occurrence of $x$.
-			Otherwise $\lambda'\at{\bhat z}$ is contained in a single-colored $\Gamma$-term. 
-			\largered{meh}
+			Otherwise $\lambda'\at{\bhat z}$ is contained in a single-colored $\Gamma$-term.
+			\hl{meh}
 
 
 			\mytodo{ICI: ind hyp should work for when z/x occur in a single-colored $\Gamma$-term, otw check what we need to have as lemma statement. all is in the resolved literal, so it's gone from the clause in the next step.}
 
+		}
 
 			We distinguish between all four cases which produce a clause on which the lemma applies:
 
@@ -1000,7 +1054,7 @@ This definition is convenient as it adheres to the following proposition:
 
 				\item
 					Suppose that w.l.o.g.\ $C_1$ contains a single-colored $\Gamma$-term $s\occ{x}$ which contains $x$ and $C_1$ or $C_2$ contains a single-colored $\Delta$-term containing a variable $y$ such that $x$ occurs grey or in a single-colored $\Delta$-colored in $y\sigma$.
-					Note that the case of an opposite assignment of colors can be argued in a symmetric manner. 
+					Note that the case of an opposite assignment of colors can be argued in a symmetric manner.
 
 					%Let $r$ be $x$ in the first case or the maximal colored term in $y\sigma$ containing $x$ in the second case.
 
@@ -1025,9 +1079,9 @@ This definition is convenient as it adheres to the following proposition:
 
 
 				\item Suppose that
-					a single-colored $\Gamma$-term $s\occ{y}$ occurs in $C_i$, $i\in \{1,2\}$ 
+					a single-colored $\Gamma$-term $s\occ{y}$ occurs in $C_i$, $i\in \{1,2\}$
 					such that $x$ occurs grey or in a single-colored $\Gamma$-term in $y\sigma$
-					and 
+					and
 					a single-colored $\Delta$-term $t\occ{z}$ occurs in $C_j$, $j\in \{1,2\}$
 					such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
 
@@ -1066,7 +1120,7 @@ This definition is convenient as it adheres to the following proposition:
 
 			\begin{enumerate}
 
-				\item Suppose a maximal colored $\Gamma$-term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$. 
+				\item Suppose a maximal colored $\Gamma$-term in $C_1$ or $C_2$ contains a variable $u$ such that $s$ occurs grey in $u\sigma$.
 					\label{25_1}
 
 					Note that it suffices to show that $x_s$ occurs grey in $\AIanyde(C)$,
@@ -1074,7 +1128,7 @@ This definition is convenient as it adheres to the following proposition:
 					then $\arr_1$ as defined in Definition~\ref{def:arrows} contains $(r, q)$ such that $\AIclde(C)\at{q}$ is $t\occatp{x_s}$.
 					As $\arr_1 \subseteq G_C$, this implies $x_s \apath_{G_C} t\occatp{x_s}$.
 
-					By Lemma~\ref{lemma:proof_along_mgu}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ and $s$ occurs grey in $u_i \sigma$ for $1\varleq i \varleq n$. 
+					By Lemma~\ref{lemma:proof_along_mgu}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ and $s$ occurs grey in $u_i \sigma$ for $1\varleq i \varleq n$.
 					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.\todo{this is the ramp!}{}
 					Therefore suppose that $u_1, \dots, u_n$ occur only colored in $C_1$ and $C_2$.
 
@@ -1095,12 +1149,12 @@ This definition is convenient as it adheres to the following proposition:
 
 								Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
 
-							\item 
+							\item
 								Suppose that $u_i$ for $1\varleq i \varleq n$ is contained in a $\Delta$-term which is contained in a $\Gamma$-term.
 
 								\mytodo{}
 
-							\item 
+							\item
 								Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Delta$-term.
 								Due to $\lambda \sigma = \lambda'\sigma$, $\lambda\at{\bhat u_n}$ is also contained in a $\Delta$-term.
 								As by assumption none of the $u_i$, $1\varleq i \varleq n$ is a grey occurrence, there must be a clause which contains two occurrences of $u_i$ such that one of them is a $\Gamma$-occurrence and one is a $\Delta$-occurrence.
@@ -1127,7 +1181,7 @@ This definition is convenient as it adheres to the following proposition:
 					Therefore assume that this situation does not arise for any $u_i$, $1\varleq i \varleq n$.
 
 					Hence as the smallest colored term containing the occurrences of $u_1$ must be $\Gamma$-terms, the same holds for $u_n$.
-					But as $l'_n\at{ \bhat u_n }$ contains the outermost symbol of $s$, which is a $\Delta$-term, and $l_n\sigma = l_n'\sigma$ and the smallest colored term containing $l_n\at{ \bhat u_n }$ is a $\Gamma$-term, 
+					But as $l'_n\at{ \bhat u_n }$ contains the outermost symbol of $s$, which is a $\Delta$-term, and $l_n\sigma = l_n'\sigma$ and the smallest colored term containing $l_n\at{ \bhat u_n }$ is a $\Gamma$-term,
 					$l'_n\at{ \bhat u_n }$ is contained in a $\Gamma$-term.
 					Let $r\occ{x_\varphi}$ be hte maximal colored term containing $l'_n\at{ \bhat u_n }$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $l'_n{}\cl\at{ \bhat u_n }$.
 					Let $C_j$ be the clause containing $l'_n$.
@@ -1148,7 +1202,7 @@ This definition is convenient as it adheres to the following proposition:
 						such that $l'\at{\bhat u}$ is an abstraction of $u\sigma$ which is different from $u$ and as $l\sigma = l'\sigma$, $l'\at{\bhat u}$ is contained in a $\Gamma$-colored term.
 						\begin{itemize}
 							\item Suppose that $l'\at{\bhat u}$ contains the outermost symbol of $s$.
-								Then it is a $\Delta$-term contained in a $\Gamma$-term, so by the induction hypothesis, 
+								Then it is a $\Delta$-term contained in a $\Gamma$-term, so by the induction hypothesis,
 								$x_? \apath_{G_{C_1}} r$, where $r$ is the maximal colored term containing $l'\at{\bhat u}$.
 								\mytodo{}
 
@@ -1159,7 +1213,7 @@ This definition is convenient as it adheres to the following proposition:
 
 						\end{itemize}
 						%Either $u\sigma$ contains the outermost symbol of $s$, or it contains a variable $v$ such that $v\sigma$ contains the outermost symbol of $s$. But in the latter case, $v$ must occur elsewhere in $l'$, say at $l'\at{\bhat v}$, such that again $l\at{\bhat v}$ either contains the outermost symbol of $s$ or a variable $w$ such that $w\sigma$ contains the outermost symbol of $s$.
-						%Since the $\mgu$ algorithm has terminated, we know that there 
+						%Since the $\mgu$ algorithm has terminated, we know that there
 
 					\end{comment}
 
@@ -1176,7 +1230,7 @@ This definition is convenient as it adheres to the following proposition:
 
 
 		\item{}Factorisation.
-			If the clause $C$ is the result of a factorisation of $C_1$, then 
+			If the clause $C$ is the result of a factorisation of $C_1$, then
 			\mytodo{}
 			\qedhere
 	\end{description}
@@ -1218,7 +1272,7 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 	\todo[inline]{This needs too many things I don't yet know how to make precise, so let's start with $\Gamma \entails \dots$}
 \end{proof}
 
-\label{sec:arrow_quantifier_block} 
+\label{sec:arrow_quantifier_block}
 
 \chapter{outline of arrow part}
 
@@ -1236,7 +1290,7 @@ for resolution/factorisation, check unifier:
 \end{compactitem}
 
 
-\begin{defi}~ 
+\begin{defi}~
 
 	\comm{(apparently not needed) arrows 1: if $x$ occurs in $y\sigma$, add arrow from every \emph{grey} occurrence of $x$ in $C$ to every colored occurrence of $y$ in $C_i$.}
 
@@ -1267,7 +1321,7 @@ for resolution/factorisation, check unifier:
 				unification algo produces a chain: $u\mapsto t$, $v \mapsto s$, \dots
 
 				$u$ only occurs colored in $C_i$.
-				Hence also at $l\at{\bhat u}$. 
+				Hence also at $l\at{\bhat u}$.
 				Therefore $l'\at{\bhat u}$ is a colored occurrence as well.
 
 				chain of colored variables:
@@ -1276,7 +1330,7 @@ for resolution/factorisation, check unifier:
 
 				if var occurs at some point at position we are unifying with, then we are done by the induction hypothesis.
 
-				AUX LEMMA: if a $\Delta$-term enters a $\Gamma$-term, there is an arrow. Later, the terms always look the same as they are affected by the same unifications. 
+				AUX LEMMA: if a $\Delta$-term enters a $\Gamma$-term, there is an arrow. Later, the terms always look the same as they are affected by the same unifications.
 
 				\mytodo{ICI; check example}
 
@@ -1297,7 +1351,7 @@ for resolution/factorisation, check unifier:
 
 				If for some $u$, $\delta_i$ grey in $u\sigma$ and $u$ occurs in $\Gamma$-term, then $\delta_i$ occurs grey somewhere.
 
-				Prf. 
+				Prf.
 				either $u$ occurs grey, then we are done.
 				Otw. $u$ only occurs colored in $\Gamma$-terms.
 				so $l'\at{\bhat u}$ also colored.
