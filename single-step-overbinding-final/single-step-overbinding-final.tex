@@ -1068,11 +1068,18 @@ This definition is convenient as it adheres to the following proposition:
 						\item
 							Suppose that $x$ occurs in a single-colored $\Delta$-term $y\sigma$:
 
+							Then by Lemma~\ref{lemma:single_col_x_in_unif_range}, either $x$ occurs grey, in which case we are done, or some $y_i$ occurs grey in $l$ or $l'$ such that $y_i\sigma$ contains a grey occurrence of $x$, in which case we are done, or $x$ occurs in a single-colored $\Delta$-term $t\occ{x}$.
+							Then however as $s\occ{x}$ occurs in $C_1$ and clauses are variable-disjoint, $t\occ{x}$ occurs in $C_1$ as well and $x$ occurs grey in $\AIany(C_1)$ by the induction hypothesis.
+
+							{\tiny
+
 							If a single-colored $\Delta$-term $t\occ{x}$ containing $x$ occurs in $C_1$ or $C_2$, say in $C_j$, then as clauses are variable disjoint, it must be the same clause as $s\occ{x}$.
 							But then $x$ occurs grey in $\AIany(C_j)$ by the induction hypothesis, so assume that no such $t\occ{x}$ occurs in $C_1$ or $C_2$.
 
 							But as a single-colored $\Delta$-term containing $x$ occurs in $y\sigma$, there must be a single-colored $\Delta$-term in $C_1$ or $C_2$ which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
 							Hence this case is repeated, but as $z\sigma$ is strictly smaller than $y\sigma$, this case can only repeat finitely often.
+
+							}
 
 					\end{itemize}
 
@@ -1085,11 +1092,12 @@ This definition is convenient as it adheres to the following proposition:
 					a single-colored $\Delta$-term $t\occ{z}$ occurs in $C_j$, $j\in \{1,2\}$
 					such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
 
-					If $y\sigma = r\occ{x}$ is a single-colored $\Phi$-term, then either $r\occ{x}$ occurs in the clause or an abstraction of $r\occ{x}$ which is not a variable occurs in the clause, which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Phi$-term in $z\sigma$.
+					%If $y\sigma = r\occ{x}$ is a single-colored $\Phi$-term, then either $r\occ{x}$ occurs in the clause or an abstraction of $r\occ{x}$ which is not a variable occurs in the clause, which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Phi$-term in $z\sigma$.
 
 
 
 
+					\largered{ possible unify lemma 24 and 25, 25 seems to be stronger on the grey part which seems to be shared with 24 }
 
 
 					\mytodo{ ICI; finish this proof }
