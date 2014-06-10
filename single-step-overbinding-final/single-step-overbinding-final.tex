@@ -886,25 +886,10 @@ This definition is convenient as it adheres to the following proposition:
 \end{defi}
 
 
-\begin{lemma}
-	\label{lemma:unified_term_starts_somewhere}
-	Let $l$ and $l'$ be variable-disjoint literals and $\sigma = \mgu(l, l')$
-	such that for a variable $x$, $x\sigma$ contains a term $t$.
-
-	\hl{new text:}
-	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
-	$t$ occurs in $x_i \sigma$ and
-	$x_i \mguarr r\occ{x_{i+1}}$ or
-	$i=n \spas\land\allowbreak x_n \mguarr\nolinebreak r_t$, where $r_t$ contains the outermost symbol of $t$
-\end{lemma}
-\begin{proof}
-	\mytodo{} (but is virtually a subset of some lemma below)
-\end{proof}
-
 
 \begin{lemma}
 	\label{lemma:unified_term_starts_somewhere_grey}
-	Let $l$ and $l'$ be variable-disjoint literals and $\sigma = \mgu(l, l')$
+	Let $l$ and $l'$ be variable disjoint literals and $\sigma = \mgu(l, l')$
 	such that for a variable $x$, $t$ occurs grey in $x\sigma$.
 
 	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n-1$,
@@ -929,117 +914,16 @@ This definition is convenient as it adheres to the following proposition:
 
 
 \end{proof}
-
-\begin{lemma}
-	\label{lemma:proof_along_mgu_old}
-	% OLD formulation, subset of current one:
-	%Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
-	%Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that $t$ occurs grey in  $x_i \sigma$ for $1\varleq i \varleq n$ and $x_n$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_n}$ such that $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, where $l'$ is the other resolved or factorised literal.
-
-	%Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
-
-	Let $l$ and $l'$ be variable-disjoint literals and $\sigma = \mgu(l, l')$
-	such that for a variable $x$, $x\sigma$ contains a grey occurrence of a term $t$.
-
-	\hl{old text:}
-	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
-	$t$ occurs grey in $x_i \sigma$ and
-	$x_i$ occurs in one of the literals, say $l_i$, at $l_i\at{\bhat x_i}$ such that
-	with $l_i'$ being the respective other literal,
-	$l_i'\at{\bhat x_i}$ contains $x_{i+1}$ for $1\varleq i \varleq n-1$ and $l_n'\at{\bhat x_n}$ contains the outermost symbol of $t$.
-
-	\hl{new text:}
-	Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
-	$t$ occurs grey in $x_i \sigma$ and
-	$x_i \mguarr r\occ{x_{i+1}}$ or
-	$i=n \land x_n \mguarr r_t$, where $r_t$ contains the outermost symbol of $t$
-	%$x_i$ occurs in one of the literals, say $l_i$, at $l_i\at{\bhat x_i}$ such that
-	%with $l_i'$ being the respective other literal,
-\end{lemma}
-\begin{proof}
-	Let $x_1 = x$ and note that $t$ occurs in $x\sigma$ by assumption.
-	We now consider the execution of the $\mgu$ algorithm as defined in \ref{def:mgu_algo}
-	and show that for an $x_i$ in the sequence, either we can find an element $x_{i+1}$ which matches the requirement for the sequence or there is an occurrence of $x_i$ which is unified with a term containing the outermost symbol of $t$.
-
-	As the $\mgu$ algorithm produces a unifier which modifies $x_i$, $x_i$ must occur in a literal, say in $l_i$ at $l_i\at{\bhat x_i}$, such that at the other literal $l_i'$, $l_i'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
-	We distinguish two cases:
-	\begin{itemize}
-		\item Suppose that $l_i'\at{\bhat x_i}$ contains the outermost symbol of $t$.
-			Then let $x_n = x_i$.
-
-		\item Otherwise $l_i'\at{\bhat x_i}$ contains a variable $v$ such that $t$ occurs grey in $v\sigma$.
-			Let $x_{i+1} = v$.
-			\qedhere
-	\end{itemize}
-
-
-\end{proof}
-
 %\begin{lemma}
 %	If $x$ occurs grey in $y\sigma$, then the seq of vars in 24 are all contained in single-colored terms of the same color or there is a grey occurrence of $x$.
 %\end{lemma}
 
 
-\begin{lemma}
-	\label{lemma:single_col_x_in_unif_range_old}
-	Let $l$ and $l'$ be variable-disjoint literals and $\sigma = \mgu(l, l')$
-	and $x$ and $y$ be variables such that
-	$x$ occurs in a single-colored $\Delta$-term in $y\sigma$.
-
-	Then there is a sequence $y_1, \dots, y_n$ and some $k$ such that $1\varleq k \varleq n$, for $1\varleq i \varleq k$,
-	$y_i\sigma$ contains a single-colored $\Delta$-term containing $x$ and $y_i\sigma$ does not contain $\Gamma$-symbols,
-	and for $k+1\varleq i \varleq n$,
-	$y_i\sigma$ contains a grey occurrence of $x$.
-
-	Furthermore, at least one of the following statements holds:
-
-	\begin{compactenum}
-	\item some single-colored $\Delta$-term containing $x$ occurs in $l$ or $l'$
-	\label{25_delta_x}
-
-	\item some single-colored $\Gamma$-term containing $x$ occurs in $l$ or $l'$ and there is a color change: some $y_i$ is contained in a single-col $\Delta$-term and some $y_{i+1}$ is contained in a single-col $\Gamma$-term %. (hence $y_i$ and $y_{i+1}$ have a grey occ of $x$).
-	\label{25_gamma_x}
-
-	\hl{possible new text: $y_i$ (and also $y_{i+1}$ occurs grey, and they are unified to $x$ as $i > k$}
-
-	\item $x$ occs grey.
-	\label{25_grey_x}
-	\end{compactenum}
-
-	additional conjecture: for the first $y_i$, but not $y_1$, the terms are contained in single-col $\Delta$-terms. when the colored tiers are peeled off, the remaining $y_i$ are grey occs of $x$. this is where color changes are possible.
-\end{lemma}
-\begin{proof}
-	Let $y_1 = y$.
-
-
-	that for some single-colored $\Delta$-term $r$, $y \mguarr r$.
-	$r$ furthermore contains $x$ or a variable $z$ such that $z\sigma$ does not contain a $\Gamma$-symbol and contains a grey occurrence of $x$ or a single-colored $\Delta$-term containing $x$.
-
-	We build the sequence inductively:
-	By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence of $y_{i_n}$ of $y_i$ such that $y_{i_n} \mguarr r$, where $r$ shares the outermost symbol with $y_i\sigma$.
-	As $y_i\sigma$ is a single-colored $\Delta$-term containing $x$, $r$ either contains $x$ in which case $i = k = n$ and item \ref{25_delta_x} holds and we are done.
-	Otherwise $r$ contains a variable $z$ such that $z\sigma$ contains a grey occurrence of $x$ or $z\sigma$ does not contain $\Gamma$-terms and contains a single-colored $\Delta$-term which contains $x$.
-	Hence $y_{i+1} = z$ and in the first case, $k=i+1$.
-	Note that the length of $z\sigma$ is a strictly smaller than the length of $y\sigma$, hence the second case can not occur infinitely often.
-
-	If we hit the first case and $k=i+1$, then we continue defining the sequence inductively.
-	Let $y_j$ be such that $y_j\sigma$ contains a grey occurrence of $x$.
-	By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence $y_{j_n}$ of $y_j$ such that $y_{j_n} \mguarr s\occ{x}$, where $s\occ{x}$ contains a grey occurrence of $x$.
-	If $s\occ{x}$ occurs grey or in a single-colored $\Delta$-term, when we are done, so suppose it occurs in a single-colored $\Gamma$-term.
-	Note that $y_{j_n}$ is contained in a single-colored $\Phi$-term if and only if $s\occ{x}$ is.
-	Note that $y_k$ is contained in a single-colored $\Delta$-term\todo{when we have finished peeling, there is at least one peeling step}.
-	As single-colored $\Delta$-terms and single-colored $\Gamma$-terms are not unifiable, there is some $i$, $i< k \varleq n$\todo{varlt?} such that $y_i$ and $y_{i+1}$ occur grey in either $l$ or $l'$, so \ref{25_gamma_x} is the case.
-
-
-	\mytodo{check indices of $i$, $k$}
-
-\end{proof}
-
 \mytodo{make sure that lemma 24 isn't misused: in lemma 25, terms can occur in any colored terms, check how that works out for 24}
 
 
 \begin{lemma}
-	\label{lemma:y_sigma_contains_grey_x}
+	\label{lemma:colored_y_sigma_contains_grey_x}
 	Let a single-colored $\Phi$-term $s\occ{y}$ occur in $l$ or $l'$ such that $x$ occurs grey in $y\sigma$.
 	Then at least one of the following statements holds:
 	\begin{compactenum}
@@ -1093,7 +977,6 @@ This definition is convenient as it adheres to the following proposition:
 
 \begin{lemma}
 	\label{lemma:y_sigma_contains_colored_x}
-	Let $\Phi$ and $\Psi$ be the two distinct colors.
 	Let a variable $y$ occur in $l$ or $l'$ such that $x$ occurs in a single-colored $\Phi$-term in $y\sigma$.
 	Then at least one of the following statements holds:
 	\begin{compactenum}
@@ -1122,7 +1005,7 @@ This definition is convenient as it adheres to the following proposition:
 
 		\item
 			Suppose that $t$ contains a variable $v$ such that $x$ occurs grey in $v\sigma$ and $v$ occurs in a single-colored $\Phi$-term in $t$. 
-			Then by Lemma~\ref{lemma:y_sigma_contains_grey_x} gives the result.
+			Then by Lemma~\ref{lemma:colored_y_sigma_contains_grey_x} gives the result.
 
 		\item
 			Suppose that $t$ contains a variable $v$ such that $v\sigma$ contains a single-colored $\Phi$-term containing $x$ and no $\Psi$-symbols. Then let $y_{i+1} = v$.
@@ -1158,147 +1041,41 @@ This definition is convenient as it adheres to the following proposition:
 		\item{}Base case.
 			Clauses contained in $\Gamma$ do not contain $\Delta$-terms and clauses contained in $\Delta$ do not contain $\Gamma$-terms.
 
-		\item{}Resolution.
-			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
-
-			{\tiny
-
-			We start by making an observation \markC:
-			If for two variables $x$ and $y$ it holds that $x$ occurs grey in $y\sigma$, then by Lemma~\ref{lemma:proof_along_mgu}, there exists a sequence $x_1,\dots, x_n$ such that for $1\varleq i \varleq n-1$, $u_i$ occurs in $\lambda\at{\bhat u_i}$ for a resolved literal $\lambda$ such that the other resolved literal $\lambda'$ has a grey occurrence of $u_{i+1}$ at $\lambda'\at{\bhat u_i}$.
-			Hence if $u_i$ occurs in a single-colored $\Phi$-\nolinebreak{}colored term in $\lambda\at{\bhat u_i}$, then $u_{i+1}$ does so too in $\lambda'\at{\bhat u_i}$ as $\lambda\sigma = \lambda'\sigma$.
-			As $u_{i+1}$ also occurs in $\lambda'\at{\bhat u_{i+1}}$ for $1\varleq 1 \varleq n-1$,
-			i.e.\ in the same clause as $\lambda'\at{\bhat u_i}$, then if $\lambda'\at{\bhat u_{i+1}}$ occurs in a single-colored term which is not $\Phi$-colored, then by the induction hypothesis, $u_{i+1}$ occurs grey in $\AIany(C_i)$ for $i\in \{1,2\}$ and as $u_{i+1}\sigma$ contains a grey occurrence of $x$,
-			$x$ occurs grey in $\AIany(C)$.
-			Therefore we can assume that all variable of the sequence $x_1, \dots, x_n$ occur only colored and each of the $x_i$, $1\varleq i \varleq n$ is contained in some single-colored $\Phi$-term, as otherwise we are done.
+		\item{}Resolution/Factorisation.
+			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$
+			or of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$.
+			Let $\sigma = \mgu(\inference)$. 
+			\mytodo{ avoid assigning $C_1$ twice here in final formulation }
 
 
-			{ \tiny
+			We consider an occurrence of a single-colored $\Phi$-term containing $x$ in $C$.
+			There are three circumstances leading to this situation:
+			\begin{compactenum}
+				\item A single-colored $\Phi$-term containing $x$ occurs in a preceding clause.
+				\item A single-colored $\Phi$-term $t\occ{y}$ in a preceding clause contains a variable $y$ such that $x$ occurs grey in $y\sigma$. \label{27_2}
+				\item A variable $z$ occurs in a preceding clause such that $z\sigma$ contains a single-colored $\Phi$-term containing $x$. \label{27_3}
+			\end{compactenum}
 
-				We make another observation \markB:
-				If for two variables $x$ an $y$ it holds that $y\sigma = s\occ{x}$ a single-colored $\Delta$-term, then we can assume that $x$ occurs grey or in some single-colored $\Delta$-term in $C_1$ or $C_2$.
-				Proof:
-				We proceed by induction on the size of $s\occ{x}$.
-				By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence of $y_n$ of $y$ in a resolved literal $\lambda$ in say $\lambda\occ{\bhat y_n}$ such that $\lambda'\occ{\bhat y_n}$ contains the outermost symbol of $s\occ{x}$.
+			We apply Lemma~\ref{lemma:colored_y_sigma_contains_grey_x} in the case of \ref{27_2} and
+			Lemma~\ref{lemma:y_sigma_contains_colored_x} in the case of \ref{27_3} to obtain that in any of the cases, at least one of the following statements hold:
 
-				Suppose for the induction start that $s\occ{x}$ is of size $2$. Note that this is the smallest size for a single-colored term containing a variable.
-				Then $\lambda'\at{\bhat y_n}$ either is $s\occ{x}$, in which case we are done, or $\lambda'\at{\bhat y_n}$ is $s\occ{z}$ for a variable $z$ such that $z\sigma = x$.
-				Hence $z$ occurs elsewhere in $\lambda'$, say in $\lambda'\at{\bhat z}$, such that $\lambda\at{\bhat z}$ is $x$.
-				So if $\lambda'\at{\bhat z}$ is a grey occurrence or $\lambda'\at{\bhat z}$ is contained in a single-colored $\Delta$-term, then due to $\lambda\sigma = \lambda'\sigma$, $\lambda\at{\bhat z}$ is a corresponding occurrence of $x$.
-				Otherwise $\lambda'\at{\bhat z}$ is contained in a single-colored $\Gamma$-term.
-				\hl{meh}
+			[ copy formulation from lemma once it's finished there ]
 
+			Now suppose that $x$ occurs in a single-colored $\Gamma$-term and in a single-colored $\Delta$-term in $C$.
+			By applying the reasoning as just given, we know that one of the three statments holds for both occurrences. 
 
-				\mytodo{ICI: ind hyp should work for when z/x occur in a single-colored $\Gamma$-term, otw check what we need to have as lemma statement. all is in the resolved literal, so it's gone from the clause in the next step.}
+			If for any one $z$ grey with $z\sigma$ contains grey $x$, then done
 
-			}
+			If IH-case, then: IH
 
-			We distinguish between all four cases which produce a clause on which the lemma applies:
-
-			\begin{itemize}
-
-				\item
-					Suppose that w.l.o.g.\ $C_1$ contains a single-colored $\Gamma$-term $s\occ{x}$ which contains $x$ and $C_1$ or $C_2$ contains a single-colored $\Delta$-term containing a variable $y$ such that $x$ occurs grey or in a single-colored $\Delta$-colored in $y\sigma$.
-					Note that the case of an opposite assignment of colors can be argued in a symmetric manner.
-
-					%Let $r$ be $x$ in the first case or the maximal colored term in $y\sigma$ containing $x$ in the second case.
-
-					\begin{itemize}
-						\item
-							Suppose that $x$ occurs grey in $y\sigma$:
-							Then by Lemma~\ref{lemma:proof_along_mgu}, there is a variable $y_n$ which occurs in a resolved literal $\lambda$ at $\lambda\at{\bhat y_n}$ such that $\lambda'\at{\bhat y_n}$ contains a grey occurrence of $x$.
-							By observation \markC, $\lambda\at{\bhat y_n}$ is contained in a single-colored $\Delta$-term.
-							But then so is $\lambda'\at{\bhat y_n}$, and as clauses are variable-disjoint\todo{clauses var-disjoint}, $s\occ{x}$ also occurs in this clause. So by the induction hypothesis, there is a grey occurrence of $x$ in $\AIany(C_j)$ where $C_j$ is the clause containing $s\occ{x}$, and as $x$ is not affected by $\sigma$, $x$ also occurs grey in $\AIany(C)$.
-
-						\item
-							Suppose that $x$ occurs in a single-colored $\Delta$-term $y\sigma$:
-
-							Then by Lemma~\ref{lemma:single_col_x_in_unif_range}, either $x$ occurs grey, in which case we are done, or some $y_i$ occurs grey in $l$ or $l'$ such that $y_i\sigma$ contains a grey occurrence of $x$, in which case we are done, or $x$ occurs in a single-colored $\Delta$-term $t\occ{x}$.
-							Then however as $s\occ{x}$ occurs in $C_1$ and clauses are variable-disjoint, $t\occ{x}$ occurs in $C_1$ as well and $x$ occurs grey in $\AIany(C_1)$ by the induction hypothesis.
-
-							{\tiny
-
-								If a single-colored $\Delta$-term $t\occ{x}$ containing $x$ occurs in $C_1$ or $C_2$, say in $C_j$, then as clauses are variable disjoint, it must be the same clause as $s\occ{x}$.
-								But then $x$ occurs grey in $\AIany(C_j)$ by the induction hypothesis, so assume that no such $t\occ{x}$ occurs in $C_1$ or $C_2$.
-
-								But as a single-colored $\Delta$-term containing $x$ occurs in $y\sigma$, there must be a single-colored $\Delta$-term in $C_1$ or $C_2$ which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
-								Hence this case is repeated, but as $z\sigma$ is strictly smaller than $y\sigma$, this case can only repeat finitely often.
-
-							}
-
-					\end{itemize}
+			otw both s.c. $\Gamma$ and $\Delta$-term respectively $\Ra$ IH as well.
+			\qedhere
 
 
 
-				\item Suppose that
-					a single-colored $\Gamma$-term $s\occ{y}$ occurs in $C_i$, $i\in \{1,2\}$
-					such that $x$ occurs grey or in a single-colored $\Gamma$-term in $y\sigma$
-					and
-					a single-colored $\Delta$-term $t\occ{z}$ occurs in $C_j$, $j\in \{1,2\}$
-					such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
-
-					%If $y\sigma = r\occ{x}$ is a single-colored $\Phi$-term, then either $r\occ{x}$ occurs in the clause or an abstraction of $r\occ{x}$ which is not a variable occurs in the clause, which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Phi$-term in $z\sigma$.
-
-
-
-
-
-				\item 2 other items from arrow-final-conjectures.
-			\end{itemize}
-		}
-
-			\begin{itemize}
-				\item Suppose a single-colored $\Phi$-term $s\occ{x}$ in $C_1$ or $C_2$ contains a grey occurrence of $x$ and 
-					furthermore a single-colored $\Psi$-term $y\occ{z}$ in $C_1$ or $C_2$ contains a variable $z$ such that $x$ occurs grey in $z\sigma$.
-					Then by Lemma~\ref{lemma:y_sigma_contains_colored_x}, at least one of the given three statments holds.
-
-					(1) As there is a grey occurrence of $z$ in $C_1$ or $C_2$, there is a grey occurrence of $x$ in $\AIany(C)$.
-
-					(2) then this term occurs in the same clause as $s\occ{x}$ as clauses are variable-disjoint and $x$ occurs grey by the induction hypothesis
-
-					(3) then by IH, there is a grey occurrence of $z$ in $C_1$ or $C_2$ and hence a grey occurrence of $x$ in $\AIany(C)$.
-
-			\end{itemize}
-
-		\item{}Factorisation.
-			\mytodo{}
 
 	\end{description}
-					\mytodo{ ICI; finish this proof }
 
-	\hl{\textbf{ new distinction: } }
-	\begin{itemize}
-		\item
-			$\Phi$-col $s\occ{x}$ in $l$/$l'$, exists $\Psi$-col $t\occ{z}$ with $z\sigma$ contains grey $x$
-		\item 
-			exists $\Phi$-col $s\occ{y}$ with $y\sigma$ contains grey $x$ and
-			exists $\Psi$-col $t\occ{z}$ with $z\sigma$ contains grey $x$
-
-			by new 24 (for col occs of $y$), either
-			\begin{compactitem}
-			\item $x$ occs grey
-			\item $y_i$ grey in $C_i$ OR $y_i$ in once in s.c.\ $\Phi$ and once in s.c.\ $\Psi$-term
-			\item some $\Phi$-term $r\occ{x}$ in $C_i$
-
-			\end{compactitem}
-
-		\item
-			$\Phi$-col $s\occ{x}$ in $l$/$l'$, exists $z$ in $C_i$ s.t. $z\sigma$ contains s.c. $\Psi$-term containing $x$
-
-		\item 
-			exists $y$ in $C_j$ s.t. $y\sigma$ contains s.c. $\Phi$-term $s\occ{x}$ and
-			exists $z$ in $C_i$ s.t. $z\sigma$ contains s.c. $\Psi$-term $t\occ{x}$
-
-			by new 25, either:
-			\begin{compactitem}
-			\item some $\Phi$-term $r\occ{x}$ in $C_i$
-			\item $y_i$ grey in $C_i$ OR $y_i$ in once in s.c.\ $\Phi$ and once in s.c.\ $\Psi$-term
-			\item $x$ occs grey 
-			\end{compactitem}
-
-			any of both case 2 or 3 $\Ra$ done.
-
-			otw both case 1, but then ind hyp
-	\end{itemize}
 \end{proof}
 
 \begin{lemma}
@@ -1326,47 +1103,11 @@ This definition is convenient as it adheres to the following proposition:
 					then $\arr_1$ as defined in Definition~\ref{def:arrows} contains $(r, q)$ such that $\AIclde(C)\at{q}$ is $t\occatp{x_s}$.
 					As $\arr_1 \subseteq G_C$, this implies $x_s \apath_{G_C} t\occatp{x_s}$.
 
+					\mytodo{ adapt to new lemmas or keep old ones currently in garbage}
+
 					By Lemma~\ref{lemma:proof_along_mgu}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ and $s$ occurs grey in $u_i \sigma$ for $1\varleq i \varleq n$.
 					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.\todo{this is the ramp!}{}
 					Therefore suppose that $u_1, \dots, u_n$ occur only colored in $C_1$ and $C_2$.
-
-					\begin{comment}
-
-						alternate version (unfinished)
-
-						Lemma~\ref{lemma:proof_along_mgu} furthermore asserts that $u_n$ occurs in a resolved literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the respective other resolved literal.
-						As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda'\sigma$, $\lambda'\at{\bhat u_n}$ is a colored occurrence as well.
-
-						\begin{itemize}
-							\item
-								Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
-								Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
-								So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
-								As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
-								as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
-
-								Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
-
-							\item
-								Suppose that $u_i$ for $1\varleq i \varleq n$ is contained in a $\Delta$-term which is contained in a $\Gamma$-term.
-
-								\mytodo{}
-
-							\item
-								Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Delta$-term.
-								Due to $\lambda \sigma = \lambda'\sigma$, $\lambda\at{\bhat u_n}$ is also contained in a $\Delta$-term.
-								As by assumption none of the $u_i$, $1\varleq i \varleq n$ is a grey occurrence, there must be a clause which contains two occurrences of $u_i$ such that one of them is a $\Gamma$-occurrence and one is a $\Delta$-occurrence.
-
-								\begin{itemize}
-									\item Suppose that one is only gamma and the other only delta
-									\item Suppose that mixed
-								\end{itemize}
-
-						\end{itemize}
-
-					\end{comment}
-
-
 
 					Note that in the prefix of $x_s$ in $t\occatp{x_s}$, no $\Delta$-colored symbol occurs as otherwise $x_s$ would not occur in this term.
 					Hence the smallest colored term containing the occurrence of $u$ in the predecessor of $t\occ{x_s}$ is a $\Gamma$-term.
@@ -1585,5 +1326,338 @@ for resolution/factorisation, check unifier:
 
 \end{proof}
 
+
+\section{Garbage}
+
+\begin{comment}
+
+
+	\begin{lemma}
+		\label{lemma:single_col_x_in_unif_range_old}
+		Let $l$ and $l'$ be variable disjoint literals and $\sigma = \mgu(l, l')$
+		and $x$ and $y$ be variables such that
+		$x$ occurs in a single-colored $\Delta$-term in $y\sigma$.
+
+		Then there is a sequence $y_1, \dots, y_n$ and some $k$ such that $1\varleq k \varleq n$, for $1\varleq i \varleq k$,
+		$y_i\sigma$ contains a single-colored $\Delta$-term containing $x$ and $y_i\sigma$ does not contain $\Gamma$-symbols,
+		and for $k+1\varleq i \varleq n$,
+		$y_i\sigma$ contains a grey occurrence of $x$.
+
+		Furthermore, at least one of the following statements holds:
+
+		\begin{compactenum}
+		\item some single-colored $\Delta$-term containing $x$ occurs in $l$ or $l'$
+			\label{25_delta_x}
+
+		\item some single-colored $\Gamma$-term containing $x$ occurs in $l$ or $l'$ and there is a color change: some $y_i$ is contained in a single-col $\Delta$-term and some $y_{i+1}$ is contained in a single-col $\Gamma$-term %. (hence $y_i$ and $y_{i+1}$ have a grey occ of $x$).
+			\label{25_gamma_x}
+
+			\hl{possible new text: $y_i$ (and also $y_{i+1}$ occurs grey, and they are unified to $x$ as $i > k$}
+
+		\item $x$ occs grey.
+			\label{25_grey_x}
+		\end{compactenum}
+
+		additional conjecture: for the first $y_i$, but not $y_1$, the terms are contained in single-col $\Delta$-terms. when the colored tiers are peeled off, the remaining $y_i$ are grey occs of $x$. this is where color changes are possible.
+	\end{lemma}
+	\begin{proof}
+		Let $y_1 = y$.
+
+
+		that for some single-colored $\Delta$-term $r$, $y \mguarr r$.
+		$r$ furthermore contains $x$ or a variable $z$ such that $z\sigma$ does not contain a $\Gamma$-symbol and contains a grey occurrence of $x$ or a single-colored $\Delta$-term containing $x$.
+
+		We build the sequence inductively:
+		By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence of $y_{i_n}$ of $y_i$ such that $y_{i_n} \mguarr r$, where $r$ shares the outermost symbol with $y_i\sigma$.
+		As $y_i\sigma$ is a single-colored $\Delta$-term containing $x$, $r$ either contains $x$ in which case $i = k = n$ and item \ref{25_delta_x} holds and we are done.
+		Otherwise $r$ contains a variable $z$ such that $z\sigma$ contains a grey occurrence of $x$ or $z\sigma$ does not contain $\Gamma$-terms and contains a single-colored $\Delta$-term which contains $x$.
+		Hence $y_{i+1} = z$ and in the first case, $k=i+1$.
+		Note that the length of $z\sigma$ is a strictly smaller than the length of $y\sigma$, hence the second case can not occur infinitely often.
+
+		If we hit the first case and $k=i+1$, then we continue defining the sequence inductively.
+		Let $y_j$ be such that $y_j\sigma$ contains a grey occurrence of $x$.
+		By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence $y_{j_n}$ of $y_j$ such that $y_{j_n} \mguarr s\occ{x}$, where $s\occ{x}$ contains a grey occurrence of $x$.
+		If $s\occ{x}$ occurs grey or in a single-colored $\Delta$-term, when we are done, so suppose it occurs in a single-colored $\Gamma$-term.
+		Note that $y_{j_n}$ is contained in a single-colored $\Phi$-term if and only if $s\occ{x}$ is.
+		Note that $y_k$ is contained in a single-colored $\Delta$-term\todo{when we have finished peeling, there is at least one peeling step}.
+		As single-colored $\Delta$-terms and single-colored $\Gamma$-terms are not unifiable, there is some $i$, $i< k \varleq n$\todo{varlt?} such that $y_i$ and $y_{i+1}$ occur grey in either $l$ or $l'$, so \ref{25_gamma_x} is the case.
+
+
+		\mytodo{check indices of $i$, $k$}
+
+	\end{proof}
+
+	\begin{lemma}
+		\label{lemma:proof_along_mgu_old}
+		% OLD formulation, subset of current one:
+		%Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
+		%Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that $t$ occurs grey in  $x_i \sigma$ for $1\varleq i \varleq n$ and $x_n$ occurs in a resolved or factorised literal $l$ at $l\at{\bhat x_n}$ such that $l'\at{\bhat x_n}$ contains the outermost symbol of $t$, where $l'$ is the other resolved or factorised literal.
+
+		%Let $x$ be a variable such that in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$, $x\sigma$ contains a grey occurrence of a term $t$.
+
+		Let $l$ and $l'$ be variable disjoint literals and $\sigma = \mgu(l, l')$
+		such that for a variable $x$, $x\sigma$ contains a grey occurrence of a term $t$.
+
+		\hl{old text:}
+		Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
+		$t$ occurs grey in $x_i \sigma$ and
+		$x_i$ occurs in one of the literals, say $l_i$, at $l_i\at{\bhat x_i}$ such that
+		with $l_i'$ being the respective other literal,
+		$l_i'\at{\bhat x_i}$ contains $x_{i+1}$ for $1\varleq i \varleq n-1$ and $l_n'\at{\bhat x_n}$ contains the outermost symbol of $t$.
+
+		\hl{new text:}
+		Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
+		$t$ occurs grey in $x_i \sigma$ and
+		$x_i \mguarr r\occ{x_{i+1}}$ or
+		$i=n \land x_n \mguarr r_t$, where $r_t$ contains the outermost symbol of $t$
+		%$x_i$ occurs in one of the literals, say $l_i$, at $l_i\at{\bhat x_i}$ such that
+		%with $l_i'$ being the respective other literal,
+	\end{lemma}
+	\begin{proof}
+		Let $x_1 = x$ and note that $t$ occurs in $x\sigma$ by assumption.
+		We now consider the execution of the $\mgu$ algorithm as defined in \ref{def:mgu_algo}
+		and show that for an $x_i$ in the sequence, either we can find an element $x_{i+1}$ which matches the requirement for the sequence or there is an occurrence of $x_i$ which is unified with a term containing the outermost symbol of $t$.
+
+		As the $\mgu$ algorithm produces a unifier which modifies $x_i$, $x_i$ must occur in a literal, say in $l_i$ at $l_i\at{\bhat x_i}$, such that at the other literal $l_i'$, $l_i'\at{\bhat x_i}$ is an abstraction of a term containing $t$ which is different from $x_i$.
+		We distinguish two cases:
+		\begin{itemize}
+			\item Suppose that $l_i'\at{\bhat x_i}$ contains the outermost symbol of $t$.
+				Then let $x_n = x_i$.
+
+			\item Otherwise $l_i'\at{\bhat x_i}$ contains a variable $v$ such that $t$ occurs grey in $v\sigma$.
+				Let $x_{i+1} = v$.
+				\qedhere
+		\end{itemize}
+
+
+	\end{proof}
+
+
+	\begin{lemma}
+		\label{lemma:unified_term_starts_somewhere}
+		Let $l$ and $l'$ be variable disjoint literals and $\sigma = \mgu(l, l')$
+		such that for a variable $x$, $x\sigma$ contains a term $t$.
+
+		\hl{new text:}
+		Then there is a sequence of variables $x_1,\dots, x_n$ with $x_1 = x$ such that for $1\varleq i \varleq n$,
+		$t$ occurs in $x_i \sigma$ and
+		$x_i \mguarr r\occ{x_{i+1}}$ or
+		$i=n \spas\land\allowbreak x_n \mguarr\nolinebreak r_t$, where $r_t$ contains the outermost symbol of $t$
+	\end{lemma}
+	\begin{proof}
+		\mytodo{} (but is virtually a subset of some lemma below)
+	\end{proof}
+
+	{comment}
+
+		alternate version (unfinished)
+
+		Lemma~\ref{lemma:proof_along_mgu} furthermore asserts that $u_n$ occurs in a resolved literal $\lambda$ at $\lambda\at{\bhat u_n}$ such that $\lambda{}'\at{\bhat u_n}$ contains the outermost symbol of the $\Delta$-term $s$, where $\lambda{}'$ is the respective other resolved literal.
+		As $u_n$ is a colored occurrence and $\lambda\sigma = \lambda'\sigma$, $\lambda'\at{\bhat u_n}$ is a colored occurrence as well.
+
+		\begin{itemize}
+			\item
+				Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Gamma$-term.
+				Let $r\occ{x_\varphi}$ be the maximal colored term containing $\lambda'\at{\bhat u_n}$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $\lambda'\at{\bhat u_n}$ in $\AIcl(C_j)$ for $j = 1$ or $j=2$.
+				So by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$, hence $x_\varphi$ occurs grey in $\AImatde(C_j)$, $\AIclde(C_j)$ or $\AIcolde(C_j)$.
+				As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
+				as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
+
+				Hence there is a grey occurrence of $x_s$ in $\AImatde(C)$, $\AIclde(C)$ or $\AIcolde(C)$ and we are done.
+
+			\item
+				Suppose that $u_i$ for $1\varleq i \varleq n$ is contained in a $\Delta$-term which is contained in a $\Gamma$-term.
+
+				\mytodo{}
+
+			\item
+				Suppose $\lambda'\at{\bhat u_n}$ is contained in a $\Delta$-term.
+				Due to $\lambda \sigma = \lambda'\sigma$, $\lambda\at{\bhat u_n}$ is also contained in a $\Delta$-term.
+				As by assumption none of the $u_i$, $1\varleq i \varleq n$ is a grey occurrence, there must be a clause which contains two occurrences of $u_i$ such that one of them is a $\Gamma$-occurrence and one is a $\Delta$-occurrence.
+
+				\begin{itemize}
+					\item Suppose that one is only gamma and the other only delta
+					\item Suppose that mixed
+				\end{itemize}
+
+		\end{itemize}
+
+	{comment}
+
+
+
+
+	old proof of smallest colored container 
+
+	{\tiny
+
+		We start by making an observation \markC:
+		If for two variables $x$ and $y$ it holds that $x$ occurs grey in $y\sigma$, then by Lemma~\ref{lemma:proof_along_mgu}, there exists a sequence $x_1,\dots, x_n$ such that for $1\varleq i \varleq n-1$, $u_i$ occurs in $\lambda\at{\bhat u_i}$ for a resolved literal $\lambda$ such that the other resolved literal $\lambda'$ has a grey occurrence of $u_{i+1}$ at $\lambda'\at{\bhat u_i}$.
+		Hence if $u_i$ occurs in a single-colored $\Phi$-\nolinebreak{}colored term in $\lambda\at{\bhat u_i}$, then $u_{i+1}$ does so too in $\lambda'\at{\bhat u_i}$ as $\lambda\sigma = \lambda'\sigma$.
+		As $u_{i+1}$ also occurs in $\lambda'\at{\bhat u_{i+1}}$ for $1\varleq 1 \varleq n-1$,
+		i.e.\ in the same clause as $\lambda'\at{\bhat u_i}$, then if $\lambda'\at{\bhat u_{i+1}}$ occurs in a single-colored term which is not $\Phi$-colored, then by the induction hypothesis, $u_{i+1}$ occurs grey in $\AIany(C_i)$ for $i\in \{1,2\}$ and as $u_{i+1}\sigma$ contains a grey occurrence of $x$,
+		$x$ occurs grey in $\AIany(C)$.
+		Therefore we can assume that all variable of the sequence $x_1, \dots, x_n$ occur only colored and each of the $x_i$, $1\varleq i \varleq n$ is contained in some single-colored $\Phi$-term, as otherwise we are done.
+
+
+		{ \tiny
+
+			We make another observation \markB:
+			If for two variables $x$ an $y$ it holds that $y\sigma = s\occ{x}$ a single-colored $\Delta$-term, then we can assume that $x$ occurs grey or in some single-colored $\Delta$-term in $C_1$ or $C_2$.
+			Proof:
+			We proceed by induction on the size of $s\occ{x}$.
+			By Lemma~\ref{lemma:proof_along_mgu}, there is an occurrence of $y_n$ of $y$ in a resolved literal $\lambda$ in say $\lambda\occ{\bhat y_n}$ such that $\lambda'\occ{\bhat y_n}$ contains the outermost symbol of $s\occ{x}$.
+
+			Suppose for the induction start that $s\occ{x}$ is of size $2$. Note that this is the smallest size for a single-colored term containing a variable.
+			Then $\lambda'\at{\bhat y_n}$ either is $s\occ{x}$, in which case we are done, or $\lambda'\at{\bhat y_n}$ is $s\occ{z}$ for a variable $z$ such that $z\sigma = x$.
+			Hence $z$ occurs elsewhere in $\lambda'$, say in $\lambda'\at{\bhat z}$, such that $\lambda\at{\bhat z}$ is $x$.
+			So if $\lambda'\at{\bhat z}$ is a grey occurrence or $\lambda'\at{\bhat z}$ is contained in a single-colored $\Delta$-term, then due to $\lambda\sigma = \lambda'\sigma$, $\lambda\at{\bhat z}$ is a corresponding occurrence of $x$.
+			Otherwise $\lambda'\at{\bhat z}$ is contained in a single-colored $\Gamma$-term.
+			\hl{meh}
+
+
+			\mytodo{ICI: ind hyp should work for when z/x occur in a single-colored $\Gamma$-term, otw check what we need to have as lemma statement. all is in the resolved literal, so it's gone from the clause in the next step.}
+
+		}
+
+		We distinguish between all four cases which produce a clause on which the lemma applies:
+
+		\begin{itemize}
+
+			\item
+				Suppose that w.l.o.g.\ $C_1$ contains a single-colored $\Gamma$-term $s\occ{x}$ which contains $x$ and $C_1$ or $C_2$ contains a single-colored $\Delta$-term containing a variable $y$ such that $x$ occurs grey or in a single-colored $\Delta$-colored in $y\sigma$.
+				Note that the case of an opposite assignment of colors can be argued in a symmetric manner.
+
+				%Let $r$ be $x$ in the first case or the maximal colored term in $y\sigma$ containing $x$ in the second case.
+
+				\begin{itemize}
+					\item
+						Suppose that $x$ occurs grey in $y\sigma$:
+						Then by Lemma~\ref{lemma:proof_along_mgu}, there is a variable $y_n$ which occurs in a resolved literal $\lambda$ at $\lambda\at{\bhat y_n}$ such that $\lambda'\at{\bhat y_n}$ contains a grey occurrence of $x$.
+						By observation \markC, $\lambda\at{\bhat y_n}$ is contained in a single-colored $\Delta$-term.
+						But then so is $\lambda'\at{\bhat y_n}$, and as clauses are variable disjoint\todo{clauses var-disjoint}, $s\occ{x}$ also occurs in this clause. So by the induction hypothesis, there is a grey occurrence of $x$ in $\AIany(C_j)$ where $C_j$ is the clause containing $s\occ{x}$, and as $x$ is not affected by $\sigma$, $x$ also occurs grey in $\AIany(C)$.
+
+					\item
+						Suppose that $x$ occurs in a single-colored $\Delta$-term $y\sigma$:
+
+						Then by Lemma~\ref{lemma:single_col_x_in_unif_range}, either $x$ occurs grey, in which case we are done, or some $y_i$ occurs grey in $l$ or $l'$ such that $y_i\sigma$ contains a grey occurrence of $x$, in which case we are done, or $x$ occurs in a single-colored $\Delta$-term $t\occ{x}$.
+						Then however as $s\occ{x}$ occurs in $C_1$ and clauses are variable disjoint, $t\occ{x}$ occurs in $C_1$ as well and $x$ occurs grey in $\AIany(C_1)$ by the induction hypothesis.
+
+						{\tiny
+
+							If a single-colored $\Delta$-term $t\occ{x}$ containing $x$ occurs in $C_1$ or $C_2$, say in $C_j$, then as clauses are variable disjoint, it must be the same clause as $s\occ{x}$.
+							But then $x$ occurs grey in $\AIany(C_j)$ by the induction hypothesis, so assume that no such $t\occ{x}$ occurs in $C_1$ or $C_2$.
+
+							But as a single-colored $\Delta$-term containing $x$ occurs in $y\sigma$, there must be a single-colored $\Delta$-term in $C_1$ or $C_2$ which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
+							Hence this case is repeated, but as $z\sigma$ is strictly smaller than $y\sigma$, this case can only repeat finitely often.
+
+						}
+
+				\end{itemize}
+
+
+
+			\item Suppose that
+				a single-colored $\Gamma$-term $s\occ{y}$ occurs in $C_i$, $i\in \{1,2\}$
+				such that $x$ occurs grey or in a single-colored $\Gamma$-term in $y\sigma$
+				and
+				a single-colored $\Delta$-term $t\occ{z}$ occurs in $C_j$, $j\in \{1,2\}$
+				such that $x$ occurs grey or in a single-colored $\Delta$-term in $z\sigma$.
+
+				%If $y\sigma = r\occ{x}$ is a single-colored $\Phi$-term, then either $r\occ{x}$ occurs in the clause or an abstraction of $r\occ{x}$ which is not a variable occurs in the clause, which contains a variable $z$ such that $x$ occurs grey or in a single-colored $\Phi$-term in $z\sigma$.
+
+
+
+
+
+			\item 2 other items from arrow-final-conjectures.
+		\end{itemize}
+	}
+
+
+
+	\largered{old semi-main lemma reasoning:}
+
+			\begin{itemize}
+				\item
+					Suppose a single-colored $\Phi$-term $s\occ{x}$ in $C_1$ or $C_2$ contains a grey occurrence of $x$ and 
+					a single-colored $\Psi$-term $t\occ{x}$ is introduced in $C$.
+					This is possible by two means: 
+					\begin{compactenum}
+						\item A single-colored $\Psi$-term $t\occ{z}$ in $C_1$ or $C_2$ contains a variable $z$ such that $x$ occurs grey in $z\sigma$
+						\item A variable $u$ occurs in $C_1$ and $C_2$ such that $u\sigma$ contains a single-colored $\Psi$-term containing $x$
+					\end{compactenum}
+					We apply
+					Lemma~\ref{lemma:y_sigma_contains_colored_x} in the first case
+					and Lemma~\ref{lemma:colored}
+					Then by Lemma~\ref{lemma:y_sigma_contains_colored_x}, at least one of the given three statments holds.
+
+					(1) As there is a grey occurrence of $z$ in $C_1$ or $C_2$, there is a grey occurrence of $x$ in $\AIany(C)$.
+
+					(2) then this term occurs in the same clause as $s\occ{x}$ as clauses are variable disjoint and $x$ occurs grey by the induction hypothesis
+
+					(3) then by IH, there is a grey occurrence of $z$ in $C_1$ or $C_2$ and hence a grey occurrence of $x$ in $\AIany(C)$.
+
+
+				\item 
+					Suppose a single-colored $\Phi$-term $s\occ{y}$ in $C_1$ or $C_2$ contains a variable $y$ such that $x$ occurs grey in $y\sigma$
+					and
+					a single-colored $\Psi$-term $t\occ{z}$ in $C_1$ or $C_2$ contains a variable $z$ such that $x$ occurs grey in $z\sigma$.
+
+					Then we can apply Lemma~\ref{lemma:colored_y_sigma_contains_grey_x} to both of $s\occ{y}$ and $t\occ{z}$.
+
+					If any one yields case (1), we are done (as above).
+
+					If any one yields case (3), we are done (IH, as above).
+
+					Hence suppose that both yield case 2.
+					Thus there is a single-colored $\Phi$-term containing $x$ and a single-colored $\Psi$-term containing $x$ in $C_1$ or $C_2$.
+					Note that as clauses are variable disjoint, both these terms must occur in the same clause, say in $C_j$.
+					But then by the induction hypothesis, $x$ occurs grey in $\AIany(C_j)$ and so also in $\AIany(C)$.
+
+			\end{itemize}
+
+		\item{}Factorisation.
+			\mytodo{}
+
+	\end{description}
+	\mytodo{ ICI; finish this proof }
+
+	\hl{\textbf{ new distinction: } }
+	\begin{itemize}
+		\item
+			$\Phi$-col $s\occ{x}$ in $l$/$l'$, exists $\Psi$-col $t\occ{z}$ with $z\sigma$ contains grey $x$
+		\item 
+			exists $\Phi$-col $s\occ{y}$ with $y\sigma$ contains grey $x$ and
+			exists $\Psi$-col $t\occ{z}$ with $z\sigma$ contains grey $x$
+
+			by new 24 (for col occs of $y$), either
+			\begin{compactitem}
+			\item $x$ occs grey
+			\item $y_i$ grey in $C_i$ OR $y_i$ in once in s.c.\ $\Phi$ and once in s.c.\ $\Psi$-term
+			\item some $\Phi$-term $r\occ{x}$ in $C_i$
+
+			\end{compactitem}
+
+		\item
+			$\Phi$-col $s\occ{x}$ in $l$/$l'$, exists $z$ in $C_i$ s.t. $z\sigma$ contains s.c. $\Psi$-term containing $x$
+
+		\item 
+			exists $y$ in $C_j$ s.t. $y\sigma$ contains s.c. $\Phi$-term $s\occ{x}$ and
+			exists $z$ in $C_i$ s.t. $z\sigma$ contains s.c. $\Psi$-term $t\occ{x}$
+
+			by new 25, either:
+			\begin{compactitem}
+			\item some $\Phi$-term $r\occ{x}$ in $C_i$
+			\item $y_i$ grey in $C_i$ OR $y_i$ in once in s.c.\ $\Phi$ and once in s.c.\ $\Psi$-term
+			\item $x$ occs grey 
+			\end{compactitem}
+
+			any of both case 2 or 3 $\Ra$ done.
+
+			otw both case 1, but then ind hyp
+	\end{itemize}
+
+\end{comment}
 
 \end{document}
