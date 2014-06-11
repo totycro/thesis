@@ -177,4 +177,54 @@
 
 	\end{itemize}
 \end{proof}
+
+\clearpage
+
+\begin{clemma}
+	Let $\sigma$ unifier.
+	exists unification order $\sigma = \sigma_1 \dots \sigma_n$ with $\sigma_i =\nolinebreak \{ x_i \mapsto r_i \}$ s.t.\ 
+	$x_i$ does not occur in $\{ r_i, r_{i+1}, \dots, r_n\}$.
+\end{clemma}
+
+\begin{proof}
+	Suppose ordering does not exist, i.e.\ $l\sigma = l'\sigma$, but every $x_i$ occurs in some $r_j$ for $j\grq i$.
+
+	But then last variable does not occur later..
+\end{proof}
+
+\begin{lemma}
+	Let $\sigma$ unifier.
+
+	At any stage in the run of the unification algo, exists var $x$ s.t. $x$ does not occur in a function symbol in a difference pair.
+\end{lemma}
+\begin{proof}
+	Suppose no such var exists. 
+
+	resolve all differences $x_i \sim r_i$ such that $r_i$ does not contain a variable in a function symbol.
+
+	all variables, in particular the remaining $x_i$, occur in a function symbol in $r_j$ for some $j$.
+
+	Iteratively resolve in some order: $x_i \mapsto r_i$, where every $r_i$ contains at least one variable.
+	Hence as every $x_i$ occurs in some $r_j$, the variable in $r_i$ then occurs in $r_j$.
+	
+	so after a step, for the remaining difference pairs, it is still the case that every variable occurs in some $r_j$.
+
+	We do not get an occurs check error as by assumptions, the term are unifiable.
+
+	when we get to the point where there is only one subst left, it has to be of the form $x_i \mapsto r_i\occ{x_i}$, so we do get an occurs check error, which contradicts the assumptions that the terms are unifiable.
+\end{proof}
+
+\largered{TODO ICI: does this mean that there is a variable which does not have a variable at its RHS? }
+(all difference pairs have a variable at some side, let's call it LHR and the other one RHS)
+
+\largered{possibly: do induction along this order: take subst which has no var to the right, then this one occurs in the term. next term then does not actually exists necessarily, so need to show some induction property.}
+
+
+evil examples:
+
+$P(z, z, \delta), \lnot P(f(x), f(y), y)$
+
+$P(z, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
+
+
 \end{document}
