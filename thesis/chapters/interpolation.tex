@@ -1,58 +1,5 @@
-\section{Preliminaries}
-\todo[inline]{this section contains all the required notation but will just be written up nicely at the end}
-
-The language of a first-order formula $A$ is denoted by $\Lang(A)$ and contains all predicate, constant and function symbols that occur in $A$.
-These are also referred to as the \emph{\mbox{non-logical} symbols} of $A$.
-The \emph{logical symbols} on the other hand include all logical connectives, quantifiers, the equality symbol ($=$) as well as symbols denoting truth ($\top$) and falsity ($\bot$).
-
-For formulas $A_1, \ldots, A_n$, $\Lang(A_1, \ldots, A_n) = \bigcup_{1\leq i \leq n} \Lang(A_i)$.
-
-A term $s$ is a subterm of a term $t$ if $s$ occurs in $t$. $s$ is a strict subterm of $t$ if $s$ is a subterm of $t$ and $s \neq t$.
-
-An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
-An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
-\todo{colors are only defined later}
 
 
-We denote $x_1, \ldots, x_n$ by $\bar x$.
-
-For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$.
-
-A substitution is a mapping of variables to terms. It is denoted by $\phi\subst{x/t}$, where $\phi$ is a formula or term where each occurrence of the variable $x$ is replaced by the term $t$.
-A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
-
-An \defiemph{abstraction} on the other hand is a mapping of terms to variables. It is denoted by $\phi\abstractionOp{t/x}$, where $\phi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
-
-A term $s$ is an \defiemph{instance} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
-If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that the abstraction- and instance-relation are reflexive. 
-$s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$.
-
-The length of a term or formula $\phi$ is the number of logical and non-logical symbols in $\phi$.
-
-$A\occurat{s}{p}$ denotes $A$ with an occurrence of $s$ at position $p$.
-
-$A\occur{s}$ denotes $A$ where the term $s$ occurs on some set of positions $\Phi$. $A\occur{t}$ denotes $A\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $A$ in some way.
-
-TODO: define $\Sigma$ as subformula set; possibly remove definition in chapter 2
-
-TODO: define $\equiv$ as syntactic equality. Define also $\semiff$, $\liff$.
-
-TODO: define what we mean by model and free variables.
-(need universal quantification of free vars)
-
-TODO: define ground, non-ground
-
-TODO: define set-notation of unifiers
-
-TODO: define infinite-domain unifiers
-
-TODO: define range and domain of substitutions
-
-TODO: define prenex formulas with matrix and prefix
-
-TODO: define prefix of term position: e.g. u in f(c, g(u, x, h(a))) has the prefix f(., g(., ., .)), or possible written as sequence of symbols (algo: always go to parent starting at u)
-
-TODO: abstraction has 2 contradictory definitions above
 
 \section{Craig Interpolation}
 
@@ -140,10 +87,13 @@ In the context of interpolation, every non-logical symbol is assigned a color wh
 A non-logical symbol is said to be \defiemph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \defiemph{grey} in case it occurs in both $\Gamma$ and $\Delta$. A symbol is \defiemph{colored} if it is $\Gamma$- or $\Delta$-colored.
 A term is a \defiemph{$\Phi$-term} if its outermost symbol is $\Phi$-colored.
 
-A term $t$ is \defiemph{mixed-colored} if $t$ is $\Phi$-colored for some $\Phi$ and $t$ contains a term which is colored but not $\Phi$-colored.
 A term $t$ is \defiemph{single-colored} if $t$ is $\Phi$-colored for some $\Phi$ and all colored symbols in $t$ are $\Phi$-colored.
+A term $t$ is \defiemph{mixed-colored} if $t$ is $\Phi$-colored for some $\Phi$ and $t$ contains a term which is colored but not $\Phi$-colored.
+\mytodo{fix either mixed-colored or multi-colored, currently both is used synonymously}
+Note that a multicolored $\Phi$-term consequently is a term whose outermost symbol is $\Phi$-colored and contains a colored but not $\Phi$-colored subterm.
 
-  An occurrence of a variable $x$ is called \defiemph{$\Phi$-colored} if it is contained in a maximal $\Phi$-colored term. It is called \defiemph{colored} if it is of any color and \defiemph{grey} otherwise.
+  An occurrence of a term $t$ is called \defiemph{$\Phi$-colored} if $t$ is contained in a maximal $\Phi$-colored term.
+	$t$ is called \defiemph{colored} if $t$ is of any color and \defiemph{grey} otherwise.
 \end{defi}
 
 We sometimes use $\Phi$ and $\Psi$ as colors to emphasise that the reasoning at hand is valid both if $\Phi = \Gamma$ and $\Psi = \Delta  $ as well as if $\Phi = \Delta$ and $\Psi = \Delta$.

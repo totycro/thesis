@@ -1,0 +1,102 @@
+\section{Preliminaries}
+\todo[inline]{this section contains all the required notation but will just be written up nicely at the end}
+
+The language of a first-order formula $A$ is denoted by $\Lang(A)$ and contains all predicate, constant and function symbols that occur in $A$.
+These are also referred to as the \emph{\mbox{non-logical} symbols} of $A$.
+The \emph{logical symbols} on the other hand include all logical connectives, quantifiers, the equality symbol ($=$) as well as symbols denoting truth ($\top$) and falsity ($\bot$).
+
+For formulas $A_1, \ldots, A_n$, $\Lang(A_1, \ldots, A_n) = \bigcup_{1\leq i \leq n} \Lang(A_i)$.
+
+A term $s$ is a subterm of a term $t$ if $s$ occurs in $t$. $s$ is a strict subterm of $t$ if $s$ is a subterm of $t$ and $s \neq t$.
+
+An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
+An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
+\todo{colors are only defined later}
+
+
+We denote $x_1, \ldots, x_n$ by $\bar x$.
+
+For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$.
+
+A substitution is a mapping of variables to terms. It is denoted by $\phi\subst{x/t}$, where $\phi$ is a formula or term where each occurrence of the variable $x$ is replaced by the term $t$.
+A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
+
+An \defiemph{abstraction} on the other hand is a mapping of terms to variables. It is denoted by $\phi\abstractionOp{t/x}$, where $\phi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
+
+A term $s$ is an \defiemph{instance} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
+If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that the abstraction- and instance-relation are reflexive. 
+$s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$.
+
+The length of a term or formula $\phi$ is the number of logical and non-logical symbols in $\phi$.
+
+$A\occurat{s}{p}$ denotes $A$ with an occurrence of $s$ at position $p$.
+
+$A\occur{s}$ denotes $A$ where the term $s$ occurs on some set of positions $\Phi$. $A\occur{t}$ denotes $A\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $A$ in some way.
+
+TODO: define $\Sigma$ as subformula set; possibly remove definition in chapter 2
+
+TODO: define $\equiv$ as syntactic equality. Define also $\semiff$, $\liff$.
+
+TODO: define what we mean by model and free variables.
+(need universal quantification of free vars)
+
+TODO: define ground, non-ground
+
+TODO: define set-notation of unifiers
+
+TODO: define infinite-domain unifiers
+
+TODO: define range and domain of substitutions
+
+TODO: define prenex formulas with matrix and prefix
+
+TODO: define prefix of term position: e.g. u in f(c, g(u, x, h(a))) has the prefix f(., g(., ., .)), or possible written as sequence of symbols (algo: always go to parent starting at u)
+
+TODO: abstraction has 2 contradictory definitions above
+
+TODO: dei
+
+
+\subsection{Unification}
+
+
+\begin{defi}[Unification algorithm]
+	Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable to signify that the $\mgu$ of the given arguments is not defined. We treat constants as $0$-ary functions.
+	Let $s$ and $t$ denote terms and $x$ a variable.
+
+	The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
+
+
+	The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
+
+	$
+	\mgu(\emptyset) = \id
+	$
+
+	\newcommand{\aatahfdgasdfg}{.4\textwidth}
+	$
+	\mbox{$\mgu(\{t\} \cup T)$} =
+	%\mgu(\{t\} \cup T) =$
+	\begin{cases}
+		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
+		\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
+		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
+		\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
+		\mgu(T) 							& \text{if $t=(s, s)$} \\
+	\end{cases}
+	$
+	\qedhere
+\end{defi}
+
+
+\largered{ FIX UP DEF BELOW depending on conj }
+
+\begin{defi}[$\mguarr$]
+	Let $l$ and $l'$ be literals such that $\mgu(l, l')$ is defined.
+	We write $x\mguarr t$ for a variable $x$ and a term $t$ if in the course of the application of the unification algorithm, the substitution $x\mapsto s$ is added to the result. 
+\end{defi}
+Note that $s$ may still contain variables which are substituted at a later stage, such that with $\sigma = \mgu(l, l')$, possibly $x\sigma \neq s$.
+This notation is convenient for reasoning about the 
+
+
+

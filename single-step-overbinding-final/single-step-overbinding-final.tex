@@ -881,10 +881,9 @@ This definition is convenient as it adheres to the following proposition:
 	\end{itemize}
 \end{defi}
 
-\begin{defi}
-	For terms $s, t$, $s\apath_{G_C} t$ holds if there is some $p, q$ in the edge set of $G_C$ such that $s$ is a subterm of the term at $p$ and $t$ is a subterm of the term at $t$ such that $s$ and $t$ are not contained in colored terms. (NOTE: in $\AIde$, $\Gamma$-terms are not colored terms in this sense.)
+\begin{defi}[$\apath$]
+	For terms $s$ and $t$, $s\apath_{G_C} t$ holds if there is some $p, q$ in the edge set of $G_C$ such that $s$ is a subterm of the term at $p$ and $t$ is a subterm of the term at $t$ such that $s$ and $t$ are not contained in colored terms. (NOTE: in $\AIde$, $\Gamma$-terms are not colored terms in this sense.)
 \end{defi}
-
 
 
 \begin{lemma}
@@ -897,6 +896,9 @@ This definition is convenient as it adheres to the following proposition:
 	$x_i \mguarr r\occ{x_{i+1}}$, where $x_{i+1}$ occurs grey in $r\occ{x_{i+1}}$.
 	Furthermore,
 	$x_n \mguarr r_t$, where $r_t$ contains the outermost symbol of $t$ at a grey position.
+
+
+	\mytodo{prove here as well: } if $x_i$ occurs grey/in s.c.\ $\Phi$-term, then $x_{i+1}$ occs grey/in s.c.\ $\Phi$-term due to literals same and term grey in unifier image.
 \end{lemma}
 
 \begin{proof}
@@ -911,15 +913,7 @@ This definition is convenient as it adheres to the following proposition:
 	Otherwise $x$ does not occur in $t$ and there is a variable in $t$ such that $v\sigma$ contains a grey occurrence of $x$.
 	Let $y_{i+1} = v$.
 	Note that as $\sigma$ only changes a finite number of variables, a variable can only be added to the sequence finitely often and cycles are not possible by the nature of the unification algorithm.
-
-
 \end{proof}
-%\begin{lemma}
-%	If $x$ occurs grey in $y\sigma$, then the seq of vars in 24 are all contained in single-colored terms of the same color or there is a grey occurrence of $x$.
-%\end{lemma}
-
-
-\mytodo{make sure that lemma 24 isn't misused: in lemma 25, terms can occur in any colored terms, check how that works out for 24}
 
 
 \begin{lemma}
@@ -949,29 +943,13 @@ This definition is convenient as it adheres to the following proposition:
 			Then as $y_n \mguarr r\occ{x}$ where $r\occ{x}$ contains a grey occurrence of $x$, $x$ does so as well and we have established item~\ref{27_x_in_sc_phi}.
 		\item 
 			Suppose that $y_n$ occurs in a single-colored $\Psi$-term for $\Psi \neq \Phi$.
+			\mytodo{this is now proved in lemma 24, drop here}
 			As $y_1 = y$, $y_1$ occurs in a single-colored $\Phi$-term.
 			As for $1 \varleq i \varleq n-1$, $y_i \mguarr r\occ{y_{i+1}}$ where $y_{i+1}$ occurs grey in  $r\occ{y_{i+1}}$, each successive variable occurs in the same coloring as the last one.
 			As $y_1$ and $y_n$ are contained in single-colored terms of different colors, there must be some $j$, $1\varleq j\varleq n$, such that $y_j$ occurs in a clause once in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term, establishing item~\ref{27_mixed}.
 			\qedhere
 	\end{itemize}
 
-
-	\begin{comment}
-
-	{\tiny
-
-		We proceed by induction on the number of unifications that the $\mgu$ algorithm applies to $y$.
-
-		Suppose the $\mgu$ algorithm applies $\{ y\mapsto s \}$ and does not change $s$ subsequently.
-		Then as $x$ occurs grey in $y\sigma$, $s\occ{y} \mguarr s\occ{r\occ{x}}$, where $r$ contains a grey occurrence of $x$.
-		Hence case~\ref{27_x_in_sc_phi} is established.
-
-		Suppose the $\mgu$ algorithm applies $\{ y\mapsto s \}$ and modifies $s$ subsequently.
-
-		If $s$ does not contain $x$, then it contains a variable $v$ such that $x$ occurs grey in $v\sigma$.
-
-	}
-\end{comment}
 \end{proof}
 
 
@@ -1071,12 +1049,42 @@ This definition is convenient as it adheres to the following proposition:
 			otw both s.c. $\Gamma$ and $\Delta$-term respectively $\Ra$ IH as well.
 			\qedhere
 
-
-
-
 	\end{description}
+\end{proof}
+
+
+application of lemma below:
+Suppose such a term occurs in a clause. Then suppose that it occurs in same s.c.\ term in literal, otw grey (we are done) or other color (then IH). then lemma!
+
+\begin{lemma}
+	\label{lemma:u_sigma_contains_delta_term}
+	Context: resolved literals.
+	Suppose a single-colored $\Gamma$-term contains a variable $u$ such that a term $s$ occurs grey in $u\sigma$.
+	Then one of the following statements holds:
+	\begin{compactenum}
+		\item there is a variable $z$ such that $s$ occurs grey in $z\sigma$ and $z$ occurs grey in $l$ or $l'$ \mytodo{possibly change this everywhere to in $l\sigma$, $s$ occurs grey}
+		\item a single-colored $\Gamma$-term in $l$ or $l'$ contains $s$ outermost symbol of $s$ and variables such that in total, with the unifier we get $s$
+		%\item exists var s.t.\ once s.c.\ $\Gamma$, once s.c.\ $\Delta$
+	\end{compactenum}
+\end{lemma}
+\begin{proof}
+	Suppose sequence with each unifying to next one, last one: $u_n \mguarr r\occ{s}$, where $s$ occurs grey in $r$.
+	also in lemma, successive variables in same coloring
+
+	$u$ from lemma statement occs in $\bar u$. 	
+	
+	Suppose $u_i$ grey, then done as all $u_i\sigma$ contain grey $s$, hence case 1
+
+	Suppose one $u_i$ occs s.c.\ $\Gamma$ and  s.c.\ $\Delta$. by lemma~\ref{lemma:smallest_colored_container}, $u_i$ occurs grey and $s$ occs grey as above, hence case 1
+
+	Otw, all colored, and as successive vars same coloring, all same s.c.\ term.
+	Start with $\Gamma$, hence all $\Gamma$. 
+	Hence case 2 (term contains var $v$ at grey pos which has $s$ in grey pos at $v\sigma$), hence $s$ occs grey in $\Gamma$-term.
+
+
 
 \end{proof}
+
 
 \begin{lemma}
 	If in $\AImatde(C) \lor \AIclde(C)$ a
@@ -1103,7 +1111,23 @@ This definition is convenient as it adheres to the following proposition:
 					then $\arr_1$ as defined in Definition~\ref{def:arrows} contains $(r, q)$ such that $\AIclde(C)\at{q}$ is $t\occatp{x_s}$.
 					As $\arr_1 \subseteq G_C$, this implies $x_s \apath_{G_C} t\occatp{x_s}$.
 
-					\mytodo{ adapt to new lemmas or keep old ones currently in garbage}
+					We apply Lemma~\ref{lemma:u_sigma_contains_delta_term}.
+					in case 1, $s$ occs grey.
+
+					in case 2, IH for that term, say $s'$: $s' \apath_{G_{C_j}} \gamma'\occ{s'}$
+					$s'$ is maximal $\Delta$-term (else would be contained in $r$ and we would talk about $x_r$).
+					as $\Gamma$-terms not lifted, $s'$ occurs ``grey''.
+					As $s$ is in range of subst, $s$ occurs in literal being unified,
+					by the definition of $\aiu$, $\{x_s \mapsto x_r\} \in \tau$
+					as $r$ is the term at the position of $x_s$ in $\lambda\sigma$ for $\lambda$ the resolved literal where $s'$ occurs.
+
+					Hence there is a grey occurrence of $x_s$ in $\AIanyde(C)$.
+					\mytodo{check this}
+
+
+
+
+					{\fontsize{1}{1}\selectfont 
 
 					By Lemma~\ref{lemma:proof_along_mgu}, there is a sequence of variable $u_1, \dots, u_n$ such that $u_1 = u$ and $s$ occurs grey in $u_i \sigma$ for $1\varleq i \varleq n$.
 					Note that if any variable $u_i$ occurs grey in $C_1$ or $C_2$, then at the corresponding position in $C$, the term at this position is a grey occurrence of $s$ and we are done.\todo{this is the ramp!}{}
@@ -1125,12 +1149,7 @@ This definition is convenient as it adheres to the following proposition:
 					Let $r\occ{x_\varphi}$ be hte maximal colored term containing $l'_n\at{ \bhat u_n }$ and $x_\varphi$ be the lifting variable at the position of the outermost symbol of $s$ in $l'_n{}\cl\at{ \bhat u_n }$.
 					Let $C_j$ be the clause containing $l'_n$.
 
-					Then by the induction hypothesis, $x_\varphi \apath_{G_{C_j}} r\occ{x_\varphi}$.
-					As however $x_\varphi$ occurs grey in $\lambda'\cl$\todo{this is only guaranteed in $\AIde$, not in $\AI$}, by the definition of $\aiu$, $\{x_\varphi \mapsto x_s\} \in \tau$
-					as $s$ is the term at the position of $x_\varphi$ in $\lambda'\sigma$.
-
-					Hence there is a grey occurrence of $x_s$ in $\AIanyde(C)$.
-
+				}
 
 					\begin{comment}
 
@@ -1329,7 +1348,7 @@ for resolution/factorisation, check unifier:
 
 \section{Garbage}
 
-\begin{comment}
+%\begin{comment}
 
 
 	\begin{lemma}
@@ -1617,10 +1636,7 @@ for resolution/factorisation, check unifier:
 
 			\end{itemize}
 
-		\item{}Factorisation.
-			\mytodo{}
 
-	\end{description}
 	\mytodo{ ICI; finish this proof }
 
 	\hl{\textbf{ new distinction: } }
@@ -1658,6 +1674,6 @@ for resolution/factorisation, check unifier:
 			otw both case 1, but then ind hyp
 	\end{itemize}
 
-\end{comment}
+%\end{comment}
 
 \end{document}
