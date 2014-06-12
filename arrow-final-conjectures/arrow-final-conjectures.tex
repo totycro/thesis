@@ -195,10 +195,13 @@
 \begin{lemma}
 	Let $\sigma$ unifier.
 
-	At any stage in the run of the unification algo, exists var $x$ s.t. $x$ does not occur in a function symbol in a difference pair.
+	At any stage in the run of the unification algo, exists var $x$ as one part of a difference pair s.t.\ $x$ does not occur in a function symbol in a difference pair.
 \end{lemma}
 \begin{proof}
 	Suppose no such var exists. 
+
+
+	{\tiny
 
 	resolve all differences $x_i \sim r_i$ such that $r_i$ does not contain a variable in a function symbol.
 
@@ -212,12 +215,27 @@
 	We do not get an occurs check error as by assumptions, the term are unifiable.
 
 	when we get to the point where there is only one subst left, it has to be of the form $x_i \mapsto r_i\occ{x_i}$, so we do get an occurs check error, which contradicts the assumptions that the terms are unifiable.
+
+}
 \end{proof}
 
-\largered{TODO ICI: does this mean that there is a variable which does not have a variable at its RHS? }
-(all difference pairs have a variable at some side, let's call it LHR and the other one RHS)
+\begin{lemma}
+	Let $\sigma$ unifier. 
+	At any stage in the run of the unification algorithm, there exists a variable as one part of a difference pair such that the other part does not contain a variable, which also occurs as one part of a difference pair, under a function symbol.
+\end{lemma}
+\begin{proof}
+	Suppose to the contrary, that \dots.
 
-\largered{possibly: do induction along this order: take subst which has no var to the right, then this one occurs in the term. next term then does not actually exists necessarily, so need to show some induction property.}
+	Construct graph with vars as nodes and arrow from $x, y$ if exists difference pair $(x, r\occ{y})$ or the symmetric pair.
+
+	As every variable unifies to a term containg another variable, we have that $\forall x \exists y\,E(x, y)$. Hence we can build a path of length $|V|+1$, but this contains a cycle. 
+
+\end{proof}
+
+{TODO ICI: does this mean that there is a variable which does not have a variable in a term at its RHS? }
+(all difference pairs have a variable at some side, let's call it LHS and the other one RHS)
+
+{possibly: do induction along this order: take subst which has no var to the right, then this one occurs in the term. next term then does not actually exists necessarily, so need to show some induction property.}
 
 
 evil examples:
