@@ -244,5 +244,207 @@ $P(z, z, \delta), \lnot P(f(x), f(y), y)$
 
 $P(z, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 
+$P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
+
+\begin{figure}
+	\begin{clemma}
+		Suppose $\Gamma$-term $s(y)$ in original diff pairs.
+
+		Suppose $y\sigma = x$ (simplification).
+
+		Suppose no col change, i.e.\ no var $x$ occurs in a unified literal twice such that once in s.c.\ $\Gamma$-term and once in s.c.\ $\Delta$-term.
+
+		Suppose no $x$ grey in $l\sigma \, ( = l'\sigma )$.
+
+		Hence at some point have diff pair $(y, v)$ with $v\sigma = x$.
+
+		by no col change and $s(y)$, $y$ does not occur in a s.c.\ $\Delta$-term.
+
+		As no $x$ grey in $l\sigma$ and $y\sigma = x$, no $y$ grey.
+
+		Hence $y$ only s.c.\ $\Gamma$-col.
+
+		$y$ and $v$ same prefix, so $v$ s.c.\ $\Gamma$-col.
+
+	\end{clemma}
+
+
+\end{figure}
+
+\begin{defi}[col change]
+	col change: a var $x$ occurs in yet to specify location twice such that once in s.c.\ $\Gamma$-term and once in s.c.\ $\Delta$-term.
+\end{defi}
+
+\newcommand{\epsilondelta}{\varepsilon\occ\delta}
+
+\begin{clemma}
+	Let $\sigma = \mgu(l, l')$
+
+	Suppose $\Gamma$-term $s\occ{y}$ in some unification pair, $\delta$ grey in $y\sigma$.
+
+	Suppose no col change.
+
+	Suppose no $\delta$ grey in $l\sigma \, ( = l'\sigma )$.
+
+	Then exists $\Gamma$-term $h\occ{\delta'}$ in $l$ or $l'$ OR in earlier $\mgu$-operation.
+
+\end{clemma}
+
+
+~
+
+\clearpage
+\begin{clemma}
+	Suppose s.c.\ $\Gamma$-term containing $\Delta$-term $\delta$ is created via unification of $l$ and $l'$.
+	Then at least one of the following statements holds:
+	\begin{enumerate}
+		\item In $l\sigma$	(=$l'$), $\delta$ occurs grey.
+		\item There is a variable $x$ in $l$ or $l'$ such that it occurs once in an s.c.\ $\Gamma$-term and once in an s.c.\ $\Delta$-term.
+		\item A $\delta$-term occurs in a $\Gamma$-term in $l$ or $l'$ (\mytodo{ be more precise on which term}).
+	\end{enumerate}
+\end{clemma}
+\begin{proof}
+	We show that a term in question is created, then one of the statments holds, or a term in question has been created earlier during the run of the mgu.
+
+	\begin{enumerate}
+		\item
+			Supp have $f(y)$ in some unification pair.
+
+			Note $y$ not grey somewhere as otherwise done.
+
+			At some stage exists diff pair $(y, t)$. note $y, t$ same prefix, hence same color.
+			$t$ abstraction of $\epsilondelta$.
+
+			\begin{itemize}
+				\item supp $t$ contains outermost symbol of $\delta$. as $y, t$ same color, $t$ is multi-col term either in $l$ or $l'$, or created earlier during unification algo.
+				\item otw $t$ contains var $v$ s.t.\ $v\sigma = \delta$ or $v\sigma = \epsilondelta$.
+
+					Supp. $v$ occurs grey in $l$ or $l'$. then done. 
+
+					Note during unification procedure, coloring does not disappear, hence assume now all $v$ colored.
+
+					\hl{[ hole: col change ]}
+
+					hence can assume all occs of $v$ are s.c.\ $\Gamma$-col.
+
+					so have like $f(v)$, with $v\sigma = \delta$ or $v\sigma = \epsilondelta$.
+					the corresponding diff pair is resolved earlier or later.
+
+					possible argument: finitely often anyway? 
+
+					possible argument: after finitely many variable renamings, we hit an actual term, which then is strictly smaller, hence terminates?
+
+			\end{itemize}
+
+		\item var substituted for multi-colored term .
+	\end{enumerate}
+
+\end{proof}
+
+\clearpage
+\begin{clemma}
+	Same as above but with applied partial unifiers. Not sure which statement actually follows from this proof.
+\end{clemma}
+\begin{proof}
+	$l\sigma = l'\sigma$.
+	$\sigma = \sigma_1 \cdots \sigma_n$, where $\sigma_i$ stems from the $i$th substitution applied by the unification algo.
+
+	Let $l_j = l\sigma_1 \cdots \sigma_j$
+
+	Let $\sigma_i$ be unifier $x \mapsto \delta$.
+
+	Suppose $l_i $ contains a $\Delta$-term in a $\Gamma$-term, where the respective predecessor of the $\Gamma$-term does not have a $\Delta$-term at that position or does not exist in $l_{i-1}$.
+
+	\begin{enumerate}
+			\item
+				Suppose a $\Gamma$-term $t\occ{y}$ exists in $l_{i-1}$, such that it contains a grey occ of a variable $y$ such that $y\sigma_i = \epsilondelta$ at position $\bhat y$ (where $\varepsilon$ may be ``empty'').
+				The corresponding difference pair is $(y, \epsilondelta)$.
+
+				So $y$ occurs at say $\bhat y$ in $l$ or $l'$, say $\lambda$. ($y$ may occur in both, variable-disjointness might have already been broken).
+
+				If it is a grey occurrence, we are done as $\delta$ occurs grey in $y\sigma$. \checkmark
+
+				So assume $y$ occurs colored.
+				
+				$\lambda'_{i-1}\at{\bhat y} = \epsilondelta$.
+				Note that $\lambda_{i-1}\at{\bhat y}$ and $\lambda'_{i-1}\at{\bhat y}$ agree on the prefix (by virtue of being a difference pair).
+
+				\begin{itemize}
+						\item
+							Suppose $\lambda_{i-1}\at{\bhat y}$ occurs in an s.c.\ $\Gamma$-term.
+							Then $\lambda'_{i-1}\at{\bhat y}$ is $\delta$ in a $\Gamma$-term in $l$ or $l'$.~\checkmark
+
+						\item
+							Suppose $\lambda_{i-1}\at{\bhat y}$ occurs in an s.c.\ $\Delta$-term.
+							Then as $y$ occurs in $t$ in a $\Gamma$-term, we have a col change (but possibly distributed over $l$/$l'$
+
+
+				\end{itemize}
+
+
+
+				\item multi-colored insertion
+	\end{enumerate}
+\end{proof}
+
+
+
+~
+
+~
+
+
+\mytodo{ express idea: all of same color or color change }
+
+\mytodo{ possibly assume: something (var, $\Delta$-term) does not occur grey $\Ra$ then other special case }
+
+
+
+\section{Structure (cases) of relevant unifications} 
+
+\begin{lemma}
+	For a difference pair or a not necessarily prefix-disjoint ``unification pair'' $(s, t)$, $s$ and $t$ are both of same maximal and minimal color.
+\end{lemma}
+
+Supp $f(x)$ occurs somewhere (original diff pairs or somewhere during run of algo) and $x\sigma =\nolinebreak \varepsilon\occ{\delta}$.
+
+
+
+\subsection{fst}
+
+Then $f(x) \sim t$, s.t.\ $t\sigma = f(\varepsilon\occ{\delta})$.
+
+(Suppose no col change.)
+
+\begin{enumerate}
+	\item Supp $t = f(\varepsilon\occ{\delta})$. \checkmark
+	\item Supp $t = f(y)$.
+		$y\sigma = \varepsilon\occ{\delta}$.
+		Then IH (for some IH\dots).
+	\item Supp $t = f_{1/2}(y)$.
+		$y\sigma = f_{1/2}(\varepsilon\occ{\delta})$.
+	\item Supp $t = y$.
+		$y\sigma = f(\varepsilon\occ{\delta})$.
+	\item ? Supp $h(t) = y$.
+\end{enumerate}
+
+\subsection{snd}
+
+Then actually $x \sim t$, s.t.\ $t$ possibly non-proper abstraction of $\varepsilon\occ{\delta}$.
+
+\begin{enumerate}
+	\item Supp $t = \varepsilon\occ{\delta}$. \checkmark
+	\item Supp $t = y$.
+		$y\sigma = \varepsilon\occ{\delta}$.
+\end{enumerate}
+
+\subsection{random notes}
+
+suppose $z\sim f(x)$.
+then $x$ is only changed if $z$ is unified with something with an $f$-prefix.
+
+
+
+\largeblue{ look at terms where partial unification applies. the final state is just an extremely advanced applied partial unification. }
 
 \end{document}
