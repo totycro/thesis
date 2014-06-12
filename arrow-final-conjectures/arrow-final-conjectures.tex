@@ -276,6 +276,7 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 \end{defi}
 
 \newcommand{\epsilondelta}{\varepsilon\occ\delta}
+\newcommand{\epsilonx}{\varepsilon\occ x}
 
 \begin{clemma}
 	Let $\sigma = \mgu(l, l')$
@@ -343,11 +344,17 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 
 \clearpage
 \begin{clemma}
-	Same as above but with applied partial unifiers. Not sure which statement actually follows from this proof.
+	Let $\sigma = \mgu(l, l')$.
+	Let $\gamma\occ{\delta}$ be a $\Gamma$-term containing a $\Delta$-term $\delta$ in $l\sigma$.
+	Then one of the following statments holds:
+	\begin{enumerate}
+		\item $\delta$ occurs at a grey position in $l\sigma$ \mytodo{argue about occurring $l\sigma$}.
+		\item col change (where?)
+		\item in $l$ or $l'$, $\delta$ occurs in a $\Gamma$-term.
+	\end{enumerate}
 \end{clemma}
 \begin{proof}
-	$l\sigma = l'\sigma$.
-	$\sigma = \sigma_1 \cdots \sigma_n$, where $\sigma_i$ stems from the $i$th substitution applied by the unification algo.
+	Let $\sigma = \sigma_1 \cdots \sigma_n$, where $\sigma_i$ stems from the $i$th substitution applied by the unification algo.
 
 	Let $l_j = l\sigma_1 \cdots \sigma_j$
 
@@ -362,7 +369,7 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 
 				So $y$ occurs at say $\bhat y$ in $l$ or $l'$, say $\lambda$. ($y$ may occur in both, variable-disjointness might have already been broken).
 
-				If it is a grey occurrence, we are done as $\delta$ occurs grey in $y\sigma$. \checkmark
+				If it is a grey occurrence, we are done as $\delta$ occurs grey in $y\sigma$. 
 
 				So assume $y$ occurs colored.
 				
@@ -372,27 +379,67 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 				\begin{itemize}
 						\item
 							Suppose $\lambda_{i-1}\at{\bhat y}$ occurs in an s.c.\ $\Gamma$-term.
-							Then $\lambda'_{i-1}\at{\bhat y}$ is $\delta$ in a $\Gamma$-term in $l$ or $l'$.~\checkmark
+							Then $\lambda'_{i-1}\at{\bhat y}$ is $\delta$ in a $\Gamma$-term in $l$ or $l'$ $\Ra$~IH.
 
 						\item
 							Suppose $\lambda_{i-1}\at{\bhat y}$ occurs in an s.c.\ $\Delta$-term.
-							Then as $y$ occurs in $t$ in a $\Gamma$-term, we have a col change (but possibly distributed over $l$/$l'$
-
-
+							Then as $y$ occurs in $t$ in a $\Gamma$-term, we have a col change (but possibly distributed over $l$/$l'$).
+							\mytodo{ lemma for col change }
 				\end{itemize}
 
 
+			\item
+				Suppose $y$ at $\bhat y$ in $\lambda_{i-1}$ s.t.\ $y\sigma_i$ is a $\Gamma$-term containing a $\Delta$-term.
 
-				\item multi-colored insertion
+				Then $\lambda'_{i-1}\at{\bhat y}$ actually is that term $\Ra$ IH. 
 	\end{enumerate}
 \end{proof}
 
+\begin{clemma}[corresponds to lemma 25 in -final]
+	Let $\sigma = \mgu(l, l')$.
 
+	Suppose a s.c.\ $\Phi$-term $s\occ{y}$ occs in $l\sigma$ s.t.\ $x$ occurs grey in $y\sigma$.
+	At least one of the following statments holds:
+
+	\begin{enumerate}
+			\item $x$ occurs grey in $l\sigma$
+			\item $x$ occurs in a s.c.\ $\Phi$-term in $l\sigma$ (and in $l$ or $l'$, which should be equivalent)
+			\item there is a col change and for col change var $z$: $x$ occurs grey in $z\sigma$.
+	\end{enumerate}
+
+\end{clemma}
+\begin{proof}
+	At some point, say $i$, the is diff pair $(y, t)$ is executed, where $t$ is an abstraction of $\epsilonx$. 
+	If it contains $x$, our argument works.
+	Otherwise it contains a variable $v$ such that $x$ occurs grey in $v\sigma$.
+	but if we manage to show that one of the conditions holds at $i$ for $v$, one of the conditions holds for $x$ at $n$, at the end.
+
+	So what we actually show is that one of the conditions hold at $i$.
+
+	So supp $\sigma_i = \{ y \mapsto \epsilonx \}$\todo{in a final version, perhaps not use $x$ here, because as explained, it doesn't need to be $x$}.
+
+	If $y$ occs grey or in s.c.\ $\Psi$-term, we are already done, so supp it only occurs in $\Gamma$-terms (note that clauses aren't var disjoint anymore here in general).
+
+	$y$ occs at $\bhat y$ in $\lambda$ and $\lambda'\at{\bhat y}$ is exactly $\epsilonx$.
+	
+	\mytodo{ICI ; looks done but recheck. do other lemmas as they are needed in the actual main arrow lemma}
+
+
+\end{proof}
+
+\begin{clemma}
+	Let $\sigma = \mgu(l, l')$ such that in $l$ and $l'$, there are grey occs for col changes.
+	Let $\gamma\occ{x}$ be a s.c.\ $\Gamma$-term containing a variable $x$ and $\delta\occ{x}$ be a s.c.\ $\Delta$-term containing the same variable $x$.
+	Then $x$ occurs at a grey position.
+\end{clemma}
+\begin{proof}
+	probably revisit later when pre-lemmas are done
+
+\end{proof}
 
 ~
 
 ~
-
 
 \mytodo{ express idea: all of same color or color change }
 
