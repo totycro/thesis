@@ -277,6 +277,8 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 
 \newcommand{\epsilondelta}{\varepsilon\occ\delta}
 \newcommand{\epsilonx}{\varepsilon\occ x}
+\newcommand{\epsilony}{\varepsilon\occ y}
+\newcommand{\epsilonz}{\varepsilon\occ z}
 
 \begin{clemma}
 	Let $\sigma = \mgu(l, l')$
@@ -364,8 +366,8 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 
 	\begin{enumerate}
 			\item
-				Suppose a $\Gamma$-term $t\occ{y}$ exists in $l_{i-1}$, such that it contains a grey occ of a variable $y$ such that $y\sigma_i = \epsilondelta$ at position $\bhat y$ (where $\varepsilon$ may be ``empty'').
-				The corresponding difference pair is $(y, \epsilondelta)$.
+				Suppose a $\Gamma$-term $t\occ{y}$ exists in $l_{i-1}$, such that it contains a grey occ of a variable $y$ such that $y\sigma_i = \epsilondelta$  (where $\varepsilon$ may be ``empty'' or else some grey term).
+				The corresponding difference pair is $(y, \epsilondelta)$, say at position $\bhat y$
 
 				So $y$ occurs at say $\bhat y$ in $l$ or $l'$, say $\lambda$. ($y$ may occur in both, variable-disjointness might have already been broken).
 
@@ -387,7 +389,7 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 							\mytodo{ lemma for col change }
 				\end{itemize}
 
-
+, say
 			\item
 				Suppose $y$ at $\bhat y$ in $\lambda_{i-1}$ s.t.\ $y\sigma_i$ is a $\Gamma$-term containing a $\Delta$-term.
 
@@ -395,37 +397,56 @@ $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 	\end{enumerate}
 \end{proof}
 
-\begin{clemma}[corresponds to lemma 25 in -final]
-	Let $\sigma = \mgu(l, l')$.
+\begin{defi}
+	$\sigma_{i\ra j} \defeq \prod_{k=i}^j\sigma_k$.
+\end{defi}
 
-	Suppose a s.c.\ $\Phi$-term $s\occ{y}$ occs in $l\sigma$ s.t.\ $x$ occurs grey in $y\sigma$.
+\begin{lemma}[corresponds to lemma 25 in -final]
+	Let $\sigma = \mgu(l, l') = \sigma_1 \cdots \sigma_n$.
+
+	Suppose a s.c.\ $\Phi$-term $s\occ{y}$ occs in $l \sigma_{0\ra i}$ or $l'\sigma_{0\mapsto i}$ where $0\varleq i \varleq n$ and $\sigma_0 = \id$ s.t.\ a var $x$ occurs grey in $y\sigma$.
 	At least one of the following statments holds:
 
 	\begin{enumerate}
 			\item $x$ occurs grey in $l\sigma$
-			\item $x$ occurs in a s.c.\ $\Phi$-term in $l\sigma$ (and in $l$ or $l'$, which should be equivalent)
-			\item there is a col change and for col change var $z$: $x$ occurs grey in $z\sigma$.
+			\item var $z$ s.t.\ $x$ occs grey in $z\sigma$ OR the var x itself occur in s.c.\ $\Phi$-term in  
+				$l\sigma_{0\ra i-1}$  
+				%$x$ occurs in a s.c.\ $\Phi$-term in
+			\item there is a col change where $x$ is the col change var in $l\sigma$
 	\end{enumerate}
-
-\end{clemma}
+\end{lemma}
 \begin{proof}
-	At some point, say $i$, the is diff pair $(y, t)$ is executed, where $t$ is an abstraction of $\epsilonx$. 
-	If it contains $x$, our argument works.
-	Otherwise it contains a variable $v$ such that $x$ occurs grey in $v\sigma$.
-	but if we manage to show that one of the conditions holds at $i$ for $v$, one of the conditions holds for $x$ at $n$, at the end.
+	At some point, say $i$, the is diff pair $(y, t)$ is resolved, where $t$ is an abstraction of $\epsilonx$, say $t = \epsilonz$ 
 
-	So what we actually show is that one of the conditions hold at $i$.
+	So $\sigma_i = \{ y \mapsto \epsilonz \}$, where either $z=x$ or $x$ occurs grey in $z\sigma$ (in total: $\epsilonz\sigma = \epsilonx$).
 
-	So supp $\sigma_i = \{ y \mapsto \epsilonx \}$\todo{in a final version, perhaps not use $x$ here, because as explained, it doesn't need to be $x$}.
+	If $y$ occs grey, we are done as this then is a grey occ of $x$ in $l\sigma$. (1)
 
-	If $y$ occs grey or in s.c.\ $\Psi$-term, we are already done, so supp it only occurs in $\Gamma$-terms (note that clauses aren't var disjoint anymore here in general).
-
-	$y$ occs at $\bhat y$ in $\lambda$ and $\lambda'\at{\bhat y}$ is exactly $\epsilonx$.
+	If $y$ occs in a s.c.\ $\Psi$-term, then $y$ is a col change var, where $x$ then is a col change var in $l\sigma$. (3)
 	
-	\mytodo{ICI ; looks done but recheck. do other lemmas as they are needed in the actual main arrow lemma}
+	So supp it only occurs in $\Phi$-terms (note that clauses aren't var disjoint anymore here in general).
 
-
+	$y$ occs at $\bhat y$ in $\lambda$ and $\lambda'\at{\bhat y}$ is exactly $\epsilonz$.
+	But  $\lambda\at{\bhat y}$ and  $\lambda'\at{\bhat y}$ share the prefix, so $\epsilonz$ is 
+	contained in a $\Phi$-term, and in $l\sigma$, that's a grey occurrence of $x$ (this occurrence of $\epsilonz$ exists at least in stage $i-1$, but possibly not in $l$). (2) \mytodo{}
 \end{proof}
+
+\begin{lemma}[corresponds to lemma 26 in -final]
+	Let $\sigma = \mgu(l, l')$.
+
+	Suppose a variable $y$ occs in  $l \sigma_{0\ra i}$ or $l'\sigma_{0\mapsto i}$ where $0\varleq i \varleq n$ and $\sigma_0 = \id$
+	 s.t.\ $x$ occurs in a s.c.\ $\Phi$-term in $y\sigma$.
+	At least one of the following statments holds:
+
+	\begin{enumerate}
+			\item $x$ occurs grey in $l\sigma$
+			\item $x$ occurs in a s.c.\ $\Phi$-term in ????
+				\mytodo{}
+			\item there is a col change where $x$ is the col change var in $l\sigma$ \mytodo{}
+	\end{enumerate}
+\end{lemma}
+
+
 
 \begin{clemma}
 	Let $\sigma = \mgu(l, l')$ such that in $l$ and $l'$, there are grey occs for col changes.

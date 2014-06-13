@@ -1,7 +1,7 @@
 \documentclass[,%fontsize=11pt,%
 	paper=a4,% 
 	%landscape,
-	DIV11, % mehr text pro seite als defaultyyp
+	DIV14, % mehr text pro seite als defaultyyp
 	%DIV10, 
 	%DIV=calc,%
 	twoside=false,%
@@ -148,10 +148,82 @@ $ f(u) \sim y $
 		(401c.b) &
 		\un{v}{f(w)} \\
 		&
-		\un{w}{\delta}.
+		\un{\delta}{w}.
 	\end{tabular}
 
 \end{tabular}
+
+401c.b:
+
+$$
+\begin{tabu}{cccccc}
+	\hline
+	f(x)& u& f(u)& f(v)& v& \delta \\
+	z& z& y& y& f(w)& w\\
+	\hline
+\end{tabu}
+$$
+\medskip
+
+
+mostly LR strategy:
+
+$$
+\begin{tabu}{cccccc}
+	\hline
+	f(x)& u& f(u)& f(v)& v& \delta \\
+	\hl{f(x)}& f(x)& y& y& f(w)& w\\
+	\hline
+\end{tabu}
+$$
+
+$$ \begin{tabu}{cccccc} \hline
+	f(x)& u& f(u)& f(v)& v& \delta \\
+f(x)& f(x)& y& y& f(\delta) \bullet_1& \hl\delta  \\
+\hline \end{tabu} $$
+
+$$ \begin{tabu}{cccccc} \hline
+	f(x)& u& f(u)& f(v)& v& \delta \\
+	f(x)& f(x)& f(v)& \hl{f(v)}& f(\delta)& \delta\\
+\hline \end{tabu} $$
+
+$$ \begin{tabu}{cccccc} \hline
+	f(x)& u& f(u)& f(f(\delta))& \hl{f(\delta)} \circ& \delta \\
+	f(x)& f(x)& f(f(\delta))& f(f(\delta))& f(\delta)& \delta\\
+\hline \end{tabu} $$
+
+\begin{multicols}{2}
+1)
+$$ \begin{tabu}{cccccc} \hline
+	f(x)& \hl{f(x)}& f(f(x))& f(f(\delta))& f(\delta)& \delta \\
+	f(x)& f(x)& f(f(\delta))& f(f(\delta))& f(\delta)& \delta\\
+\hline \end{tabu} $$
+
+$$ \begin{tabu}{cccccc} \hline
+	f(\delta)& f(\delta)& \hl{f(f(\delta))} \bullet_2& f(f(\delta))& f(\delta)& \delta \\
+	f(\delta)& f(\delta) & f(f(\delta))& f(f(\delta))& f(\delta)& \delta\\
+\hline \end{tabu} $$
+
+2)
+$$ \begin{tabu}{cccccc} \hline
+	f(x)& f(\delta)& f(\hl{f(\delta)}) \circ& f(f(\delta))& f(\delta)& \delta \\
+	f(x)& f(x)& f(f(\delta))& f(f(\delta))& f(\delta)& \delta\\
+\hline \end{tabu} $$
+
+$$ \begin{tabu}{cccccc} \hline
+	f(\delta)& f(\delta)& f(f(\delta))& f(f(\delta))& f(\delta)& \delta \\
+	f(\delta)& \hl{f(\delta)} \bullet_2 & f(f(\delta))& f(f(\delta))& f(\delta)& \delta\\
+\hline \end{tabu} $$
+\end{multicols}
+
+$\bullet$: $\Delta$-term enters $\Gamma$-term
+
+$\bullet_1$ unification with $\Delta$-term occurring at grey position
+
+$\bullet_2$ unification with $\Delta$-term occurring at $\Gamma$-position
+
+$\circ$: propagation
+
 
 \e{402 -- misc }
 $P(z, z, \delta), \lnot P(f(x), f(y), y)$
@@ -159,5 +231,51 @@ $P(z, z, \delta), \lnot P(f(x), f(y), y)$
 $P(z, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
 
 $P(u, f(z), f(f(\delta))), \lnot P(f(x), y, y)$
+
+\e{403 -- col change example }
+
+
+$P(f(x), g(x)) , \lnot P(y, g(a) ) $
+
+
+\e{403 -- col change example with introduction}
+
+$P(f(x), x, z, z) , \lnot P(\cdot, y, g(y), g(a)) $
+
+$$\begin{tabu}{cccc}\hline
+	f(x)& x& z& z \\
+	\cdot& y& g(y)& g(a) \\
+\hline \end{tabu}$$
+
+$$\begin{tabu}{cccc}\hline
+	f(x)& x& z& z \\
+	\cdot& \hl x& g(x)& g(a) \\
+\hline \end{tabu}$$
+\begin{multicols}{2}
+	1)
+	$$\begin{tabu}{cccc}\hline
+		f(x)& x& \hl{g(x)}& g(x) \\
+		\cdot&  x& g(x)& g(a) \\
+	\hline \end{tabu}$$
+
+	$$\begin{tabu}{cccc}\hline
+		f(a) \bullet_3 & a& g(a)& \hl{g(a)} \\
+		\cdot& a& g(a)& g(a) \\
+	\hline \end{tabu}$$
+
+	2)
+	$$\begin{tabu}{cccc}\hline
+		f(x)& x& g(a)& \hl{g(a)} \\
+		\cdot& x& g(x)& g(a) \\
+	\hline \end{tabu}$$
+
+	$$\begin{tabu}{cccc}\hline
+		f(a) \bullet_3 & a& g(a)& g(a) \\
+		\cdot& a& \hl{g(a)}& g(a) \\
+	\hline \end{tabu}$$
+
+\end{multicols}
+
+$\bullet_3$ unification with $\Delta$-term occurring at $\Delta$-position
 
 \end{document}
