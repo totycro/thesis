@@ -204,8 +204,10 @@ BS:
 	\label{new_27}
 	Let $\sigma = \mgu(l, l')$, $C_1$ and $C_2$ var-disjoint and condition holds.
 
+	\NB{this means that it holds for all resolution refutations if we pretend to have extended it to factorisation by just applying induction on exactly this. perhaps we should do this.}
+
 	Suppose in $(C_1 \cup C_2)\sigmazi$ where $0\varleq i \varleq n$ and $\sigma_0 = \id$ there is a col change with var $x$ of $\Gamma$-term $s\occ{x}$ and $\Delta$-term~$t\occ{x}$.
-	Then $x$ occs grey in $l(')\sigmazi$.
+	Then $x$ occs grey in $(C_1 \cup C_2)\sigmazi$.
 \end{lemma}
 \begin{proof}
 	for $\sigma_0$, it holds.
@@ -215,8 +217,8 @@ BS:
 	3 possibilities for having a variable in a s.c.\ $\Phi$-term :
 	\begin{compactenum}
 	\item was there in stage $i-1$ in $(C_1 \cup C_2)\sigmaz{i-1}$
-	\item ???$l(')\sigmaz{i-1}$ contains term $t\occ{y}$ with $\dom(\sigma_i) = \{y\}$ and $x$ occs grey in $y\sigma_i$
-	\item ??? $l(')\sigmaz{i-1}$ contains a variable $z$ such that $\dom(\sigma_i) = \{z\}$ and $x$ occs in a s.c.\ $\Phi$-term in $z\sigma_i$.
+	\item $(C_1 \cup C_2)\sigmaz{i-1}$ contains term $t\occ{y}$ with $\dom(\sigma_i) = \{y\}$ and $x$ occs grey in $y\sigma_i$
+	\item $(C_1 \cup C_2)\sigmaz{i-1}$ contains a variable $z$ such that $\dom(\sigma_i) = \{z\}$ and $x$ occs in a s.c.\ $\Phi$-term in $z\sigma_i$.
 	\end{compactenum}
 
 	apply this to both $s\occ{x}$ and $t\occ{x}$.
@@ -276,7 +278,8 @@ BS:
 
 \begin{clemma}[corresponds to 29 in -final]
 	If in $\AImatde(C) \lor \AIclde(C)$ a
-	$\Gamma$-term $t\occatp{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s \apath_{G_C} t\occatp{x_s}$.
+	$\Gamma$-term $t\occatp{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s$ occurs grey in $\AIanyde(C)$,
+
 \end{clemma}
 \begin{proof}
 	induction; base case works.
@@ -294,33 +297,31 @@ BS:
 
 			If $u$ occs grey anywhere in $C_{j}\sigmaz{i-1}$, in particular for example at $\lambda\sigmaz{i-1}\at{\bhat u}$, then done as $u\sigma_i = s'$, hence due to $s'\sigma=s$ we have that $u\sigma = s$.
 
-			(this should also work with any occ in the clause:)
-			If $\lambda\sigmaz{i-1}\at{\bhat u}$ is containd in a s.c.\ $\Delta$-term,
 
+			If $u$ occs anywhere in $C_{j}\sigmaz{i-1}$, in particular for example in $\lambda\sigmaz{i-1}\at{\bhat u}$, in a s.c.\ $\Delta$-term, then by Lemma~\ref{new_27}, $u$ occs grey in $(C_1\cup C_2)\sigmaz{i-1}$ and we are done as above.
 
-			Suppose $u$ occs colored in say $\lambda$.
+			So suppose $u$ only occs in s.c.\ $\Gamma$-terms, in particular in $\lambda\sigmaz{i-1}\at{\bhat u}$. 
+			But as $\lambda'\sigmaz{i-1}\at{\bhat u}$ has the same prefix, but it is $s'$, there is a $\Delta$-term in a $\Gamma$-term, so by the induction hypothesis $x_{s'}$ occs grey in $\AIanyde(C_j)$ for some $j$.
 
+			As $\Gamma$-terms are not lifted in $\AIclde(C_j)$, $x_{s'}$ is not lifted there.
 
+			As $s'$ is in the range of the unifier, $s'$ occurs in a resolved literal. 
 
+			By the definition of $\aiu$, $\{x_{s'} \mapsto x_s\} \in \tau$
+			as $s$ is the term at the position of $x_{s'}$ in $\lambda\sigma$ for $\lambda$ the resolved literal where $s'$ occurs.
+
+			Hence there is a grey occurrence of $x_s$ in $\AIanyde(C)$.
+
+		\item
+			Suppose a variable $u$ occurs in $C_1$ or $C_2$ grey or in a maximal colored single colored $\Gamma$-colored term such that $u\sigma$ contains a multi-colored $\Gamma$-term $t$ 
+
+			Then $\lambda'\sigmaz{i-}\at{\bhat{u}}$ actually is $t$ $\Ra$ IH.
+			\qedhere
 
 	\end{enumerate}
 \end{proof}
 
-
-\subsection{sketch of final lemma}
-
-1) 
-supp s.c.\ $\Gamma$-term in $l\sigmarange{0}{i}$ contains var $y$ s.t.\ $y\sigma$ contains grey 
-$\delta$.
-then either $\delta$ occs grey in $l\sigma$ or $l$ or $l'$ contains s.c.\ $\Gamma$-term containing ``an appropriate predecessor of $\delta$''
-
-By Lemma~TODO, at least one of:
-\begin{compactenum}
-\item $\delta$ occs grey
-\item there is a color change with $y$ as color change var \mytodo{where? $\sigmarange{0}{i}$?}
-\item IH case \checkmark
-\end{compactenum}
-
+\mytodo{ICI ICI ICI: this lemma should easily give the main result. extend to factorisation and write up nicely}
 
 \clearpage
 
