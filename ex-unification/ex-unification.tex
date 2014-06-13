@@ -249,12 +249,12 @@ $$\begin{tabu}{cccc}\hline
 
 $$\begin{tabu}{cccc}\hline
 	f(x)& x& z& z \\
-	\cdot& \hl x& g(x)& g(a) \\
+	\cdot& \hl x& g(x) \triangle_1 & g(a) \\
 \hline \end{tabu}$$
 \begin{multicols}{2}
 	1)
 	$$\begin{tabu}{cccc}\hline
-		f(x)& x& \hl{g(x)}& g(x) \\
+		f(x)& x& \hl{g(x)} \triangle_2 & g(x) \\
 		\cdot&  x& g(x)& g(a) \\
 	\hline \end{tabu}$$
 
@@ -276,6 +276,10 @@ $$\begin{tabu}{cccc}\hline
 
 \end{multicols}
 
-$\bullet_3$ unification with $\Delta$-term occurring at $\Delta$-position
+$\bullet_3$: unification with $\Delta$-term occurring at $\Delta$-position
+
+$\triangle_1$: introduction of col change
+
+$\triangle_2$: propagation of col change
 
 \end{document}
