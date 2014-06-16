@@ -382,7 +382,7 @@ In order to avoid the pitfall shown in Example \ref{exa:2b} and to generalize th
 we define a function on resolved literals calculating a substitution, which ensures that the literals in the lifted clause, which correspond to the resolved literals, are equal.
 
 \begin{defi}[$\aiu$]
-	Let $\inference$ be a resolution or factorisation rule application with $l$ and $l'$ as resolved or factorised literals, $\sigma = \mgu(\inference)$
+	Let $\inference$ be a resolution or factorisation rule application with $l$ and $l'$ as resolved or factorised literals and $\sigma = \mgu(\inference)$.
 
 	\newcommand{\aiuP}{\aiu'}
 
@@ -1059,9 +1059,10 @@ for resolution/factorisation, check unifier:
 
 \begin{defi}
 	\label{def:arrow_quantifier_block}
-	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$
+	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
 	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables ocurring in $\AImat(C)$.
 	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$ $z_s \apath_{G_C} z_r$ implies that $z_s$ is listed before $z_r$.
+	We denote $\Q(\square)$ by $\Q(\pi)$.
 	%such that for any edge $(p, q) \in G_C$, if $s$ is a subterm of $\AIany(C)\at{p}$ and $r$ is a subterm of $\AIany(C)\at{q}$ and $z_s$ and $z_r$ both occur in $\AImat(C)$, then $z_s$ is listed before $z_r$ is.
 \end{defi}
 
@@ -1097,6 +1098,104 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 	\mytodo{
 	it remains to show 1 and 2.
 }
+
+\end{proof}
+
+\begin{clemma}
+	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$. Then $\Q(\pi)\AImat(\pi) \semiff \lnot \Q(\bhat \pi)\AImat(\bhat \pi)$.
+\end{clemma}
+\begin{proof}
+	Let $C$ be a clause in $\pi$ and $\bhat C$ the corresponding clause in $\bhat \pi$. 
+	Note that $\AIcl$ is defined irrespective of the coloring, so $\AIcl(C) \syneq \AIcl(\bhat C)$.
+
+	We show by induction that $\AImat(C) \semiff \lnot \AImat(\bhat C)$.
+
+	\begin{itemize}
+		\item[Base case.]
+			If $C \in \Gamma$, then $\AImat(C) = \bot \semiff \lnot \top \semiff \lnot \AImat(\bhat C)$ as $\bhat C\in\Delta$. 
+			The case for $C\in\Delta$ can be argued analoguously.
+
+		\item[Resolution.]
+			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
+
+			As $\aiu(\inference)$ depends only on $l\cl$, $l'\cl$ and $\sigma$ and as $\AIcl(C) \syneq \AIcl(\bhat C)$, $\tau$ is the same for both $\pi$ and $\bhat \pi$.
+
+			We now distinguish the following cases:
+
+			\begin{enumerate}
+
+				\item $l$ is $\Gamma$-colored:
+					\begin{align*}
+						\AImat(C)	&= \lifboth{\AImat(C_1)\sigma}\tau\spas\lor \lifboth{\AImat(C_2)\sigma}\tau \\
+														 &\semiff \lnot (\lnot\lifboth{\AImat(C_1)\sigma}\tau\spas\land \lnot \lifboth{\AImat(C_2)\sigma}\tau) \\
+														 &\semiff \lnot (\lifboth{(\lnot \AImat(C_1))\sigma}\tau\spas\land \lifboth{(\lnot \AImat(C_2))\sigma}\tau) \\
+														 &\semiff \lnot (\lifboth{\AImat(\bhat C_1)\sigma}\tau\spas\land \lifboth{\AImat(\bhat C_2)\sigma}\tau) \\
+														 &= \lnot \AImat(\bhat C)
+					\end{align*}
+
+				\item $l$ is $\Delta$-colored:
+					This case can be argued analogously
+
+				\item $l$ is grey:
+					\begin{align*}
+						\AImat(C) &=
+					(\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor 
+					(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImat(C_2)\sigma}\tau)\\
+					\end{align*}
+
+					\mytodo{ICI ICI ICI }
+					
+
+			\end{enumerate}
+
+
+
+
+	\end{itemize}
+
+
+	~
+
+	~
+
+	for reference:
+
+	\begin{itemize}
+		\item[Resolution.]
+
+			If the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
+			then
+			let $\tau = \aiu(\inference)$ and
+			define $\AImat(C)$ and $\AIcl(C)$ as follows:
+
+			$\AIcl(C) \defeq \lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau \spam\lor \lifboth{(\AIclause(C_2)\setminus \{l\fromclause'\})\sigma}\tau $
+			\begin{enumerate}
+
+				\item If $l$ is $\Gamma$-colored:
+					$\AImat(C) \defeq \lifboth{\AImat(C_1)\sigma}\tau\spas\lor \lifboth{\AImat(C_2)\sigma}\tau $
+
+				\item If $l$ is $\Delta$-colored:
+					$\AImat(C) \defeq \lifboth{\AImat(C_1)\sigma}\tau\spas\land \lifboth{\AImat(C_2)\sigma}\tau $
+
+				\item If $l$ is grey:
+					$\AImat(C) \defeq
+					(\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor
+					(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImat(C_2)\sigma}\tau)
+					$
+
+			\end{enumerate}
+
+		\item[Factorisation.]
+			If the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
+			then let $\tau = \aiu(\inference)$ and define
+			$\AImat(C)$ and $\AIcl(C)$ as follows:
+
+			$\AImat(C) \defeq{} \lifboth{\AImat(C_1)\sigma}\tau$
+
+			$\AIcl(C) \defeq \lifboth{ (\AIclause(C_1) \setminus\nolinebreak \{l'\cl\})\sigma}\tau$
+			\qedhere
+
+	\end{itemize}
 
 \end{proof}
 

@@ -275,7 +275,7 @@ extracts propositional interpolants in the sense that besides potentially contai
 	Then
 	\begin{enumerate}
 		\item$\Gamma\entails \PI(\pi)$
-		\item$\Delta\entails \PI(\pi)$
+		\item$\Delta\entails \lnot \PI(\pi)$
 			\label{ths6hrh}
 		\item $\PS(\PI(\pi)) \subseteq \PS(\Gamma) \cap \PS(\Delta)$.
 		\end{enumerate}
@@ -288,7 +288,7 @@ extracts propositional interpolants in the sense that besides potentially contai
 	As the lifting replaces terms by variables which are then implicitly universally quantified, $\PI(\pi)$ is an instance of $\lifdelta{\PI(\pi)}$.
 	Therefore $\Gamma \entails \PI(\pi)$.
 
-	Item~\ref{ths6hrh} can be argued analogously as $\pi$ is also a refutation of $\bhat \Gamma \cup \bhat \Delta$, where $\bhat\Gamma = \Delta$ and $\bhat\Delta = \Gamma$.
+	Item~\ref{ths6hrh} can be argued analogously as $\pi$ is also a refutation of $\bhat \Gamma \cup \bhat \Delta$, where $\bhat\Gamma = \Delta$ and $\bhat\Delta = \Gamma$.\todo[inline]{this is wrong, see lemma 4.10 and 4.11 (it used to say $\Delta \entails \PI(\pi)$}
 
 	By the construction of $\PI$, only grey predicates are added.
 \end{proof}
