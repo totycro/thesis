@@ -510,7 +510,23 @@ $\Delta$-lifted:
 \end{prooftree}
 
 
+~
 
+\e{212d -- not in literal}
+
+\begin{prooftree}
+	\AxiomCm{\p{ P(g(x)) \lor Q(k(x)) }}
+	\AxiomCm{\p{\lnot Q(k(a))}}
+	\BinaryInfCm{ Q(k(a)) \mid P(g(\ha a))}
+\end{prooftree}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{\p{ P(x_{g(x)}) \lor Q(x_{k(x)}) }}
+	\AxiomCm{\p{\lnot Q(x_{k(a)})}}
+	\BinaryInfCm{ Q(x_{k(a)}) \mid P(x_{g(\ha x)})}
+\end{prooftree}
 
 
 \clearpage
