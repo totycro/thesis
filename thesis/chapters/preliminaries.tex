@@ -59,6 +59,7 @@ TODO: dei
 
 \subsection{Unification}
 
+We specify the unification algorithm which is used in this thesis in order enable formal reasoning.
 
 \begin{defi}[Unification algorithm]
 	Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable to signify that the $\mgu$ of the given arguments is not defined. We treat constants as $0$-ary functions.
@@ -85,18 +86,16 @@ TODO: dei
 		\mgu(T) 							& \text{if $t=(s, s)$} \\
 	\end{cases}
 	$
+
+	For $\sigma = \mgu(l, l')$ for two literals $l$ and $l'$ we denote by $\sigma_i$ the $i$th substitution, which in the course of the run of the algorithm has been added to $\sigma$. 
+	We denote composition of substitutions $\sigma_i$ up to including $\sigma_j$ by $\sigmarange{i}{j}$.
 	\qedhere
 \end{defi}
 
+Hence for a unifier $\sigma$, we have that $ \sigma = \sigma_1\cdots\sigma_n = \sigmarange{i}{j}$, where $n$ is $|\dom(\sigma)|$.
+Note that $|\dom(\sigma_i)| = 1$ for $1\varleq i \varleq n$.
 
-\largered{ FIX UP DEF BELOW depending on conj }
 
-\begin{defi}[$\mguarr$]
-	Let $l$ and $l'$ be literals such that $\mgu(l, l')$ is defined.
-	We write $x\mguarr t$ for a variable $x$ and a term $t$ if in the course of the application of the unification algorithm, the substitution $x\mapsto s$ is added to the result. 
-\end{defi}
-Note that $s$ may still contain variables which are substituted at a later stage, such that with $\sigma = \mgu(l, l')$, possibly $x\sigma \neq s$.
-This notation is convenient for reasoning about the 
 
 
 
