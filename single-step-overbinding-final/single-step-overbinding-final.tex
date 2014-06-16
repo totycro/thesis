@@ -957,11 +957,12 @@ This definition is convenient as it adheres to the following proposition:
 \end{proof}
 
 
-\begin{clemma}
+\begin{lemma}
+	\label{lemma:lft_var_occurs_grey}
  	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
 	If in $\AImatde(C) \lor \AIclde(C)$	a $\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s$ occurs grey in $\AIanyde(C)$.
 
-\end{clemma}
+\end{lemma}
 \begin{proof}
 	Note that if a respective term occurs in $\AImatde(C) \lor \AIclde(C)$, the corresponding non-lifted term is a $\Gamma$-term containing a $\Delta$-term\todo{mention lemma once it exists}.
 
@@ -1006,21 +1007,36 @@ This definition is convenient as it adheres to the following proposition:
 \end{proof}
 
 \begin{exa}
-	$ R(h(y)) \lor P(f(y))$
-
+	$ R(h(y)) \lor P(f(y))$;
 	$ \lnot P(f(x_{g(x)})) \lor Q(x_{g(x)}) $ such that in the actual clause, it is $g(a)$ and not $g(x)$ any more.
 	Then $ \{ x_{g(x)} \mapsto x_{g(a)} \} \in \tau $ as desired.
 \end{exa}
 
-\clearpage
-
 \begin{clemma}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	If in $\AImatde(C) \lor \AIclde(C)$	a $\Gamma$-term $t\occatp{x_s}$ contains a $\Delta$-lifting variable $x_s$,
-	then $x_s \apath_{G_C} t\occatp{x_s}$.
+	If in $\AImatde(C) \lor \AIclde(C)$	a maximal colored $\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$,
+	then $x_s \apath_{G_C} t\occ{x_s}$.
 \end{clemma}
-\mytodo{big fat todo}
+\begin{proof}
+	We proceed by induction. Note that for $C\in\Gamma\cup\Delta$, no $\Delta$-lifting variable occurs in a $\Gamma$-term in $\AImatde(C) \lor \AIclde(C)$.
 
+	For the induction step, suppose that the condition holds for $C_1$ and $C_2$ which are used in a resolution or factorisation step $\inference$.
+	By Lemma~\ref{lemma:lft_var_occurs_grey}, $x_s$ occurs grey in $\AIanyde(C)$. Let $r$ be the position of $x_s$ in $\AIanyde(C)$.
+	We consider the two situations which produce $\Delta$-terms in $\Gamma$-terms:
+	\begin{itemize}
+		\item Suppose a maximal colored single-colored $\Gamma$-term $t\occ{u}$ in $\Lambda$ contains a variable $u$ such that a $\Delta$-term $s$ occurs grey in $u\sigma$.
+			Then $\arr_1$ as defined in Definition~\ref{def:arrows} contains $(r, q)$ such that $\AIclde(C)\at{q}$ is $t\occ{x_s}$.
+
+		\item
+			Suppose that a variable $u$ occurs in $C_1$ or $C_2$ either grey or in a maximal colored single-colored $\Gamma$-term such that $u\sigma$ contains a multi-colored $\Gamma$-term $t$.
+			Then $\arr_2$ as defined in Definition~\ref{def:arrows} contains $(r, q)$ such that $\AIclde(C)\at{q}$ is the grey occurrence of $u$ or the maximal colored term containing $u$ respectively.
+			\qedhere
+	\end{itemize}
+
+\end{proof}
+
+
+\clearpage
 
 
 \section{Combining the results}
