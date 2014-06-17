@@ -116,8 +116,66 @@
 \newcommand{\de}{^\Delta}
 
 \begin{document}
+\section{small result}
+Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
+
+\begin{compactenum}
+\item if a $\Gamma$-lifting variable occurs multiple times in $\AImat(C)\lor\AIcl(C)$, then the terms at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal and
+\item if a $\Delta$-lifting variable occurs multiple times in $\AImatde(C) \lor \AIclde(C))$, then the $\Delta$-lifting variables at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal.
+\end{compactenum}
+
+~
+
+ad 1)
+
+Suppose that a $\Gamma$-term $t$ is introduced in a derivation step in $\AIany(C)/\AIanyde(C)$ (or is ``introduced initially``) such that it does not occur in a $\Delta$-term (then it actually is a lifting var in $\AI$)
+
+\begin{enumerate}
+	\item Suppose no variables occur in $t$. Then it will always have this form in the literal in $\AIanyde(C)$, and the lifting variable in $\AIany(C)$ will always be $y_t$. So if multiple $t$'s are introduced at any stage anywhere in the derivation, it will always be $y_t$.
+	\item Suppose a variable occurs in $t$.
+
+		In $\AIany(C)$, it's $y_t$; in $\AIanyde(C)$, it's $\lifdeltanovar{t}$.
+		Note that this is the case for any $t$ introduced in this step, hence all these introduced ones correspond to $\lifdeltanovar{t}$
+
+		Suppose that $y_t$ already occurs in $\AIany(C)$.
+
+		As it is now introduced by means of a unifier, no variable occurring in $t$ has been substituted. (Lemma: if a variable is substituted for something, it does not occur at any later stage in the derivation (basically not in clauses, could also say not in unifiers)
+		But if no variable of $t$ has been altered, that old $y_t$ still refers to $\lifdeltanovar{t}$.
+
+		Note that $\tau$ in this case has not changed $y_t$ in $\AIany(C)$ as $\tau$ only resets to the version in $C$, but also this has not changed.
+
+		this establishes that if an $y_t$ is introduced, it's fine with the old ones. 
+		so now that all are on the same level, note that any change in $\AIanyde$ is performed for all occurrences of $\lifdeltanovar{t}$ there.
+
+		Also changes by means of $\tau$ affect all $y_t$ in $\AIany(C)$ the same way, and also, it does not unify lifting variables in a problematic way:
+		If $\tau$ changes $y_t$, then $y_t$ occurs in the resolved/factorised literal and $y_t$ is replaced by say $\lifboth{s} = y_s$, if $s$ is the term in $C$.
+		but then every lifting variable which is a subterm of the position of $s$ in $\AIanyde(C)$ is also treated by $\tau$ and reset to finally give $\lifdeltanovar{s}$.
+		So if in both the resolved/factorised literals we have $y_t$ and $y_{t'}$, after the application of $\tau$, both of them are $y_s$ and also the ones in $\AIany(C)$ are the same variables. 
+		[ words about the IH ]
+
+
+
+
+		
+		
+		~
+
+		~
+
+		Note that it is not the case that an occurrence of $t$ or $y_t$ can enter this thread of derivation as other clauses are variable disjoint and hence do not exhibit any of the variables in $t$.
+\end{enumerate}
+
+
+
+
+
+
+
+
+\clearpage
 
 \section{serious stuff}
+
 
 \begin{defi}[col change]
 	col change: a var $x$ occurs in yet to specify location twice such that once in s.c.\ $\Gamma$-term and once in s.c.\ $\Delta$-term.

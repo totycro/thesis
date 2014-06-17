@@ -825,12 +825,14 @@ This definition is convenient as it adheres to the following proposition:
 	Let $l$ be a literal in a clause in $\Gamma \cup \Delta$.
 	Then for a clause $C$ in a resolution refutation of $\Gamma\cup\Delta$,
 	$\AIany(C)$ contains a literal derived from $l$.
+	\mytodo{actually \textbf{AT LEAST} one literal derived from $l$}
 	\todo{ write this more formally, there is a relation like $\simgeq$ here. possibly write that lemma like this}
 \end{prop}
 
 
 \mytodo{define: descendant (usual stuff, factorisation is merge, resolution is de-facto merge which happens implicitly so no actual merge required)}
 
+\cbstart
 \begin{defi}
 	We define a directed graph $G_C$ for every clause $C$ of the derivation.
 	The nodes are of the form $l.tp$, where $l$ denotes a literal and $tp$ a position of a term in $l$, which is not contained in a colored term.
@@ -876,6 +878,7 @@ This definition is convenient as it adheres to the following proposition:
 			\qedhere
 	\end{itemize}
 \end{defi}
+\cbend
 
 
 \cbstart
@@ -901,7 +904,7 @@ for resolution/factorisation, check unifier:
 \begin{comment}
 	\begin{lemma}
 		Let $l$ and $l'$ be literals such that $\sigma = \mgu(l, l')$
-		and let $\Lambda = l\lor l'$.
+		and let $\lit = l\lor l'$.
 
 		Suppose a single-colored $\Phi$-term $s\occ{y}$ containing a variable $y$ occurs in $\Lambda\sigmaz{i-1}$ where $1\varleq i \varleq n$ and $\sigma_0 = \id$ such that 
 		a variable $x$ occurs grey in $y\sigma_i$.
@@ -916,22 +919,23 @@ for resolution/factorisation, check unifier:
 	\end{lemma}
 \end{comment}
 
+\newcommand{\lits}{\alpha}
 \begin{lemma}
 	Let $l$ and $l'$ be literals such that $\sigma = \mgu(l, l')$
-	and let $\Lambda = l\lor l'$.
+	and let $\lits = l\lor l'$.
 
-	Suppose a single-colored $\Phi$-term $s\occ{y}$ containing a variable $y$ occurs in $\Lambda\sigmaz{i-1}$ where $1\varleq i \varleq n$ and $\sigma_0 = \id$ such that 
+	Suppose a single-colored $\Phi$-term $s\occ{y}$ containing a variable $y$ occurs in $\lits\sigmaz{i-1}$ where $1\varleq i \varleq n$ and $\sigma_0 = \id$ such that 
 	a variable $x$ occurs grey in $y\sigma_i$.
 
-	Then if $x$ only occurs only in single-colored $\Psi$-terms in $\Lambda\sigmaz{i-1}$, $y$ also occurs in a single-colored $\Psi$-term in $\Lambda\sigmaz{i-1}$.
-	%Then there is at least one occurrence of $x$ in $\Lambda\sigmaz{i-1}$\todo{or $i$, depending on what we need}{} which is not contained in a single-colored $\Psi$-term.????
+	Then if $x$ only occurs only in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$, $y$ also occurs in a single-colored $\Psi$-term in $\lits\sigmaz{i-1}$.
+	%Then there is at least one occurrence of $x$ in $\lits\sigmaz{i-1}$\todo{or $i$, depending on what we need}{} which is not contained in a single-colored $\Psi$-term.????
 \end{lemma}
 \begin{proof}
 	There must be an occurrence $\bhat y$ of $y$, say w.l.o.g.\ in $l\sigmaz{i-1}$,
 	such that $l'\sigmaz{i-1}\at{\bhat y} = y\sigma_i$.
 	Note that $l\sigmaz{i-1}\at{\bhat y}$ and $l'\sigmaz{i-1}\at{\bhat y}$ agree on the prefix and that $x$ occurs grey in $l'\sigmaz{i-1}\at{\bhat y}$.
 
-	Now suppose that $x$ only occurs in single-colored $\Psi$-terms in $\Lambda\sigmaz{i-1}$.
+	Now suppose that $x$ only occurs in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$.
 	Then $l\sigmaz{i-1}\at{\bhat y}$ is a single-colored $\Psi$-term containing $y$.
 \end{proof}
 
@@ -983,7 +987,7 @@ for resolution/factorisation, check unifier:
 \begin{proof}
 	Note that if a respective term occurs in $\AImatde(C) \lor \AIclde(C)$, the corresponding non-lifted term is a $\Gamma$-term containing a $\Delta$-term\todo{mention lemma once it exists}.
 
-	Note that it suffices to show that at the derivation step which introduces $s$ as subterm of $t\occ{s}$ $x_s$ occurs grey in $\AIanyde(C)$ as any potential later modification of $x_s$ is only performed by the substitution $\tau$. 
+	Note that it suffices to show that at the derivation step which introduces $s$ as subterm of $t\occ{s}$, $x_s$ occurs grey in $\AIanyde(C)$ as any potential later modification of $x_s$ is only performed by the substitution $\tau$. 
 	However $\tau$ is applied globally in $\AIanyde$, so it affects each occurrence of $x_s$ in the same manner.
 
 	We proceed by induction.
@@ -1071,6 +1075,37 @@ for resolution/factorisation, check unifier:
 there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifgammanovar{ \AIde(C) } $
 
 \begin{clemma}
+	\label{lemma:ai_vs_aide_1}
+	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
+	If a $\Gamma$-lifting variable occurs multiple times in $\AIany(C)$, then the terms at the corresponding positions in $\AIany(C))$ are equal.
+\end{clemma}
+\begin{proof}
+	Note that $\AIclde(C) \sim \lifdeltanovar{C}$ and $\AIcl(C) \sim \lifboth{C}$.\todo{$\sim$ not defined here}
+
+	We proceed by induction over the resolution refutation of $\Gamma\cup\Delta$.
+	
+	\begin{description}
+		\item{} Base case.
+			For $C \in \Gamma\cup\Delta$, if $\AIany(C)$ contains a $\Gamma$-lifting variable $y_t$ at position\nolinebreak{} $p$,
+			then $\AIanyde(C)\at{p} = \lifdeltanovar{t}$.
+
+		\item{} Induction step.
+			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$
+			or of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$. \mytodo{do not assign $C_1$ twice}
+			Let $\sigma = \mgu(\inference)$.
+
+			Suppose $\sigma$ introduces a $\Gamma$-term 
+
+			how to argue formally over connection between aide and ai?
+
+
+
+	\end{description}
+
+
+\end{proof}
+
+\begin{clemma}
 	\label{lemma:gamma_entails_quantified_ai}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
 	%and $\overline y$ be the $\Gamma$-lifting variables of $\AImat(C) \lor \AIcl$.
@@ -1079,7 +1114,7 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 \end{clemma}
 \begin{proof}
 	By Lemma~\ref{lemma:gamma_entails_aide}, we obtain that 
-	$\Gamma \entails \forall x_1 \cdots \forall x_n (\AImatde(C) \lor \AIclde(C))$.
+	$\Gamma \entails \forall x_1 \cdots \forall x_n (\AImatde(C) \lor \AIclde(C))$, where $x_1,\dots,x_n$ are the $\Delta$-lifting variables occurring in $\AImatde(C) \lor \AIclde(C)$.
 	Note that $\AImatde(C) \lor \AIclde(C)$ and $\AImat(C) \lor\nolinebreak \AIcl(C)$ are structurally equal in the sense that for a position $p$ in the latter, the first has a related term: For a grey term, it is the same grey term. For a $\Delta$-lifting variable, it is also a $\Delta$-lifting variable but possibly a different one and for $\Gamma$-lifting variables, the first has a maximal colored $\Gamma$-term.
 
 	In order to show prove the lemma, we show that
