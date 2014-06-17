@@ -1071,8 +1071,8 @@ for resolution/factorisation, check unifier:
 there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifgammanovar{ \AIde(C) } $
 
 \begin{clemma}
-	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$ and
-	$\overline x$ be the $\Delta$-lifting variables occurring in $\AImatde(C) \lor \AIclde(C)$.
+	\label{lemma:gamma_entails_quantified_ai}
+	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
 	%and $\overline y$ be the $\Gamma$-lifting variables of $\AImat(C) \lor \AIcl$.
 	Then
 	$\Gamma \entails\nolinebreak Q(C) ( \AImat(C) \lor\nolinebreak \AIcl(C))$.
@@ -1101,14 +1101,18 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 
 \end{proof}
 
-\begin{clemma}
-	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$. Then $\Q(\pi)\AImat(\pi) \semiff \lnot \Q(\bhat \pi)\AImat(\bhat \pi)$.
-\end{clemma}
+\begin{lemma}
+	\label{lemma:ai_symmetry}
+	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$. Then $\Q(\pi)\AImat(\pi) \spas\semiff \lnot \Q(\bhat \pi)\AImat(\bhat \pi)$.
+\end{lemma}
 \begin{proof}
 	Let $C$ be a clause in $\pi$ and $\bhat C$ the corresponding clause in $\bhat \pi$. 
 	Note that $\AIcl$ is defined irrespective of the coloring, so $\AIcl(C) \syneq \AIcl(\bhat C)$.
 
-	We show by induction that $\AImat(C) \semiff \lnot \AImat(\bhat C)$.
+	Consider furthermore that liftings variables of $C$ and $\bhat C$ only differ in the variable symbol, but not in the index, and that the quantifier type of any given lifting variable in $C$ is exactly contrary to the corresponding one in $\bhat C$.
+	Hence for any formula $\phi$, $\Q(C) \lnot \phi \spas\semiff \lnot \Q(\bhat C) \phi$.
+
+	It remains to show that $\AImat(C) \semiff \lnot \AImat(\bhat C)$, which we do be induction:
 
 	\begin{itemize}
 		\item[Base case.]
@@ -1137,66 +1141,35 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 					This case can be argued analogously
 
 				\item $l$ is grey:
+					Note that by Lemma~\ref{lemma:resolved_literals_equal}, $\lifboth{l\fromclause\sigma} = \lifboth{l\fromclause\sigma}$ \markB.
 					\begin{align*}
 						\AImat(C) &=
-					(\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor 
-					(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImat(C_2)\sigma}\tau)\\
+						(\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor 
+						(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImat(C_2)\sigma}\tau)\\
+						&\stackrel\markB\semiff\,
+						({\lifboth{l'\fromclause\sigma}}\tau \lor \lifboth{\AImat(C_1)\sigma}\tau) \spam\land 
+						(\lnot \lifboth{l\fromclause\sigma}\tau \lor \lifboth{\AImat(C_2)\sigma}\tau)\\
+						%&\semiff\,({\lifboth{l'\fromclause\sigma}}\tau \lor  \lifboth{\AImat(C_1)\sigma}\tau) \spam\land 
+						%(\lnot\lifboth{l\fromclause\sigma}\tau \lor \lifboth{\AImat(C_2)\sigma}\tau)\\
+						&\semiff \lnot \Big( (\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lnot \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor 
+						(\lifboth{l\fromclause\sigma}\tau \land \lnot\lifboth{\AImat(C_2)\sigma}\tau) \Big) \\
+						&=\lnot \Big( (\lnot {\lifboth{\bhat l'\fromclause\sigma}}\tau \land \lifboth{\AImat(\bhat C_1)\sigma}\tau) \spam\lor 
+						(\lifboth{\bhat l\fromclause\sigma}\tau \land \lifboth{\AImat(\bhat C_2)\sigma}\tau) \Big)\\
+						& = \AImat(\bhat C) 
 					\end{align*}
 
-					\mytodo{ICI ICI ICI }
-					
 
 			\end{enumerate}
 
 
-
-
-	\end{itemize}
-
-
-	~
-
-	~
-
-	for reference:
-
-	\begin{itemize}
-		\item[Resolution.]
-
-			If the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
-			then
-			let $\tau = \aiu(\inference)$ and
-			define $\AImat(C)$ and $\AIcl(C)$ as follows:
-
-			$\AIcl(C) \defeq \lifboth{(\AIclause(C_1) \setminus \{l\fromclause\})\sigma}\tau \spam\lor \lifboth{(\AIclause(C_2)\setminus \{l\fromclause'\})\sigma}\tau $
-			\begin{enumerate}
-
-				\item If $l$ is $\Gamma$-colored:
-					$\AImat(C) \defeq \lifboth{\AImat(C_1)\sigma}\tau\spas\lor \lifboth{\AImat(C_2)\sigma}\tau $
-
-				\item If $l$ is $\Delta$-colored:
-					$\AImat(C) \defeq \lifboth{\AImat(C_1)\sigma}\tau\spas\land \lifboth{\AImat(C_2)\sigma}\tau $
-
-				\item If $l$ is grey:
-					$\AImat(C) \defeq
-					(\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor
-					(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImat(C_2)\sigma}\tau)
-					$
-
-			\end{enumerate}
 
 		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$,
-			then let $\tau = \aiu(\inference)$ and define
-			$\AImat(C)$ and $\AIcl(C)$ as follows:
+			Suppse the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
+with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
 
-			$\AImat(C) \defeq{} \lifboth{\AImat(C_1)\sigma}\tau$
-
-			$\AIcl(C) \defeq \lifboth{ (\AIclause(C_1) \setminus\nolinebreak \{l'\cl\})\sigma}\tau$
+			Then $\AImat(C) = \lifboth{\AImat(C_1)\sigma}\tau$, so the construction is not influenced by the coloring and the induction hypothesis gives the result.
 			\qedhere
-
 	\end{itemize}
-
 \end{proof}
 
 
@@ -1205,7 +1178,16 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 	Then $\AImat( \pi )$ is an interpolant.
 \end{thm}
 \begin{proof}
-	\mytodo{still need $\Delta \entails \lnot Q(c) ( \AImat(C) \lor \AIcl(C) )$}
+	By Lemma~\ref{lemma:gamma_entails_quantified_ai},
+	$\Gamma \entails \Q(C)(\AImat(\square) \lor \AIcl(\square))$.
+	But as $\AIcl(\square) = \square$, this simplifes to
+	$\Gamma \entails \Q(C)\AImat(\pi)$.
+
+	By constructing a proof $\bhat \pi$ from $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$, we obtain by Lemma~\ref{lemma:gamma_entails_quantified_ai} that $\bhat\Gamma \entails \Q(\bhat \pi)\AImat(\bhat \pi)$.
+	By Lemma \ref{lemma:ai_symmetry}, this however is nothing else than
+	$\Delta \entails \lnot \Q(\pi) \AImat(\pi)$. 
+
+	As furthermore by construction no colored symbols occur in $\Q(\pi) \AImat(\pi)$, it is an interpolant for $\Gamma\cup\Delta$.
 
 \end{proof}
 

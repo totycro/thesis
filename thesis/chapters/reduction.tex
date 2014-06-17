@@ -158,27 +158,27 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 
 \begin{lemma}~ 
-	\label{lemma:trans_lang}
+	\label{lemma:transLang}
 	\begin{compactenum}
 	\item
 		Let $\Phi$ be a set of first-order formulas. Then $\TransAll(\Phi)$ is in the language~$\Trans(\Lang(\Phi))$.
-		\label{lemma:trans_lang1}
+		\label{lemma:transLang1}
 
 	\item 
 		If $\Psi$ is in the language $\Trans(\LangSym)$, then $\TransInv(\Psi)$ is in the language~$\LangSym$.
-		\label{lemma:trans_lang2}
+		\label{lemma:transLang2}
 	\end{compactenum}
 \end{lemma}
 
 \begin{prop}
-	\label{prop:trans_sat_equiv}
+	\label{prop:transSatEquiv}
 	Let $\Phi$ be a set of first-order formulas.
 	\begin{compactenum}
 		\item If $\Phi$ is satisfiable, then so is $\TransAll(\Phi)$.
-			\label{prop:trans_sat_equiv1}
+			\label{prop:transSatEquiv1}
 		\item Let $\LangSym$ be a first-order language and $\Phi$ a set of first-order formulas in the language~$\Trans(\LangSym)$.
 			If $\FAX(\LangSym) \cup \EAX(\LangSym) \cup \Phi $ is satisfiable, then so is $\TransInv(\Phi)$.
-			\label{prop:trans_sat_equiv2}
+			\label{prop:transSatEquiv2}
 	\end{compactenum}
 \end{prop}
 \begin{proof}
@@ -240,8 +240,8 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	Then $\Phi$ is satisfiable if and only if $\TransAll(\Phi)$ is satisfiable.
 \end{cor}
 \begin{proof}
-	The left-to-right direction is directly given in Proposition \ref{prop:trans_sat_equiv}.
-	For the other direction, consider that by Proposition \ref{prop:trans_sat_equiv}, $\TransInv(\Trans(\Phi))$ is satisfiable, which by Lemma \ref{lemma:tinv} is nothing else than $\Phi$.
+	The left-to-right direction is directly given in Proposition \ref{prop:transSatEquiv}.
+	For the other direction, consider that by Proposition \ref{prop:transSatEquiv}, $\TransInv(\Trans(\Phi))$ is satisfiable, which by Lemma \ref{lemma:tinv} is nothing else than $\Phi$.
 \end{proof}
 
 
@@ -376,7 +376,7 @@ This allows us to state the central theorem of this section:
 		\begin{proof}%[Proof of Theorem \ref{thm:interpolation} (Interpolation)]
 
 			Since $\Gamma \cup \Delta$ is unsatisfiable,
-			by Proposition \ref{prop:trans_sat_equiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
+			by Proposition \ref{prop:transSatEquiv}, $\TransAll(\Gamma \cup \Delta)$ is unsatisfiable.
 			\begin{align*}
 				\TransAll(\Gamma \cup \Delta)\,\semiff~&\{\FAX(\Lang(\Gamma\cup\Delta)), \EAX(\Lang(\Gamma \cup\Delta))\} \cup \Trans(\Gamma \cup \Delta) \\
 				\semiff~&\{\FAX(\Lang(\Gamma)\cup\Lang(\Delta)), \EAX(\Lang(\Gamma)\cup\Lang(\Delta))\} \cup \Trans(\Gamma )\cup \Trans(\Delta) \\
@@ -386,7 +386,7 @@ This allows us to state the central theorem of this section:
 			\end{align*}
 			%It follows from Lemma \ref{lemma:trans_transform}, that $\TransAll(\Gamma) \cup \TransAll(\Delta)$is unsatisfiable as well.
 			Hence  $\TransAll(\Gamma) \cup \TransAll(\Delta)$ is unsatisfiable as well.
-			By Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} $\TransAll(\Gamma)$ and $\TransAll(\Delta)$ contain neither function symbols nor the equality symbol.
+			By Lemma \refsub{lemma:transLang}{lemma:transLang1} $\TransAll(\Gamma)$ and $\TransAll(\Delta)$ contain neither function symbols nor the equality symbol.
 			Hence by Theorem \ref{thm:prop_interpol}, there is an interpolant $I$ such that
 			\begin{enumerate}
 				\item $\TransAll(\Gamma) \entails I$
@@ -403,13 +403,13 @@ This allows us to state the central theorem of this section:
 			This set of formulas can now be translated back to the original language with the equality symbol and function symbols. 
 			More formally, 
 			since $\Lang(\lnot I) \subseteq \Lang(\TransAll(\Gamma))$, we can apply Proposition
-			\refsub{prop:trans_sat_equiv}{prop:trans_sat_equiv2}
+			\refsub{prop:transSatEquiv}{prop:transSatEquiv2}
 			by considering $\Trans(\Gamma) \cup \{\lnot I\}$ as $\Phi$ to conclude that $\TransInv(\Trans(\Gamma) \cup \{\lnot I\})$ is unsatisfiable. By pulling $\TransInv$ inward and an application of Lemma \ref{lemma:tinv}, we get that $\Gamma \cup \{\TransInv(\lnot I)\} = \Gamma \cup \{\lnot \TransInv(I)\}$ is unsatisfiable. 
 			Therefore $\Gamma \entails \Trans^{-1}(I)$.
 
 			For $\Delta$, an analogous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
 
-			By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) $. 
+			By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:transLang}{lemma:transLang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) $. 
 				\newcommand{\somespace}{\;}
 				\newcommand{\impconn}[1]{\somespace#1\somespace}
 				%\medskip
@@ -424,7 +424,7 @@ This allows us to state the central theorem of this section:
 			\end{align*}
 				\end{figure}
 				\vspace{-1em}
-			As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:trans_lang}{lemma:trans_lang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
+			As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:transLang}{lemma:transLang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
 		\end{proof}
 
 

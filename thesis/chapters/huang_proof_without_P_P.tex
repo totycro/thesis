@@ -510,12 +510,14 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 						\end{align*}
 					\item $l$ is $\Delta$-colored. This case can be argued analogously.
 
-					\item $l$ is grey. Then $\primex l$ is grey.\nopagebreak 
+					\item $l$ is grey. Then $\primex l$ is grey. 
+						Note that $l\sigma \syneq l'\sigma$ \markB.
+						\nopagebreak 
 			\begin{align*}
 				\PI(C) 
 				&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
 				&=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
-				&\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
+				&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
 				&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
 				&= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
 				&= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
