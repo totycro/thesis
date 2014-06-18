@@ -780,6 +780,18 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
 \end{proof}
 
+\section{Variable renaming conventions}
+
+\mytodo{move this to definition of resolution}
+
+two clauses involved in a resolution inference must be variable disjoint.
+
+the initial clauses are each pairwise variable disjoint.
+
+if a variable is substituted, it does not occur in the subsequent derivation.
+
+
+
 
 \section{Arrows}
 
@@ -861,6 +873,8 @@ This definition is convenient as it adheres to the following proposition:
 
 			$\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $z_t$ in $\AIany(C)$, $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$
 
+			\largered{ really maximal $\Phi$-term ?}
+
 			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey occurrence of $x$ or maximal colored term containing colored occurrence of $x$ in $C_1$ or $C_2$,
 			$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 
@@ -901,32 +915,16 @@ for resolution/factorisation, check unifier:
 	For terms $s$ and $t$, $s\apath_{G_C} t$ holds if there is some $p, q$ in the edge set of $G_C$ such that $s$ is a subterm of the term at $p$ and $t$ is a subterm of the term at $t$ such that $s$ and $t$ are not contained in colored terms. (NOTE: in $\AIde$, $\Gamma$-terms are not colored terms in this sense.)
 \end{defi}
 
-\begin{comment}
-	\begin{lemma}
-		Let $l$ and $l'$ be literals such that $\sigma = \mgu(l, l')$
-		and let $\lit = l\lor l'$.
-
-		Suppose a single-colored $\Phi$-term $s\occ{y}$ containing a variable $y$ occurs in $\Lambda\sigmaz{i-1}$ where $1\varleq i \varleq n$ and $\sigma_0 = \id$ such that 
-		a variable $x$ occurs grey in $y\sigma_i$.
-		%Then at least one of the following statements holds:
-		Then in $\Lambda\sigmazi$, there is an occurrence of $x$ of at least one of the following forms:
-		\begin{enumerate}
-			\item A grey occurrence
-			\item An occurrence in a single-colored $\Phi$-term
-			\item [ col change ]
-		\end{enumerate}
-
-	\end{lemma}
-\end{comment}
 
 \newcommand{\lits}{\alpha}
 \begin{lemma}
+	\largered{Unused.}
+	\label{unnamed_lemma}
 	Let $l$ and $l'$ be literals such that $\sigma = \mgu(l, l')$
-	and let $\lits = l\lor l'$.
+	and let $\lits = \{l,l'\}$.
 
 	Suppose a single-colored $\Phi$-term $s\occ{y}$ containing a variable $y$ occurs in $\lits\sigmaz{i-1}$ where $1\varleq i \varleq n$ and $\sigma_0 = \id$ such that 
 	a variable $x$ occurs grey in $y\sigma_i$.
-
 	Then if $x$ only occurs only in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$, $y$ also occurs in a single-colored $\Psi$-term in $\lits\sigmaz{i-1}$.
 	%Then there is at least one occurrence of $x$ in $\lits\sigmaz{i-1}$\todo{or $i$, depending on what we need}{} which is not contained in a single-colored $\Psi$-term.????
 \end{lemma}
@@ -939,12 +937,21 @@ for resolution/factorisation, check unifier:
 	Then $l\sigmaz{i-1}\at{\bhat y}$ is a single-colored $\Psi$-term containing $y$.
 \end{proof}
 
-\mytodo{ICI1: think about what $\Lambda$ is and how to define it in the context of multiply used clauses}
+\begin{defi}
+	$\Lambda(C)$:
+
+	Base case: $\Lambda(C) = C$
+
+	Resolution: $\Lambda(C) = \{ \lifboth{ \varphi \sigma} \tau \mid \varphi \in \Lambda(C_1) \cup \Lambda(C_2) \}$
+
+	Factorisation: $\Lambda(C) = \{ \lifboth{ \varphi \sigma} \tau \mid \varphi \in \Lambda(C_1) \}$ \comm{no merge atm as literals are equal anyway }
+
+\end{defi}
 
 \begin{lemma}
 	\label{lemma:color_change}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $C_1$ and $C_2$ be the clauses used in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$.
-	Let $\Lambda$ be the set of literals contained in $\Gamma\cup\Delta$ with all unifications of $C_1$ and $C_2$ applied.
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $\bbar C$ be the clauses used in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$.
+	Let $\Lambda = \bigcup_{j=1}^{|\bbar C|} \Lambda(C_j)$.
 	Then if a variable $x$ is a color-changing variable\footnote{Recall that a variable is a color-changing if it occurs both in a single-colored $\Gamma$-term and a single-colored $\Delta$-term}
 	in $\Lambda\sigmazi$,
 	$x$ also occurs grey 
@@ -954,7 +961,7 @@ for resolution/factorisation, check unifier:
 	We proceed by induction. Note that in the initial clause sets, no foreign colored terms occur.
 
 	We consider a resolution or factorisation step.
-	We perform a nested induction over the construction steps of $\sigma = \sigma_1 \cdots \sigma_n$ with $C_1$ and $C_2$ as induction start.
+	We perform a nested induction over the construction steps of $\sigma = \sigma_1 \cdots \sigma_n$ with $\bbar C$ as induction start.
 
 	Suppose that $x$ does not occur grey in $\Lambda\sigmaz{i-1}$ as otherwise we are done.
 	We show that if a variable $x$ occurs in a single-colored $\Phi$-term in $\Lambda\sigmazi$, then (1) it does so in $\Lambda\sigmaz{i-1}$ or (2) there is a color-changing variable $y$ in $\Lambda\sigmaz{i-1}$ such that $x$ occurs grey in $y\sigma_i$.
@@ -965,10 +972,10 @@ for resolution/factorisation, check unifier:
 			Suppose furthermore that $x$ does not occur in a single-colored $\Phi$-term in $\Lambda\sigmaz{i-1}$ as otherwise we are done.
 			As by assumption it does not occur grey in $\Lambda\sigmaz{i-1}$, $x$ only occurs in single-colored $\Psi$-terms in $\sigmaz{i-1}$.
 			But as $x$ occurs grey in $y\sigma_i$, there must be an occurrence $\bhat y$ of $y$ in a resolved or factorised literal, say $l\sigmaz{i-1}$, such that for the other resolved or factorised literal $l'$, $l'\sigmaz{i-1}\at{\bhat y}$ is a subterm where $x$ occurs grey.
-			But as $l'\sigmaz{i-1}\at{\bhat y}$ is contained in a single-colored $\Psi$-term, so is $l\sigmaz{i-1}$, hence $y$ is a color-changing variable in $(C_1 \cup C_2)\sigmaz{i-1}$. 
+			But as $l'\sigmaz{i-1}\at{\bhat y}$ is contained in a single-colored $\Psi$-term, so is $l\sigmaz{i-1}$, hence $y$ is a color-changing variable in $\Lambda\sigmaz{i-1}$. 
 
-		\item Suppose that a variable $y$ occurs in $(C_1 \cup C_2)\sigmaz{i-1}$ such that $x$ occurs in a single-colored $\Phi$-term in $y\sigma_i$.
-			There must be an occurrence of $y\sigma_i$ in $(C_1 \cup C_2)\sigmaz{i-1}$, but this is nothing else than single-colored $\Phi$-term containing $x$.
+		\item Suppose that a variable $y$ occurs in $\Lambda\sigmaz{i-1}$ such that $x$ occurs in a single-colored $\Phi$-term in $y\sigma_i$.
+			There must be an occurrence of $y\sigma_i$ in $\Lambda\sigmaz{i-1}$, but this is nothing else than single-colored $\Phi$-term containing $x$.
 	\end{itemize}
 
 	Suppose now that $x$ occurs in $\Lambda\sigmazi$ in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term.
@@ -978,23 +985,29 @@ for resolution/factorisation, check unifier:
 	By the induction hypothesis, then $y$ occurs grey in $\Lambda\sigmaz{i-1}$, which directly implies that $x$ occurs grey in $\Lambda\sigmazi$.
 \end{proof}
 
+\begin{lemma}
+	\label{lemma:Lambda_vs_aiany}
+	$\AIany(C)$ contains the same literals as $\Lambda(C)$.
+\end{lemma}
+
 
 \begin{lemma}
 	\label{lemma:lft_var_occurs_grey}
- 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
 	If in $\AImatde(C) \lor \AIclde(C)$	a $\Gamma$-term $t\occ{x_s}$ contains a $\Delta$-lifting variable $x_s$, then $x_s$ occurs grey in $\AIanyde(C)$.
 
 \end{lemma}
 \begin{proof}
-	Note that if a respective term occurs in $\AImatde(C) \lor \AIclde(C)$, the corresponding non-lifted term is a $\Gamma$-term containing a $\Delta$-term\todo{mention lemma once it exists}.
-
 	Note that it suffices to show that at the derivation step which introduces $s$ as subterm of $t\occ{s}$, $x_s$ occurs grey in $\AIanyde(C)$ as any potential later modification of $x_s$ is only performed by the substitution $\tau$. 
 	However $\tau$ is applied globally in $\AIanyde$, so it affects each occurrence of $x_s$ in the same manner.
+
+	Note that if a $\Gamma$-term containing a $\Delta$-lifting variable occurs in $\AImatde(C) \lor \AIclde(C)$, the corresponding non-lifted term in $\Lambda(C)$ is a $\Gamma$-term containing a $\Delta$-term.
+	Note also that if a term occurs grey in $\Lambda(C)$, a corresponding term occurs grey in $\AIanyde(C)$ (cf.\ \ref{lemma:Lambda_vs_aiany}).
 
 	We proceed by induction.
 	Note that for $C\in \Gamma\cup\Delta$, no $\Delta$-lifting variable occurs in a $\Gamma$-term in $\AImatde(C) \lor \AIclde(C)$.
 
-	For the induction step, suppose that the condition holds for the clauses $C_1$ and $C_2$ used in a resolution or factorisation step $\inference$.
+	For the induction step, suppose that the condition holds for the clauses $\bbar C$ used in a resolution or factorisation step $\inference$.
 	Let $\sigma = \mgu(\inference)$.
 	We continue by induction over the construction steps of $\sigma = \sigma_1 \cdots \sigma_n$ and consider the situations which produce $\Delta$-terms in $\Gamma$-terms:
 	\begin{itemize}
@@ -1071,56 +1084,101 @@ for resolution/factorisation, check unifier:
 	%such that for any edge $(p, q) \in G_C$, if $s$ is a subterm of $\AIany(C)\at{p}$ and $r$ is a subterm of $\AIany(C)\at{q}$ and $z_s$ and $z_r$ both occur in $\AImat(C)$, then $z_s$ is listed before $z_r$ is.
 \end{defi}
 
-\largered{ doesn't it work to add arrows based on $C$ (actual clause), then prove correctness via $\AI^\Delta$ and $\AI^\Gamma$, then just use $\AI$ wihout actually needing the one-sided ones? }
 
-there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifgammanovar{ \AIde(C) } $
-
-\mytodo{ICI2: possibly use $\Lambda$ as to be defined above}
-
-\begin{clemma}
+\cbstart
+\begin{lemma}
 	\label{lemma:ai_vs_aide_1}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
-	If a $\Gamma$-lifting variable occurs multiple times in $\AIany(C)$, then the terms at the corresponding positions in $\AIany(C))$ are equal.
-\end{clemma}
+	If a $\Gamma$-lifting variable occurs multiple times in $\AIany(C)$, then the terms at the corresponding positions in $\AIanyde(C))$ are equal.
+\end{lemma}
 \begin{proof}
-	Note that $\AIclde(C) \sim \lifdeltanovar{C}$ and $\AIcl(C) \sim \lifboth{C}$.\todo{$\sim$ not defined here}
-
 	We proceed by induction over the resolution refutation of $\Gamma\cup\Delta$.
-	
+
 	\begin{description}
 		\item{} Base case.
 			For $C \in \Gamma\cup\Delta$, if $\AIany(C)$ contains a $\Gamma$-lifting variable $y_t$ at position\nolinebreak{} $p$,
 			then $\AIanyde(C)\at{p} = \lifdeltanovar{t}$.
 
 		\item{} Induction step.
-			Suppose the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$
-			or of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$. \mytodo{do not assign $C_1$ twice}
+			Suppose the clause $C$ is the result of a resolution or factorisation step $\inference$ of the clauses $\bbar C$.
 			Let $\sigma = \mgu(\inference)$.
 
-			Suppose $\sigma$ introduces a $\Gamma$-term 
+			We show first that the property holds for newly introduced lifting variables, and second that the property is not violated in the course of the derivation.
 
-			how to argue formally over connection between aide and ai?
+			\begin{itemize}
+				\item
+					Suppose a $\Gamma$-lifting variable $y_t$ is added to $\AIany(C)$ in $\inference$.
+					Then $\sigma$ introduces a $\Gamma$-term $t$ at a grey position, so the corresponding term in $\AIanyde(C)$ is $t$.
+
+					Let $\bhat y_t$ be another occurrence of $y_t$ in $\AIany(C)$. We show that $\AIanyde(C)\at{\bhat y_t} = t$ by contradiction, i.e.\ suppose that $\AIanyde(C)\at{\bhat y_t} = s$ with $s\neq t$.
+					Then from the inference in the derivation where $y_t$ has been created to $\inference$, at least one variable contained in $t$, say $u$, has been substituted.
+					But then $u$ does not occur in the subsequent derivation, but $\ran(\sigma)$ contains $u$ since it contains $t$. 
+					Therefore no variable occurring in $t$ is changed from the point of its introduction up to $\inference$.
+
+					This however implies that if for a position $p$, $\AIany(C)\at{p} = y_t$, then $\AIanyde(C)\at{p} = t$.
 
 
+				\item 
+					Let $\bhat y_s$ and $\bdot y_s$ be two occurrences of a lifting variable $y_s$ in $\AIany(C)$.
 
+					Suppose that there exist ancestors of $\bhat y_s$ and $\bdot y_s$ in $\AIany(D)$ for $D\in\bbar C$ which are occurrences of $y_s$.
+					\mytodo{ lifting variables may also be the same if they are in different clauses if they do not contain variables }
+					Then by the induction hypothesis, $\AIanyde(D)\at{\bhat y_s} = \AIanyde(D)\at{\bdot y_s}$.
+					$\bhat y_s$ and $\bdot y_s$ can only be modified by $\aiu(\inference)$, but this affects both of them the same way.
+					$\AIanyde(D)\at{\bhat y_s}$ and $\AIanyde(D)\at{\bdot y_s}$ on the other hand are modified by $\sigma$, but this again affects both terms the same way.
+
+					Suppose that otherwise at both ancestors of $\bhat y_s$ and $\bdot y_s$ are lifting variables but at least one ancestor is $y_r$ such that $r\neq s$.
+					Then it is modified by $\aiu(\inference)$ and hence occurs in a resolved or factorised literal $\lambda$, say at $p$.
+					However $\aiu(\inference)$ modifies it such $\lambda\at{p} = s$.
+
+					- at this position in $\AIanyde(C)$ also in resolved/factorised literal, so reset
+
+					- if other $y_s$ has been there before: then argue as above, no var changed
+
+					- if other $y_s$ also just created: then also everything in $\AIany(C)$ AS WELL AS $\AIanyde(C)$ is reset.
+					\qedhere
+
+			\end{itemize}
 	\end{description}
+\end{proof}
 
+\begin{lemma}
+	\label{lemma:ai_vs_aide_2}
+	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
+	If a $\Delta$-lifting variable occurs multiple times in $\AIanyde(C)$ at a grey position, then the terms at the corresponding positions in $\AIany(C))$ are equal.
+\end{lemma}
+\begin{proof}
+	Note that the corresponding terms in $\AIany(C)$ do not exist if the $\Delta$-lifting variable in $\AIanyde(C)$ is contained in a $\Gamma$-term, so we do not consider these.
+
+	initially: just lifted all the same in both.
+
+	step:
+
+	same before, only changed by $\tau$ $\Ra$ same afterwards
+
+	just introduced: then just introduced for both the same
+
+	unified by $\tau$ $\Ra$ either both unified, or one is still exactly the reight term (as no vars changed)
+	\qedhere
 
 \end{proof}
 
-\begin{clemma}
+\cbend
+
+\begin{lemma}
 	\label{lemma:gamma_entails_quantified_ai}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
 	%and $\overline y$ be the $\Gamma$-lifting variables of $\AImat(C) \lor \AIcl$.
 	Then
 	$\Gamma \entails\nolinebreak Q(C) ( \AImat(C) \lor\nolinebreak \AIcl(C))$.
-\end{clemma}
+\end{lemma}
 \begin{proof}
 	By Lemma~\ref{lemma:gamma_entails_aide}, we obtain that 
 	$\Gamma \entails \forall x_1 \cdots \forall x_n (\AImatde(C) \lor \AIclde(C))$, where $x_1,\dots,x_n$ are the $\Delta$-lifting variables occurring in $\AImatde(C) \lor \AIclde(C)$.
 	Note that $\AImatde(C) \lor \AIclde(C)$ and $\AImat(C) \lor\nolinebreak \AIcl(C)$ are structurally equal in the sense that for a position $p$ in the latter, the first has a related term: For a grey term, it is the same grey term. For a $\Delta$-lifting variable, it is also a $\Delta$-lifting variable but possibly a different one and for $\Gamma$-lifting variables, the first has a maximal colored $\Gamma$-term.
 
-	In order to show prove the lemma, we show that
+	Lemma~\ref{lemma:ai_vs_aide_1} and
+	Lemma~\ref{lemma:ai_vs_aide_2} give the following:
 	\begin{compactenum}
 	\item if a $\Gamma$-lifting variable occurs multiple times in $\AImat(C)\lor\AIcl(C)$, then the terms at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal and 
 	\item if a $\Delta$-lifting variable occurs multiple times in $\AImatde(C) \lor \AIclde(C))$, then the $\Delta$-lifting variables at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal.
@@ -1130,13 +1188,6 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 
 	In the witness terms for the $\Gamma$-lifting variables, in general $\Delta$-lifting variables occur. 
 	By Lemma~\ref{lemma:arrow_for_lft_var}, for every lifting variable $x_s$ in $t\occ{x_s}$, we have that $x_s \apath_{G_C} t\occ{x_s}$, hence by Definition~\ref{def:arrow_quantifier_block}, the lifting variables are quantified in some order such that the lifting variable for $x_s$ is quantified before the lifting variable for $t\occ{x_s}$ is.
-
-	~
-
-	\mytodo{
-	it remains to show 1 and 2.
-}
-
 \end{proof}
 
 \begin{lemma}
@@ -1169,8 +1220,8 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 				\item $l$ is $\Gamma$-colored:
 					\begin{align*}
 						\AImat(C)	&= \lifboth{\AImat(C_1)\sigma}\tau\spas\lor \lifboth{\AImat(C_2)\sigma}\tau \\
-														 &\semiff \lnot (\lnot\lifboth{\AImat(C_1)\sigma}\tau\spas\land \lnot \lifboth{\AImat(C_2)\sigma}\tau) \\
-														 &\semiff \lnot (\lifboth{(\lnot \AImat(C_1))\sigma}\tau\spas\land \lifboth{(\lnot \AImat(C_2))\sigma}\tau) \\
+															 &\semiff \lnot (\lnot\lifboth{\AImat(C_1)\sigma}\tau\spas\land \lnot \lifboth{\AImat(C_2)\sigma}\tau) \\
+															&\semiff \lnot (\lifboth{(\lnot \AImat(C_1))\sigma}\tau\spas\land \lifboth{(\lnot \AImat(C_2))\sigma}\tau) \\
 														 &\semiff \lnot (\lifboth{\AImat(\bhat C_1)\sigma}\tau\spas\land \lifboth{\AImat(\bhat C_2)\sigma}\tau) \\
 														 &= \lnot \AImat(\bhat C)
 					\end{align*}
@@ -1203,7 +1254,7 @@ there's also a similar result in \texttt{-presentable}: $\lifboth{C} \sim \lifga
 
 		\item[Factorisation.]
 			Suppse the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
-with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
+			with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
 
 			Then $\AImat(C) = \lifboth{\AImat(C_1)\sigma}\tau$, so the construction is not influenced by the coloring and the induction hypothesis gives the result.
 			\qedhere
