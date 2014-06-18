@@ -510,6 +510,29 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{proof}
 
 \begin{lemma}
+	%\largered{ either reduce to ``equal up to index of lifting variables'' or use elaborate version as given below with additional lemma about how every $x_s$ refers to the same term PLUS variable renaming convention }
+	\label{lemma:literals_clause_only_sim}
+	Let $\lambda$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
+	Then $\AIcl(C)$ contains a literal $\lambda\cl$ such that $\lambda\cl \sim \lifboth{\lambda}$, where $\sim$ is defined as follows:
+	\[
+		\varphi \simgeq \varphi' \semiff
+		\begin{cases}
+			P = P' \land \bigwedge_{i=1}^n s_i \simgeq s'_i &  \text{ if $\varphi = P(s_1, \dots, s_n)$ and $\varphi' = P'(s'_1, \dots, s'_n)$} \\
+			f = f' \land \bigwedge_{i=1}^n s_i \simgeq s'_i &  \text{ if $\varphi = f(s_1, \dots, s_n)$ and $\varphi' = f'(s'_1, \dots, s'_n)$} \\
+			x = x' & \text{ if $\varphi, \varphi'$ are non-lifting variables, $\varphi = x$ and $\varphi' = x'$} \\
+			\top  & \text{ if $\varphi, \varphi'$ are lifting variables of the same color} \\
+		\end{cases}
+	\]
+	For resolved or factorised literals $\lambda$ of an inference $\inference$ with $\tau = \aiu(\inference)$ we furthermore have that $\lifboth{\lambda\cl\sigma}\tau \simgeq \lifboth{\lambda\sigma}$.
+	\todo[inline]{introduce definition for characterising the relation between $C$ and $\AIcl(C)$}
+\end{lemma}
+
+
+{ More elaborate but unneeded approach:
+
+	\tiny
+
+\begin{lemma}
 	Let $l$ and $l'$ be resolved or factorised literals in a resolution derivation step $\inference$ creating a clause $C$ and
 	$\tau = \aiu(\inference)$.
 	For any substitution $(z_s \mapsto z_t) \in \tau$,
@@ -525,7 +548,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 \end{lemma}
 
 \begin{lemma}
-	\largered{ either reduce to ``equal up to index of lifting variables'' or use elaborate version as given below with additional lemma about how every $x_s$ refers to the same term PLUS variable renaming convention }
+	%\largered{ either reduce to ``equal up to index of lifting variables'' or use elaborate version as given below with additional lemma about how every $x_s$ refers to the same term PLUS variable renaming convention }
 	\label{lemma:literals_clause_simgeq}
 	Let $\lambda$ be a literal in a clause $C$ occurring in a resolution refutation of $\Gamma\cup\Delta$.
 	Then $\AIcl(C)$ contains a literal $\lambda\cl$ such that $\lambda\cl \simgeq \lifboth{\lambda}$, where $\simgeq$ is defined as follows:
@@ -610,6 +633,8 @@ we define a function on resolved literals calculating a substitution, which ensu
 	\end{description}
 
 \end{proof}
+
+}
 
 \begin{lemma}
 	\label{lemma:resolved_literal_like_lifted_literal}
@@ -1219,6 +1244,7 @@ for resolution/factorisation, check unifier:
 
 				\item $l$ is $\Gamma$-colored:
 					\begin{align*}
+						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 						\AImat(C)	&= \lifboth{\AImat(C_1)\sigma}\tau\spas\lor \lifboth{\AImat(C_2)\sigma}\tau \\
 															 &\semiff \lnot (\lnot\lifboth{\AImat(C_1)\sigma}\tau\spas\land \lnot \lifboth{\AImat(C_2)\sigma}\tau) \\
 															&\semiff \lnot (\lifboth{(\lnot \AImat(C_1))\sigma}\tau\spas\land \lifboth{(\lnot \AImat(C_2))\sigma}\tau) \\
@@ -1232,10 +1258,11 @@ for resolution/factorisation, check unifier:
 				\item $l$ is grey:
 					Note that by Lemma~\ref{lemma:resolved_literals_equal}, $\lifboth{l\fromclause\sigma} = \lifboth{l\fromclause\sigma}$ \markB.
 					\begin{align*}
+						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 						\AImat(C) &=
 						(\lnot {\lifboth{l'\fromclause\sigma}}\tau \land \lifboth{\AImat(C_1)\sigma}\tau) \spam\lor 
 						(\lifboth{l\fromclause\sigma}\tau \land \lifboth{\AImat(C_2)\sigma}\tau)\\
-						&\stackrel\markB\semiff\,
+						&\stackrel{\markB}{\semiff}\,
 						({\lifboth{l'\fromclause\sigma}}\tau \lor \lifboth{\AImat(C_1)\sigma}\tau) \spam\land 
 						(\lnot \lifboth{l\fromclause\sigma}\tau \lor \lifboth{\AImat(C_2)\sigma}\tau)\\
 						%&\semiff\,({\lifboth{l'\fromclause\sigma}}\tau \lor  \lifboth{\AImat(C_1)\sigma}\tau) \spam\land 
