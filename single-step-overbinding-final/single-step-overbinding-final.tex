@@ -622,7 +622,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 			\end{itemize}
 
 		\item{Factorisation.}
-			If the clause $C$ is the result of a factorisation, then we can argue analoguously as for resolution.
+			If the clause $C$ is the result of a factorisation, then we can argue analogously as for resolution.
 			%If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier~$\sigma$ such that $l\sigma = l'\sigma$, then let $\tau = \aiu(\lifboth{l\cl\sigma}, \lifboth{l'\cl\sigma})$.
 			%The rest of this proof resembles the case of resolution:
 			%Every literal in $C$ is of the form $\lambda\sigma$ for some $\lambda \in C_1$.
@@ -786,7 +786,7 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 \end{defi}
 
 \begin{prop}
-	Let $\Gamma$ and $\Delta$ be sets of first-order forumulas such that $\Gamma\cup\Delta$ is unsatisfiable.
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma\cup\Delta$ is unsatisfiable.
 	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$ formula.
 \end{prop}
 \begin{proof}
@@ -901,9 +901,8 @@ However it is possible to algorithmically keep track of the required sets by com
 		then the contents of the set of grey and colored occurrences of $y$ is added to the set of colored occurrences of $x$.
 \end{itemize}
 
-
-In order to establish the required ordering on the lifting variables, we annotate the literals with arrows.
-More formally:
+Now we define the arrows which
+establish the required ordering on the lifting variables in the interpolant:
 
 \begin{defi}
 	We define a directed graph $G_C$ for every clause $C$ of the derivation.
@@ -960,35 +959,39 @@ More formally:
 
 
 \begin{defi}[$\apath$]
-	For terms $s$ and $t$, $s\apath_{G_C} t$ holds if there is some $p, q$ in the edge set of $G_C$ such that $s$ is a subterm of the term at $p$ and $t$ is a subterm of the term at $t$ such that $s$ and $t$ are not contained in colored terms. (NOTE: in $\AIde$, $\Gamma$-terms are not colored terms in this sense.)
+	%For terms $s$ and $t$, $s\apath_{G_C} t$ holds if there is some $p, q$ in the edge set of $G_C$ such that $s$ is a subterm of the term at $p$ and $t$ is a subterm of the term at $t$ such that $s$ and $t$ are not contained in colored terms. %(NOTE: in $\AIde$, $\Gamma$-terms are not colored terms in this sense.)
+	For terms $s$ and $t$ and a clause $C$, $s\apath_{G_C} t$ holds if there is some $(p, q)$ in the edge set of $G_C$ such that $s$ is the term at $p$ and $t$ is the term at $q$.
 \end{defi}
 
 
-\newcommand{\lits}{\alpha}
-\begin{lemma}
-	\largered{Unused.}
-	\label{unnamed_lemma}
-	Let $l$ and $l'$ be literals such that $\sigma = \mgu(l, l')$
-	and let $\lits = \{l,l'\}$.
 
-	Suppose a single-colored $\Phi$-term $s\occ{y}$ containing a variable $y$ occurs in $\lits\sigmaz{i-1}$ where $1\varleq i \varleq n$ and $\sigma_0 = \id$ such that 
-	a variable $x$ occurs grey in $y\sigma_i$.
-	Then if $x$ only occurs only in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$, $y$ also occurs in a single-colored $\Psi$-term in $\lits\sigmaz{i-1}$.
-	%Then there is at least one occurrence of $x$ in $\lits\sigmaz{i-1}$\todo{or $i$, depending on what we need}{} which is not contained in a single-colored $\Psi$-term.????
-\end{lemma}
-\begin{proof}
-	There must be an occurrence $\bhat y$ of $y$, say w.l.o.g.\ in $l\sigmaz{i-1}$,
-	such that $l'\sigmaz{i-1}\at{\bhat y} = y\sigma_i$.
-	Note that $l\sigmaz{i-1}\at{\bhat y}$ and $l'\sigmaz{i-1}\at{\bhat y}$ agree on the prefix and that $x$ occurs grey in $l'\sigmaz{i-1}\at{\bhat y}$.
+\begin{comment}
+	\newcommand{\lits}{\alpha}
+	\begin{lemma}
+		\largered{Unused.}
+		\label{unnamed_lemma}
+		Let $l$ and $l'$ be literals such that $\sigma = \mgu(l, l')$
+		and let $\lits = \{l,l'\}$.
 
-	Now suppose that $x$ only occurs in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$.
-	Then $l\sigmaz{i-1}\at{\bhat y}$ is a single-colored $\Psi$-term containing $y$.
-\end{proof}
+		Suppose a single-colored $\Phi$-term $s\occ{y}$ containing a variable $y$ occurs in $\lits\sigmaz{i-1}$ where $1\varleq i \varleq n$ and $\sigma_0 = \id$ such that 
+		a variable $x$ occurs grey in $y\sigma_i$.
+		Then if $x$ only occurs only in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$, $y$ also occurs in a single-colored $\Psi$-term in $\lits\sigmaz{i-1}$.
+		%Then there is at least one occurrence of $x$ in $\lits\sigmaz{i-1}$\todo{or $i$, depending on what we need}{} which is not contained in a single-colored $\Psi$-term.????
+	\end{lemma}
+	\begin{proof}
+		There must be an occurrence $\bhat y$ of $y$, say w.l.o.g.\ in $l\sigmaz{i-1}$,
+		such that $l'\sigmaz{i-1}\at{\bhat y} = y\sigma_i$.
+		Note that $l\sigmaz{i-1}\at{\bhat y}$ and $l'\sigmaz{i-1}\at{\bhat y}$ agree on the prefix and that $x$ occurs grey in $l'\sigmaz{i-1}\at{\bhat y}$.
+
+		Now suppose that $x$ only occurs in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$.
+		Then $l\sigmaz{i-1}\at{\bhat y}$ is a single-colored $\Psi$-term containing $y$.
+	\end{proof}
+\end{comment}
 
 \begin{lemma}
 	\label{lemma:color_change}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $\bbar C$ be the clauses used in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$.
-	Let $\Lambda = \bigcup_{j=1}^{|\bbar C|} \Lambda(C_j)$.
+	%Let $\Lambda = \bigcup_{j=1}^{|\bbar C|} \Lambda(C_j)$.
 	Then if a variable $x$ is a color-changing variable\footnote{Recall that a variable is a color-changing if it occurs both in a single-colored $\Gamma$-term and a single-colored $\Delta$-term}
 	in $\Lambda\sigmazi$,
 	$x$ also occurs grey 
@@ -1058,7 +1061,7 @@ More formally:
 			Otherwise $s'$ has a predecessor $s''$ in $C_1$ or $C_2$ such that $s''$ is a $\Delta$-term which is contained in a $\Gamma$-term and $s''\sigmaz{i-1} = s'$.
 			The lifting variable in $\AIanyde(C_1)$ or $\AIanyde(C_2)$\todo{formulate a lemma about that this works}{} corresponding to $s''$ in general is of the form $x_r$ with $r\neq s$.
 			But Lemma~\ref{lemma:resolved_literal_like_lifted_literal}, we have that $\lifdeltanovar{l\cl\sigma}\tau = \lifdeltanovar{l\sigma}$ for the resolved or factorised literal $l$ with $\tau = \aiu(\inference)$.
-			Since $x_r$ occurs in $l\cl$ and lifting variables are only modifed by $\tau$, it must be the case that $\{x_r \mapsto x_s\}\in \tau$.
+			Since $x_r$ occurs in $l\cl$ and lifting variables are only modified by $\tau$, it must be the case that $\{x_r \mapsto x_s\}\in \tau$.
 			But then $x_s$ occurs in $\lifdeltanovar{l\cl\sigma}\tau$, which is contained in $\AIcolde(C)$ and hence in $\AIanyde(C)$.
 
 
@@ -1110,7 +1113,7 @@ More formally:
 \begin{defi}
 	\label{def:arrow_quantifier_block}
 	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
-	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables ocurring in $\AImat(C)$.
+	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\AImat(C)$.
 	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$ $z_s \apath_{G_C} z_r$ implies that $z_s$ is listed before $z_r$.
 	We denote $\Q(\square)$ by $\Q(\pi)$.
 	%such that for any edge $(p, q) \in G_C$, if $s$ is a subterm of $\AIany(C)\at{p}$ and $r$ is a subterm of $\AIany(C)\at{q}$ and $z_s$ and $z_r$ both occur in $\AImat(C)$, then $z_s$ is listed before $z_r$ is.
@@ -1190,7 +1193,7 @@ More formally:
 
 	just introduced: then just introduced for both the same
 
-	unified by $\tau$ $\Ra$ either both unified, or one is still exactly the reight term (as no vars changed)
+	unified by $\tau$ $\Ra$ either both unified, or one is still exactly the right term (as no vars changed)
 	\qedhere
 
 \end{proof}
@@ -1238,7 +1241,7 @@ More formally:
 	\begin{itemize}
 		\item[Base case.]
 			If $C \in \Gamma$, then $\AImat(C) = \bot \semiff \lnot \top \semiff \lnot \AImat(\bhat C)$ as $\bhat C\in\Delta$. 
-			The case for $C\in\Delta$ can be argued analoguously.
+			The case for $C\in\Delta$ can be argued analogously.
 
 		\item[Resolution.]
 			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
@@ -1287,7 +1290,7 @@ More formally:
 
 
 		\item[Factorisation.]
-			Suppse the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
+			Suppose the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
 			with $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
 
 			Then $\AImat(C) = \lifboth{\AImat(C_1)\sigma}\tau$, so the construction is not influenced by the coloring and the induction hypothesis gives the result.
@@ -1303,7 +1306,7 @@ More formally:
 \begin{proof}
 	By Lemma~\ref{lemma:gamma_entails_quantified_ai},
 	$\Gamma \entails \Q(C)(\AImat(\square) \lor \AIcl(\square))$.
-	But as $\AIcl(\square) = \square$, this simplifes to
+	But as $\AIcl(\square) = \square$, this simplifies to
 	$\Gamma \entails \Q(C)\AImat(\pi)$.
 
 	By constructing a proof $\bhat \pi$ from $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$, we obtain by Lemma~\ref{lemma:gamma_entails_quantified_ai} that $\bhat\Gamma \entails \Q(\bhat \pi)\AImat(\bhat \pi)$.
