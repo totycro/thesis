@@ -874,10 +874,9 @@ For a related definition for non-lifted literals, we introduce the following:
 
 	\comm{An alternate definition would be to collect all colored literal (like $\AIcol$) and all of the ones in the interpolant (like $\AImat$), then define $\Lambda(C) \defeq \Lambda_{\operatorname{col}} \cup \Lambda_{\operatorname{mat}} \cup C$.
 	}
-
 \end{defi}
 
-\mytodo{define: descendant} %(usual stuff, factorisation is merge, resolution is de-facto merge which happens implicitly so no actual merge required)}
+%\mytodo{define: descendant} %(usual stuff, factorisation is merge, resolution is de-facto merge which happens implicitly so no actual merge required)}
 
 \begin{lemma}
 	\label{lemma:Lambda_vs_aiany}
@@ -885,21 +884,24 @@ For a related definition for non-lifted literals, we introduce the following:
 \end{lemma}
 
 
-\section{Arrows}
+\section{Definition of arrows}
 
-In the Definition~\ref{def:arrows} below, the set of occurrences of a certain color of a variable is required.
-%Need for var $x$ the set of colored occs and grey occs in initial clauses.
-In lifted clauses, it the structure of the term is in general not known. 
-%lift clauses as usual s.t. to not see any of the colored structure, hence remember only in which max colored term the var is.
+\begin{remark}
+	In the Definition~\ref{def:arrows} below, the set of occurrences of a certain color of a variable is required.
+	%Need for var $x$ the set of colored occs and grey occs in initial clauses.
+	In lifted clauses, it the structure of the term is in general not known. 
+	%lift clauses as usual s.t. to not see any of the colored structure, hence remember only in which max colored term the var is.
 
-However it is possible to algorithmically keep track of the required sets by complying to the following ideas: 
+	However it is possible to algorithmically keep track of the required sets by complying to the following ideas: 
 
-\begin{itemize}
-	\item Build sets of occurrences in original clauses.
-	\item If in a resolution or factorisation step with unifier $\sigma$, $x$ occurs grey in $y\sigma$, then the contents of set of grey (colored) occurrences of $y$ is added to the set grey (colored) occurrences of $x$. $y$ does not occur in any further derivation step.
-	\item If in a resolution or factorisation step with unifier $\sigma$, $x$ occurs colored in $y\sigma$, 
-		then the contents of the set of grey and colored occurrences of $y$ is added to the set of colored occurrences of $x$.
-\end{itemize}
+	\begin{itemize}
+		\item Build sets of occurrences in original clauses.
+		\item If in a resolution or factorisation step with unifier $\sigma$, $x$ occurs grey in $y\sigma$, then the contents of set of grey (colored) occurrences of $y$ is added to the set grey (colored) occurrences of $x$. $y$ does not occur in any further derivation step.
+		\item If in a resolution or factorisation step with unifier $\sigma$, $x$ occurs colored in $y\sigma$, 
+			then the contents of the set of grey and colored occurrences of $y$ is added to the set of colored occurrences of $x$.
+			\qedhere
+	\end{itemize}
+\end{remark}
 
 Now we define the arrows which
 establish the required ordering on the lifting variables in the interpolant:
@@ -945,10 +947,10 @@ establish the required ordering on the lifting variables in the interpolant:
 
 			$G_C \defeq G_{C_1} \cup G_{C_2} \cup \arr_1 \cup \arr_2$
 			\qedhere
-			
 
 
-		%\item[Factorisation.]
+
+			%\item[Factorisation.]
 			%If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then
 
 			%$$G_C \defeq G_{C_1} \cup G_{C_2}$\footnote{Note however that the literal $l$ in $C$ has $l$ as well as $l'$ in $C_1$ as predecessors, i.e.~the arrows from both of these literals apply implicitly.}
@@ -988,6 +990,8 @@ establish the required ordering on the lifting variables in the interpolant:
 	\end{proof}
 \end{comment}
 
+\section{Existence of arrows}
+
 \begin{lemma}
 	\label{lemma:color_change}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $\bbar C$ be the clauses used in a resolution or factorisation step $\inference$ with $\sigma = \mgu(\inference)$.
@@ -1007,7 +1011,7 @@ establish the required ordering on the lifting variables in the interpolant:
 	We show that if a variable $x$ occurs in a single-colored $\Phi$-term in $\Lambda\sigmazi$, then (1) it does so in $\Lambda\sigmaz{i-1}$ or (2) there is a color-changing variable $y$ in $\Lambda\sigmaz{i-1}$ such that $x$ occurs grey in $y\sigma_i$.
 	Consider the situations which produce a single-colored $\Phi$-term containing a variable:
 	\begin{itemize}
-		\item Suppose single-colored $\Phi$-colored term containing $x$ is present in $\Lambda\sigmaz{i-1}$. Then it is as well in $\Lambda\sigmaz{i}$.
+		\item Suppose a single-colored $\Phi$-colored term containing $x$ is present in $\Lambda\sigmaz{i-1}$. Then it is as well in $\Lambda\sigmaz{i}$.
 		\item Suppose that a variable $y$ occurs a single-colored $\Phi$-term in $\Lambda\sigmaz{i-1}$ such that $x$ occurs grey in $y\sigma_i$.
 			Suppose furthermore that $x$ does not occur in a single-colored $\Phi$-term in $\Lambda\sigmaz{i-1}$ as otherwise we are done.
 			As by assumption it does not occur grey in $\Lambda\sigmaz{i-1}$, $x$ only occurs in single-colored $\Psi$-terms in $\sigmaz{i-1}$.
@@ -1120,7 +1124,6 @@ establish the required ordering on the lifting variables in the interpolant:
 \end{defi}
 
 
-\cbstart
 \begin{lemma}
 	\label{lemma:ai_vs_aide_1}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
@@ -1136,17 +1139,17 @@ establish the required ordering on the lifting variables in the interpolant:
 
 		\item{} Induction step.
 			Suppose the clause $C$ is the result of a resolution or factorisation step $\inference$ of the clauses $\bbar C$.
-			Let $\sigma = \mgu(\inference)$.
+			Let $\sigma = \mgu(\inference)$ and $\tau = \aiu(\inference)$.
 
-			We show first that the property holds for newly introduced lifting variables, and second that the property is not violated in the course of the derivation.
+			We first show that the property holds for newly introduced lifting variables, and then that the property is not violated in the course of the derivation.
 
 			\begin{itemize}
 				\item
-					Suppose a $\Gamma$-lifting variable $y_t$ is added to $\AIany(C)$ in $\inference$.
+					Suppose a $\Gamma$-lifting variable $y_t$ is introduced in $\AIany(C)$ in $\inference$.
 					Then $\sigma$ introduces a $\Gamma$-term $t$ at a grey position, so the corresponding term in $\AIanyde(C)$ is $t$.
 
 					Let $\bhat y_t$ be another occurrence of $y_t$ in $\AIany(C)$. We show that $\AIanyde(C)\at{\bhat y_t} = t$ by contradiction, i.e.\ suppose that $\AIanyde(C)\at{\bhat y_t} = s$ with $s\neq t$.
-					Then from the inference in the derivation where $y_t$ has been created to $\inference$, at least one variable contained in $t$, say $u$, has been substituted.
+					Then from the inference in the derivation where $y_t$ is introduced created up to $\inference$, at least one variable contained in $t$, say $u$, has been substituted.
 					But then $u$ does not occur in the subsequent derivation, but $\ran(\sigma)$ contains $u$ since it contains $t$. 
 					Therefore no variable occurring in $t$ is changed from the point of its introduction up to $\inference$.
 
@@ -1156,21 +1159,21 @@ establish the required ordering on the lifting variables in the interpolant:
 				\item 
 					Let $\bhat y_s$ and $\bdot y_s$ be two occurrences of a lifting variable $y_s$ in $\AIany(C)$.
 
-					Suppose that there exist ancestors of $\bhat y_s$ and $\bdot y_s$ in $\AIany(D)$ for $D\in\bbar C$ which are occurrences of $y_s$.
-					\mytodo{ lifting variables may also be the same if they are in different clauses if they do not contain variables }
+					Note that if $s$ does not contain a variable, then in the course of the derivation, the term as well as the lifting variable is not modified, in particular also not by $\tau$.
+					Hence suppose in the following that $s$ does contain a variable.
+
+					Suppose that there exist ancestors of $\bhat y_s$ and $\bdot y_s$ in $\AIany(D)$ for $D\in\bbar C$ which are both occurrences of $y_s$.
 					Then by the induction hypothesis, $\AIanyde(D)\at{\bhat y_s} = \AIanyde(D)\at{\bdot y_s}$.
-					$\bhat y_s$ and $\bdot y_s$ can only be modified by $\aiu(\inference)$, but this affects both of them the same way.
+					$\bhat y_s$ and $\bdot y_s$ can only be modified by $\tau$, but this affects both of them the same way.
 					$\AIanyde(D)\at{\bhat y_s}$ and $\AIanyde(D)\at{\bdot y_s}$ on the other hand are modified by $\sigma$, but this again affects both terms the same way.
 
-					Suppose that otherwise at both ancestors of $\bhat y_s$ and $\bdot y_s$ are lifting variables but at least one ancestor is $y_r$ such that $r\neq s$.
-					Then it is modified by $\aiu(\inference)$ and hence occurs in a resolved or factorised literal $\lambda$, say at $p$.
-					However $\aiu(\inference)$ modifies it such $\lambda\at{p} = s$.
+					Suppose that otherwise at both ancestors of $\bhat y_s$ and $\bdot y_s$ in $\AIany(C)$ are lifting variables but at least one ancestor is $y_r$ such that $r\neq s$.
+					Then it is modified by $\tau$ and hence occurs in a resolved or factorised literal $\lambda$, say at $p$.
+					However $\tau$ modifies it such $\AIany(C)\at{p} = y_s$. Also all lifting variable contained in $\AIanyde\at{p}$ are contained in the resolved or factorised literal and therefore $\tau$ resets them to reflect the term in the non-lifted literal.
 
-					- at this position in $\AIanyde(C)$ also in resolved/factorised literal, so reset
+					Hence of both $\bhat y_s$ and $\bdot y_s$ are not occurrences of $y_s$ in the clauses preceding $C$, in $\AIanyde(C)$, they both are occurrences of $\lifdelta{s}$.
 
-					- if other $y_s$ has been there before: then argue as above, no var changed
-
-					- if other $y_s$ also just created: then also everything in $\AIany(C)$ AS WELL AS $\AIanyde(C)$ is reset.
+					If however one of $\bhat y_s$ and $\bdot y_s$ is an occurrence of $y_s$ in a preceding clause, then by a similar argument as in the other case, as $s$ is present in $C$, no variable contained in $s$ has been affected by a substitution, hence $\bhat y_s$ and $\bdot y_s$ are both occurrences of $\lifdelta{s}$ in $\AIanyde(C)$.
 					\qedhere
 
 			\end{itemize}
@@ -1180,25 +1183,26 @@ establish the required ordering on the lifting variables in the interpolant:
 \begin{lemma}
 	\label{lemma:ai_vs_aide_2}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
-	If a $\Delta$-lifting variable occurs multiple times in $\AIanyde(C)$ at a grey position, then the terms at the corresponding positions in $\AIany(C))$ are equal.
+	If a $\Delta$-lifting variable occurs multiple times in $\AIanyde(C)$, then the terms at the corresponding positions in $\AIany(C))$ are equal.
 \end{lemma}
-\begin{proof}
-	Note that the corresponding terms in $\AIany(C)$ do not exist if the $\Delta$-lifting variable in $\AIanyde(C)$ is contained in a $\Gamma$-term, so we do not consider these.
+\begin{proof}(Sketch.)
+	Note that if a $\Delta$-lifting variable in $\AIanyde(C)$ is contained in a $\Gamma$-term, there is no corresponding term in $\AIany(C)$. Therefore we only consider $\Delta$-lifting variables in $\AIanyde(C)$ at grey positions.
 
-	initially: just lifted all the same in both.
+	We proceed by induction.
 
-	step:
+	For $C \in \Gamma\cup\Delta$, the condition clearly holds.
 
-	same before, only changed by $\tau$ $\Ra$ same afterwards
+	Induction step:
 
-	just introduced: then just introduced for both the same
+	Similar as in the proof of Lemma~\ref{lemma:ai_vs_aide_2}, if a colored term $t$ is introduced, then none of its variables has been substutited, so all present occurrences of $x_t$ correspond to $t$.
 
-	unified by $\tau$ $\Ra$ either both unified, or one is still exactly the right term (as no vars changed)
+	If a lifting variable contains no variables, then it does not change, hence this case is fine.
+
+	If a lifting variable is changed by $\tau$, then it is contained in the resolved or factorised literal, so it is changed in $\AIany(C)$ as well as in $\AIanyde(C)$ and in both instances reset to the correct term.
+	This includes the case where in $C_1$ and $C_2$ there are lifting variables such that in $C$, they are the same lifting variable.
 	\qedhere
-
 \end{proof}
 
-\cbend
 
 \begin{lemma}
 	\label{lemma:gamma_entails_quantified_ai}
@@ -1215,14 +1219,15 @@ establish the required ordering on the lifting variables in the interpolant:
 	Lemma~\ref{lemma:ai_vs_aide_1} and
 	Lemma~\ref{lemma:ai_vs_aide_2} give the following:
 	\begin{compactenum}
-	\item if a $\Gamma$-lifting variable occurs multiple times in $\AImat(C)\lor\AIcl(C)$, then the terms at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal and 
-	\item if a $\Delta$-lifting variable occurs multiple times in $\AImatde(C) \lor \AIclde(C))$, then the $\Delta$-lifting variables at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal.
+	\item If a $\Gamma$-lifting variable occurs multiple times in $\AImat(C)\lor\AIcl(C)$, then the terms at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal.
+	\item If a $\Delta$-lifting variable occurs multiple times in $\AImatde(C) \lor \AIclde(C))$, then the $\Delta$-lifting variables at the corresponding positions in $\AImatde(C) \lor \AIclde(C))$ are equal.
 	\end{compactenum}
 	%In order to show the implication, we show that for two occurrences $\bhat x_{t}$ and $\bhat x_t'$ of $\Gamma$-lifting variable $x_t$ in $\AImat(C)\lor\AIcl(C)$,
 	These conditions allow for inserting the respective terms of $\AImatde(C) \lor \AIclde(C))$ as witness terms for the $\Gamma$-lifting variables in $\AImat(C)\lor\AIcl(C)$ to yield a formula where the universal quantifiers are either equally or less restrictive than in $\AImat(C)\lor\AIcl(C)$, but otherwise the formula coincides.
 
-	In the witness terms for the $\Gamma$-lifting variables, in general $\Delta$-lifting variables occur. 
+	In the witness terms for the $\Gamma$-lifting variables extracted from $\AImatde(C) \lor \AIclde(C)$, in general $\Delta$-lifting variables occur. 
 	By Lemma~\ref{lemma:arrow_for_lft_var}, for every lifting variable $x_s$ in $t\occ{x_s}$, we have that $x_s \apath_{G_C} t\occ{x_s}$, hence by Definition~\ref{def:arrow_quantifier_block}, the lifting variables are quantified in some order such that the lifting variable for $x_s$ is quantified before the lifting variable for $t\occ{x_s}$ is.
+	This shows that $\Gamma \entails\nolinebreak Q(C) ( \AImat(C) \lor\nolinebreak \AIcl(C))$.
 \end{proof}
 
 \begin{lemma}
@@ -1257,8 +1262,8 @@ establish the required ordering on the lifting variables in the interpolant:
 						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 						\AImat(C)	&= \lifboth{\AImat(C_1)\sigma}\tau\spas\lor \lifboth{\AImat(C_2)\sigma}\tau \\
 															 &\semiff \lnot (\lnot\lifboth{\AImat(C_1)\sigma}\tau\spas\land \lnot \lifboth{\AImat(C_2)\sigma}\tau) \\
-															&\semiff \lnot (\lifboth{(\lnot \AImat(C_1))\sigma}\tau\spas\land \lifboth{(\lnot \AImat(C_2))\sigma}\tau) \\
-														 &\semiff \lnot (\lifboth{\AImat(\bhat C_1)\sigma}\tau\spas\land \lifboth{\AImat(\bhat C_2)\sigma}\tau) \\
+															 &\semiff \lnot (\lifboth{(\lnot \AImat(C_1))\sigma}\tau\spas\land \lifboth{(\lnot \AImat(C_2))\sigma}\tau) \\
+															&\semiff \lnot (\lifboth{\AImat(\bhat C_1)\sigma}\tau\spas\land \lifboth{\AImat(\bhat C_2)\sigma}\tau) \\
 														 &= \lnot \AImat(\bhat C)
 					\end{align*}
 
@@ -1266,7 +1271,7 @@ establish the required ordering on the lifting variables in the interpolant:
 					This case can be argued analogously
 
 				\item $l$ is grey:
-					Note that by Lemma~\ref{lemma:resolved_literals_equal}, $\lifboth{l\fromclause\sigma} = \lifboth{l\fromclause\sigma}$ \markB.
+					Note that by Lemma~\ref{lemma:resolved_literals_equal}, $\lifboth{l\fromclause\sigma} = \lifboth{l'\fromclause\sigma}$ \markB.
 					\begin{align*}
 						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 						\AImat(C) &=
@@ -1298,23 +1303,21 @@ establish the required ordering on the lifting variables in the interpolant:
 	\end{itemize}
 \end{proof}
 
-
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
 	Then $\AImat( \pi )$ is an interpolant.
 \end{thm}
 \begin{proof}
 	By Lemma~\ref{lemma:gamma_entails_quantified_ai},
-	$\Gamma \entails \Q(C)(\AImat(\square) \lor \AIcl(\square))$.
-	But as $\AIcl(\square) = \square$, this simplifies to
-	$\Gamma \entails \Q(C)\AImat(\pi)$.
+	$\Gamma \entails \Q(\pi)(\AImat(\pi) \lor \AIcl(\pi))$.
+	But as $\AIcl(\pi) = \square$, this simplifies to
+	$\Gamma \entails \Q(\pi)\AImat(\pi)$.
 
 	By constructing a proof $\bhat \pi$ from $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$, we obtain by Lemma~\ref{lemma:gamma_entails_quantified_ai} that $\bhat\Gamma \entails \Q(\bhat \pi)\AImat(\bhat \pi)$.
 	By Lemma \ref{lemma:ai_symmetry}, this however is nothing else than
 	$\Delta \entails \lnot \Q(\pi) \AImat(\pi)$. 
 
-	As furthermore by construction no colored symbols occur in $\Q(\pi) \AImat(\pi)$, it is an interpolant for $\Gamma\cup\Delta$.
-
+	As furthermore by construction no colored symbols occur in $\Q(\pi) \AImat(\pi)$, this formula is an interpolant for $\Gamma\cup\Delta$.
 \end{proof}
 
 \end{document}
