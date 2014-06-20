@@ -818,13 +818,7 @@ if a variable is substituted, it does not occur in the subsequent derivation.
 
 
 
-\section{Arrows}
-
-
-\mytodo{transition to ordering of quantified lifting vars}
-
-In order to establish the required ordering on the lifting variables, we annotate the literals with arrows.
-More formally:
+\section{Auxiliary sets}
 
 \begin{defi}[$\AIcol$]
 	The set of colored literals with respect to a clause $C$ in a resolution derivation is defined as follows:
@@ -853,34 +847,76 @@ More formally:
 \end{defi}
 
 \begin{defi}[$\AIany$]
-	For a clause $C$, $\AIany(C)$ denotes $\AImat(C)$, $\AIcl(C)$, $\AIcol(C)$.
+	For a clause $C$, $\AIany(C)$ denotes $\AImat(C) \cup \AIcl(C) \cup \AIcol(C)$.
 \end{defi}
 
 This definition is convenient as it adheres to the following proposition:
 
-\begin{prop}
+\begin{remark}
 	Let $l$ be a literal in a clause in $\Gamma \cup \Delta$.
 	Then for a clause $C$ in a resolution refutation of $\Gamma\cup\Delta$,
-	$\AIany(C)$ contains a literal derived from $l$.
-	\mytodo{actually \textbf{AT LEAST} one literal derived from $l$}
-	\todo{ write this more formally, there is a relation like $\simgeq$ here. possibly write that lemma like this}
-\end{prop}
+	$\AIany(C)$ contains at least one literal derived from $l$.
+	Furthermore, no literal is removed from $\AIany(C)$ during the derivation but only potentially moved from one of its sets to another one.  
+\end{remark}
+
+For a related definition for non-lifted literals, we introduce the following:
+
+\begin{defi}
+	$\Lambda(C)$:
+
+	Base case: $C\in \Gamma\cup\Delta$: $\Lambda(C) \defeq C$
+
+	Resolution: $\Lambda(C) \defeq \{ \lifboth{ \varphi \sigma} \tau \mid \varphi \in \Lambda(C_1) \cup \Lambda(C_2) \}$
+
+	Factorisation: $\Lambda(C) \defeq \{ \lifboth{ \varphi \sigma} \tau \mid \varphi \in \Lambda(C_1) \}$ \comm{here, we could merge the factorised literals if we merge their arrows, but this is not necessary }
+
+	~
+
+	\comm{An alternate definition would be to collect all colored literal (like $\AIcol$) and all of the ones in the interpolant (like $\AImat$), then define $\Lambda(C) \defeq \Lambda_{\operatorname{col}} \cup \Lambda_{\operatorname{mat}} \cup C$.
+	}
+
+\end{defi}
+
+\mytodo{define: descendant} %(usual stuff, factorisation is merge, resolution is de-facto merge which happens implicitly so no actual merge required)}
+
+\begin{lemma}
+	\label{lemma:Lambda_vs_aiany}
+	$\AIany(C)$ contains the same literals as $\Lambda(C)$.
+\end{lemma}
 
 
-\mytodo{define: descendant (usual stuff, factorisation is merge, resolution is de-facto merge which happens implicitly so no actual merge required)}
+\section{Arrows}
 
-\cbstart
+In the Definition~\ref{def:arrows} below, the set of occurrences of a certain color of a variable is required.
+%Need for var $x$ the set of colored occs and grey occs in initial clauses.
+In lifted clauses, it the structure of the term is in general not known. 
+%lift clauses as usual s.t. to not see any of the colored structure, hence remember only in which max colored term the var is.
+
+However it is possible to algorithmically keep track of the required sets by complying to the following ideas: 
+
+\begin{itemize}
+	\item Build sets of occurrences in original clauses.
+	\item If in a resolution or factorisation step with unifier $\sigma$, $x$ occurs grey in $y\sigma$, then the contents of set of grey (colored) occurrences of $y$ is added to the set grey (colored) occurrences of $x$. $y$ does not occur in any further derivation step.
+	\item If in a resolution or factorisation step with unifier $\sigma$, $x$ occurs colored in $y\sigma$, 
+		then the contents of the set of grey and colored occurrences of $y$ is added to the set of colored occurrences of $x$.
+\end{itemize}
+
+
+In order to establish the required ordering on the lifting variables, we annotate the literals with arrows.
+More formally:
+
 \begin{defi}
 	We define a directed graph $G_C$ for every clause $C$ of the derivation.
 	The nodes are of the form $l.tp$, where $l$ denotes a literal and $tp$ a position of a term in $l$, which is not contained in a colored term.
-	The node $l.tp$ in a graph $G_C$ refers to the literal in $\AImat(C)$, $\AIcl(C)$ or $\AIcol(C)$
+	The node $l.tp$ in a graph $G_C$ refers to any literal in $\AIany(C)$,
 	which is a descendant of $l$.
-	Note that there exists exactly one for every literal of every clause which is an ancestor of $C$.
-	Hence given $C$, $l.tp$ is a well-defined position and the position will usually just be denoted by $p$ or $q$ as abbreviation of $l.tp$.
-	For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$.
-	Note that set of literals in $\AIcl(C)$ is exactly the set of literals of $C$.
+	%Note that there exists exactly one for every literal of every clause which is an ancestor of $C$.
+	%Hence given $C$, $l.tp$ is a well-defined position and 
+	The position will usually just be denoted by $p$ or $q$ as abbreviation of $l.tp$.
+	%For literals in $\AIcl(C)$, we usually denote the literal by $l\cl$ and the corresponding literal in $C$ by $l$.
+	%Note that set of literals in $\AIcl(C)$ is exactly the set of literals of $C$.
 
-	Note that term positions are well defined since arcs do not point into colored terms and are hence not removed by liftings and in the course of the derivation, terms in literals are only modified by substitutions, which does not remove any term which might invalidate a term position.
+	Note that term positions are well defined since arcs do not point into colored terms and are hence not removed by liftings and in the course of the derivation.
 
 	\label{def:arrows}
 	\begin{itemize}
@@ -888,51 +924,38 @@ This definition is convenient as it adheres to the following proposition:
 			For $C \in \Gamma\cup\Delta$, we define $G_C$ to be the empty graph.
 
 		\item[Resolution.]
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, we define:
+			If the clause $C$ is the result of a resolution or factorisation step $\inference$ of the clauses $\bbar C$ with $\sigma = \mgu(\inference)$:
 
-			\mytodo{find meaningful name for index when usage of $\arr_1$ is clear}
+			%\mytodo{find meaningful name for index when usage of $\arr_1$ is clear}
 
-			\comm{old idea, basically requires to know term behind lifting var \tiny $\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$ (NOTE: does not only mean $C$ actually), $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$}
+			%\comm{old idea, basically requires to know term behind lifting var \tiny $\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$ (NOTE: does not only mean $C$ actually), $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$}
 
-			\NB{this will only work for $\AIde$, c.f.\ 212c:}
+			%\NB{this will only work for $\AIde$, c.f.\ 212c:}
 
-			$\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $z_t$ in $\AIany(C)$, $q$ maximal colored term containing colored occurrence of $x$ (where the color of $x$ is different from the color of $t$) in $C_1$ or $C_2 \}$
+			The first kind of arrows deals with introductions of colored terms into terms of other colors:
 
-			\largered{ really maximal $\Phi$-term ?}
+			$\arr_1 \defeq \{ (p, q) \mid $ maximal colored term $t$ occurs in $x\sigma$ for some variable $x$, $p$ grey occurrence of $z_t$ in $\AIany(C)$, $q$ maximal colored term containing colored occurrence of $x$, where the color of $x$ is different from the color of $t$ in $\bbar C$ \}\todo{this works in $\AIde$, possibly not in $\AI$}
 
-			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey occurrence of $x$ or maximal colored term containing colored occurrence of $x$ in $C_1$ or $C_2$,
-			$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
+			The second kind of arrows handles unifications, where mixed-colored terms occur in the range of the substitution:
+
+			$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey occurrence of $x$ or maximal colored term containing colored occurrence of $x$ in $\bbar C$\}
 
 			% old version:
 			%$\arr_2 \defeq \{ (p, q) \mid $ maximal $\Phi$-term $t$ occurs in maximal $\Psi$-term $s$ in $x\sigma$ for some variable $x$, $p$ grey occurrence of $t$ in $C$, $q$ grey or colored occurrence of $x$ in $C_1$ or $C_2$,
 			%$(\Phi, \Psi) \in \{(\Gamma, \Delta), (\Delta, \Gamma)\} \} $
 
 			$G_C \defeq G_{C_1} \cup G_{C_2} \cup \arr_1 \cup \arr_2$
-
-
-		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then
-
-			$G_C \defeq G_{C_1} \cup G_{C_2}$\footnote{Note however that the literal $l$ in $C$ has $l$ as well as $l'$ in $C_1$ as predecessors, i.e.~the arrows from both of these literals apply implicitly.}
 			\qedhere
+			
+
+
+		%\item[Factorisation.]
+			%If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then
+
+			%$$G_C \defeq G_{C_1} \cup G_{C_2}$\footnote{Note however that the literal $l$ in $C$ has $l$ as well as $l'$ in $C_1$ as predecessors, i.e.~the arrows from both of these literals apply implicitly.}
 	\end{itemize}
 \end{defi}
-\cbend
 
-
-\cbstart
-\subsection{Variable occurrences}
-Need for var $x$ the set of colored occs and grey occs in initial clauses.
-lift clauses as usual s.t. to not see any of the colored structure, hence remember only in which max colored term the var is.
-
-for resolution/factorisation, check unifier:
-\begin{compactitem}
-\item
-	if $x$ occurs grey in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col to col and grey to grey
-\item
-	if $x$ occurs colored in $y\sigma$, then the set of occurrences of $y$ is added to the ones of $x$, col and grey to col
-\end{compactitem}
-\cbend
 
 
 
@@ -961,17 +984,6 @@ for resolution/factorisation, check unifier:
 	Now suppose that $x$ only occurs in single-colored $\Psi$-terms in $\lits\sigmaz{i-1}$.
 	Then $l\sigmaz{i-1}\at{\bhat y}$ is a single-colored $\Psi$-term containing $y$.
 \end{proof}
-
-\begin{defi}
-	$\Lambda(C)$:
-
-	Base case: $\Lambda(C) = C$
-
-	Resolution: $\Lambda(C) = \{ \lifboth{ \varphi \sigma} \tau \mid \varphi \in \Lambda(C_1) \cup \Lambda(C_2) \}$
-
-	Factorisation: $\Lambda(C) = \{ \lifboth{ \varphi \sigma} \tau \mid \varphi \in \Lambda(C_1) \}$ \comm{no merge atm as literals are equal anyway }
-
-\end{defi}
 
 \begin{lemma}
 	\label{lemma:color_change}
@@ -1009,11 +1021,6 @@ for resolution/factorisation, check unifier:
 	If otherwise $x$ does not occur in a single-colored $\Phi$- or $\Psi$-term in $\Lambda\sigmaz{i-1}$, then by the reasoning given above, there is a color-changing variable $y$ in $\Lambda\sigmaz{i-1}$ such that $x$ occurs grey in $y\sigma_i$. 
 	By the induction hypothesis, then $y$ occurs grey in $\Lambda\sigmaz{i-1}$, which directly implies that $x$ occurs grey in $\Lambda\sigmazi$.
 \end{proof}
-
-\begin{lemma}
-	\label{lemma:Lambda_vs_aiany}
-	$\AIany(C)$ contains the same literals as $\Lambda(C)$.
-\end{lemma}
 
 
 \begin{lemma}
