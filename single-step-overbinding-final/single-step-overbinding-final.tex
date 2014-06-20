@@ -166,7 +166,6 @@
 \section{referenced lemmas from previous sections}
 \begin{quote}
 	\begin{lemma}[Commutativity of lifting and logical operators]
-		\label{lemma:lift_commute}
 		\label{lemma:lift_logic_commute}
 		Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it     holds that:
 		\begin{enumerate}
@@ -421,7 +420,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 
 \begin{prop}
 	\label{prop:tau_dom_ran}
-	Let $\inference$ be a resolution or factorisation rule application with $l$ and $l'$ as resolved or factorised literals, $\sigma = \mgu(\inference)$
+	Let $\inference$ be a resolution or factorisation rule application with $l$ and $l'$ as resolved or factorised literals, $\sigma = \mgu(\inference)$.
 	Then $\dom(\aiu(\inference))$ consists exactly of the lifting variables of $\lifboth{l\fromclause\sigma}$ and $\lifboth{l'\fromclause\sigma}$ and $\ran(\aiu(\inference))$ consists exactly of the lifting variables of $\lifboth{l\sigma}$.
 \end{prop}
 
@@ -482,6 +481,20 @@ we define a function on resolved literals calculating a substitution, which ensu
 	$\AImatde(C)$ ($\AIclde(C)$) for a clause $C$ is defined as $\AImat(C)$ ($\AIcl(C)$) with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
 \end{defi}
 
+\begin{remark}
+	Many results involving $\AImat(C)$ ($\AIcl(C)$) are valid for $\AImatde(C)$ ($\AIclde(C)$) 
+	in a formulation which is adapted accordingly.
+	This can easily be seen by the following proof idea:
+
+	Let $f_1, \dots, f_n$ be all $\Gamma$-colored function or constant symbols,
+	$c$ a fresh constant symbol and $g$ be a fresh $n$-ary function symbol.
+	Construct a formula $t = t$ such that $t = g(t_1, \dots, t_n)$,
+	such that $t_i = f_i(c_1, \dots, c_m)$ for $1\varleq i \varleq n$ where $m$ is the arity of $f_i$ and $c_j = c$ for $1\varleq j \varleq m$. Let $\Delta' = \Delta$ and apply the desired result to the initial clause sets $\Gamma$ and $\Delta'$.
+
+	Under this construction, every originally $\Gamma$-colored symbol is now grey which implies that $\AImat(C) = \AImatde(C)$ as well as $\AIcl(C) = \AIclde(C)$.
+	But $\Delta\entails \varphi \semiff \Delta'\entails \varphi$ for any formula $\varphi$.
+\end{remark}
+
 \begin{lemma}
 	\label{lemma:no_colored_terms}
 	Let $C$ be a clause of a resolution refutation $\pi$ of $\Gamma\cup\Delta$.
@@ -500,7 +513,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 \begin{lemma}
 	\label{lemma:substitute_and_lift}
 	Let $\sigma$ be a substitution and $F$ a formula without $\Phi$-colored terms such that for a set of formulas $\Psi$, $\Psi \entails F$.
-	Then $\Psi \entails \lifphi{F\sigma}$.
+	Then $\Psi \entails \lifphinovar{F\sigma}$.
 \end{lemma}
 \begin{proof}
 	$\lifphi{F\sigma}$ is an instance of $F$:
@@ -628,7 +641,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 						But by the definition of $\aiu$, the substitutions in $\tau$ only update lifting variables to correspond to the terms in the clause of the actual resolution derivation.
 						More formally, $\lifboth{t\cl\sigma}\tau = z_s$ for some term $s$ implies that $\lifboth{\lambda\sigma}\at{p} = z_s$, but then $z_s = t$.
 						\hl{this argument only holds for terms in the resolved literals, see remark in lemma statement}
-						\todo[inline]{\tiny uoutsource this thought to lemma after definition of $\aiu$ in case needed elsewhere}
+						\todo[inline]{\tiny outsource this thought to lemma after definition of $\aiu$ in case needed elsewhere}
 
 					\item
 						Suppose that $t$ is colored term.
@@ -673,7 +686,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 \begin{proof}
 	By Lemma~\ref{lemma:literals_clause_only_sim}, we obtain that
 	$\lifboth{l\cl\sigma}\tau \sim \lifboth{l\sigma}$.
-	Note that the $\sim$-\nolinebreak{}relation guarantees that pairs of predicates and terms in this relation are equal up to the index of their lifting variables.
+	Note that the \mbox{$\sim$-relation} guarantees that pairs of predicates and terms in this relation are equal up to the index of their lifting variables.
 	Hence it only remains to show that the lifting variables of $\lifboth{l\cl\sigma}\tau$ and $\lifboth{l\sigma}$ match.
 	But the definition of $\aiu$, $\tau$ substitutes any lifting variable at position $p$ of $\lifboth{l\cl\sigma}$ by the lifting variable $\lifboth{l\sigma}\at{p}$.
 \end{proof}
@@ -786,7 +799,7 @@ we define a function on resolved literals calculating a substitution, which ensu
 			\end{prooftree}
 
 			Let $\tau = \aiu(\inference)$.
-			We introduce the abbreviation $\AIclde( (C_1)_\Gamma)^* \defeq \AIclde( (C_1)_\Gamma) \setminus \{ (l\cl)_\Gamma , (l'\cl)_\Gamma \}$ and express the induction hypothesis as follows:
+			We introduce the abbreviation $\AIclde( (C_1)_\Gamma)^* \defeq\allowbreak \AIclde( (C_1)_\Gamma) \setminus \{ (l\cl)_\Gamma , (l'\cl)_\Gamma \}$ and express the induction hypothesis as follows:
 			$\Gamma \entails \AImatde(C_1) \lor \AIclde( (C_1)_\Gamma)^* \lor (l\cl)_\Gamma \lor (l'\cl)_\Gamma $.
 			By Lemma~\ref{lemma:no_colored_terms}, Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lift_logic_commute} and after applying $\tau$ to the induction hypothesis, we obtain that
 			$\Gamma \entails \lifboth{\AImatde(C_1)\sigma}\tau \lor \lifboth{\AIclde( (C_1)_\Gamma)^*\sigma}\tau \lor \lifboth{(l\cl)_\Gamma \sigma}\tau \lor \lifboth{(l'\cl)_\Gamma\sigma}\tau $.
@@ -834,18 +847,6 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
 \end{proof}
 
-\section{Variable renaming conventions}
-
-\mytodo{move this to definition of resolution}
-
-two clauses involved in a resolution inference must be variable disjoint.
-
-the initial clauses are each pairwise variable disjoint.
-
-if a variable is substituted, it does not occur in the subsequent derivation.
-
-
-
 
 \section{Auxiliary sets}
 
@@ -878,8 +879,6 @@ if a variable is substituted, it does not occur in the subsequent derivation.
 \begin{defi}[$\AIany$]
 	For a clause $C$, $\AIany(C)$ denotes $\AImat(C) \cup \AIcl(C) \cup \AIcol(C)$.
 \end{defi}
-
-This definition is convenient as it adheres to the following proposition:
 
 \begin{remark}
 	Let $l$ be a literal in a clause in $\Gamma \cup \Delta$.
@@ -1223,7 +1222,7 @@ establish the required ordering on the lifting variables in the interpolant:
 
 	Induction step:
 
-	Similar as in the proof of Lemma~\ref{lemma:ai_vs_aide_2}, if a colored term $t$ is introduced, then none of its variables has been substutited, so all present occurrences of $x_t$ correspond to $t$.
+	Similar as in the proof of Lemma~\ref{lemma:ai_vs_aide_2}, if a colored term $t$ is introduced, then none of its variables has been substituted, so all present occurrences of $x_t$ correspond to $t$.
 
 	If a lifting variable contains no variables, then it does not change, hence this case is fine.
 
