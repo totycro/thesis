@@ -1142,10 +1142,10 @@ establish the required ordering on the lifting variables in the interpolant:
 
 \section{Combining the results}
 
-\begin{defi}
+\begin{defi}[Quantifier block]
 	\label{def:arrow_quantifier_block}
 	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
-	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\AImat(C)$.
+	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\AImat(C)$ and $\AIcl(C)$.
 	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$ $z_s \apath_{G_C} z_r$ implies that $z_s$ is listed before $z_r$.
 	We denote $\Q(\square)$ by $\Q(\pi)$.
 	%such that for any edge $(p, q) \in G_C$, if $s$ is a subterm of $\AIany(C)\at{p}$ and $r$ is a subterm of $\AIany(C)\at{q}$ and $z_s$ and $z_r$ both occur in $\AImat(C)$, then $z_s$ is listed before $z_r$ is.

@@ -150,6 +150,8 @@ positioning,fit,calc,decorations.text,shadows%
 \DeclareMathOperator{\Refl}{Refl}
 \DeclareMathOperator{\aiu}{au}
 
+\newcommand{\PIinc}{\ensuremath{\PI_{\operatorname{inc}}}}
+
 %\DeclareMathOperator{\abstraction}{abstraction}
 
 %\newcommand{\sk}{\ensuremath{\mathrm{sk}}}
@@ -229,6 +231,11 @@ positioning,fit,calc,decorations.text,shadows%
 %\newcommand{\lft}[3]{\lifsym_{#1,#2}[#3]}
 \newcommand{\lft}[3]{\lift{#1}{#3}{#2}}
 \newcommand{\lifboth}[1]{\lifsym[#1]}
+
+%\newcommand{\lifi}{\lifsym\operatorname{-}\mathit{i}}
+\newcommand{\lifi}{\mathop{\ell\text{}i}}
+\newcommand{\lifiboth}[1]{\lifi[#1]}
+\newcommand{\lifidelta}[1]{\lifi_\Delta^x[#1]}
 
 \newcommand{\lifdelta}[1]{\lift{\Delta}{#1}{x}}
 \newcommand{\lifdeltanovar}[1]{\liftnovar{\Delta}{#1}}
