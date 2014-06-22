@@ -146,11 +146,24 @@ positioning,fit,calc,decorations.text,shadows%
 \DeclareMathOperator{\Lang}{L}
 \DeclareMathOperator{\ar}{ar}
 \DeclareMathOperator{\PI}{PI}
+\DeclareMathOperator{\LI}{LI}
 \DeclareMathOperator{\Congr}{Congr}
 \DeclareMathOperator{\Refl}{Refl}
 \DeclareMathOperator{\aiu}{au}
 
-\newcommand{\PIinc}{\ensuremath{\PI_{\operatorname{inc}}}}
+\newcommand{\PIinc}{\LI}
+\newcommand{\PIincde}{\LI^\Delta}
+
+\newcommand{\LIcl}{\ensuremath{\LI_{\operatorname{cl}}}}
+\newcommand{\LIclde}{\ensuremath{\LI_{\operatorname{cl}}^\Delta}}
+
+\newcommand{\cll}{\ensuremath{_{\LIcl}}}
+\newcommand{\cllde}{\ensuremath{_{\LIclde}}}
+
+%\newcommand{\lifi}{\mathop{\ell\text{}i}}
+\newcommand{\lifiboth}[1]{\ensuremath{\LIcl(#1)}}
+\newcommand{\lifidelta}[1]{\ensuremath{\LIclde(#1)}}
+
 
 %\DeclareMathOperator{\abstraction}{abstraction}
 
@@ -232,10 +245,10 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\lft}[3]{\lift{#1}{#3}{#2}}
 \newcommand{\lifboth}[1]{\lifsym[#1]}
 
-%\newcommand{\lifi}{\lifsym\operatorname{-}\mathit{i}}
-\newcommand{\lifi}{\mathop{\ell\text{}i}}
-\newcommand{\lifiboth}[1]{\lifi[#1]}
-\newcommand{\lifidelta}[1]{\lifi_\Delta^x[#1]}
+%\newcommand{\lifi}{\mathop{\ell\text{}i}}
+%\newcommand{\lifiboth}[1]{\lifi[#1]}
+%\newcommand{\lifidelta}[1]{\lifi_\Delta^x[#1]}
+%\newcommand{\lifideltanovar}[1]{\lifi_\Delta[#1]}
 
 \newcommand{\lifdelta}[1]{\lift{\Delta}{#1}{x}}
 \newcommand{\lifdeltanovar}[1]{\liftnovar{\Delta}{#1}}

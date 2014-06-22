@@ -165,8 +165,8 @@
 
 			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then let $\tau = \tau(\inference)$ and define $\PIinc(C)$ and $\lifiboth{C}$ as follows:
 
-			$\lifiboth{C} \defeq \lifboth{(\lifiboth{C_1} \setminus \{l\fromclause\})\tau} \spam\lor \lifboth{(\lifiboth{C_2}\setminus \{l\fromclause'\})\tau} $
-			\todo[inline]{say something about $l\fromclause$ and/or rewrite that (also below)}
+			$\lifiboth{C} \defeq \lifboth{(\lifiboth{C_1} \setminus \{l\cll\})\tau} \spam\lor \lifboth{(\lifiboth{C_2}\setminus \{l\cll'\})\tau} $
+			\todo[inline]{say something about $l\cll$ and/or rewrite that (also below)}
 
 			\begin{enumerate}
 
@@ -178,14 +178,14 @@
 
 				\item If $l$ is grey:
 					$\PIinc(C) \defeq
-					(\lnot {\lifboth{l'\fromclause\tau}} \land \lifboth{\PIinc(C_1)\tau}) \spam\lor
-					(\lifboth{l\fromclause\tau}\land \lifboth{\PIinc(C_2)\tau })
+					(\lnot {\lifboth{l'\cll\tau}} \land \lifboth{\PIinc(C_1)\tau}) \spam\lor
+					(\lifboth{l\cll\tau}\land \lifboth{\PIinc(C_2)\tau })
 					$
 
 			\end{enumerate}
 
 		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PIinc(C) \defeq \lifboth{\PIinc(C_1)\tau(\inference)}$ and $\lifiboth{C} \defeq \lifboth{ (\lifiboth{C_1} \setminus\nolinebreak \{l'\cl\})\tau(\inference)}$.
+			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PIinc(C) \defeq \lifboth{\PIinc(C_1)\tau(\inference)}$ and $\lifiboth{C} \defeq \lifboth{ (\lifiboth{C_1} \setminus\nolinebreak \{l'\cll\})\tau(\inference)}$.
 			\qedhere
 
 	\end{itemize}
@@ -193,18 +193,54 @@
 \end{defi}
 
 
+\begin{defi}
+	$\PIincde(C)$ ($\lifidelta{C}$) for a clause $C$ is defined as $\PIinc(C)$ ($\lifiboth{C}$) with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
+\end{defi}
+
 \begin{defi}[Quantifier block]
 	\label{def:arrow_quantifier_block}
 	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
-	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\PIinc(C)$ and $\lifiboth(C)$.
-	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ is listed before $z_r$.
+	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\PIinc(C)$ and $\lifiboth{C}$.
+	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid\nolinebreak x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ is listed before $z_r$.
 	We denote $\Q(\square)$ by $\Q(\pi)$.
 \end{defi}
 
+
 \begin{clemma}
 	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
-	$\Gamma\entails \PIinc(C) \lor \lifiboth{C}$.
+	$\Gamma\entails \PIincde(C) \lor \lifidelta{C}$.
 \end{clemma}
+\begin{proof}
+	Induction of the strengthening $\Gamma\entails \PIincde(C) \lor \lifidelta{C_\Gamma}$
+
+	\begin{description}
+		\item{} Base case.
+			\checkmark
+		\item{} Resolution.
+
+			Ind hyp gives $\Gamma \entails \PIincde(C_1)  \lor \lifidelta{D} \lor l\cllde $\todo{Don't really say $\lifidelta{D}$ here, we only have $\lifidelta{C}$}{}
+			and similar for $C_2$.
+
+			with $\tau$:
+
+			$\Gamma \entails \PIincde(C_1)  \lor \lifidelta{D} \lor l\cllde$
+
+			have that $l\sigma = l'\sigma$, get also that $\lifdeltanovar{l\cllde \tau} = \lifdeltanovar{l'\cllde \tau}$. Proof:
+			Suppose not lifted, then same. Otw. lifting variables, but then for $p$ pos of lft var $z_t$ in $l\cllde$, $l\at{p}$ is $t$ after applying $\tau$.
+			Hence have $z_t$ for both.
+
+
+
+			\begin{itemize}
+				\item supp $\Gamma$
+					resolved literals not removed due to coloring. literals are equal, 
+			\end{itemize}
+
+
+	\end{description}
+\end{proof}
+
+\clearpage
 
 
 
