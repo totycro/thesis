@@ -90,12 +90,19 @@ we define a procedure which replaces colored terms by lifting variables.
 
 
 \begin{defi}[Lifting]
-	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
-	$\varphi$ a formula or a term, $Z=\{\colterm{1}, \dotsc, \colterm{n}\}$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\varphi$ and $z_{\colterm{1}}, \ldots, z_{\colterm{n}}$ fresh variables, referred to as \defiemph{$\Phi$-lifting variables} or \defiemph{lifting variables} if the coloring is clear from the context.
+	Let $\varphi$ a formula or a term and $Z=\{\colterm{1}, \dotsc, \colterm{n}\}$ the maximal $\Phi$-colored terms in $\varphi$.
 
-	Then $\lft{\Phi}{z}{\varphi}$ denotes % $\phi\abstractionOp{\colterm{1}/z_1}\dots\abstractionOp{\colterm{n}/z_n}$.
+	Let furthermore $z_{\expa(\colterm{1})}, \ldots, z_{\expa(\colterm{n})}$ be fresh variables, referred to as \defiemph{$\Phi$-lifting variables} or \defiemph{lifting variables} if the coloring is clear from the context.
+	The function $\expa$ replaces lifting variables occurring in colored terms by the term they lift in order to avoid lifting variables in the index of other lifting variables and is defined as follows:  
+	\[\expa(t) \defeq \begin{cases}
+		f(\expa(t_1),\dots, \expa(t_m)) & \text{if $t=f(t_1, \dots, t_m)$} \\
+		t & \text{if $t$ is a non-lifting variable $x$} \\
+		\expa(s) & \text{if $t$ is a lifting variable $z_s$}
+	\end{cases}\]
+
+	The lifting of $\varphi$, denoted by $\lft{\Phi}{z}{\varphi}$, is an abbreviation of % $\phi\abstractionOp{\colterm{1}/z_1}\dots\abstractionOp{\colterm{n}/z_n}$.
 	$\lft{\Phi}{z}{\varphi, Z}$ which is defined as follows:
-\[\lft{\Phi}{z}{\varphi, Z} \defeq \begin{cases} \varphi & Z = \emptyset \\ \lft{\Phi}{z}{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \text{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \end{cases}\]
+\[\lft{\Phi}{z}{\varphi, Z} \defeq \begin{cases} \varphi & Z = \emptyset \\ \lft{\Phi}{z}{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \end{cases}\]
 	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift respectively is clear from the context or not of the essence.
 %	We denote $\varphi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\varphi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
 \end{defi}
@@ -588,6 +595,9 @@ $\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 	$ \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$
 	differ only in the naming of the variables replacing maximal colored terms.
 	\label{lemma:naming_of_colored_variables}
+	\label{lemma:lifting_order_not_relevant}
+
+	\largered{this is wrong now with $\expa$: now it's exactly the same}
 
 \end{lemma}
 \begin{proof}

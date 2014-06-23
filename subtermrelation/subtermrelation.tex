@@ -121,132 +121,284 @@
 
 \tableofcontents
 
+\section{from other pdf}
+\begin{lemma}
+	\label{lemma:lifting_order_not_relevant}
+	Basically $\lifgamma{\lifdelta{\varphi}} = \lifdelta{\lifgamma{\varphi}}$.
+\end{lemma}
+
 \clearpage
 
-\begin{defi}[$\tau(\inference)$, deprecated version]
-	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution $\tau(\inference)$ with $\dom(\tau(\inference)) = \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
+\section{proof}
 
-	\[
-		x\tau(\inference) =
-		\begin{cases}
-			x & \text{$x$ is a non-lifting variable} \\
-			z_t & \text{$x$ is a lifting variable $z_s$ and $s\sigma = t$}
-		\end{cases}
-	\]
-\end{defi}
-
-\begin{defi}[$\tau(\inference)$, current version]
-	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
+\begin{defi}[$\tau(\inference)$]
+	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution\todo{define infinite substitutions properly and apply definition here}{} $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
 
 	\[
 		x\tau(\inference) =
 		\begin{cases}
 			x\sigma & \text{$x$ is a non-lifting variable} \\
-			z_t & \text{$x$ is a lifting variable $z_s$ and $s\sigma = t$}
-		\end{cases}
+			z_{t\sigma} & \text{$x$ is a lifting variable $z_t$}
+		\end{cases} 
 	\]
+		%\qedhere
 \end{defi}
 
 
 \begin{defi}[Incremental lifting]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	We define $\LI(\pi)$ ($\LIcl(\pi)$) to be $\LI(\square)$ ($\LIcl(\square)$), where $\square$ is the empty clause derived in $\pi$.
 
-	For a clause $C$ in $\pi$, 
-	we define $\PIinc(C)$ and $\lifiboth{C}$ as follows:
-	~
+	Let $C$ be a clause in $\pi$. 
+	For a literal $\lambda$ in $C$, we denote the corresponding literal in $\LIcl(C)$ by $\lambda\cll$, which is exists by Proposition~\ref{prop:corresponding_literal}.
+
+	We define $\LI(C)$ and $\lifiboth{C}$ as follows:
 
 	\begin{itemize}
 		\item[Base case.]
-			If $C \in \Gamma$, $\PIinc(C) \defeq \bot$.
-			If otherwise $C \in \Delta$, $\PIinc(C) \defeq \top$.
+			If $C \in \Gamma$, $\LI(C) \defeq \bot$.
+			If otherwise $C \in \Delta$, $\LI(C) \defeq \top$.
 
 			In any case, $\lifiboth{C} \defeq \lifboth{C}$.
 		\item[Resolution.]
 
-			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then let $\tau = \tau(\inference)$ and define $\PIinc(C)$ and $\lifiboth{C}$ as follows:
+			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then let $\tau = \tau(\inference)$ and define $\LI(C)$ and $\lifiboth{C}$ as follows:
 
 			$\lifiboth{C} \defeq \lifboth{(\lifiboth{C_1} \setminus \{l\cll\})\tau} \spam\lor \lifboth{(\lifiboth{C_2}\setminus \{l\cll'\})\tau} $
-			\todo[inline]{say something about $l\cll$ and/or rewrite that (also below)}
 
 			\begin{enumerate}
 
 				\item If $l$ is $\Gamma$-colored:
-					$\PIinc(C) \defeq \lifboth{\PIinc(C_1)\tau}\spas\lor \lifboth{\PIinc(C_2)\tau} $
+					$\LI(C) \defeq \lifboth{\LI(C_1)\tau}\spas\lor \lifboth{\LI(C_2)\tau} $
 
 				\item If $l$ is $\Delta$-colored:
-					$\PIinc(C) \defeq \lifboth{\PIinc(C_1)\tau}\spas\land \lifboth{\PIinc(C_2)\tau} $
+					$\LI(C) \defeq \lifboth{\LI(C_1)\tau}\spas\land \lifboth{\LI(C_2)\tau} $
 
 				\item If $l$ is grey:
-					$\PIinc(C) \defeq
-					(\lnot {\lifboth{l'\cll\tau}} \land \lifboth{\PIinc(C_1)\tau}) \spam\lor
-					(\lifboth{l\cll\tau}\land \lifboth{\PIinc(C_2)\tau })
+					$\LI(C) \defeq
+					(\lifboth{l\cll\tau} \land \lifboth{\LI(C_2)\tau}) \spas\lor
+					(\lnot \lifboth{l'\cll\tau}\land \lifboth{\LI(C_1)\tau })
 					$
 
 			\end{enumerate}
 
 		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PIinc(C) \defeq \lifboth{\PIinc(C_1)\tau(\inference)}$ and $\lifiboth{C} \defeq \lifboth{ (\lifiboth{C_1} \setminus\nolinebreak \{l'\cll\})\tau(\inference)}$.
+			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\LI(C) \defeq \lifboth{\LI(C_1)\tau(\inference)}$ and $\lifiboth{C} \defeq \lifboth{ (\lifiboth{C_1} \setminus\nolinebreak \{l'\cll\})\tau(\inference)}$.
 			\qedhere
 
 	\end{itemize}
 
 \end{defi}
 
+\begin{prop}
+	\label{prop:corresponding_literal}
+	Every literal $\lambda$ in $C$ has a corresponding literal $\lambda\cll$ in\nolinebreak{} $\LIcl(C)$.
+\end{prop}
+
 
 \begin{defi}
-	$\PIincde(C)$ ($\lifidelta{C}$) for a clause $C$ is defined as $\PIinc(C)$ ($\lifiboth{C}$) with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
-\end{defi}
-
-\begin{defi}[Quantifier block]
-	\label{def:arrow_quantifier_block}
-	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
-	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\PIinc(C)$ and $\lifiboth{C}$.
-	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid\nolinebreak x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ is listed before $z_r$.
-	We denote $\Q(\square)$ by $\Q(\pi)$.
+	$\LIde(C)$ ($\lifidelta{C}$) for a clause $C$ is defined as $\LI(C)$ ($\lifiboth{C}$) with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
 \end{defi}
 
 
-\begin{clemma}
+\begin{lemma}
+	\label{lemma:gamma_proves_pide}
 	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
-	$\Gamma\entails \PIincde(C) \lor \lifidelta{C}$.
-\end{clemma}
+	$\Gamma\entails \LIde(C) \lor \lifidelta{C}$.
+\end{lemma}
 \begin{proof}
-	Induction of the strengthening $\Gamma\entails \PIincde(C) \lor \lifidelta{C_\Gamma}$
+	Induction of the strengthening $\Gamma\entails \LIde(C) \lor \lifidelta{C_\Gamma}$
 
 	\begin{description}
 		\item{} Base case.
 			\checkmark
 		\item{} Resolution.
 
-			Ind hyp gives $\Gamma \entails \PIincde(C_1)  \lor \lifidelta{D} \lor l\cllde $\todo{Don't really say $\lifidelta{D}$ here, we only have $\lifidelta{C}$}{}
+			Ind hyp gives $\Gamma \entails \LIde(C_1)  \lor \lifidelta{D} \lor l\cllde $\todo{Don't really say $\lifidelta{D}$ here, we only have $\lifidelta{C}$}{}
 			and similar for $C_2$.
 
-			with $\tau$:
+			$\Gamma \entails \LIde(C_1)  \lor \lifidelta{D} \lor l\cllde$
 
-			$\Gamma \entails \PIincde(C_1)  \lor \lifidelta{D} \lor l\cllde$
+			+ \texttt{lemma:substitute\_and\_lift}
+
+			$\Gamma \entails \lifdelta{\LIde(C_1)\tau}  \lor \lifdelta{\LIclde(D)\tau} \lor \lifdelta{l\cllde\tau}$
+
 
 			have that $l\sigma = l'\sigma$, get also that $\lifdeltanovar{l\cllde \tau} = \lifdeltanovar{l'\cllde \tau}$. Proof:
 			Suppose not lifted, then same. Otw. lifting variables, but then for $p$ pos of lft var $z_t$ in $l\cllde$, $l\at{p}$ is $t$ after applying $\tau$.
 			Hence have $z_t$ for both.
 
-
-
 			\begin{itemize}
 				\item supp $\Gamma$
-					resolved literals not removed due to coloring. literals are equal, 
+					resolved literals not removed due to coloring. literals are equal, can do resolution. get everything in disjunction
+
+				\item supp $\Delta$
+					literals removed.
+					have: either one of the clauses, or else both interpolant pairs
+
+				\item supp grey.
+					as literals same, if $l$, then $\lnot l$ not, so get rest there and vice versa
+
 			\end{itemize}
 
+		\item{} Factorisation.
+
+			Ind hyp gives $\Gamma \entails \LIde(C_1)  \lor \lifidelta{D} \lor l\cllde \lor l'\cllde$\todo{Don't really say $\lifidelta{D}$ here, we only have $\lifidelta{C}$}{}
+
+			also have that $l\sigma = l'\sigma$ implies $\lifdeltanovar{l\cll\tau} = \lifdeltanovar{l'\cll\tau}$.
+
+			+ \texttt{lemma:substitute\_and\_lift}: 
+
+			$\Gamma \entails \lifdelta{\LIde(C_1)\tau}  \lor \lifdelta{\lifidelta{D}\tau} \lor \lifdelta{l\cllde\tau} \lor \lifdelta{l'\cllde\tau}$
+
+			hence can factorise here
+			\qedhere
 
 	\end{description}
 \end{proof}
 
-\clearpage
-
+\begin{defi}[Quantifier block]
+	\label{def:arrow_quantifier_block}
+	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
+	and $\bar x$ be the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\LI(C)$ and $\lifiboth{C}$.
+	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid\nolinebreak x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ is listed before $z_r$.
+	We denote $\Q(\square)$ by $\Q(\pi)$.
+\end{defi}
 
 
 \begin{clemma}
-	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
-	$\Gamma\entails \Q(C)(\PIinc(C) \lor \lifiboth{C})$.
+	$\lifboth{\lifboth{ \varphi} \tau} = \lifboth{ \varphi \tau } $.
 \end{clemma}
+\begin{proof}
+	proof by induction.
+
+	Supp constant: done.
+
+	Supp grey function: apply to children.
+
+	supp variable:
+	$\lifboth{\lifboth{x}\tau} = \lifboth{x\tau}$
+
+	supp lft var:
+	$\lifboth{\lifboth{z_t}\tau} = \lifboth{z_t\tau}$
+
+	supp col term $t$
+
+	$\lifboth{\lifboth{t}\tau} = \lifboth{z_t\tau} = \lifboth{z_{t\sigma}} = z_{t\sigma}
+	= \lifboth{t\sigma} = \lifboth{t\tau}$
+
+	%$\lifboth{t\tau} = \lifboth{t\sigma} = z_{t\sigma}$
+
+
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:gamma_lifted_lide}
+	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
+	$\lifgammanovar{\LIde(C) \lor \LIclde(C)} = \LI(C) \lor \LIcl(C)$.
+\end{lemma}
+\begin{proof}
+	\begin{description}
+		\item{} Base case.
+
+			$\LIde$: easy.
+
+			$\LIclde$:
+			By Lemma~\ref{lemma:lifting_order_not_relevant}, $\lifgammanovar{\lifdeltanovar{C}} = \lifboth{C}$
+
+		\item{} Resolution.
+
+			IH: 
+
+			$\lifgammanovar{\LIde(C_1) \lor \LIclde(C_1)} = \LI(C_1) \lor \LIcl(C_1)$.
+
+			$\lifgammanovar{\LIde(C_2) \lor \LIclde(C_2)} = \LI(C_2) \lor \LIcl(C_2)$.
+
+			~
+
+			$\LIclde$:
+
+			$\lifgammanovar{\LIclde(C_1)} = \LIcl(C_1)$
+
+			$\lifdeltanovar{\LIclde(C_1)\tau} \subseteq \LIclde(C)$ 
+
+			%$C_1\sigma \subseteq C$
+
+			$\lifboth{\LIcl(C_1)\tau} \subseteq \LIcl(C)$
+
+			to show: $\lifgamma{ \LIclde( C)} = \LIcl(C)$
+
+			$ \lifboth{ \lifgammanovar{\LIclde(C_1)} \tau} = \lifboth{ \LIcl(C_1)\tau}$ $\quad$ IH + same op on both sides
+
+			new lemma above
+
+			$ \lifboth{ \lifgammanovar{\LIclde(C_1)} \tau} = 
+			\lifboth{ \LIclde(C_1) \tau} $
+			~
+
+			$\LIde$:
+
+			\begin{itemize}
+				\item Supp $\Gamma$:
+
+					IH: $\lifgammanovar{ \LIde(C_1) } = \LI(C_1)$
+
+					hence also: $\lifboth{ \LIde(C_1) } = \LI(C_1)$ (by lemma: no $\Delta$-terms in \dots)
+
+					+ $\tau$:
+					$\lifboth{ \LIde(C_1) }\tau = \LI(C_1)\tau$ 
+
+					+ $\ell$:
+					$\lifboth{\lifboth{ \LIde(C_1) }\tau} = \lifboth{\LI(C_1)\tau}$ 
+
+					by new lemma
+					$\lifboth{ \LIde(C_1) \tau} = \lifboth{\LI(C_1)\tau}$ 
+
+					hence by Lemma~\ref{lemma:lifting_order_not_relevant}, $\lifgammanovar{\lifdeltanovar{\LIde(C_1)\tau}} \subseteq \LIde(C)$
+
+					hence $\lifgammanovar{\LIde(C)} \subseteq \LIde(C)$
+
+
+
+			\end{itemize}
+
+
+
+
+		\item{} Factorisation.
+	\end{description}
+
+\end{proof}
+
+
+\begin{lemma}
+	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
+	$\Gamma\entails \Q(C)(\LI(C) \lor \LIcl(C))$.
+\end{lemma}
+\begin{proof}
+	By Lemma~\ref{lemma:gamma_lifted_lide}
+	$\lifgammanovar{ \LIde(C) \lor \LIclde(C)} = \LI(C) \lor \LIcl(C)$.
+
+	By Lemma~\ref{lemma:gamma_proves_pide},
+	$\Gamma\entails \LIde(C) \lor \LIclde(C)$. 
+	Hence the terms in $\LIde(C) \lor \LIclde(C)$ provide witness terms for the $\Gamma$-lifting variables in $\LI(C) \lor \LIcl(C)$, which are existentially quantified in $\Q(C) (\LI(C) \lor \LIcl(C))$.
+
+	Furthermore, the ordering imposed on the quantifiers in $\Q(C)$ implies that if a $\Delta$-lifting variable $x_s$ occurs in a witness term for a $\Gamma$-lifting variable $y_r$, $y_r$ is quantified in the scope of the quantifier of $x_s$ as $s$ is a subterm of $r$.
+	This however ensures that the witness terms are valid.
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:li_symmetry}
+	symmetry: $\Q(C)(\LI(C)) \semiff \Q(\bhat C)(\LI(\bhat C))$.
+\end{lemma}
+\begin{proof}
+	todo: copy from other pdf
+\end{proof}
+
+\begin{thm}
+	same as other pdf
+\end{thm}
+
+
 
 \end{document}
