@@ -1,4 +1,4 @@
-BASENAME="single-step-overbinding-presentable-OLD-AIU"
+BASENAME="monadic"
 TEXFILE="${BASENAME}.tex"
 PDFFILE="${BASENAME}.pdf"
 
@@ -33,7 +33,7 @@ pdf:
 
 pdf1now:
 	pdflatex -file-line-error -jobname tmp ${TEXFILE} | tee /tmp/pdflatexer 
-	if [ -e "tmp.pdf" ] ; then mv tmp.pdf ${PDFFILE}; else tail -n30 /tmp/pdflatexer > /tmp/pdflatexer-error; zenity --text-info --filename=/tmp/pdflatexer-error --width=700 --height=800  ; fi
+	if [ -e "tmp.pdf" ] ; then mv tmp.pdf ${PDFFILE}; else tail -n20 /tmp/pdflatexer > /tmp/pdflatexer-error; zenity --text-info --filename=/tmp/pdflatexer-error --width=700 --height=800  ; fi
 
 spell:
 	 aspell -l ${LANG} -t -c ${TEXFILE}

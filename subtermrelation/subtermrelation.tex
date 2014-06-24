@@ -138,9 +138,9 @@
 
 \clearpage
 
-\section{Proof}
+\chapter{Interpolant extraction from resolution proofs in one phase \hl{(subterm relation)}}
 
-
+\section{Incremental lifting and substitutions of lifting variables}
 
 \begin{defi}[Substitution $\tau(\inference)$]
 	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution\todo{define infinite substitutions properly and apply definition here}{} $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
@@ -244,6 +244,8 @@
 
 \end{defi}
 
+\section{Properties of $\LI$ and $\LIcl$}
+
 \begin{lemma}
 	\label{lemma:li_vs_clause_plus_literals_equal}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$.
@@ -309,24 +311,6 @@
 \end{proof}
 
 
-\begin{defi}
-	$\LIde(C)$ and $\lifidelta{C}$ for a clause $C$ are defined as $\LI(C)$ and $\lifiboth{C}$ respectively with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
-\end{defi}
-
-\begin{remark}
-	Many results involving $\LI(C)$ or $\LIcl(C)$ are valid for $\LIde(C)$ or $\LIclde(C)$
-	in a formulation which is adapted accordingly.
-	This can easily be seen by the following proof idea:
-
-	Let $f_1, \dots, f_n$ be all $\Gamma$-colored function or constant symbols occurring in $C$,
-	$c$ a fresh constant symbol and $g$ a fresh $n$-ary function symbol.
-	Construct a formula $\varphi:  g(t_1, \dots, t_n) = g(t_1, \dots, t_n)$,
-	such that $t_i = f_i(c_1, \dots, c_m)$ for $1\varleq i \varleq n$ where $m$ is the arity of $f_i$ and $c_j = c$ for $1\varleq j \varleq m$. Let $\Delta' = \Delta \cup \{\varphi\}$ and apply the desired result to the initial clause sets $\Gamma$ and $\Delta'$.
-
-	Under this construction, every originally $\Gamma$-colored symbol is now grey, which implies that $\LI(C) = \LIde(C)$ as well as $\LIcl(C) = \LIclde(C)$.
-	But $\Delta\entails \psi \semiff \Delta'\entails \psi$ for any formula $\psi$.
-\end{remark}
-
 \begin{lemma}
 	\label{lemma:no_colored_terms}
 	Let $C$ be a clause of a resolution refutation of $\Gamma\cup\Delta$.
@@ -350,6 +334,25 @@
 	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
 \end{proof}
 
+\section{Lifting the $\Delta$-terms}
+
+\begin{defi}
+	$\LIde(C)$ and $\lifidelta{C}$ for a clause $C$ are defined as $\LI(C)$ and $\lifiboth{C}$ respectively with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
+\end{defi}
+
+\begin{remark}
+	Many results involving $\LI(C)$ or $\LIcl(C)$ are valid for $\LIde(C)$ or $\LIclde(C)$
+	in a formulation which is adapted accordingly.
+	This can easily be seen by the following proof idea:
+
+	Let $f_1, \dots, f_n$ be all $\Gamma$-colored function or constant symbols occurring in $C$,
+	$c$ a fresh constant symbol and $g$ a fresh $n$-ary function symbol.
+	Construct a formula $\varphi:  g(t_1, \dots, t_n) = g(t_1, \dots, t_n)$,
+	such that $t_i = f_i(c_1, \dots, c_m)$ for $1\varleq i \varleq n$ where $m$ is the arity of $f_i$ and $c_j = c$ for $1\varleq j \varleq m$. Let $\Delta' = \Delta \cup \{\varphi\}$ and apply the desired result to the initial clause sets $\Gamma$ and $\Delta'$.
+
+	Under this construction, every originally $\Gamma$-colored symbol is now grey, which implies that $\LI(C) = \LIde(C)$ as well as $\LIcl(C) = \LIclde(C)$.
+	But $\Delta\entails \psi \semiff \Delta'\entails \psi$ for any formula $\psi$.
+\end{remark}
 
 
 \begin{lemma}
@@ -465,15 +468,6 @@
 	\end{description}
 \end{proof}
 
-\begin{defi}[Quantifier block]
-	\label{def:arrow_quantifier_block}
-	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
-	and $\bar x$ the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\LI(C)$ and $\lifiboth{C}$.
-	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid\nolinebreak x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ is listed before $z_r$.
-	We denote $\Q(\square)$ by $\Q(\pi)$.
-\end{defi}
-
-
 \begin{lemma}
 	\label{lemma:gamma_lifted_lide}
 	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
@@ -495,13 +489,27 @@
 			%$\LIde(C)$ and $\LI(C)$ as well as $\LIclde(C)$ and $\LIcl(C)$ differ only in the liftings, or more precisely:
 
 			Every literal in $\LI(C)$ or $\LIcl(C)$ is of the form $\lifboth{\lambda\tau}$ for some $\lambda$ in $\LI(C_i)$ or $\LIcl(C_i)$ for some $C_i \in \bbar C$.
-
 			Every literal in $\LIde(C)$ or $\LIclde(C)$ is of the form $\lifdeltanovar{\lambda\tau}$ for some $\lambda$ in $\LIde(C_i)$ or $\LIclde(C_i)$ for some $C_i \in \bbar C$.
 
 			%Every literal in $\LI(C)$ ($\LIde(C)$) is of the form $\lifboth{\lambda\tau}$ ($\lifdelta{\lambda\tau}$) for $\lambda$ in $\LI(C_i)$ ($\LIde(C_i)$) or $\LIcl(C_i)$ ($\LIclde(C_i)$), $i\in\{1,2\}$.
 
 			%Every literal in $\LIcl(C)$ ($\LIclde(C)$) is of the form $\lifboth{\lambda\tau}$ ($\lifdelta{\lambda\tau}$) for $\lambda$ in $\LIcl(C_i)$ ($\LIclde(C_i)$), $i\in\{1,2\}$.
 
+			Hence it suffices to show that for a literal $\lambda$ in $\LIde(C_i)$ or $\LIclde(C_i)$ and its corresponding literal $\lifgammanovar{\lambda}$ in $\LI(C_i)$ or $\LIcl(C_i)$ for some $C_i \in \bbar C$
+			that $\lifgammanovar{ \lifdeltanovar{\lambda\tau} } = \lifboth{\lifgammanovar{\lambda}\tau}$.
+			%As $\lambda$ corresponds to a literal in $\LIde$ or $\LIclde$, we may by Lemma~\ref{lemma:no_colored_terms} additionally assume that no $\Delta$-colored term occurs in $\lambda$.
+
+			By Lemma~\ref{lemma:no_colored_terms}, no $\Delta$-terms occur in $\lambda$.
+			Hence 
+			$\lifboth{\lambda} = \lifgammanovar{\lambda}$ and consequently
+			$\lifboth{\lifboth{\lambda}\tau} = \lifboth{\lifgammanovar{\lambda}\tau}$.
+			By Lemma~\ref{lemma:lifting_tau_commute}, $\lifboth{\lifboth{\lambda}\tau} = \lifboth{\lambda\tau}$ and by Lemma~\ref{lemma:lifting_order_not_relevant}, $\lifboth{\lambda\tau} = \lifgammanovar{\lifdeltanovar{\lambda\tau}}$.
+			Hence $\lifgammanovar{\lifdeltanovar{\lambda\tau}} = \lifboth{\lifgammanovar{\lambda}\tau}$.
+			%By Lemma~\ref{lemma:lifting_tau_commute},
+			%$\lifboth{\lambda\tau} = \lifboth{\lifgammanovar{\lambda}\tau}$, 
+			%which by Lemma~\ref{lemma:lifting_order_not_relevant} is nothing else than
+			%$\lifgammanovar{\lifdeltanovar{\lambda\tau}} = \lifboth{\lifgammanovar{\lambda}\tau}$.
+			\begin{comment}
 			Hence it suffices to show that for a literal $\lambda$ in $\LIde(C_i)$ or $\LIclde(C_i)$ and its corresponding literal $\kappa$ in $\LI(C_i)$ or $\LIcl(C_i)$ for some $C_i \in \bbar C$
 			that $\lifgammanovar{ \lifdeltanovar{\lambda\tau} } = \lifboth{\kappa\tau}$.
 			%As $\lambda$ corresponds to a literal in $\LIde$ or $\LIclde$, we may by Lemma~\ref{lemma:no_colored_terms} additionally assume that no $\Delta$-colored term occurs in $\lambda$.
@@ -515,6 +523,7 @@
 			$\lifboth{\lambda\tau} = \lifboth{\kappa\tau}$, 
 			which by Lemma~\ref{lemma:lifting_order_not_relevant} is nothing else than
 			$\lifgammanovar{\lifdeltanovar{\lambda\tau}} = \lifboth{\kappa\tau}$.
+		\end{comment}
 			\begin{comment}
 
 				For the induction step, it suffices to show that for a literal $\lambda$ with $\lifgammanovar{\lambda} = \kappa$
@@ -596,15 +605,29 @@
 \end{proof}
 
 
+
+\section{Quantifying over the lifting variables}
+
+\begin{defi}[Quantifier block]
+	\label{def:arrow_quantifier_block}
+	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
+	and $\bar x$ the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\LI(C)$ and $\lifiboth{C}$.
+	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid\nolinebreak x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ is listed before $z_r$.
+	We denote $\Q(\square)$ by $\Q(\pi)$.
+\end{defi}
+
+Note that at a certain stage of the interpolant extraction, the quantifier block possesses a certain partial ordering based on the subterm relation of the indices of the lifting variables.
+This implies that the ordering is monotonous in the sense that in the subsequent course of the extraction, this ordering is only extended but existing order-relations are not modified.
+
+
 \begin{lemma}
 	\label{lemma:gamma_proves_quantified_lide}
-	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
+	Let $C$ be a clause of a resolution refutation of $\Gamma\cup\Delta$. Then
 	$\Gamma\entails \Q(C)(\LI(C) \lor \LIcl(C))$.
 \end{lemma}
 \begin{proof}
 	By Lemma~\ref{lemma:gamma_lifted_lide}
 	$\lifgammanovar{ \LIde(C) \lor \LIclde(C)} = \LI(C) \lor \LIcl(C)$.
-
 	By Lemma~\ref{lemma:gamma_proves_pide},
 	$\Gamma\entails \LIde(C) \lor \LIclde(C)$. 
 	Hence the terms in $\LIde(C) \lor \LIclde(C)$ provide witness terms for the $\Gamma$-lifting variables in $\LI(C) \lor \LIcl(C)$, which are existentially quantified in $\Q(C) (\LI(C) \lor \LIcl(C))$.
@@ -616,15 +639,15 @@
 \begin{lemma}
 	\label{lemma:li_symmetry}
 	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$.
-	Then for a clause $C$ in $\pi$ and its corresponding clause $\bhat C$ in $\bhat \pi$, $\Q(C)(\LI(C)) \spas\semiff \Q(\bhat C)(\LI(\bhat C))$.
+	Then for a clause $C$ in $\pi$ and its corresponding clause $\bhat C$ in $\bhat \pi$, $\Q(C)(\LI(C)) \spas\semiff \lnot \Q(\bhat C)(\LI(\bhat C))$.
 \end{lemma}
 \begin{proof}
-	Note that $\LIcl$ is defined irrespective of the coloring, so $\LIcl(C) = \LIcl(\bhat C)$.
+	%Note that $\LIcl$ is defined irrespective of the coloring, so $\LIcl(C) = \LIcl(\bhat C)$.
 
-	Consider furthermore that liftings variables of $C$ and $\bhat C$ only differ in the variable symbol, but not in the index, and that the quantifier type of any given lifting variable in $C$ is exactly contrary to the corresponding one in $\bhat C$.
+	Consider furthermore that liftings variables of $C$ and $\bhat C$ only differ in the variable symbol, but not in the index, and that the quantifier type of any given lifting variable in $C$ is dual to the corresponding one in $\bhat C$.
 	Hence for any formula $\phi$, $\Q(C) \lnot \phi \spas\semiff \lnot \Q(\bhat C) \phi$.
 
-	It remains to show that $\LI(C) \semiff \lnot \LI(\bhat C)$, which we do be induction:
+	It remains to show that $\LI(C) \semiff \lnot \LI(\bhat C)$, which we establish by induction:
 
 	\begin{itemize}
 		\item[Base case.]
@@ -652,7 +675,7 @@
 					\end{align*}
 
 				\item $l$ is $\Delta$-colored:
-					This case can be argued analogously
+					This case can be argued analogously.
 
 				\item $l$ is grey:
 					Note that by Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}, $\lifboth{l\cll\tau} = \lifboth{l'\cll\tau}$ \markB.
@@ -668,7 +691,7 @@
 						(\lifboth{l\cll\tau} \land \lnot\lifboth{\LI(C_2)\tau}) \Big) \\
 						&\stackrel{{\phantom{\markB}}}=\lnot \Big( (\lnot {\lifboth{\bhat l'\cll\tau}} \land \lifboth{\LI(\bhat C_1)\tau}) \spam\lor 
 						(\lifboth{\bhat l\cll\tau} \land \lifboth{\LI(\bhat C_2)\tau}) \Big)\\
-						& \stackrel{{\phantom{\markB}}}= \LI(\bhat C) 
+						& \stackrel{{\phantom{\markB}}}= \lnot \LI(\bhat C) 
 					\end{align*}
 
 

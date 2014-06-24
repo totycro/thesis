@@ -1,0 +1,185 @@
+\documentclass[,%fontsize=11pt,%
+	%landscape,
+	%DIV8, % mehr text pro seite als defaultyyp
+	%DIV10,
+	%DIV=calc,%
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+	11pt,
+	a4paper,
+	oneside,% apparently, this should stay below some other parameter to have an effect
+	openany,
+	%]{scrartcl}
+]{memoir}
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+
+\newcommand{\changefont}[3]{
+\fontfamily{#1}\fontseries{#2}\fontshape{#3}\selectfont}
+
+%\renewcommand{\familydefault}{ \sfdefault }
+%\renewcommand{\rmdefault}{ppl}
+
+
+%\usepackage[urw-garamond]{mathdesign}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+
+% subsections also in toc
+\setcounter{tocdepth}{2}
+\setsecnumdepth{subsection}
+
+
+\definethms
+
+\def\proofSkipAmount{ \vskip -0.1em }
+
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+%\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+%\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+
+
+\usepackage{amsthm}
+
+
+\chapterstyle{madsen}
+
+% define page numbering styles
+\makepagestyle{numberCorner}
+\makeevenfoot{numberCorner}{\thepage}{}{}
+\makeoddfoot{numberCorner}{}{}{\thepage}
+
+\makepagestyle{numberCenter}
+%\makeevenfoot{numberCenter}{}{\thepage}{}
+%\makeoddfoot{numberCenter}{}{\thepage}{}
+%
+%\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
+%\makeoddhead{numberCenter}{\thesection }{}{\thechapter}
+\makeheadrule{numberCenter}{\textwidth}{1pt}
+
+\makeevenhead{numberCenter}{\thepage}{}{\leftmark}
+\makeoddhead{numberCenter}{\rightmark}{}{\thepage}
+
+
+\makeatletter
+\makepsmarks{numberCenter}{
+	\def\chaptermark##1{\markboth{%
+			\ifnum \value{secnumdepth} > -1
+			\if@mainmatter
+			\chaptername\ \thechapter\ --- %
+			\fi
+			\fi
+	##1}{}}
+	\def\sectionmark##1{\markright{%
+			\ifnum \value{secnumdepth} > 0
+			\thesection. \ %
+			\fi
+	##1}}
+}
+\makeatother
+\newcommand{\mysetpagestyle}{
+	%\pagestyle{numberCorner}
+	\pagestyle{numberCenter}
+}
+\mysetpagestyle
+
+
+
+
+
+\usepackage{refcheck}
+
+%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
+%\setlrmargins{*}{*}{1.2}
+%\setulmargins{*}{*}{1.4}
+%\checkandfixthelayout[nearest]
+
+
+\begin{document}
+
+\tableofcontents
+
+\section{random notes}
+
+\begin{itemize}
+	\item As long as every pair of literal is variable disjoint, the quantifier ordering is arbitrary (proof idea: establish that some ordering works, then pull quantifier inwards and back outwards in arbitrary order).
+	\item
+
+		\begin{itemize}
+			\item lifted terms which contain variables are disjoint for different clauses,
+				but ground lifted terms can be the same (which does not appear to be necessarily so!)
+			\item  the resolved/factorised literal should be the same (else this kind of proof doesn't go through)
+		\end{itemize}
+\end{itemize}
+
+\begin{lemma}
+	\label{1}
+	$\Gamma \entails \LIde(C) \lor \LIclde(C)$.
+\end{lemma}
+
+\begin{lemma}
+	\label{2}
+	$\Gamma \entails \forall \bbar x\,\exists \bbar y\,(\LI(C) \lor \LIcl(C))$.
+\end{lemma}
+\begin{proof}
+	By \ref{1}, 
+	$\Gamma \entails \LIde(C) \lor \LIclde(C)$.
+
+	Hence 
+	$\Gamma \entails \forall \bbar x\,( \LIde(C) \lor \LIclde(C))$.
+
+	and also 
+	$\Gamma \entails \forall \bbar x\,\exists \bbar y\,\lifgammanovar{ \LIde(C) \lor \LIclde(C)}$.
+
+	by some lemma then
+	$\Gamma \entails \forall \bbar x\,\exists \bbar y\,(\LI(C) \lor \LIcl(C))$.
+\end{proof}
+
+\hl{but can't invert this idea:}
+
+\noindent
+Let $\bhat \Delta = \Gamma$ and $\bhat \Gamma = \Delta$.
+
+Then with $\bhat \pi$ and \ref{2}:
+$\bhat \Gamma \entails \forall \bbar{\bhat x}\, \exists \bbar{\bhat y}\, ( \LI(\bbar \pi) )$
+
+Hence (some lemma)
+$\Delta \entails \forall \bbar y\, \exists \bbar x\, ( \lnot \LI(\pi)  )$.
+
+Hence
+$\Delta \entails \lnot \exists \bbar y\, \forall \bbar x\, ( \LI(\pi)  )$.
+
+\hl{need some consistent ordering, so possibly just prove that all work, because we need to shuffle a lot anyway}
+
+\end{document}
+
+
