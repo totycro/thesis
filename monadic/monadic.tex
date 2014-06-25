@@ -26,6 +26,10 @@
 %\renewcommand{\familydefault}{ \sfdefault }
 %\renewcommand{\rmdefault}{ppl}
 
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
 
 %\usepackage[urw-garamond]{mathdesign}
 
@@ -139,7 +143,10 @@
 				but ground lifted terms can be the same (which does not appear to be necessarily so!)
 			\item  the resolved/factorised literal should be the same (else this kind of proof doesn't go through)
 		\end{itemize}
+	\item $\forall x \exists y \varphi \semiff \exists y \forall x  $ does not hold for formula coding $f(0) = 1$, $f(1) = 0$: $(Z(y) \limpl O(x))\land (O(y) \limpl Z(x)$, $\mathcal{U} = \{ 0, 1\}$, $Z/1$ and $O/1$ encode being $0$ or $1$ respectively.
 \end{itemize}
+
+\largered{TODO NOW: check if we can encode that counter-example in a resolution refutation, because that would be a counterexample to the conjecture that the quantifier order is arbitrary and try to learn something from success or failure respectively}
 
 \begin{lemma}
 	\label{1}
@@ -179,6 +186,67 @@ Hence
 $\Delta \entails \lnot \exists \bbar y\, \forall \bbar x\, ( \LI(\pi)  )$.
 
 \hl{need some consistent ordering, so possibly just prove that all work, because we need to shuffle a lot anyway}
+
+\section*{example with same lifting var in two children of a connective:}
+
+\e{601 -- lifting vars interleaved so quantifier pull in/out trick doesn't work}
+
+\begin{prooftree}
+	\AxiomCm{\sig{ P(f(x)) \lor S(f(x)) } }
+	\AxiomCm{\p{ \lnot P(z) \lor Q(g(y)) \lor R(g(y)) } }
+	\BinaryInfCm{ P(f(x)) \mid S(f(x)) \lor Q(g(y))\lor R(g(y)) }
+
+	\AxiomCm{\sig{ \lnot Q(z) } }
+
+	\BinaryInfCm{ \lnot Q(g(y)) \land P(f(x)) \mid S(f(x)) \lor R(g(y)) }
+
+\end{prooftree}
+
+$\Sigma \entails \forall u \exists v \big( ( \lnot Q(u_{g(y)}) \land P(v_{f(x)})) \spam\lor S(v_{f(x)}) \lor R(u_{g(y)}) \big)$
+
+$\Ra$ not interesting as $R$ is not mentioned, so it collapses.
+
+~
+
+$\Pi \entails \exists u \forall v \big( (  Q(u_{g(y)}) \lor \lnot P(v_{f(x)})) \spam\lor S(v_{f(x)}) \lor R(u_{g(y)}) \big)$
+
+
+\begin{prooftree}
+	\AxiomCm{ \stackrel{\text{(cont)}}{\lnot Q(g(y)) \land P(f(x)) \mid S(f(x)) \lor R(g(y))} }
+
+	\AxiomCm{ \p{ \lnot S(x_7)}}
+
+	\BinaryInfCm{ S(f(x)) \lor  (\lnot Q(g(y)) \land P(f(x)) ) \mid R(g(y))} 
+\end{prooftree}
+
+$\Sigma \entails \forall u \exists v \Big( S(v) \lor (\lnot Q(u) \lor P(v)) \lor R(u)  \Big) $
+
+~
+
+$\Pi \entails \exists u \forall v \Big( ( \lnot S(v_{f(x)}) \land (Q(u_{g(y)}) \lor \lnot P(v_{f(x)}))) \spam\lor R(u_{g(y)}) \Big)$
+
+~
+
+\hl{Can't see much of interest, but can not apply quantifier pulling in and out trick}
+
+~
+
+\textbf{same again with direct overbinding:}
+
+\begin{prooftree}
+	\AxiomCm{\sig{ \exists v (P(v) \lor S(v)) } }
+	\AxiomCm{\p{ \forall u (  \lnot P(z) \lor Q(u) \lor R(u) ) } }
+	\BinaryInfCm{ \stackrel{\exists v}{\forall u} ( P(v) \mid S(v) \lor Q(u)\lor R(u) )}
+
+\end{prooftree}
+
+only $\Delta$:
+$\forall u ( P(f(x)) \mid S(f(x)) \lor Q(u)\lor R(u) )$
+
+\e{602 -- lifting vars interleaved so quantifier pull in/out trick doesn't work}
+
+
+
 
 \end{document}
 

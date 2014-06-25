@@ -1,0 +1,277 @@
+\documentclass[,%fontsize=11pt,%
+	%landscape,
+	%DIV8, % mehr text pro seite als defaultyyp
+	%DIV10,
+	%DIV=calc,%
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+	11pt,
+	a4paper,
+	oneside,% apparently, this should stay below some other parameter to have an effect
+	openany,
+	%]{scrartcl}
+]{memoir}
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+
+\newcommand{\changefont}[3]{
+\fontfamily{#1}\fontseries{#2}\fontshape{#3}\selectfont}
+
+%\renewcommand{\familydefault}{ \sfdefault }
+%\renewcommand{\rmdefault}{ppl}
+
+
+%\usepackage[urw-garamond]{mathdesign}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+
+% subsections also in toc
+\setcounter{tocdepth}{2}
+\setsecnumdepth{subsection}
+
+
+\definethms
+
+\def\proofSkipAmount{ \vskip -0.1em }
+
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+%\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+%\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+
+
+\usepackage{amsthm}
+
+
+\chapterstyle{madsen}
+
+% define page numbering styles
+\makepagestyle{numberCorner}
+\makeevenfoot{numberCorner}{\thepage}{}{}
+\makeoddfoot{numberCorner}{}{}{\thepage}
+
+\makepagestyle{numberCenter}
+%\makeevenfoot{numberCenter}{}{\thepage}{}
+%\makeoddfoot{numberCenter}{}{\thepage}{}
+%
+%\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
+%\makeoddhead{numberCenter}{\thesection }{}{\thechapter}
+\makeheadrule{numberCenter}{\textwidth}{1pt}
+
+\makeevenhead{numberCenter}{\thepage}{}{\leftmark}
+\makeoddhead{numberCenter}{\rightmark}{}{\thepage}
+
+
+\makeatletter
+\makepsmarks{numberCenter}{
+	\def\chaptermark##1{\markboth{%
+			\ifnum \value{secnumdepth} > -1
+			\if@mainmatter
+			\chaptername\ \thechapter\ --- %
+			\fi
+			\fi
+	##1}{}}
+	\def\sectionmark##1{\markright{%
+			\ifnum \value{secnumdepth} > 0
+			\thesection. \ %
+			\fi
+	##1}}
+}
+\makeatother
+\newcommand{\mysetpagestyle}{
+	%\pagestyle{numberCorner}
+	\pagestyle{numberCenter}
+}
+\mysetpagestyle
+
+
+
+
+
+\usepackage{refcheck}
+
+%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
+%\setlrmargins{*}{*}{1.2}
+%\setulmargins{*}{*}{1.4}
+%\checkandfixthelayout[nearest]
+
+
+\begin{document}
+
+\begin{defi}[$\Q$]
+	For a literal/clause $\varphi$, $\Q(\varphi)$ denotes the quantifier block consisting of every lifting variable in $\varphi$ with appropriate quantifier type.
+	The order is yet to be defined
+\end{defi}
+
+For $l \in C$ for $C \in \Gamma$: $\Q(l) = \exists \bar y$
+
+For $l \in C$ for $C \in \Delta$: $\Q(l) = \forall \bar x$
+
+\section*{basic axioms which should be fulfilled for a reasonable procedure}
+
+\noindent
+start
+
+\begin{itemize}
+	\item
+		$\Gamma \entails \LIcl(C)$
+
+		$\Gamma = \{ P(f(x)) \}$ $\Ra$ $\LIcl(C) \stackrel{\text{must be}}= \exists x P(x) $
+
+		$\Gamma = \{ \lnot P(f(x)) \}$ $\Ra$ $\LIcl(C) \stackrel{\text{must be}}= \exists x \lnot P(x) $
+
+	\item
+		$\Delta \entails ?$
+
+\end{itemize}
+
+\noindent
+inferences $\LI$ is always basically just $\Gamma$-part
+
+always want: $\Gamma \entails \LI$, $\Delta \entails \lnot \LI$
+
+\begin{itemize}
+	\item
+		$\Gamma: P(f(x)) \Ra \exists x P(x)$
+
+		$\Delta: \lnot P(y) \Ra \forall y \lnot P(x)$
+
+	\item
+		$\Gamma: \lnot P(f(x)) \Ra \exists x\lnot  P(x)$
+
+		$\Delta: P(y) \Ra \forall y P(x)$
+
+	\item
+		$\Gamma: \lnot P(x) \Ra \forall x \lnot P(x) $
+
+		$\Delta: P(g(y)) \Ra \exists y P(y)$
+
+	\item
+		$\Gamma: P(x) \Ra \forall x P(x) $
+
+		$\Delta: \lnot P(g(y)) \Ra \lnot \exists y P(y)$
+
+\end{itemize}
+
+\largered{ but must not tear apart $P(x) \lor \lnot P(x)$ to $\forall x P(x)\lor \forall x \lnot P(x)$ }
+
+\subsection*{example for ``var does not occur in clause any more-condition'':}
+
+\begin{prooftree}
+	\AxiomCm{ R(f(z)) }
+	\AxiomCm{ \lnot R(x) \lor P(x) }
+	\BinaryInfCm{ \lnot R(x)\mid P(x) }
+	\noLine
+	\UnaryInfC{Note that $(\forall y_{f(x)} \lnot R(y_{f(x)})) \lor P(x)$ is not valid!}
+\end{prooftree}
+
+\section*{attempt for a definition}
+
+
+\begin{defi}[$\LI$]
+	~
+
+	\begin{description}
+		\item{} Base case.
+
+			For $l \in C$ for $C \in \Gamma\cup\Delta$:
+			$\Q(l) \lifboth{C} \in \LIcl(C)$
+
+			$\LI$ as usual
+
+		\item{} Resolution.
+
+			\begin{defi}[$\chi$: lifting with quantification on literal level]~
+
+				$\chi(F \circ G) \defeq \chi(F) \circ \chi(G)$
+
+				$\chi(\lnot G) \defeq \lnot \chi(F) $
+
+				$\chi(\Q(\lambda)\lambda) \defeq \Q(\lambda\sigma) \lambda\sigma$
+
+				where $\Q(\lambda\sigma)$ is $\Q(\lambda)$ with quantifiers and lifting variables for additional maximal colored terms introduced by $\sigma$ into $\lambda$
+			\end{defi}
+
+			$\LIcl{C} \defeq
+			\chi(\LIcl(C_1) \setminus \{l\cll\}) 
+			\spas\lor
+			\chi(\LIcl(C_2) \setminus \{l'\cll\}) 
+			$
+
+			%$ \big( (\LIcl(C_1) \cup \LIcl(C_2)) \setminus  \{l\cll, l'\cll\} \big)$
+
+			%$\lits\cll = \{ \lifboth{\lambda \sigma} \mid \lambda \in \big( (\LIcl(C_1) \cup \LIcl(C_2)) \setminus \{l\cll, l'\cll\} \big) \}$
+
+			%$\displaystyle \lifiboth{C} \defeq \bigvee_{\lambda\in\lits\cll} \Q(\lambda) \lambda $
+
+
+			\begin{enumerate}
+
+				\item If $l$ is $\Gamma$-colored:
+					$\LI(C) \defeq \chi(\LI(C_1))\spas\lor \chi(\LI(C_2)) $
+
+				\item If $l$ is $\Delta$-colored:
+					$\LI(C) \defeq \chi(\LI(C_1))\spas\land \chi(\LI(C_2)) $
+
+				\item If $l$ is grey:
+					$\LI(C) \defeq
+					(\lifboth{l\cll\tau} \land \lifboth{\LI(C_2)\tau}) \spas\lor
+					(\lnot \lifboth{l'\cll\tau}\land \lifboth{\LI(C_1)\tau })
+					$
+
+			\end{enumerate}
+
+
+
+	\end{description}
+\end{defi}
+
+\begin{clemma}
+	$\Gamma \entails \LI(C) \lor \LIcl(C)$
+\end{clemma}
+\begin{proof}
+	Start works.
+
+	Step:
+
+	resolved literals: have same coloring
+
+	~
+
+	IH:
+
+	$\Gamma \entails \LI(C_1) \lor \LIcl(C_1^*) \lor l\cll$
+
+	$\Gamma \entails \LI(C_2) \lor \LIcl(C_2^*) \lor l'\cll$
+\end{proof}
+
+
+\end{document}

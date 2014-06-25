@@ -654,7 +654,7 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 \end{defi}
 
 Note that at a certain stage of the interpolant extraction, the quantifier block possesses a certain partial ordering based on the subterm relation of the indices of the lifting variables.
-This implies that the ordering is monotonous in the sense that in the subsequent course of the extraction, this ordering is only extended but existing order-relations are not modified.
+This implies that the ordering is monotonous in the sense that in the subsequent course of the extraction, this ordering is only extended but existing order-relations are not modified, even though the indices of the lifting variables are altered by means of substitution.
 
 
 \begin{lemma}
@@ -663,10 +663,10 @@ This implies that the ordering is monotonous in the sense that in the subsequent
 	$\Gamma\entails \Q(C)(\LI(C) \lor \LIcl(C))$.
 \end{lemma}
 \begin{proof}
-	By Lemma~\ref{lemma:gamma_lifted_lide}
-	$\lifgammanovar{ \LIde(C) \lor \LIclde(C)} = \LI(C) \lor \LIcl(C)$.
 	By Lemma~\ref{lemma:gamma_entails_lide},
-	$\Gamma\entails \LIde(C) \lor \LIclde(C)$. 
+	$\Gamma\entails \LIde(C) \lor \LIclde(C)$ and 
+	by Lemma~\ref{lemma:gamma_lifted_lide}
+	$\lifgammanovar{ \LIde(C) \lor \LIclde(C)} = \LI(C) \lor \LIcl(C)$.
 	Hence the terms in $\LIde(C) \lor \LIclde(C)$ provide witness terms for the $\Gamma$-lifting variables in $\LI(C) \lor \LIcl(C)$, which are existentially quantified in $\Q(C) (\LI(C) \lor \LIcl(C))$.
 
 	Furthermore, the ordering imposed on the quantifiers in $\Q(C)$ implies that if a $\Delta$-lifting variable $x_s$ occurs in a witness term for a $\Gamma$-lifting variable $y_r$, $y_r$ is quantified in the scope of the quantifier of $x_s$ as $s$ is a subterm of $r$.
