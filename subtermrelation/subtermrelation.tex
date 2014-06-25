@@ -356,7 +356,7 @@
 
 
 \begin{lemma}
-	\label{lemma:gamma_proves_pide}
+	\label{lemma:gamma_entails_lide}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$. Then
 	$\Gamma\entails \LIde(C) \lor \lifidelta{C}$.
 \end{lemma}
@@ -604,6 +604,43 @@
 
 \end{proof}
 
+\section{One-sided interpolants}
+
+As we have just seen, the formula $\LIde(C) \lor \LIclde(C)$ now satisfies one condition of interpolants.
+Using this, we are able to formulate a result on one-sided interpolants, which are defined as follows:
+
+\begin{defi}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
+	A \defiemph{one-sided interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that
+	\begin{enumerate}
+		\item $\Gamma \entails I$
+		\item $\Lang(I) \subseteq \Lang(\Gamma) \cap \Lang(\Delta)$
+			\qedhere
+	\end{enumerate}
+\end{defi}
+
+\begin{prop}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma\cup\Delta$ is unsatisfiable.
+	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$ formula.
+\end{prop}
+\begin{proof}
+	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
+	By Lemma~\ref{lemma:gamma_entails_lide}, $\Gamma \entails \LIde(\pi) \lor \LIclde(\pi)$,
+	or in other words
+	$\Gamma \entails \forall x_1 \dots \forall x_n  \LIde(\pi) \lor \LIclde(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\LIde(\pi) \lor \LIclde(\pi)$.
+	%Let $x_1, \dots, x_n$ be the $\Delta$-lifting variables in $I$.
+	By Lemma~\ref{lemma:no_colored_terms}, the formula $\LIde(\pi) \lor \LIclde(\pi)$ does not contain $\Delta$-colored symbols.
+
+	Let $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\LIde(\pi) \lor \LIclde(\pi)}$
+	and
+	\[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\LIde(\pi) \lor \LIclde(\pi)}.\]
+	Note that $I$ does not contain any $\Gamma$-terms.
+	As $\LIde(\pi) \lor \LIclde(\pi)$ contains witness terms for every existential quantifier in $I$ with respect to $\Gamma$, $\Gamma \entails I$.
+	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
+\end{proof}
+
+
+
 
 
 \section{Quantifying over the lifting variables}
@@ -621,14 +658,14 @@ This implies that the ordering is monotonous in the sense that in the subsequent
 
 
 \begin{lemma}
-	\label{lemma:gamma_proves_quantified_lide}
+	\label{lemma:gamma_entails_quantified_lide}
 	Let $C$ be a clause of a resolution refutation of $\Gamma\cup\Delta$. Then
 	$\Gamma\entails \Q(C)(\LI(C) \lor \LIcl(C))$.
 \end{lemma}
 \begin{proof}
 	By Lemma~\ref{lemma:gamma_lifted_lide}
 	$\lifgammanovar{ \LIde(C) \lor \LIclde(C)} = \LI(C) \lor \LIcl(C)$.
-	By Lemma~\ref{lemma:gamma_proves_pide},
+	By Lemma~\ref{lemma:gamma_entails_lide},
 	$\Gamma\entails \LIde(C) \lor \LIclde(C)$. 
 	Hence the terms in $\LIde(C) \lor \LIclde(C)$ provide witness terms for the $\Gamma$-lifting variables in $\LI(C) \lor \LIcl(C)$, which are existentially quantified in $\Q(C) (\LI(C) \lor \LIcl(C))$.
 
@@ -713,12 +750,12 @@ This implies that the ordering is monotonous in the sense that in the subsequent
 	Then $\LI( \pi )$ is an interpolant.
 \end{thm}
 \begin{proof}
-	By Lemma~\ref{lemma:gamma_proves_quantified_lide}
+	By Lemma~\ref{lemma:gamma_entails_quantified_lide}
 	$\Gamma \entails \Q(\pi)(\LI(\pi) \lor \LIcl(\pi))$.
 	But as $\LIcl(\pi) = \square$, this simplifies to
 	$\Gamma \entails \Q(\pi)\LI(\pi)$.
 
-	By constructing a proof $\bhat \pi$ from $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$, we obtain by Lemma~\ref{lemma:gamma_proves_quantified_lide} that $\bhat\Gamma \entails \Q(\bhat \pi)\LI(\bhat \pi)$.
+	By constructing a proof $\bhat \pi$ from $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$, we obtain by Lemma~\ref{lemma:gamma_entails_quantified_lide} that $\bhat\Gamma \entails \Q(\bhat \pi)\LI(\bhat \pi)$.
 	By Lemma \ref{lemma:li_symmetry}, this however is nothing else than
 	$\Delta \entails \lnot \Q(\pi) \LI(\pi)$. 
 
