@@ -329,7 +329,7 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 						 &= \lnot \PI(\primex C)
 					\end{align*}
 
-				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $E\occur{r}$ and $h(r)$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
+				\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
 					This case can be argued analogously.
 				\item Otherwise:
 					\begin{align*}
@@ -537,9 +537,9 @@ extracts propositional interpolants in the sense that besides possibly containin
 								\lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$
 
 							\item
-								Otherwise $r$ occurs in a maximal $\Delta$-term $h\occ{r}$ in $(E\occat{r}{p})_\Gamma$, but $h(r)$ does not occur elsewhere in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
-								Then the lifting variable $x_r$ occurs only once in \markB{}.
-								Hence $\Gamma$ does not pose any restriction on $x_r$ and we can substitute it in  by $x_t$. 
+								Otherwise $r$ occurs in a maximal $\Delta$-term $h\occ{r}$ in $(E\occat{r}{p})_\Gamma$, but $h\occur{r}$ does not occur elsewhere in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
+								Then the lifting variable $x_{h\occur{r}}$ occurs only once in \markB{}.
+								Hence $\Gamma$ does not pose any restriction on $x_{h\occur{r}}$ and we can substitute it by $x_{h\occur{t}}$. 
 								So in $M$ we have that $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma} \semiff\allowbreak M\entails \lifdelta{(E\occurat{r}{p})_\Gamma}$.
 
 						\end{itemize}

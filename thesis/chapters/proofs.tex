@@ -168,7 +168,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 					As $\Pred(l) \not\in \Lang(\Gamma)$,
 					$\Gamma \entails (\PI(C_1) \lor D_\Gamma)\sigma$
 					as well as $\Gamma \entails (\PI(C_2) \lor E_\Gamma)\sigma$.
-					Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D_\Gamma$ and $M \cancel \entails E_\Gamma$. Then $M \entails \PI(C_1) \land \PI(C_2)$.
+					Suppose that in a model $M$ of $\Gamma$, $M \notentails D_\Gamma$ and $M \notentails E_\Gamma$. Then $M \entails \PI(C_1) \land \PI(C_2)$.
 					Hence 
 					$\Gamma \entails (\PI(C_1) \land \PI(C_2))\sigma \lor ((D \lor E)\sigma)_\Gamma$.
 
@@ -186,14 +186,14 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 					First, we have to show that 
 					$ \Gamma \entails [(l \land \PI(C_2)) \lor (l' \land \PI(C_1)) ]\sigma \lor ((D \lor E)\sigma)_\Gamma$.
-					Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D_\Gamma$ and $\Gamma \cancel \entails E$. Otherwise we are done.
+					Suppose that in a model $M$ of $\Gamma$, $M \notentails D_\Gamma$ and $\Gamma \notentails E$. Otherwise we are done.
 					The induction assumption hence simplifies to $M \entails \PI(C_1) \lor l$ and $M \entails \PI(C_2) \lor \lnot l'$ respectively.
 					As $l\sigma = l'\sigma$, by a case distinction argument on the truth value of $l\sigma$, we get that either $M \entails (l \land \PI(C_2))\sigma$ or $M \entails  (\lnot l' \land \PI(C_1))\sigma$.
 
 
 					Second, we show that 
 					$\Delta \entails ((l \lor \lnot \PI(C_1)) \land (\lnot l' \lor \lnot \PI(C_2)))\sigma \lor ((D \lor E)\sigma)_\Delta$.
-					Suppose again that in a model $M$ of $\Delta$, $M \cancel \entails D_\Delta$ and $\Gamma \cancel \entails E_\Delta$. 
+					Suppose again that in a model $M$ of $\Delta$, $M \notentails D_\Delta$ and $\Gamma \notentails E_\Delta$. 
 					Then the required statement follows from the induction hypothesis.
 
 					The language condition remains satisfied as only the common literal $l$ is added to the interpolant.
@@ -249,16 +249,16 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
 
-			Suppose that in a model $M$ of $\Gamma$, $M \cancel \entails D\sigma$ and $M \cancel \entails E\occurat{t}{p}\sigma$. Otherwise we are done.
-			Furthermore, assume that $M \entails (s=t)\sigma$. Then $M \cancel \entails E\occurat{r}{p}\sigma$, but then necessarily $M \entails \PI(C_2)\sigma$. \\
-			On the other hand, suppose $M \entails (s\neq t)\sigma$. As also $M \cancel \entails D\sigma$, $M \entails \PI(C_1)\sigma$.
+			Suppose that in a model $M$ of $\Gamma$, $M \notentails D\sigma$ and $M \notentails E\occurat{t}{p}\sigma$. Otherwise we are done.
+			Furthermore, assume that $M \entails (s=t)\sigma$. Then $M \notentails E\occurat{r}{p}\sigma$, but then necessarily $M \entails \PI(C_2)\sigma$. \\
+			On the other hand, suppose $M \entails (s\neq t)\sigma$. As also $M \notentails D\sigma$, $M \entails \PI(C_1)\sigma$.
 			Consequently, $M \entails [(s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1))]\sigma \lor [(D \lor E)_\Gamma]\sigma$
 
 			By an analogous argument, we get $\Delta \entails [(s=t \land \lnot \PI(C_2)) \lor (s\neq t \land \lnot \PI(C_1))]\sigma \lor [(D \lor E)_\Delta]\sigma$,
 			which implies
 			$\Delta \entails [( s\neq t \lor \lnot \PI(C_2)) \land (s = t \lor \lnot \PI(C_1))]\sigma \lor ((D \lor E)_\Delta)\sigma $
 
-			%By a similar case distinction for a model $M$ of $\Delta$ and assuming that $M \cancel \entails D_\Delta$ and $M \cancel \entails E_\Delta$, we get that if $M \entails (s=t)\sigma$, $M \entails \lnot P$, which implies
+			%By a similar case distinction for a model $M$ of $\Delta$ and assuming that $M \notentails D_\Delta$ and $M \notentails E_\Delta$, we get that if $M \entails (s=t)\sigma$, $M \entails \lnot P$, which implies
 
 			The language restriction again remains satisfied as the only predicate, that is added to the interpolant, is $=$.
 
@@ -459,8 +459,8 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					\lift{\Delta}{ E_\Gamma }{x}$.
 
 					So if in a model $M$ of $\Gamma$ we have that
-					$M \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
-					$M \cancel\entails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $M \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $M \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute_huang}
+					$M \notentails \lift{\Delta}{ D_\Gamma }{x}$ and 
+					$M \notentails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $M \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $M \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute_huang}
 					$M \entails \lift{\Delta}{ \PI(C_1) \land \PI(C_2) }{x} \lor
 					\lift{\Delta}{ (D \lor E)_\Gamma }{x}$.
 
@@ -471,8 +471,8 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					$\Gamma \entails \lift{\Delta}{(l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1)) \lor (D \lor E)_\Gamma  }{x} $. 
 
 					Suppose that for a model $M$ of $\Gamma$ that 
-					$M \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
-					$M \cancel\entails \lift{\Delta}{ E_\Gamma }{x}$.
+					$M \notentails \lift{\Delta}{ D_\Gamma }{x}$ and 
+					$M \notentails \lift{\Delta}{ E_\Gamma }{x}$.
 					Then by $^{(\circ)}$
 					and $^{(*)}$, we get that\nopagebreak
 
@@ -546,12 +546,12 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{(E\occurat{t}{p})_\Gamma})$
 
 					Suppose that in a model $M$ of $\Gamma$,
-					$M \cancel\entails \lift{\Delta}{ D_\Gamma }{x}$ and 
-					$M \cancel\entails \lift{\Delta}{ (E\occurat{t}{p})_\Gamma }{x}$.
+					$M \notentails \lift{\Delta}{ D_\Gamma }{x}$ and 
+					$M \notentails \lift{\Delta}{ (E\occurat{t}{p})_\Gamma }{x}$.
 					We show that then, depending on whether $\lif{s} = \lif{t}$ holds in $M$, one of the first two disjuncts holds in $M$.
 
 					Then in case $M \entails \lif{s} = \lif{t}$ we also get
-					$M \cancel\entails \lift{\Delta}{ (E\occurat{s}{p})_\Gamma }{x}$ and consequently by the induction hypothesis $M\entails \lif{\PI(C_2)}$.
+					$M \notentails \lift{\Delta}{ (E\occurat{s}{p})_\Gamma }{x}$ and consequently by the induction hypothesis $M\entails \lif{\PI(C_2)}$.
 
 					However in case $M \entails \lif{s} \neq \lif{t}$ we get by the induction hypothesis that 
 					$M\entails \lif{\PI(C_1)}$.
@@ -569,7 +569,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					one of the following cases holds:
 
 					\begin{itemize}
-					\item $M\entails \lif{h\occur{s}} = \lif{h\occur{t}}$. From this, it follows that as in the proof of case \ref{njktahjtkhltah}, $M \cancel \entails \lif{(E\occurat{s}{p})_\Gamma}$ and consequently $M \entails \lif{\PI(C_2)}$ again by the induction hypothesis.
+					\item $M\entails \lif{h\occur{s}} = \lif{h\occur{t}}$. From this, it follows that as in the proof of case \ref{njktahjtkhltah}, $M \not\entails \lif{(E\occurat{s}{p})_\Gamma}$ and consequently $M \entails \lif{\PI(C_2)}$ again by the induction hypothesis.
 
 					\item 
 						$M \entails \lif{h\occur{s}} \neq \lif{h\occur{t}}$.
