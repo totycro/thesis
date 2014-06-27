@@ -126,6 +126,8 @@
 
 \begin{document}
 
+\chapter{ trying to overbind mostly right away \hl{does not look promissing} } 
+
 \begin{defi}[$\Q$]
 	For a literal/clause $\varphi$, $\Q(\varphi)$ denotes the quantifier block consisting of every lifting variable in $\varphi$ with appropriate quantifier type.
 	The order is yet to be defined
@@ -243,7 +245,7 @@ always want: $\Gamma \entails \LI$, $\Delta \entails \lnot \LI$
 
 				\item If $l$ is grey:
 					$\LI(C) \defeq
-					(\lifboth{l\cll\tau} \land \lifboth{\LI(C_2)\tau}) \spas\lor
+					({l\cll\tau} \land {\LI(C_2)\tau}) \spas\lor
 					(\lnot \lifboth{l'\cll\tau}\land \lifboth{\LI(C_1)\tau })
 					$
 
@@ -272,6 +274,132 @@ always want: $\Gamma \entails \LI$, $\Delta \entails \lnot \LI$
 
 	$\Gamma \entails \LI(C_2) \lor \LIcl(C_2^*) \lor l'\cll$
 \end{proof}
+
+
+\chapter{overbind just within thight constraints}
+
+\begin{lemma}
+	\label{A}
+	If a variable does occurs in $\bbar C$ but does not in $C$, then it is not modified by any $\mgu$ of a subsequent inference.
+\end{lemma}
+
+\section{naive interpolant extraction based on \ref{A}}
+
+\begin{defi}[$\LI$ with stepwise prenex interplants but globally non-prenex ones]
+	~
+
+	\begin{description}
+		\item{} Base case.
+
+			For $l \in C$ for $C \in \Gamma\cup\Delta$:
+			$C \in \LIcl(C)$
+
+			$\LI$ as usual
+
+		\item{} Resolution.
+
+			$\LIcl(C) \defeq
+			\LIcl(C_1) \setminus \{l\cll\}\sigma
+			\spas\lor
+			\LIcl(C_2) \setminus \{l'\cll\}\sigma
+			$
+
+			$\Ra \LIcl(C) = C$
+
+			%$\chi(F):$
+			%If a maximal col term $t$ in $F$ does not a contain variable which occurs in $\LIcl(C)$, 
+			%find the smallest subformula such that all occurrences of all variables of $t$ of $F$ 
+
+			$\chi(F)$:
+			lift all terms which do contain a variable which do not contain variables which occur in $\LIcl(C)$ 
+			and quantify prenex
+
+			\mytodo{not sure where we can quantify ground terms as they can be added arbitrarily (possibly lift every occurrence of a ground term $t$ distinctly)} 
+			
+			\mytodo{need not be prenex here}
+
+			\begin{enumerate}
+
+				\item If $l$ is $\Gamma$-colored:
+					$\LI(C) \defeq \chi(\LI(C_1) \lor \LI(C_2))\sigma $
+
+				\item If $l$ is $\Delta$-colored:
+					$\LI(C) \defeq \chi(\LI(C_1) \land \LI(C_2))\sigma $
+
+				\item If $l$ is grey:
+					$\LI(C) \defeq\,
+					({l\cll} \sigma {\LI(C_2)})\tau \spas\lor
+					(\lnot {l'\cll}\land {\LI(C_1) })\sigma
+					$
+
+			\end{enumerate}
+
+
+
+	\end{description}
+\end{defi}
+
+$\Gamma \entails \LI(C) \lor C$
+
+($\Delta \entails \lnot \LI(C) \lor C$)
+
+\section{lifting only $\Delta$-terms in this way for now}
+
+\begin{clemma}
+	$\Gamma \entails \LIde(C) \lor C$
+\end{clemma}
+\begin{proof}
+	induction on strenghtening, as always.
+
+	$C_\Gamma = 
+	C_1^*{}_\Gamma \lor
+	C_2^*{}_\Gamma$
+
+	IH:
+
+	$\Gamma \entails \LIde(C_1) \lor C_1^*{}_\Gamma \lor l_\Gamma$
+
+	$\Gamma \entails \LIde(C_2) \lor C_2^*{}_\Gamma \lor \lnot l'_\Gamma$
+
+	Hence:
+
+	$\Gamma \entails ( \LIde(C_1) \lor C_1^*{}_\Gamma \lor l_\Gamma )\sigma$
+
+	$\Gamma \entails ( \LIde(C_2) \lor C_2^*{}_\Gamma \lor \lnot l'_\Gamma )\sigma$
+
+	Supp grey:
+
+	$\Gamma \entails 
+	(l \land \LIde(C_2))\sigma \lor (l' \land \LIde(C_1))\sigma
+	\spam\lor C_\Gamma $
+
+	$\Gamma \entails  \LIde(C) \spam\lor C_\Gamma $
+
+	~
+
+
+	???
+
+\end{proof}
+
+$X = \LV(\LIde(C)) \spas\setminus \LV(\LIclde(C_\Gamma))$
+
+$X'$: take from $X$ those lifting variables, which contain variables which do not occur in $C$ (this is safer than only $\LIclde(C)$)
+
+$Y = \LV( \lifgammanovar{\LIde(C)})$
+
+$Y' = \{ z_t \in Y \mid t\text{ contains a variable which does not occur in $C$} \}$
+
+From other pdf: $\Gamma \entails \LIde(C) \lor \LIclde(C)$
+
+Hence $\Gamma \entails (\Q(Y') \LIde(C)) \lor \LIclde(C)$
+
+
+\section{random ideas}
+
+-- we can pull apart existentially quantified variables: $\exists x (P(x) \lor Q(x))$ implies $\exists x P(x) \lor \exists y P(y)$. this does not work with universally quantified variables ($P(f(x)) \lor \lnot P(f(x))$
+
+
 
 
 \end{document}

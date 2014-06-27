@@ -56,20 +56,20 @@ We define a procedure $\PI$, which produces propositional interpolants from reso
 
     \item[Paramodulation.]
   \label{def:PI_paramod}
-      Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a       unifier $\sigma$ such that $r\sigma = s\sigma$.
-      Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $D\occur{r}$.
+      Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a       unifier $\sigma$ such that $r\sigma = s\sigma$.
+      Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
       Then $\PI(C)$ is defined according to the following case distinction:
       \begin{enumerate}
 
-        \item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+        \item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
           \label{def:PI_paramod_1}
           \newline
 					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
-        \item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+        \item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
           \label{def:PI_paramod_2}
           \newline
 					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} =     h\occur{t})\sigma$
-				\item If $r$ does not occur in a colored term in $D\occur{r}$ {\color{red} or $s\syneq t$}:
+				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in\nolinebreak{} $E\occur{r}$:
           \label{def:PI_paramod_3}
           \newline
 					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
@@ -237,9 +237,9 @@ $.
 	Let $h\occur{t}$ be a maximal $\Delta$-colored term containing $t$ at $p$ in $E\occurat{t}{p}$, if such a term exists. Then it holds that:
 \begin{itemize}
 \item If $h\occur{t}$ does not exists, then
-	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{s}{p}}$.
+	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{t}{p}}$.
 \item Otherwise
-	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{s}{p}}$
+	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{t}{p}}$
 	or $M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$ holds.
 \end{itemize}
 \end{lemma}
@@ -315,12 +315,12 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 			Suppose the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$. Then $\PI(C) = \PI(C_1)\sigma$ and the induction hypothesis gives the result.
 
 		\item[Paramodulation.]
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
+			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
 			We distinguish the following cases:
 
 			\begin{enumerate}
-				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$ and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
-					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex D\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex D\occur{r} \lor \PI(\primex D\occur{r})$.
+				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
+					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
 						 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
@@ -329,7 +329,7 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 						 &= \lnot \PI(\primex C)
 					\end{align*}
 
-				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
+				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $E\occur{r}$ and $h(r)$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
 					This case can be argued analogously.
 				\item Otherwise:
 					\begin{align*}

@@ -10,7 +10,7 @@ Due to the simplicity of its rules, it is widely used in the area of automated d
 	A \defiemph{resolution refutation} of a set of clauses~$\Gamma$ is a derivation of $\square$ consisting of applications of resolution rules (cf.~Figure~\ref{fig:resolution}) starting from clauses in $\Gamma$.
 \end{defi}
 
-Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$ and positions by $p$.
+Clauses will usually be denoted by $C$, $D$ or $E$, literals by $l$, $l'$ or $\lambda$ and positions by $p$.
 
 \begin{figure}[htbp]
 	\begin{prooftree}
@@ -30,10 +30,10 @@ Clauses will usually be denoted by $C$ or $D$, literals by $l$ or $l'$ and posit
 
 	\begin{prooftree}
 		\LeftLabel{\textit{Paramodulation:}\quad}
-		\AxiomCm{ C \lor s=t }
-		\AxiomCm{ D\occurat{r}{p} }
+		\AxiomCm{ D \lor s=t }
+		\AxiomCm{ E\occurat{r}{p} }
 		\RightLabelm{\resrulepar \quad \sigma = \mgu(s, r)}
-		\BinaryInfCm{ (C \lor D\occurat{t}{p})\sigma }
+		\BinaryInfCm{ (D \lor E\occurat{t}{p})\sigma }
 	\end{prooftree}
 
 	\caption{The rules of resolution calculus}

@@ -74,18 +74,18 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 		\item[Paramodulation.]
 	\label{def:PI_paramod}
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$.
-			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $D\occur{r}$.
+			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$.
+			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
 			Then $\PI(C)$ is defined according to the following case distinction:
 			\begin{enumerate}
 
 				\item If $h\occur{r}$ is $\Delta$-colored and 
-					$h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+					$h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
 					\label{def:PI_paramod_1}
 					\newline
 					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$ 
 				\item If $h\occur{r}$ is $\Gamma$-colored and 
-					$h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$:
+					$h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
 					\label{def:PI_paramod_2}
 					\newline
 					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$ 
@@ -638,12 +638,12 @@ The interpolant extraction procedure $\PI$ exhibits a convenient property which 
 			Suppose the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$. Then $\PI(C) = \PI(C_1)\sigma$ and the induction hypothesis gives the result.
 
 		\item[Paramodulation.]
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor C$ and $C_2: D\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
+			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
 			We distinguish the following cases:
 
 			\begin{enumerate}
-				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $D\occur{r}$ and $h\occur{r}$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
-					Then $\primexHuang r$ occurs in a maximal $\Gamma$-term $\primexHuang h\occur{r}$ in $\primexHuang D\occur{r}$ and $\primexHuang h\occur{r}$ occurs more than once in $\primexHuang D\occur{r} \lor \PI(\primexHuang D\occur{r})$.
+				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
+					Then $\primexHuang r$ occurs in a maximal $\Gamma$-term $\primexHuang h\occur{r}$ in $\primexHuang E\occur{r}$ and $\primexHuang h\occur{r}$ occurs more than once in $\primexHuang E\occur{r} \lor \PI(\primexHuang E\occur{r})$.
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
 						 &= [ ( s=t \land \lnot \PI(\primexHuang C_2) ) \lor (s\neq t \land \lnot \PI(\primexHuang C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
@@ -652,7 +652,7 @@ The interpolant extraction procedure $\PI$ exhibits a convenient property which 
 						 &= \lnot \PI(\primexHuang C)
 					\end{align*}
 
-				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $D\occur{r}$ and $h(r)$ occurs more than once in $D\occur{r} \lor \PI(D\occur{r})$.
+				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $E\occur{r}$ and $h(r)$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
 					This case can be argued analogously.
 				\item Otherwise:
 					\begin{align*}
