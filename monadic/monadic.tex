@@ -146,7 +146,6 @@
 	\item $\forall x \exists y \varphi \semiff \exists y \forall x  $ does not hold for formula coding $f(0) = 1$, $f(1) = 0$: $(Z(y) \limpl O(x))\land (O(y) \limpl Z(x)$, $\mathcal{U} = \{ 0, 1\}$, $Z/1$ and $O/1$ encode being $0$ or $1$ respectively.
 \end{itemize}
 
-\largered{TODO NOW: check if we can encode that counter-example in a resolution refutation, because that would be a counterexample to the conjecture that the quantifier order is arbitrary and try to learn something from success or failure respectively}
 
 \begin{lemma}
 	\label{1}
@@ -243,7 +242,55 @@ $\Pi \entails \exists u \forall v \Big( ( \lnot S(v_{f(x)}) \land (Q(u_{g(y)}) \
 only $\Delta$:
 $\forall u ( P(f(x)) \mid S(f(x)) \lor Q(u)\lor R(u) )$
 
-\e{602 -- lifting vars interleaved so quantifier pull in/out trick doesn't work}
+\largered{no subterm relation anyway}
+
+\clearpage
+\e{602 -- counterexample with alternating function}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ F(x) \lor \lnot Z(f(x)) \lor O(\alpha) } }
+	\AxiomCm{ \p{ G(y) \lor \lnot O(g(y)) } }
+	\BinaryInfCm{ O(g(y)) \mid F(x) \lor \lnot Z(f(x)) \lor G(y) }
+	\AxiomCm{ \p{ Z(\alpha) \lor M{\beta} }}
+	\BinaryInfCm{ O(g(y)) \lor \lnot Z(f(x)) \mid F(x) \lor  G(y) \lor M(\beta) }
+\end{prooftree}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ F(x') \lor Z(\alpha) \lor \lnot O(f(x')) } }
+	\AxiomCm{ \p{ G(y') \lor \lnot Z(g(y')) } }
+	\BinaryInfCm{ Z(g(y')) \mid F(x') \lor \lnot O(f(x')) \lor G(y') }
+	\AxiomCm{ \p{ O(\alpha) \lor \lnot M(\beta)}}
+	\BinaryInfCm{ Z(g(y')) \lor \lnot O(f(x')) \mid F(x') \lor  G(y') \lor M(\beta)}
+\end{prooftree}
+
+conbining:
+
+\begin{prooftree}
+	\AxiomCm{ (Z(g(y')) \lor \lnot O(f(x')) ) \spal\land ( O(g(y)) \lor \lnot Z(f(x))) \spal\mid F(x) \lor  G(y) \lor  F(x') \lor  G(y') }
+	
+	\UnaryInfCm{ (Z(g(y)) \lor \lnot O(f(x)) ) \spa\land ( O(g(y)) \lor \lnot Z(f(x))) \spal\mid F(x) \lor  G(y) }
+\end{prooftree}
+
+
+interpolant is lifted version:
+
+$
+\forall y_g \exists y_f \Big(
+(Z(y_g) \lor \lnot O(y_f) ) \spa\land ( O(y_g) \lor \lnot Z(y_f)) \spal\mid F(x) \lor  G(y) \Big)
+$
+
+
+\e{602a: with constants}
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ \lnot Z(a) \lor O(\alpha) } }
+	\AxiomCm{ \p{ \lnot O(b) } }
+	\BinaryInfCm{ O(b) \mid \lnot Z(a)  }
+	\AxiomCm{ \p{ Z(\alpha) \lor M{\beta} }}
+	\BinaryInfCm{ O(b) \lor \lnot Z(a) \mid M(\beta) }
+\end{prooftree}
+
+In such cases, we always have $O(\alpha)$, i.e.\ something universally quantified
 
 
 
