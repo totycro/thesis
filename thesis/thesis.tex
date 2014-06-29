@@ -217,6 +217,7 @@
 
 
 
+\usepackage{blindtext}
 
 %\setulmarginsandblock{1.5cm}{1.5cm}{*}
 %\setlrmarginsandblock{4cm}{1.5cm}{*}
@@ -224,18 +225,38 @@
 
 % this is slightly smaller than the default
 %\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
+\settypeblocksize{0.64\stockheight}{0.64\stockwidth}{*}
 %\settypeblocksize{0.63\stockheight}{0.63\stockwidth}{*}
-%\setlrmargins{*}{*}{1.0}
-%\setulmargins{*}{*}{1.4}
-%\checkandfixthelayout[nearest]
+\setlrmargins{*}{*}{1.0}
+\setulmargins{*}{*}{1.4}
+\checkandfixthelayout[nearest]
 
 \usepackage{mathabx}
 
 
-\usepackage{refcheck}
+%\usepackage{refcheck}
 
 
 \begin{document}
+
+\begin{comment}
+\selectlanguage{english}
+\blindtext
+\blindtext
+\blindtext
+55
+\blindtext
+33
+\blindtext
+10
+\blindtext
+\blindtext
+\blindtext
+20
+\blindtext
+\blindtext
+\blindtext
+\end{comment}
 
 \captionnamefont{\bfseries}
 
@@ -245,98 +266,98 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifdefined\secproofsonly 
 
-	\selectlanguage{english}
-	\proofcontent
+\selectlanguage{english}
+\proofcontent
 
 \else
 
-	%\pagenumbering{arabic}
-	\mysetpagestyle
+%\pagenumbering{arabic}
+\mysetpagestyle
 
-	\ifdefined\contentonly 
-	\selectlanguage{english}
-	
-	
-	\tableofcontents
-	
-	\content
+\ifdefined\contentonly 
+\selectlanguage{english}
 
-	\appendixcontent 
 
-	\else 
-	
-	
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%%   FRONTMATTER    %%%%%%%%%%%%%%%%%%%%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		\frontmatter
-		\pagenumbering{roman}
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%%   TITLEPAGES    %%%%%%%%%%%%%%%%%%%%%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
-		% the german title page is required as first page
-		\include{titlepage}
-		
-		% an english translation may follow
-		\include{titlepage_en} % optional
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%%   ERKLAERUNG DER SELBSTAENDIGKEIT   %
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		\cleardoublepage
-		\selectlanguage{ngerman}
-		\input{chapters/erklaerung}
-		\selectlanguage{english}
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%%   ACKNOWLEDGEMENTS    %%%%%%%%%%%%%%%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
-		% optional acknowledgements may be included in german or in english
-		%\input{chapters/danksagung} 		% optional
-		\input{chapters/acknowledgements}	% optional
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%%   ABSTRACT    %%%%%%%%%%%%%%%%%%%%%%%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
-		\input{chapters/abstract_en}
-		\cleardoublepage
-		\selectlanguage{ngerman}
-		\input{chapters/abstract_de}
-		\selectlanguage{english}
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%%   CONTENTS    %%%%%%%%%%%%%%%%%%%%%%%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		% uncomment to set document language to german (results in "Inhaltsverzeichnis", "Kapitel", "Abbildung", etc. instead of "Contents", "Chapter", and "Figure"), otherwise the document's language is english
-		%\selectlanguage{ngerman}
-		
-		\cleardoublepage
-		\mysetpagestyle
-		\tableofcontents*
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%%%   MAINMATTER    %%%%%%%%%%%%%%%%%%%%%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
-		\mainmatter
-		\pagenumbering{arabic}
-		\mysetpagestyle
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
-		\content
-		
-		%\chapter{Notes}
-		%\input{chapters/lk_algo}
-		
-		\appendixcontent
-		
-		
-		\fi
+\tableofcontents
+
+\content
+
+\appendixcontent 
+
+\else 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   FRONTMATTER    %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+\pagenumbering{roman}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   TITLEPAGES    %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% the german title page is required as first page
+\include{titlepage}
+
+% an english translation may follow
+\include{titlepage_en} % optional
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   ERKLAERUNG DER SELBSTAENDIGKEIT   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\selectlanguage{ngerman}
+\input{chapters/erklaerung}
+\selectlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   ACKNOWLEDGEMENTS    %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% optional acknowledgements may be included in german or in english
+%\input{chapters/danksagung} 		% optional
+\input{chapters/acknowledgements}	% optional
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   ABSTRACT    %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/abstract_en}
+\cleardoublepage
+\selectlanguage{ngerman}
+\input{chapters/abstract_de}
+\selectlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   CONTENTS    %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% uncomment to set document language to german (results in "Inhaltsverzeichnis", "Kapitel", "Abbildung", etc. instead of "Contents", "Chapter", and "Figure"), otherwise the document's language is english
+%\selectlanguage{ngerman}
+
+\cleardoublepage
+\mysetpagestyle
+\tableofcontents*
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   MAINMATTER    %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mainmatter
+\pagenumbering{arabic}
+\mysetpagestyle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\content
+
+%\chapter{Notes}
+%\input{chapters/lk_algo}
+
+\appendixcontent
+
+
+\fi
 \fi
 
 \end{document}
