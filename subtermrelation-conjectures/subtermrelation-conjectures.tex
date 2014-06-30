@@ -118,10 +118,10 @@
 
 \usepackage{refcheck}
 
-%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
-%\setlrmargins{*}{*}{1.2}
-%\setulmargins{*}{*}{1.4}
-%\checkandfixthelayout[nearest]
+\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
+\setlrmargins{*}{*}{1.2}
+\setulmargins{*}{*}{1.4}
+\checkandfixthelayout[nearest]
 
 
 \begin{document}
@@ -313,9 +313,7 @@ always want: $\Gamma \entails \LI$, $\Delta \entails \lnot \LI$
 			%find the smallest subformula such that all occurrences of all variables of $t$ of $F$
 
 			$\chi(F)$:
-			lift all terms which do contain only variables which do not occur in $\LIcl(C)$ AND at least one such,
-			and quantify prenex
-			\hl{Does it suffice to have one, and other variables which are not final? proof idea: this term will never be a subterm of another term, as this variable cannot enter another term. other terms might become subterms of this term, but then they only need to be quantified before this one, which is implicitly given as it is lifted here in a nested way.}
+			lift all maximal colored terms which contain some variable which does not occur in $\LIcl(C)$ 
 
 			\mytodo{not sure where we can quantify ground terms as they can be added arbitrarily (possibly lift every occurrence of a ground term $t$ distinctly)}
 
@@ -326,10 +324,10 @@ always want: $\Gamma \entails \LI$, $\Delta \entails \lnot \LI$
 			\begin{enumerate}
 
 				\item If $l$ is $\Gamma$-colored:
-					$\LI^\bullet(C) \defeq \LI(C_1) \lor \LI(C_2)\sigma $
+					$\LI^\bullet(C) \defeq \LI(C_1)\tau \lor \LI(C_2)\tau $
 
 				\item If $l$ is $\Delta$-colored:
-					$\LI(C)^\bullet \defeq \LI(C_1) \land \LI(C_2)\sigma $
+					$\LI^\bullet(C) \defeq \LI(C_1)\tau \land \LI(C_2)\tau $
 
 				\item If $l$ is grey:
 					$\LI(C)^\bullet \defeq\,
@@ -367,35 +365,35 @@ $\Gamma \entails \LI(C) \lor C$
 
 	{ \tiny
 
-	$C_\Gamma =
-	C_1^*{}_\Gamma \lor
-	C_2^*{}_\Gamma$
+		$C_\Gamma =
+		C_1^*{}_\Gamma \lor
+		C_2^*{}_\Gamma$
 
-	IH:
+		IH:
 
-	$\Gamma \entails \LIde(C_1) \lor C_1^*{}_\Gamma \lor l_\Gamma$
+		$\Gamma \entails \LIde(C_1) \lor C_1^*{}_\Gamma \lor l_\Gamma$
 
-	$\Gamma \entails \LIde(C_2) \lor C_2^*{}_\Gamma \lor \lnot l'_\Gamma$
+		$\Gamma \entails \LIde(C_2) \lor C_2^*{}_\Gamma \lor \lnot l'_\Gamma$
 
-	Hence:
+		Hence:
 
-	$\Gamma \entails ( \LIde(C_1) \lor C_1^*{}_\Gamma \lor l_\Gamma )\sigma$
+		$\Gamma \entails ( \LIde(C_1) \lor C_1^*{}_\Gamma \lor l_\Gamma )\sigma$
 
-	$\Gamma \entails ( \LIde(C_2) \lor C_2^*{}_\Gamma \lor \lnot l'_\Gamma )\sigma$
+		$\Gamma \entails ( \LIde(C_2) \lor C_2^*{}_\Gamma \lor \lnot l'_\Gamma )\sigma$
 
-	Supp grey:
+		Supp grey:
 
-	$\Gamma \entails
-	(l \land \LIde(C_2))\sigma \lor (l' \land \LIde(C_1))\sigma
-	\spam\lor C_\Gamma $
+		$\Gamma \entails
+		(l \land \LIde(C_2))\sigma \lor (l' \land \LIde(C_1))\sigma
+		\spam\lor C_\Gamma $
 
-	$\Gamma \entails  \LIde(C) \spam\lor C_\Gamma $
+		$\Gamma \entails  \LIde(C) \spam\lor C_\Gamma $
 
-	the literal is of course equal as by clearly $C$ is not affected.
-	~
+		the literal is of course equal as by clearly $C$ is not affected.
+		~
 
 
-}
+	}
 \end{proof}
 
 $X = \LV(\LIde(C)) \spas\setminus \LV(\LIclde(C_\Gamma))$
@@ -416,64 +414,156 @@ Hence $\Gamma \entails (\Q(Y') \LIde(C)) \lor \LIclde(C)$
 	$\Gamma \entails \lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C}$
 \end{clemma}
 \begin{proof}
-induction on $C_\Gamma$.
+	induction on $C_\Gamma$. \hl{take care of this properly when writing this up properly}
 
-Base case:
+	Base case:
 
-$C\in \Gamma$: Then $\lifdeltanovar{C} = C$ and $\Gamma \entails C$
+	$C\in \Gamma$: Then $\lifdeltanovar{C} = C$ and $\Gamma \entails C$
 
-$C \in \Delta$: Then $\LI(C) = \top$ 
+	$C \in \Delta$: Then $\LI(C) = \top$ 
+
+	Ind step:
+
+	Supp
+	$\Gamma \entails \lifdeltanovar{\LI(C_i)} \lor \lifdeltanovar{C_i}$
+
+	By lemma \ref{lemma:substitute_and_lift}
+	$\Gamma \entails \lifdeltanovar{\lifdeltanovar{\LI(C_i)}\tau} \lor \lifdeltanovar{\lifdeltanovar{C_i}\tau}$
+
+	By Lemma \ref{lemma:lifting_tau_commute},
+
+	$\Gamma \entails \lifdeltanovar{\LI(C_i)\tau} \lor \lifdeltanovar{C_i\tau}$
+
+	formulate differently:
+
+	\markA\markB:
+	$\Gamma \entails \lifdeltanovar{\LI(C_i)\tau} \lor
+	\lifdeltanovar{C_1^*\tau} \lor
+	\lifdeltanovar{l\tau}$
+
+
+	Clearly: $l\tau = l'\tau$
+
+	By Lemma TODO (not even needed):
+	$\lifdeltanovar{C} = \lifdeltanovar{C_1^*\sigma} \lor \lifdeltanovar{C_2^*\sigma} = \lifdeltanovar{C_1}\tau \lor \lifdeltanovar{C_2}\tau$
+
+
+	\begin{itemize}
+		\item Supp $l$ grey.
+
+			Need to show for $\LI^\bullet(C)$:
+
+			$\Gamma \entails \lifdeltanovar{C}
+			\spam\lor (\lifdeltanovar{l}\tau \lor \lifdeltanovar{\LI(C_2)}\tau) 
+			\spam\lor (\lnot\lifdeltanovar{l'}\tau \lor \lifdeltanovar{\LI(C_1)}\tau)$
+
+			%By lemma above:
+
+			%$\Gamma \entails \lifdeltanovar{C_1}\tau \lor \lifdeltanovar{C_2}\tau 
+			%\spas\lor (\lifdeltanovar{l}\tau \lor \lifdeltanovar{\LI(C_2)}\tau) 
+			%\spas\lor (\lnot\lifdeltanovar{l'}\tau \lor \lifdeltanovar{\LI(C_1)}\tau)$
+
+			By \markA\markB:
+
+			$\Gamma \entails \lifdeltanovar{\LIcl(C_1)\tau} \lor
+			\lifdeltanovar{C_1^*\tau} \lor
+			\lifdeltanovar{l\tau}$
+
+			$\Gamma \entails \lifdeltanovar{\LIcl(C_2)\tau} \lor
+			\lifdeltanovar{C_2^*\tau} \lor
+			\lnot\lifdeltanovar{l'\tau}$
+
+			Hence:
+
+			$\Gamma \entails
+			\lifdeltanovar{\LIcl(C_1)\tau} \lor
+			\lifdeltanovar{\LIcl(C_2)\tau} 
+			\spam\lor (\lifdeltanovar{l\tau} \lor \lifdeltanovar{\LI(C_2)\tau}) 
+			\spam\lor (\lnot\lifdeltanovar{l'\tau} \lor \lifdeltanovar{\LI(C_1)\tau})$
+
+			is nothing else than:
+
+			$\Gamma\entails \lifdeltanovar{C} \lor \lifdeltanovar{\LI^\bullet(C)}$
+
+		\item Supp $l$ $\Gamma$-colored
+
+			Then resolve on $l$ in \markA\markB{} and obtain the same thing as in the other cases
+
+		\item Supp $l$ $\Delta$-colored
+
+			Then \markA\markB{} collapse to:
+
+			$\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor
+			\lifdeltanovar{C_1^*\tau}$
+
+			$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor
+			\lifdeltanovar{C_2^*\tau}$
+
+			Clearly 
+			$\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{\LI(C_2)\tau} \lor
+			\lifdeltanovar{C_1^*\tau} \land \lifdeltanovar{C_2^*\tau} $
+
+			is nothing else than:
+
+			$\Gamma\entails \lifdeltanovar{C} \lor \lifdeltanovar{\LI^\bullet(C)}$
+
+
+	\end{itemize}
+
+	Let $t$ be a term in $\LI^\bullet(C)$ at $p$ such that $t$ is maximal colored, contains a variable which does not occur in $C$.\todo{IDEA: ``do not occur in $\lifdeltanovar{C}$}\nopagebreak
+	\begin{itemize}
+		\item Suppose $t$ is $\Delta$-colored:
+
+			$\LI(C)\at{p}$ is $\lifdelta{t} = x_t$
+
+			However 
+			$\lifdeltanovar{\LI^\bullet}\at{p} = x_t$
+
+		\item Suppose $t$ is $\Gamma$-colored:
+
+			Then
+			$\LI^*(C)\at{p} = y_t$
+
+			and $\exists y_t$ is contained in $\Q_{\LI^*(C)}$
+
+			But 
+			$\LI^\bullet(C)\at{p} = t$ ($t$ by assumption has not been lifted before)
+
+			also $\lifdeltanovar{\LI^\bullet(C)}\at{p} = \lifdeltanovar{t}$
+
+			Hence here we have the witness, and it contains quantified $\Delta$-lifting vars.
+
+	\end{itemize}
+
+	Also more $\Delta$-colored terms in $\lifdeltanovar{\LI^\bullet(C)}$ are lifted, but due to $\tau$, they correspond exactly to the non-lifted terms.
+	Hence with respect to the $\Delta$-terms, $\LI(C)$ is an instance of $\lifdeltanovar{\LI^\bullet(C)}$.
+
+	As $t$ contains a variable which does not occur elsewhere, $t$ is not a subterm of a term which does not occur here.
+
+	$\Q_{\LI^*(C)}$ sorts according to subterm relation.
+	Hence if $t$ is a $\Gamma$-term and its witness term in $\lifdeltanovar{\LI^\bullet(C)}$ contains a $\Delta$-lifting variable, say $x_s$, then it is quantified in $\Q_{\LI^*(C)}$ before $y_t$ is.
+
+	if $s$ contains the important variable, then $t$ and $s$ are both lifted at this inference.
+
+	if $s$ does not, then $t$ contains the important variable.
+	Then $s$ might be lifted later if it occurs elsewhere, or possibly not at all.
+
+	irrelevant remark: it is quantified at some point if it contains a variable as the last inference creates the empty clause, which does not contain variables.
+\end{proof}
+
+
+
+\section{random ideas}
+
+-- we can pull apart existentially quantified variables: $\exists x (P(x) \lor Q(x))$ implies $\exists x P(x) \lor \exists y P(y)$. this does not work with universally quantified variables ($P(f(x)) \lor \lnot P(f(x))$
+
+$\quad$ but interpolants are somewhat symmetric, if it's existential for $\Gamma$, it's universal for $\Delta$.
 
 ~
 
-Ind step:
-
-Supp
-$\Gamma \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{C_1}$ and
-$\Gamma \entails \lifdeltanovar{\LI(C_2)} \lor \lifdeltanovar{C_2}$.
-
-
-By Lemma TODO:
-$\lifdeltanovar{C} = \lifdeltanovar{C_1^*\sigma} \lor \lifdeltanovar{C_2^*\sigma} = \lifdeltanovar{C_1}\tau \lor \lifdeltanovar{C_2}\tau$
-
-Then also
-
-$\Gamma \entails \LI(C_1) \lor C_1^* \lor l$
-
-$\Gamma \entails \LI(C_2) \lor C_2^* \lor l'$.
-
-also:
-
-$\Gamma \entails \LI(C_1)\sigma \lor C_1^*\sigma \lor l\sigma$
-
-$\Gamma \entails \LI(C_2)\sigma \lor C_2^*\sigma \lor \lnot l'\sigma$.
-
-\begin{itemize}
-	\item Supp $l$ grey.
-		Note $l\sigma = l'\sigma$.
-		then
-		$\Gamma \entails C_1^*\sigma \lor C_2^*\sigma \lor (l\sigma \land \LI(C_2)) \lor (\lnot l'\sigma \land \LI(C_1)\sigma$.
-
-		Variables in $\LI(C)$ can only not occur in $C$ anymore if it was contained in $l$/$l'$ and not anywhere else in $C_1$/$C_2$.
-		variables might disappear due to $\sigma$a removing them, but then they also disappear in $\LI(C)$\todo{here we might be able to proof this w.r.t\ ground terms}.
-
-		So suppose $l$ contains a term $t$ with variables such that they do not occur in $C$.
-\end{itemize}
+-- suppose we lift all ground terms in the interpolant if no maximal colored term in the current clause is a subterm.
 
 
 
 
-	\end{proof}
-
-
-
-	\section{random ideas}
-
-	-- we can pull apart existentially quantified variables: $\exists x (P(x) \lor Q(x))$ implies $\exists x P(x) \lor \exists y P(y)$. this does not work with universally quantified variables ($P(f(x)) \lor \lnot P(f(x))$
-
-	$\quad$ but interpolants are somewhat symmetric, if it's existential for $\Gamma$, it's universal for $\Delta$.
-
-
-
-
-	\end{document}
+\end{document}
