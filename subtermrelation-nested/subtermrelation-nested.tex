@@ -380,16 +380,20 @@
 	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
 \end{proof}
 
+\largered{IH used in a wrong way!
+
+lemmas must be together, e.g. the second lemma could be standalone and used in the first one}
+
 \begin{lemma}
-	\label{lemma:gamma_entails_delta_lifted_invariant}
+	\label{lemma:gamma_entails_delta_lifted_preinvariant}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
 	Then
-	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
+	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C} $
 \end{lemma}
 \begin{proof}
-	We show the strengthening
-	$\Gamma \entails \lifdeltanovar{ \LI(C_\Gamma) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}
-	First, we proceed by induction to prove that $\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma} $.
+	We proceed by induction over the strengthening
+	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}
+	%First, we proceed by induction to prove that $\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma} $.
 
 
 	\begin{description}
@@ -532,17 +536,22 @@
 							$M\entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\tau}$, 
 							which implies that
 							$\Gamma\entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
-
+							\qedhere
 					\end{itemize}
-
 			\end{itemize}
-
 	\end{description}
+\end{proof}
 
-	We now conclude by showing that 
-	$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$
-	implies 
-	$\Gamma \entails \lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C_\Gamma}$.
+
+\begin{lemma}
+	\label{lemma:gamma_entails_delta_lifted_invariant}
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	Then
+	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
+\end{lemma}
+\begin{proof}
+	By Lemma~\ref{lemma:gamma_entails_delta_lifted_preinvariant}, we have that 
+	$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 	The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
 	Let $t$ be a term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
