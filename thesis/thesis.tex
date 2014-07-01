@@ -77,29 +77,13 @@
 \makeatother
 \urlstyle{leo}
 
+\definethms
+
 % section numbers for subsections:
 \setsecnumdepth{subsection}
 
 % subsections also in toc
 \setcounter{tocdepth}{2}
-
-%\declaretheorem[title=Theorem,qed=$\triangle$,parent=chapter]{thm}
-\newcommand{\thmqed}{$\square$} % for thms without proof
-\newcommand{\propqed}{$\square$} 
-\newcommand{\lemmaqed}{$\square$} 
-\declaretheorem[title=Theorem,parent=chapter]{thm}
-\declaretheorem[title=Proposition,sibling=thm]{prop}
-%\declaretheorem[title=Lemma,parent=chapter]{lemma}
-\declaretheorem[sibling=thm]{lemma}
-\declaretheorem[title=Corollary,sibling=thm]{cor}
-\declaretheorem[sibling=thm,title=Definition,style=definition,qed=$\triangle$]{defi}
-%\declaretheorem[title=Definition,qed=$\triangle$,parent=chapter]{defi}
-\declaretheorem[title=Example,style=definition,qed=$\triangle$,sibling=thm]{exa}
-\declaretheorem[sibling=thm,title=Conjecture]{conj}
-
-%\theoremstyle{remark}
-%\newtheorem*{remark}{Remark}
-\declaretheorem[title=Remark,style=remark,numbered=no,qed=$\triangle$]{remark}
 
 %\def\proofSkipAmount{ \vskip -0.5em}
 %\def\proofSkipAmount{ \vskip -0.3em}
@@ -140,6 +124,7 @@
 \thesisbetreins{Ass.Prof.~Stefan Hetzl}
 \thesisbetrzwei{Dr. Vorname Familienname}
 \thesisbetrdrei{Dr. Vorname Familienname} % optional
+
 
 % define page numbering styles
 \makepagestyle{numberCorner}

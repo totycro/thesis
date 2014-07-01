@@ -344,11 +344,11 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 
 \end{proof}
 
-\begin{cor}
+\begin{corr}
 	\label{cor:delta_entails_lifted_interpolant}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
 	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
-\end{cor}
+\end{corr}
 \begin{proof}
 	Build $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$. 
@@ -376,7 +376,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 Before we proceed with the proof of this lemma, we give a corollary which demonstrates that $\PI$ 
 extracts propositional interpolants in the sense that besides possibly containing colored terms, they are proper interpolants:
 
-\begin{cor}
+\begin{corr}
 	\label{cor:propositional_interpolant}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	Then
@@ -385,7 +385,7 @@ extracts propositional interpolants in the sense that besides possibly containin
 		\item$\Delta\entails \lnot \PI(\pi)$
 		\item $\PS(\PI(\pi)) \subseteq \PS(\Gamma) \cap \PS(\Delta)$.
 		\end{enumerate}
-\end{cor}
+\end{corr}
 \begin{proof}
 	By the definition of $\PI$, 
 	$\PI(\pi)$ denotes $\PI(\square)$, where $\square$ is the empty clause derived in $\PI$.

@@ -19,6 +19,10 @@
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 
+% for screen display:
+\usepackage[bitstream-charter]{mathdesign}
+%\usepackage{newcent}
+%\usepackage{lmodern}
 
 \newcommand{\changefont}[3]{
 \fontfamily{#1}\fontseries{#2}\fontshape{#3}\selectfont}
@@ -140,7 +144,7 @@
 
 \clearpage
 
-\section{Interpolant extraction from resolution proofs in one phase \hl{lifting terms whose quantifier position can be determined -- nested}}
+\chapter{Interpolant extraction from resolution proofs in one phase \hl{lifting terms whose quantifier position can be determined -- nested}}
 
 \section{Incremental lifting and substitutions of lifting variables}
 
@@ -231,8 +235,8 @@
 
 				\item If $l$ is grey:
 					$\LIpre(C) \defeq
-					(l\cll\tau \land \LI(C_2)\tau) \spas\lor
-					(\lnot l'\cll\tau\land \LI(C_1)\tau)
+					(l\tau \land \LI(C_2)\tau) \spas\lor
+					(\lnot l'\tau\land \LI(C_1)\tau)
 					$
 
 			\end{enumerate}
@@ -271,7 +275,7 @@
 	\begin{enumerate}
 		\item Lift all maximal colored terms in $\LIpre(C)$ which contains some variable which does not occur in $C$.
 		\item Let $X$ ($Y$) be the $\Delta$-($\Gamma$-)lifting variables created in the previous step.
-		\item Prefix the resulting formula with an arrangement of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
+		\item Prefix the resulting formula with an arrangement $\Q(C)$ of the elements of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
 			\qedhere
 	\end{enumerate}
 \end{defi}
@@ -373,11 +377,12 @@
 	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
 \end{proof}
 
-\begin{clemma}
+\begin{lemma}
+	\label{lemma:gamma_entails_delta_lifted_invariant}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
 	Then
 	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
-\end{clemma}
+\end{lemma}
 \begin{proof}
 	We proceed by induction on the strengthening
 	$\Gamma \entails \lifdeltanovar{ \LI(C_\Gamma) } \lor \lifdeltanovar{C_\Gamma} $\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}
@@ -402,9 +407,10 @@
 
 			$\Gamma \stackrel\markB\entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{E_\Gamma\tau} \lor \lnot \lifdeltanovar{l'_\Gamma\tau}$
 
-			As $l_\Gamma\sigma = l'_\Gamma\sigma$ and both $l_\Gamma$ and $l'_\Gamma$ are devoid of lifting variables, it holds that $l_\Gamma\tau = l'_\Gamma\tau$.
-
-			We proceed by a case distinction on the color of the resolved literal to show that in each case
+			As $l_\Gamma\sigma = l'_\Gamma\sigma$,
+			it holds that $l_\Gamma\tau = l'_\Gamma\tau$ and consequently 
+			$\lifdeltanovar{l_\Gamma\tau} = \lifdeltanovar{l'_\Gamma\tau}$.
+			We proceed by a case distinction on the color of the resolved literal to show that in each case, we have that
 			$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$:
 			\begin{itemize}
 				\item Suppose that $l$ is $\Gamma$-colored.
@@ -419,15 +425,15 @@
 				\item Suppose that $l$ is $\Delta$-colored.
 					Then \markA{} and \markB{} reduce to 
 					$\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{D_\Gamma\tau}$
-					as well as
-					$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{E_\Gamma\tau}$, 
+					and
+					$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{E_\Gamma\tau}$
+					respectively,
 					which clearly implies that 
 					$\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{\LI(C_2)\tau} \lor (\lifdeltanovar{D_\Gamma\tau} \land \lifdeltanovar{E_\Gamma\tau})$.
-					This is turn is however the same as
+					This is turn is however just the unfolding of
 					$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 				\item Suppose that $l$ is grey.
-
 					Then \markA{} and \markB{} imply that
 					$\Gamma \entails
 					\lifdeltanovar{\LI(C_1)\tau} \lor
@@ -445,28 +451,29 @@
 			implies that 
 			$\Gamma \entails \lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C}$.
 
-			The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
+			The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
 			Let $t$ be a term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
-			Then $t$ is a maximal colored term and contains a variable which does not occur in $C$.
+			Then $t$ is a maximal colored term and contains a variable which does not occur in\nolinebreak{} $C$.
 
 			If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
-			Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ is not bound at $\lifdeltanovar{\LIpre(C)}\atp$.
-			Hence it is implicitly universally quantified and therefore implies that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed quantifier.  
+			Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ occurs free at $\lifdeltanovar{\LIpre(C)}\atp$.
+			Hence it is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed quantifier.  
 
 			If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
-			Hence $\lifdeltanovar{t}$ is a witness term for the lifting variable $y_t$ at $\LI(C)\atp$.
-			In general, $\lifdeltanovar{t}$ however contains $\Delta$-lifting variables, which require being lifted in the scope of the existential quantifier for $y_t$. 
-			Let $x_s$ be a $\Delta$-lifting variable which occurs in $\lifdeltanovar{t}$. 
+			Hence $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
+			In general, $\lifdeltanovar{t}$ however contains $\Delta$-lifting variables, which require being lifted in the scope of the existential quantifier of $y_t$. 
 
-			It is essential to see that neither $s$ nor a predecessor of $s$ is lifted in a previous step of the interpolant extraction.
-			Suppose to the contrary that is in the inference creating the clause $C'$.
+			Let $x_s$ be a $\Delta$-lifting variable which occurs in $\lifdeltanovar{t}$. 
+			It is essential to see that neither $s$ nor a predecessor of $s$ in the resolution derivation is lifted in a previous step of the interpolant extraction.
+			Suppose to the contrary that this is the case in the inference creating the clause $C'$.
 			Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
 			Then one of the following two contradictions eventuate:
 			\begin{itemize}
 				\item Suppose that $s'$ is a subterm of the corresponding predecessor $t'$.
-					Then $s'$ contains a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
+					Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
+
 				\item Otherwise $t'$ does not contain $s'$.
-					Clearly $s'$ contains a variable which does not occur in $C'$.
+					We have already established that $s'$ contains a variable which does not occur in $C'$.
 					As all clauses are variable-disjoint, no other clause contains this variable.
 					But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
 
@@ -474,10 +481,10 @@
 
 			Hence there are three possibilities for quantification of $x_s$:
 			\begin{enumerate}
-			\item $s$ nor a successor of $s$ in the derivation does not occur at a grey position. Then $x_s$ is never explicitly quantified.
-			\item A variable which does not occur in $C$ entered $s$ by means of the current subtitution $\sigma$ or a variable is contained in $s$ such that the only occurrences of it in $C_1$ and $C_2$ are in $l$ and $l'$.
-				Then $x_s$ is lifted in the current step and as $s$ is a subterm of $t$, $y_t$ is quantified in the scope of $x_s$.
-			\item $x_s$ or a respective successor is quantified at a later stage in the derivation.
+			\item Neither $s$ nor a successor of $s$ in the derivation occurs at a grey position. Then $x_s$ is not quantified in the course of the interpolant extraction.
+			\item A variable which does not occur in $C$ enters $s$ by means of the current substitution $\sigma$ or a variable is contained in $s$ such that the only occurrences of it in $C_1$ and $C_2$ are in $l$ and $l'$.
+				Then $x_s$ is lifted in the current step and as $s$ is a subterm of $t$, $x_s$ is quantified in $\Q(C)$ prior to $y_t$.
+			\item The lifting variable $x_s$ or a respective successor is quantified at a later stage in the derivation.
 				Then as the quantifier for $y_t$ is contained in $\LI(C)$ and for any successor $C'$ of $C$, $\LI(C')$ contains a successor $\LI(C)$, $y_t$ is quantified in the scope of the quantifier for $x_s$.
 			\end{enumerate}
 
@@ -485,14 +492,170 @@
 			%			Suppose that $s$ contains a variable which does not occur in $C$. Then $x_s$ is quantified in $\LI(C)$ as well.
 			%			As however the quantifier block of $\LI(C)$ is ordered with respect to the subterm relation of the index of the lifting variables, $x_s$ is quantified prior to $y_t$.
 
+		\item{} Factorisation. 
+			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
+			
+			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ \LI(C_1) } \lor \lifdeltanovar{ l \lor l' \lor D }$.
+			By Lemma~\ref{lemma:substitute_and_lift}, we obtain
+			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l\tau \lor l'\tau \lor D\tau }$.
+			As however $l\sigma \equiv l'\sigma$, 
+			also $l\tau \equiv l'\tau$, so we can apply a factorisation step and obtain that
+			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l\tau \lor D\tau }$,
+			which is nothing else than $\Gamma \entails \LIpre(C) \lor \lifdeltanovar{C}$.
+
+		\item{} Paramodulation.
+			Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
+
+			Z
+
+
+
 	\end{description}
-
-
 \end{proof}
 
-\largered{TODO: make sure this proof is valid; then define what happens at the end: lift all remaining terms (as in huang?). also check if symmetry works out. compare with other proofs.}
+
+\begin{lemma}
+	\label{lemma:li_symmetry}
+	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$.
+	Then for a clause $C$ in $\pi$ and its corresponding clause $\bhat C$ in $\bhat \pi$, $\LI(C) \spas\semiff \lnot \LI(\bhat C)$.
+\end{lemma}
+\begin{proof}
+	We proceded by induction to show that $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$:
+	\begin{itemize}
+		\item[Base case.]
+			If $C \in \Gamma$, then $\LI(C) = \bot \semiff \lnot \top \semiff \lnot \LI(\bhat C)$ as $\bhat C\in\Delta$. 
+			The case for $C\in\Delta$ can be argued analogously.
+
+		\item[Resolution.]
+			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
+
+			As $\tau$ depends only on $\sigma$,
+			$\tau$ is the same for both $\pi$ and $\bhat \pi$.
+
+			We now distinguish the following cases:
+
+			\begin{enumerate}
+
+				\item $l$ is $\Gamma$-colored:
+					\begin{align*}
+						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
+						\LIpre(C)	&= \LI(C_1)\tau\spas\lor {\LI(C_2)\tau} \\
+													&\semiff \lnot (\lnot{\LI(C_1)\tau}\spas\land \lnot {\LI(C_2)\tau}) \\
+						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\tau}\spas\land \lifboth{(\lnot \LI(C_2))\tau}) \\
+													&\semiff \lnot ({\LI(\bhat C_1)\tau}\spas\land {\LI(\bhat C_2)\tau}) \\
+													&= \lnot \LIpre(\bhat C)
+					\end{align*}
+
+				\item $l$ is $\Delta$-colored:
+					This case can be argued analogously.
+
+				\item $l$ is grey:
+					Note ${l\tau} \stackrel{{\markB}}= {l'\tau}$.
+					\begin{align*}
+						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
+						\LIpre(C) &\stackrel{{\phantom{\markB}}}=
+						(\lnot {{l'\tau}} \land {\LI(C_1)\tau}) \spam\lor 
+						({l\tau} \land {\LI(C_2)\tau})\\
+						&\stackrel{{\markB}}\semiff\,
+						({{l'\tau}} \lor {\LI(C_1)\tau}) \spam\land 
+						(\lnot {l\tau} \lor {\LI(C_2)\tau})\\
+						&\stackrel{{\phantom{\markB}}}\semiff \lnot [ (\lnot {{l'\tau}} \land \lnot {\LI(C_1)\tau}) \spam\lor 
+						({l\tau} \land \lnot{\LI(C_2)\tau}) ] \\
+						&\stackrel{{\phantom{\markB}}}=\lnot [ (\lnot {{\bhat l'\tau}} \land {\LI(\bhat C_1)\tau}) \spam\lor 
+						({\bhat l\tau} \land {\LI(\bhat C_2)\tau}) ]\\
+						& \stackrel{{\phantom{\markB}}}= \lnot \LIpre(\bhat C) 
+					\end{align*}
+			\end{enumerate}
 
 
+		\item[Factorisation.]
+			Suppose the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
+			with $\sigma = \mgu(\inference)$.
+
+			As the construction is not influenced by the coloring, the induction hypothesis $\LIpre(C) = \LI(C_1)\tau$ suffices.
+
+			Then $\LIpre(C) = \lifboth{\LI(C_1)\tau}$, so the construction is not influenced by the coloring and by the induction hypothesis, $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$.
+
+		\item[Paramodulation.]
+			Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
+
+
+			We proceed by a case distinction:
+			\begin{itemize}
+				\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Delta$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
+					Then $p$ in $\bhat E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $\bhat E\occatp{r} \lor \LI(\bhat E\occatp{r})$. 
+
+					\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
+						%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
+						\begin{align*}
+							%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
+							\LIpre(C) 
+						 &= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \lor ({s\tau=t\tau} \land {h\occur{s}\tau \neq h\occur{t}\tau}) \\
+						 &\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \land ({s\tau= t\tau} \lor \lnot{\LI(C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
+						 &= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
+						 &\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ]\\
+						 &= \lnot \LIpre(\bhat C)
+						\end{align*}
+					}\par
+
+				\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
+					This case can be argued analogously.
+
+				\item Otherwise:
+					%\hspace*{\dimexpr-\leftmargini-\leftmarginii-\leftmarginiii}\parbox{\linewidth}{%
+					%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
+					\begin{align*}
+						%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
+						\LIpre(C) 
+						&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \\
+						&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
+						&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
+						&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
+						&= \lnot \LIpre(\bhat C)
+					\end{align*}
+					%}\par
+
+			\end{itemize}
+
+	\end{itemize}
+
+
+	We conclude by showing that 
+	$\LIpre(C) \semiff \lnot \LIpre(\bhat C)$ 
+	entails that 
+	$\LI(C) \semiff \lnot \LI(\bhat C)$:
+	Clearly the terms to be lifted in $\LIpre(C)$ and $\LIpre(\bhat C)$ are the same and differ only in their color.
+	Even though this results in different lifting variables, that is of no relevance as all lifted variables are instantly bound.
+	Additionally, the quantifier type of any given lifting variable in $\Q(C)$ is dual to the respective one in $\Q(\bhat C)$.
+	Furthermore note that the subterm-relation is not affected by the coloring, so the ordering of the quantifiers in $\Q(C)$ and $\Q(\bhat C)$ is identical.
+	Hence 
+	$\LI(C) \semiff \lnot \LI(\bhat C)$.
+\end{proof}
+
+
+\begin{lemma}
+	\label{lemma:delta_entails_li}
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	Then
+	$\Delta \entails \lnot\lifgammanovar{\LI(C)} \lor \lifgammanovar{C}$.
+\end{lemma}
+\begin{proof}
+	Construct $\bhat \pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$. 
+	Then by Lemma~\ref{lemma:gamma_entails_delta_lifted_invariant}, $\bhat \Gamma \entails \liftnovar{\bhat \Delta}{\LI(\bhat C)} \lor \liftnovar{\bhat \Delta}{\bhat C}$, 
+	which by Lemma~\ref{lemma:li_symmetry} is nothing else than
+	$\Delta \entails \lnot \liftnovar{\Gamma}{\LI(C)} \lor \liftnovar{\Gamma}{C}$.
+\end{proof}
+
+\begin{thm}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	Then $\LI(\pi)$ is an interpolant of $\Gamma$ and $\Delta$.
+\end{thm}
+\begin{proof}
+	\ref{lemma:gamma_entails_delta_lifted_invariant}
+	\ref{lemma:delta_entails_li}
+	plus lifting of ground terms (todo)
+
+\end{proof}
 
 
 \part*{old stuff}
@@ -503,8 +666,6 @@
 	$\LIde(C)$ and $\lifidelta{C}$ for a clause $C$ are defined as $\LI(C)$ and $\lifiboth{C}$ respectively with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
 \end{defi}
 
-
-\tiny
 \begin{remark}
 	Many results involving $\LI(C)$ or $\LIcl(C)$ are valid for $\LIde(C)$ or $\LIclde(C)$
 	in a formulation which is adapted accordingly.
@@ -523,7 +684,7 @@
 
 
 \begin{lemma}
-	\label{lemma:gamma_entails_lide}
+	\label{old:lemma:gamma_entails_lide}
 	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$. Then
 	$\Gamma\entails \LIde(C) \lor \lifidelta{C}$.
 \end{lemma}
@@ -730,7 +891,7 @@
 \end{proof}
 
 \begin{lemma}
-	\label{lemma:gamma_lifted_lide}
+	\label{old:lemma:gamma_lifted_lide}
 	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
 	$\lifgammanovar{\LIde(C)} = \LI(C)$ and $\lifgammanovar{\LIclde(C)} = \LIcl(C)$.
 \end{lemma}
@@ -909,7 +1070,7 @@ Using this, we are able to formulate a result on one-sided interpolants, which a
 \section{Quantifying over the lifting variables}
 
 \begin{defi}[Quantifier block]
-	\label{def:arrow_quantifier_block}
+	\label{old:def:arrow_quantifier_block}
 	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
 	and $\bar x$ the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\LI(C)$ and $\lifiboth{C}$.
 	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid\nolinebreak x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
@@ -921,7 +1082,7 @@ This implies that the ordering is monotonous in the sense that in the subsequent
 
 
 \begin{lemma}
-	\label{lemma:gamma_entails_quantified_lide}
+	\label{old:lemma:gamma_entails_quantified_lide}
 	Let $C$ be a clause of a resolution refutation of $\Gamma\cup\Delta$. Then
 	$\Gamma\entails \Q(C)(\LI(C) \lor \LIcl(C))$.
 \end{lemma}
@@ -937,7 +1098,7 @@ This implies that the ordering is monotonous in the sense that in the subsequent
 \end{proof}
 
 \begin{lemma}
-	\label{lemma:li_symmetry}
+	\label{old:lemma:li_symmetry}
 	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$.
 	Then for a clause $C$ in $\pi$ and its corresponding clause $\bhat C$ in $\bhat \pi$, $\Q(C)(\LI(C)) \spas\semiff \lnot \Q(\bhat C)(\LI(\bhat C))$.
 \end{lemma}
@@ -1041,7 +1202,6 @@ This implies that the ordering is monotonous in the sense that in the subsequent
 						&= \lnot [ (\lifboth{s\tau\neq t\tau} \lor \lifboth{\LI(\bhat C_2)\tau} ) \spam\land (\lifboth{s\tau= t\tau} \lor \lifboth{\LI(\bhat C_1)\tau}) ] \\
 						&\semiff \lnot [ (\lifboth{s\tau= t\tau} \land \lifboth{\LI(\bhat C_2)\tau} ) \spam\lor (\lifboth{s\tau\neq t\tau} \land \lifboth{\LI(\bhat C_1)\tau}) ] \\
 						&= \lnot \LI(\bhat C)
-						\qedhere
 					\end{align*}
 					%}\par
 

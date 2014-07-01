@@ -37,10 +37,8 @@ positioning,fit,calc,decorations.text,shadows%
 
 \usepackage{amsmath}
 \usepackage{amsthm}
-\usepackage{amssymb} % the reals
+%\usepackage{amssymb} % the reals
 \usepackage{mathtools} % smashoperator
-
-\usepackage{bm} % bm, bold math symbols
 
 \usepackage{thm-restate} % restatable env
 
@@ -647,3 +645,7 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\inference}{\ensuremath{\iota}}
 
 \usepackage{cases} % numcases
+
+
+% this should be loaded last: http://tex.stackexchange.com/questions/86343/no-room-for-a-new-mathgroup
+\usepackage{bm} % bm, bold math symbols
