@@ -21,6 +21,7 @@
 
 % for screen display:
 \usepackage[bitstream-charter]{mathdesign}
+%\usepackage{amssymb} % conflicts with bitstream-charter
 %\usepackage{newcent}
 %\usepackage{lmodern}
 
@@ -447,9 +448,9 @@
 
 
 			We now conclude by showing that 
-			$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C}$
+			$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$
 			implies that 
-			$\Gamma \entails \lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C}$.
+			$\Gamma \entails \lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 			The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
 			Let $t$ be a term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
@@ -495,24 +496,79 @@
 		\item{} Factorisation. 
 			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
 			
-			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ \LI(C_1) } \lor \lifdeltanovar{ l \lor l' \lor D }$.
+			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ \LI(C_1) } \lor \lifdeltanovar{ l_\Gamma \lor l'_\Gamma \lor D_\Gamma }$.
 			By Lemma~\ref{lemma:substitute_and_lift}, we obtain
-			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l\tau \lor l'\tau \lor D\tau }$.
+			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l_\Gamma\tau \lor l'_\Gamma\tau \lor D_\Gamma\tau }$.
 			As however $l\sigma \equiv l'\sigma$, 
 			also $l\tau \equiv l'\tau$, so we can apply a factorisation step and obtain that
-			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l\tau \lor D\tau }$,
-			which is nothing else than $\Gamma \entails \LIpre(C) \lor \lifdeltanovar{C}$.
+			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l_\Gamma\tau \lor D_\Gamma\tau }$,
+			which is nothing else than $\Gamma \entails \LIpre(C) \lor \lifdeltanovar{C_\Gamma}$.
 
 		\item{} Paramodulation.
-			Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
+			Suppose the clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
 
-			Z
+			By the induction hypothesis, we obtain the following: 
+
+			$\Gamma \stackrel\markA\entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma} \lor \lifdeltanovar{s}=\lifdeltanovar{t}$
+
+			$\Gamma \stackrel\markB\entails \lifdeltanovar{\LI(C_2)} \lor \lifdeltanovar{(E\occatp{r})_\Gamma}$
+
+			Suppose now that for a model $M$ of $\Gamma$ that $M \entails \lifdeltanovar{s}\neq \lifdeltanovar{t}$.
+			Then we get by \markA{} that $\Gamma \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma}$, which by Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} gives $\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{D_\Gamma\tau}$.
+			Note that $\Gamma \entails \lifdeltanovar{s\tau}\neq \lifdeltanovar{t\tau} \lor \lifdeltanovar{\LI(C_1)\tau}$ suffices for $\Gamma \entails \lifdeltanovar{\LIpre(C)}$ and $\Gamma \entails \lifdeltanovar{D_\Gamma\tau}$ implies for $\Gamma \entails \lifdeltanovar{C_\Gamma}$.
+			Therefore we obtain that 
+			$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
+
+			Now suppose to the contrary that for a model $M$ of $\Gamma$ that $M \entails \lifdeltanovar{s}=\lifdeltanovar{t}$.
+			By Lemma~\ref{lemma:substitute_and_lift} and  Lemma~\ref{lemma:lifting_tau_commute} we obtain from \markB{} that
+			$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{r})_\Gamma\tau}$.
+			As however $\sigma = \mgu(r, s)$, $r\tau \equiv s\tau$
+			and hence $\lifdeltanovar{r\tau} \equiv \lifdeltanovar{s\tau}$.
+			Therefore we also have that 
+			$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\tau}$.
+
+			We proceed by a case distinction:
+			\begin{itemize}
+				\item Suppose that the position $p$ in $E\occatp{s}$ is not contained in a $\Delta$-term.
+					Then
+					$\lifdeltanovar{(E\occatp{s})_\Gamma\tau}$
+					and
+					$\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
+					only differ at at position $p$.
+					But as $\lifdeltanovar{s} = \lifdeltanovar{t}$, we can apply Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} to obtain that 
+					$\lifdeltanovar{s\tau} = \lifdeltanovar{t\tau}$.
+					Thus
+					$M\entails \lifdeltanovar{(E\occatp{s})_\Gamma\tau} \semiff 
+					\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
+					and consequently
+					$M \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\tau}$.
+					As furthermore $\lifdeltanovar{\tau s} =\lifdeltanovar{t} \land \lifdeltanovar{\LI(C_2)\tau}$ entails $\lifdeltanovar{\LIpre(C)}$
+					and $\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$ is sufficient for $\lifdeltanovar{C_\Gamma}$,
+					we have that 
+					$M\entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
+
+
+					\mytodo{ICI}
+			\end{itemize}
+
+
+
 
 
 
 	\end{description}
 \end{proof}
 
+
+\largered{
+	proof idea for ground terms:
+
+	double all arities of function symbols.
+	exchange parameter $t$ by $t, x$, where $x$ is a fresh variable.
+	change interpretation such that even second parameter is ignored.
+	Then there are no ground terms.
+
+}
 
 \begin{lemma}
 	\label{lemma:li_symmetry}
@@ -540,10 +596,10 @@
 					\begin{align*}
 						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 						\LIpre(C)	&= \LI(C_1)\tau\spas\lor {\LI(C_2)\tau} \\
-													&\semiff \lnot (\lnot{\LI(C_1)\tau}\spas\land \lnot {\LI(C_2)\tau}) \\
+															&\semiff \lnot (\lnot{\LI(C_1)\tau}\spas\land \lnot {\LI(C_2)\tau}) \\
 						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\tau}\spas\land \lifboth{(\lnot \LI(C_2))\tau}) \\
-													&\semiff \lnot ({\LI(\bhat C_1)\tau}\spas\land {\LI(\bhat C_2)\tau}) \\
-													&= \lnot \LIpre(\bhat C)
+														 &\semiff \lnot ({\LI(\bhat C_1)\tau}\spas\land {\LI(\bhat C_2)\tau}) \\
+														&= \lnot \LIpre(\bhat C)
 					\end{align*}
 
 				\item $l$ is $\Delta$-colored:
@@ -560,62 +616,62 @@
 						({{l'\tau}} \lor {\LI(C_1)\tau}) \spam\land 
 						(\lnot {l\tau} \lor {\LI(C_2)\tau})\\
 						&\stackrel{{\phantom{\markB}}}\semiff \lnot [ (\lnot {{l'\tau}} \land \lnot {\LI(C_1)\tau}) \spam\lor 
-						({l\tau} \land \lnot{\LI(C_2)\tau}) ] \\
-						&\stackrel{{\phantom{\markB}}}=\lnot [ (\lnot {{\bhat l'\tau}} \land {\LI(\bhat C_1)\tau}) \spam\lor 
-						({\bhat l\tau} \land {\LI(\bhat C_2)\tau}) ]\\
-						& \stackrel{{\phantom{\markB}}}= \lnot \LIpre(\bhat C) 
-					\end{align*}
-			\end{enumerate}
+					({l\tau} \land \lnot{\LI(C_2)\tau}) ] \\
+					&\stackrel{{\phantom{\markB}}}=\lnot [ (\lnot {{\bhat l'\tau}} \land {\LI(\bhat C_1)\tau}) \spam\lor 
+				({\bhat l\tau} \land {\LI(\bhat C_2)\tau}) ]\\
+				& \stackrel{{\phantom{\markB}}}= \lnot \LIpre(\bhat C) 
+			\end{align*}
+	\end{enumerate}
 
 
-		\item[Factorisation.]
-			Suppose the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
-			with $\sigma = \mgu(\inference)$.
+\item[Factorisation.]
+	Suppose the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
+	with $\sigma = \mgu(\inference)$.
 
-			As the construction is not influenced by the coloring, the induction hypothesis $\LIpre(C) = \LI(C_1)\tau$ suffices.
+	As the construction is not influenced by the coloring, the induction hypothesis $\LIpre(C) = \LI(C_1)\tau$ suffices.
 
-			Then $\LIpre(C) = \lifboth{\LI(C_1)\tau}$, so the construction is not influenced by the coloring and by the induction hypothesis, $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$.
+	Then $\LIpre(C) = \lifboth{\LI(C_1)\tau}$, so the construction is not influenced by the coloring and by the induction hypothesis, $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$.
 
-		\item[Paramodulation.]
-			Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
+\item[Paramodulation.]
+	Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
 
 
-			We proceed by a case distinction:
-			\begin{itemize}
-				\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Delta$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
-					Then $p$ in $\bhat E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $\bhat E\occatp{r} \lor \LI(\bhat E\occatp{r})$. 
+	We proceed by a case distinction:
+	\begin{itemize}
+		\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Delta$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
+			Then $p$ in $\bhat E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $\bhat E\occatp{r} \lor \LI(\bhat E\occatp{r})$. 
 
-					\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-						%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-						\begin{align*}
-							%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-							\LIpre(C) 
-						 &= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \lor ({s\tau=t\tau} \land {h\occur{s}\tau \neq h\occur{t}\tau}) \\
-						 &\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \land ({s\tau= t\tau} \lor \lnot{\LI(C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
-						 &= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
-						 &\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ]\\
-						 &= \lnot \LIpre(\bhat C)
-						\end{align*}
-					}\par
-
-				\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
-					This case can be argued analogously.
-
-				\item Otherwise:
-					%\hspace*{\dimexpr-\leftmargini-\leftmarginii-\leftmarginiii}\parbox{\linewidth}{%
-					%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-					\begin{align*}
-						%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-						\LIpre(C) 
-						&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \\
-						&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
-						&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
-						&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
+			\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
+				%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
+				\begin{align*}
+					%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
+					\LIpre(C) 
+					&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \lor ({s\tau=t\tau} \land {h\occur{s}\tau \neq h\occur{t}\tau}) \\
+					&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \land ({s\tau= t\tau} \lor \lnot{\LI(C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
+					 &= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
+						&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ]\\
 						&= \lnot \LIpre(\bhat C)
-					\end{align*}
-					%}\par
+				\end{align*}
+			}\par
 
-			\end{itemize}
+		\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
+			This case can be argued analogously.
+
+		\item Otherwise:
+			%\hspace*{\dimexpr-\leftmargini-\leftmarginii-\leftmarginiii}\parbox{\linewidth}{%
+			%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
+			\begin{align*}
+				%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
+				\LIpre(C) 
+				&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \\
+				 &\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
+					&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
+					 &\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
+						&= \lnot \LIpre(\bhat C)
+			\end{align*}
+			%}\par
+
+	\end{itemize}
 
 	\end{itemize}
 
@@ -656,583 +712,5 @@
 	plus lifting of ground terms (todo)
 
 \end{proof}
-
-
-\part*{old stuff}
-
-\section{Lifting the $\Delta$-terms}
-
-\begin{defi}
-	$\LIde(C)$ and $\lifidelta{C}$ for a clause $C$ are defined as $\LI(C)$ and $\lifiboth{C}$ respectively with the difference that in its inductive definition, every lifting $\lifboth{\varphi}$ for a formula or term $\varphi$ is replaced by a lifting of only the $\Delta$-terms $\lifdeltanovar{\varphi}$.
-\end{defi}
-
-\begin{remark}
-	Many results involving $\LI(C)$ or $\LIcl(C)$ are valid for $\LIde(C)$ or $\LIclde(C)$
-	in a formulation which is adapted accordingly.
-	This can easily be seen by the following proof idea:
-
-	Let $f_1, \dots, f_n$ be all $\Gamma$-colored function or constant symbols occurring in $C$,
-	$c$ a fresh constant symbol and $g$ a fresh $n$-ary function symbol.
-	Construct a formula $\varphi:  g(t_1, \dots, t_n) = g(t_1, \dots, t_n)$,
-	such that $t_i = f_i(c_1, \dots, c_m)$ for $1\varleq i \varleq n$ where $m$ is the arity of $f_i$ and $c_j = c$ for $1\varleq j \varleq m$. Let $\Delta' = \Delta \cup \{\varphi\}$ and apply the desired result to the initial clause sets $\Gamma$ and $\Delta'$.
-
-	Under this construction, every originally $\Gamma$-colored symbol is now grey, which implies that $\LI(C) = \LIde(C)$ as well as $\LIcl(C) = \LIclde(C)$.
-	But $\Delta\entails \psi \semiff \Delta'\entails \psi$ for any formula $\psi$.
-\end{remark}
-
-
-
-
-\begin{lemma}
-	\label{old:lemma:gamma_entails_lide}
-	Let $C$ be a clause in a resolution refutation of $\Gamma\cup\Delta$. Then
-	$\Gamma\entails \LIde(C) \lor \lifidelta{C}$.
-\end{lemma}
-\begin{proof}
-	We proceed by induction of the strengthening $\Gamma\entails \LIde(C) \lor \lifidelta{C_\Gamma}$.
-
-	\begin{description}
-		\item{} Base case.
-			For $C\in\Gamma$, $\LIclde(C_\Gamma) = \lifdeltanovar{C} = C$. Hence $\Gamma \entails \LIclde(C_\Gamma)$.
-
-			For $C\in\Delta$, $\LIde(C) = \top$, so $\Gamma \entails \LIde(C)$.
-
-		\item{} Resolution.
-			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
-
-			\newcommand{\clauseOnePrime}{\LIclde( (C_1)_\Gamma )^*}
-			\newcommand{\clauseTwoPrime}{\LIclde( (C_2)_\Gamma )^*}
-
-			We define the following abbreviations:
-
-			$\clauseOnePrime = \LIclde( (C_1)_\Gamma \setminus \{l\cllde\} )$
-
-			$\clauseTwoPrime = \LIclde( (C_2)_\Gamma \setminus \{\lnot l'\cllde\} )$
-
-			Hence the induction hypothesis can be stated as follows:
-
-			$\Gamma \entails \LIde(C_1) \lor \clauseOnePrime \lor (l\cllde)_\Gamma$
-
-			$\Gamma \entails \LIde(C_2) \lor \clauseTwoPrime \lor \lnot (l'\cllde)_\Gamma$
-
-			By Lemma~\ref{lemma:no_colored_terms}, $\LIde(C_i)$ and $\LIclde(C_i)$ for $i\in\{1,2\}$ do not contain $\Delta$-colored terms. 
-			Hence we are able to apply Lemma~\ref{lemma:substitute_and_lift} in order to obtain
-
-			$\Gamma \stackrel\markA\entails \lifdeltanovar{\LIde(C_1)\tau} \lor \lifdeltanovar{\clauseOnePrime\tau} \lor \lifdeltanovar{(l\cllde)_\Gamma\tau}$
-
-			$\Gamma \stackrel\markB\entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{\clauseTwoPrime\tau} \lor \lnot \lifdeltanovar{(l'\cllde)_\Gamma\tau}$
-
-			By Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}, we obtain that
-			$\lifdeltanovar{l\cllde\tau} = 
-			\lifdeltanovar{l'\cllde\tau}$.
-
-			Now we distinguish cases based on the color of the resolved literal:
-
-			\begin{itemize}
-				\item Suppose that $l$ is $\Gamma$-colored.
-					Then as
-					$\lifdeltanovar{l\cllde\tau} = 
-					\lifdeltanovar{l'\cllde\tau}$, 
-					we can perform a resolution step on \markA{} and \markB{}, which gives that
-					$\Gamma \entails
-					\lifdeltanovar{\LIde(C_1)\tau} \spas\lor \lifdeltanovar{\clauseOnePrime\tau} \spam\lor 
-					\lifdeltanovar{\LIde(C_2)\tau} \spas\lor \lifdeltanovar{\clauseTwoPrime\tau}$.
-					This however is nothing else than $\Gamma\entails \LIde(C) \lor \LIclde(C)$.
-
-				\item Suppose that $l$ is $\Delta$-colored. Then \markA{} and \markB{} simply to the following:
-
-					$\Gamma \entails \lifdeltanovar{\LIde(C_1)\tau} \lor \lifdeltanovar{\clauseOnePrime\tau}$
-
-					$\Gamma \entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{\clauseTwoPrime\tau}$
-
-					These however imply that 
-					$\Gamma \entails 
-					\clauseOnePrime \spas\lor \clauseTwoPrime \spas\lor\allowbreak
-					(\lifdeltanovar{\LIde(C_1)\tau} \land
-					\lifdeltanovar{\LIde(C_2)\tau} )$, which is nothing else than
-					$\Gamma \entails \LIde(C) \lor \LIclde(C)$.
-
-				\item Suppose that $l$ is grey.
-					Suppose that $M$ is a model of $\Gamma$ such that
-					%$M\notentails \lifdeltanovar{\LIclde(C_1)\tau} \lor \lifdeltanovar{\LIclde(C_2)\tau}$.
-					$M\notentails \LIclde(C)$, i.e.\ 
-					$M\notentails \lifdeltanovar{\clauseOnePrime\tau} \lor \lifdeltanovar{\clauseTwoPrime\tau}$.
-					Then $M \entails \lifdeltanovar{\LIde(C_1)\tau} \lor \lifdeltanovar{l\cllde\tau}$
-					as well as 
-					$M \entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lnot \lifdeltanovar{l'\cllde\tau}$.
-					Due to $\lifdeltanovar{l\cllde\tau} = 
-					\lifdeltanovar{l'\cllde\tau}$,
-					we obtain that
-					$M\entails (\lifdeltanovar{l\cllde\tau} \land \lifdeltanovar{\LIde(C_2)\tau}) \spam\lor
-					(\lnot \lifdeltanovar{l'\cllde\tau} \land \lifdeltanovar{\LIde(C_1)\tau})$,
-					which is nothing else than $M\entails \LIde(C)$.
-
-			\end{itemize}
-
-
-		\item{} Factorisation. 
-			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
-
-			We introduce the abbreviation
-			$\LIclde( (C_1)_\Gamma)^* = \LIclde( (C_1)_\Gamma \setminus \{l\cllde, \lnot l'\cllde\} )$
-			and express the induction hypothesis as follows:
-
-			$\Gamma \entails \LIde(C_1) \lor \LIclde( (C_1)_\Gamma)^* \lor (l\cllde)_\Gamma \lor \lnot (l'\cllde)_\Gamma$
-
-			By Lemma~\ref{lemma:no_colored_terms}, $\LIde(C_i)$ and $\LIclde(C_i)$ for $i\in\{1,2\}$ do not contain $\Delta$-colored terms. 
-			Hence we are able to apply Lemma~\ref{lemma:substitute_and_lift} in order to obtain
-
-			$\Gamma \stackrel\markC\entails \lifdeltanovar{\LIde(C_1)\tau} \lor \lifdeltanovar{\LIclde( (C_1)_\Gamma)^*\tau} \lor \lifdeltanovar{(l\cllde)_\Gamma\tau} \lor \lnot \lifdeltanovar{(l'\cllde)_\Gamma\tau}$
-
-			As by Lemma~\ref{lemma:li_vs_clause_plus_literals_equal} we get that 
-			$\lifdeltanovar{l\cllde\tau} = 
-			\lifdeltanovar{l'\cllde\tau}$,
-			we can perform a factorisation step on \markC{} to obtain that 
-			$\Gamma \entails \lifdeltanovar{\LIde(C_1)\tau} \lor \lifdeltanovar{\LIclde( (C_1)_\Gamma)^*\tau} \lor \lifdeltanovar{(l\cllde)_\Gamma\tau}$.
-			But this is nothing else than $\Gamma \entails \LIde(C) \lor \LIclde(C_\Gamma)$.
-			\qedhere
-
-
-		\item{} Paramodulation.
-			Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
-
-			We introduce the abbreviation $\LIclde((C_1)_\Gamma)^* = \LIclde( (C_1)_\Gamma \setminus \{ (s=t)\cll\})$ and express the induction hypothesis as follows:
-
-			$\Gamma \stackrel\markA\entails \LIde(C_1) \lor \LIclde(C_1)^* \lor (s=t)\cll $
-
-			$\Gamma \stackrel\markB\entails \LIde(C_2) \lor \LIclde(C_2)$
-
-			%By Lemma~\ref{lemma:li_vs_clause_plus_literals_equal},
-
-			%$\Gamma \entails \LIde(C_1) \lor \LIclde(C_1)^* \lor (s=t)\cll $
-
-			%$\Gamma \entails \LIde(C_2) \lor \lifdeltanovar{ E\occatp{r} }$
-
-			%By Lemma~\ref{lemma:no_colored_terms} and Lemma~\ref{lemma:substitute_and_lift}, we obtain that 
-
-			%$\Gamma \stackrel\markA\entails \lifdeltanovar{\LIde(C_1)\tau} \lor \lifdeltanovar{\LIcl(C_1)^*\tau} \lor \lifdeltanovar{(s=t)\cll\tau}$
-
-			%$\Gamma \stackrel\markB\entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{\LIcl(C_2)\tau}$
-
-			Suppose now that for a model $M$ of $\Gamma$ that $M \entails \lifdeltanovar{s} \neq \lifdeltanovar{t}$.
-			Then by Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}, 
-			$M \entails s\cll \neq t\cll$.
-			Hence we get by \markA{} that 
-			$\Gamma \entails \LIde(C_1) \lor \LIcl(C_1)^*$
-			and consequently 
-			by Lemma~\ref{lemma:no_colored_terms} and Lemma~\ref{lemma:substitute_and_lift} that 
-			$\Gamma \entails \lifdeltanovar{\LIde(C_1)\tau} \lor \lifdeltanovar{\LIcl(C_1)^*\tau}$.
-			But this however implies that $\Gamma \entails \LIde(C) \lor \LIcl(C)$.
-
-			Now suppose to the contrary that for a model $M$ of $\Gamma$ that $M \entails \lifdeltanovar{s} =\nolinebreak \lifdeltanovar{t}$.
-			Note that by Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}, $\lifdeltanovar{ (E\occatp{r})_\Gamma} = \LIclde(C_2)$.
-			Hence \markB{} is nothing else than
-			$\Gamma \entails \LIde(C_2) \lor \lifdeltanovar{ (E\occatp{r})_\Gamma }$.
-			From this, it also follows by Lemma~\ref{lemma:no_colored_terms} and Lemma~\ref{lemma:substitute_and_lift} that
-			$\Gamma \entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{\lifdeltanovar{ (E\occatp{r})_\Gamma }\tau}$, 
-			which by Lemma~\ref{lemma:lifting_tau_commute} simplifies to
-			$\Gamma \entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{(E\occatp{r})_\Gamma \tau}$, 
-
-			%We show that
-			%$
-			%\lifdeltanovar{ (E\occatp{r})_\Gamma\sigma }
-			%\semiff
-			%\lifdeltanovar{ (E\occatp{t})_\Gamma\sigma }
-			%$.
-
-			%then, $\Gamma\entails\LIde(C_2) \lor \lifdeltanovar{ (E\occatp{t})_\Gamma\sigma }$
-
-			Due to $\sigma = \mgu(r, s)$, $r\tau\syneq s\tau$ and consequently $\lifdeltanovar{r\tau} = \lifdeltanovar{s\tau}$.
-			Hence 
-			%$\lifdeltanovar{(E\occatp{r})_\Gamma\sigma} \equiv \lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$.
-			$\Gamma \entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{(E\occatp{s})_\Gamma \tau}$, 
-
-
-			We proceed by a case distinction:
-			\begin{itemize}
-				\item
-					Suppose that $p$ in $E\occatp{s}$ is not contained in a $\Delta$-term.
-					Then $\lifdeltanovar{ (E\occatp{s})_\Gamma \tau }$ and $\lifdeltanovar{ (E\occatp{t})_\Gamma \tau}$ only differ at position $p$.
-					But as $M\entails \lifdeltanovar{s} = \lifdeltanovar{t}$, 
-					by Lemma~\ref{lemma:substitute_and_lift} and
-					Lemma~\ref{lemma:lifting_tau_commute} we derive that
-					$M\entails \lifdeltanovar{s\tau} = \lifdeltanovar{t\tau}$. 
-					Then however 
-					$M\entails \lifdeltanovar{ (E\occatp{s})_\Gamma \tau } \semiff \lifdeltanovar{ (E\occatp{t})_\Gamma \tau}$
-					and thus
-					$M \entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{ (E\occatp{t})_\Gamma \tau }$,
-					which is sufficient for
-					$M \entails \LIde(C) \lor \LIclde(C)$.
-
-					%From this we can however conclude that $M\entails \lifdeltanovar{(E\occatp{r})_\Gamma\sigma} \semiff \lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$.
-
-				\item 
-					Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Delta$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LIde(E\occatp{r})$. 
-					Suppose furthermore that $M\entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$ as otherwise $M \entails s=\nolinebreak t \land \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$, which implies that $M \entails \LIde(C)$.
-
-					But then we again obtain that 
-					$\lifdeltanovar{ (E\occatp{s})_\Gamma \tau }$ and $\lifdeltanovar{ (E\occatp{t})_\Gamma \tau}$ only differ at position $p$ and
-					by a similar line of argument as in the former case, we can deduce that 
-					$M \entails \LIde(C) \lor \LIclde(C)$.
-
-				\item 
-					Suppose that $p$ in $E\occatp{s}$ is contained in a maximal $\Delta$-term $h\occ{s}$, which occurs exactly once in $E\occatp{s} \lor \LIde(E\occatp{r})$. 
-					Then the lifting variable $z_{h\occ{s}}$ occurs exactly once in \markB, where it is implicitly universally quantified. 
-					Therefore we can instantiate this variable by any term, in particular by $z_{h\occ{t}}$, 
-					so we obtain that 
-					$\Gamma \entails \lifdeltanovar{\LIde(C_2)\tau} \lor \lifdeltanovar{(E\occatp{t})_\Gamma \tau}$.
-					which again is sufficient for
-					$M \entails \LIde(C) \lor \LIclde(C)$.
-					%But this is nothing else than stating that \dots formula from above adapted appropriately \dots
-					\qedhere
-			\end{itemize}
-
-	\end{description}
-\end{proof}
-
-\begin{lemma}
-	\label{old:lemma:gamma_lifted_lide}
-	For a clause $C$ of a resolution refutation of $\Gamma\cup\Delta$, 
-	$\lifgammanovar{\LIde(C)} = \LI(C)$ and $\lifgammanovar{\LIclde(C)} = \LIcl(C)$.
-\end{lemma}
-\begin{proof}
-	We proceed by induction.
-	\begin{description}
-		\item{} Base case.
-			For $C \in \Gamma\cup\Delta$, $\LIclde(C) = \lifdeltanovar{C}$.
-			By Lemma~\ref{lemma:lifting_order_not_relevant}, $\lifgammanovar{\lifdeltanovar{C}} = \lifboth{C}$,
-			so $\lifgammanovar{\LIclde{C}} = \lifboth{C} = \LIclde(C)$.
-
-			$\LIde(C)$ does not contain colored symbols.
-
-		\item{} Inductions step.
-			Suppose the clause $C$ is the result of a resolution, factorisation or paramodulation inference \inference{} of the clauses $\bbar C$.
-
-			%$\LIde(C)$ and $\LI(C)$ as well as $\LIclde(C)$ and $\LIcl(C)$ differ only in the liftings, or more precisely:
-
-			As liftings do not affect the predicate, we do not consider them further.
-			Note that every term in $\LI(C)$ or $\LIcl(C)$ is of the form $\lifboth{t\tau}$ for some term $t$ in $\LI(C_i)$ or $\LIcl(C_i)$ for some $C_i \in \bbar C$.
-			Furthermore,
-			every term in $\LIde(C)$ or $\LIclde(C)$ is of the form $\lifdeltanovar{t\tau}$ for some term $t$ in $\LIde(C_i)$ or $\LIclde(C_i)$ for some $C_i \in \bbar C$.
-
-			%Every literal in $\LI(C)$ ($\LIde(C)$) is of the form $\lifboth{\lambda\tau}$ ($\lifdelta{\lambda\tau}$) for $\lambda$ in $\LI(C_i)$ ($\LIde(C_i)$) or $\LIcl(C_i)$ ($\LIclde(C_i)$), $i\in\{1,2\}$.
-
-			%Every literal in $\LIcl(C)$ ($\LIclde(C)$) is of the form $\lifboth{\lambda\tau}$ ($\lifdelta{\lambda\tau}$) for $\lambda$ in $\LIcl(C_i)$ ($\LIclde(C_i)$), $i\in\{1,2\}$.
-
-			Hence it suffices to show that for a term $t$ in $\LIde(C_i)$ or $\LIclde(C_i)$ and its corresponding term $\lifgammanovar{t}$ in $\LI(C_i)$ or $\LIcl(C_i)$ for some $C_i \in \bbar C$
-			that $\lifgammanovar{ \lifdeltanovar{t\tau} } = \lifboth{\lifgammanovar{t}\tau}$.
-			%As $\lambda$ corresponds to a literal in $\LIde$ or $\LIclde$, we may by Lemma~\ref{lemma:no_colored_terms} additionally assume that no $\Delta$-colored term occurs in $\lambda$.
-
-			By Lemma~\ref{lemma:no_colored_terms}, no $\Delta$-terms occur in $t$.
-			Hence 
-			$\lifboth{t} = \lifgammanovar{t}$ and consequently
-			$\lifboth{\lifboth{t}\tau} = \lifboth{\lifgammanovar{t}\tau}$.
-			By Lemma~\ref{lemma:lifting_tau_commute}, $\lifboth{\lifboth{t}\tau} = \lifboth{t\tau}$ and by Lemma~\ref{lemma:lifting_order_not_relevant}, $\lifboth{t\tau} = \lifgammanovar{\lifdeltanovar{t\tau}}$.
-			Hence $\lifgammanovar{\lifdeltanovar{t\tau}} = \lifboth{\lifgammanovar{t}\tau}$.
-			%By Lemma~\ref{lemma:lifting_tau_commute},
-			%$\lifboth{\lambda\tau} = \lifboth{\lifgammanovar{\lambda}\tau}$, 
-			%which by Lemma~\ref{lemma:lifting_order_not_relevant} is nothing else than
-			%$\lifgammanovar{\lifdeltanovar{\lambda\tau}} = \lifboth{\lifgammanovar{\lambda}\tau}$.
-			\begin{comment}
-				Hence it suffices to show that for a literal $\lambda$ in $\LIde(C_i)$ or $\LIclde(C_i)$ and its corresponding literal $\kappa$ in $\LI(C_i)$ or $\LIcl(C_i)$ for some $C_i \in \bbar C$
-				that $\lifgammanovar{ \lifdeltanovar{\lambda\tau} } = \lifboth{\kappa\tau}$.
-				%As $\lambda$ corresponds to a literal in $\LIde$ or $\LIclde$, we may by Lemma~\ref{lemma:no_colored_terms} additionally assume that no $\Delta$-colored term occurs in $\lambda$.
-
-				By the induction hypothesis, $\lifgammanovar{\lambda} = \kappa$.
-				By Lemma~\ref{lemma:no_colored_terms}, no $\Delta$-terms occur in $\lambda$.
-				Hence 
-				$\lifboth{\lambda} = \kappa$ and also
-				$\lifboth{\lifboth{\lambda}\tau} = \lifboth{\kappa\tau}$.
-				By Lemma~\ref{lemma:lifting_tau_commute},
-				$\lifboth{\lambda\tau} = \lifboth{\kappa\tau}$, 
-				which by Lemma~\ref{lemma:lifting_order_not_relevant} is nothing else than
-				$\lifgammanovar{\lifdeltanovar{\lambda\tau}} = \lifboth{\kappa\tau}$.
-			\end{comment}
-			\begin{comment}
-
-				For the induction step, it suffices to show that for a literal $\lambda$ with $\lifgammanovar{\lambda} = \kappa$
-				that $\lifgammanovar{\lifdeltanovar{\lambda} \tau} = \lifboth{\kappa\tau}$.
-
-				We abbreviate\
-				$C_1\setminus \{l\}$ by $C_1^*$ and
-				$C_2\setminus \{\lnot l'\}$ by $C_2^*$.
-
-				Note that each literal in $\LIclde(C)$ is of the form $\lifdeltanovar{\lambda\tau}$ for some literal $\lambda$ in $\LIclde(C_1)$ or $\LIclde(C_2)$.
-				Hence by the induction hypothesis, $\lifgammanovar{\lambda}$ is contained in $\LIcl(C_1)$ or $\LIcl(C_1)$.
-				Note that every literal in $\LIcl(C)$ is of this form $\lifboth{\lifgammanovar{\lambda}\tau}$ for some $\lambda$ in $\LIclde(C_1)$ or $\LIclde(C_2)$.
-				We show that $\lifboth{\lifgammanovar{\lambda}\tau} = \lifgammanovar{\lifdeltanovar{\lambda\tau}}$.
-
-				As $\lambda$ is contained in $\LIclde(C_1)$ or $\LIclde(C_2)$, by Lemma~\ref{lemma:no_colored_terms}, $\lambda$ does not contain $\Delta$-colored terms.
-				Hence $\lifboth{\lifgammanovar{\lambda}\tau} =
-				\lifboth{\lifboth{\lambda}\tau}$.
-				But by Lemma~\ref{lemma:lifting_tau_commute}, 
-				$\lifboth{\lifboth{\lambda}\tau} = \lifboth{\lambda\tau}$, which by Lemma~\ref{lemma:lifting_order_not_relevant} is nothing else than $\lifgammanovar{\lifdeltanovar{\lambda\tau}}$.
-
-
-				We now distinguish cases based on the color of the resolved literal:
-				\begin{itemize}
-					\item Suppose $l$ is $\Gamma$-colored.
-				\end{itemize}
-
-				~
-
-				$\LIclde$:
-
-				$\lifgammanovar{\LIclde(C_1)} = \LIcl(C_1)$
-
-				$\lifdeltanovar{\LIclde(C_1)\tau} \subseteq \LIclde(C)$ 
-
-				%$C_1\sigma \subseteq C$
-
-				$\lifboth{\LIcl(C_1)\tau} \subseteq \LIcl(C)$
-
-				to show: $\lifgammanovar{ \LIclde( C)} = \LIcl(C)$
-
-				$ \lifboth{ \lifgammanovar{\LIclde(C_1)} \tau} = \lifboth{ \LIcl(C_1)\tau}$ $\quad$ IH + same op on both sides
-
-				new lemma above
-
-				$ \lifboth{ \lifgammanovar{\LIclde(C_1)} \tau} = 
-				\lifboth{ \LIclde(C_1) \tau} $
-				ub
-
-				$\LIde$:
-
-				\begin{itemize}
-					\item Supp $\Gamma$:
-
-						IH: $\lifgammanovar{ \LIde(C_1) } = \LI(C_1)$
-
-						hence also: $\lifboth{ \LIde(C_1) } = \LI(C_1)$ (by lemma: no $\Delta$-terms in \dots)
-
-						+ $\tau$:
-						$\lifboth{ \LIde(C_1) }\tau = \LI(C_1)\tau$ 
-
-						+ $\ell$:
-						$\lifboth{\lifboth{ \LIde(C_1) }\tau} = \lifboth{\LI(C_1)\tau}$ 
-
-						by new lemma
-						$\lifboth{ \LIde(C_1) \tau} = \lifboth{\LI(C_1)\tau}$ 
-
-						hence by Lemma~\ref{lemma:lifting_order_not_relevant}, $\lifgammanovar{\lifdeltanovar{\LIde(C_1)\tau}} \subseteq \LIde(C)$
-
-						hence $\lifgammanovar{\LIde(C)} \subseteq \LIde(C)$
-
-
-
-				\end{itemize}
-
-			\end{comment}
-			\qedhere
-	\end{description}
-
-\end{proof}
-
-\section{One-sided interpolants}
-
-As we have just seen, the formula $\LIde(C) \lor \LIclde(C)$ now satisfies one condition of interpolants.
-Using this, we are able to formulate a result on one-sided interpolants, which are defined as follows:
-
-\begin{defi}
-	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
-	A \defiemph{one-sided interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that
-	\begin{enumerate}
-		\item $\Gamma \entails I$
-		\item $\Lang(I) \subseteq \Lang(\Gamma) \cap \Lang(\Delta)$
-			\qedhere
-	\end{enumerate}
-\end{defi}
-
-\begin{prop}
-	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma\cup\Delta$ is unsatisfiable.
-	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$ formula.
-\end{prop}
-\begin{proof}
-	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
-	By Lemma~\ref{lemma:gamma_entails_lide}, $\Gamma \entails \LIde(\pi) \lor \LIclde(\pi)$,
-	or in other words
-	$\Gamma \entails \forall x_1 \dots \forall x_n  \LIde(\pi) \lor \LIclde(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\LIde(\pi) \lor \LIclde(\pi)$.
-	%Let $x_1, \dots, x_n$ be the $\Delta$-lifting variables in $I$.
-	By Lemma~\ref{lemma:no_colored_terms}, the formula $\LIde(\pi) \lor \LIclde(\pi)$ does not contain $\Delta$-colored symbols.
-
-	Let $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\LIde(\pi) \lor \LIclde(\pi)}$
-	and
-	\[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\LIde(\pi) \lor \LIclde(\pi)}.\]
-	Note that $I$ does not contain any $\Gamma$-terms.
-	As $\LIde(\pi) \lor \LIclde(\pi)$ contains witness terms for every existential quantifier in $I$ with respect to $\Gamma$, $\Gamma \entails I$.
-	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
-\end{proof}
-
-
-
-
-
-\section{Quantifying over the lifting variables}
-
-\begin{defi}[Quantifier block]
-	\label{old:def:arrow_quantifier_block}
-	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma\cup\Delta$
-	and $\bar x$ the $\Delta$-lifting variables and $\bar y$ the $\Gamma$-lifting variables occurring in $\LI(C)$ and $\lifiboth{C}$.
-	$\Q(C)$ denotes an arrangement of the elements of  $\{ \forall x_t \mid\nolinebreak x_t \in \bar x\} \cup \{ \exists y_t \mid y_t \in \bar y\}$ such that for two lifting variable $z_s$ and $z_r$, if $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
-	We denote $\Q(\square)$ by $\Q(\pi)$.
-\end{defi}
-
-Note that at a certain stage of the interpolant extraction, the quantifier block possesses a certain partial ordering based on the subterm relation of the indices of the lifting variables.
-This implies that the ordering is monotonous in the sense that in the subsequent course of the extraction, this ordering is only extended but existing order-relations are not modified, even though the indices of the lifting variables are altered by means of substitution.
-
-
-\begin{lemma}
-	\label{old:lemma:gamma_entails_quantified_lide}
-	Let $C$ be a clause of a resolution refutation of $\Gamma\cup\Delta$. Then
-	$\Gamma\entails \Q(C)(\LI(C) \lor \LIcl(C))$.
-\end{lemma}
-\begin{proof}
-	By Lemma~\ref{lemma:gamma_entails_lide},
-	$\Gamma\entails \LIde(C) \lor \LIclde(C)$ and 
-	by Lemma~\ref{lemma:gamma_lifted_lide}
-	$\lifgammanovar{ \LIde(C) \lor \LIclde(C)} = \LI(C) \lor \LIcl(C)$.
-	Hence the terms in $\LIde(C) \lor \LIclde(C)$ provide witness terms for the $\Gamma$-lifting variables in $\LI(C) \lor \LIcl(C)$, which are existentially quantified in $\Q(C) (\LI(C) \lor \LIcl(C))$.
-
-	Furthermore, the ordering imposed on the quantifiers in $\Q(C)$ implies that if a $\Delta$-lifting variable $x_s$ occurs in a witness term for a $\Gamma$-lifting variable $y_r$, $y_r$ is quantified in the scope of the quantifier of $x_s$ as $s$ is a subterm of $r$.
-	This however ensures that the witness terms are valid.
-\end{proof}
-
-\begin{lemma}
-	\label{old:lemma:li_symmetry}
-	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$.
-	Then for a clause $C$ in $\pi$ and its corresponding clause $\bhat C$ in $\bhat \pi$, $\Q(C)(\LI(C)) \spas\semiff \lnot \Q(\bhat C)(\LI(\bhat C))$.
-\end{lemma}
-\begin{proof}
-	%Note that $\LIcl$ is defined irrespective of the coloring, so $\LIcl(C) = \LIcl(\bhat C)$.
-
-	Consider furthermore that liftings variables of $C$ and $\bhat C$ only differ in the variable symbol, but not in the index, and that the quantifier type of any given lifting variable in $C$ is dual to the corresponding one in $\bhat C$.
-	Hence for any formula $\phi$, $\Q(C) \lnot \phi \spas\semiff \lnot \Q(\bhat C) \phi$.
-
-	It remains to show that $\LI(C) \semiff \lnot \LI(\bhat C)$, which we establish by induction:
-
-	\begin{itemize}
-		\item[Base case.]
-			If $C \in \Gamma$, then $\LI(C) = \bot \semiff \lnot \top \semiff \lnot \LI(\bhat C)$ as $\bhat C\in\Delta$. 
-			The case for $C\in\Delta$ can be argued analogously.
-
-		\item[Resolution.]
-			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
-
-			As $\tau$ depends only on $\sigma$,
-			$\tau$ is the same for both $\pi$ and $\bhat \pi$.
-
-			We now distinguish the following cases:
-
-			\begin{enumerate}
-
-				\item $l$ is $\Gamma$-colored:
-					\begin{align*}
-						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-						\LI(C)	&= \lifboth{\LI(C_1)\tau}\spas\lor \lifboth{\LI(C_2)\tau} \\
-													&\semiff \lnot (\lnot\lifboth{\LI(C_1)\tau}\spas\land \lnot \lifboth{\LI(C_2)\tau}) \\
-						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\tau}\spas\land \lifboth{(\lnot \LI(C_2))\tau}) \\
-													&\semiff \lnot (\lifboth{\LI(\bhat C_1)\tau}\spas\land \lifboth{\LI(\bhat C_2)\tau}) \\
-													&= \lnot \LI(\bhat C)
-					\end{align*}
-
-				\item $l$ is $\Delta$-colored:
-					This case can be argued analogously.
-
-				\item $l$ is grey:
-					Note that by Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}, $\lifboth{l\cll\tau} = \lifboth{l'\cll\tau}$ \markB.
-					\begin{align*}
-						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-						\LI(C) &\stackrel{{\phantom{\markB}}}=
-						(\lnot {\lifboth{l'\cll\tau}} \land \lifboth{\LI(C_1)\tau}) \spam\lor 
-						(\lifboth{l\cll\tau} \land \lifboth{\LI(C_2)\tau})\\
-						&\stackrel{{\markB}}\semiff\,
-						({\lifboth{l'\cll\tau}} \lor \lifboth{\LI(C_1)\tau}) \spam\land 
-						(\lnot \lifboth{l\cll\tau} \lor \lifboth{\LI(C_2)\tau})\\
-						&\stackrel{{\phantom{\markB}}}\semiff \lnot \Big( (\lnot {\lifboth{l'\cll\tau}} \land \lnot \lifboth{\LI(C_1)\tau}) \spam\lor 
-						(\lifboth{l\cll\tau} \land \lnot\lifboth{\LI(C_2)\tau}) \Big) \\
-						&\stackrel{{\phantom{\markB}}}=\lnot \Big( (\lnot {\lifboth{\bhat l'\cll\tau}} \land \lifboth{\LI(\bhat C_1)\tau}) \spam\lor 
-						(\lifboth{\bhat l\cll\tau} \land \lifboth{\LI(\bhat C_2)\tau}) \Big)\\
-						& \stackrel{{\phantom{\markB}}}= \lnot \LI(\bhat C) 
-					\end{align*}
-
-
-			\end{enumerate}
-
-
-
-		\item[Factorisation.]
-			Suppose the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
-			with $\sigma = \mgu(\inference)$.
-
-			Then $\LI(C) = \lifboth{\LI(C_1)\tau}$, so the construction is not influenced by the coloring and the induction hypothesis gives the result.
-
-		\item[Paramodulation.]
-			Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
-
-
-			We proceed by a case distinction:
-			\begin{itemize}
-				\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Delta$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
-					Then $p$ in $\bhat E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $\bhat E\occatp{r} \lor \LI(\bhat E\occatp{r})$. 
-
-					\hspace*{\dimexpr-\leftmargini-\leftmarginii-\leftmarginiii}\parbox{\linewidth}{%
-						%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-						\begin{align*}
-							%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-							&\LI(C) \\
-						 &= (\lifboth{s\tau=t\tau} \land \lifboth{\LI(C_2)\tau} ) \lor (\lifboth{s\tau\neq t\tau} \land \lifboth{\LI(C_1)\tau}) \lor (\lifboth{s\tau=t\tau} \land \lifboth{h\occur{s}\tau \neq h\occur{t}\tau}) \\
-						 &\semiff \lnot [ (\lifboth{s\tau\neq t\tau} \lor \lnot \lifboth{\LI(C_2)\tau} ) \land (\lifboth{s\tau= t\tau} \lor \lnot\lifboth{\LI(C_1)\tau}) \land (\lifboth{s\tau\neq t\tau} \lor \lifboth{h\occur{s}\tau = h\occur{t}\tau}) ] \\
-						 &= \lnot [ (\lifboth{s\tau\neq t\tau} \lor \lifboth{\LI(\bhat C_2)\tau} ) \land (\lifboth{s\tau= t\tau} \lor \lifboth{\LI(\bhat C_1)\tau}) \land (\lifboth{s\tau\neq t\tau} \lor \lifboth{h\occur{s}\tau = h\occur{t}\tau}) ] \\
-						 &\semiff \lnot [ (\lifboth{s\tau= t\tau} \land \lifboth{\LI(\bhat C_2)\tau} ) \lor (\lifboth{s\tau\neq t\tau} \land \lifboth{\LI(\bhat C_1)\tau}) \land (\lifboth{s\tau\neq t\tau} \lor \lifboth{h\occur{s}\tau = h\occur{t}\tau}) ]\\
-						 &= \lnot \LI(\bhat C)
-						\end{align*}
-					}\par
-
-				\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
-					This case can be argued analogously.
-
-				\item Otherwise:
-					%\hspace*{\dimexpr-\leftmargini-\leftmarginii-\leftmarginiii}\parbox{\linewidth}{%
-					%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-					\begin{align*}
-						%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-						&\LI(C) \\
-						&= (\lifboth{s\tau=t\tau} \land \lifboth{\LI(C_2)\tau} ) \spam\lor (\lifboth{s\tau\neq t\tau} \land \lifboth{\LI(C_1)\tau}) \\
-						&\semiff \lnot [ (\lifboth{s\tau\neq t\tau} \lor \lnot \lifboth{\LI(C_2)\tau} ) \spam\land (\lifboth{s\tau= t\tau} \lor \lnot \lifboth{\LI(C_1)\tau}) ] \\
-						&= \lnot [ (\lifboth{s\tau\neq t\tau} \lor \lifboth{\LI(\bhat C_2)\tau} ) \spam\land (\lifboth{s\tau= t\tau} \lor \lifboth{\LI(\bhat C_1)\tau}) ] \\
-						&\semiff \lnot [ (\lifboth{s\tau= t\tau} \land \lifboth{\LI(\bhat C_2)\tau} ) \spam\lor (\lifboth{s\tau\neq t\tau} \land \lifboth{\LI(\bhat C_1)\tau}) ] \\
-						&= \lnot \LI(\bhat C)
-					\end{align*}
-					%}\par
-
-
-
-			\end{itemize}
-
-
-			\qedhere
-
-	\end{itemize}
-\end{proof}
-
-\begin{thm}
-	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
-	Then $\LI( \pi )$ is an interpolant.
-\end{thm}
-\begin{proof}
-	By Lemma~\ref{lemma:gamma_entails_quantified_lide}
-	$\Gamma \entails \Q(\pi)(\LI(\pi) \lor \LIcl(\pi))$.
-	But as $\LIcl(\pi) = \square$, this simplifies to
-	$\Gamma \entails \Q(\pi)\LI(\pi)$.
-
-	By constructing a proof $\bhat \pi$ from $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$, we obtain by Lemma~\ref{lemma:gamma_entails_quantified_lide} that $\bhat\Gamma \entails \Q(\bhat \pi)\LI(\bhat \pi)$.
-	By Lemma \ref{lemma:li_symmetry}, this however is nothing else than
-	$\Delta \entails \lnot \Q(\pi) \LI(\pi)$. 
-
-	As furthermore by construction no colored symbols occur in $\Q(\pi) \LI(\pi)$, this formula is an interpolant for $\Gamma\cup\Delta$.
-\end{proof}
-
-
-
 
 \end{document}
