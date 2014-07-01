@@ -218,11 +218,12 @@
 
 	We define the preliminary formula $\LI^\bullet(C)$ as follows:
 
-	\begin{itemize}
-		\item[Base case.]
+	\begin{description}
+	\item{} Base case.
 			If $C \in \Gamma$, $\LI(C) \defeq \bot$.
 			If otherwise $C \in \Delta$, $\LI(C) \defeq \top$.
-		\item[Resolution.]
+
+		\item{} Resolution.
 
 			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then define $\LI(C)$ as follows:
 
@@ -242,10 +243,10 @@
 
 			\end{enumerate}
 
-		\item[Factorisation.]
+	\item{} Factorisation.
 			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\LIpre(C) \defeq \lifboth{\LI(C_1)\tau}$.
 
-		\item[Paramodulation.]
+		\item{} Paramodulation.
 			If the clause $C$ is the result of a paramodulation step $\inference$ of $C_1 : s = t \lor D$ and $C_2: E\occ{r}$ with $\sigma = \mgu(\inference)$.
 			Let $h\occ{r}$ be the maximal colored term in which $r$ occurs in $E\occ{r}$.
 			Then define $\LI(C)$ as follows:
@@ -269,8 +270,9 @@
 
 			\end{enumerate}
 
-	\end{itemize}
+	\end{description}
 
+	\noindent
 	$\LI(C)$ is built from $\LIpre(C)$ as follows:
 
 	\begin{enumerate}
@@ -385,8 +387,10 @@
 	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
 \end{lemma}
 \begin{proof}
-	We proceed by induction on the strengthening
-	$\Gamma \entails \lifdeltanovar{ \LI(C_\Gamma) } \lor \lifdeltanovar{C_\Gamma} $\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}
+	We show the strengthening
+	$\Gamma \entails \lifdeltanovar{ \LI(C_\Gamma) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}
+	First, we proceed by induction to prove that $\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma} $.
+
 
 	\begin{description}
 		\item{} Base case.
@@ -447,48 +451,6 @@
 			\end{itemize}
 
 
-			We now conclude by showing that 
-			$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$
-			implies that 
-			$\Gamma \entails \lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C_\Gamma}$.
-
-			The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
-			Let $t$ be a term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
-			Then $t$ is a maximal colored term and contains a variable which does not occur in\nolinebreak{} $C$.
-
-			If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
-			Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ occurs free at $\lifdeltanovar{\LIpre(C)}\atp$.
-			Hence it is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed quantifier.  
-
-			If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
-			Hence $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
-			In general, $\lifdeltanovar{t}$ however contains $\Delta$-lifting variables, which require being lifted in the scope of the existential quantifier of $y_t$. 
-
-			Let $x_s$ be a $\Delta$-lifting variable which occurs in $\lifdeltanovar{t}$. 
-			It is essential to see that neither $s$ nor a predecessor of $s$ in the resolution derivation is lifted in a previous step of the interpolant extraction.
-			Suppose to the contrary that this is the case in the inference creating the clause $C'$.
-			Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
-			Then one of the following two contradictions eventuate:
-			\begin{itemize}
-				\item Suppose that $s'$ is a subterm of the corresponding predecessor $t'$.
-					Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
-
-				\item Otherwise $t'$ does not contain $s'$.
-					We have already established that $s'$ contains a variable which does not occur in $C'$.
-					As all clauses are variable-disjoint, no other clause contains this variable.
-					But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
-
-			\end{itemize}
-
-			Hence there are three possibilities for quantification of $x_s$:
-			\begin{enumerate}
-			\item Neither $s$ nor a successor of $s$ in the derivation occurs at a grey position. Then $x_s$ is not quantified in the course of the interpolant extraction.
-			\item A variable which does not occur in $C$ enters $s$ by means of the current substitution $\sigma$ or a variable is contained in $s$ such that the only occurrences of it in $C_1$ and $C_2$ are in $l$ and $l'$.
-				Then $x_s$ is lifted in the current step and as $s$ is a subterm of $t$, $x_s$ is quantified in $\Q(C)$ prior to $y_t$.
-			\item The lifting variable $x_s$ or a respective successor is quantified at a later stage in the derivation.
-				Then as the quantifier for $y_t$ is contained in $\LI(C)$ and for any successor $C'$ of $C$, $\LI(C')$ contains a successor $\LI(C)$, $y_t$ is quantified in the scope of the quantifier for $x_s$.
-			\end{enumerate}
-
 
 			%			Suppose that $s$ contains a variable which does not occur in $C$. Then $x_s$ is quantified in $\LI(C)$ as well.
 			%			As however the quantifier block of $\LI(C)$ is ordered with respect to the subterm relation of the index of the lifting variables, $x_s$ is quantified prior to $y_t$.
@@ -547,28 +509,108 @@
 					we have that 
 					$M\entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
+				\item
+					Suppose that the position $p$ in $E\occatp{s}$ is contained in a maximal $\Delta$-term $h\occ{s}$.
+					We distinguish further:
 
-					\mytodo{ICI}
+					\begin{itemize}
+						\item Suppose $h\occ{s}$ occurs more than once in $\LI(C_2)\tau \lor E\occatp{s}\tau$.
+							Suppose furthermore that $M \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$ as otherwise $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M \entails \lifdeltanovar{\LIpre(C)}$.
+							But then again we obtain that
+							$\lifdeltanovar{(E\occatp{s})_\Gamma\tau}$
+							and
+							$\lifdeltanovar{(E\occatp{s})_\Gamma\tau}$
+							differ solely at position $p$ and by a similar line of argument as in the preceding case, we can deduce that $M \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C}$.
+
+						\item Suppose $h\occ{s}$ occurs exactly once in $\LI(C_2)\tau \lor E\occatp{s}\tau$.
+							Then the lifting variable $x_{h\occ{s}}$ 
+							occurs exactly once in $\lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{E\occatp{s}\tau}$.
+
+							Note that from \markB{} by applying Lemma~\ref{lemma:substitute_and_lift} as well as Lemma~\ref{lemma:lifting_tau_commute}, we obtain that $M\entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\tau}$.
+							As $x_{h\occ{s}}$ occurs only once and free in this formula, it is implicitly universally quantified and we can instantiate it arbitrarily, in particular by $z_{h\occ{t}}$.
+							But thereby we get that 
+							$M\entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\tau}$, 
+							which implies that
+							$\Gamma\entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
+
+					\end{itemize}
+
 			\end{itemize}
 
-
-
-
-
-
 	\end{description}
+
+	We now conclude by showing that 
+	$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$
+	implies 
+	$\Gamma \entails \lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C_\Gamma}$.
+
+	The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
+	Let $t$ be a term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
+	Then $t$ is a maximal colored term and contains a variable which does not occur in\nolinebreak{} $C$.
+
+	If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
+	Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ occurs free at $\lifdeltanovar{\LIpre(C)}\atp$.
+	Hence it is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed quantifier.  
+
+	If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
+	Hence $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
+	In general, $\lifdeltanovar{t}$ however contains $\Delta$-lifting variables, which require being lifted in the scope of the existential quantifier of $y_t$. 
+
+	Let $x_s$ be a $\Delta$-lifting variable which occurs in $\lifdeltanovar{t}$. 
+	It is essential to see that neither $s$ nor a predecessor of $s$ in the resolution derivation is lifted in a previous step of the interpolant extraction.
+	Suppose to the contrary that this is the case in the inference creating the clause $C'$.
+	Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
+	Then one of the following two contradictions eventuate:
+	\begin{itemize}
+		\item Suppose that $s'$ is a subterm of the corresponding predecessor $t'$.
+			Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
+
+		\item Otherwise $t'$ does not contain $s'$.
+			We have already established that $s'$ contains a variable which does not occur in $C'$.
+			As all clauses are variable-disjoint, no other clause contains this variable.
+			But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
+
+	\end{itemize}
+
+	Hence there are three possibilities for quantification of $x_s$:
+	\begin{enumerate}
+		\item Neither $s$ nor a successor of $s$ in the derivation occurs at a grey position. Then $x_s$ is not quantified in the course of the interpolant extraction.
+		\item A variable which does not occur in $C$ enters $s$ by means of the current substitution $\sigma$ or a variable is contained in $s$ such that the only occurrences of it in $C_1$ and $C_2$ are in $l$ and $l'$.
+			Then $x_s$ is lifted in the current step and as $s$ is a subterm of $t$, $x_s$ is quantified in $\Q(C)$ prior to $y_t$.
+		\item The lifting variable $x_s$ or a respective successor is quantified at a later stage in the derivation.
+			Then as the quantifier for $y_t$ is contained in $\LI(C)$ and for any successor $C'$ of $C$, $\LI(C')$ contains a successor $\LI(C)$, $y_t$ is quantified in the scope of the quantifier for $x_s$.
+			\qedhere
+	\end{enumerate}
 \end{proof}
 
 
 \largered{
 	proof idea for ground terms:
-
-	double all arities of function symbols.
-	exchange parameter $t$ by $t, x$, where $x$ is a fresh variable.
-	change interpretation such that even second parameter is ignored.
-	Then there are no ground terms.
-
 }
+
+\begin{itemize}
+	\item idea 1 (tedious):
+		double all arities of function symbols.
+		exchange parameter $t$ by $t, x$, where $x$ is a fresh variable.
+		change interpretation such that even second parameter is ignored.
+		Then there are no ground terms.
+
+	\item idea 2:
+
+		replace every constant by a variable
+
+	\item idea 3: \hl{(seems good)}
+
+		every ground term contains a constant.
+
+		Let $f_c$ be fresh function symbols for each constant $c$
+
+		replace every constant $a$ by $f_a(x)$, where $x$ is a fresh variable symbol.
+		then unifiers where $a$ is mentioned are to be replaced by $f_a(x)$ with the respective $x$, which is universally unifiable.
+\end{itemize}
+
+
+
 
 \begin{lemma}
 	\label{lemma:li_symmetry}
@@ -596,10 +638,10 @@
 					\begin{align*}
 						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 						\LIpre(C)	&= \LI(C_1)\tau\spas\lor {\LI(C_2)\tau} \\
-															&\semiff \lnot (\lnot{\LI(C_1)\tau}\spas\land \lnot {\LI(C_2)\tau}) \\
+															 &\semiff \lnot (\lnot{\LI(C_1)\tau}\spas\land \lnot {\LI(C_2)\tau}) \\
 						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\tau}\spas\land \lifboth{(\lnot \LI(C_2))\tau}) \\
-														 &\semiff \lnot ({\LI(\bhat C_1)\tau}\spas\land {\LI(\bhat C_2)\tau}) \\
-														&= \lnot \LIpre(\bhat C)
+															 &\semiff \lnot ({\LI(\bhat C_1)\tau}\spas\land {\LI(\bhat C_2)\tau}) \\
+															&= \lnot \LIpre(\bhat C)
 					\end{align*}
 
 				\item $l$ is $\Delta$-colored:
@@ -648,9 +690,9 @@
 					\LIpre(C) 
 					&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \lor ({s\tau=t\tau} \land {h\occur{s}\tau \neq h\occur{t}\tau}) \\
 					&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \land ({s\tau= t\tau} \lor \lnot{\LI(C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
-					 &= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
-						&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ]\\
-						&= \lnot \LIpre(\bhat C)
+					&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
+					&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ]\\
+					 &= \lnot \LIpre(\bhat C)
 				\end{align*}
 			}\par
 
@@ -664,10 +706,10 @@
 				%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 				\LIpre(C) 
 				&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \\
-				 &\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
-					&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
-					 &\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
-						&= \lnot \LIpre(\bhat C)
+				&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
+				&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
+				 &\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
+					&= \lnot \LIpre(\bhat C)
 			\end{align*}
 			%}\par
 
