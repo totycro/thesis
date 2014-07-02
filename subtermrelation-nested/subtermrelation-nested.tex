@@ -276,14 +276,19 @@
 					$\LIpre(C) \defeq{} ( s=t \land \LI(C_2) )\tau \lor (s\neq t \land \LI(C_1))\tau $ 
 
 			\end{enumerate}
-
 	\end{description}
 
 	\noindent
 	$\LI(C)$ is built from $\LIpre(C)$ according to the following steps:
 
 	\begin{enumerate}
-		\item Lift all maximal colored terms in $\LIpre(C)$ which contains some variable which does not occur in $C$.
+		\item Lift all maximal colored terms $t$ in $\LIpre(C)$
+			for at least which one of the following conditions applies:
+
+			\begin{itemize} 
+				\item The term $t$ contains some variable $x$ such that $x$ does not occur in $C$.
+				\item The term $t$ is ground and $\LI(C)$ as well as $C$ do not contain $t$.
+			\end{itemize} 
 		\item Let $X$ ($Y$) be the $\Delta$-($\Gamma$-)lifting variables created in the previous step.
 		\item Prefix the resulting formula with an arrangement $\Q(C)$ of the elements of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
 			\qedhere
@@ -490,11 +495,11 @@
 
 	The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
 	Let $t$ be a term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
-	Then $t$ is a maximal colored term and contains a variable which does not occur in\nolinebreak{} $C$.
+	Then $t$ is a maximal colored term. % and contains a variable which does not occur in\nolinebreak{} $C$.
 
 	If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
 	Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ occurs free at $\lifdeltanovar{\LIpre(C)}\atp$.
-	Hence it is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed quantifier.  
+	Hence it is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed universal quantifier.  
 
 	If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
 	Hence $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
@@ -504,17 +509,29 @@
 	It is essential to see that neither $s$ nor a predecessor of $s$ in the resolution derivation is lifted in a previous step of the interpolant extraction.
 	Suppose to the contrary that this is the case in the inference creating the clause $C'$.
 	Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
-	Then one of the following two contradictions eventuate:
 	\begin{itemize}
-		\item Suppose that $s'$ is a subterm of the corresponding predecessor $t'$.
-			Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
+		\item Suppose that $y_t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
 
-		\item Otherwise $t'$ does not contain $s'$.
-			We have already established that $s'$ contains a variable which does not occur in $C'$.
-			As all clauses are variable-disjoint, no other clause contains this variable.
-			But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
+			Then one of the following two contradictions eventuate:
+			\begin{itemize}
+				\item Suppose that $s'$ is a subterm of the corresponding predecessor $t'$.
+					Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
 
-	\end{itemize}
+				\item Otherwise $t'$ does not contain $s'$.
+					We have already established that $s'$ contains a variable which does not occur in $C'$.
+					As all clauses are variable-disjoint, no other clause contains this variable.
+					But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
+			\end{itemize}
+
+		\item Suppose that $y_t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
+
+			Supp $s'$ subterm of $t'$:
+			then $s'$ is not lifted as it occurs in $t'$ which occurs in $\LI(C')$ or in $C$ (well, exactly where $s'$ occurs too)
+
+			Supp $s'$ not subterm of $t'$.
+			IDEA: then $s'$ can be lifted, but if some $t'$ contains $s'$, then this is a different occurrence of $s'$ with a different ``history''. 
+			
+\end{itemize}
 
 	Hence there are three possibilities for quantification of $x_s$. We show that in each of them, $y_t$ is quantified in the scope of the quantifier of $x_s$. 
 	\begin{enumerate}
