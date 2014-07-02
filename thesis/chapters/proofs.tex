@@ -9,26 +9,25 @@ Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of the empty cla
 \begin{defi}[Propositional interpolant]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	A formula $A$ is a \defiemph{propositional interpolant} if
-	\label{def:rel_prop_interpol}
+	\label{def:huang_orig_rel_prop_interpol}
 	\begin{enumerate}
 		\item $\Gamma \entails A$
-			\label{rel_prop_interpol_cond1}
+			\label{huang_orig_rel_prop_interpol_cond1}
 		\item $\Delta \entails \lnot A$
-			\label{rel_prop_interpol_cond2}
+			\label{huang_orig_rel_prop_interpol_cond2}
 		\item $\Pred(A) \subseteq (\Pred(\Gamma) \intersect \Pred(\Delta)) \cup \{\top, \bot\} $.
-			\label{rel_prop_interpol_cond_lang}
+			\label{huang_orig_rel_prop_interpol_cond_lang}
 	\end{enumerate}
 
 
 	For a clause $C$ in $\pi$, a formula $A_C$ is a \defiemph{propositional interpolant relative to $C$} if
-	\label{def:rel_prop_interpol}
 	\begin{enumerate}
 		\item $\Gamma \entails A_C \lor C$
-			\label{rel_prop_interpol_cond1}
+			%\label{huang_orig_rel_prop_interpol_cond1}
 		\item $\Delta \entails \lnot A_C \lor C$
-			\label{rel_prop_interpol_cond2}
+			%\label{huang_orig_rel_prop_interpol_cond2}
 		\item $\Pred(A_C) \subseteq (\Pred(\Gamma) \intersect \Pred(\Delta)) \cup \{\top, \bot\} $.
-			\label{rel_prop_interpol_cond_lang}
+			%\label{huang_orig_rel_prop_interpol_cond_lang}
 	\end{enumerate}
 
 	The propositional interpolant of the empty clause derived in $\pi$ is denoted by $\PI(\pi)$.\qedhere
@@ -45,13 +44,13 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
 
 	For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
-	\label{def:PI}
+	\label{def:huang_orig_PI}
 	\begin{itemize}
 		\item[Base case.]
 			If $C \in \Gamma$, $\PI(C) = \bot$. 
 			If otherwise $C \in \Delta$, $\PI(C) = \top$. 
 		\item[Resolution.]
-			\label{def:PI_resolution}
+			\label{def:huang_orig_PI_resolution}
 			%Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
 
 			%	\begin{prooftree}
@@ -73,7 +72,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
 
 		\item[Paramodulation.]
-	\label{def:PI_paramod}
+	\label{def:huang_orig_PI_paramod}
 			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$.
 			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
 			Then $\PI(C)$ is defined according to the following case distinction:
@@ -81,16 +80,16 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 				\item If $h\occur{r}$ is $\Delta$-colored and 
 					$h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-					\label{def:PI_paramod_1}
+					\label{def:huang_orig_PI_paramod_1}
 					\newline
 					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$ 
 				\item If $h\occur{r}$ is $\Gamma$-colored and 
 					$h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-					\label{def:PI_paramod_2}
+					\label{def:huang_orig_PI_paramod_2}
 					\newline
 					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$ 
 				\item Otherwise:
-					\label{def:PI_paramod_3}
+					\label{def:huang_orig_PI_paramod_3}
 					\newline
 					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
 
@@ -107,7 +106,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 \begin{proof}
 	Proof by induction on the number of rule applications including the following strengthenings:
 	$\Gamma \entails \PI(C) \lor C_\Gamma$ and
-	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $\Lang(\Phi)$. They clearly imply conditions \ref{rel_prop_interpol_cond1} and \ref{rel_prop_interpol_cond2} of definition \ref{def:rel_prop_interpol}. 
+	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $\Lang(\Phi)$. They clearly imply conditions \ref{huang_orig_rel_prop_interpol_cond1} and \ref{huang_orig_rel_prop_interpol_cond2} of definition \ref{def:huang_orig_rel_prop_interpol}. 
 
 	\begin{itemize}
 		\item[Base case.]
@@ -142,7 +141,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\Delta \entails \lnot \PI(C_2) \lor (E\lor \lnot l')_\Delta$
 
-			We consider the respective cases from definition \ref{def:PI_resolution}:
+			We consider the respective cases from definition \ref{def:huang_orig_PI_resolution}:
 
 			\begin{enumerate}
 				\item $l$ is $\Gamma$-colored.
@@ -245,7 +244,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\Delta \entails \lnot \PI(C_2) \lor (E[r])_\Delta$
 
-			First, we show that $\PI(C)$ as constructed in case \ref{def:PI_paramod_3} of the definition is a propositional interpolant in any of these cases:
+			First, we show that $\PI(C)$ as constructed in case \ref{def:huang_orig_PI_paramod_3} of the definition is a propositional interpolant in any of these cases:
 
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
 
@@ -262,15 +261,15 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			The language restriction again remains satisfied as the only predicate, that is added to the interpolant, is $=$.
 
-			This concludes the argumentation for case \ref{def:PI_paramod_3}. 
+			This concludes the argumentation for case \ref{def:huang_orig_PI_paramod_3}. 
 
-			The interpolant for case \ref{def:PI_paramod_1} differs only by an additional formula added via a disjunction and hence condition \ref{rel_prop_interpol_cond1} of definition \ref{def:rel_prop_interpol} holds by the above reasoning.
-			As the adjoined formula is a contradiction, its negation is valid which in combination with the above reasoning establishes condition \ref{rel_prop_interpol_cond2}.
+			The interpolant for case \ref{def:huang_orig_PI_paramod_1} differs only by an additional formula added via a disjunction and hence condition \ref{huang_orig_rel_prop_interpol_cond1} of definition \ref{def:huang_orig_rel_prop_interpol} holds by the above reasoning.
+			As the adjoined formula is a contradiction, its negation is valid which in combination with the above reasoning establishes condition \ref{huang_orig_rel_prop_interpol_cond2}.
 			Since no new predicated are added, the language condition remains intact. 
 
-			The situation in case \ref{def:PI_paramod_2} is somewhat symmetric: 
-			As a tautology is added to the interpolant with respect to case \ref{def:PI_paramod_1}, condition \ref{rel_prop_interpol_cond1} is satisfied by the above reasoning.
-			For condition \ref{rel_prop_interpol_cond2}, consider that the negated interpolant for case \ref{def:PI_paramod_1} implies the negated interpolant for this case.
+			The situation in case \ref{def:huang_orig_PI_paramod_2} is somewhat symmetric: 
+			As a tautology is added to the interpolant with respect to case \ref{def:huang_orig_PI_paramod_1}, condition \ref{huang_orig_rel_prop_interpol_cond1} is satisfied by the above reasoning.
+			For condition \ref{huang_orig_rel_prop_interpol_cond2}, consider that the negated interpolant for case \ref{def:huang_orig_PI_paramod_1} implies the negated interpolant for this case.
 			The language condition again remains intact.
 			\qedhere
 	\end{itemize}
@@ -312,7 +311,7 @@ This insight allows us to push substitutions of the variables upwards along this
 
 Even though propositional refutations have nice properties for theoretical analysis, their use in practise is not desired as its construction involves a considerable blowup of the refutation. 
 But its use is still justified in this instance as we can show for arbitrary refutations $\pi$
-that the algorithm stated in \ref{def:PI} gives closely related results for both $\pi$ and its corresponding propositional refutation.
+that the algorithm stated in \ref{def:huang_orig_PI} gives closely related results for both $\pi$ and its corresponding propositional refutation.
 
 \begin{lemma}
 	Let $\pi$ be a resolution refutation of $\Phi$ and $\pi'$ a propositional refutation corresponding to $\pi$.
@@ -540,8 +539,8 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			\begin{enumerate}
 				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
 
-					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E\occurat{t}{p})_\Gamma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of 
-					Definition \ref{def:PI_paramod}. By Lemma \ref{lemma:lift_commute_huang}, this is equivalent to
+					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E\occurat{t}{p})_\Gamma}$, which subsumes the cases \ref{def:huang_orig_PI_paramod_2} and \ref{def:huang_orig_PI_paramod_3} of 
+					Definition \ref{def:huang_orig_PI_paramod}. By Lemma \ref{lemma:lift_commute_huang}, this is equivalent to
 
 					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{(E\occurat{t}{p})_\Gamma})$
 
@@ -559,7 +558,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					\label{njktahjtkhltah}
 
 				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
-				This reflects case \ref{def:PI_paramod_1} of Definition \ref{def:PI_paramod}.
+				This reflects case \ref{def:huang_orig_PI_paramod_1} of Definition \ref{def:huang_orig_PI_paramod}.
 
 					Then models are possible in which $s=t$ and therefore $\lif{s}=\lif{t}$ holds, while at the same time $\lif{h\occur{s}} \neq \lif{h\occur{t}}$ does not as $h\occur{s}$ and $h\occur{t}$ are replaced by distinct variables due to being different $\Delta$-terms.
 
