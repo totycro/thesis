@@ -145,7 +145,7 @@
 
 \tableofcontents
 
-\section{Lemmas from other pdf}
+%\section{Lemmas from other pdf}
 \begin{lemma}
 	\label{lemma:lifting_order_not_relevant}
 	$\lifgammanovar{\lifdeltanovar{\varphi}} = \lifdeltanovar{\lifgammanovar{\varphi}}$.
@@ -155,7 +155,7 @@
 
 \chapter{Interpolant extraction from resolution proofs in one phase \hl{lifting terms whose quantifier position can be determined -- nested}}
 
-\section{Incremental lifting and substitutions of lifting variables}
+%\section{Incremental lifting and substitutions of lifting variables}
 
 \begin{defi}[Substitution $\tau(\inference)$]
 	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution\todo{define infinite substitutions properly and apply definition here}{} $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
@@ -217,15 +217,14 @@
 
 \begin{defi}[Incrementally lifted interpolant]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
-	We define $\LI(\pi)$ and $\LIcl(\pi)$ to be $\LI(\square)$ and $\LIcl(\square)$ respectively, where $\square$ is the empty clause derived in $\pi$.
+	We define $\LI(\pi)$ to be $\LI(\square)$, where $\square$ is the empty clause derived in $\pi$.
 
 	Let $C$ be a clause in $\pi$. 
 	%For a literal $\lambda$ in $C$, we denote the corresponding literal in $\LIcl(C)$ by $\lambda\cll$, whose existence is ensured Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}.
 
-	We define $\LIcl(C) \defeq C$. \mytodo{if this version is final, drop $\LIcl(C)$ everywhere}
+	%We define $\LIcl(C) \defeq C$. \mytodo{if this version is final, drop $\LIcl(C)$ everywhere}
 
 	We define the preliminary formula $\LI^\bullet(C)$ as follows:
-
 	\begin{description}
 	\item{} Base case.
 			If $C \in \Gamma$, $\LI(C) \defeq \bot$.
@@ -291,7 +290,7 @@
 	\end{enumerate}
 \end{defi}
 
-\section{Properties of $\LI$ and $\LIcl$}
+%\section{Properties of $\LI$ and $\LIcl$}
 
 \begin{lemma}
 	\label{lemma:substitute_and_lift}
