@@ -22,8 +22,8 @@
 \usepackage{microtype} % better kerning and general typesetting
 
 % for screen display:
-%\usepackage[bitstream-charter]{mathdesign}
-\usepackage{amssymb} % conflicts with bitstream-charter
+\usepackage[bitstream-charter]{mathdesign}
+%\usepackage{amssymb} % conflicts with bitstream-charter
 %\usepackage{newcent}
 %\usepackage{lmodern}
 
@@ -402,13 +402,14 @@
 
 			$\Gamma \stackrel\markB\entails \lifdeltanovar{\LI(C_2)} \lor \lifdeltanovar{(E\occatp{r})_\Gamma}$
 
-			Suppose now that for a model $M$ of $\Gamma$ that $M \entails \lifdeltanovar{s}\neq \lifdeltanovar{t}$.
-			Then we get by \markA{} that $\Gamma \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma}$, which by Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} gives $\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{D_\Gamma\tau}$.
-			Note that $\Gamma \entails \lifdeltanovar{s\tau}\neq \lifdeltanovar{t\tau} \land \lifdeltanovar{\LI(C_1)\tau}$ suffices for $\Gamma \entails \lifdeltanovar{\LIpre(C)}$ and $\Gamma \entails \lifdeltanovar{D_\Gamma\tau}$ implies that $\Gamma \entails \lifdeltanovar{C_\Gamma}$.
+			Suppose now that for a model $M$ of $\Gamma$ and an assignment $\alpha$ of the free variables of $\lifdeltanovar{s}$ and $\lifdeltanovar{t}$ that $M_\alpha \entails \lifdeltanovar{s}\neq \lifdeltanovar{t}$.
+			Then we get by \markA{} that $M_\alpha \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma}$, which by Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} gives $M_\alpha \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{D_\Gamma\tau}$.
+			Note that $M_\alpha \entails \lifdeltanovar{s\tau}\neq \lifdeltanovar{t\tau} \land \lifdeltanovar{\LI(C_1)\tau}$ suffices for $M_\alpha \entails \lifdeltanovar{\LIpre(C)}$ and $M_\alpha \entails \lifdeltanovar{D_\Gamma\tau}$ implies that $M_\alpha \entails \lifdeltanovar{C_\Gamma}$.
 			Therefore we obtain that 
-			$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
+			$M_\alpha \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
-			Now suppose to the contrary that for a model $M$ of $\Gamma$ that $M \entails \lifdeltanovar{s}\nobreak=\lifdeltanovar{t}$.
+			Now suppose to the contrary that for a model $M$ of $\Gamma$ that for any assignment of free variables $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t}$.
+
 			By Lemma~\ref{lemma:substitute_and_lift} and  Lemma~\ref{lemma:lifting_tau_commute} we obtain from \markB{} that
 			$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{r})_\Gamma\tau}$.
 			As however $\sigma = \mgu(r, s)$, $r\tau \equiv s\tau$
@@ -424,8 +425,8 @@
 					and
 					$\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
 					only differ at at position $p$.
-					But as $\lifdeltanovar{s} = \lifdeltanovar{t}$, we can apply Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} to obtain that 
-					$\lifdeltanovar{s\tau} = \lifdeltanovar{t\tau}$.
+					As $M \entails \lifdeltanovar{s} = \lifdeltanovar{t}$, we can apply Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} to obtain that 
+					$M \entails \lifdeltanovar{s\tau} = \lifdeltanovar{t\tau}$.
 					Thus
 					$M\entails \lifdeltanovar{(E\occatp{s})_\Gamma\tau} \semiff 
 					\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
@@ -441,13 +442,17 @@
 					We distinguish further:
 
 					\begin{itemize}
-						\item Suppose $h\occ{s}$ occurs more than once in $\LI(C_2)\tau \lor E\occatp{s}\tau$.
-							Assume that $M \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$ as otherwise $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M \entails \lifdeltanovar{\LIpre(C)}$.
-							But then we obtain that
+						\item Suppose $h\occ{s}$ occurs more than once in $\LI(C_2)\tau \lor E\occatp{s}\tau$ and let $\alpha$ be an arbitrary assignment to the variables $\lifdeltanovar{h\occ{s}} = x_{h\occ{s}}$ and $\lifdeltanovar{h\occ{t}} = x_{h\occ{t}}$.
+
+							If $M_\alpha \entails \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, then we have that $M_\alpha \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M_\alpha \entails \lifdeltanovar{\LIpre(C)}$.
+
+							%Assume that $M \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$ as otherwise $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M \entails \lifdeltanovar{\LIpre(C)}$.
+							Otherwise it holds that $M_\alpha \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$.
+							But then 
 							$\lifdeltanovar{(E\occatp{s})_\Gamma\tau}$
 							and
 							$\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
-							differ solely at subterms which we can assume to be equal in the model,
+							differ in subterms which are equal in the given model and with the given interpretation of the free variables,
 							%at position of $h\occ{s}$ and $h\occ{t}$ respectively and
 							so by a similar line of argument as in the preceding case, we can deduce that $M \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C}$.
 
@@ -466,16 +471,16 @@
 	\end{description}
 
 
-%
-%\begin{lemma}
-%	\label{lemma:gamma_entails_delta_lifted_invariant}
-%	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-%	Then
-%	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
-%\end{lemma}
-%\begin{proof}
-%	By Lemma~\ref{lemma:gamma_entails_delta_lifted_preinvariant}, we have that 
-%	$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
+	%
+	%\begin{lemma}
+	%	\label{lemma:gamma_entails_delta_lifted_invariant}
+	%	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	%	Then
+	%	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
+	%\end{lemma}
+	%\begin{proof}
+	%	By Lemma~\ref{lemma:gamma_entails_delta_lifted_preinvariant}, we have that 
+	%	$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 	As we have now established that
 	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma}$,
@@ -554,7 +559,7 @@
 															 &\semiff \lnot (\lnot{\LI(C_1)\tau}\spas\land \lnot {\LI(C_2)\tau}) \\
 						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\tau}\spas\land \lifboth{(\lnot \LI(C_2))\tau}) \\
 															 &\semiff \lnot ({\LI(\bhat C_1)\tau}\spas\land {\LI(\bhat C_2)\tau}) \\
-															&= \lnot \LIpre(\bhat C)
+															 &= \lnot \LIpre(\bhat C)
 					\end{align*}
 
 				\item $l$ is $\Delta$-colored:
@@ -605,7 +610,7 @@
 					&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \land ({s\tau= t\tau} \lor \lnot{\LI(C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
 					&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
 					&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ]\\
-					 &= \lnot \LIpre(\bhat C)
+					&= \lnot \LIpre(\bhat C)
 				\end{align*}
 			}\par
 
@@ -621,8 +626,8 @@
 				&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \\
 				&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
 				&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
-				 &\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
-					&= \lnot \LIpre(\bhat C)
+				&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
+				 &= \lnot \LIpre(\bhat C)
 			\end{align*}
 			%}\par
 

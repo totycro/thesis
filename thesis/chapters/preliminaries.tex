@@ -42,6 +42,16 @@ TODO: define $\equiv$ as syntactic equality. Define also $\semiff$, $\liff$.
 TODO: define what we mean by model and free variables.
 (need universal quantification of free vars)
 
+need it for paramodulation proof
+
+proposal: free vars are implicitly universally quantified
+
+this should work out in general, and when needed, we add an explicit interpretation of some free variables
+
+$M \entails P(x)$ is short for $M \entails \forall \FV(P(x))\;P(x)$
+
+$M_\alpha \entails P(x)$ is short for $M$ entails $P(x)$ with all variables interporeted by $\alpha$ interpreted like that (basically $P(x)$ with ``substitution'' $\alpha$)
+
 TODO: define ground, non-ground
 
 TODO: define set-notation of unifiers
@@ -55,8 +65,6 @@ TODO: define prenex formulas with matrix and prefix
 TODO: define prefix of term position: e.g. u in f(c, g(u, x, h(a))) has the prefix f(., g(., ., .)), or possible written as sequence of symbols (algo: always go to parent starting at u)
 
 TODO: abstraction has 2 contradictory definitions above
-
-TODO: dei
 
 TODO: free vars: $\FV$ and possibly $\LV$: free lifting vars. probably $\FV$ does not include $\LV$.
 
