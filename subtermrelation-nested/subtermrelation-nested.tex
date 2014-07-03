@@ -287,7 +287,7 @@
 
 			\begin{itemize} 
 				\item The term $t$ contains some variable $x$ such that $x$ does not occur in $C$.
-				\item The term $t$ is ground and $\LI(C)$ as well as $C$ do not contain $t$.
+				\item The term $t$ is ground and $C$ does not contain $t$.
 			\end{itemize} 
 		\item Let $X$ ($Y$) be the $\Delta$-($\Gamma$-)lifting variables created in the previous step.
 		\item Prefix the resulting formula with an arrangement $\Q(C)$ of the elements of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
@@ -308,6 +308,16 @@
 	For the first kind, the lifting has no effect.
 	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
 \end{proof}
+
+
+\begin{lemma}
+	If a variable $x$ occurs in $\LI(C)$ but not in $C$, then $x$ does not occur in the subsequent resolution derivation.
+\end{lemma}
+
+
+\begin{lemma}
+	If a ground term $t$ occurs in $\LI(C)$ but not in $C$, and a successor of $C$ contains $t$, then ``the second $t$ has been derived from first principles in a different way''.
+\end{lemma}
 
 \begin{lemma}
 	\label{lemma:gamma_entails_delta_lifted_invariant}
@@ -494,7 +504,7 @@
 
 
 	The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
-	Let $t$ be a term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
+	Let $t$ be a colored term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
 	Then $t$ is a maximal colored term. % and contains a variable which does not occur in\nolinebreak{} $C$.
 
 	If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
@@ -509,29 +519,79 @@
 	It is essential to see that neither $s$ nor a predecessor of $s$ in the resolution derivation is lifted in a previous step of the interpolant extraction.
 	Suppose to the contrary that this is the case in the inference creating the clause $C'$.
 	Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
+
 	\begin{itemize}
-		\item Suppose that $y_t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
+		\item Suppose that $t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
+			Then as $s'$ is a subterm of $t'$, $t'$ contains this variable as well and would therefore be lifted in $\LI(C')$.
 
-			Then one of the following two contradictions eventuate:
-			\begin{itemize}
-				\item Suppose that $s'$ is a subterm of the corresponding predecessor $t'$.
-					Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
+		\item Suppose that $t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
+			Then $s'$ does not occur in $C'$. But as $t'$ contains $s'$, $t'$ also does not occur in $C'$ and would therefore be lifted in $\LI(C')$.
+	\end{itemize}
 
-				\item Otherwise $t'$ does not contain $s'$.
-					We have already established that $s'$ contains a variable which does not occur in $C'$.
-					As all clauses are variable-disjoint, no other clause contains this variable.
-					But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
-			\end{itemize}
+	\largered{check other paramod proofs}
 
-		\item Suppose that $y_t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
+	Note the the lifting conditions ensure that only terms are lifted which do not influence the subsequent resolution derivation: 
+	If a variable $x$ occurs in $\LI(C)$ but not in $C$, then as clauses are variable-disjoint, the variable $x$ does not occur in any other clause.
+	For ground terms $r$ however which occur in $\LI(C)$ but not in $C$,
+	it is possible for them to cooccur in a subsequent clause. Let $p$ be the occurrence of $r$ in $\LI(C)$ and $q$ the occurrence of $r$ in a successive clause of $C$.
+	Then due to the fact that $p$ is not used in any unification, 
+	$q$ must have been created or originated from other occurrences of the same function and/or constant symbols.
+	Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant. 
 
-			Supp $s'$ subterm of $t'$:
-			then $s'$ is not lifted as it occurs in $t'$ which occurs in $\LI(C')$ or in $C$ (well, exactly where $s'$ occurs too)
 
-			Supp $s'$ not subterm of $t'$.
-			IDEA: then $s'$ can be lifted, but if some $t'$ contains $s'$, then this is a different occurrence of $s'$ with a different ``history''. 
-			
-\end{itemize}
+
+	\noindent
+	\rule{\textwidth}{0.5px}
+
+
+
+	~
+
+	~
+
+
+	{
+
+		\begin{itemize}
+			\item Suppose that $y_t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
+
+				Then one of the following two contradictions eventuate:
+				\begin{itemize}
+					\item Suppose that $s'$ is a subterm of $t'$.
+						Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
+
+					\item Otherwise $t'$ does not contain $s'$.
+						We have already established that $s'$ contains a variable which does not occur in $C'$.
+						As all clauses are variable-disjoint, no other clause contains this variable.
+						But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
+				\end{itemize}
+
+			\item Suppose that $y_t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
+
+				\begin{itemize}
+					\item Suppose that $s'$ is a subterm of $t'$.
+						Then as $s'$ occurs in $t'$, $s'$ is not lifted.
+
+					\item Otherwise $t'$ does not contain $s'$.
+						Then if $s'$ is lifted, $s'$ is not contained in any term in $C$ or $\LI(C)$.
+						Hence $s'$ is not a predecessor of 
+
+
+
+				\end{itemize}
+
+				\largered{what is lifted? all occs of some term? all maximal $\Phi$-colored occs?}
+				\largered{candidate for answer: effectively, we lift \textbf{maximal colored terms}, conceptually, every occurrence of these terms are lifted. with this version, we argue for correctness, and we should argue, that that's what we get}
+
+				Supp $s'$ subterm of $t'$:
+				then $s'$ is not lifted as it occurs in $t'$ which occurs in $\LI(C')$ or in $C$ (well, exactly where $s'$ occurs too)
+
+				Supp $s'$ not subterm of $t'$.
+				IDEA: then $s'$ can be lifted, but if some $t'$ contains $s'$, then this is a different occurrence of $s'$ with a different ``history''. 
+
+		\end{itemize}
+
+	}
 
 	Hence there are three possibilities for quantification of $x_s$. We show that in each of them, $y_t$ is quantified in the scope of the quantifier of $x_s$. 
 	\begin{enumerate}
@@ -644,7 +704,7 @@
 				&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
 				&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
 				&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
-				 &= \lnot \LIpre(\bhat C)
+				&= \lnot \LIpre(\bhat C)
 			\end{align*}
 			%}\par
 
@@ -684,37 +744,13 @@
 	Then $\LI(\pi)$ is an interpolant of $\Gamma$ and $\Delta$.
 \end{thm}
 \begin{proof}
-	\ref{lemma:gamma_entails_delta_lifted_invariant}
-	\ref{lemma:delta_entails_li}
-	plus lifting of ground terms (todo)
-
+	We obtain by Lemma~\ref{lemma:gamma_entails_delta_lifted_invariant} that  $\Gamma \entails \liftnovar{\Delta}{\LI(\pi)}$ and
+	by Lemma~\ref{lemma:delta_entails_li} that
+	$\Delta \entails \lnot\lifgammanovar{\LI(\pi)}$.
+	As the empty clause derived in $\pi$ trivially contains neither variables nor ground terms, 
+	all colored terms are lifted in $\LI(\pi)$.
+	Therefore $\lifdeltanovar{\LI(\pi)} = \LI(\pi)$ and $\lifgammanovar{\LI(\pi)} = \LI(\pi)$.
 \end{proof}
-
-\largered{
-	proof idea for ground terms:
-}
-
-\begin{itemize}
-	\item idea 1:
-		double all arities of function symbols.
-		exchange parameter $t$ by $t, x$, where $x$ is a fresh variable.
-		change interpretation such that even second parameter is ignored.
-		Then there are no ground terms.
-
-	\item idea 2:
-
-		replace every constant by a variable
-
-	\item idea 3: 
-
-		every ground term contains a constant.
-
-		Let $f_c$ be fresh function symbols for each constant $c$
-
-		replace every constant $a$ by $f_a(x)$, where $x$ is a fresh variable symbol.
-		then unifiers where $a$ is mentioned are to be replaced by $f_a(x)$ with the respective $x$, which is universally unifiable.
-\end{itemize}
-
 
 
 \end{document}

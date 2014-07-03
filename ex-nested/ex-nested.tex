@@ -23,8 +23,11 @@
 \usepackage[english]{babel}
 
 
-%\usepackage[bitstream-charter]{mathdesign}
-\usepackage{amssymb}
+\usepackage[bitstream-charter]{mathdesign}
+%\usepackage[utopia]{mathdesign}
+%\usepackage[garamond]{mathdesign}
+%\usepackage{amssymb}
+
 
 %\input{../latex_header.tex}
 \usepackage{bm}
@@ -73,6 +76,11 @@
 \newcommand{\lifphinovar}[1]{\liftnovar{\Phi}{#1}}
 \newcommand{\lifphi}[1]{\lift{\Phi}{#1}{z}}
 
+
+
+\newcommand{\entails}{\vDash}
+\newcommand{\notentails}{\nvDash}
+\newcommand{\proves}{\vdash}
 
 
 \DeclareMathOperator{\arr}{\mathcal{A}}
@@ -348,13 +356,32 @@
 \end{prooftree}
 
 
-\largered{possibly important intermediate step before last formula:
+Detailed derivation:
 
-	$
-	P(f(x_a), x_a) \lor \forall x_a( Q(x_a) \lor R(x_a)) 
-	$
 
-}
+
+	$\Gamma \entails \forall x_a( Q(x_a) \lor R(x_a)) \mid P(f(x), x)$
+
+	$\Gamma \entails P(z, x_a)$
+
+	hence
+
+	$\Gamma \entails \forall x_a \Big( {\forall x_a( Q(x_a) \lor R(x_a)) \mid P(f(x_a), x_a)}\Big)$
+
+	$\Gamma \entails \forall x_a P(f(x_a), x_a)$
+
+	hence
+
+	$\Gamma \entails \forall x_a \Big( {\forall x_a( Q(x_a) \lor R(x_a)) \mid P(f(x_a), x_a)}\Big) \spal\land \forall x_a P(f(x_a), x_a)$
+
+	hence
+
+	$\Gamma \entails \forall x_a \Big( \forall x_a( Q(x_a) \lor R(x_a)) \mid P(f(x_a), x_a) \spal\land  P(f(x_a), x_a)\Big)$
+
+	simplified 
+
+	$\Gamma \entails \forall x_a \Big( \forall x_a( Q(x_a) \lor R(x_a))  \spal\land  P(f(x_a), x_a) \Big)$
+
 
 
 ~
@@ -381,9 +408,6 @@
 	\UnaryInfCm{\forall x_a \exists y_{f(a)} \Big( P(y_{f(a)}, x_a) \lor \forall x_a (Q(x_a) \lor R(x_a))  \Big) \mid \square}
 \end{prooftree}
 
-
-\largered{TODO figure out why this always works}
-\largered{possibly write down logical justification of steps down very precisely as for paramod special case}
 
 
 \end{document}
