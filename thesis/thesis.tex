@@ -209,6 +209,12 @@
 
 	\proofcontent
 
+	\semanticcontent
+
+}
+
+\newcommand{\semanticcontent}{
+	\input{chapters/semantic_proof}
 }
 
 \newcommand{\appendixcontent}{
@@ -273,6 +279,13 @@
 
 \selectlanguage{english}
 \proofcontent
+
+
+\else
+\ifdefined\semanticonly 
+
+\selectlanguage{english}
+\semanticcontent
 
 \else
 
@@ -362,6 +375,7 @@
 \appendixcontent
 
 
+\fi
 \fi
 \fi
 

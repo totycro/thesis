@@ -35,7 +35,7 @@
 \begin{restatable}[Reverse Interpolation]{thm}{interpolationRevThm}
 		\label{thm:interpolation}
 		Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \cup \Delta $ is unsatisfiable.
-	Then there exists a reverse interpolant for $\Gamma$ and $\Delta$.
+		Then there exists a reverse interpolant for $\Gamma$ and\nolinebreak{} $\Delta$.
 \end{restatable}
 
 
@@ -58,9 +58,19 @@
 
 As the notions of interpolation and reverse interpolation in this sense coincide, we will in the following only speak of interpolation where  will be clear from the context which definition applies.
 
+\begin{remark}
+	In this thesis, the equality symbol is treated as a logical symbol. 
+	This is justified by the following example:
+
+	Let $\Gamma = \{ a=b \} $ and $\Delta = \{P(a), \lnot P(b)\}$.
+	Note that then, $\Lang(\Gamma) \cap \Lang(\Delta)$ does not contain a predicate symbol.
+	By regarding $=$ as logical symbol and therefore permitting it to occur in an interpolant despite the fact that it does not occur in $\Delta$ allows for the interpolant $a=b$.
+	If we would not permit $=$ in the interpolant, there would be no interpolant for $\Gamma$ and $\Delta$, even though $\Gamma \cup \Delta$ clearly is unsatisfiable.
+\end{remark}
+
 \begin{lemma}
 	\label{lemma:logically_equivalent_sets}
-	Let $\Gamma, \Gamma', \Delta, \Delta'$ be sets of first order formulas such that $\Gamma \semiff \Gamma'$ and $\Delta \semiff \Delta'$ and $\Lang(\Gamma) \cap \Lang(\Delta) = \Lang(\Gamma') \cap \Lang(\Delta')$ .
+	Let $\Gamma, \Gamma', \Delta, \Delta'$ be sets of first order formulas such that $\Gamma \semiff \Gamma'$ and $\Delta \semiff \Delta'$ and $\Lang(\Gamma) \cap \Lang(\Delta) = \Lang(\Gamma') \cap \Lang(\Delta')$.
 	Then $I$ is an interpolant for $\Gamma$ and $\Delta$ if and only if $I$ is an interpolant for $\Gamma'$ and $\Delta'$.
 \end{lemma}
 \begin{proof}

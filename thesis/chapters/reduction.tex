@@ -211,7 +211,7 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 	We build a model $M'$ with the domain 
 	$D' = D/{E^M}$, i.e.\ the the congruence relation of $D$ modulo $E^M$.
 	The interpretation $\calI'$ of $M'$ is obtained from the interpretation $\calI$ of $M$ by 
-	replacing every occurrence of a domain element $d$ by its respective congruence class $\{ x \mid (d, x) \in E^M\}$.\todo{how to write this in a nicer way?}{}
+	replacing every occurrence of a domain element $d$ by its respective congruence class with respect to $E^M$.
 	As $M \entails \EAX(\LangSym)$, it satisfies the congruence axioms with respect to every function and predicate symbol, and therefore $\calI'$ is well-defined.
 	Due to this construction, $M' \entails s = t$ if and only if $M \entails E(s, t)$ for all terms $s$ and $t$.
 
@@ -265,7 +265,8 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	 Then there exists a proof of $\Gamma \proves \Delta$ that does not contain the equality symbol.
 \end{lemma}
 \begin{proof}
-	\todo{this is not finished}
+	\largered{this is not finished}
+	\largered{supported idea: there is a proof in LK with equality, so it is valid. it is true in every model. a calculus without equality is complete for every theorem without equality. hence this calculus without equality has a proof for this formula.}
 	Let $\pi$ be a proof of $\Gamma \proves \Delta$.
 
 	Suppose $\pi$ contains an instance of the equality axiom $\proves t = t$ for a term $t$.

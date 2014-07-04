@@ -9,8 +9,9 @@ LANG="en" # of tex file
 
 #first: pdf
 #first: proofs
+
 first:
-	make content >/dev/null &
+	make semantic >/dev/null &
 
 all: everything
 
@@ -44,6 +45,8 @@ proofs:
 content:
 	make TEXFILE="\\\\def\\\\contentonly{}\\\\input{${TEXFILE}}" pdf1now
 
+semantic:
+	make TEXFILE="\\\\def\\\\semanticonly{}\\\\input{${TEXFILE}}" pdf1now
 
 
 

@@ -1,13 +1,20 @@
 \section{Preliminaries}
 \todo[inline]{this section contains all the required notation but will just be written up nicely in the final version}
 
+\todo[inline]{formulas}
+
 The language of a first-order formula $A$ is denoted by $\Lang(A)$ and contains all predicate, constant and function symbols that occur in $A$.
+For formulas $A_1, \ldots, A_n$, $\Lang(A_1, \ldots, A_n) = \bigcup_{1\varleq i \varleq n} \Lang(A_i)$.
 These are also referred to as the \emph{\mbox{non-logical} symbols} of $A$.
 The \emph{logical symbols} on the other hand include all logical connectives, quantifiers, the equality symbol ($=$) as well as symbols denoting truth ($\top$) and falsity ($\bot$).
+Among the usual symbols for the connectives $\land$ (conjunction), $\lor$ (disjunction), $\limpl$ (implication), we use $\semiff$ to indicate logical equivalence and $\liff$ for the syntactic implication in both direction.
+Syntactic equality is denoted by $\syneq$.
 
-For formulas $A_1, \ldots, A_n$, $\Lang(A_1, \ldots, A_n) = \bigcup_{1\leq i \leq n} \Lang(A_i)$.
+For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$.
 
-A term $s$ is a subterm of a term $t$ if $s$ occurs in $t$. $s$ is a strict subterm of $t$ if $s$ is a subterm of $t$ and $s \neq t$.
+\todo[inline]{terms}
+
+A term $s$ is a subterm of a term $t$ if $s$ occurs in $t$. $s$ is a strict subterm of $t$ if $s$ is a subterm of $t$ and $s \neq t$. The superterm relation is the inverse of the subterm relation.
 
 An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
 An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
@@ -16,57 +23,49 @@ An occurrence of a colored term $t$ is a maximal colored term if it does not occ
 
 We denote $x_1, \ldots, x_n$ by $\bar x$.
 
-For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$.
-
-A substitution is a mapping of variables to terms. It is denoted by $\phi\subst{x/t}$, where $\phi$ is a formula or term where each occurrence of the variable $x$ is replaced by the term $t$.
-A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
-
-An \defiemph{abstraction} on the other hand is a mapping of terms to variables. It is denoted by $\phi\abstractionOp{t/x}$, where $\phi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
-
-A term $s$ is an \defiemph{instance} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
-If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that the abstraction- and instance-relation are reflexive. 
-$s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$.
-
-The length of a term or formula $\phi$ is the number of logical and non-logical symbols in $\phi$.
-
-$A\occurat{s}{p}$ denotes $A$ with an occurrence of $s$ at position $p$.
-
-$A\occur{s}$ denotes $A$ where the term $s$ occurs on some set of positions $\Phi$. $A\occur{t}$ denotes $A\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $A$ in some way.
-
-TODO: define $\Sigma$ as subformula set; possibly remove definition in chapter 2
-
-TODO: define superterm the same way as subterm
-
-TODO: define $\equiv$ as syntactic equality. Define also $\semiff$, $\liff$.
-
-TODO: define what we mean by model and free variables.
-(need universal quantification of free vars)
-
-need it for paramodulation proof
-
-proposal: free vars are implicitly universally quantified
-
-this should work out in general, and when needed, we add an explicit interpretation of some free variables
-
-$M \entails P(x)$ is short for $M \entails \forall \FV(P(x))\;P(x)$
-
-$M_\alpha \entails P(x)$ is short for $M$ entails $P(x)$ with all variables interporeted by $\alpha$ interpreted like that (basically $P(x)$ with ``substitution'' $\alpha$)
-
-TODO: define ground, non-ground
-
-TODO: define set-notation of unifiers
+\todo[inline]{substitutions}
 
 TODO: define infinite-domain unifiers
 
 TODO: define range and domain of substitutions
 
+
+A substitution is a mapping of finitely many variables to terms.
+We define named substitutions $\sigma$ of a variable $x$ by a term $t$ in a set notation $\sigma = \{ x \mapsto t\}$ such that 
+$\varphi\sigma$ denotes a formula or term $\varphi$ where each occurrence of the variable $x$ is replaced by the term $t$.
+Unnamed substitution applications are written as $\varphi\subst{x/t}$.
+A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
+
+% the word abstraction has a different meaning already, and this usage is not used except for once
+%An \defiemph{abstraction} on the other hand is a mapping of terms to variables. It is denoted by $\varphi\abstractionOp{t/x}$, where $\varphi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
+
+A term $s$ is an \defiemph{instance} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
+If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that the abstraction- and instance-relation are reflexive. 
+$s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$.
+
+\todo[inline]{misc}
+
+The length of a term or formula $\varphi$ is the number of logical and non-logical symbols in $\varphi$.
+
+For formulas or terms $\varphi$, $\varphi\occurat{s}{p}$ denotes $\varphi$ with an occurrence of $s$ at position $p$.
+$\varphi\occur{s}$ denotes $\varphi$ where the term $s$ occurs on some set of positions $\Phi$. $\varphi\occur{t}$ denotes $\varphi\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $\varphi$ in some way.
+
+TODO: define $\Sigma$ as subformula set; possibly remove definition in chapter 2
+
+TODO: model has a domain and interpretation as in proof of prop 3.8
+
+TODO: $E^M$ as in prop 3.8
+
+For formulas $\varphi$ with free variables $\bar x$ and models $M$, $M\entails \varphi$ in general denotes $M \entails \forall x_1 \quantifierdots \forall x_n \varphi$.
+In instances where an explicit assignment to the free variables $\alpha$ is desired,
+we write $M_\alpha \entails \varphi$ 
+to signify that $M$ entails the formula $\varphi$ where the free variable assignment concurs with $\alpha$ and the free variables not assigned by $\alpha$ are universally quantified.
+
 TODO: define prenex formulas with matrix and prefix
 
 TODO: define prefix of term position: e.g. u in f(c, g(u, x, h(a))) has the prefix f(., g(., ., .)), or possible written as sequence of symbols (algo: always go to parent starting at u)
 
-TODO: abstraction has 2 contradictory definitions above
-
-TODO: free vars: $\FV$ and possibly $\LV$: free lifting vars. probably $\FV$ does not include $\LV$.
+TODO: free vars: $\FV$ and possibly $\LV$: free lifting vars. probably $\FV$ does not include $\LV$. ($\LV$ only if it is really going to be used)
 
 
 \subsection{Unification}

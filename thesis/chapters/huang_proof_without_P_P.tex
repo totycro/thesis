@@ -35,47 +35,47 @@ We define a procedure $\PI$, which produces propositional interpolants from reso
 			\label{def:PI_resolution}
 			%Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
 
-      % \begin{prooftree}
-      %   \AxiomCm{C_1: D \lor l}
-      %   \AxiomCm{C_2: E \lor \lnot l'}
-      %   \RightLabelm{\quad l\sigma = l'\sigma}
-      %   \BinaryInfCm{C: (D\lor E)\sigma}
-      % \end{prooftree}
-      %\todo{write as prooftree? (not necessary, but nicer)}
-      If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
-      %$\PI(C)$ is defined according to this case distinction:
-      \begin{enumerate}
+			% \begin{prooftree}
+			%   \AxiomCm{C_1: D \lor l}
+			%   \AxiomCm{C_2: E \lor \lnot l'}
+			%   \RightLabelm{\quad l\sigma = l'\sigma}
+			%   \BinaryInfCm{C: (D\lor E)\sigma}
+			% \end{prooftree}
+			%\todo{write as prooftree? (not necessary, but nicer)}
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
+			%$\PI(C)$ is defined according to this case distinction:
+			\begin{enumerate}
 				\item If $l$ is $\Gamma$-colored: $\PI(C) \defeq{} [\PI(C_1) \lor \PI(C_2)]\sigma$
 				\item If $l$ is $\Delta$-colored: $\PI(C) \defeq{} [\PI(C_1) \land \PI(C_2)]\sigma$
 				\item If $l$ is grey: $\PI(C) \defeq{} [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
-      \end{enumerate}
+			\end{enumerate}
 
-    \item[Factorisation.]
-      If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
+		\item[Factorisation.]
+			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
 
-    \item[Paramodulation.]
-  \label{def:PI_paramod}
-      Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a       unifier $\sigma$ such that $r\sigma = s\sigma$.
-      Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
-      Then $\PI(C)$ is defined according to the following case distinction:
-      \begin{enumerate}
+		\item[Paramodulation.]
+			\label{def:PI_paramod}
+			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a       unifier $\sigma$ such that $r\sigma = s\sigma$.
+			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
+			Then $\PI(C)$ is defined according to the following case distinction:
+			\begin{enumerate}
 
-        \item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-          \label{def:PI_paramod_1}
-          \newline
+				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
+					\label{def:PI_paramod_1}
+					\newline
 					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
-        \item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-          \label{def:PI_paramod_2}
-          \newline
+				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
+					\label{def:PI_paramod_2}
+					\newline
 					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} =     h\occur{t})\sigma$
 				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in\nolinebreak{} $E\occur{r}$:
-          \label{def:PI_paramod_3}
-          \newline
+					\label{def:PI_paramod_3}
+					\newline
 					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
 
-      \end{enumerate}
+			\end{enumerate}
 
-  \end{itemize}
+	\end{itemize}
 \end{defi}
 
 
@@ -92,16 +92,23 @@ we define a procedure which replaces colored terms by lifting variables.
 	Let furthermore $z_{\expa(\colterm{1})}, \ldots, z_{\expa(\colterm{n})}$ be fresh variables, referred to as \defiemph{$\Phi$-lifting variables} or \defiemph{lifting variables} if the coloring is clear from the context.
 	The function $\expa$ replaces lifting variables occurring in colored terms by the term they lift in order to avoid lifting variables in the index of other lifting variables and is defined as follows:  
 	\[\expa(t) \defeq \begin{cases}
-		f(\expa(t_1),\dots, \expa(t_m)) & \text{if $t=f(t_1, \dots, t_m)$} \\
-		t & \text{if $t$ is a non-lifting variable $x$} \\
-		\expa(s) & \text{if $t$ is a lifting variable $z_s$}
+			f(\expa(t_1),\dots, \expa(t_m)) & \text{if $t=f(t_1, \dots, t_m)$} \\
+			t & \text{if $t$ is a non-lifting variable $x$} \\
+			\expa(s) & \text{if $t$ is a lifting variable $z_s$}
 	\end{cases}\]
 
-	The lifting of $\varphi$, denoted by $\lft{\Phi}{z}{\varphi}$, is an abbreviation of % $\phi\abstractionOp{\colterm{1}/z_1}\dots\abstractionOp{\colterm{n}/z_n}$.
+	The lifting of $\varphi$, denoted by $\lft{\Phi}{z}{\varphi}$, is an abbreviation of 
 	$\lft{\Phi}{z}{\varphi, Z}$ which is defined as follows:
-\[\lft{\Phi}{z}{\varphi, Z} \defeq \begin{cases} \varphi & Z = \emptyset \\ \lft{\Phi}{z}{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \end{cases}\]
+	\[
+		\lft{\Phi}{z}{\varphi, Z} \defeq
+		\begin{cases}
+			\varphi & Z = \emptyset \\
+			%\lft{\Phi}{z}{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \\
+			\lft{\Phi}{z}{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.6\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$, $\psi$ is created from $\varphi$ by replacing every occcurrence of $\colterm{i}$ by $z_{\colterm{i}}$} 
+		\end{cases}
+	\]
 	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift respectively is clear from the context or not of the essence.
-%	We denote $\varphi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\varphi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
+	%	We denote $\varphi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\varphi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
 \end{defi}
 
 We usually lift $\Delta$-terms by variables with the letter $x$ and $\Gamma$-terms with the letter $y$. If the lifting is not specific to a color, we use variables with the letter $z$.
@@ -109,13 +116,13 @@ We usually lift $\Delta$-terms by variables with the letter $x$ and $\Gamma$-ter
 
 Some elementary properties of liftings are described by the following lemmas:
 
- 
+
 \begin{lemma}[Commutativity of lifting and logical operators]
-  \label{lemma:lift_commute}
-  Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
-  \begin{enumerate}
-    \item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
-    \item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land, \lor\}$
+	\label{lemma:lift_commute}
+	Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
+	\begin{enumerate}
+		\item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
+		\item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land, \lor\}$
 		\item $\lift{\Phi}{s = t}{z} \spas\semiff{} ( \lift{\Phi}{s}{z} = \lift{\Phi}{t}{z} )$
 	\end{enumerate}
 \end{lemma}
@@ -195,36 +202,32 @@ $.
 
 
 \begin{comment}
-\begin{lemma}
-	Let $s$ and $t$ be terms such that no $x_i$ occurs in them, $\Phi$ a set of formulas and $M$ a model.
-	Then $M\entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$ implies that $M\entails s=t$.
-	\label{lemma:lift_equality}
-\end{lemma}
-\begin{proof}
-	Suppose no $\Delta$-term occurs in $s$ or $t$. Then $\lft{\Phi}{x}{s} = s$ 
-	and $\lft{\Phi}{x}{t} = t$.
+	\begin{lemma}
+		Let $s$ and $t$ be terms such that no $x_i$ occurs in them, $\Phi$ a set of formulas and $M$ a model.
+		Then $M\entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$ implies that $M\entails s=t$.
+		\label{lemma:lift_equality}
+	\end{lemma}
+	\begin{proof}
+		Suppose no $\Delta$-term occurs in $s$ or $t$. Then $\lft{\Phi}{x}{s} = s$ 
+		and $\lft{\Phi}{x}{t} = t$.
 
-	Otherwise let $t_i$ be a maximal $\Delta$-term in $s$. Suppose it occurs at position $p$. In $\lft{\Phi}{x}{s}$, it is replaced by $x_i$.
-	But as $M \entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$, two situations can arise:
-	\begin{compactenum}
-	\item $x_i$ occurs at $p$ in $\lft{\Phi}{x}{t}$.
-		As $x_i$ does not occur in $t$, it is placed there by the lifting.
-		But $x_i$ is only employed in order to replace $t_i$, so at position $p$ in $t$, we have $t_i$.
-	\item A term $r$ occurs at $p$ in $\lft{\Phi}{x}{t}$ which does not influence the evaluation of $\lft{\Phi}{x}{t}$ in $M$. This can be the case if $r$ is contained in a subterm of $u$ and in $M$, the function symbol of $u$ is interpreted such that it does not depend on the argument that contains $r$.
-		
-		But as the maximal $\Delta$-term $t_i$ occurs in $s$ at $p$ and $M \entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$, there is a function symbol $u'$ in $\lft{\Phi}{x}{s}$ corresponding to $u$ which also does not depend on this argument.
+		Otherwise let $t_i$ be a maximal $\Delta$-term in $s$. Suppose it occurs at position $p$. In $\lft{\Phi}{x}{s}$, it is replaced by $x_i$.
+		But as $M \entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$, two situations can arise:
+		\begin{compactenum}
+		\item $x_i$ occurs at $p$ in $\lft{\Phi}{x}{t}$.
+			As $x_i$ does not occur in $t$, it is placed there by the lifting.
+			But $x_i$ is only employed in order to replace $t_i$, so at position $p$ in $t$, we have $t_i$.
+		\item A term $r$ occurs at $p$ in $\lft{\Phi}{x}{t}$ which does not influence the evaluation of $\lft{\Phi}{x}{t}$ in $M$. This can be the case if $r$ is contained in a subterm of $u$ and in $M$, the function symbol of $u$ is interpreted such that it does not depend on the argument that contains $r$.
 
-		Hence even though $s$ and $t$ are not syntactically equal, $M\entails s=t$ in this case. \qedhere
-	\end{compactenum}
+			But as the maximal $\Delta$-term $t_i$ occurs in $s$ at $p$ and $M \entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$, there is a function symbol $u'$ in $\lft{\Phi}{x}{s}$ corresponding to $u$ which also does not depend on this argument.
 
-\end{proof}
+			Hence even though $s$ and $t$ are not syntactically equal, $M\entails s=t$ in this case. \qedhere
+		\end{compactenum}
+
+	\end{proof}
 \end{comment}
 
 
-\begin{exa}
-	Let $M$ be a model and $c$ and $d$ be $\Phi$-colored constants such that $M\entails c=d$.  
-	Then \todo[inline]{?????}
-\end{exa}
 
 
 \begin{lemma}
@@ -232,13 +235,13 @@ $.
 	Let $M$ be a model, $E$ a formula and $s$ and $t$ terms such that
 	$M \entails \lifdelta{s} = \lifdelta{t}$.
 	Let $h\occur{t}$ be a maximal $\Delta$-colored term containing $t$ at $p$ in $E\occurat{t}{p}$, if such a term exists. Then it holds that:
-\begin{itemize}
-\item If $h\occur{t}$ does not exists, then
-	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{t}{p}}$.
-\item Otherwise
-	$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{t}{p}}$
-	or $M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$ holds.
-\end{itemize}
+	\begin{itemize}
+		\item If $h\occur{t}$ does not exists, then
+			$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{t}{p}}$.
+		\item Otherwise
+			$M\entails \lifdelta{E\occurat{s}{p}} \semiff M \entails \lifdelta{E\occurat{t}{p}}$
+			or $M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$ holds.
+	\end{itemize}
 \end{lemma}
 \begin{proof} 
 	Suppose that the position $p$ in $E\occurat{s}{p}$ is not contained in a $\Delta$-colored term.
@@ -282,29 +285,29 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 
 			We distinguish the following cases:
 			\begin{enumerate}
-					\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
-						\begin{align*}
-							\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
-														 &\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
-														 &= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
-														 &= \lnot \PI(\primex C)  
-						\end{align*}
-					\item $l$ is $\Delta$-colored. This case can be argued analogously.
+				\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
+					\begin{align*}
+						\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
+													&\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
+													 &= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
+														&= \lnot \PI(\primex C)  
+					\end{align*}
+				\item $l$ is $\Delta$-colored. This case can be argued analogously.
 
-					\item $l$ is grey. Then $\primex l$ is grey. 
-						Note that $l\sigma \syneq l'\sigma$ \markB.
-						\nopagebreak 
-			\begin{align*}
-				\PI(C) 
-				&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
-				&=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
-				&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
-				&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
-				&= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
-				&= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
-				&= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
-				&= \lnot \PI(\p C)
-			\end{align*}
+				\item $l$ is grey. Then $\primex l$ is grey. 
+					Note that $l\sigma \syneq l'\sigma$ \markB.
+					\nopagebreak 
+					\begin{align*}
+						\PI(C) 
+						&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
+					 &=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
+					&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
+				 &\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
+				 &= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
+				 &= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
+				 &= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
+				 &= \lnot \PI(\p C)
+					\end{align*}
 
 			\end{enumerate}
 
@@ -320,10 +323,10 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-						 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-						 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-						 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-						 &= \lnot \PI(\primex C)
+											&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+									 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+								 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+							 &= \lnot \PI(\primex C)
 					\end{align*}
 
 				\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
@@ -331,11 +334,11 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 				\item Otherwise:
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
-									 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
-									 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
-									 &\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
+												&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
+											&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
+										&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
 									 &= \lnot \PI(\primex C)
-					\qedhere
+						\qedhere
 					\end{align*}
 			\end{enumerate}
 
@@ -353,9 +356,9 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 	Build $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$. 
 	By Lemma \ref{lemma:symmetry},
-$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
+	$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
 	This however is nothing else than 
-$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
+	$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 \end{proof}
 
 \section{Main lemma}
@@ -384,7 +387,7 @@ extracts propositional interpolants in the sense that besides possibly containin
 		\item$\Gamma\entails \PI(\pi)$
 		\item$\Delta\entails \lnot \PI(\pi)$
 		\item $\PS(\PI(\pi)) \subseteq \PS(\Gamma) \cap \PS(\Delta)$.
-		\end{enumerate}
+	\end{enumerate}
 \end{corr}
 \begin{proof}
 	By the definition of $\PI$, 
@@ -429,7 +432,7 @@ extracts propositional interpolants in the sense that besides possibly containin
 			We proceed by a case distinction on the color of $l$:
 			\begin{enumerate}
 				\item $l$ is $\Gamma$-colored. Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$.
-					
+
 					Since $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and therefore $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
 					As by Lemma~\ref{lemma:lif} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
 					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.\label{aou5jklah}
@@ -504,79 +507,79 @@ extracts propositional interpolants in the sense that besides possibly containin
 			$\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{(E\occurat{r}{p})_\Gamma}$ respectively.
 
 
-				We distinguish two cases:\nopagebreak
-				\begin{enumerate}
-					\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$, which occurs more than once in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
-						\label{klehjy}
+			We distinguish two cases:\nopagebreak
+			\begin{enumerate}
+				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$, which occurs more than once in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
+					\label{klehjy}
 
-						Let $M$ be a model of $\Gamma$.
-						First, assume that $M \entails \lifdelta{s} \neq \lifdelta{t}$.
-						Then by \markA{} we have that $M \entails \lifdelta{\PI(C_1)} \lor \lifdelta{D_\Gamma}$.
-						By applying $\sigma'$ and Lemma~\ref{lemma:lif}, we hence can conclude from 
-						$M \entails \lifdelta{s\sigma} \neq \lifdelta{t\sigma}$ that 
-						$M \entails \lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma\sigma}$.
+					Let $M$ be a model of $\Gamma$.
+					First, assume that $M \entails \lifdelta{s} \neq \lifdelta{t}$.
+					Then by \markA{} we have that $M \entails \lifdelta{\PI(C_1)} \lor \lifdelta{D_\Gamma}$.
+					By applying $\sigma'$ and Lemma~\ref{lemma:lif}, we hence can conclude from 
+					$M \entails \lifdelta{s\sigma} \neq \lifdelta{t\sigma}$ that 
+					$M \entails \lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma\sigma}$.
 
 
-						Second, assume to the contrary that $M \entails \lifdelta{s} = \lifdelta{t}$.
-						\todo{this is wrong in the same way as the -nested proof was, fix just like the other one}
-						We distinguish cases:
-						\begin{itemize}
-							\item
-								Suppose that $s$ does not occur in a maximal $\Delta$-term in $(E\occat{s}{p})_\Gamma$.
-								Then by Lemma~\ref{aga5tg5ba} $M\entails \lifdelta{(E\occat{t}{p})_\Gamma} \semiff M \entails \lifdelta{(E\occat{s}{t})_\Gamma}$.
+					Second, assume to the contrary that $M \entails \lifdelta{s} = \lifdelta{t}$.
+					\todo{this is wrong in the same way as the -nested proof was, fix just like the other one}
+					We distinguish cases:
+					\begin{itemize}
+						\item
+							Suppose that $s$ does not occur in a maximal $\Delta$-term in $(E\occat{s}{p})_\Gamma$.
+							Then by Lemma~\ref{aga5tg5ba} $M\entails \lifdelta{(E\occat{t}{p})_\Gamma} \semiff M \entails \lifdelta{(E\occat{s}{t})_\Gamma}$.
 
-								Due to $\sigma=\mgu(s, r)$, $s\sigma \syneq r\sigma$.
-								Suppose they are both not $\Delta$-colored.
-								Then the lifting does not affect them and 
-								$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
-								Otherwise the lifting will replace them with the same variable and we as well get that
-								$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
-								Hence $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma\sigma} \semiff\allowbreak M\entails 
-								\lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$
+							Due to $\sigma=\mgu(s, r)$, $s\sigma \syneq r\sigma$.
+							Suppose they are both not $\Delta$-colored.
+							Then the lifting does not affect them and 
+							$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
+							Otherwise the lifting will replace them with the same variable and we as well get that
+							$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
+							Hence $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma\sigma} \semiff\allowbreak M\entails 
+							\lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$
 
-							\item
-								Otherwise $r$ occurs in a maximal $\Delta$-term $h\occ{r}$ in $(E\occat{r}{p})_\Gamma$, but $h\occur{r}$ does not occur elsewhere in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
-								Then the lifting variable $x_{h\occur{r}}$ occurs only once in \markB{}.
-								Hence $\Gamma$ does not pose any restriction on $x_{h\occur{r}}$ and we can substitute it by $x_{h\occur{t}}$. 
-								So in $M$ we have that $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma} \semiff\allowbreak M\entails \lifdelta{(E\occurat{r}{p})_\Gamma}$.
+						\item
+							Otherwise $r$ occurs in a maximal $\Delta$-term $h\occ{r}$ in $(E\occat{r}{p})_\Gamma$, but $h\occur{r}$ does not occur elsewhere in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
+							Then the lifting variable $x_{h\occur{r}}$ occurs only once in \markB{}.
+							Hence $\Gamma$ does not pose any restriction on $x_{h\occur{r}}$ and we can substitute it by $x_{h\occur{t}}$. 
+							So in $M$ we have that $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma} \semiff\allowbreak M\entails \lifdelta{(E\occurat{r}{p})_\Gamma}$.
 
-						\end{itemize}
+					\end{itemize}
 
-						Hence in any of the cases, by \markB{} and by applying $\sigma'$ and Lemma~\ref{lemma:lif}
-						it follows from $M\entails \lifdelta{s\sigma} = \lifdelta{t\sigma}$ 
-						that $M \entails \lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occurat{t}{p})_\Gamma\sigma}$. 
-						\medskip
+					Hence in any of the cases, by \markB{} and by applying $\sigma'$ and Lemma~\ref{lemma:lif}
+					it follows from $M\entails \lifdelta{s\sigma} = \lifdelta{t\sigma}$ 
+					that $M \entails \lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occurat{t}{p})_\Gamma\sigma}$. 
+					\medskip
 
-						In conclusion, we can derive that 
-						$\Gamma \entails
-						(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land\allowbreak (\lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma}\sigma))
-						\spam{\lor}\allowbreak
-						(\lifdelta{s\sigma} = \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}))$.
-						This however implies that
-						$\Gamma \entails
-						\Big(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_1)\sigma} )\Big)
-						\spas{\lor}\allowbreak
-						\Big(\lifdelta{s\sigma} =\nolinebreak \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma}) \Big)
-						\spas\lor\allowbreak \Big(\lifdelta{D_\Gamma\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}\Big)$, 
+					In conclusion, we can derive that 
+					$\Gamma \entails
+					(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land\allowbreak (\lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma}\sigma))
+					\spam{\lor}\allowbreak
+					(\lifdelta{s\sigma} = \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}))$.
+					This however implies that
+					$\Gamma \entails
+					\Big(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_1)\sigma} )\Big)
+					\spas{\lor}\allowbreak
+					\Big(\lifdelta{s\sigma} =\nolinebreak \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma}) \Big)
+					\spas\lor\allowbreak \Big(\lifdelta{D_\Gamma\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}\Big)$, 
 					which by Lemma~\ref{lemma:lift_commute} is nothing else than
-						$\Gamma \entails \lifdelta{\PI(C) \lor C}$.
+					$\Gamma \entails \lifdelta{\PI(C) \lor C}$.
 
-					\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$, which occurs more than once in $E\occat{s}{p}$.
+				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$, which occurs more than once in $E\occat{s}{p}$.
 
-						Then a similar line of argument as in case~\ref{klehjy} can be employed, with the difference that the application of Lemma~\ref{aga5tg5ba} in the case of $M\entails \lifdelta{s} = \lifdelta{t}$ yields the additional possibility that 
-			$M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$.
- Hence we arrive at:
+					Then a similar line of argument as in case~\ref{klehjy} can be employed, with the difference that the application of Lemma~\ref{aga5tg5ba} in the case of $M\entails \lifdelta{s} = \lifdelta{t}$ yields the additional possibility that 
+					$M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$.
+					Hence we arrive at:
 
-				$\Gamma \entails
-				\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\Big) \spas\lor\allowbreak
-				\Big(\lifdelta{s}\sigma'\neq\lifdelta{t}\sigma' \land \lifdelta{\PI(C_1)}\sigma'\Big) \spas\lor\allowbreak
-				\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land (\lifdelta{h\occur{s}}\sigma') \neq (\lifdelta{h\occur{t}}\sigma' )\Big) \spas\lor\allowbreak
-				\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
+					$\Gamma \entails
+					\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\Big) \spas\lor\allowbreak
+					\Big(\lifdelta{s}\sigma'\neq\lifdelta{t}\sigma' \land \lifdelta{\PI(C_1)}\sigma'\Big) \spas\lor\allowbreak
+					\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land (\lifdelta{h\occur{s}}\sigma') \neq (\lifdelta{h\occur{t}}\sigma' )\Big) \spas\lor\allowbreak
+					\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
 
-				This however is by Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute} equivalent to $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
-				\qedhere
-		\end{enumerate}
-\end{description}
+					This however is by Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute} equivalent to $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
+					\qedhere
+			\end{enumerate}
+	\end{description}
 \end{proof}
 
 
@@ -595,7 +598,7 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 
 	For a formula or term $\varphi$,
 	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ \varphi}  } =
-	 \lft{\Delta}{x}{ \lft{\Gamma}{y}{ \varphi }  }$.
+	\lft{\Delta}{x}{ \lft{\Gamma}{y}{ \varphi }  }$.
 	%\label{lemma:naming_of_colored_variables}
 	\label{lemma:lifting_order_not_relevant}
 
