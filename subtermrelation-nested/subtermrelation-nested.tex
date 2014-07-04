@@ -135,7 +135,7 @@
 \setulmargins{*}{*}{1.4}
 \checkandfixthelayout[nearest]
 
-  
+
 \binoppenalty=9999
 \relpenalty=9999
 
@@ -167,7 +167,7 @@
 			z_{t\sigma} & \text{$x$ is a lifting variable $z_t$}
 		\end{cases} 
 	\]
-		%\qedhere
+	%\qedhere
 
 	If the inference $\inference$ is clear from the context, we abbreviate $\tau(\inference)$ by $\tau$. 
 \end{defi}
@@ -186,11 +186,11 @@
 			Then we can derive the following, where (IH) signifies a deduction by virtue of the induction hypothesis. 
 			\begin{align*}
 				\lifboth{\lifboth{t}\tau} &= \lifboth{\lifboth{ f(t_1, \dots, t_n)}\tau} \\
-																  &= \lifboth{ f(\lifboth{t_1}\tau, \dots, \lifboth{t_n}\tau) } \\
-																	&= f(\lifboth{\lifboth{t_1}\tau}, \dots, \lifboth{\lifboth{t_n}\tau}) \\
-																 	&\stackrel{\mathclap{\text{(IH)}}}= f(\lifboth{t_1\tau}, \dots, \lifboth{t_n\tau}) \\
-																	&= \lifboth{f(t_1, \dots, t_n)\tau} \\
-																	&= \lifboth{t\tau}
+																							&= \lifboth{ f(\lifboth{t_1}\tau, \dots, \lifboth{t_n}\tau) } \\
+																				&= f(\lifboth{\lifboth{t_1}\tau}, \dots, \lifboth{\lifboth{t_n}\tau}) \\
+																		&\stackrel{\mathclap{\text{(IH)}}}= f(\lifboth{t_1\tau}, \dots, \lifboth{t_n\tau}) \\
+																	 &= \lifboth{f(t_1, \dots, t_n)\tau} \\
+																	 &= \lifboth{t\tau}
 			\end{align*}
 		\item Suppose that $t$ is a colored constant or function symbol. Then:
 			\[
@@ -226,7 +226,7 @@
 
 	We define the preliminary formula $\LI^\bullet(C)$ as follows:
 	\begin{description}
-	\item{} Base case.
+		\item{} Base case.
 			If $C \in \Gamma$, $\LI(C) \defeq \bot$.
 			If otherwise $C \in \Delta$, $\LI(C) \defeq \top$.
 
@@ -250,7 +250,7 @@
 
 			\end{enumerate}
 
-	\item{} Factorisation.
+		\item{} Factorisation.
 			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\LIpre(C) \defeq \lifboth{\LI(C_1)\tau}$.
 
 		\item{} Paramodulation.
@@ -282,8 +282,7 @@
 	$\LI(C)$ is built from $\LIpre(C)$ according to the following steps:
 
 	\begin{enumerate}
-		\item Lift all maximal colored terms $t$ in $\LIpre(C)$
-			for at least which one of the following conditions applies:
+		\item Lift all maximal colored occurrences of colored terms $t$ in $\LIpre(C)$ for which at least one of the following conditions, referred to as \defiemph{lifting conditions}, applies:
 
 			\begin{itemize} 
 				\item The term $t$ contains some variable $x$ such that $x$ does not occur in $C$.
@@ -399,7 +398,7 @@
 
 		\item{} Factorisation. 
 			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
-			
+
 			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ \LI(C_1) } \lor \lifdeltanovar{ l_\Gamma \lor l'_\Gamma \lor D_\Gamma }$.
 			By Lemma~\ref{lemma:substitute_and_lift}, we obtain
 			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l_\Gamma\tau \lor l'_\Gamma\tau \lor D_\Gamma\tau }$.
@@ -503,7 +502,7 @@
 	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$ holds.
 
 
-	The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
+	The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted and the resulting lifting variable bound in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
 	Let $t$ be a colored term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
 	Then $t$ is a maximal colored term. % and contains a variable which does not occur in\nolinebreak{} $C$.
 
@@ -513,97 +512,51 @@
 
 	If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
 	Hence $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
-	In general, $\lifdeltanovar{t}$ however contains $\Delta$-lifting variables, which require being lifted in the scope of the existential quantifier of $y_t$. 
+	In general, $\lifdeltanovar{t}$ however contains $\Delta$-lifting variables, hence for $\lifdeltanovar{t}$ to be a valid witness term, these have to be bound such that the existential quantifier of $y_t$ is in their scope.
+	Note that occurrences of colored terms which are not maximal colored terms are not actually lifted in $\LI$.
 
 	Let $x_s$ be a $\Delta$-lifting variable which occurs in $\lifdeltanovar{t}$. 
-	It is essential to see that neither $s$ nor a predecessor of $s$ in the resolution derivation is lifted in a previous step of the interpolant extraction.
-	Suppose to the contrary that this is the case in the inference creating the clause $C'$.
-	Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
+	We show that $y_t$ is quantified in the scope of the quantification of $x_s$ by discussing the different possibilities for quantification of $x_s$:
 
 	\begin{itemize}
-		\item Suppose that $t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
-			Then as $s'$ is a subterm of $t'$, $t'$ contains this variable as well and would therefore be lifted in $\LI(C')$.
+		\item
+			Clearly if $s$ or a respective successor is never bound due to not occurring at a maximal colored position, it is implicitly universally quantified.
 
-		\item Suppose that $t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
-			Then $s'$ does not occur in $C'$. But as $t'$ contains $s'$, $t'$ also does not occur in $C'$ and would therefore be lifted in $\LI(C')$.
+		\item
+			If $s$ or a respective successor does occur at a maximal colored position but does not satisfy any of the lifting conditions up to the stage where $t$ is lifted, it is bound at some later stage of the interpolant extraction, but as for any successor $C'$ of $C$, $\LI(C)$ is contained in $\LI(C')$, 
+			the scope of its quantifier encompasses the quantifier for $y_t$.
+
+		\item
+			In the case that $s$ and $t$ are lifted at the same stage of the interpolant extraction, by the definition of the quantifier prefix, the quantification of $x_s$ precedes the quantification for $x_t$ as $s$ is a subterm of $t$.
+
+
+		\item
+			It is furthermore essential to see that neither $s$ nor a respective predecessor is lifted in a previous step of the interpolant extraction.
+			Suppose to the contrary that this is the case in the inference creating the clause $C'$.
+			Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
+
+			\begin{itemize}
+				\item Suppose that $t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
+					Then as $s'$ is a subterm of $t'$, $t'$ contains this variable as well and would therefore be lifted in $\LI(C')$.
+
+				\item Suppose that $t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
+					Then $s'$ does not occur in $C'$. But as $t'$ contains $s'$, $t'$ also does not occur in $C'$ and would therefore be lifted in $\LI(C')$.
+					\qedhere
+			\end{itemize}
+
 	\end{itemize}
-
-	\largered{check other paramod proofs}
-
-	Note the the lifting conditions ensure that only terms are lifted which do not influence the subsequent resolution derivation: 
-	If a variable $x$ occurs in $\LI(C)$ but not in $C$, then as clauses are variable-disjoint, the variable $x$ does not occur in any other clause.
-	For ground terms $r$ however which occur in $\LI(C)$ but not in $C$,
-	it is possible for them to cooccur in a subsequent clause. Let $p$ be the occurrence of $r$ in $\LI(C)$ and $q$ the occurrence of $r$ in a successive clause of $C$.
-	Then due to the fact that $p$ is not used in any unification, 
-	$q$ must have been created or originated from other occurrences of the same function and/or constant symbols.
-	Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant. 
-
-
-
-	\noindent
-	\rule{\textwidth}{0.5px}
-
-
-
-	~
-
-	~
-
-
-	{
-
-		\begin{itemize}
-			\item Suppose that $y_t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
-
-				Then one of the following two contradictions eventuate:
-				\begin{itemize}
-					\item Suppose that $s'$ is a subterm of $t'$.
-						Then due to the fact that $s'$ is lifted, $s'$ must contain a variable which does not occur in $C'$. But as $t'$ contains $s'$, $t'$ contains this variable as well and would be lifted at this stage already.
-
-					\item Otherwise $t'$ does not contain $s'$.
-						We have already established that $s'$ contains a variable which does not occur in $C'$.
-						As all clauses are variable-disjoint, no other clause contains this variable.
-						But then it does not occur in any subsequent unifier, and in particular, it never enters $t'$ by means of substitution, which implies that $s'$ due to containing this variable does not become a subterm of a successor of $t'$.
-				\end{itemize}
-
-			\item Suppose that $y_t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
-
-				\begin{itemize}
-					\item Suppose that $s'$ is a subterm of $t'$.
-						Then as $s'$ occurs in $t'$, $s'$ is not lifted.
-
-					\item Otherwise $t'$ does not contain $s'$.
-						Then if $s'$ is lifted, $s'$ is not contained in any term in $C$ or $\LI(C)$.
-						Hence $s'$ is not a predecessor of 
-
-
-
-				\end{itemize}
-
-				\largered{what is lifted? all occs of some term? all maximal $\Phi$-colored occs?}
-				\largered{candidate for answer: effectively, we lift \textbf{maximal colored terms}, conceptually, every occurrence of these terms are lifted. with this version, we argue for correctness, and we should argue, that that's what we get}
-
-				Supp $s'$ subterm of $t'$:
-				then $s'$ is not lifted as it occurs in $t'$ which occurs in $\LI(C')$ or in $C$ (well, exactly where $s'$ occurs too)
-
-				Supp $s'$ not subterm of $t'$.
-				IDEA: then $s'$ can be lifted, but if some $t'$ contains $s'$, then this is a different occurrence of $s'$ with a different ``history''. 
-
-		\end{itemize}
-
-	}
-
-	Hence there are three possibilities for quantification of $x_s$. We show that in each of them, $y_t$ is quantified in the scope of the quantifier of $x_s$. 
-	\begin{enumerate}
-		\item Neither $s$ nor a successor of $s$ in the derivation occurs at a grey position. Then $x_s$ is not quantified in the course of the interpolant extraction.
-		\item A variable which does not occur in $C$ enters $s$ by means of the current substitution $\sigma$ or a variable is contained in $s$ such that the only occurrences of it in $C_1$ and $C_2$ are in $l$ and $l'$.
-			Then $x_s$ is lifted in the current step and as $s$ is a subterm of $t$, $x_s$ is quantified in $\Q(C)$ prior to $y_t$.
-		\item The lifting variable $x_s$ or a respective successor is quantified at a later stage in the derivation.
-			Then as the quantifier for $y_t$ is contained in $\LI(C)$ and for any successor $C'$ of $C$, $\LI(C')$ contains a successor $\LI(C)$, $y_t$ is quantified in the scope of the quantifier for $x_s$.
-			\qedhere
-	\end{enumerate}
 \end{proof}
 
+
+Note the the lifting conditions ensure that only terms are lifted,
+which do not exhibit a direct logical relation with any term in the remaining clause.
+More precisely, they do not influence the subsequent resolution derivation: 
+If a variable $x$ occurs in $\LI(C)$ but not in $C$, then as clauses are variable-disjoint, the variable $x$ does not occur in any other clause.
+For ground terms $r$ however which occur in $\LI(C)$ but not in $C$,
+it is possible for them to cooccur in a subsequent clause. Let $p$ be the occurrence of $r$ in $\LI(C)$ and $q$ the occurrence of $r$ in a successive clause of $C$.
+Then due to the fact that $p$ is not used in any unification, 
+$q$ must have been created or originated from other occurrences of the same function and/or constant symbols.
+Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant. 
 
 
 
