@@ -58,16 +58,6 @@
 
 As the notions of interpolation and reverse interpolation in this sense coincide, we will in the following only speak of interpolation where  will be clear from the context which definition applies.
 
-\begin{remark}
-	In this thesis, the equality symbol is treated as a logical symbol. 
-	This is justified by the following example:
-
-	Let $\Gamma = \{ a=b \} $ and $\Delta = \{P(a), \lnot P(b)\}$.
-	Note that then, $\Lang(\Gamma) \cap \Lang(\Delta)$ does not contain a predicate symbol.
-	By regarding $=$ as logical symbol and therefore permitting it to occur in an interpolant despite the fact that it does not occur in $\Delta$ allows for the interpolant $a=b$.
-	If we would not permit $=$ in the interpolant, there would be no interpolant for $\Gamma$ and $\Delta$, even though $\Gamma \cup \Delta$ clearly is unsatisfiable.
-\end{remark}
-
 \begin{lemma}
 	\label{lemma:logically_equivalent_sets}
 	Let $\Gamma, \Gamma', \Delta, \Delta'$ be sets of first order formulas such that $\Gamma \semiff \Gamma'$ and $\Delta \semiff \Delta'$ and $\Lang(\Gamma) \cap \Lang(\Delta) = \Lang(\Gamma') \cap \Lang(\Delta')$.
@@ -111,4 +101,24 @@ Note that a multicolored $\Phi$-term consequently is a term whose outermost symb
 We sometimes use $\Phi$ and $\Psi$ as colors to emphasise that the reasoning at hand is valid irrespective of the actual color assignment and solely assuming that $\Phi \neq \Psi$. 
 %both if $\Phi = \Gamma$ and $\Psi = \Delta  $ as well as if $\Phi = \Delta$ and $\Psi = \Delta$.
 
+
+\subsection{Degenerate cases}
+In this thesis, the equality symbol as well as the symbols for truth and falsity are regarded as a logical symbol. 
+This is justified by the following examples, which are referred to in \cite[Example 20.2 and 20.4]{boolos2007computability} as ``failure of interpolation'' and ``degenerate cases'' respectively:
+
+\begin{exa}
+	Let $\Gamma = \{ a=b \} $ and $\Delta = \{P(a), \lnot P(b)\}$.
+	Note that here, the intersection of $\Lang(\Gamma)$ and $\Lang(\Delta)$ does not contain a predicate symbol.
+	By regarding $=$ as logical symbol and therefore permitting it to occur in an interpolant despite the fact that it does not occur in $\Delta$ allows for the interpolant $a=b$.
+	If we would not permit $=$ in the interpolant, there would be no interpolant for $\Gamma$ and $\Delta$, even though $\Gamma \cup \Delta$ clearly is unsatisfiable.
+\end{exa}
+
+\begin{exa}
+	Let $\Gamma = \{ P(a) \land \lnot P(a) \} $ and $\Delta = \emptyset$.
+	As clearly the intersection of $\Lang(\Gamma)$ and $\Lang(\Delta)$ is empty, we may form an interpolant only of logical symbols.
+	In this instance, the interpolant must be either $\bot$ or a formula logically equivalent to $\bot$.
+	By merely swapping $\Gamma$ and $\Delta$, we arrive at a situation where the interpolant must be equivalent to $\top$.
+
+	Note that as we can express a formulas, which are logically equivalent to $\bot$ and $\top$ respectively by employing the equality symbol\footnote{$\forall x\,x\neq x$ and $\forall x\,x=x$ are suitable examples for $\bot$ and $\top$ respectively.}, the symbols for truth and falsity are not strictly required to be regarded as logical symbols for the interpolation theorem to hold.
+\end{exa}
 
