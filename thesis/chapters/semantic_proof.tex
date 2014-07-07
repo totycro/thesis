@@ -1,6 +1,74 @@
 
 \chapter{The semantic perspective on interpolation}
 
+The proofs of the interpolation theorem in the preceding chapters have a common feature:
+They are proof-theoretic approaches.
+
+\mytodo{ finish this when the chapter is done content-wise }
+
+\begin{thm}
+	interpolation again
+\end{thm}
+\begin{proof}
+	Suppose that there is no interpolant for $\Gamma$ and $\Delta$
+	We show that then, $\Gamma\cup\Delta$ is satisfiable by constructing a model.
+
+	Let $L_0 = \Lang(\Gamma) \cap \Lang(\Delta)$
+
+	Note that by assumption there is no formula $I$ such that $\Gamma\entails I$ and $\Delta \entails \lnot I$.
+
+	Let $\Phi = \varphi_1, \varphi_2, \dots$ be an enumeration of all formulas in the language $\Lang(\Gamma)$
+	and
+	$\Psi = \psi_1, \psi_2, \dots$ be an enumeration of all formulas in the language $\Lang(\Delta)$.
+
+	Let $\Gamma_0 = \Gamma$
+	and $\Delta_0 = \Delta$.
+	Let $\Gamma_{i+1} = \Gamma_i \cup \{\varphi_i\}$ if there is no interpolant for $\Gamma_i \cup \{\varphi_i\}$ and $\Delta_i$, and $\Gamma_{i+1} = \Gamma_i$ otherwise.
+	Let $\Delta_{i+1} = \Delta_i \cup \{\psi_i\}$ if there is no interpolant for $\Delta_i \cup \{\psi_i\}$ and $\Gamma_i$, and $\Delta_{i+1} = \Delta_i$ otherwise.
+
+	Let $\Gamma_\omega$ be the limit of the sequence of the $\Gamma_i$ and
+	Let $\Delta_\omega$ be the limit of the sequence of the $\Delta_i$.
+
+	Note that $\Gamma_\omega$ and $\Delta_\omega$ are ??? (complete, maximal consistent).
+	Suppose for a formula $\chi$ of language ??? that neither
+	$\chi \in \Gamma_\omega$
+	nor
+	$\lnot\chi \in \Gamma_\omega$.
+
+As then $\chi \not\in \Gamma_\omega$, but the construction considers all formulas of appropriate language, it must hold that there is an interpolant $\Gamma_i \cup \{\chi\}$ and $\Delta_i$ for some $i$.
+Let $I$ denote this interpolant.
+
+Hence we obtain that $\Gamma_\omega \entails \chi \limpl I$ 
+and $\Delta_\omega \entails \lnot I$.
+
+As also $\lnot\chi \not\in \Gamma_\omega$, by a similar argument, we obtain that 
+there must be an interpolant $J$ for $\Gamma_j \cup \{\lnot \chi\}$ and $\Delta_j$ for some $j$ and consequently
+$\Gamma_\omega \entails \lnot \chi \limpl J$ 
+and $\Delta_\omega \entails \lnot J$.
+
+But then
+$\Gamma_\omega \entails (\chi \limpl I) \land (\lnot \chi \limpl J)$, which implies $\Gamma_\omega \entails I\lor J$, and also $\Delta\entails \lnot (I \lor J)$, thus $I\lor J$ is, in contradiction with the assumption, an interpolant for $\Gamma_\omega$ and $\Delta_\omega$.
+
+By analogous argument, $\Delta_\omega$ is ??? as well. 
+
+Note that for each formula $\alpha$ in $\Lang(\Gamma) \cap \Lang(\Delta)$,
+both $\Gamma_\omega$ and $\Delta_\omega$ contain either $\alpha$ or $\lnot \alpha$.
+Moreover, as there is no interpolant for $\Gamma_\omega$ and $\Delta_\omega$, they either both contain $\alpha$ or both contain $\lnot \alpha$.
+Hence they agree on every formula in $\Lang(\Gamma) \cap \Lang(\Delta)$, and as both $\Gamma_\omega$ and $\Delta_\omega$ are consistent, their reduct to this language is consistent.
+
+But as $\Gamma \subseteq \Gamma_\omega$ and 
+$\Delta \subseteq \Delta_\omega$, there is a model of $\Gamma \cup \Delta$.
+
+
+
+
+
+
+\end{proof}
+
+
+\clearpage
+
 
 
 \section{notes on shoenfield}
