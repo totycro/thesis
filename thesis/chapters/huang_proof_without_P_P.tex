@@ -165,7 +165,7 @@ $.
 	Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
 	%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
 	%$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
-	Define $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
+	Define the infinite substitution $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
 	\[
 		x \sigma' =
 		\begin{cases} 
@@ -604,7 +604,7 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 
 \end{lemma}
 \begin{proof}
-	Let $\varphi$ be a mixed-colored term as otherwise we are done.
+	Let $\varphi$ be a multi-colored term as otherwise we are done.
 	Suppose without loss of generality that it is a $\Gamma$-term which contains a maximal $\Delta$-term $t$ as position $p$.
 	Then $\lft{\Delta}{x}{ \lft{\Gamma}{y}{ \varphi }  }
 	= \lft{\Delta}{x}{ y_\varphi }

@@ -20,14 +20,19 @@ An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as su
 An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
 \todo{colors are only defined later}
 
-
 We denote $x_1, \ldots, x_n$ by $\bar x$.
 
+
+\todo[inline]{model}
+A model $M$ for a first-order language $\LangSym$ is a pair $(\domainofmodel{M}, \interpretation{M})$, where $\domainofmodel{M}$ is the domain and $\interpretation{M}$ the interpretation, which assigns a domain element to every constant symbol, a function $f : \domainofmodel{M}^n \mapsto \domainofmodel{M}$ to every function symbol of arity $n$ and an $n$-ary relation of domain elements to every predicate symbol of arity $n$ in the language $\LangSym$.
+
+For formulas $\varphi$ with $\FV(\varphi) = \{x_1, \dots, x_n\}$ and a model $M$, $M\entails \varphi$ denotes $M \entails \forall x_1 \quantifierdots \forall x_n \varphi$.
+In instances where an explicit assignment $\alpha$ to the free variables is desired,
+we write $M_\alpha \entails \varphi$ 
+to signify that $M$ entails the formula $\varphi$ where the free variable assignment concurs with $\alpha$ and the free variables not assigned by $\alpha$ are universally quantified.
+
+
 \todo[inline]{substitutions}
-
-TODO: define infinite-domain unifiers
-
-TODO: define range and domain of substitutions
 
 
 A substitution is a mapping of finitely many variables to terms.
@@ -35,6 +40,14 @@ We define named substitutions $\sigma$ of a variable $x$ by a term $t$ in a set 
 $\varphi\sigma$ denotes a formula or term $\varphi$ where each occurrence of the variable $x$ is replaced by the term $t$.
 Unnamed substitution applications are written as $\varphi\subst{x/t}$.
 A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
+
+In some situations, mappings of infinitely many variables to terms are required. We denote such as infinite substitutions.
+
+The domain of a substitution $\sigma$, designated by $\dom(\sigma)$, is the set $\{x \in V \mid x\sigma \neq x\}$, where $V$ denotes the set of all variables.
+We refer to the set $\{x\sigma \mid x\in \dom(\sigma)\}$ as the range of sigma, denoted by $\ran(\sigma)$. \mytodo{remove $\ran$ if not needed}
+
+
+
 
 % the word abstraction has a different meaning already, and this usage is not used except for once
 %An \defiemph{abstraction} on the other hand is a mapping of terms to variables. It is denoted by $\varphi\abstractionOp{t/x}$, where $\varphi$ is a formula or term where each occurrence of the term $t$ is replaced by the variable $x$.
@@ -52,16 +65,9 @@ $\varphi\occur{s}$ denotes $\varphi$ where the term $s$ occurs on some set of po
 
 TODO: define $\Sigma$ as subformula set; possibly remove definition in chapter 2
 
-TODO: model has a domain and interpretation as in proof of prop 3.8
 
-TODO: $E^M$ as in prop 3.8
 
-For formulas $\varphi$ with free variables $\bar x$ and models $M$, $M\entails \varphi$ in general denotes $M \entails \forall x_1 \quantifierdots \forall x_n \varphi$.
-In instances where an explicit assignment to the free variables $\alpha$ is desired,
-we write $M_\alpha \entails \varphi$ 
-to signify that $M$ entails the formula $\varphi$ where the free variable assignment concurs with $\alpha$ and the free variables not assigned by $\alpha$ are universally quantified.
-
-TODO: define prenex formulas with matrix and prefix
+TODO: define prenex formulas with matrix and prefix (ONLY IF IT STILL OCCURS IN FINAL VERSION)
 
 TODO: define prefix of term position: e.g. u in f(c, g(u, x, h(a))) has the prefix f(., g(., ., .)), or possible written as sequence of symbols (algo: always go to parent starting at u)
 
@@ -72,7 +78,6 @@ TODO: free vars: $\FV$ and possibly $\LV$: free lifting vars. probably $\FV$ doe
 
 We specify the unification algorithm which is used in this thesis in order enable formal reasoning.
 
-\begin{defi}[Unification algorithm]
 	Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable to signify that the $\mgu$ of the given arguments is not defined. We treat constants as $0$-ary functions.
 	Let $s$ and $t$ denote terms and $x$ a variable.
 
@@ -81,13 +86,15 @@ We specify the unification algorithm which is used in this thesis in order enabl
 
 	The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
 
+	\noindent
 	$
-	\mgu(\emptyset) = \id
+	\mgu(\emptyset) \defeq \id
 	$
 
 	\newcommand{\aatahfdgasdfg}{.4\textwidth}
+	\noindent
 	$
-	\mbox{$\mgu(\{t\} \cup T)$} =
+	\mbox{$\mgu(\{t\} \cup T)$} \defeq
 	%\mgu(\{t\} \cup T) =$
 	\begin{cases}
 		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
@@ -99,9 +106,7 @@ We specify the unification algorithm which is used in this thesis in order enabl
 	$
 
 	For $\sigma = \mgu(l, l')$ for two literals $l$ and $l'$ we denote by $\sigma_i$ the $i$th substitution, which in the course of the run of the algorithm has been added to $\sigma$. 
-	We denote composition of substitutions $\sigma_i$ up to including $\sigma_j$ by $\sigmarange{i}{j}$.
-	\qedhere
-\end{defi}
+	We denote composition of substitutions $\sigma_i$ up to including $\sigma_j$ by $\sigmarange{i}{j}$. \mytodo{remove sigmarange if not needed}
 
 Hence for a unifier $\sigma$, we have that $ \sigma = \sigma_1\cdots\sigma_n = \sigmarange{i}{j}$, where $n$ is $|\dom(\sigma)|$.
 Note that $|\dom(\sigma_i)| = 1$ for $1\varleq i \varleq n$.

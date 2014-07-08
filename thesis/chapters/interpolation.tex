@@ -88,9 +88,8 @@ A non-logical symbol is said to be \defiemph{$\Gamma$ ($\Delta$)-colored} if it 
 A term is a \defiemph{$\Phi$-term} if its outermost symbol is $\Phi$-colored.
 
 A term $t$ is \defiemph{single-colored} if $t$ is $\Phi$-colored for some $\Phi$ and all colored symbols in $t$ are $\Phi$-colored.
-A term $t$ is \defiemph{mixed-colored} if $t$ is $\Phi$-colored for some $\Phi$ and $t$ contains a term which is colored but not $\Phi$-colored.
-\mytodo{fix either mixed-colored or multi-colored, currently both is used synonymously}
-Note that a multicolored $\Phi$-term consequently is a term whose outermost symbol is $\Phi$-colored and contains a colored but not $\Phi$-colored subterm.
+A term $t$ is \defiemph{multi-colored} if $t$ is $\Phi$-colored for some $\Phi$ and $t$ contains a term which is colored but not $\Phi$-colored.
+Note that a multi-colored $\Phi$-term consequently is a term whose outermost symbol is $\Phi$-colored and contains a colored but not $\Phi$-colored subterm.
 
   An occurrence of a term $t$ is called \defiemph{$\Phi$-colored} if $t$ is contained in a maximal $\Phi$-colored term.
 	$t$ is called \defiemph{colored} if $t$ is of any color and \defiemph{grey} otherwise.
@@ -121,4 +120,67 @@ This is justified by the following examples, which are referred to in \cite[Exam
 
 	Note that as we can express a formulas, which are logically equivalent to $\bot$ and $\top$ respectively by employing the equality symbol\footnote{$\forall x\,x\neq x$ and $\forall x\,x=x$ are suitable examples for $\bot$ and $\top$ respectively.}, the symbols for truth and falsity are not strictly required to be regarded as logical symbols for the interpolation theorem to hold.
 \end{exa}
+
+
+\section{Beth's definability theorem}
+
+In this section, we present an application of the interpolation theorem by a further result which can even be argued to be a corollary of the interpolation theorem. \mytodo{ check original proof, cannot have involved interpolation, write about how interpolation makes this easier \cite{beth1953}}
+It deals with definitions of predicates by means of formulas and bridges the gap between implicit definitions, where predicates are defined by its use, and explicit definitions, which define a formula by means of another formula.
+
+\begin{defi}[Implicit and explicit definition]
+	Let $\LangSym$ be a first-order language and
+	$P$ and $P'$ be two fresh predicate symbols of arity $n$.
+	Let $\Gamma_P$ be a set of first-order formulas\todo{open or closed?}{}
+	in the language $\LangSym\cup\{P\}$ 
+	and $\Gamma_{P'}$ the same set of formulas with every occurrence of $P$ in $\Gamma_P$ replaced by\nolinebreak{} $P'$, such that the language of $\Gamma_{P'}$ is $\LangSym \cup\{P'\}$.
+
+	$\Gamma_P$ defines $P$ implicitly iff $\Gamma_P \cup \Gamma_{P'} \entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff P'(x_1, \dots, x_n))$.
+	On the other hand $\Gamma_P$ defined $P$ explicitly iff there is formula $\varphi$ in $\LangSym$ with $\FV(\varphi) = \{x_1, \dots, x_n\}$ such that 
+	$\Gamma\entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff \varphi)$.
+\end{defi}
+
+\begin{thm}[Beth's definability theorem]
+	$\Gamma_P$ defines $P$ explicitly if and only if $\Gamma_P$ defines $P$ implicitly.
+\end{thm}
+\begin{proof}
+	Suppose that $\Gamma_P$ defines $P$ explicitly. 
+	Then for some formula $\varphi$,
+	$\Gamma_P\entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff \varphi)$.
+	But we also get that
+	$\Gamma_{P'}\entails \forall x_1\quantifierdots \forall x_n (  P'(x_1, \dots, x_n) \liff \varphi)$, so
+	$\Gamma_{P} \cup \Gamma_{P'} \entails \forall x_1\quantifierdots \forall x_n (P(x_1, \dots, x_n) \liff P'(x_1, \dots, x_n))$, hence $\Gamma_P$ is an implicit definition of $P$.
+
+	For the other direction, suppose that $\Gamma_P$ defines $P$ implicitly. 
+	Then
+	$\Gamma_P \cup \Gamma_{P'} \entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff P'(x_1, \dots, x_n))$.
+	It follows from the compactness theorem that
+	we can find a finite set $\Gamma^*_{P'} \subseteq \Gamma_{P'}$ such that  
+	$\Gamma_P \cup \Gamma^*_{P'} \entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff P'(x_1, \dots, x_n))$.
+	Let $\gamma_{P'}$ be the conjunction of all formulas in $\Gamma^*_{P'}$ and  $y_1, \dots, y_n$ be fresh variables.
+	Then we obtain by the deduction theorem that  
+	$\Gamma_P \cup \{P(y_1, \dots, y_n)\} \entails \gamma_{P'} \limpl  P'(y_1, \dots, y_n)$.
+
+	Note that $P$ only occurs in the antecedent and $P'$ only occurs in the consequent.
+	Hence we can apply the Interpolation Theorem~\ref{thm:interpolation_original} in order to obtain a formula $\chi$
+	such that
+	$\Gamma_P \cup \{P(y_1, \dots, y_n)\} \entails \chi$ and
+	$\chi \entails \gamma_{P'} \limpl  P'(y_1, \dots, y_n)$,
+	while additionally $\Lang(\chi) = \Lang(\Gamma_P) \cap \Lang(\Gamma_{P'})$, i.e.\ neither $P$ nor $P'$ occur in $\chi$.
+
+	Now we apply the deduction theorem another time and get that
+	\markA{} $\Gamma_P \entails P(y_1, \dots, y_n) \limpl \chi$ and
+	$\gamma_{P'} \entails \chi \limpl  P'(y_1, \dots, y_n)$.
+	As $\gamma_{P'}$ implies $\Gamma_{P'}$, we also have that
+	$\Gamma_{P'} \entails \chi \limpl  P'(y_1, \dots, y_n)$.
+	Since $P$ does not occur in this entailment, it remains valid if we replace every occurrence of the symbol $P'$ by $P$
+	and obtain that
+	\markB{} $\Gamma_{P} \entails \chi \limpl  P(y_1, \dots, y_n)$.
+
+	But then \markA{} and \markB{} imply that 
+	\markB{} $\Gamma_{P} \entails \chi \liff  P(y_1, \dots, y_n)$, i.e.{}
+	\markB{} $\Gamma_{P} \entails \forall y_1\quantifierdots\forall y_n \left( \chi \liff  P(y_1, \dots, y_n)\right)$.
+	So clearly $\Gamma_P$ defines $P$ explicitly.
+\end{proof}
+
+
 

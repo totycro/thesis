@@ -11,8 +11,8 @@ LANG="en" # of tex file
 #first: proofs
 
 first:
-	make semantic >/dev/null &
-	#make content >/dev/null &
+	#make semantic >/dev/null &
+	make content >/dev/null &
 
 all: everything
 

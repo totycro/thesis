@@ -206,13 +206,12 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 
 	For 2, suppose $\FAX(\LangSym) \cup \EAX(\LangSym) \cup \Phi$ is satisfiable and let $M$ be a model of it.
 
-	First, note that as $M \entails \EAX(\LangSym)$, by Proposition \ref{prop:equivalence_relation},  $E^M$ is an equivalence relation.
+	First, note that as $M \entails \EAX(\LangSym)$, by Proposition \ref{prop:equivalence_relation}, $\calI_M(E)$ is an equivalence relation.
 	Let $D$ be the domain of $M$.
-	We build a model $M'$ with the domain 
-	$D' = D/{E^M}$, i.e.\ the the congruence relation of $D$ modulo $E^M$.
-	The interpretation $\calI'$ of $M'$ is obtained from the interpretation $\calI$ of $M$ by 
-	replacing every occurrence of a domain element $d$ by its respective congruence class with respect to $E^M$.
-	As $M \entails \EAX(\LangSym)$, it satisfies the congruence axioms with respect to every function and predicate symbol, and therefore $\calI'$ is well-defined.
+	We build a model $M'$ whose domain $\domainofmodel{M'}$ is the congruence relation of $\domainofmodel{M}$ modulo $\interpretation{M}(E)$.
+	The interpretation $\interpretation{M'}$ of $M'$ is obtained from $\interpretation{M}$ by 
+	replacing every occurrence of a domain element $d$ by its respective congruence class with respect to $\interpretation{M}(E)$.
+	As $M \entails \EAX(\LangSym)$, $\interpretation{M'}$ satisfies the congruence axioms with respect to every function and predicate symbol, and is therefore well-defined.
 	Due to this construction, $M' \entails s = t$ if and only if $M \entails E(s, t)$ for all terms $s$ and $t$.
 
 	%We extend a model $M$ of this set of formulas to a model of $\TransInv(\Phi)$ by extending it from the language $\Trans(\LangSym)$ to include $\FS(\LangSym)$.

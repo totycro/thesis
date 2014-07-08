@@ -1,6 +1,8 @@
 
 \chapter{The semantic perspective on interpolation}
 
+\cite{robinson1956result}
+
 The proofs of the interpolation theorem in the preceding chapters have a common feature:
 They are proof-theoretic approaches.
 
@@ -10,12 +12,18 @@ They are proof-theoretic approaches.
 	interpolation again
 \end{thm}
 \begin{proof}
+	Random note: if theories are inseparable, then each is by itself consistent (else pick some formula implies by the consistent theory, and its negation will be implied by the inconsistent one)
+
+
 	Suppose that there is no interpolant for $\Gamma$ and $\Delta$
 	We show that then, $\Gamma\cup\Delta$ is satisfiable by constructing a model.
 
 	Let $L_0 = \Lang(\Gamma) \cap \Lang(\Delta)$
 
 	Note that by assumption there is no formula $I$ such that $\Gamma\entails I$ and $\Delta \entails \lnot I$.
+	\NB{this is a reverse interpolant, not sure which interpolant we would have in the thm statement. possibly write it down explicitly or use "barred" (BBL) or separable (everyone else) }
+
+
 
 	Let $\Phi = \varphi_1, \varphi_2, \dots$ be an enumeration of all formulas in the language $\Lang(\Gamma)$
 	and

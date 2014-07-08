@@ -171,6 +171,9 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\lifiboth}[1]{\ensuremath{\LIcl(#1)}}
 \newcommand{\lifidelta}[1]{\ensuremath{\LIclde(#1)}}
 
+\newcommand{\domainofmodel}[1]{\ensuremath{D_{#1}}}
+\newcommand{\interpretation}[1]{\ensuremath{\calI_{#1}}}
+
 
 %\DeclareMathOperator{\abstraction}{abstraction}
 
@@ -231,7 +234,7 @@ positioning,fit,calc,decorations.text,shadows%
 \DeclareMathOperator{\TransAll}{\Trans_{Ax}}
 %\newcommand{\FAX}{\ensuremath{\mathrm{F_{Ax}}}}
 
-\DeclareMathOperator{\defeq}{\stackrel{\mathrm{def}}{=}}
+\DeclareMathOperator{\defeq}{\stackrel{\mathclap{\mathrm{def}}}{=}}
 
 \newcommand{\subst}[1]{[#1]}
 %\newcommand{\abstractionOp}[1]{\{#1\}}
@@ -318,6 +321,9 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\Axiomm}[1]{\Axiom$#1$}
 
 \newcommand{\quantifierdots}{\dots} % dots for $\forall x_1 \quantifierdots \forall x_n$
+% cdots are somewhat nicer, but look inconsistent with other dots at the bottom of the line 
+%\newcommand{\quantifierdots}{\cdots} % dots for $\forall x_1 \quantifierdots \forall x_n$
+
 
 
 % math
@@ -393,7 +399,8 @@ positioning,fit,calc,decorations.text,shadows%
 % force no overlong lines:
 %\tolerance=1 % tolerance for how badly spaced lines are allowed, less means "better" lines
 \tolerance=500 %  need more tolerance for equations
-%\emergencystretch=\maxdimen
+%\tolerance=9999 %  really much tolerance, 10k is max
+%\emergencystretch=\maxdimen % this creates really ugly lines
 %\emergencystretch=200pt
 %\setlength{\emergencystretch}{3em}
 %\hyphenpenalty=10000 % forces no hyphenation
