@@ -1,12 +1,29 @@
 
 \chapter{The semantic perspective on interpolation}
 
-\cite{robinson1956result}
+A curious feature of the interpolant theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters as it is a purely model-theoretic.
+It was initially presented in \cite{robinson1956result} as a proof of Beth's definability theorem, which is discussed in section~\ref{sec:beth}.
 
-The proofs of the interpolation theorem in the preceding chapters have a common feature:
-They are proof-theoretic approaches.
+\begin{thm}[Robinson's joint consistency theorem]
+	\label{thm:robinson}
+	Let $\Gamma$ and $\Delta$ be consistent sets of first-order formulas.
+	Then $\Gamma \cup \Delta$ is consistent if and only if there is no formula $\varphi$ such that $\Gamma \entails \varphi$ and $\Delta \entails \lnot \varphi$.
+\end{thm}
 
-\mytodo{ finish this when the chapter is done content-wise }
+
+\begin{prop}
+	Theorem~\ref{thm:robinson} and ??? are equivalent.
+\end{prop}
+\begin{proof}
+	Suppose that ??? holds.
+
+	Clearly if there is a formula $\varphi$ such that $\Gamma\entails \varphi$ and $\Delta\entails \lnot \varphi$, then $\Gamma \cup \Delta $ is inconsistent.
+
+	On the other hand, if $\Gamma\cup\Delta$ is inconsistent, 
+
+	\mytodo{ can easily use positive or negative form of craig interpolation here, continue proof when this detail is fixed}
+
+\end{proof}
 
 \begin{thm}
 	interpolation again

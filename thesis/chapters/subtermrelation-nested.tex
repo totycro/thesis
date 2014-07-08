@@ -2,6 +2,8 @@
 
 \mytodo{some text}
 
+\section{ Preliminaries }
+
 \begin{defi}[Substitution $\tau(\inference)$]
 	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
 
@@ -58,7 +60,20 @@
 
 \end{proof}
 
+\begin{lemma}
+	\label{lemma:substitute_and_lift}
+	Let $\sigma$ be a substitution and $F$ a formula without $\Phi$-colored terms such that for a set of formulas $\Psi$ which does not contain $\Phi$-lifting variables, $\Psi \entails F$.
+	Then $\Psi \entails \lifphinovar{F\sigma}$.
+\end{lemma}
+\begin{proof}
+	$\lifphinovar{F\sigma}$ is an instance of $F$:
+	$\sigma$ substitutes variables either for terms which do not contain $\Phi$-colored symbols or by terms containing $\Phi$-colored symbols.
+	For the first kind, the lifting has no effect.
+	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
+\end{proof}
 
+
+\section{ Interpolant extraction with simultaneous lifting  }
 
 \begin{defi}[Incrementally lifted interpolant]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
@@ -141,19 +156,8 @@
 
 %\section{Properties of $\LI$ and $\LIcl$}
 
-\begin{lemma}
-	\label{lemma:substitute_and_lift}
-	Let $\sigma$ be a substitution and $F$ a formula without $\Phi$-colored terms such that for a set of formulas $\Psi$ which does not contain $\Phi$-lifting variables, $\Psi \entails F$.
-	Then $\Psi \entails \lifphinovar{F\sigma}$.
-\end{lemma}
-\begin{proof}
-	$\lifphinovar{F\sigma}$ is an instance of $F$:
-	$\sigma$ substitutes variables either for terms which do not contain $\Phi$-colored symbols or by terms containing $\Phi$-colored symbols.
-	For the first kind, the lifting has no effect.
-	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
-\end{proof}
 
-
+\mytodo{ possible outsourced lemmas from main lemma. try to give some motivation! }
 \begin{lemma}
 	If a variable $x$ occurs in $\LI(C)$ but not in $C$, then $x$ does not occur in the subsequent resolution derivation.
 \end{lemma}
@@ -162,6 +166,8 @@
 \begin{lemma}
 	If a ground term $t$ occurs in $\LI(C)$ but not in $C$, and a successor of $C$ contains $t$, then ``the second $t$ has been derived from first principles in a different way''.
 \end{lemma}
+
+\section{Main lemma}
 
 \begin{lemma}
 	\label{lemma:gamma_entails_delta_lifted_invariant}
@@ -404,6 +410,7 @@ $q$ must have been created or originated from other occurrences of the same func
 Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant. 
 
 
+\section{ Towards an interpolant }
 
 \begin{lemma}
 	\label{lemma:li_symmetry}
