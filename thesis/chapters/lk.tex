@@ -13,19 +13,49 @@ Its use of sequents in lieu of plain formulas allows for a natural mapping of th
 The rules of sequent calculus are as follows:
 %\medskip
 
-\newcommand{\calculussec}[1]{ \textbf{#1}\nopagebreak}
+{ % multicol length scope
+\setlength{\multicolsep}{0.5em plus 2.0pt minus 1.5pt}% http://tex.stackexchange.com/questions/37863/reduce-white-space-before-and-after-multicols-environment
+%http://tex.stackexchange.com/questions/51312/reduce-vertical-spacing-itemize-and-multicols
+
+\newcommand{\calculussec}[1]{\textbf{#1}\nopagebreak}
 %\newcommand{\calculussec}[1]{\subsubsection*{#1}\nopagebreak}
 \newenvironment{lkdefsec}{
-	\begin{figure}[H]
+	%\begin{figure}[H]
 	%\begin{samepage}
 	%\ContinuedFloat
+	%	\begin{adjustwidth}{0.05\textwidth}{0.05\textwidth}
+}{
+	%	\end{adjustwidth}
+	%\end{figure}
+	%\end{samepage}
+	%\vspace*{-0.5em}
+} 
+
+
+\newenvironment{lkdefitemize}{
+}{
+	\vspace{0.6em}
+}
+
+\newenvironment{lkdefsamepage}{
+	\begin{figure}[H]
 		\begin{adjustwidth}{0.05\textwidth}{0.05\textwidth}
 		}{
 		\end{adjustwidth}
 	\end{figure}
-	%\end{samepage}
+	\vspace{-1.1em}
 }
+
+\newenvironment{lkdefitem}{
+	\begin{lkdefsamepage}
+		\begin{itemize}
+			}{
+		\end{itemize}
+	\end{lkdefsamepage}
+}
+
 \begin{lkdefsec}
+	\begin{lkdefsamepage}
 	\calculussec{Axioms}
 	\begin{multicols}{2}
 		\begin{prooftree}
@@ -35,7 +65,9 @@ The rules of sequent calculus are as follows:
 			\AxiomCm{\fCenter t=t}
 		\end{prooftree}
 	\end{multicols}
+	\end{lkdefsamepage}
 \end{lkdefsec}
+
 
 \begin{lkdefsec}
 	\calculussec{Cut}
@@ -48,207 +80,232 @@ The rules of sequent calculus are as follows:
 
 \begin{lkdefsec}
 	\calculussec{Structural rules}
-	\begin{itemize}
-		\item Contraction
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiom$\Gamma, A, A \fCenter \Delta$
-					\RightLabelm{\lkrule{c}{l}}
-					\UnaryInf$\Gamma, A \fCenter \Delta$
-				\end{prooftree}
+	\begin{lkdefitemize}
+			\begin{lkdefitem}
+			\item Contraction
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiom$\Gamma, A, A \fCenter \Delta$
+						\RightLabelm{\lkrule{c}{l}}
+						\UnaryInf$\Gamma, A \fCenter \Delta$
+					\end{prooftree}
 
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta, A, A}
-					\RightLabelm{\lkrule{c}{r}}
-					\UnaryInfm{\Gamma \fCenter \Delta, A }
-				\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta, A, A}
+						\RightLabelm{\lkrule{c}{r}}
+						\UnaryInfm{\Gamma \fCenter \Delta, A }
+					\end{prooftree}
 
-			\end{multicols}
+				\end{multicols}
 
-		\item Weakening
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta}
-					\RightLabelm{\lkrule{w}{l}}
-					\UnaryInfm{\Gamma, A \fCenter \Delta}
-				\end{prooftree}
+			\end{lkdefitem}
+			\begin{lkdefitem}
 
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta}
-					\RightLabelm{\lkrule{w}{r}}
-					\UnaryInfm{\Gamma \fCenter \Delta,  A }
-				\end{prooftree}
+			\item Weakening
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta}
+						\RightLabelm{\lkrule{w}{l}}
+						\UnaryInfm{\Gamma, A \fCenter \Delta}
+					\end{prooftree}
 
-			\end{multicols}
-	\end{itemize}
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta}
+						\RightLabelm{\lkrule{w}{r}}
+						\UnaryInfm{\Gamma \fCenter \Delta,  A }
+					\end{prooftree}
+
+				\end{multicols}
+			\end{lkdefitem}
+	\end{lkdefitemize}
 \end{lkdefsec}
 
 \begin{lkdefsec}
 
 	\calculussec{Propositional rules}
 
-	\begin{itemize}
-		\item Negation
+	\begin{lkdefitemize}
+			\begin{lkdefitem}
+			\item Negation
 
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta,  A}
-					\RightLabelm{\lkrule{\lnot}{l}}
-					\UnaryInfm{\lnot A, \Gamma \fCenter \Delta }
-				\end{prooftree}
-				\begin{prooftree}
-					\Axiomm{A, \Gamma \fCenter \Delta}
-					\RightLabelm{\lkrule{\lnot}{r}}
-					\UnaryInfm{\Gamma \fCenter \Delta, \lnot  A }
-				\end{prooftree}
-			\end{multicols}
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta,  A}
+						\RightLabelm{\lkrule{\lnot}{l}}
+						\UnaryInfm{\lnot A, \Gamma \fCenter \Delta }
+					\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{A, \Gamma \fCenter \Delta}
+						\RightLabelm{\lkrule{\lnot}{r}}
+						\UnaryInfm{\Gamma \fCenter \Delta, \lnot  A }
+					\end{prooftree}
+				\end{multicols}
 
-		\item Conjunction
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiomm{\Gamma, A, B \fCenter \Delta}
-					\RightLabelm{\lkrule{\land}{l}}
-					\UnaryInfm{\Gamma, A\land B \fCenter \Delta }
-				\end{prooftree}
+			\end{lkdefitem}
+			\begin{lkdefitem}
+			\item Conjunction
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A, B \fCenter \Delta}
+						\RightLabelm{\lkrule{\land}{l}}
+						\UnaryInfm{\Gamma, A\land B \fCenter \Delta }
+					\end{prooftree}
 
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta, A}
-					\Axiomm{\Sigma \fCenter \Pi, B}
-					\RightLabelm{\lkrule{\land}{r}}
-					\BinaryInfCm{\Gamma, \Sigma \fCenter \Delta, \Pi, A \land B }
-				\end{prooftree}
-			\end{multicols}
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta, A}
+						\Axiomm{\Sigma \fCenter \Pi, B}
+						\RightLabelm{\lkrule{\land}{r}}
+						\BinaryInfCm{\Gamma, \Sigma \fCenter \Delta, \Pi, A \land B }
+					\end{prooftree}
+				\end{multicols}
+				%	\end{itemize} \end{lkdefsec}
+				%\begin{lkdefsec} \begin{itemize}
 
-	\end{itemize} \end{lkdefsec}
-	\mytodo{format pagebreaks nicely in final version} 
-\begin{lkdefsec} \begin{itemize}
 
-		\item Disjunction\nopagebreak
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiomm{\Gamma, A \fCenter \Delta}
-					\Axiomm{\Sigma, B \fCenter \Pi}
-					\RightLabelm{\lkrule{\lor}{l}}
-					\BinaryInfm{\Gamma, \Sigma, A \lor B \fCenter \Delta, \Pi }
-				\end{prooftree}
+			\end{lkdefitem}
+			\begin{lkdefitem}
+			\item Disjunction\nopagebreak
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A \fCenter \Delta}
+						\Axiomm{\Sigma, B \fCenter \Pi}
+						\RightLabelm{\lkrule{\lor}{l}}
+						\BinaryInfm{\Gamma, \Sigma, A \lor B \fCenter \Delta, \Pi }
+					\end{prooftree}
 
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta, A, B}
-					\RightLabelm{\lkrule{\lor}{r}}
-					\UnaryInfm{\Gamma \fCenter \Delta, A \lor B  }
-				\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta, A, B}
+						\RightLabelm{\lkrule{\lor}{r}}
+						\UnaryInfm{\Gamma \fCenter \Delta, A \lor B  }
+					\end{prooftree}
 
-			\end{multicols}
+				\end{multicols}
 
-		\item Implication
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter A, \Delta}
-					\Axiomm{\Sigma, B \fCenter \Pi}
-					\RightLabelm{\lkrule{\limpl}{l}}
-					\BinaryInfm{\Gamma, \Sigma, A \limpl B \fCenter \Delta, \Pi }
-				\end{prooftree}
+			\end{lkdefitem}
+			\begin{lkdefitem}
+			\item Implication
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter A, \Delta}
+						\Axiomm{\Sigma, B \fCenter \Pi}
+						\RightLabelm{\lkrule{\limpl}{l}}
+						\BinaryInfm{\Gamma, \Sigma, A \limpl B \fCenter \Delta, \Pi }
+					\end{prooftree}
 
-				\begin{prooftree}
-					\Axiomm{\Gamma, A \fCenter \Delta, B}
-					\RightLabelm{\lkrule{\limpl}{r}}
-					\UnaryInfm{\Gamma \fCenter \Delta, A \limpl B}
-				\end{prooftree}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A \fCenter \Delta, B}
+						\RightLabelm{\lkrule{\limpl}{r}}
+						\UnaryInfm{\Gamma \fCenter \Delta, A \limpl B}
+					\end{prooftree}
 
-			\end{multicols}
+				\end{multicols}
+			\end{lkdefitem}
 
-	\end{itemize}
+	\end{lkdefitemize}
 \end{lkdefsec}
-\begin{lkdefsec}
 
+\begin{lkdefsec}
 	\calculussec{Quantifier rules}
 
-	\begin{itemize}
+	\begin{lkdefitemize}
+			\begin{lkdefitem}
+			\item Universal
+
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A[x/t] \fCenter \Delta}
+						\RightLabelm{\lkrule{\forall}{l}}
+						\UnaryInfm{\Gamma, \forall x A \fCenter \Delta }
+					\end{prooftree}
+
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta, A[x/y]}
+						\RightLabelm{\lkrule{\forall}{r}}
+						\UnaryInfm{\Gamma\fCenter \Delta, \forall x A  }
+					\end{prooftree}
+
+				\end{multicols}
+
+			\end{lkdefitem}
+			\begin{lkdefitem}
+			\item Existential
+
+				\begin{multicols}{2}
+					\begin{prooftree}
+						\Axiomm{\Gamma, A[x/y] \fCenter \Delta}
+						\RightLabelm{\lkrule{\exists}{l}}
+						\UnaryInfm{\Gamma, \exists x A \fCenter \Delta }
+					\end{prooftree}
+
+					\begin{prooftree}
+						\Axiomm{\Gamma \fCenter \Delta, A[x/t]}
+						\RightLabelm{\lkrule{\exists}{r}}
+						\UnaryInfm{\Gamma\fCenter \Delta, \exists x A  }
+					\end{prooftree}
 
 
-		\item Universal
-
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiomm{\Gamma, A[x/t] \fCenter \Delta}
-					\RightLabelm{\lkrule{\forall}{l}}
-					\UnaryInfm{\Gamma, \forall x A \fCenter \Delta }
-				\end{prooftree}
-
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta, A[x/y]}
-					\RightLabelm{\lkrule{\forall}{r}}
-					\UnaryInfm{\Gamma\fCenter \Delta, \forall x A  }
-				\end{prooftree}
-
-			\end{multicols}
-
-		\item Existential
-
-			\begin{multicols}{2}
-				\begin{prooftree}
-					\Axiomm{\Gamma, A[x/y] \fCenter \Delta}
-					\RightLabelm{\lkrule{\exists}{l}}
-					\UnaryInfm{\Gamma, \exists x A \fCenter \Delta }
-				\end{prooftree}
-
-				\begin{prooftree}
-					\Axiomm{\Gamma \fCenter \Delta, A[x/t]}
-					\RightLabelm{\lkrule{\exists}{r}}
-					\UnaryInfm{\Gamma\fCenter \Delta, \exists x A  }
-				\end{prooftree}
-
-			\end{multicols}
-
-	\end{itemize}
+				\end{multicols}
+			\end{lkdefitem}
 
 	(provided no free variable of $t$ becomes bound in $A[x/t]$ and
 	$y$ does not occur free in $\Gamma$, $\Delta$ or $A$)
+	\end{lkdefitemize}
+
+
 
 \end{lkdefsec}
-\begin{figure}[H]
+%\begin{figure}[H]
 	\begin{lkdefsec}
-
 		\calculussec{Equality rules}
-		\begin{itemize}
+		\begin{lkdefitemize}
+			\begin{lkdefitem}
 			\item Left rules
-				\begin{multicols}{2}
-					\begin{prooftree}
-						\Axiomm{\Gamma, A\occurat{t}{p} \fCenter \Delta}
-						\Axiomm{\Sigma \fCenter \Pi, s=t}
-						\RightLabelm{\lkrule{=}{l_1}}
-						\BinaryInfm{\Gamma, \Sigma, A\occurat{s}{p} \fCenter \Delta, \Pi }
-					\end{prooftree}
-					\begin{prooftree}
-						\Axiomm{\Gamma, A\occurat{s}{p} \fCenter \Delta}
-						\Axiomm{\Sigma \fCenter \Pi, s=t}
-						\RightLabelm{\lkrule{=}{l_2}}
-						\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
-					\end{prooftree}
-				\end{multicols}
+				%\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma, A\occurat{t}{p} \fCenter \Delta}
+					\Axiomm{\Sigma \fCenter \Pi, s=t}
+					\RightLabelm{\lkrule{=}{l_1}}
+					\BinaryInfm{\Gamma, \Sigma, A\occurat{s}{p} \fCenter \Delta, \Pi }
+				\end{prooftree}
+				\begin{prooftree}
+					\Axiomm{\Gamma, A\occurat{s}{p} \fCenter \Delta}
+					\Axiomm{\Sigma \fCenter \Pi, s=t}
+					\RightLabelm{\lkrule{=}{l_2}}
+					\BinaryInfm{\Gamma, \Sigma, A\occurat{t}{p} \fCenter \Delta, \Pi }
+				\end{prooftree}
+				%\end{multicols}
+
+			\end{lkdefitem}
+			\begin{lkdefitem}
 
 			\item Right rules
-				\begin{multicols}{2}
-					\begin{prooftree}
-						\Axiomm{\Gamma\fCenter \Delta, A\occurat{t}{p} }
-						\Axiomm{\Sigma \fCenter \Pi, s=t}
-						\RightLabelm{\lkrule{=}{r_1}}
-						\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{s}{p}  }
-					\end{prooftree}
-					\begin{prooftree}
-						\Axiomm{\Gamma\fCenter \Delta, A\occurat{s}{p} }
-						\Axiomm{\Sigma \fCenter \Pi, s=t}
-						\RightLabelm{\lkrule{=}{r_2}}
-						\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{t}{p} }
-					\end{prooftree}
-				\end{multicols}
-		\end{itemize}
-
+				%\begin{multicols}{2}
+				\begin{prooftree}
+					\Axiomm{\Gamma\fCenter \Delta, A\occurat{t}{p} }
+					\Axiomm{\Sigma \fCenter \Pi, s=t}
+					\RightLabelm{\lkrule{=}{r_1}}
+					\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{s}{p}  }
+				\end{prooftree}
+				\begin{prooftree}
+					\Axiomm{\Gamma\fCenter \Delta, A\occurat{s}{p} }
+					\Axiomm{\Sigma \fCenter \Pi, s=t}
+					\RightLabelm{\lkrule{=}{r_2}}
+					\BinaryInfm{\Gamma, \Sigma\fCenter \Delta, \Pi, A\occurat{t}{p} }
+				\end{prooftree}
+				%\end{multicols}
+			\end{lkdefitem}
 		(provided no free variable of $s$ or $t$ becomes bound in $A\occurat{t}{p}$ or $A\occurat{s}{p}$)
+			\end{lkdefitemize}
+
+			\vspace{-1em}
+		\begin{figure}[H]
 		\caption{The rules of sequent calculus}
 		\label{fig:lk}
+		\end{figure}
 	\end{lkdefsec}
-\end{figure}
+%\end{figure}
+}
+			\vspace{-0.5em}
 For the purposes of this thesis, we usually consider the cut-free fragment of sequent calculus.
 
 \begin{thm}
