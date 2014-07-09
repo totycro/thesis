@@ -561,10 +561,10 @@ positioning,fit,calc,decorations.text,shadows%
 \newcommand{\mytodo}[1]{{\color{red}TODO: #1}}
 \newcommand{\largered}[1]{{
 
-	  \LARGE\bfseries\color{red}
+		\LARGE\bfseries\boldmath{\color{red}
 		#1
 
-}}
+}}}
 \newcommand{\largeblue}[1]{{
 
 	  \large\bfseries\color{blue}
@@ -656,3 +656,6 @@ positioning,fit,calc,decorations.text,shadows%
 
 % this should be loaded last: http://tex.stackexchange.com/questions/86343/no-room-for-a-new-mathgroup
 \usepackage{bm} % bm, bold math symbols
+
+
+\newcommand{\allbold}[1]{\textbf{\boldmath{#1}}}

@@ -4,15 +4,24 @@
 A curious feature of the interpolant theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters as it is a purely model-theoretic.
 It was initially presented in \cite{robinson1956result} as a proof of Beth's definability theorem, which is discussed in section~\ref{sec:beth}.
 
+\begin{defi}[Separability]
+	Let $\Gamma$ and $\Delta$ be sets of first order formulas.
+	A formula $\varphi$ in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ is said to \defiemph{separate} $\Gamma$ and $\Delta$ if $\Gamma \entails \varphi$ and $\Delta \entails \lnot \varphi$.
+	$\Gamma$ and $\Delta$ are \defiemph{inseparable} if there exists no formula in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ which separates $\Gamma$ and $\Delta$.
+\end{defi}
+
+Note that the following theorem shows that if there exists no formula in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ which separates $\Gamma$ and $\Delta$, then there exists no formula in any language which separate $\Gamma$ and $\Delta$ as then, $\Gamma \cup \Delta$ is consistent:
+
 \begin{thm}[Robinson's joint consistency theorem]
 	\label{thm:robinson}
-	Let $\Gamma$ and $\Delta$ be consistent sets of first-order formulas.
-	Then $\Gamma \cup \Delta$ is consistent if and only if there is no formula $\varphi$ such that $\Gamma \entails \varphi$ and $\Delta \entails \lnot \varphi$.
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
+	Then $\Gamma \cup \Delta$ is consistent if and only if $\Gamma$ and $\Delta$ are inseparable.
 \end{thm}
 
 
 \begin{prop}
 	Theorem~\ref{thm:robinson} and ??? are equivalent.
+	\todo{possibly still move this to the end of the section}
 \end{prop}
 \begin{proof}
 	Suppose that ??? holds.
@@ -25,10 +34,23 @@ It was initially presented in \cite{robinson1956result} as a proof of Beth's def
 
 \end{proof}
 
-\begin{thm}
-	interpolation again
-\end{thm}
-\begin{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:robinson}.]
+	Suppose that $\Gamma\cup\Delta$ is consistent and let $M$ be a model of it.
+	Then clearly for every formula $\varphi$, if $\Gamma \entails \varphi$, then $M \entails \varphi$ as $M \entails \Gamma$.
+	But $M \entails \Delta$, hence it can not be the case that $\Delta \entails \lnot \varphi$.
+
+	For the other direction, suppose that $\Gamma$ and $\Delta$ are inseparable.
+	\mytodo{ICI}
+
+
+	~
+
+	~
+
+	~
+
+
+	\mytodo{old first proof approach, formulated for interpolation}
 	Random note: if theories are inseparable, then each is by itself consistent (else pick some formula implies by the consistent theory, and its negation will be implied by the inconsistent one)
 
 
@@ -95,8 +117,82 @@ $\Delta \subseteq \Delta_\omega$, there is a model of $\Gamma \cup \Delta$.
 \clearpage
 
 
+\section{shoenfield in my words}
+
+Supp no closed formula $A$ such that $\proves_T A$ and $\proves_{T'} \lnot A$.
+Then construct model of $T\cup T'$.
+
+Let $\Gamma$ contain all theorems of $T'$ in the language of $T$ (hence in the language of the intersection).
+
+$T$ with $\Gamma$ is consistent, because else we can construct a forbidden formula $A$ (somehow).
+\bigskip
+
+Let $\mathbf{ M_1 }$ model of $\mathbf T$ and $\Gamma$.
+
+Let $N$ be $M_1 | L$ with symbols for $T'$ added (no info on interpretation of these).
+
+All $L$-theorems of $T'$ are valid in $M_1$ and hence in $N$
+
+By model extension theorem, have $M'_1$ such that $ \mathbf{M'_1 \entails T'}$, agrees with $N$ on $L$-formulas.
+Hence \allbold{$M'_1$ and $M_1$ agree on the $L$-formulas}, $M'_1$ might have more domain elements.
+\bigskip
+
+$\Ra$ can construct this because due to earlier reasoning, there is no contradiction on the $L$-formulas
+\bigskip
+
+
+Let $E$ be $M'_1|L$ with symbols of $T$ added.
+
+$M'_1|L$ is elementary extension of $M_1|L$, so $E$ is elementary extension of $M_1$.
+
+By the corollary,
+there is $M_2$ which agrees on the $L$-formulas with $E$, and which is an elementary extension of $M_1$
+
+
+there is $M_2$ which agrees on the $L$-formulas with $E$ and agrees on all formulas with $M_1$.
+
+$M_2$ is elementary extension of $M_1$, so $M_1\entails T$ implies $M_2 \entails T$.
+
+$M_2|L$ is elementary extension of $E|L = M'_1|L$.
+
+\medskip
+
+similarily:
+$M'_2$ is elementary extension of $M'_1$, so $M'_1\entails T'$ implies $M'_2 \entails T'$.
+
+\bigskip
+
+
+Same formulas hold always for $M_i$, $M'_i$ and both $M_i|L$ and $M'_i|L$.
+
+\bigskip
+
+Question: what is different from the union of all $M_i$ in comparision with a single $M_i$?
+The single ones are already proper models of their respective theories.
+
+does the union differn in so far as it has exactly the same elements?
+
+we always take a model of e.g. $T$ and make a model of $T'$ out of it. before we create the model of $T'$, we take the reduct w.r.t.\ $L$, but we do keep the domain elements.
+
+consider aufschaukeln!,:
+
+$T = \{ P(t(a)), \forall x (P(t(x)) \limpl P(s(x))) \}$
+
+$T' = \{  \forall x (P(s(x)) \limpl P(r(x))) ,
+\forall x (P(r(x)) \limpl P(t(s((x))))) \}$
+\comm{$r$ is just to have something which is not in $L$ to see what the reduct actually does. We could build something similar for $T$.}
+
+
+~
+
+~
+
+
+
 
 \section{notes on shoenfield}
+
+
 
 \begin{description}
 	\item{$T[\Gamma]$:}
@@ -109,7 +205,7 @@ $T[\Gamma]$: theory obtained from $T$ with $\Gamma$ as additional (nonlogical) a
 	\item{Extension of theory:}
 		may contains additional symbols and new theorems, and every symbol/theorem of the old language/theory is a symbol/theorem of the new language/theory
 
-		elementary: from wikipedia: if all formulas of the language of the larger one with variables interpreted with elements of the smaller language hold in the smaller iff they hold in the larger.
+		elementary: from wikipedia: if all formulas in the language of the larger one with variables interpreted with elements of the smaller language hold in the smaller iff they hold in the larger.
 
 	\item{Conservative extension of theory:}
 		$T'$ is conservative extension of $T$ if formulas in $T$ which are theorems of $T'$ are theorems in $T$.
