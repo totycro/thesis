@@ -2,229 +2,157 @@
 \chapter{The semantic perspective on interpolation}
 
 A curious feature of the interpolant theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters as it is a purely model-theoretic.
-It was initially presented in \cite{robinson1956result} as a proof of Beth's definability theorem, which is discussed in section~\ref{sec:beth}.
+It is based on the joint consistency theorem by Robinson (\cite{robinson1956result}), which we show to be equivalent to the interpolation theorem.
+The joint consistency theorem itself was presented as a proof of Beth's definability theorem, which is discussed in section~\ref{sec:beth}.
+
+The notion of joint consistency is based on separability of sets of formulas:
 
 \begin{defi}[Separability]
 	Let $\Gamma$ and $\Delta$ be sets of first order formulas.
-	A formula $\varphi$ in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ is said to \defiemph{separate} $\Gamma$ and $\Delta$ if $\Gamma \entails \varphi$ and $\Delta \entails \lnot \varphi$.
-	$\Gamma$ and $\Delta$ are \defiemph{inseparable} if there exists no formula in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ which separates $\Gamma$ and $\Delta$.
+	A formula $A$ in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ is said to \defiemph{separate} $\Gamma$ and $\Delta$ if $\Gamma \entails A$ and $\Delta \entails \lnot A$.
+	$\Gamma$ and $\Delta$ are \defiemph{separable} if there exists a formula in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ which separates $\Gamma$ and $\Delta$ and \defiemph{inseparable} otherwise.
 \end{defi}
 
-Note that the following theorem shows that if there exists no formula in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ which separates $\Gamma$ and $\Delta$, then there exists no formula in any language which separate $\Gamma$ and $\Delta$ as then, $\Gamma \cup \Delta$ is consistent:
+Note that for joint consistency, we it is not necessary to require the original sets to be consistent as this is implied by separability:
+
+\begin{prop}
+	\label{lemma:insep_consistent}
+	Let $\Gamma$ and $\Delta$ be inseparable sets of first order formulas. Then $\Gamma$ and $\Delta$ are each consistent.
+\end{prop}
+\begin{proof}
+	Suppose w.l.o.g.\ that $\Gamma$ is inconsistent. Then $\Gamma \entails \bot$, and as $\Delta \entails \top$, $\bot$ separates $\Gamma$ and $\Delta$.
+\end{proof}
+
+The joint consistency theorem shows that if there exists no formula in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ which separates $\Gamma$ and $\Delta$, then there exists no formula in any language which separate $\Gamma$ and $\Delta$ as then, $\Gamma \cup \Delta$ is consistent:
 
 \begin{thm}[Robinson's joint consistency theorem]
 	\label{thm:robinson}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
 	Then $\Gamma \cup \Delta$ is consistent if and only if $\Gamma$ and $\Delta$ are inseparable.
 \end{thm}
+The following proof essentially follows \cite{chang1990model}.
+\begin{proof}
+	Suppose that $\Gamma\cup\Delta$ is consistent and let $M$ be a model of it.
+	Then clearly for every formula $A$, if $\Gamma \entails A$, then $M \entails A$ as $M \entails \Gamma$.
+	But $M \entails \Delta$, hence it can not be the case that $\Delta \entails \lnot A$.
+
+	For the other direction, suppose that $\Gamma$ and $\Delta$ are inseparable.
+	We proceed by iteratively constructing two maximal consistent sets of formulas $T$ and $T'$ such that $\Gamma \subseteq T$ and $\Delta \subset T'$ with $T \cup T'$ being consistent in order to then derive a model of this union, establishing the consistency of $\Gamma$ and $\Delta$.
+
+	Let $T_0 = \Gamma$ and $T'_0 = \Delta$. 
+	We now require a countably infinite set of fresh constant symbols $C = \{c_0, c'_0, c_1, c'_1, \dots\}$.
+	Let $\mathcal{A}_0, \mathcal{A}_1, \dots$ be an enumeration of all sentences in the language $\Lang(\Gamma) \cup C$
+	and $\mathcal{B}_0, \mathcal{B}_1, \dots$ an enumeration of all sentences in the language $\Lang(\Delta) \cup C$.
+
+	We construct
+	$T_{i+1}$ 
+	from
+	$T_{i}$
+	by means of the following formation rules:
+	%\begin{enumerate}[(1)]
+	\begin{enumerate}[(1)]
+		\item
+			\label{theory_construction_1}
+			If $T_{i} \cup \{\mathcal{A}_i\}$ and $T'_{i}$ are separable, then $T_{i+1} \defeq{}\, T_i$.
+		\item Otherwise:
+			\label{theory_construction_2}
+			\begin{enumerate}[(2a)]
+			\label{theory_construction_2a}
+				\item If $\mathcal{A}_i$ is of the form $\exists x A$, then $T_{i+1} \defeq{}\, T_i \cup \{ \mathcal{A}_i, A\subst{x/c_i} \}$.
+			\label{theory_construction_2b}
+				\item Otherwise $T_{i+1} \defeq{}\, T_i \cup \{ \mathcal{A}_i \}$.
+			\end{enumerate}
+	\end{enumerate}
+
+	$T'_{i+1}$ is formed in a similar fasion:
+	\begin{enumerate}[(1$'$)]
+		\item
+			If $T'_{i} \cup \{\mathcal{B}_i\}$ and $T_{i+1}$ are separable, then $T'_{i+1} \defeq{}\, T'_i$.
+		\item
+			\begin{samepage}
+				Otherwise: 
+			\begin{enumerate}[(2$'$a)]
+				\item If $\mathcal{B}_i$ is of the form $\exists x A$, then $T'_{i+1} \defeq{}\, T'_i \cup \{ \mathcal{B}_i, A\subst{x/c'_i} \}$.
+				\item Otherwise $T'_{i+1} \defeq{}\, T'_i \cup \{ \mathcal{B}_i \}$.
+			\end{enumerate}
+			\end{samepage}
+	\end{enumerate}
+
+	Now let
+	$T = \bigcup_{i\vargeq 0} T_i$
+	and
+	$T' = \bigcup_{i\vargeq 0} T'_i$.
+	We prove properties on $T$ and $T'$ which will be vital for the construction of a model of $T\cup T'$:
+
+	\begin{enumerate}[I.]
+		\item
+			\label{enum:theories_insep}
+			$T_i$ and $T'_i$ are inseparable.
+
+			$\Gamma$ and $\Delta$ are inseparable by assumption and clearly the construction of the subsequent elements of the sequence do not violate this invariant.
 
 
+		\item
+			\label{enum:each_max_consistent}
+			$T$ and $T'$ are each maximal consistent with respect to $\Lang(\Gamma) \cup C$ and $\Lang(\Delta) \cup C$ respectively.
+
+			We show the result for $T$.
+			Suppose that for some $i$, $\mathcal{A}_i \not\in T$ and $\lnot\mathcal{A}_i \not\in T$.
+			Then by the construction of $T$,
+			$T_i \cup \{\mathcal{A}_i\}$ and $T'_i$ are separable.
+			Hence also
+			$T \cup \{\mathcal{A}_i\}$ and $T'$ are, i.e.\ there exists a formula $B_1$ in the language $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that
+			$T \cup \{\mathcal{A}_i\} \entails B_1$ and $T' \entails \lnot B_1$.
+			By the deduction theorem, we also have that \markA{} $T \entails \mathcal{A}_i \limpl B_1$.
+
+			As furthermore $\lnot \mathcal{A}_i \not\in T$, by a similar argument, there exists a formula $B_2$ in the language  $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that 
+			\markB{} $T \entails \lnot \mathcal{A}_i \limpl B_2$ and $T' \entails \lnot B_2$.
+
+			Then however \markA{} and \markB{} entail that in any model, depending on whether $\mathcal{A}_i$ holds in the model, either $B_1$ or $B_2$ hold, i.e.\ $T \entails B_1 \lor B_2$.
+			But we as neither $B_1$ nor $B_2$ hold in $T'$, we obtain that $T' \entails \lnot (B_1 \lor B_2)$, in effect establishing that $B_1 \lor B_2$ separates $T$ and $T'$, a contradiction to \ref{enum:theories_insep}.
+
+
+		\item
+			\label{enum:intersection_consistent}
+			$T \cap T'$ are each maximal consistent with respect to $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$.
+
+			By~\ref{enum:each_max_consistent}, for every formula $A$ in $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ it holds that either 
+			$A \in T$ or $\lnot A \in T$ as well as
+			$A \in T'$ or $\lnot A \in T'$. As $T$ and $T'$ are inseparable, either $A \in T$ and $A\in T'$ or otherwise $\lnot A \in T$ and $\lnot A \in T'$.
+
+	\end{enumerate}
+
+
+	As $T$ is consistent, let $M$ be a model of $T$.
+	Due to~\ref{enum:each_max_consistent}, for each term $t$ in $\Lang(\Gamma)\cup C$, $\exists x\, (t = x) \in T$ and hence by~\ref{theory_construction_2a}, there is some $c_i \in C$ such that $t=c_i \in T$.
+	Therefore we can find a submodel of $N$ of $M$ which as $M$ is in the language $\Lang(\Gamma)\cup C$ such that
+	every domain element in $N$ corresponds to a constant symbol in $C$.
+	%the domain of $N$ is $\{ \interpretation{M}(c) \mid c \in C\}$, where $\interpretation{M}$ is the interpretation of $M$.
+	Models $M'$ of $T'$ allow by a similar reasoning for finding a submodel $N'$ of $M'$.
+
+	As by~\ref{enum:intersection_consistent}, $T$ and $T'$ agree on all formulas of $(\Lang(\Gamma) \cap \Lang(\Delta))\cup C$, 
+	we are able to find an isomorphism between the reducts $N$ and $N'$ to their common language.
+	Hence we may build a common model $K$ based on $N$ and extending it to $\Lang(\Delta)$ by copying the respective interpretation of $N'$ with regard to the isomorphism.
+	%Hence we may build $N'_c$ from $N'$ by exchanging every $c'_i \in C$ by its corresponding $c_j \in C$.
+	%Now we see that by extending the $N$ to $\Lang(\Delta)$ by copying the interpretation of $N''$,
+	Thus as $N\entails T$ and $N'\entails T'$, $K\entails T \cup T'$, which implies that $\Gamma\cup\Delta$ is consistent.
+\end{proof}
+
+\largered{in this formulation, joint consistency and craig interpolation really is literally the same} 
 \begin{prop}
 	Theorem~\ref{thm:robinson} and ??? are equivalent.
-	\todo{possibly still move this to the end of the section}
 \end{prop}
 \begin{proof}
 	Suppose that ??? holds.
 
-	Clearly if there is a formula $\varphi$ such that $\Gamma\entails \varphi$ and $\Delta\entails \lnot \varphi$, then $\Gamma \cup \Delta $ is inconsistent.
+	Clearly if there is a formula $A$ such that $\Gamma\entails A$ and $\Delta\entails \lnot A$, then $\Gamma \cup \Delta $ is inconsistent.
 
-	On the other hand, if $\Gamma\cup\Delta$ is inconsistent, 
-
-	\mytodo{ can easily use positive or negative form of craig interpolation here, continue proof when this detail is fixed}
-
-\end{proof}
-
-\begin{proof}[Proof of Theorem~\ref{thm:robinson}.]
-	Suppose that $\Gamma\cup\Delta$ is consistent and let $M$ be a model of it.
-	Then clearly for every formula $\varphi$, if $\Gamma \entails \varphi$, then $M \entails \varphi$ as $M \entails \Gamma$.
-	But $M \entails \Delta$, hence it can not be the case that $\Delta \entails \lnot \varphi$.
-
-	For the other direction, suppose that $\Gamma$ and $\Delta$ are inseparable.
-	\mytodo{ICI}
-
-
-	~
-
-	~
-
-	~
-
-
-	\mytodo{old first proof approach, formulated for interpolation}
-	Random note: if theories are inseparable, then each is by itself consistent (else pick some formula implies by the consistent theory, and its negation will be implied by the inconsistent one)
-
-
-	Suppose that there is no interpolant for $\Gamma$ and $\Delta$
-	We show that then, $\Gamma\cup\Delta$ is satisfiable by constructing a model.
-
-	Let $L_0 = \Lang(\Gamma) \cap \Lang(\Delta)$
-
-	Note that by assumption there is no formula $I$ such that $\Gamma\entails I$ and $\Delta \entails \lnot I$.
-	\NB{this is a reverse interpolant, not sure which interpolant we would have in the thm statement. possibly write it down explicitly or use "barred" (BBL) or separable (everyone else) }
-
-
-
-	Let $\Phi = \varphi_1, \varphi_2, \dots$ be an enumeration of all formulas in the language $\Lang(\Gamma)$
-	and
-	$\Psi = \psi_1, \psi_2, \dots$ be an enumeration of all formulas in the language $\Lang(\Delta)$.
-
-	Let $\Gamma_0 = \Gamma$
-	and $\Delta_0 = \Delta$.
-	Let $\Gamma_{i+1} = \Gamma_i \cup \{\varphi_i\}$ if there is no interpolant for $\Gamma_i \cup \{\varphi_i\}$ and $\Delta_i$, and $\Gamma_{i+1} = \Gamma_i$ otherwise.
-	Let $\Delta_{i+1} = \Delta_i \cup \{\psi_i\}$ if there is no interpolant for $\Delta_i \cup \{\psi_i\}$ and $\Gamma_i$, and $\Delta_{i+1} = \Delta_i$ otherwise.
-
-	Let $\Gamma_\omega$ be the limit of the sequence of the $\Gamma_i$ and
-	Let $\Delta_\omega$ be the limit of the sequence of the $\Delta_i$.
-
-	Note that $\Gamma_\omega$ and $\Delta_\omega$ are ??? (complete, maximal consistent).
-	Suppose for a formula $\chi$ of language ??? that neither
-	$\chi \in \Gamma_\omega$
-	nor
-	$\lnot\chi \in \Gamma_\omega$.
-
-As then $\chi \not\in \Gamma_\omega$, but the construction considers all formulas of appropriate language, it must hold that there is an interpolant $\Gamma_i \cup \{\chi\}$ and $\Delta_i$ for some $i$.
-Let $I$ denote this interpolant.
-
-Hence we obtain that $\Gamma_\omega \entails \chi \limpl I$ 
-and $\Delta_\omega \entails \lnot I$.
-
-As also $\lnot\chi \not\in \Gamma_\omega$, by a similar argument, we obtain that 
-there must be an interpolant $J$ for $\Gamma_j \cup \{\lnot \chi\}$ and $\Delta_j$ for some $j$ and consequently
-$\Gamma_\omega \entails \lnot \chi \limpl J$ 
-and $\Delta_\omega \entails \lnot J$.
-
-But then
-$\Gamma_\omega \entails (\chi \limpl I) \land (\lnot \chi \limpl J)$, which implies $\Gamma_\omega \entails I\lor J$, and also $\Delta\entails \lnot (I \lor J)$, thus $I\lor J$ is, in contradiction with the assumption, an interpolant for $\Gamma_\omega$ and $\Delta_\omega$.
-
-By analogous argument, $\Delta_\omega$ is ??? as well. 
-
-Note that for each formula $\alpha$ in $\Lang(\Gamma) \cap \Lang(\Delta)$,
-both $\Gamma_\omega$ and $\Delta_\omega$ contain either $\alpha$ or $\lnot \alpha$.
-Moreover, as there is no interpolant for $\Gamma_\omega$ and $\Delta_\omega$, they either both contain $\alpha$ or both contain $\lnot \alpha$.
-Hence they agree on every formula in $\Lang(\Gamma) \cap \Lang(\Delta)$, and as both $\Gamma_\omega$ and $\Delta_\omega$ are consistent, their reduct to this language is consistent.
-
-But as $\Gamma \subseteq \Gamma_\omega$ and 
-$\Delta \subseteq \Delta_\omega$, there is a model of $\Gamma \cup \Delta$.
-
-
-
-
+	On the other hand, if $\Gamma\cup\Delta$ is inconsistent. 
+	Then by~\ref{thm:robinson}, there exists a formula $A$ in $\Lang(\Gamma)\cap\Lang(\Delta)$ such that $\Gamma \entails A$ and $\Delta \entails \lnot A$. 
 
 
 \end{proof}
 
 
-\clearpage
 
-
-\section{shoenfield in my words}
-
-Supp no closed formula $A$ such that $\proves_T A$ and $\proves_{T'} \lnot A$.
-Then construct model of $T\cup T'$.
-
-Let $\Gamma$ contain all theorems of $T'$ in the language of $T$ (hence in the language of the intersection).
-
-$T$ with $\Gamma$ is consistent, because else we can construct a forbidden formula $A$ (somehow).
-\bigskip
-
-Let $\mathbf{ M_1 }$ model of $\mathbf T$ and $\Gamma$.
-
-Let $N$ be $M_1 | L$ with symbols for $T'$ added (no info on interpretation of these).
-
-All $L$-theorems of $T'$ are valid in $M_1$ and hence in $N$
-
-By model extension theorem, have $M'_1$ such that $ \mathbf{M'_1 \entails T'}$, agrees with $N$ on $L$-formulas.
-Hence \allbold{$M'_1$ and $M_1$ agree on the $L$-formulas}, $M'_1$ might have more domain elements.
-\bigskip
-
-$\Ra$ can construct this because due to earlier reasoning, there is no contradiction on the $L$-formulas
-\bigskip
-
-
-Let $E$ be $M'_1|L$ with symbols of $T$ added.
-
-$M'_1|L$ is elementary extension of $M_1|L$, so $E$ is elementary extension of $M_1$.
-
-By the corollary,
-there is $M_2$ which agrees on the $L$-formulas with $E$, and which is an elementary extension of $M_1$
-
-
-there is $M_2$ which agrees on the $L$-formulas with $E$ and agrees on all formulas with $M_1$.
-
-$M_2$ is elementary extension of $M_1$, so $M_1\entails T$ implies $M_2 \entails T$.
-
-$M_2|L$ is elementary extension of $E|L = M'_1|L$.
-
-\medskip
-
-similarily:
-$M'_2$ is elementary extension of $M'_1$, so $M'_1\entails T'$ implies $M'_2 \entails T'$.
-
-\bigskip
-
-
-Same formulas hold always for $M_i$, $M'_i$ and both $M_i|L$ and $M'_i|L$.
-
-\bigskip
-
-Question: what is different from the union of all $M_i$ in comparision with a single $M_i$?
-The single ones are already proper models of their respective theories.
-
-does the union differn in so far as it has exactly the same elements?
-
-we always take a model of e.g. $T$ and make a model of $T'$ out of it. before we create the model of $T'$, we take the reduct w.r.t.\ $L$, but we do keep the domain elements.
-
-consider aufschaukeln!,:
-
-$T = \{ P(t(a)), \forall x (P(t(x)) \limpl P(s(x))) \}$
-
-$T' = \{  \forall x (P(s(x)) \limpl P(r(x))) ,
-\forall x (P(r(x)) \limpl P(t(s((x))))) \}$
-\comm{$r$ is just to have something which is not in $L$ to see what the reduct actually does. We could build something similar for $T$.}
-
-
-~
-
-~
-
-
-
-
-\section{notes on shoenfield}
-
-
-
-\begin{description}
-	\item{$T[\Gamma]$:}
-
-$\Gamma$ is a set of formulas in the theory $T$
-
-$T[\Gamma]$: theory obtained from $T$ with $\Gamma$ as additional (nonlogical) axioms
-
-
-	\item{Extension of theory:}
-		may contains additional symbols and new theorems, and every symbol/theorem of the old language/theory is a symbol/theorem of the new language/theory
-
-		elementary: from wikipedia: if all formulas in the language of the larger one with variables interpreted with elements of the smaller language hold in the smaller iff they hold in the larger.
-
-	\item{Conservative extension of theory:}
-		$T'$ is conservative extension of $T$ if formulas in $T$ which are theorems of $T'$ are theorems in $T$.
-
-		Hence additional formulas may only be theorems if they involve new symbols.
-
-	\item{Reduction theorem for consistency:}
-		if a set of formulas in a theory is inconsistent, then there is a disjunction of negated formulas of the set which is a theorem of $T$
-
-	\item{Chain:}
-		a sequence of structure, such that every one is an extension of the former
-
-		a chain is elementary if every element is an elementary extension of the former
-
-	\item{Tarksi's Lemma:}
-		the union of an elementary chain is an elementary extension of each member
-
-	\item{Regular set of formulas:} 
-		every $x=y$ or $x\neq y$ is contained, and for every formula $A[x_1, \dots, x_n]$ is contained (does not say if $x_i$ is var or term)
-
-\end{description}
 

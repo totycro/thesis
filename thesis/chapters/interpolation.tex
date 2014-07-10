@@ -125,8 +125,11 @@ This is justified by the following examples, which are referred to in \cite[Exam
 \section{Beth's definability theorem}
 \label{sec:beth}
 
-In this section, we present an application of the interpolation theorem by a further result which can even be argued to be a corollary of the interpolation theorem. \mytodo{ check original proof, cannot have involved interpolation, write about how interpolation makes this easier \cite{beth1953}}
-It deals with definitions of predicates by means of formulas and bridges the gap between implicit definitions, where predicates are defined by its use, and explicit definitions, which define a formula by means of another formula.
+In this section, we illustrate the interpolation theorem by presenting Beth's definability theorem, which admits a straightforward proof by means of the interpolation theorem. 
+The original publication in \cite{beth1953} precedes Craig's papers on interpolation (\cite{Craig57linear,Craig57three}) by four years and hence relies on a direct proof.
+The definability theorem deals with definitions of predicates by means of formulas in first order logic and bridges the gap between implicit definitions, where predicates are defined by its use, and explicit definitions, which define a formula by means of another formula, by even showing their equivalence.
+This is given significance by the circumstance that implicit definitions occur in mathematics, but are by this theorem in no sense weaker than explicit defintions.
+ 
 
 \begin{defi}[Implicit and explicit definition]
 	Let $\LangSym$ be a first-order language and
@@ -137,8 +140,13 @@ It deals with definitions of predicates by means of formulas and bridges the gap
 
 	$\Gamma_P$ defines $P$ implicitly iff $\Gamma_P \cup \Gamma_{P'} \entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff P'(x_1, \dots, x_n))$.
 	On the other hand $\Gamma_P$ defined $P$ explicitly iff there is formula $\varphi$ in $\LangSym$ with $\FV(\varphi) = \{x_1, \dots, x_n\}$ such that 
-	$\Gamma\entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff \varphi)$.
+	$\Gamma_P\entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff \varphi)$.
 \end{defi}
+
+Note that the definition of implicit definitions is essentially second-order 
+and by reducing $\Gamma_P$ and $\Gamma_{P'}$ to finite sets $\Gamma^*_P$ and $\Gamma^*_{P'}$ respectively by a suitable application of the compactness theorem can be expressed by the second-order sentence
+$\forall P \forall P' (  (\bigwedge_{\varphi \in \Gamma^*_P \cup \Gamma^*_{P'}} \varphi ) \limpl P=P')$.
+% cite chang/keisler page 324
 
 \begin{thm}[Beth's definability theorem]
 	$\Gamma_P$ defines $P$ explicitly if and only if $\Gamma_P$ defines $P$ implicitly.
