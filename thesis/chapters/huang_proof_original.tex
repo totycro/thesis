@@ -511,39 +511,44 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 \label{sec:huang_commentary} 
 
 
-In \cite[Definition 3]{Huang95}, a maximal occurrence of a $\Gamma$ ($\Delta$)-term is defined to be an occurrence of a $\Gamma$ ($\Delta$) term which is not subterm of a larger $\Gamma$ ($\Delta$)-term.
+In \cite[Definition 3]{Huang95}, a maximal occurrence of a $\Gamma$ ($\Delta$)-term is defined to be an occurrence of a $\Gamma$ ($\Delta$) term which is not a subterm of a larger $\Gamma$ ($\Delta$)-term.
 
-In the extension of the ``Interpolation Algorithm'' to include paramodulation inferences\cite[p.~183]{Huang95}, this term is used to distinguish between the respective cases.
-Translated into our notation in the context of our definition in \ref{def:PI_paramod}, the conditions for the three cases are:
-\begin{itemize}
+In the extension of the ``Interpolation Algorithm'' to include paramodulation inferences in \cite[p.~183]{Huang95}, this notion is used to distinguish between the respective cases.
+Translated into our notation in the context of our corresponding Definition~\ref{def:PI_paramod}, the conditions for the three cases are:
+\begin{enumerate}
 	\item The term $r$ occurs in $E\occ{r}$ as subterm of a maximal $\Gamma$-term, which occurs more than once in $E\occ{r} \lor \PI(E\occ{r})$.
+		\label{case_1}
 	\item The term $r$ occurs in $E\occ{r}$ as subterm of a maximal $\Delta$-term, which occurs more than once in $E\occ{r} \lor \PI(E\occ{r})$.
 	\item Otherwise.
-\end{itemize}
+\end{enumerate}
 
-Note that when reading this definition in the strict sense, an ambiguity arises:
+Note that if reading this definition in the strict sense, an ambiguity arises:
 It is very well possible for a term to be a subterm of a maximal $\Gamma$-term and a maximal $\Delta$-term at the same time.
+Suppose $g$ is a $\Gamma$-colored and $h$ a $\Delta$-colored function symbol.
+Then the term $h(g(c))$ contains the maximal $\Delta$-term $h(g(c))$ as well as the maximal $\Gamma$-term $g(c)$ since $g(c)$ is not subterm of a larger $\Gamma$-term in\nolinebreak{} $h(g(c))$.
 
-We consider the following example, which illustrates that the definition of the conditions for the cases above must be read as ``maximal colored term, which is $\Phi$-colored'' (or more concisely: ``maximal colored $\Phi$-term) in place of ``maximal $\Phi$-term''.
+We consider the following example, which illustrates that the definition of the conditions for the cases above is to be read as ``maximal colored term, which is $\Phi$-colored'' (or more concisely: ``maximal colored $\Phi$-term'') in place of ``maximal $\Phi$-term''.
 
 \begin{exa}
 	Let 
 	$\Gamma = \{ P(x) \lor \lnot Q(x), \lnot P(y) \lor Q(y), c=d, \lnot R(g(d)), \lnot S(g(c))  \}$
 	and
-	$\Delta = \{ S(v) \lor \lnot Q(h(v)), R(u) \lor  Q(h(u)) \}$.
+	$\Delta = \{ S(v) \lor \lnot Q(h(v)), R(u) \lor  Q(h(u)), T(c, d)\}$.
+	Hence $h$ is a $\Delta$-colored function symbol and $g$ a $\Gamma$-colored function symbol, while the constant symbols $c$ and $d$ are grey.
 	%\Gamma = \{ P(x) \lor \lnot Q(x), c=d, \lnot R(g(d)), \lnot P(v)  \}$
 	%and $\Delta = \{ R(u) \lor  Q(h(u)) \}$.
 
 	We present a resolution refutation of $\Gamma \cup \Delta$ in combination with the interpolant extraction such that each label is of the form $C\mid \PI(C)$, where $C$ is the clause of the refutation.
-	For the sake of brevity, we sometimes write simplified but logically equivalent versions of $\PI(C)$.
+	For the sake of brevity, we sometimes give simplified but logically equivalent versions of $\PI(C)$.
 	%\begin{landscape}
 
-	Note that at the paramodluation inference \markC{}, the maximal $\Gamma$-colored term $g(d)$ is picked to be added to be interpolant, even though it is contained in the maximal $\Delta$-colored term $h(g(d))$.
+	Note that at the paramodulation inference \markC{}, case~\ref{case_1} is selected due to $d$ occurring in the maximal $\Gamma$-colored term $g(d)$, 
+	even though $d$ is also contained in the maximal $\Delta$-colored term $h(g(d))$.
 
 	{
 		\small
 
-		%\begin{adjustwidth}{-2.5em}{0em}
+		\begin{adjustwidth}{-1.5em}{0em}
 
 			\begin{prooftree}
 				\AxiomCm{{ \lnot R(g(d)) \mid \bot}}
@@ -564,6 +569,7 @@ We consider the following example, which illustrates that the definition of the 
 				\BinaryInfCm{ (c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \lor (c\neq d \land g(c) = g(d))   \mid P(h(g(c))) }
 
 			\end{prooftree}
+			~
 
 			\begin{prooftree}
 
@@ -581,19 +587,16 @@ We consider the following example, which illustrates that the definition of the 
 
 
 			\end{prooftree}
+			~
+
+		\end{adjustwidth}
 	}
 
-		%\end{adjustwidth}
-
-	By combining these two derivation by means of a resolution inference on the last remaining literal with a trivial substitution, we obtain the interpolant $\PI(\square)$:
-
-	\noindent
+	By combining these two derivation by means of a resolution inference on the last remaining literal employing a trivial substitution, we obtain the interpolant $\PI(\square)$:
 				$
-				(c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \spam\lor (c\neq d \land g(c) = g(d))  \spam\lor
-				{\lnot S(g(c)) \land Q(h(g(c)))} $
-
-				By lifting $\PI(\square)$ and adding appropriate quantifiers, we obtain the final interpolant $I$: 
-
+				(c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \spam\lor (c\neq d \land g(c) = g(d))  \spam\lor\allowbreak
+				{\lnot S(g(c)) \land Q(h(g(c)))}$.
+				Lifting $\PI(\square)$ and adding appropriate quantifiers gives the final result $I$ of the interpolant extraction:
 				\[
 					\exists y_{g(c)} \exists y_{g(d)} \forall x_{h(g(c))} \forall x_{h(g(d))} 
 				\]
@@ -607,66 +610,11 @@ We consider the following example, which illustrates that the definition of the 
 				\]
 				
 				Now we show that $\Gamma \not\entails I$.
-				Note that as $\Gamma \entails c=d$, no model of $\Gamma$ can satisfy $(c\neq d \land y_{g(c)} = y_{g(d)})$.
-				The remaining disjuncts imply that 
+				Note that as $\Gamma \entails c=d$, no model of $\Gamma$ satisfies $(c\neq d \land y_{g(c)} = y_{g(d)})$.
+				The remaining two disjuncts imply that 
 				$\forall x_{h(g(c))} \forall x_{h(g(d))} ( \lnot Q(x_{h(g(d))}) \lor Q(x_{h(g(c))}))$,
-				but we can easily find a model of $\Gamma$ where at least one domain element does not satisfy the predicate $Q$ and another domain element does satisfy it.
-				Any such model is a countermodel.
-
-				LOOKS BAD:
-				\[
-					\exists y_c \exists y_d \exists y_{g(c)} \exists y_{g(d)} \forall x_{h(g(c))} \forall x_{h(g(d))} 
-				\]
-				\[
-					\Big(
-				(y_c=y_d \land \lnot R(y_{g(d)}) \land \lnot Q(x_{h(g(d))})) \spam\lor
-			\]\[
-					(y_c\neq y_d \land y_{g(c)} = y_{g(d)})  \spam\lor
-					{\lnot S(x_{g(c)}) \land Q(x_{h(g(c))})}
-					\Big)
-				\]
-
-
-				\begin{comment} FAILED
-					{\small
-
-						\begin{adjustwidth}{-4em}{0em}
-
-							\begin{prooftree}
-
-								\AxiomCm{{ \lnot R(g(d)) \mid \bot}}
-								\AxiomCm{{  R(u) \lor  Q(h(u)) \mid \top}}
-
-								%\RightLabelm{u\mapsto g(t)}
-								\RightLabelm{\lkrule{\resruleres}{u\mapsto g(d)}}
-								%\RightLabelm{\resruleres}
-								\BinaryInfCm{ \lnot R(g(d)) \mid  Q(h(g(d))) }
-
-								\AxiomCm{{P(x) \lor \lnot Q(x)} \mid \bot}
-
-								\RightLabelm{\lkrule{\resruleres}{x \mapsto h(g(d))}}
-								\BinaryInfCm{ {\lnot R(g(d)) \land \lnot Q(h(g(d)))}\mid P(h(g(d))) }
-
-								\AxiomCm{{c=d} \mid \bot}
-								\RightLabelm{\lkrule{\resrulepar^{\markC}}{\id}}
-								\BinaryInfCm{ (c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \lor (c\neq d \land g(c) = g(d))   \mid P(h(g(c))) }
-
-
-								\AxiomCm{\lnot P(v) \mid \bot }
-
-								\RightLabelm{\lkrule{\resruleres}{v\mapsto h(g(c))}}
-				\BinaryInfCm{ (c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \lor (c\neq d \land g(c) = g(d))   \mid \square}
-
-			\end{prooftree}
-
-		\end{adjustwidth}
-		}
-	\end{comment}
-
-
-
-
-
+				but we can easily find a model of $\Gamma$ where at least one domain element satisfies the predicate $Q$ and another domain element does not.
+				Any such model is a countermodel to the proposition $\Gamma \entails I$.
 \end{exa}
 
 
