@@ -1,10 +1,9 @@
 \chapter{Interpolant extraction from resolution proofs in two phases}
+\label{sec:two_phases}
 
 In \cite{Huang95}, Huang proposes an algorithm for computing interpolants of two sets of first-order formulas $\Gamma$ and $\Delta$, where $\Gamma\cup\Delta$ is unsatisfiable, by traversing a resolution refutation of $\Gamma \cup \Delta$.
-We present his proof in a modified form.
+We present his proof in a modified form in this section and in a more original form in appendix~\ref{sec:huang}.
 The central difference lies in the treatment of the interplay of substitutions and liftings. While in \cite{Huang95}, propositional deductions are employed where only trivial substitutions occur, we provide a method which allows for commuting substitutions and liftings under certain conditions.
-
-See also \mytodo{} for a comments on the original proof.
 
 \section{Layout of the proof}
 
@@ -22,11 +21,11 @@ These are eliminated (lifted) by replacing them with bound variables whose quant
 We define a procedure $\PI$, which produces propositional interpolants from resolution refutations and is based on the ``Interpolation algorithm'' in \cite{Huang95}.
 
 \begin{defi}[Propositional interpolant extraction.]
+	\label{def:PI}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
 
 	For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
-	\label{def:PI}
 	\begin{itemize}
 		\item[Base case.]
 			If $C \in \Gamma$, $\PI(C) \defeq \bot$.
@@ -82,8 +81,10 @@ We define a procedure $\PI$, which produces propositional interpolants from reso
 
 
 \section{Lifting of colored symbols}
+\label{sec:lifting}
 As $\PI$ only fixes the propositional structure of the interpolant but still contains colored symbol, 
-we define a procedure which replaces colored terms by lifting variables.
+we define a procedure which replaces colored terms by variables, which eventually will become bound by appropriate quantifiers.
+This replacement is referred to as lifting:
 
 
 \begin{defi}[Lifting]
@@ -169,7 +170,7 @@ $.
 	\[
 		x \sigma' =
 		\begin{cases} 
-			z_{t\sigma} & \text{ if } x = z_t \text{ and } t\sigma \neq t \\
+			z_{t\sigma} & \text{ if } x = z_t \text{ for some $t$ }\\%\text{ and } t\sigma \neq t \\
 			\lifphi{x\sigma} & \text{ otherwise}
 		\end{cases} 
 	\]
@@ -189,13 +190,14 @@ $.
 
 	Let $t$ be a maximal $\Phi$-term in $C$.
 	Then $\lifphi{ t\sigma} = z_{t\sigma}$.
-	We show that $z_{t\sigma} = \lifphi{t}\sigma'$.
-
-	Suppose that $t\sigma = t$. Then $\lifphi{t}\sigma' = z_t\sigma' = z_t = z_{t\sigma}$.
-	Note that $z_r$ must not occur in $t$ for some term $r$, as $z_r\sigma = z_r$, but potentially $z_r\sigma' \neq z_r$.
-
-	Otherwise it is the case that $t\sigma \neq t$.
-	Then $\lifphi{t}\sigma' = z_t\sigma'$, and by the definition of $\sigma'$, $z_t\sigma' = z_{t\sigma}$.
+	But also $\lifphi{t}\sigma' = z_t\sigma' = z_{t\sigma}$.
+	%
+	%Suppose that $t\sigma = t$. Then $\lifphi{t}\sigma' = z_t\sigma' = z_{t\sigma}$.
+	% this does not happen due to unfold-lift
+	%Note that $z_r$ must not occur in $t$ for some term $r$, as $z_r\sigma = z_r$, but potentially $z_r\sigma' \neq z_r$.
+	%
+	%Otherwise it is the case that $t\sigma \neq t$.
+	%Then $\lifphi{t}\sigma' = z_t\sigma'$, and by the definition of $\sigma'$, $z_t\sigma' = z_{t\sigma}$.
 \end{proof}
 
 
@@ -353,7 +355,7 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
 \end{corr}
 \begin{proof}
-	Build $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
+	Form $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$. 
 	By Lemma \ref{lemma:symmetry},
 	$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
@@ -632,36 +634,45 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$z_1, \dots, z_n$ be the variables which replace the colored terms in $\lifgamma{\lifdelta{\PI(\pi)}}$ ordered by their length.
+	$t_1, \dots, t_n$ be an arrangement of the maximal colored terms in $\PI(\pi)$ according to the subterm order, i.e.\ if $t_i$ is a subterm of $t_j$, then $i<j$.
 	Then
-	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_i$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
+	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_{t_i}$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
 \end{thm}
 \begin{proof}
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{\PI(\pi)}$ where $m$ is the number of maximal $\Delta$-colored terms in $\PI(\pi)$.
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
 
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_i$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-terms.
-	Let $t$ be a maximal $\Gamma$-term in $\lifdelta{\PI(\pi)}$ and $x_{j_1}, \dots, x_{j_k}$ the variables replacing $\Delta$-terms in~$t$.
-	Note that the $\Delta$-terms, which are replaced by $x_{j_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
+	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-terms.
+	Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
+	Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
+	Note that as all of ${r_1}, \dots, {r_k}$ are subterms of $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
+	%Note that all of $r_1, \dots, r_k$ are subterms of $t$.
+	%Note that the $\Delta$-terms, which are replaced by $x_{r_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
 
 	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are grey terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
 
-	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is replaced by some $z_j$, which is existentially quantified.
-	Hence $t$ is a witness for $z_j$ as due to the quantifier ordering,
-	the existential quantification of $z_j$ is in the scope of the quantifiers of $x_{j_1}, \ldots, x_{j_k}$ respectively.
-	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
+	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is lifted by $y_t$, which is existentially quantified.
+	Hence $t$ is a witness for $y_j$ as due to the quantifier ordering,
+	it is bound in the scope of the quantification of the lifting variables $x_{r_1}, \dots, x_{r_k}$.
+	Therefore $\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
 
-	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_1 \dots \forall y_k\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $k$ is the number of $\Gamma$-colored terms in $\PI(\pi)$.
-	By a similar line of argumentation as above, we can replace the maximal $\Delta$-terms by existentially quantified variables and arrive at
-	$\Delta \entails\nolinebreak{} \overline Q_1 z_1 \dots \overline Q_n z_n\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
+	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_{u_1} \dots \forall y_{u_{k'}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $u_1, \dots u_{k'}$ are the maximal colored $\Gamma$-terms in $\PI(\pi)$.
+
+	By a similar line of argumentation as above, we can replace the maximal $\Delta$-\nolinebreak{}terms by variables which are then existentially quantified and arrive at
+	$\Delta \entails\nolinebreak{} \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$.
-	By Lemma \ref{lemma:lifting_order_not_relevant},
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
+	finally by Lemma \ref{lemma:lifting_order_not_relevant},
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
 
-	As it is now easy to see that $Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
+	As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
 \end{proof}
 
 
+\begin{remark}
+	In this proof, we order the lifting variables in the interpolant according to the subterm relation of the terms they represent.
+	This differs from the proof in \cite{Huang95}, where the ordering is based on the length of these terms.
+	The proof of the theorem above however shows that both of these approaches are equally valid, but clearly the subterm-based ordering in general allows for more permutations than the length-based ordering. 
+\end{remark}
 
 
 

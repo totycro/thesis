@@ -1,8 +1,9 @@
 \chapter{Interpolant extraction from resolution proofs in one phase}
+\label{sec:one_phase}
 
 \mytodo{some text}
 
-\section{ Preliminaries }
+\section{Preliminaries}
 
 \begin{defi}[Substitution $\tau(\inference)$]
 	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
@@ -73,7 +74,7 @@
 \end{proof}
 
 
-\section{ Interpolant extraction with simultaneous lifting  }
+\section{Interpolant extraction with simultaneous lifting}
 
 \begin{defi}[Incrementally lifted interpolant]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
@@ -410,7 +411,7 @@ $q$ must have been created or originated from other occurrences of the same func
 Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant. 
 
 
-\section{ Towards an interpolant }
+\section{Towards an interpolant}
 
 \begin{lemma}
 	\label{lemma:li_symmetry}

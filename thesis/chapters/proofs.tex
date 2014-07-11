@@ -1,10 +1,15 @@
 
-\chapter{WT: Huang's proof}
+\chapter{Interpolant extraction from resolution proofs due to Huang}  
+\label{sec:huang}
+
+This section essentially presents the original proof of \cite{Huang95} in a modern format.
+It forms the base for our work in chapter~\ref{sec:two_phases} and \ref{sec:one_phase}, and we refer to these chapters for lemmas and definitions which also apply here.
+Section~\ref{sec:huang_commentary} features a commentary on the original publication. 
 
 \section{Propositional interpolants}
 
 
-Let $\Gamma \cup \Delta$ be unsatisfiable. Let $\pi$ be a proof of the empty clause from $\Gamma \cup \Delta$. Then $\PI$ is a function that returns a interpolant with respect to the current clause. 
+Let $\Gamma \cup \Delta$ be unsatisfiable and $\pi$ be a proof of the empty clause from $\Gamma \cup \Delta$. Then $\PI$ is a function that returns a interpolant with respect to the current clause. 
 
 \begin{defi}[Propositional interpolant]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
@@ -37,66 +42,7 @@ The third condition of a propositional interpolant will sometimes be referred to
 It is easy to see that the propositional interpolant relative to the empty clause of a resolution refutation is a propositional interpolant.
 %^\todo{add this to the definition, i.e.~possible define rel prop interpol from prop interpol}
 
-We proceed by defining a procedure $\PI$ which extracts propositional interpolants from a resolution refutation.
-
-\begin{defi}[Propositional interpolant extraction.]
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
-	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
-
-	For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
-	\label{def:huang_orig_PI}
-	\begin{itemize}
-		\item[Base case.]
-			If $C \in \Gamma$, $\PI(C) = \bot$. 
-			If otherwise $C \in \Delta$, $\PI(C) = \top$. 
-		\item[Resolution.]
-			\label{def:huang_orig_PI_resolution}
-			%Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
-
-			%	\begin{prooftree}
-			%		\AxiomCm{C_1: D \lor l}
-			%		\AxiomCm{C_2: E \lor \lnot l'}
-			%		\RightLabelm{\quad l\sigma = l'\sigma}
-			%		\BinaryInfCm{C: (D\lor E)\sigma}
-			%	\end{prooftree}
-			%\todo{write as prooftree? (not necessary, but nicer)}
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
-			%$\PI(C)$ is defined according to this case distinction:
-			\begin{enumerate}
-				\item If $l$ is $\Gamma$-colored: $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$
-				\item If $l$ is $\Delta$-colored: $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$
-				\item If $l$ is grey: $\PI(C) = [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
-			\end{enumerate}
-
-		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
-
-		\item[Paramodulation.]
-	\label{def:huang_orig_PI_paramod}
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$.
-			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
-			Then $\PI(C)$ is defined according to the following case distinction:
-			\begin{enumerate}
-
-				\item If $h\occur{r}$ is $\Delta$-colored and 
-					$h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-					\label{def:huang_orig_PI_paramod_1}
-					\newline
-					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$ 
-				\item If $h\occur{r}$ is $\Gamma$-colored and 
-					$h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-					\label{def:huang_orig_PI_paramod_2}
-					\newline
-					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$ 
-				\item Otherwise:
-					\label{def:huang_orig_PI_paramod_3}
-					\newline
-					$\PI(C) = [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
-
-			\end{enumerate}
-	\end{itemize}
-\end{defi}
-
+We refer to Definition~\ref{def:PI} for the definition of $\PI$.
 
 \begin{prop}
 	\label{prop:prop_interpol}
@@ -141,7 +87,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\Delta \entails \lnot \PI(C_2) \lor (E\lor \lnot l')_\Delta$
 
-			We consider the respective cases from definition \ref{def:huang_orig_PI_resolution}:
+			We consider the respective cases from definition \ref{def:PI_resolution}:
 
 			\begin{enumerate}
 				\item $l$ is $\Gamma$-colored.
@@ -244,7 +190,7 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			$\Delta \entails \lnot \PI(C_2) \lor (E[r])_\Delta$
 
-			First, we show that $\PI(C)$ as constructed in case \ref{def:huang_orig_PI_paramod_3} of the definition is a propositional interpolant in any of these cases:
+			First, we show that $\PI(C)$ as constructed in case \ref{def:PI_paramod_3} of the definition is a propositional interpolant in any of these cases:
 
 			$\PI(C) = (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) $
 
@@ -261,15 +207,15 @@ We proceed by defining a procedure $\PI$ which extracts propositional interpolan
 
 			The language restriction again remains satisfied as the only predicate, that is added to the interpolant, is $=$.
 
-			This concludes the argumentation for case \ref{def:huang_orig_PI_paramod_3}. 
+			This concludes the argumentation for case \ref{def:PI_paramod_3}. 
 
-			The interpolant for case \ref{def:huang_orig_PI_paramod_1} differs only by an additional formula added via a disjunction and hence condition \ref{huang_orig_rel_prop_interpol_cond1} of definition \ref{def:huang_orig_rel_prop_interpol} holds by the above reasoning.
+			The interpolant for case \ref{def:PI_paramod_1} differs only by an additional formula added via a disjunction and hence condition \ref{huang_orig_rel_prop_interpol_cond1} of definition \ref{def:huang_orig_rel_prop_interpol} holds by the above reasoning.
 			As the adjoined formula is a contradiction, its negation is valid which in combination with the above reasoning establishes condition \ref{huang_orig_rel_prop_interpol_cond2}.
 			Since no new predicated are added, the language condition remains intact. 
 
-			The situation in case \ref{def:huang_orig_PI_paramod_2} is somewhat symmetric: 
-			As a tautology is added to the interpolant with respect to case \ref{def:huang_orig_PI_paramod_1}, condition \ref{huang_orig_rel_prop_interpol_cond1} is satisfied by the above reasoning.
-			For condition \ref{huang_orig_rel_prop_interpol_cond2}, consider that the negated interpolant for case \ref{def:huang_orig_PI_paramod_1} implies the negated interpolant for this case.
+			The situation in case \ref{def:PI_paramod_2} is somewhat symmetric: 
+			As a tautology is added to the interpolant with respect to case \ref{def:PI_paramod_1}, condition \ref{huang_orig_rel_prop_interpol_cond1} is satisfied by the above reasoning.
+			For condition \ref{huang_orig_rel_prop_interpol_cond2}, consider that the negated interpolant for case \ref{def:PI_paramod_1} implies the negated interpolant for this case.
 			The language condition again remains intact.
 			\qedhere
 	\end{itemize}
@@ -311,7 +257,7 @@ This insight allows us to push substitutions of the variables upwards along this
 
 Even though propositional refutations have nice properties for theoretical analysis, their use in practise is not desired as its construction involves a considerable blowup of the refutation. 
 But its use is still justified in this instance as we can show for arbitrary refutations $\pi$
-that the algorithm stated in \ref{def:huang_orig_PI} gives closely related results for both $\pi$ and its corresponding propositional refutation.
+that the algorithm stated in \ref{def:PI} gives closely related results for both $\pi$ and its corresponding propositional refutation.
 
 \begin{lemma}
 	Let $\pi$ be a resolution refutation of $\Phi$ and $\pi'$ a propositional refutation corresponding to $\pi$.
@@ -327,69 +273,9 @@ that the algorithm stated in \ref{def:huang_orig_PI} gives closely related resul
 	But these substitutions are certainly applied by $\sigma$, hence $\PI(C)\sigma = \PI(C')$.
 \end{proof}
 
-\cbstart
-\todo[inline]{this part occurs in other proof}
 \section{Lifting of colored symbols}
-This establishes the theoretical framework which is required to define and show the correctness of the procedure to construct a proper interpolant from the propositional interpolant.
-The idea of this procedure will be to replace colored terms still occurring in the propositional interpolant with variables and quantifying them appropriately.
-This replacement is referred to as lifting:
 
-\begin{defi}[Lifting]
-	Let $\Gamma$ and $\Delta$ be sets of first-order formulas, 
-	$\varphi$ a formula or a term, $Z=\{\colterm{1}, \dotsc, \colterm{n}\}$ the maximal $\Phi$-terms for $\Phi \in \{\Gamma, \Delta\}$ in $\varphi$ and $z_1, \ldots, z_n$ fresh variables, referred to as \defiemph{lifting variables}.
-
-	Then $\lft{\Phi}{z}{\varphi}$ denotes 
-	$\lft{\Phi}{z}{\varphi, Z}$ which is defined as follows:
-\[\lft{\Phi}{z}{\varphi, Z} \defeq \begin{cases} \varphi & Z = \emptyset \\ \lft{\Phi}{z}{\varphi/{\colterm{i}/z_i}, Z\setminus\{\colterm{i}\}} & \text{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \end{cases}\]
-	\largered{deprecated to other version in huang proof without $P_P$}
-	We also denote $\varphi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\varphi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
-\end{defi}
-
-We usually lift $\Delta$-terms by indexed variables with letter $x$ and $\Gamma$-terms with letter $y$. If the lifting is not specific to a color, we use indexed variables with letter $z$.
-
-
-Some elementary properties of liftings are described by the following lemmas:
-
-\begin{lemma} 
-  \label{lemma:lift_commute_huang}
-  Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
-  \begin{enumerate}
-    \item $\lift{\Phi}{\lnot A}{z} \semiff{} \lnot \lift{\Phi}{A}{z}$
-    \item $\lift{\Phi}{A \circ B}{z} \semiff{} ( \lift{\Phi}{A}{z} \circ \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land,       \lor\}$
-    \item $\lift{\Phi}{s = t}{z} \semiff{} ( \lift{\Phi}{s}{z} = \lift{\Phi}{t}{z} )$
-  \end{enumerate}
-\end{lemma}
-\cbend
-\begin{lemma}
-	%Let $\{z_1,\ldots, z_n\}$ be the maximal colored terms of a clause $C$.
-	%Then 
-	%$ Q_1 z_1 \ldots Q_n z_n \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }
-	%\;\liff\;
-	%Q_1 z_1 \ldots Q_n z_n \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$ for $Q_i \in \{\forall, \exists\}$ for $1\varleq i\varleq n$.
-
-	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }$ and 
-	$ \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$
-	differ only in the naming of the variables replacing maximal colored terms.
-	\label{lemma:naming_of_colored_variablesHuang}
-
-	\largered{not quite right with $\expa$, see proof without $P_P$}
-
-\end{lemma}
-\begin{proof}
-	Suppose a term $t$ in $C$ is affected by a lifting.
-	We only need to consider maximal colored terms as grey terms are not affected by the liftings.
-	Without loss of generality let $t$ be a maximal $\Delta$-colored term.
-
-	Let $\Phi$ be the positions of maximal occurrences of $t$.
-	Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
-
-	In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
-	However after this step,
-	all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
-	Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
-\end{proof}
-
-
+We rely on the same definition of lifting as given in \ref{sec:lifting}.
 First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 \begin{lemma}
@@ -424,7 +310,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 			$\Gamma \entails \lift{\Delta}{ \PI(C_2) \lor (E \lor \lnot l)_\Gamma }{x}$
 
-			which by Lemma \ref{lemma:lift_commute_huang} is equivalent to
+			which by Lemma \ref{lemma:lift_commute} is equivalent to
 
 			$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
 			\lift{\Delta}{ D_\Gamma }{x} \lor
@@ -443,7 +329,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					$$\Gamma \entails\lift{\Delta}{ \PI(C_1) }{x} \lor \lift{\Delta}{ \PI(C_2) }{x} \lor
 					\lift{\Delta}{ D_\Gamma }{x} \lor
 					\lift{\Delta}{ E_\Gamma }{x}.$$
-					Several applications of Lemma \ref{lemma:lift_commute_huang} give
+					Several applications of Lemma \ref{lemma:lift_commute} give
 					$\Gamma \entails\lift{\Delta}{ \PI(C_1)  \lor  \PI(C_2) \lor (D \lor E)_\Gamma }{x}$.
 
 				\item Suppose $l$ is $\Delta$-colored.
@@ -460,7 +346,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 					So if in a model $M$ of $\Gamma$ we have that
 					$M \notentails \lift{\Delta}{ D_\Gamma }{x}$ and 
-					$M \notentails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $M \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $M \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute_huang}
+					$M \notentails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $M \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $M \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute}
 					$M \entails \lift{\Delta}{ \PI(C_1) \land \PI(C_2) }{x} \lor
 					\lift{\Delta}{ (D \lor E)_\Gamma }{x}$.
 
@@ -489,7 +375,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 					Therefore
 					$M\entails (\lif{l} \land \lif{\PI(C_2)}) \lor (\lnot \lif{l} \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{E_\Gamma}) $,
-					and several applications of Lemma \ref{lemma:lift_commute_huang} give
+					and several applications of Lemma \ref{lemma:lift_commute} give
 					$M\entails \lif{(l \land \PI(C_2)) \lor (\lnot {l} \land {\PI(C_1)}) \lor ({D_\Gamma} \lor {E_\Gamma})} $.
 			\end{enumerate}
 
@@ -503,7 +389,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			The propositional interpolant directly carried over from $C_1$, i.e.~$\PI(C) = \PI(C_1)$.
 
 			By the induction hypothesis, we get that $\Gamma \entails \lif{\PI(C_1) \lor (l \lor l \lor D)_\Gamma}$.
-			By Lemma \ref{lemma:lift_commute_huang}, 
+			By Lemma \ref{lemma:lift_commute}, 
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor  \lif{l_\Gamma} \lor \lif{D_\Gamma})$,
 
@@ -511,7 +397,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor \lif{D_\Gamma})$,
 
-			so by again applying Lemma \ref{lemma:lift_commute_huang}, we arrive at
+			so by again applying Lemma \ref{lemma:lift_commute}, we arrive at
 
 			$\Gamma \entails \lif{\PI(C_1) \lor (l \lor D)_\Gamma}$.
 
@@ -530,7 +416,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 			$\Gamma \entails \lif{\PI(C_2) \lor (E\occurat{s}{p})_\Gamma}$.
 
-			By Lemma \ref{lemma:lift_commute_huang}, we get that 
+			By Lemma \ref{lemma:lift_commute}, we get that 
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif{s}=\lif{t}$ and 
 
@@ -540,8 +426,8 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			\begin{enumerate}
 				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
 
-					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E\occurat{t}{p})_\Gamma}$, which subsumes the cases \ref{def:huang_orig_PI_paramod_2} and \ref{def:huang_orig_PI_paramod_3} of 
-					Definition \ref{def:huang_orig_PI_paramod}. By Lemma \ref{lemma:lift_commute_huang}, this is equivalent to
+					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E\occurat{t}{p})_\Gamma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of 
+					Definition \ref{def:PI_paramod}. By Lemma \ref{lemma:lift_commute}, this is equivalent to
 
 					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{(E\occurat{t}{p})_\Gamma})$
 
@@ -559,7 +445,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					\label{njktahjtkhltah}
 
 				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
-				This reflects case \ref{def:huang_orig_PI_paramod_1} of Definition \ref{def:huang_orig_PI_paramod}.
+				This reflects case \ref{def:PI_paramod_1} of Definition \ref{def:PI_paramod}.
 
 				\todo{this is probably wrong in the same way as -nested was, fix just like there}
 					Then models are possible in which $s=t$ and therefore $\lif{s}=\lif{t}$ holds, while at the same time $\lif{h\occur{s}} \neq \lif{h\occur{t}}$ does not as $h\occur{s}$ and $h\occur{t}$ are replaced by distinct variables due to being different $\Delta$-terms.
@@ -581,145 +467,46 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			\end{enumerate}
 
 	\end{itemize}
-
 \end{proof}
-
-
-
-The interpolant extraction procedure $\PI$ exhibits a convenient property which is termed \emph{symmetry} in \cite[Definition 5]{interpolantStrenth} and can be stated formally as follows:
-
-\newcommand{\primexHuang}[1]{\ensuremath{\bhat{#1}}}
-\begin{lemma}
-	\label{lemma:symmetryHuang}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primexHuang\pi$ be $\pi$ with $\primexHuang\Gamma = \Delta$ and $\primexHuang\Delta = \Gamma$.
-	Then $\PI(\pi) \semiff \lnot \PI(\primexHuang\pi)$.
-\end{lemma}
-\begin{proof}
-	We prove this lemma by induction on $\pi$.
-	Let $\primexHuang\varphi$ denote the clause/formula/literal/term in $\primexHuang\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
-
-	\newcommand{\p}[1]{\primexHuang{#1}}
-	\begin{itemize}
-		\item[Base case.]
-			If $C \in \Gamma$, then $C' \in \Delta'$ and $\PI(C) = \bot \semiff \lnot \top = \lnot \PI(C')$. 
-			The case for $C\in \Delta$ is analogous.
-
-		\item[Resolution.]
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then by induction hypothesis, we get that
-			$\PI(C_i) = \lnot \PI(C'_i)$ for $i\in \{1,2\}$.
-
-			We distinguish the following cases:
-			\begin{enumerate}
-					\item $l$ is $\Gamma$-colored. Then $\primexHuang l$ is $\Delta$-colored.
-						\begin{align*}
-							\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
-														 &\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
-														 &= \lnot ( \PI(\primexHuang C_1) \land \PI(\primexHuang C_2) ) \\
-														 &= \lnot \PI(\primexHuang C)  
-						\end{align*}
-					\item $l$ is $\Delta$-colored. This case can be argued analogously.
-
-					\item $l$ is grey. Then $\primexHuang l$ is grey.\nopagebreak 
-			\begin{align*}
-				\PI(C) 
-				&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
-				&=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
-				&\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
-				&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
-				&= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
-				&= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
-				&= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
-				&= \lnot \PI(\p C)
-			\end{align*}
-
-			\end{enumerate}
-
-		\item[Factorisation.]
-			Suppose the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$. Then $\PI(C) = \PI(C_1)\sigma$ and the induction hypothesis gives the result.
-
-		\item[Paramodulation.]
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
-			We distinguish the following cases:
-
-			\begin{enumerate}
-				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
-					Then $\primexHuang r$ occurs in a maximal $\Gamma$-term $\primexHuang h\occur{r}$ in $\primexHuang E\occur{r}$ and $\primexHuang h\occur{r}$ occurs more than once in $\primexHuang E\occur{r} \lor \PI(\primexHuang E\occur{r})$.
-					\begin{align*}
-						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-						 &= [ ( s=t \land \lnot \PI(\primexHuang C_2) ) \lor (s\neq t \land \lnot \PI(\primexHuang C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-						 &\semiff \lnot [ ( s\neq t \lor \PI(\primexHuang C_2) ) \land (s= t \lor \PI(\primexHuang C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-						 &\semiff \lnot [ ( s = t \land \PI(\primexHuang C_2) ) \lor (s\neq t \land \PI(\primexHuang C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-						 &= \lnot \PI(\primexHuang C)
-					\end{align*}
-
-				\item $r$ occurs in a maximal $\Gamma$-term $h(r)$ in $E\occur{r}$ and $h(r)$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
-					This case can be argued analogously.
-				\item Otherwise:
-					\begin{align*}
-						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
-									 &= [ ( s=t \land \lnot \PI(\primexHuang C_2) ) \lor (s\neq t \land \lnot \PI(\primexHuang C_1)) ]\sigma \\
-									 &\semiff \lnot [ ( s\neq t \lor \PI(\primexHuang C_2) ) \land (s=t \lor \PI(\primexHuang C_1)) ]\sigma \\
-									 &\semiff \lnot [ ( s=t \land \PI(\primexHuang C_2) ) \lor (s\neq t \land \PI(\primexHuang C_1)) ]\sigma \\
-									 &= \lnot \PI(\primexHuang C)
-					\qedhere
-					\end{align*}
-			\end{enumerate}
-
-
-	\end{itemize}
-
-\end{proof}
-
-This lemma can be leveraged to show a counterpart of Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang} for $\Delta$:\nopagebreak
-
-\begin{corr}
-	\label{cor:delta_entails_lifted_interpolantHuang}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
-	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
-\end{corr}
-\begin{proof}
-	Build $\primexHuang \pi$ from $\pi$ using $\primexHuang \Gamma = \Delta$ and $\primexHuang \Delta = \Gamma$ as initial clause set partition.
-	\newline
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\primexHuang \Gamma \entails \lft{\primexHuang\Delta}{x}{ \PI(\primexHuang C) \lor \primexHuang C }$ for $\primexHuang C$ in $\primexHuang \pi$.
-	\newline
-	By Lemma \ref{lemma:symmetryHuang},
-$\primexHuang \Gamma \entails \lft{\primexHuang\Delta}{x}{ \lnot \PI(C) \lor \primexHuang C }$ for the clause $C$ in $\pi$ corresponding to $\primexHuang C$ in $\primexHuang \pi$. 
-	This however is nothing else than 
-$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
-\end{proof}
-
 
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$z_1, \dots, z_n$ be the variables which replace the colored terms in $\lifgamma{\lifdelta{\PI(\pi)}}$ ordered by their length.
+	$t_1, \dots, t_n$ be the maximal colored terms in $\PI(\pi)$ in ascending order.
 	Then
-	$Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_i$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
+	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_{t_i}$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
 \end{thm}
 \begin{proof}
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\Gamma \entails \forall x_1 \ldots \forall x_m\,\lifdelta{\PI(\pi)}$ where $m$ is the number of maximal $\Delta$-colored terms in $\PI(\pi)$.
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
 
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_i$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-terms.
-	Let $t$ be a maximal $\Gamma$-term in $\lifdelta{\PI(\pi)}$ and $x_{j_1}, \dots, x_{j_k}$ the variables replacing $\Delta$-terms in~$t$.
-	Note that the $\Delta$-terms, which are replaced by $x_{j_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
+	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-terms.
+	Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
+	Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
+	Note that as all of ${r_1}, \dots, {r_k}$ due to being subterms of $t$ are of strictly smaller length than $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
+	%Note that all of $r_1, \dots, r_k$ are subterms of $t$.
+	%Note that the $\Delta$-terms, which are replaced by $x_{r_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
 
 	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are grey terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
 
-	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is replaced by some $z_j$, which is existentially quantified.
-	Hence $t$ is a witness for $z_j$ as due to the quantifier ordering,
-	the existential quantification of $z_j$ is in the scope of the quantifiers of $x_{j_1}, \ldots, x_{j_k}$ respectively.
-	Therefore $\Gamma \entails Q_1 z_1 \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
+	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is lifted by $y_t$, which is existentially quantified.
+	Hence $t$ is a witness for $y_j$ as due to the quantifier ordering,
+	it is bound in the scope of the quantification of the lifting variables $x_{r_1}, \dots, x_{r_k}$.
+	Therefore $\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
 
-	By Corollary \ref{cor:delta_entails_lifted_interpolantHuang} $\Delta \entails \forall y_1 \dots \forall y_m\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $m$ is the number of $\Gamma$-colored terms in $\PI(\pi)$.
-	By a similar line of argumentation as above, we can replace the maximal $\Delta$-terms by existentially quantified variables and arrive at
-	$\Delta \entails\nolinebreak{} \overline Q_1 z_1 \dots \overline Q_n z_n\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
+	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_{u_1} \dots \forall y_{u_{k'}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $u_1, \dots u_{k'}$ are the maximal colored $\Gamma$-terms in $\PI(\pi)$.
+
+	By a similar line of argumentation as above, we can replace the maximal $\Delta$-\nolinebreak{}terms by variables which are then existentially quantified and arrive at
+	$\Delta \entails\nolinebreak{} \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$.
-	By Lemma \ref{lemma:naming_of_colored_variablesHuang} and as all variables which replace colored terms are bound, 
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
+	finally by Lemma \ref{lemma:lifting_order_not_relevant},
+	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
 
-	As it is now easy to see that $Q_1 z_1 \dots Q_n z_n\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
+	As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
 \end{proof}
 
 
 
+
+\section{Commentary of the original publication}
+
+\label{sec:huang_commentary} 
