@@ -1,9 +1,11 @@
 
 \chapter{The semantic perspective on interpolation}
 
-A curious feature of the interpolant theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters as it is a purely model-theoretic.
+A curious feature of the interpolant theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters, as it is a purely model-theoretic.
 It is based on the joint consistency theorem by Robinson (\cite{robinson1956result}), which we show to be equivalent to the interpolation theorem.
 The joint consistency theorem itself was presented as a proof of Beth's definability theorem, which is discussed in section~\ref{sec:beth}.
+
+\section{Joint consistentcy}
 
 The notion of joint consistency is based on separability of sets of formulas:
 
@@ -13,12 +15,12 @@ The notion of joint consistency is based on separability of sets of formulas:
 	$\Gamma$ and $\Delta$ are \defiemph{separable} if there exists a formula in the language $\Lang(\Gamma)\cap \Lang(\Delta)$ which separates $\Gamma$ and $\Delta$ and \defiemph{inseparable} otherwise.
 \end{defi}
 
-Note that for joint consistency, we it is not necessary to require the original sets to be consistent as this is implied by separability:
+Note that for joint consistency, it is not necessary to require the original sets to be consistent as this is implied by separability:
 
-\begin{prop}
+\begin{lemma}
 	\label{lemma:insep_consistent}
 	Let $\Gamma$ and $\Delta$ be inseparable sets of first order formulas. Then $\Gamma$ and $\Delta$ are each consistent.
-\end{prop}
+\end{lemma}
 \begin{proof}
 	Suppose w.l.o.g.\ that $\Gamma$ is inconsistent. Then $\Gamma \entails \bot$, and as $\Delta \entails \top$, $\bot$ separates $\Gamma$ and $\Delta$.
 \end{proof}
@@ -37,20 +39,21 @@ The following proof essentially follows \cite{chang1990model}.
 	But $M \entails \Delta$, hence it can not be the case that $\Delta \entails \lnot A$.
 
 	For the other direction, suppose that $\Gamma$ and $\Delta$ are inseparable.
-	We proceed by iteratively constructing two maximal consistent sets of formulas $T$ and $T'$ such that $\Gamma \subseteq T$ and $\Delta \subset T'$ with $T \cup T'$ being consistent in order to then derive a model of this union, establishing the consistency of $\Gamma$ and $\Delta$.
+	We proceed by iteratively constructing two maximal consistent sets of formulas $T$ and $T'$ such that $\Gamma \subseteq T$ and $\Delta \subset T'$ where $T \cup T'$ is consistent in order to then derive a model of this union, thus establishing the consistency of $\Gamma$ and $\Delta$.
 
-	Let $T_0 = \Gamma$ and $T'_0 = \Delta$. 
-	We now require a countably infinite set of fresh constant symbols $C = \{c_0, c'_0, c_1, c'_1, \dots\}$.
+	Let $C = \{c_0, c'_0, c_1, c'_1, \dots\}$ be
+	a countably infinite set of fresh constant symbols.
 	Let $\mathcal{A}_0, \mathcal{A}_1, \dots$ be an enumeration of all sentences in the language $\Lang(\Gamma) \cup C$
 	and $\mathcal{B}_0, \mathcal{B}_1, \dots$ an enumeration of all sentences in the language $\Lang(\Delta) \cup C$.
 
+	Let $T_0 = \Gamma$ and $T'_0 = \Delta$. 
 	We construct
 	$T_{i+1}$ 
 	from
 	$T_{i}$
 	by means of the following formation rules:
 	%\begin{enumerate}[(1)]
-	\begin{enumerate}[(1)]
+	\begin{enumerate}[~~(1)]
 		\item
 			\label{theory_construction_1}
 			If $T_{i} \cup \{\mathcal{A}_i\}$ and $T'_{i}$ are separable, then $T_{i+1} \defeq{}\, T_i$.
@@ -64,14 +67,15 @@ The following proof essentially follows \cite{chang1990model}.
 			\end{enumerate}
 	\end{enumerate}
 
-	$T'_{i+1}$ is formed in a similar fasion:
-	\begin{enumerate}[(1$'$)]
+	\noindent
+	$T'_{i+1}$ is formed in a similar fashion:
+	\begin{enumerate}[~~(1$'$)]
 		\item
 			If $T'_{i} \cup \{\mathcal{B}_i\}$ and $T_{i+1}$ are separable, then $T'_{i+1} \defeq{}\, T'_i$.
 		\item
 			\begin{samepage}
 				Otherwise: 
-			\begin{enumerate}[(2$'$a)]
+			\begin{enumerate}[~(2$'$a)]
 				\item If $\mathcal{B}_i$ is of the form $\exists x A$, then $T'_{i+1} \defeq{}\, T'_i \cup \{ \mathcal{B}_i, A\subst{x/c'_i} \}$.
 				\item Otherwise $T'_{i+1} \defeq{}\, T'_i \cup \{ \mathcal{B}_i \}$.
 			\end{enumerate}
@@ -91,30 +95,36 @@ The following proof essentially follows \cite{chang1990model}.
 
 			$\Gamma$ and $\Delta$ are inseparable by assumption and clearly the construction of the subsequent elements of the sequence do not violate this invariant.
 
+			\item 
+			\label{enum:theories_consistent}
+			$T_i$ and $T'_i$ are consistent.
+
+			Immediate by \ref{enum:theories_insep} and Lemma~\ref{lemma:insep_consistent}.
 
 		\item
 			\label{enum:each_max_consistent}
 			$T$ and $T'$ are each maximal consistent with respect to $\Lang(\Gamma) \cup C$ and $\Lang(\Delta) \cup C$ respectively.
 
 			We show the result for $T$.
+			By~\ref{enum:theories_consistent}, $T$ is consistent.
 			Suppose that for some $i$, $\mathcal{A}_i \not\in T$ and $\lnot\mathcal{A}_i \not\in T$.
-			Then by the construction of $T$,
+			Then by the construction of $T$, we can derive that
 			$T_i \cup \{\mathcal{A}_i\}$ and $T'_i$ are separable.
 			Hence also
-			$T \cup \{\mathcal{A}_i\}$ and $T'$ are, i.e.\ there exists a formula $B_1$ in the language $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that
+			$T \cup \{\mathcal{A}_i\}$ and $T'$ are, i.e.\ there exists a formula $B_1$ in the language $\Lang(T\cup\{\mathcal{A}_i\}) \cap \Lang(T') = (\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that
 			$T \cup \{\mathcal{A}_i\} \entails B_1$ and $T' \entails \lnot B_1$.
 			By the deduction theorem, we also have that \markA{} $T \entails \mathcal{A}_i \limpl B_1$.
 
-			As furthermore $\lnot \mathcal{A}_i \not\in T$, by a similar argument, there exists a formula $B_2$ in the language  $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that 
+			As we also assume that $\lnot \mathcal{A}_i \not\in T$, by a similar argument, there exists a formula $B_2$ in the language  $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that 
 			\markB{} $T \entails \lnot \mathcal{A}_i \limpl B_2$ and $T' \entails \lnot B_2$.
 
-			Then however \markA{} and \markB{} entail that in any model, depending on whether $\mathcal{A}_i$ holds in the model, either $B_1$ or $B_2$ hold, i.e.\ $T \entails B_1 \lor B_2$.
-			But we as neither $B_1$ nor $B_2$ hold in $T'$, we obtain that $T' \entails \lnot (B_1 \lor B_2)$, in effect establishing that $B_1 \lor B_2$ separates $T$ and $T'$, a contradiction to \ref{enum:theories_insep}.
+			Then however \markA{} and \markB{} entail that in any model, depending on whether $\mathcal{A}_i$ holds in the model, at least one of $B_1$ and $B_2$ holds, i.e.\ $T \entails B_1 \lor B_2$.
+			But as neither $B_1$ nor $B_2$ hold in $T'$, we obtain that $T' \entails \lnot (B_1 \lor B_2)$, in effect establishing that $B_1 \lor B_2$ separates $T$ and $T'$, a contradiction to \ref{enum:theories_insep}.
 
 
 		\item
 			\label{enum:intersection_consistent}
-			$T \cap T'$ are each maximal consistent with respect to $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$.
+			$T \cap T'$ is maximal consistent with respect to $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$.
 
 			By~\ref{enum:each_max_consistent}, for every formula $A$ in $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ it holds that either 
 			$A \in T$ or $\lnot A \in T$ as well as
@@ -128,7 +138,7 @@ The following proof essentially follows \cite{chang1990model}.
 	Therefore we can find a submodel of $N$ of $M$ which as $M$ is in the language $\Lang(\Gamma)\cup C$ such that
 	every domain element in $N$ corresponds to a constant symbol in $C$.
 	%the domain of $N$ is $\{ \interpretation{M}(c) \mid c \in C\}$, where $\interpretation{M}$ is the interpretation of $M$.
-	Models $M'$ of $T'$ allow by a similar reasoning for finding a submodel $N'$ of $M'$.
+	Models $M'$ of $T'$ allow by a similar reasoning for finding submodels $N'$ of $M'$.
 
 	As by~\ref{enum:intersection_consistent}, $T$ and $T'$ agree on all formulas of $(\Lang(\Gamma) \cap \Lang(\Delta))\cup C$, 
 	we are able to find an isomorphism between the reducts $N$ and $N'$ to their common language.
@@ -138,20 +148,19 @@ The following proof essentially follows \cite{chang1990model}.
 	Thus as $N\entails T$ and $N'\entails T'$, $K\entails T \cup T'$, which implies that $\Gamma\cup\Delta$ is consistent.
 \end{proof}
 
-\largered{in this formulation, joint consistency and craig interpolation really is literally the same} 
+\section{Joint consistency and interpolation}
+
+Let us recall the Interpolation Theorem~\ref{thm:interpolation}:
+
+\interpolationRevThm*
+
 \begin{prop}
-	Theorem~\ref{thm:robinson} and ??? are equivalent.
+	Theorem~\ref{thm:robinson} and Theorem~\ref{thm:interpolation} are equivalent.
 \end{prop}
 \begin{proof}
-	Suppose that ??? holds.
-
-	Clearly if there is a formula $A$ such that $\Gamma\entails A$ and $\Delta\entails \lnot A$, then $\Gamma \cup \Delta $ is inconsistent.
-
-	On the other hand, if $\Gamma\cup\Delta$ is inconsistent. 
-	Then by~\ref{thm:robinson}, there exists a formula $A$ in $\Lang(\Gamma)\cap\Lang(\Delta)$ such that $\Gamma \entails A$ and $\Delta \entails \lnot A$. 
-
-
+	It is easy to see that the notion of reverse interpolant and separating formulas coincide.
 \end{proof}
+
 
 
 
