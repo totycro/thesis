@@ -4,13 +4,34 @@
 In contrast to the approach described in chapter \ref{sec:two_phases}, where propositional interpolants are extracted first and colored terms lifted just in a second, separate phase, 
 we now present a method which is based on the former but merges the two phases.
 
-As the \mytodo{TODO}
+The motivation for the separation in two phases lies in the fact that just after the formation of the propositional interpolant, all terms and their logical relation can be known.
+This however neglects the fact that proofs are frequently structured in a way such that the occurrence of certain symbols and variables are restricted to certain areas of the proof.
+By lifting these and prefixing the entire interpolant with their respective quantifier, the resulting formula is not optimal in the sense that the quantifier scope can be minimised.
 
-Colored terms satisfying certain restrictions which allow for determining the order of the quantifier of the their corresponding lifting variables are lifted and bound during the extractions of the interpolants.
-The resulting interpolants are therefore in general not in prenex form.
+Consider the following example:
+\todo{example notation reference}
 
-The key idea which enables this early lifting of colored terms is that proofs often consist of several parts which are independent of each other. 
-\mytodo{elaborate}
+\begin{exa}
+	Let $\Gamma = \{ P(x) \lor Q(y) \}$ and $\Delta = \{\lnot P(a), \lnot Q(a)\}$.
+	We consider the following refutation of $\Gamma \cup \Delta$:
+
+	\begin{prooftree}
+		\AxiomCm{ P(x) \lor Q(y) \mid \bot}
+		\AxiomCm{ \lnot P(a)  \mid \top}
+		\BinaryInfCm{ P(a) \mid Q(y) }
+		\AxiomCm{ \lnot Q(a)  \mid \top}
+		\BinaryInfCm{ Q(a) \lor P(a) \mid  \square }
+	\end{prooftree}
+
+	Lifting and quantification of this propositional interpolant according to Theorem~\ref{thm:two_phases} gives the interpolant $\forall x_a (Q(x_a) \lor P(x_a))$.
+	Note however that the more general formula $(\forall x_a Q(x_a) ) \lor (\forall x_a P(x_a))$ is an interpolant as well which cannot be constructed by this method.
+	Consider yet that $\Delta$ entails only the negated interpolant, so by generalising the interpolant, the formula entailed by $\Delta$ becomes more specialised.
+\end{exa}
+
+%Colored terms satisfying certain restrictions which allow for determining the order of the quantifier of the their corresponding lifting variables are lifted and bound during the extractions of the interpolants.
+%The resulting interpolants are therefore in general not in prenex form.
+
+%The key idea which enables this early lifting of colored terms is that proofs often consist of several parts which are independent of each other. 
 
 \section{Preliminaries}
 
