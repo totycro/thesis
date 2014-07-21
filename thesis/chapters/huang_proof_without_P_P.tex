@@ -257,113 +257,8 @@ $.
 \end{proof} 
 
 
-
-\section{Symmetry of the extracted interpolants}
-
-
-The interpolant extraction procedure $\PI$ exhibits a convenient property which is termed \emph{symmetry} in \cite[Definition 5]{interpolantStrenth} and will be used to show that results concerning $\Gamma$ can easily be generalised to results for $\Delta$.
-The symmetry-property of $\PI$ can be stated formally as follows:
-
-\newcommand{\primex}[1]{\ensuremath{\bhat{#1}}}
-\begin{lemma}
-	\label{lemma:symmetry}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	Then $\PI(\pi) \semiff \lnot \PI(\primex\pi)$.
-\end{lemma}
-\begin{proof}
-	We prove this lemma by induction on $\pi$.
-	Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
-
-	\newcommand{\p}[1]{\primex{#1}}
-	\begin{itemize}
-		\item[Base case.]
-			If $C \in \Gamma$, then $C' \in \Delta'$ and $\PI(C) = \bot \semiff \lnot \top = \lnot \PI(C')$. 
-			The case for $C\in \Delta$ is analogous.
-
-		\item[Resolution.]
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then by induction hypothesis, we get that
-			$\PI(C_i) = \lnot \PI(C'_i)$ for $i\in \{1,2\}$.
-
-			We distinguish the following cases:
-			\begin{enumerate}
-				\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
-					\begin{align*}
-						\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
-													&\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
-													 &= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
-														&= \lnot \PI(\primex C)  
-					\end{align*}
-				\item $l$ is $\Delta$-colored. This case can be argued analogously.
-
-				\item $l$ is grey. Then $\primex l$ is grey. 
-					Note that $l\sigma \syneq l'\sigma$ \markB.
-					\nopagebreak 
-					\begin{align*}
-						\PI(C) 
-						&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
-					 &=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
-					&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
-				 &\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
-				 &= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
-				 &= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
-				 &= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
-				 &= \lnot \PI(\p C)
-					\end{align*}
-
-			\end{enumerate}
-
-		\item[Factorisation.]
-			Suppose the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$. Then $\PI(C) = \PI(C_1)\sigma$ and the induction hypothesis gives the result.
-
-		\item[Paramodulation.]
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
-			We distinguish the following cases:
-
-			\begin{enumerate}
-				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
-					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
-					\begin{align*}
-						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-											&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-									 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-								 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-							 &= \lnot \PI(\primex C)
-					\end{align*}
-
-				\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
-					This case can be argued analogously.
-				\item Otherwise:
-					\begin{align*}
-						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
-												&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
-											&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
-										&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
-									 &= \lnot \PI(\primex C)
-						\qedhere
-					\end{align*}
-			\end{enumerate}
-
-
-	\end{itemize}
-
-\end{proof}
-
-\begin{corr}
-	\label{cor:delta_entails_lifted_interpolant}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
-	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
-\end{corr}
-\begin{proof}
-	Form $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$. 
-	By Lemma \ref{lemma:symmetry},
-	$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
-	This however is nothing else than 
-	$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
-\end{proof}
-
 \section{Main lemma}
+\label{sec:two_phase_main_lemma}
 
 By lifting the propositional interpolant, we are able to already obtain a formula partially fulfilling the requirements for interpolants:
 
@@ -378,35 +273,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 	\label{lemma:gamma_entails_lifted_interpolant}
 \end{lemma}
 
-Before we proceed with the proof of this lemma, we give a corollary which demonstrates that $\PI$ 
-extracts propositional interpolants in the sense that besides possibly containing colored terms, they are proper interpolants:
-
-\begin{corr}
-	\label{cor:propositional_interpolant}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
-	Then
-	\begin{enumerate}
-		\item$\Gamma\entails \PI(\pi)$
-		\item$\Delta\entails \lnot \PI(\pi)$
-		\item $\PS(\PI(\pi)) \subseteq \PS(\Gamma) \cap \PS(\Delta)$.
-	\end{enumerate}
-\end{corr}
 \begin{proof}
-	By the definition of $\PI$, 
-	$\PI(\pi)$ denotes $\PI(\square)$, where $\square$ is the empty clause derived in $\PI$.
-	By Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we get that 
-	$ \Gamma \entails \lifdelta{\PI(\pi)}$.
-	As the lifting replaces terms by variables which are then implicitly universally quantified, $\PI(\pi)$ is an instance of $\lifdelta{\PI(\pi)}$.
-	Therefore $\Gamma \entails \PI(\pi)$.
-
-	By Corollary~\ref{cor:delta_entails_lifted_interpolant}, $\Delta \entails \lnot \lifgamma{\PI(\pi)}$,
-	thus by a similar argument as above, $\Delta \entails \lnot \PI(\pi)$.
-
-
-	By the construction of $\PI$, only grey predicates are added.
-\end{proof}
-
-\begin{proof}[Proof of Lemma~\ref{lemma:gamma_entails_lifted_interpolant}]
 	We proceed by induction on the resolution refutation of the strengthening $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$,
 	where $D_\Phi$ denotes the clause created from $D$ by removing all literals which are not contained $\Lang(\Phi)$.
 	%i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
@@ -585,7 +452,146 @@ extracts propositional interpolants in the sense that besides possibly containin
 \end{proof}
 
 
-From Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we can easily derive a result on a restricted notion of interpolation which we refer to as one-sided interpolants:
+\section{Symmetry of the extracted interpolants}
+\label{sec:symmetry}
+
+
+The interpolant extraction procedure $\PI$ exhibits a convenient property which is termed \emph{symmetry} in \cite[Definition 5]{interpolantStrenth} and will be used to show that results concerning $\Gamma$ can easily be generalised to results for $\Delta$.
+The symmetry-property of $\PI$ can be stated formally as follows:
+
+\newcommand{\primex}[1]{\ensuremath{\bhat{#1}}}
+\begin{lemma}
+	\label{lemma:symmetry}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	Then $\PI(\pi) \semiff \lnot \PI(\primex\pi)$.
+\end{lemma}
+\begin{proof}
+	We prove this lemma by induction on $\pi$.
+	Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
+
+	\newcommand{\p}[1]{\primex{#1}}
+	\begin{itemize}
+		\item[Base case.]
+			If $C \in \Gamma$, then $C' \in \Delta'$ and $\PI(C) = \bot \semiff \lnot \top = \lnot \PI(C')$. 
+			The case for $C\in \Delta$ is analogous.
+
+		\item[Resolution.]
+			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then by induction hypothesis, we get that
+			$\PI(C_i) = \lnot \PI(C'_i)$ for $i\in \{1,2\}$.
+
+			We distinguish the following cases:
+			\begin{enumerate}
+				\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
+					\begin{align*}
+						\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
+													&\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
+													 &= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
+														&= \lnot \PI(\primex C)  
+					\end{align*}
+				\item $l$ is $\Delta$-colored. This case can be argued analogously.
+
+				\item $l$ is grey. Then $\primex l$ is grey. 
+					Note that $l\sigma \syneq l'\sigma$ \markB.
+					\nopagebreak 
+					\begin{align*}
+						\PI(C) 
+						&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
+					 &=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
+					&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
+				 &\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
+				 &= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
+				 &= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
+				 &= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
+				 &= \lnot \PI(\p C)
+					\end{align*}
+
+			\end{enumerate}
+
+		\item[Factorisation.]
+			Suppose the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$. Then $\PI(C) = \PI(C_1)\sigma$ and the induction hypothesis gives the result.
+
+		\item[Paramodulation.]
+			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
+			We distinguish the following cases:
+
+			\begin{enumerate}
+				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
+					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
+					\begin{align*}
+						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+											&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+									 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+								 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+							 &= \lnot \PI(\primex C)
+					\end{align*}
+
+				\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
+					This case can be argued analogously.
+				\item Otherwise:
+					\begin{align*}
+						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
+												&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
+											&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
+										&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
+									 &= \lnot \PI(\primex C)
+						\qedhere
+					\end{align*}
+			\end{enumerate}
+
+
+	\end{itemize}
+
+\end{proof}
+
+\begin{corr}
+	\label{cor:delta_entails_lifted_interpolant}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
+	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
+\end{corr}
+\begin{proof}
+	Form $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$. 
+	By Lemma \ref{lemma:symmetry},
+	$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
+	This however is nothing else than 
+	$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
+\end{proof}
+
+
+\section{Propositional and one-sided interpolants}
+
+We now show that the results presented in section \ref{sec:two_phase_main_lemma} and \ref{sec:symmetry}
+already are give interpolants which are propositional interpolants in the sense that besides possibly containing colored terms, they are proper interpolants.
+Note that this coincides with the notion of ``relational interpolant'' as given in \cite{Huang95} and is defined formally in our notation in~\ref{def:huang_orig_rel_prop_interpol}.
+
+\begin{corr}
+	\label{cor:propositional_interpolant}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	Then
+	\begin{enumerate}
+		\item$\Gamma\entails \PI(\pi)$
+		\item$\Delta\entails \lnot \PI(\pi)$
+		\item $\PS(\PI(\pi)) \subseteq \PS(\Gamma) \cap \PS(\Delta)$.
+	\end{enumerate}
+\end{corr}
+\begin{proof}
+	By the definition of $\PI$, 
+	$\PI(\pi)$ denotes $\PI(\square)$, where $\square$ is the empty clause derived in $\PI$.
+	By Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we get that 
+	$ \Gamma \entails \lifdelta{\PI(\pi)}$.
+	As the lifting replaces terms by variables which are then implicitly universally quantified, $\PI(\pi)$ is an instance of $\lifdelta{\PI(\pi)}$.
+	Therefore $\Gamma \entails \PI(\pi)$.
+
+	By Corollary~\ref{cor:delta_entails_lifted_interpolant}, $\Delta \entails \lnot \lifgamma{\PI(\pi)}$,
+	thus by a similar argument as above, $\Delta \entails \lnot \PI(\pi)$.
+
+
+	Finally, by the construction of $\PI$, $\PI(\pi)$ is solely comprised of grey predicate symbols.
+\end{proof}
+
+
+From Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we can also easily derive a result on a restricted notion of interpolation which we refer to as one-sided interpolants. 
 
 \begin{defi}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
@@ -593,10 +599,12 @@ From Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we can easily derive a 
 	\begin{enumerate}
 		\item $\Gamma \entails I$
 		\item $\Delta \entails \lnot I$
-		\item $\Lang(I) \subseteq \Lang(\Gamma) \cap \Lang(\Delta)$
+		\item $\Lang(I) \subseteq \Lang(\Gamma) $
 			\qedhere
 	\end{enumerate}
 \end{defi}
+
+Note that if $I$ is a one-sided interpolant for $\Gamma$ and $\Delta$ and additionally $\Lang(I) \subseteq \Lang(\Delta)$ holds, then $I$ is an interpolant for $\Gamma$ and $\Delta$.
 
 \begin{prop}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma\cup\Delta$ is unsatisfiable.
@@ -604,29 +612,18 @@ From Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we can easily derive a 
 \end{prop}
 \begin{proof}
 	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
-	By Lemma~\ref{lemma:gamma_entails_lifted_interpolant},
-	$\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
+	By Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we have that
+	$ \Gamma \entails \lifdelta{\PI(\pi)}$,
+	or equivalently
+	$\Gamma \entails \forall x_1 \quantifierdots \forall x_n  \PI(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\PI(\pi)$.
 
-	\mytodo{}
+	By Corollary~\ref{cor:propositional_interpolant}, we get that
+	$\Delta \entails \lnot \PI(\pi)$.
+	This however provides witness terms for 
+	$\Delta \entails \exists x_1 \quantifierdots \exists x_n \lnot \lifdelta{ \PI(\pi) }$, where we can pull the quantifiers inwards to obtain that
+	$\Delta \entails \lnot  \forall x_1 \quantifierdots \forall x_n \lnot \lifdelta{ \PI(\pi) }$.
 
-	~
-
-	~
-
-	~
-
-	By Lemma~\ref{lemma:gamma_entails_lide}, $\Gamma \entails \LIde(\pi) \lor \LIclde(\pi)$,
-	or in other words
-	$\Gamma \entails \forall x_1 \dots \forall x_n  \LIde(\pi) \lor \LIclde(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\LIde(\pi) \lor \LIclde(\pi)$.
-	%Let $x_1, \dots, x_n$ be the $\Delta$-lifting variables in $I$.
-	By Lemma~\ref{lemma:no_colored_terms}, the formula $\LIde(\pi) \lor \LIclde(\pi)$ does not contain $\Delta$-colored symbols.
-
-	Let $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\LIde(\pi) \lor \LIclde(\pi)}$
-	and
-	\[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\LIde(\pi) \lor \LIclde(\pi)}.\]
-	Note that $I$ does not contain any $\Gamma$-terms.
-	As $\LIde(\pi) \lor \LIclde(\pi)$ contains witness terms for every existential quantifier in $I$ with respect to $\Gamma$, $\Gamma \entails I$.
-	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
+	Clearly $\forall x_1 \quantifierdots \forall x_n \lifdelta{ \PI(\pi) }$ is devoid of $\Delta$-terms and hence a one-sided interpolant, which is a $\PI_1$ formula.
 \end{proof}
 
 
