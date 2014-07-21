@@ -585,6 +585,51 @@ extracts propositional interpolants in the sense that besides possibly containin
 \end{proof}
 
 
+From Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we can easily derive a result on a restricted notion of interpolation which we refer to as one-sided interpolants:
+
+\begin{defi}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
+	A \defiemph{one-sided interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that
+	\begin{enumerate}
+		\item $\Gamma \entails I$
+		\item $\Delta \entails \lnot I$
+		\item $\Lang(I) \subseteq \Lang(\Gamma) \cap \Lang(\Delta)$
+			\qedhere
+	\end{enumerate}
+\end{defi}
+
+\begin{prop}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma\cup\Delta$ is unsatisfiable.
+	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$ formula.
+\end{prop}
+\begin{proof}
+	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
+	By Lemma~\ref{lemma:gamma_entails_lifted_interpolant},
+	$\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
+
+	\mytodo{}
+
+	~
+
+	~
+
+	~
+
+	By Lemma~\ref{lemma:gamma_entails_lide}, $\Gamma \entails \LIde(\pi) \lor \LIclde(\pi)$,
+	or in other words
+	$\Gamma \entails \forall x_1 \dots \forall x_n  \LIde(\pi) \lor \LIclde(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\LIde(\pi) \lor \LIclde(\pi)$.
+	%Let $x_1, \dots, x_n$ be the $\Delta$-lifting variables in $I$.
+	By Lemma~\ref{lemma:no_colored_terms}, the formula $\LIde(\pi) \lor \LIclde(\pi)$ does not contain $\Delta$-colored symbols.
+
+	Let $y_1, \dots y_m$ be the $\Gamma$-lifting variables of $\lifgamma{\LIde(\pi) \lor \LIclde(\pi)}$
+	and
+	\[I = \forall x_1 \dots \forall x_n \exists y_1 \dots \exists y_m \lifgamma{\LIde(\pi) \lor \LIclde(\pi)}.\]
+	Note that $I$ does not contain any $\Gamma$-terms.
+	As $\LIde(\pi) \lor \LIclde(\pi)$ contains witness terms for every existential quantifier in $I$ with respect to $\Gamma$, $\Gamma \entails I$.
+	Hence $I$ is a $\Pi_1$ formula which is a one-sided interpolant for $\Gamma \cup \Delta$.
+\end{proof}
+
+
 
 \section{Quantifying over lifting variables}
 

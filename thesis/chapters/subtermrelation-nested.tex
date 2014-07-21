@@ -1,9 +1,20 @@
 \chapter{Interpolant extraction from resolution proofs in one phase}
 \label{sec:one_phase}
 
-\mytodo{some text}
+In contrast to the approach described in chapter \ref{sec:two_phases}, where propositional interpolants are extracted first and colored terms lifted just in a second, separate phase, 
+we now present a method which is based on the former but merges the two phases.
+
+As the \mytodo{TODO}
+
+Colored terms satisfying certain restrictions which allow for determining the order of the quantifier of the their corresponding lifting variables are lifted and bound during the extractions of the interpolants.
+The resulting interpolants are therefore in general not in prenex form.
+
+The key idea which enables this early lifting of colored terms is that proofs often consist of several parts which are independent of each other. 
+\mytodo{elaborate}
 
 \section{Preliminaries}
+
+First, we define a substitution which ensures that modifications to terms are also applied to lifting variables. Note that it is conceptually similar to $\sigma'$ as employed in Lemma~\ref{lemma:lif}.\todo{merge these concepts?}
 
 \begin{defi}[Substitution $\tau(\inference)$]
 	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
@@ -76,7 +87,8 @@
 
 \section{Interpolant extraction with simultaneous lifting}
 
-We now define the lifted interpolant $\LI$. Note that its propositional structure coincides with $\PI$ as defined in Definition~\ref{def:PI}.
+We now define the lifted interpolant $\LI$.
+Note that the structure of the resulting formula coincides the ones from $\PI$ as defined in Definition~\ref{def:PI} except for quantifiers and, of course, the colored terms.
 
 \begin{defi}[Incrementally lifted interpolant]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
@@ -84,21 +96,16 @@ We now define the lifted interpolant $\LI$. Note that its propositional structur
 
 	Let $C$ be a clause in $\pi$. 
 	%For a literal $\lambda$ in $C$, we denote the corresponding literal in $\LIcl(C)$ by $\lambda\cll$, whose existence is ensured Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}.
-
 	%We define $\LIcl(C) \defeq C$. \mytodo{if this version is final, drop $\LIcl(C)$ everywhere}
-
-	We define the preliminary formula $\LI^\bullet(C)$ as follows:
+	We define the intermediary formula $\LI^\bullet(C)$ as follows:
 	\begin{description}
 		\item{} Base case.
-			If $C \in \Gamma$, $\LI(C) \defeq \bot$.
-			If otherwise $C \in \Delta$, $\LI(C) \defeq \top$.
+			If $C \in \Gamma$, $\LI^\bullet(C) \defeq \bot$.
+			If otherwise $C \in \Delta$, $\LI^\bullet(C) \defeq \top$.
 
 		\item{} Resolution.
-
 			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then define $\LI(C)$ as follows:
-
 			\begin{enumerate}
-
 				\item If $l$ is $\Gamma$-colored:
 					$\LIpre(C) \defeq \LI(C_1)\tau\spas\lor \LI(C_2)\tau $
 
@@ -142,17 +149,25 @@ We now define the lifted interpolant $\LI$. Note that its propositional structur
 	\end{description}
 
 	\noindent
-	$\LI(C)$ is built from $\LIpre(C)$ according to the following steps:
+	$\LI(C)$ is built from $\LIpre(C)$ according to the following lifting procedure:
 
 	\begin{enumerate}
-		\item Lift all maximal colored occurrences of colored terms $t$ in $\LIpre(C)$ for which at least one of the following conditions, referred to as \defiemph{lifting conditions}, applies:
-
+		\item Lift all maximal colored occurrences of a term $t$ in $\LIpre(C)$ for which at least one of the following conditions, referred to as \defiemph{lifting conditions}, applies:
 			\begin{itemize} 
 				\item The term $t$ contains some variable $x$ such that $x$ does not occur in $C$.
 				\item The term $t$ is ground and $C$ does not contain $t$.
 			\end{itemize} 
-		\item Let $X$ ($Y$) be the $\Delta$-($\Gamma$-)lifting variables created in the previous step.
-		\item Prefix the resulting formula with an arrangement $\Q(C)$ of the elements of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
+			Denote the resulting formula by $\lifsym_\mathrm{part}(\LIpre(C))$.
+
+		\item 
+Let $\lifsym_\mathrm{part}^*(\LIpre(C))$ be 
+$\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which occurs free, is substituted by a fresh lifting variable $z_{t'}$.
+\label{lemma_part_renaming}
+
+		\item Let $X$ ($Y$) be the set of $\Delta$-($\Gamma$-)lifting variables which occur free in  
+			$\lifsym_\mathrm{part}^*(\LIpre(C))$.
+			Form an arrangement $\Q(C)$ of the elements of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
+			Finally let $\LI(C) \defeq Q(C) \lifsym_\mathrm{part}^*(\LIpre(C))$.
 			\qedhere
 	\end{enumerate}
 \end{defi}
@@ -160,17 +175,46 @@ We now define the lifted interpolant $\LI$. Note that its propositional structur
 %\section{Properties of $\LI$ and $\LIcl$}
 
 
-\mytodo{ possible outsourced lemmas from main lemma. try to give some motivation! }
-\begin{lemma}
-	If a variable $x$ occurs in $\LI(C)$ but not in $C$, then $x$ does not occur in the subsequent resolution derivation.
-\end{lemma}
+\mytodo{example showing that we can quantify locally}
 
-
-\begin{lemma}
-	If a ground term $t$ occurs in $\LI(C)$ but not in $C$, and a successor of $C$ contains $t$, then ``the second $t$ has been derived from first principles in a different way''.
-\end{lemma}
 
 \section{Main lemma}
+Note the the lifting conditions ensure that only terms are lifted,
+which do not exhibit a direct logical relation with any term in the remaining clause.
+More precisely, they do not influence the subsequent resolution derivation: 
+If a variable $x$ occurs in $\LI(C)$ but not in $C$, then as clauses are variable-disjoint, the variable $x$ does not occur in any other clause.
+For ground terms $r$ however which occur in $\LI(C)$ but not in $C$,
+it is possible for them to cooccur in a subsequent clause. Let $p$ be the occurrence of $r$ in $\LI(C)$ and $q$ the occurrence of $r$ in a successor-clause of $C$.
+Then due to the fact that $p$ is not used in any unification, 
+$q$ must be created or originate from other occurrences of the same function and/or constant symbols.
+Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant, but despite the syntactic equality between $p$ and $q$, there is no logical relation between them.
+
+We now show more formally that the lifting conditions ensure that if a term contains another term, the subterm is not lifted before the superterm:
+
+\begin{lemma}
+	\label{lemma:lifting_conditions}
+	Let $C$ be a clause of a resolution refutation such that $\lifdeltanovar{\LIpre(C)}$ contains a maximal colored $\Gamma$-term $t$ which is lifted in $\lifdeltanovar{\LI(C)}$.
+	Suppose furthermore that $t$ contains a $\Delta$-lifting variable $x_s$.
+	Then $x_s$ occurs free as a subterm of $t$ in $\lifdeltanovar{\LIpre(C)}$.
+\end{lemma}
+\begin{proof}
+	By the construction of $\LI$, the lemma is violated only if the term $s$ or a respective predecessor is lifted and bound due to fulfilling one of the lifting conditions.
+
+	For the sake of contradiction suppose that this is the case in the inference creating the clause $C'$.
+	Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
+
+	\begin{itemize}
+		\item Suppose that $s'$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C'$.
+			Then as $s'$ is a subterm of $t'$, $t'$ contains this variable as well and therefore is lifted in $\LI(C')$, contradicting the assumption.
+
+		\item Suppose that $s'$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C'$.
+			Then $t'$ does not occur in $C'$ either as any occurrence of $t'$ contains $s'$. 
+			Hence $t'$ is lifted in $\LI(C')$, contradicting the assumption.
+			\qedhere
+	\end{itemize}
+\end{proof}
+
+Now, we proceed to the main lemma:
 
 \begin{lemma}
 	\label{lemma:gamma_entails_delta_lifted_invariant}
@@ -362,12 +406,14 @@ We now define the lifted interpolant $\LI$. Note that its propositional structur
 
 	If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
 	Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ occurs free at $\lifdeltanovar{\LIpre(C)}\atp$.
-	Hence it is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed universal quantifier.  
+	The renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure
+	ensures that $x_t$ is a fresh lifting variable and hence is not bound by quantifiers introduced to to other occurrences of the term $t$, which would otherwise also be lifted by the same lifting variable and bound by the same quantifier.
+	Hence $x_t$ is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed universal quantifier. 
 
 	If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
-	Hence $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
+	Therefore $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
 	In general, $\lifdeltanovar{t}$ however contains $\Delta$-lifting variables, hence for $\lifdeltanovar{t}$ to be a valid witness term, these have to be bound such that the existential quantifier of $y_t$ is in their scope.
-	Note that occurrences of colored terms which are not maximal colored terms are not actually lifted in $\LI$.
+	Note that occurrences of colored terms which are not maximal colored terms are not lifted in $\LI$.
 
 	Let $x_s$ be a $\Delta$-lifting variable which occurs in $\lifdeltanovar{t}$. 
 	We show that $y_t$ is quantified in the scope of the quantification of $x_s$ by discussing the different possibilities for quantification of $x_s$:
@@ -385,35 +431,14 @@ We now define the lifted interpolant $\LI$. Note that its propositional structur
 
 
 		\item
-			It is furthermore essential to see that neither $s$ nor a respective predecessor is lifted in a previous step of the interpolant extraction.
-			Suppose to the contrary that this is the case in the inference creating the clause $C'$.
-			Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
-
-			\begin{itemize}
-				\item Suppose that $t$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
-					Then as $s'$ is a subterm of $t'$, $t'$ contains this variable as well and would therefore be lifted in $\LI(C')$.
-
-				\item Suppose that $t$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
-					Then $s'$ does not occur in $C'$. But as $t'$ contains $s'$, $t'$ also does not occur in $C'$ and would therefore be lifted in $\LI(C')$.
-					\qedhere
-			\end{itemize}
-
+			It is furthermore essential to see that neither $s$ nor a respective predecessor is lifted in a previous step of the interpolant extraction, which is shown by Lemma~\ref{lemma:lifting_conditions}.
+			\qedhere
 	\end{itemize}
 \end{proof}
 
-
-Note the the lifting conditions ensure that only terms are lifted,
-which do not exhibit a direct logical relation with any term in the remaining clause.
-More precisely, they do not influence the subsequent resolution derivation: 
-If a variable $x$ occurs in $\LI(C)$ but not in $C$, then as clauses are variable-disjoint, the variable $x$ does not occur in any other clause.
-For ground terms $r$ however which occur in $\LI(C)$ but not in $C$,
-it is possible for them to cooccur in a subsequent clause. Let $p$ be the occurrence of $r$ in $\LI(C)$ and $q$ the occurrence of $r$ in a successive clause of $C$.
-Then due to the fact that $p$ is not used in any unification, 
-$q$ must have been created or originated from other occurrences of the same function and/or constant symbols.
-Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant. 
-
-
 \section{Towards an interpolant}
+
+In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also show a symmetry-property for $\LI$:
 
 \begin{lemma}
 	\label{lemma:li_symmetry}
@@ -486,7 +511,8 @@ Note that the lifting conditions ensure that for these, the order of the quantif
 		\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Delta$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
 			Then $p$ in $\bhat E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $\bhat E\occatp{r} \lor \LI(\bhat E\occatp{r})$. 
 
-			\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
+			\hspace*{\dimexpr-\leftmargini-1em}\parbox{\linewidth}{%
+			%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
 				%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
 				\begin{align*}
 					%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
@@ -555,8 +581,7 @@ Note that the lifting conditions ensure that for these, the order of the quantif
 	We obtain by Lemma~\ref{lemma:gamma_entails_delta_lifted_invariant} that  $\Gamma \entails \liftnovar{\Delta}{\LI(\pi)}$ and
 	by Lemma~\ref{lemma:delta_entails_li} that
 	$\Delta \entails \lnot\lifgammanovar{\LI(\pi)}$.
-	As the empty clause derived in $\pi$ trivially contains neither variables nor ground terms, 
-	all colored terms are lifted in $\LI(\pi)$.
+	As the empty clause derived in $\pi$ trivially contains neither variables nor ground terms and as any colored term either contains variables or is ground, at least one lifting condition holds for any term in $\LIpre(\pi)$ and hence all colored terms are lifted in $\LI(\pi)$.
 	Therefore $\lifdeltanovar{\LI(\pi)} = \LI(\pi)$ and $\lifgammanovar{\LI(\pi)} = \LI(\pi)$.
 \end{proof}
 
