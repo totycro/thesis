@@ -52,6 +52,29 @@ First, we define a substitution which ensures that modifications to terms are al
 	If the inference $\inference$ is clear from the context, we abbreviate $\tau(\inference)$ by $\tau$. 
 \end{defi}
 
+\mytodo{need commutativity, but the easy version does not work out: ($\lifboth{t\sigma} = \lifboth{t}\mathrm{somesubst}$)}
+
+\mytodo{does work out but not for lifting variables} 
+
+\mytodo{possibly show where we need this exactly: in induction step where hypothesis is lifted.}
+
+
+\begin{exa}
+	Let $\inference$ be an inference with $\mgu(\inference) = \sigma = \{x \mapsto a\}$
+	and consider the terms $f(x)$ and $f(a)$, where $f$ and $a$ are colored symbols.
+	Clearly $f(x)\sigma = f(a)$ and therefore necessarily $z_{f(x)}\tau = z_{f(a)}$.
+
+	But now consider $z_{f(x)} \sigma$.
+	As $z_{f(x)}$ is a lifting variable, $z_{f(x)} \not\in \dom(\sigma)$ as $\sigma$ is a unifier from a resolution derivation inference.
+	Hence $z_{f(x)}\sigma = z_{f(x)}$ and therefore $\lifboth{z_{f(x)}\sigma} = \lifboth{z_{f(x)}} = z_{f(x)}$, but $\lifboth{z_{f(x)}}\tau = z_{f(x)}\tau = z_{f(a)}$.
+	So $\lifboth{z_{f(x)}\sigma} \neq \lifboth{z_{f(x)}}\tau$.
+
+	We see here that there are circumstances under which in order to commute lifting and substitution,
+	the substitution $\tau$ is required to conform to the equation
+	$z_{f(x)}\tau =\nolinebreak z_{f(a)}$,
+	whereas in others, it must hold that
+	$z_{f(x)}\tau = z_{f(x)}$.
+\end{exa}
 
 \begin{lemma}
 	\label{lemma:lifting_tau_commute}
@@ -92,6 +115,19 @@ First, we define a substitution which ensures that modifications to terms are al
 	\end{itemize}
 
 \end{proof}
+
+\addtocounter{exa}{-2}
+\begin{exa}[continued]
+	In the formulation as given in Lemma~\ref{lemma:lifting_tau_commute}, we observe the required property:
+	
+	$\lifboth{ \lifboth{ x} } \sigma = \lifboth{x \sigma}$
+
+	$\lifboth{ \lifboth{ z_{f(x)} } \sigma } = \lifboth{z_{f(x)} \sigma}$
+
+	\mytodo{elaborate, make connection to example above obvious}
+\end{exa}
+\addtocounter{exa}{1}
+
 
 \begin{lemma}
 	\label{lemma:substitute_and_lift}
@@ -261,7 +297,7 @@ Now, we proceed to the main lemma:
 		\item{} Resolution.
 			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
 
-			By the induction hypothesis we obtain that
+			By the induction hypothesis and Lemma~\ref{lemma:lift_commute} we obtain that
 			$\Gamma \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma} \lor \lifdeltanovar{l_\Gamma}$
 			as well as 
 			$\Gamma \entails \lifdeltanovar{\LI(C_2)} \lor \lifdeltanovar{E_\Gamma} \lor \lnot \lifdeltanovar{l'_\Gamma}$.
@@ -310,16 +346,12 @@ Now, we proceed to the main lemma:
 
 			\end{itemize}
 
-
-
-			%			Suppose that $s$ contains a variable which does not occur in $C$. Then $x_s$ is quantified in $\LI(C)$ as well.
-			%			As however the quantifier block of $\LI(C)$ is ordered with respect to the subterm relation of the index of the lifting variables, $x_s$ is quantified prior to $y_t$.
-
 		\item{} Factorisation. 
 			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
 
 			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ \LI(C_1) } \lor \lifdeltanovar{ l_\Gamma \lor l'_\Gamma \lor D_\Gamma }$.
-			By Lemma~\ref{lemma:substitute_and_lift}, we obtain
+			By Lemma~\ref{lemma:substitute_and_lift}
+			and Lemma~\ref{lemma:lifting_tau_commute}, we obtain
 			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l_\Gamma\tau \lor l'_\Gamma\tau \lor D_\Gamma\tau }$.
 			As however $l\sigma \equiv l'\sigma$, 
 			also $l\tau \equiv l'\tau$, so we can apply a factorisation step and obtain that

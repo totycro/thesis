@@ -16,9 +16,6 @@ For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$
 
 A term $s$ is a subterm of a term $t$ if $s$ occurs in $t$. $s$ is a strict subterm of $t$ if $s$ is a subterm of $t$ and $s \neq t$. The superterm relation is the inverse of the subterm relation.
 
-An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
-An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
-\todo{colors are only defined later}
 
 We denote $x_1, \ldots, x_n$ by $\bar x$.
 
@@ -36,8 +33,10 @@ to signify that $M$ entails the formula $\varphi$ where the free variable assign
 
 
 A substitution is a mapping of finitely many variables to terms.
-We define named substitutions $\sigma$ of a variable $x$ by a term $t$ in a set notation $\sigma = \{ x \mapsto t\}$ such that 
+We define named substitutions $\sigma$ of a variable $x$ by a term $t$ in a set-style notation $\sigma = \{ x \mapsto t\}$ such that 
 $\varphi\sigma$ denotes a formula or term $\varphi$ where each occurrence of the variable $x$ is replaced by the term $t$.
+This is done in a capture avoiding manner, i.e.\ if a variable $y$ occurs free in $t$ and $y$ is also bound in $\varphi$ such that a free occurrence of $x$ is in the scope of this quantifier, the bound variable is renamed by a fresh variable.
+
 Unnamed substitution applications are written as $\varphi\subst{x/t}$.
 A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
 
@@ -54,7 +53,7 @@ We refer to the set $\{x\sigma \mid x\in \dom(\sigma)\}$ as the range of sigma, 
 
 A term $s$ is an \defiemph{instance} of a term $t$ if there exists a substitution $\sigma$ such that $t\sigma = s$.
 If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note that the abstraction- and instance-relation are reflexive. 
-$s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$.
+$s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$. \mytodo{possibly drop ``proper'' if not used}
 
 \todo[inline]{misc}
 

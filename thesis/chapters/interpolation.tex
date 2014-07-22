@@ -74,9 +74,9 @@ As the notions of interpolation and reverse interpolation in this sense coincide
 \begin{remark}
 	In Lemma \ref{lemma:logically_equivalent_sets}, it is not sufficient to require that $\Gamma \semiff \Gamma'$ and $\Delta \semiff \Delta'$. 
 	Consider the example where
-	$\Gamma = \Delta = \{ \forall x (x=c)\}$
-	and 
-	$\Gamma' = \Delta' = \{ \forall x (x=d)\}$.
+	$\Gamma = \{ \forall x (x=c)\}$ and $\Delta = \lnot \Gamma$
+	as well as  
+	$\Gamma' = \{ \forall x (x=d)\}$ and $\Delta' = \lnot \Gamma'$.
 	Then even though $\Gamma$ and $\Gamma'$ as well as $\Delta$ and $\Delta'$ have the same models,
 	$\Lang(\Gamma) \cap \Lang(\Delta) = \{c\}$
 	whereas
@@ -86,17 +86,21 @@ As the notions of interpolation and reverse interpolation in this sense coincide
 
 In the context of interpolation, every non-logical symbol is assigned a color which indicates its origin(s). 
 \begin{defi}[Coloring]
+	\label{def:coloring}
 A non-logical symbol is said to be \defiemph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \defiemph{grey} in case it occurs in both $\Gamma$ and $\Delta$. A symbol is \defiemph{colored} if it is $\Gamma$- or $\Delta$-colored.
 A term is a \defiemph{$\Phi$-term} if its outermost symbol is $\Phi$-colored.
 
 A term $t$ is \defiemph{single-colored} if $t$ is $\Phi$-colored for some $\Phi$ and all colored symbols in $t$ are $\Phi$-colored.
-A term $t$ is \defiemph{multi-colored} if $t$ is $\Phi$-colored for some $\Phi$ and $t$ contains a term which is colored but not $\Phi$-colored.\todo{check if multi-colored is even used}
+A term $t$ is \defiemph{multi-colored} if $t$ is $\Phi$-colored for some $\Phi$ and $t$ contains a term which is colored but not $\Phi$-colored.\todo{check if multi-colored is even used}{}
 Note that a multi-colored $\Phi$-term consequently is a term whose outermost symbol is $\Phi$-colored and contains a colored but not $\Phi$-colored subterm.
 
-  An occurrence of a term $t$ is called \defiemph{$\Phi$-colored} if $t$ is contained in a maximal $\Phi$-colored term.
-	$t$ is called \defiemph{colored} if $t$ is of any color and \defiemph{grey} otherwise.
+An occurrence of $\Phi$-term is called \emph{maximal} if it does not occur as subterm of another $\Phi$-term.
+An occurrence of a colored term $t$ is a maximal colored term if it does not occur as subterm of another colored term.
 
-	A variable is a \defiemph{color-changing} variable if it occurs both in a single-colored $\Phi$-term and a single-colored $\Psi$-term in a given context.
+  An occurrence of a term $t$ is called \defiemph{$\Phi$-colored} if $t$ is contained in a maximal $\Phi$-colored term.
+	$t$ is called \defiemph{colored} if $t$ is of any color and \defiemph{grey} otherwise.\mytodo{probably remove this}
+
+	A variable is a \defiemph{color-changing} variable if it occurs both in a single-colored $\Phi$-term and a single-colored $\Psi$-term in a given context.\mytodo{probably remove color-changing}
 \end{defi}
 
 We sometimes use $\Phi$ and $\Psi$ as colors to emphasise that the reasoning at hand is valid irrespective of the actual color assignment and solely assuming that $\Phi \neq \Psi$. 

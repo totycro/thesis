@@ -555,17 +555,17 @@ We consider the following example, which illustrates that the definition of the 
 				\AxiomCm{{  R(u) \lor  Q(h(u)) \mid \top}}
 
 				%\RightLabelm{u\mapsto g(t)}
-				\RightLabelm{\lkrule{\resruleres}{u\mapsto g(d)}}
+				\RightLabelm{\resrule{\resruleres}{u\mapsto g(d)}}
 				%\RightLabelm{\resruleres}
 				\BinaryInfCm{ \lnot R(g(d)) \mid  Q(h(g(d))) }
 
 				\AxiomCm{{P(x) \lor \lnot Q(x)}}
 
-				\RightLabelm{\lkrule{\resruleres}{x \mapsto h(g(d))}}
+				\RightLabelm{\resrule{\resruleres}{x \mapsto h(g(d))}}
 				\BinaryInfCm{ {\lnot R(g(d)) \land \lnot Q(h(g(d)))}\mid P(h(g(d))) }
 
 				\AxiomCm{{c=d}}
-				\RightLabelm{\lkruleremark{\resrulepar}{\id}{\markC}}
+				\RightLabelm{\resruleremark{\resrulepar}{\id}{\markC}}
 				\BinaryInfCm{ (c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \lor (c\neq d \land g(c) = g(d))   \mid P(h(g(c))) }
 
 			\end{prooftree}
@@ -576,12 +576,12 @@ We consider the following example, which illustrates that the definition of the 
 				\AxiomCm{{ \lnot S(g(c))}}
 				\AxiomCm{{  S(v) \lor \lnot Q(h(v)) }} 
 
-				\RightLabelm{\lkrule{\resruleres}{v \mapsto g(c)}}
+				\RightLabelm{\resrule{\resruleres}{v \mapsto g(c)}}
 				\BinaryInfCm{ \lnot S(g(c)) \mid \lnot Q(h(g(c))) }
 
 				\AxiomCm{{\lnot P(y) \lor Q(y)}}
 
-				\RightLabelm{\lkrule{\resruleres}{y \mapsto h(g(c))}}
+				\RightLabelm{\resrule{\resruleres}{y \mapsto h(g(c))}}
 				\BinaryInfCm{ {\lnot S(g(c)) \land Q(h(g(c)))} \mid \lnot P(h(g(c))) }
 
 

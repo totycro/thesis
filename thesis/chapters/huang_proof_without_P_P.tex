@@ -77,7 +77,22 @@ We define a procedure $\PI$, which produces propositional interpolants from reso
 	\end{itemize}
 \end{defi}
 
+\begin{remark}
+	The control flow of the procedure $\PI$ is mainly determined by the coloring of literals.
+	In this context, two distinct but similar interpretation of the notion of color are viable: 
+	On the one hand, one can employ the usual, symbol-based interpretation as given in Definition~\ref{def:coloring}, where a (predicate) symbol is considered grey if there are any formulas in $\Gamma$ as well as $\Delta$ which contain the symbol. 
+	Note that this does not necessarily capture the logical function of the symbol, as the symbol then is allowed to occur in the interpolant if in the resolution refutation, only formulas from say $\Gamma$ contain the symbol.
+	It is obvious that one can then also find an interpolant which does not contain the symbol by computing an interpolant for $\Gamma'$ and $\Delta$, where $\Gamma'$ is derived from $\Gamma$ by omitting any formula containing the symbol. 
+	Clearly the refutation of $\Gamma \cup \Delta$ is also a refutation of $\Gamma' \cup \Delta$.
 
+	However in \cite{Huang95}, a stricter notion is utilised.
+	Here, a predicate symbol is colored based on its occurrence:
+	All occurrences of predicate symbols in formulas in $\Gamma$ ($\Delta$) are considered to be $\Gamma$-($\Delta$)-colored.
+	A predicate symbol occurring in the resolution derivation is $\Phi$-colored if its corresponding predecessor is.
+	Factorisation inferences may create grey literals if the factorised literals are respectively $\Gamma$- and $\Delta$-colored.
+
+	The definition above can be understood in this sense by reading conditions on the coloring of a resolved or factorised literals $l$ as being true if they apply to \emph{both} resolved or factorised literals $l$ and $l'$.
+\end{remark}
 
 
 \section{Lifting of colored symbols}
@@ -128,7 +143,7 @@ Some elementary properties of liftings are described by the following lemmas:
 	\end{enumerate}
 \end{lemma}
 
-For the proof, we also require a means of commuting substitutions and liftings.
+For the proof, we also require a means for commuting substitutions and liftings.
 This however can not be achieved in a direct manner. The following examples illustrate
 that in general for a term $t$, it is not the case that
 $
@@ -182,7 +197,7 @@ $.
 \begin{proof}
 	As substitutions and liftings only affect the terms of a clause, it suffices to  show that 
 	$\lifphi{t\sigma} = \lifphi{t}\sigma'$ for for a term $t$ in $C$.
-	More precisely, only variables of $\dom(\sigma)$ and maximal $\Delta$-terms are affected. 
+	More precisely, only variables of $\dom(\sigma)$ and maximal $\Phi$-terms are affected. 
 	We show that for terms $t$ of either kind that
 	$ \lifphi{ t \sigma } = \lifphi{ t } \sigma'$ holds, which proves the lemma.
 
@@ -267,10 +282,10 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 %The remaining part of his proof after this lemma does not use the restriction to propositional deductions and hence goes through.
 
 \begin{lemma}
+	\label{lemma:gamma_entails_lifted_interpolant}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	Then for a clause $C$ in $\pi$,
 	$ \Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C} $.
-	\label{lemma:gamma_entails_lifted_interpolant}
 \end{lemma}
 
 \begin{proof}
@@ -300,11 +315,12 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 
 			We proceed by a case distinction on the color of $l$:
 			\begin{enumerate}
-				\item $l$ is $\Gamma$-colored. Then $\PI(C) = [\PI(C_1) \lor \PI(C_2)]\sigma$.
+				\item $l$ is $\Gamma$-colored. Then $\PI(C) = [\PI(C_1\label{aou5jklah}) \lor \PI(C_2)]\sigma$.
+					\label{aou5jklah}
 
 					Since $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and therefore $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
 					As by Lemma~\ref{lemma:lif} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
-					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.\label{aou5jklah}
+					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
 					Hence by applying $\sigma'$ to \markA{} and \markB{} (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and obtain
 					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma} \sigma' \spas\lor \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma} \sigma'$.
 					Now we apply Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute} in the other direction 
@@ -486,8 +502,8 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 					\begin{align*}
 						\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
 													&\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
-													 &= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
-														&= \lnot \PI(\primex C)  
+													&= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
+													 &= \lnot \PI(\primex C)  
 					\end{align*}
 				\item $l$ is $\Delta$-colored. This case can be argued analogously.
 
@@ -498,8 +514,8 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 						\PI(C) 
 						&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
 					 &=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
-					&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
-				 &\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
+					 &\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
+					&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
 				 &= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
 				 &= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
 				 &= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
@@ -520,10 +536,10 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-											&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-									 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-								 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-							 &= \lnot \PI(\primex C)
+												&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+										 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+									 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+								 &= \lnot \PI(\primex C)
 					\end{align*}
 
 				\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
@@ -531,10 +547,10 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 				\item Otherwise:
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
-												&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
-											&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
-										&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
-									 &= \lnot \PI(\primex C)
+												 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
+												&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
+											&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
+										&= \lnot \PI(\primex C)
 						\qedhere
 					\end{align*}
 			\end{enumerate}
@@ -645,7 +661,6 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	\lft{\Delta}{x}{ \lft{\Gamma}{y}{ \varphi }  }$.
 	%\label{lemma:naming_of_colored_variables}
 	\label{lemma:lifting_order_not_relevant}
-
 \end{lemma}
 \begin{proof}
 	Let $\varphi$ be a multi-colored term as otherwise we are done.
@@ -657,20 +672,19 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	On the other hand
 	$\lft{\Gamma}{y}{ \lft{\Delta}{x}{ \varphi}  } = \lft{\Gamma}{y}{ \psi }$ such that $\psi$ is equal to $\varphi$ besides having $x_t$ at position $p$.
 	But $\lft{\Gamma}{y}{ \psi } = y_{\expa(\psi)} = y_\varphi$.
-	\begin{comment}
-
-		Suppose a term $t$ in $C$ is affected by a lifting.
-		We only need to consider maximal colored terms as grey terms are not affected by the liftings.
-		Without loss of generality let $t$ be a maximal $\Delta$-colored term.
-
-		Let $\Phi$ be the positions of maximal occurrences of $t$.
-		Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
-
-		In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
-		However after this step,
-		all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
-		Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
-	\end{comment}
+%	\begin{comment}
+%		Suppose a term $t$ in $C$ is affected by a lifting.
+%		We only need to consider maximal colored terms as grey terms are not affected by the liftings.
+%		Without loss of generality let $t$ be a maximal $\Delta$-colored term.
+%
+%		Let $\Phi$ be the positions of maximal occurrences of $t$.
+%		Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
+%
+%		In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
+%		However after this step,
+%		all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
+%		Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
+%	\end{comment}
 \end{proof}
 
 
@@ -717,5 +731,111 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	The proof of the theorem above however shows that both of these approaches are equally valid, but clearly the subterm-based ordering in general allows for more permutations than the length-based ordering. 
 \end{remark}
 
+We conclude by presenting the algorithm on an a larger instance:
 
+\begin{exa}
+	Let $\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot P(w) \lor \lnot P(f(w)) \}$
+	and 
+	$\Delta = \{ P(d), \lnot P(z) \lor \lnot L(z, u) \}$.
+
+	{ \footnotesize
+
+		\begin{prooftree}
+			\AxiomCm{ G(x, y) \lor L(x, y) \lor x = y }
+			\AxiomCm{ \lnot P(z) \lor \lnot  L(z, u) }
+			\BinaryInfCm{  G(x, y) \lor x=y \lor \lnot P(x) }
+
+			\AxiomCm{ \lnot P(w) \lor \lnot P(f(w)) }
+			\AxiomCm{ P(d)}
+			\BinaryInfCm{ \lnot P(f(d)) }
+
+			\BinaryInfCm{ G(x, f(d)) \lor \lnot P(x) \lor \lnot P(y) }
+			\UnaryInfCm{ G(x, f(d)) \lor \lnot P(x)  }
+
+			\AxiomCm{ \lnot G(v, f(v)) }
+
+			\BinaryInfCm{  \lnot P(d)  }
+
+			\AxiomCm{ P(d) }
+
+			\BinaryInfCm{  \square }
+		\end{prooftree}
+
+		\begin{prooftree}
+			\AxiomCm{ \bot}
+			\AxiomCm{ \top }
+			\BinaryInfCm{  L(x, y) \markC }
+
+			\AxiomCm{ \bot}
+			\AxiomCm{ \top }
+			\BinaryInfCm{ \lnot P(d) }
+
+			\BinaryInfCm{ (x = f(d) \land \lnot P(f(d)) ) \lor (x \neq f(d) \land L(x, f(d))) }
+			\UnaryInfCm{  (x = f(d) \land \lnot P(f(d)) ) \lor (x \neq f(d) \land L(x, f(d))) }
+
+			\AxiomCm{ \bot }
+
+			\BinaryInfCm{  (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) }
+
+			\AxiomCm{ \top  }
+
+			\BinaryInfCm{ \lnot P(d) \lor  \big( (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) \big)}
+		\end{prooftree}
+
+		$ \lnot P(d) \lor  \big( (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) \big)$
+
+		~
+
+		$ \lnot P(d) \lor  (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) $
+
+		~
+
+		$ \lnot P(d) \lor  (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) $
+
+		~
+
+		$ \forall x_d \exists y_{f(d)} ( \lnot P(x_d) \lor  (x_d = y_{f(d)} \land \lnot P(y_{f(d)}) ) \lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) )$
+
+		~
+
+		neg:
+
+		$ \exists x_d \forall y_{f(d)} ( P(x_d) \land  (x_d \neq y_{f(d)} \lor P(y_{f(d)}) ) \land (x_d = y_{f(d)} \lor \lnot L(x_d, y_{f(d)})) )$
+
+
+		~
+
+		~
+
+
+		\begin{prooftree}
+
+
+			\AxiomCm{ G(x, y) \lor L(x, y) \lor x = y \mid \bot }
+			\AxiomCm{ \lnot P(z) \lor \lnot  L(z, u) \mid \top}
+			\BinaryInfCm{  G(x, y) \lor x=y \lor \lnot P(x) \mid (L(x,y) \land \top) \lor (\lnot L(x,y) \land \bot)}
+			\noLine
+			\UnaryInfCm{  G(x, y) \lor x=y \lor \lnot P(x) \mid L(x,y)}
+
+			\AxiomCm{ \lnot P(w) \lor \lnot P(f(w)) \mid \bot }
+			\AxiomCm{ P(d)\mid \top}
+			\BinaryInfCm{ \lnot P(f(d)) \mid P(d) \markC  \hl{error}}
+
+			\BinaryInfCm{ G(x, f(d)) \lor \lnot P(x) \lor \lnot P(y) \mid (x=f(d) \land P(d)) \lor (x\neq f(d) \land L(x, f(d))) }
+			\UnaryInfCm{ G(x, f(d)) \lor \lnot P(x)  \mid (x=f(d) \land P(d)) \lor (x\neq f(d) \land L(x, f(d))) }
+
+			\AxiomCm{ \lnot G(v, f(v)) \mid \bot}
+
+			\BinaryInfCm{  \lnot P(d)  \mid (d=f(d) \land P(d)) \lor (d\neq f(d) \land L(d, f(d))) \markC }
+
+			\AxiomCm{ P(d) \mid \bot }
+
+			\BinaryInfCm{  \square \mid P(d) \land (  (d=f(d) \land P(d)) \lor (d\neq f(d) \land L(d, f(d))) ) \markC }
+
+
+
+		\end{prooftree}
+
+	}
+\end{exa}
 
