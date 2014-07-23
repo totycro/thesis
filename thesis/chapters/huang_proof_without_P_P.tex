@@ -731,113 +731,125 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	The proof of the theorem above however shows that both of these approaches are equally valid, but clearly the subterm-based ordering in general allows for more permutations than the length-based ordering. 
 \end{remark}
 
-We conclude by presenting the algorithm on an a larger instance:
+We conclude by presenting the algorithm on an a larger instance: 
 
 \begin{exa}
-	\mytodo{fix notation below: $ C | \PI(C)$}
-
-	Let $\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot P(w) \lor \lnot P(f(w)) \}$
+	Let $\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot Z(w) \lor \lnot Z(f(w)) \}$
 	and 
-	$\Delta = \{ P(d), \lnot P(z) \lor \lnot L(z, u) \}$.
+	$\Delta = \{ Z(d), \lnot Z(z) \lor \lnot L(z, u) \}$.
+
+	We use the following resolution refutation $\pi$ for the extraction of the interpolant:
 
 	{ \footnotesize
 
-		\begin{prooftree}
-			\AxiomCm{ G(x, y) \lor L(x, y) \lor x = y }
-			\AxiomCm{ \lnot P(z) \lor \lnot  L(z, u) }
-			\BinaryInfCm{  G(x, y) \lor x=y \lor \lnot P(x) }
+		~
 
-			\AxiomCm{ \lnot P(w) \lor \lnot P(f(w)) }
-			\AxiomCm{ P(d)}
-			\BinaryInfCm{ \lnot P(f(d)) }
 
-			\BinaryInfCm{ G(x, f(d)) \lor \lnot P(x) \lor \lnot P(y) }
-			\UnaryInfCm{ G(x, f(d)) \lor \lnot P(x)  }
+		\begin{adjustwidth}{-4em}{0em}
+			\def\defaultHypSeparation{\hskip 1.4em}
+			\def\ScoreOverhang{-0em}
+			\begin{prooftree}
 
-			\AxiomCm{ \lnot G(v, f(v)) }
+				\AxiomCm{ G(x, y) \lor L(x, y) \lor x = y }
+				\AxiomCm{ \lnot Z(z) \lor \lnot  L(z, u) }
+				\RightLabelm{\resrule{\resruleres}{z \mapsto x}}
+				\BinaryInfCm{  G(x, y) \lor x=y \lor \lnot Z(x) }
 
-			\BinaryInfCm{  \lnot P(d)  }
+				\AxiomCm{ \lnot Z(w) \lor \lnot Z(f(w)) }
+				\AxiomCm{ Z(d)}
+				\RightLabelm{\resrule{\resruleres}{w \mapsto d}}
+				\BinaryInfCm{ \lnot Z(f(d)) }
 
-			\AxiomCm{ P(d) }
+				\RightLabelm{\resrule{\resrulepar}{y\mapsto f(d)}}
+				\BinaryInfCm{ G(x, f(d)) \lor \lnot Z(x) \lor \lnot Z(x) }
+				\RightLabelm{\resrule{\resrulefac}{\id}}
+				\UnaryInfCm{ G(x, f(d)) \lor \lnot Z(x)  }
 
-			\BinaryInfCm{  \square }
-		\end{prooftree}
+				\AxiomCm{ \lnot G(v, f(v)) }
 
+				\RightLabelm{\resrule{\resruleres}{v\mapsto d,\, x\mapsto d}}
+				\BinaryInfCm{  \lnot Z(d)  }
+
+				\AxiomCm{ Z(d) }
+
+				\RightLabelm{\resrule{\resruleres}{\id}}
+				\BinaryInfCm{  \square }
+			\end{prooftree}
+		\end{adjustwidth}
+		~
+
+		~
+	}
+
+	In the following tree, we show the propositional interpolant $\PI(C)$ for the corresponding clauses $C$ (in simplified form):
+	{
+			\def\defaultHypSeparation{\hskip 4.4em}
 		\begin{prooftree}
 			\AxiomCm{ \bot}
 			\AxiomCm{ \top }
-			\BinaryInfCm{  L(x, y) \markC }
+			\BinaryInfCm{  L(x, y) }
 
 			\AxiomCm{ \bot}
 			\AxiomCm{ \top }
-			\BinaryInfCm{ \lnot P(d) }
+			\BinaryInfCm{ \lnot Z(d) }
 
-			\BinaryInfCm{ (x = f(d) \land \lnot P(f(d)) ) \lor (x \neq f(d) \land L(x, f(d))) }
-			\UnaryInfCm{  (x = f(d) \land \lnot P(f(d)) ) \lor (x \neq f(d) \land L(x, f(d))) }
+			\BinaryInfCm{ (x = f(d) \land \lnot Z(f(d)) ) \lor (x \neq f(d) \land L(x, f(d))) }
+			\UnaryInfCm{  (x = f(d) \land \lnot Z(f(d)) ) \lor (x \neq f(d) \land L(x, f(d))) }
 
 			\AxiomCm{ \bot }
 
-			\BinaryInfCm{  (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) }
+			\BinaryInfCm{  (d = f(d) \land \lnot Z(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) }
 
 			\AxiomCm{ \top  }
 
-			\BinaryInfCm{ \lnot P(d) \lor  \big( (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) \big)}
+			\BinaryInfCm{ \lnot Z(d) \lor  \big( (d = f(d) \land \lnot Z(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) \big)}
 		\end{prooftree}
+	}
+	
 
-		$ \lnot P(d) \lor  \big( (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) \big)$
+	\noindent
+	Hence
+	\[\PI(\pi) \spal=  \lnot Z(d) \spam\lor  (d = f(d) \land \lnot Z(f(d)) ) \spam\lor (d \neq f(d) \land L(d, f(d))) \]
+	and lifting and quantification gives the final interpolant
+	\[ \forall x_d \exists y_{f(d)} \big( \lnot Z(x_d) \spam\lor  (x_d = y_{f(d)} \land \lnot Z(y_{f(d)}) ) \spam\lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) \big)\]
+	\qedhere
 
-		~
-
-		$ \lnot P(d) \lor  (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) $
-
-		~
-
-		$ \lnot P(d) \lor  (d = f(d) \land \lnot P(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) $
-
-		~
-
-		$ \forall x_d \exists y_{f(d)} ( \lnot P(x_d) \lor  (x_d = y_{f(d)} \land \lnot P(y_{f(d)}) ) \lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) )$
-
-		~
-
-		neg:
-
-		$ \exists x_d \forall y_{f(d)} ( P(x_d) \land  (x_d \neq y_{f(d)} \lor P(y_{f(d)}) ) \land (x_d = y_{f(d)} \lor \lnot L(x_d, y_{f(d)})) )$
+		%neg:
+		%$ \exists x_d \forall y_{f(d)} ( Z(x_d) \land  (x_d \neq y_{f(d)} \lor Z(y_{f(d)}) ) \land (x_d = y_{f(d)} \lor \lnot L(x_d, y_{f(d)})) )$
 
 
-		~
-
-		~
 
 
+		\begin{comment}
 		\begin{prooftree}
 
 
 			\AxiomCm{ G(x, y) \lor L(x, y) \lor x = y \mid \bot }
-			\AxiomCm{ \lnot P(z) \lor \lnot  L(z, u) \mid \top}
-			\BinaryInfCm{  G(x, y) \lor x=y \lor \lnot P(x) \mid (L(x,y) \land \top) \lor (\lnot L(x,y) \land \bot)}
+			\AxiomCm{ \lnot Z(z) \lor \lnot  L(z, u) \mid \top}
+			\BinaryInfCm{  G(x, y) \lor x=y \lor \lnot Z(x) \mid (L(x,y) \land \top) \lor (\lnot L(x,y) \land \bot)}
 			\noLine
-			\UnaryInfCm{  G(x, y) \lor x=y \lor \lnot P(x) \mid L(x,y)}
+			\UnaryInfCm{  G(x, y) \lor x=y \lor \lnot Z(x) \mid L(x,y)}
 
-			\AxiomCm{ \lnot P(w) \lor \lnot P(f(w)) \mid \bot }
-			\AxiomCm{ P(d)\mid \top}
-			\BinaryInfCm{ \lnot P(f(d)) \mid P(d) \markC  \hl{error}}
+			\AxiomCm{ \lnot Z(w) \lor \lnot Z(f(w)) \mid \bot }
+			\AxiomCm{ Z(d)\mid \top}
+			\BinaryInfCm{ \lnot Z(f(d)) \mid Z(d) \markC  \hl{error}}
 
-			\BinaryInfCm{ G(x, f(d)) \lor \lnot P(x) \lor \lnot P(y) \mid (x=f(d) \land P(d)) \lor (x\neq f(d) \land L(x, f(d))) }
-			\UnaryInfCm{ G(x, f(d)) \lor \lnot P(x)  \mid (x=f(d) \land P(d)) \lor (x\neq f(d) \land L(x, f(d))) }
+			\BinaryInfCm{ G(x, f(d)) \lor \lnot Z(x) \lor \lnot Z(y) \mid (x=f(d) \land Z(d)) \lor (x\neq f(d) \land L(x, f(d))) }
+			\UnaryInfCm{ G(x, f(d)) \lor \lnot Z(x)  \mid (x=f(d) \land Z(d)) \lor (x\neq f(d) \land L(x, f(d))) }
 
 			\AxiomCm{ \lnot G(v, f(v)) \mid \bot}
 
-			\BinaryInfCm{  \lnot P(d)  \mid (d=f(d) \land P(d)) \lor (d\neq f(d) \land L(d, f(d))) \markC }
+			\BinaryInfCm{  \lnot Z(d)  \mid (d=f(d) \land Z(d)) \lor (d\neq f(d) \land L(d, f(d))) \markC }
 
-			\AxiomCm{ P(d) \mid \bot }
+			\AxiomCm{ Z(d) \mid \bot }
 
-			\BinaryInfCm{  \square \mid P(d) \land (  (d=f(d) \land P(d)) \lor (d\neq f(d) \land L(d, f(d))) ) \markC }
+			\BinaryInfCm{  \square \mid Z(d) \land (  (d=f(d) \land Z(d)) \lor (d\neq f(d) \land L(d, f(d))) ) \markC }
 
 
 
 		\end{prooftree}
+		\end{comment}
 
-	}
+	
 \end{exa}
 

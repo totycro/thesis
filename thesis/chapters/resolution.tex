@@ -1,9 +1,45 @@
 
 
 \section{Resolution}
+\label{sec:resolution}
 
 Resolution calculus, in the formulation as given here, is a sound and complete calculus for first-order logic with equality.
 Due to the simplicity of its rules, it is widely used in the area of automated deduction.
+
+\subsection{Unification}
+
+We first specify the unification algorithm which is vital for resolution calculus.
+
+Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable to signify that the $\mgu$ of the given arguments is not defined. We treat constants as $0$-ary functions.
+Let $s$ and $t$ denote terms and $x$ a variable.
+
+The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
+
+
+The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
+
+\noindent
+$
+\mgu(\emptyset) \defeq \id
+$
+
+\newcommand{\aatahfdgasdfg}{.4\textwidth}
+\noindent
+$
+\mbox{$\mgu(\{t\} \cup T)$} \defeq
+%\mgu(\{t\} \cup T) =$
+\begin{cases}
+	\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
+	\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
+	\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
+	\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
+	\mgu(T) 							& \text{if $t=(s, s)$} \\
+\end{cases}
+$
+
+
+\subsection{Definition of the calculus}
+
 
 \begin{defi}
 	A \defiemph{clause} is a finite set of literals. The empty clause will be denoted by $\square$.
@@ -48,12 +84,12 @@ Clauses will usually be denoted by $C$, $D$ or $E$, literals by $l$, $l'$ or $\l
 \end{figure}
 
 \begin{samepage}
-\begin{thm}
-	A clause set $\Gamma$ is unsatisfiable if and only if there is resolution refutation of $\Gamma$.
-\end{thm}
-\begin{proof}
-	See \cite{Rob65}.
-\end{proof}
+	\begin{thm}
+		A clause set $\Gamma$ is unsatisfiable if and only if there is resolution refutation of $\Gamma$.
+	\end{thm}
+	\begin{proof}
+		See \cite{Rob65}.
+	\end{proof}
 \end{samepage}
 
 
@@ -64,27 +100,28 @@ Clauses will usually be denoted by $C$, $D$ or $E$, literals by $l$, $l'$ or $\l
 
 The following lemma shows that the restriction to tree refutations does not restrict the calculus given that we allow multisets as initial clause sets.
 \begin{lemma}
-  \label{lemma:bin_tree_deduction}
-  Every resolution refutation can be transformed into a tree refutation.
+	\label{lemma:bin_tree_deduction}
+	Every resolution refutation can be transformed into a tree refutation.
 \end{lemma}
 \begin{proof}
-  Let $\pi$ be a resolution refutation of a set of clauses $\Phi$.
-  We show that $\pi$ can be transformed into a tree refutation by induction on the number of clauses that are used multiple times.
+	Let $\pi$ be a resolution refutation of a set of clauses $\Phi$.
+	We show that $\pi$ can be transformed into a tree refutation by induction on the number of clauses that are used multiple times.
 
-  Suppose that no clause is used more than once in $\pi$. Then $\pi$ is a tree refutation.
+	Suppose that no clause is used more than once in $\pi$. Then $\pi$ is a tree refutation.
 
-  Otherwise let $\Psi$ be the set of clauses which is used multiple times.
-  Let $C \in \Psi$ be such that no clause $D \in \Psi$ is used in the derivation leading to $C$.
-  Let $\chi$ be the derivation leading to $C$.
+	Otherwise let $\Psi$ be the set of clauses which is used multiple times.
+	Let $C \in \Psi$ be such that no clause $D \in \Psi$ is used in the derivation leading to $C$.
+	Let $\chi$ be the derivation leading to $C$.
 
-  Suppose $C$ is used $m$ times.
-  We create another resolution refutation $\pi'$ from $\pi$ which contains $m$ copies of $\chi$ and replaces the $i$th use of the clause $C$ by the final clause of the $i$th copy of $\chi$, $1 \varleq i \varleq m$.
-  In order to ensure that the sets of variables of the input clauses are disjoint, we rename the variables in each copy of $\chi$ and adapt $\pi'$ accordingly.
-  Hence $\pi'$ is a resolution refutation of $\Phi$ where $m-1$ clauses are used more than once.
+	Suppose $C$ is used $m$ times.
+	We create another resolution refutation $\pi'$ from $\pi$ which contains $m$ copies of $\chi$ and replaces the $i$th use of the clause $C$ by the final clause of the $i$th copy of $\chi$, $1 \varleq i \varleq m$.
+	In order to ensure that the sets of variables of the input clauses are disjoint, we rename the variables in each copy of $\chi$ and adapt $\pi'$ accordingly.
+	Hence $\pi'$ is a resolution refutation of $\Phi$ where $m-1$ clauses are used more than once.
 \end{proof}
 
 
 \section{Resolution and Interpolation}
+\label{sec:resolution_and_interpolation}
 
 
 In order to apply resolution to arbitrary first-order formulas, they have to be converted to clauses first.
@@ -99,9 +136,9 @@ In this context, the conjuncts of a CNF-formula are interpreted as clauses.
 A well-established procedure for the translation to CNF is comprised of the following steps:
 
 \begin{enumerate}
-		\item NNF-Transformation \label{step_nnf_trans}
-		\item Skolemisation \label{step_skolem_trans}
-		\item CNF-Transformation \label{step_cnf_trans}
+	\item NNF-Transformation \label{step_nnf_trans}
+	\item Skolemisation \label{step_skolem_trans}
+	\item CNF-Transformation \label{step_cnf_trans}
 \end{enumerate}
 
 Step \ref{step_nnf_trans} can be achieved by solely pushing the negation inwards.
@@ -167,33 +204,33 @@ In the following, we use the notational convention that $\{\bar y\} \cup \{\bar 
 \begin{defi}
 	For every occurrence of a subformula $B$ of a formula $A$ without existential quantifiers, introduce a new atom $L_B(\bar x)$, where $\bar x$ are the free variables occurring in $B$.
 	This atom acts as a label for the subformula. 
-For each of them, create a defining clause $D_B$:
+	For each of them, create a defining clause $D_B$:
 
-\begin{itemize}
-	\item[If $B$ is atomic:]~
+	\begin{itemize}
+		\item[If $B$ is atomic:]~
 
-		$D_B\equiv \forall \bar x \big(\lnot B \lor L_B(\bar x)\big) \land \forall \bar x \big(B \lor \lnot L_B(\bar x)\big)  $
-	\item[If $B$ is of the form $\lnot G$:]~
+			$D_B\equiv \forall \bar x \big(\lnot B \lor L_B(\bar x)\big) \land \forall \bar x \big(B \lor \lnot L_B(\bar x)\big)  $
+		\item[If $B$ is of the form $\lnot G$:]~
 
-		$D_B\equiv \forall \bar x \big(L_B(\bar x) \lor L_G(\bar x)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor \lnot L_G(\bar x)\big)$
-	\item[If $B$ is of the form $G \land H$:]~
+			$D_B\equiv \forall \bar x \big(L_B(\bar x) \lor L_G(\bar x)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor \lnot L_G(\bar x)\big)$
+		\item[If $B$ is of the form $G \land H$:]~
 
-		$D_B\equiv \forall \bar x \big(\lnot L_B(\bar x) \lor L_G(\bar y)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor L_H(\bar z)\big) \land \forall \bar x \big(L_B(\bar x) \lor \lnot L_G(\bar y) \lor \lnot L_H(\bar z)\big)  $
-	\item[If $B$ is of the form $G \lor H$:]~
+			$D_B\equiv \forall \bar x \big(\lnot L_B(\bar x) \lor L_G(\bar y)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor L_H(\bar z)\big) \land \forall \bar x \big(L_B(\bar x) \lor \lnot L_G(\bar y) \lor \lnot L_H(\bar z)\big)  $
+		\item[If $B$ is of the form $G \lor H$:]~
 
-		$D_B\equiv \forall \bar x \big(L_B(\bar x) \lor \lnot L_G(\bar y)\big) \land \forall \bar x \big(L_B(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor L_G(\bar y) \lor L_H(\bar z)\big)$
-	\item[If $B$ is of the form $G \limpl H$:]~
+			$D_B\equiv \forall \bar x \big(L_B(\bar x) \lor \lnot L_G(\bar y)\big) \land \forall \bar x \big(L_B(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor L_G(\bar y) \lor L_H(\bar z)\big)$
+		\item[If $B$ is of the form $G \limpl H$:]~
 
-		$D_B\equiv \forall \bar x \big(L_B(\bar x) \lor L_G(\bar y)\big) \land
-		\forall \bar x \big(L_B(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  $
-	\item[If $B$ is of the form $\forall x G$:]~
+			$D_B\equiv \forall \bar x \big(L_B(\bar x) \lor L_G(\bar y)\big) \land
+			\forall \bar x \big(L_B(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_B(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  $
+		\item[If $B$ is of the form $\forall x G$:]~
 
-		$D_B\equiv \forall \bar x \forall x \big(\lnot L_B(\bar x) \lor L_G(\bar x, x)\big) \land \forall \bar x \forall x \big(L_B(\bar x) \lor \lnot L_G(\bar x, x)\big)$
-\end{itemize}
+			$D_B\equiv \forall \bar x \forall x \big(\lnot L_B(\bar x) \lor L_G(\bar x, x)\big) \land \forall \bar x \forall x \big(L_B(\bar x) \lor \lnot L_G(\bar x, x)\big)$
+	\end{itemize}
 
-Let $\subformdefinitional{A}$ be defined as $\bigwedge_{B \in \Sigma(A)} D_B$ and
-\defiemph{$\delta(A)$} as $\subformdefinitional{A} \land \forall \bar x L_A(\bar x)$, where $\Sigma(A)$ denotes the set of occurrences of subformulas of $A$.
-For a set of formulas without existential quantifiers $\Phi$, let \defiemph{$\delta(\Phi) = \{ \delta(B) \mid B \in \Phi\}$}.
+	Let $\subformdefinitional{A}$ be defined as $\bigwedge_{B \in \Sigma(A)} D_B$ and
+	\defiemph{$\delta(A)$} as $\subformdefinitional{A} \land \forall \bar x L_A(\bar x)$, where $\Sigma(A)$ denotes the set of occurrences of subformulas of $A$.
+	For a set of formulas without existential quantifiers $\Phi$, let \defiemph{$\delta(\Phi) = \{ \delta(B) \mid B \in \Phi\}$}.
 \end{defi}
 
 Note that each of the $D_B$ is in CNF, hence also $\delta(A)$ for any formula $A$ without existential quantifiers.
@@ -252,7 +289,7 @@ We continue by working out the logical relations of formulas and their image und
 \end{proof}
 
 %\begin{defi}
-	%For a model $M$ in the language $\Lang(A)$ for a formula $A$, we define $\delta(M)$ to be the extension of $M$ to the language $\Lang(\delta(A))$ by setting $\delta(M) \entails L_B(\bar x)$ if and only if $M \entails B$ for $B\in\Sigma(A)$.
+%For a model $M$ in the language $\Lang(A)$ for a formula $A$, we define $\delta(M)$ to be the extension of $M$ to the language $\Lang(\delta(A))$ by setting $\delta(M) \entails L_B(\bar x)$ if and only if $M \entails B$ for $B\in\Sigma(A)$.
 %\end{defi}
 
 \begin{lemma}
@@ -277,13 +314,13 @@ We continue by working out the logical relations of formulas and their image und
 			By the induction hypothesis, we get that $M_A' \entails \subformdefinitional{G}$ as well as $M_A' \entails \subformdefinitional{H}$.
 			It remains to show that $M_A' \entails D_A$, i.e.~
 			$M_A' \entails \forall \bar x \big(L_A(\bar x) \lor L_G(\bar y)\big) \land
-		\forall \bar x \big(L_A(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_A(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  $.
+			\forall \bar x \big(L_A(\bar x) \lor \lnot L_H(\bar z)\big) \land \forall \bar x \big(\lnot L_A(\bar x) \lor \lnot L_G(\bar y) \lor L_H(\bar z)\big)  $.
 
-		Suppose that $M_A' \entails A$.
-		Then $M_A' \notentails G$ or $M_A' \entails H$. By construction of $M_A'$, we furthermore have that $M_A' \entails L_B(\bar x)$ and $M_A' \entails \lnot L_G(\bar y) \lor L_H(\bar z)$.
+			Suppose that $M_A' \entails A$.
+			Then $M_A' \notentails G$ or $M_A' \entails H$. By construction of $M_A'$, we furthermore have that $M_A' \entails L_B(\bar x)$ and $M_A' \entails \lnot L_G(\bar y) \lor L_H(\bar z)$.
 
-		Otherwise we have that $M_A' \notentails A$, so $M_A' \entails G$ and $M_A' \notentails H$.
-		Hence $M_A' \entails \lnot  L_A(\bar x)$, $M_A' \entails L_G(\bar y)$ and $M_A' \notentails L_H(\bar z)$.
+			Otherwise we have that $M_A' \notentails A$, so $M_A' \entails G$ and $M_A' \notentails H$.
+			Hence $M_A' \entails \lnot  L_A(\bar x)$, $M_A' \entails L_G(\bar y)$ and $M_A' \notentails L_H(\bar z)$.
 
 		\item $A$ is of the form $\forall x B$.
 			Then $\subformdefinitional{A} =

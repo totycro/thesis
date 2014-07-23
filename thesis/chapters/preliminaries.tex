@@ -1,4 +1,5 @@
 \section{Preliminaries}
+\label{sec:preliminaries}
 \todo[inline]{this section contains all the required notation but will just be written up nicely in the final version}
 
 \todo[inline]{formulas}
@@ -62,55 +63,14 @@ The length of a term or formula $\varphi$ is the number of logical and non-logic
 For formulas or terms $\varphi$, $\varphi\occurat{s}{p}$ denotes $\varphi$ with an occurrence of $s$ at position $p$.
 $\varphi\occur{s}$ denotes $\varphi$ where the term $s$ occurs on some set of positions $\Phi$. $\varphi\occur{t}$ denotes $\varphi\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $\varphi$ in some way.
 
-TODO: define $\Sigma$ as subformula set; possibly remove definition in chapter 2
 
 TODO: define: consistent, satisfiable (also say that they coincide?)
-
 
 TODO: define prenex formulas with matrix and prefix (ONLY IF IT STILL OCCURS IN FINAL VERSION)
 
 TODO: define prefix of term position: e.g. u in f(c, g(u, x, h(a))) has the prefix f(., g(., ., .)), or possible written as sequence of symbols (algo: always go to parent starting at u)
 
 TODO: free vars: $\FV$ and possibly $\LV$: free lifting vars. probably $\FV$ does not include $\LV$. ($\LV$ only if it is really going to be used)
-
-
-\subsection{Unification}
-
-We specify the unification algorithm which is used in this thesis in order enable formal reasoning.
-
-	Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable to signify that the $\mgu$ of the given arguments is not defined. We treat constants as $0$-ary functions.
-	Let $s$ and $t$ denote terms and $x$ a variable.
-
-	The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
-
-
-	The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
-
-	\noindent
-	$
-	\mgu(\emptyset) \defeq \id
-	$
-
-	\newcommand{\aatahfdgasdfg}{.4\textwidth}
-	\noindent
-	$
-	\mbox{$\mgu(\{t\} \cup T)$} \defeq
-	%\mgu(\{t\} \cup T) =$
-	\begin{cases}
-		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ occurs in $s$ but $x\neq s$ } \\
-		\mgu(T\subst{x/s})\subst{x/s} \cup \{x\mapsto s\} 		& \parbox[t]{\aatahfdgasdfg}{if $t = (x, s)$ or $t=(s,x)$ and $x$ does not occur in $s$ or $x=x$} \\
-		\mathbf{fail} 				& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), g(s_1,\dotsc,s_n))$ with $f\neq g$} \\
-		\mgu(T \cup \{(s_1, t_1), \dotsc, (t_n, s_n)\})		& \parbox[t]{\aatahfdgasdfg}{if $t = (f(s_1,\dotsc,s_n), f(t_1,\dotsc,t_n))$} \\
-		\mgu(T) 							& \text{if $t=(s, s)$} \\
-	\end{cases}
-	$
-
-	For $\sigma = \mgu(l, l')$ for two literals $l$ and $l'$ we denote by $\sigma_i$ the $i$th substitution, which in the course of the run of the algorithm has been added to $\sigma$. 
-	We denote composition of substitutions $\sigma_i$ up to including $\sigma_j$ by $\sigmarange{i}{j}$. \mytodo{remove sigmarange if not needed}
-
-Hence for a unifier $\sigma$, we have that $ \sigma = \sigma_1\cdots\sigma_n = \sigmarange{i}{j}$, where $n$ is $|\dom(\sigma)|$.
-Note that $|\dom(\sigma_i)| = 1$ for $1\varleq i \varleq n$.
-
 
 
 
