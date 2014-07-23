@@ -173,10 +173,9 @@
 						\RightLabelm{\lkrule{\forall}{l}}
 						\UnaryInfm{\Gamma, \forall x A \fCenter \Delta}
 					\end{prooftree}
-					Note that since we have excluded function symbols to occur in the final sequent (and constant symbols are treated as function symbols of arity 0), 
-					\todo[inline]{it is only possible to find a proof where these don't occur, but they might occur in a stupid proof.
-					add a lemma as for equality?}
-
+					Note that since we have excluded function symbols to occur in the final sequent (and constant symbols are treated as function symbols of arity 0) and
+					by completeness, there is a proof in the language of the final sequent, we can assume that no function or constant symbols occur in this proof and hence
+					 quantifiers are only instantiated by variables.
 
 
 					There are two possible partition schemes of $\Gamma, \forall x A \vdash \Delta$:
@@ -200,7 +199,7 @@
 
 					In the case of \lkrule{\exists}{r}, a similar argument goes through.
 
-				\item The last rule application is an instance of $\lkrule{\forall}{r}$. Then it is of the form:
+				\item The last rule application is an instance of $\lkrule{\forall}{r}$. Then it is of the form:\nopagebreak
 					\begin{prooftree}
 						\Axiomm{\Gamma\fCenter \Delta, A\subst{x/y} }
 						\RightLabelm{\lkrule{\forall}{r}}

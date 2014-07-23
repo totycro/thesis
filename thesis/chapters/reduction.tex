@@ -264,7 +264,11 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	 Then there exists a proof of $\Gamma \proves \Delta$ that does not contain the equality symbol.
 \end{lemma}
 \begin{proof}
-	\largered{this is not finished}
+	As sequent calculus without equality rules is complete for first-order logic without equality and we can assume that $\Gamma \proves \Delta$, there is a proof $\pi$ in this calculus.
+	However $\pi$ is also a proof in sequent calculus with equality rules.
+\end{proof}
+
+\begin{comment}
 	\largered{supported idea: there is a proof in LK with equality, so it is valid. it is true in every model. a calculus without equality is complete for every theorem without equality. hence this calculus without equality has a proof for this formula.}
 	Let $\pi$ be a proof of $\Gamma \proves \Delta$.
 
@@ -339,6 +343,7 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	(proof might become longer, but how does that work? don't innessential cuts remain?)
 
 \end{proof}
+\end{comment}
 
 
 We now show that interpolants can be computed by means of a sequent calculus based procedure by Maehara.
@@ -409,11 +414,11 @@ This allows us to state the central theorem of this section:
 
 			For $\Delta$, an analogous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
 
-			By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:transLang}{lemma:transLang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta)) $. 
+			By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:transLang}{lemma:transLang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta))$. 
 				\newcommand{\somespace}{\;}
 				\newcommand{\impconn}[1]{\somespace#1\somespace}
 				%\medskip
-				\begin{figure}[H]
+				%\begin{figure}[H]
 			\begin{align*}
 				\noalign{$\Trans(\Lang(\Gamma))\cap\nolinebreak \Trans(\Lang(\Delta)) =$} 
 				& \Big(\Lang(\Gamma)\impconn\cup \{E\}\impconn\cup\{F_f\mid f \in \FS(\Gamma)\}\Big) \impconn\setminus\Big(\{=\nolinebreak \} \impconn\cup \FS(\Gamma)\Big)\,\impconn\cap \\
@@ -422,8 +427,8 @@ This allows us to state the central theorem of this section:
 				=\,& \Big((\Lang(\Gamma) \cap \Lang(\Delta)) \impconn\cup \{E\} \impconn\cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta))\} \Big) \impconn\setminus \Big( \{=\} \impconn\cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) \Big)  \\ 
 				=\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
 			\end{align*}
-				\end{figure}
-				\vspace{-1em}
+				%\end{figure}
+				%\vspace{-1em}
 			As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:transLang}{lemma:transLang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
 		\end{proof}
 
