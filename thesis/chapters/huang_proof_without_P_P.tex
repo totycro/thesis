@@ -740,15 +740,16 @@ We conclude by presenting the algorithm on an a larger instance:
 
 	We use the following resolution refutation $\pi$ for the extraction of the interpolant:
 
-	{ \footnotesize
+	{ %\small
 
 		~
 
 
-		\begin{adjustwidth}{-4em}{0em}
+		\begin{adjustwidth}{8em}{0em}
 			\def\defaultHypSeparation{\hskip 1.4em}
 			\def\ScoreOverhang{-0em}
 			\begin{prooftree}
+				\AxiomCm{ Z(d) }
 
 				\AxiomCm{ G(x, y) \lor L(x, y) \lor x = y }
 				\AxiomCm{ \lnot Z(z) \lor \lnot  L(z, u) }
@@ -767,10 +768,12 @@ We conclude by presenting the algorithm on an a larger instance:
 
 				\AxiomCm{ \lnot G(v, f(v)) }
 
+				\insertBetweenHyps{\hskip -9em}
+
 				\RightLabelm{\resrule{\resruleres}{v\mapsto d,\, x\mapsto d}}
 				\BinaryInfCm{  \lnot Z(d)  }
 
-				\AxiomCm{ Z(d) }
+				\insertBetweenHyps{\hskip -10em}
 
 				\RightLabelm{\resrule{\resruleres}{\id}}
 				\BinaryInfCm{  \square }
@@ -785,6 +788,9 @@ We conclude by presenting the algorithm on an a larger instance:
 	{
 			\def\defaultHypSeparation{\hskip 4.4em}
 		\begin{prooftree}
+
+			\AxiomCm{ \top  }
+
 			\AxiomCm{ \bot}
 			\AxiomCm{ \top }
 			\BinaryInfCm{  L(x, y) }
@@ -799,8 +805,6 @@ We conclude by presenting the algorithm on an a larger instance:
 			\AxiomCm{ \bot }
 
 			\BinaryInfCm{  (d = f(d) \land \lnot Z(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) }
-
-			\AxiomCm{ \top  }
 
 			\BinaryInfCm{ \lnot Z(d) \lor  \big( (d = f(d) \land \lnot Z(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) \big)}
 		\end{prooftree}

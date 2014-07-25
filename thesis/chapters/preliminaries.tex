@@ -12,6 +12,8 @@ Among the usual symbols for the logical connectives $\land$ (conjunction), $\lor
 Syntactic equality is denoted by $\syneq$.
 
 For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$.
+With respect to a formula\nolinebreak{} $A$, an occurrence of a subformula $B$ of $A$ is said to occur positively if it occurs under an even number of negations and negatively otherwise.
+
 
 \todo[inline]{terms}
 
@@ -28,6 +30,13 @@ For formulas $\varphi$ with $\FV(\varphi) = \{x_1, \dots, x_n\}$ and a model $M$
 In instances where an explicit assignment $\alpha$ to the free variables is desired,
 we write $M_\alpha \entails \varphi$ 
 to signify that $M$ entails the formula $\varphi$ where the free variable assignment concurs with $\alpha$ and the free variables not assigned by $\alpha$ are universally quantified.
+
+\todo[inline]{formulas and terms}
+The length of a term or formula $\varphi$ is the number of logical and non-logical symbols in $\varphi$.
+
+For formulas or terms $\varphi$, $\varphi\occurat{s}{p}$ denotes $\varphi$ with an occurrence of $s$ at position $p$.
+$\varphi\occur{s}$ denotes $\varphi$ where the term $s$ occurs on some set of positions $\Phi$. $\varphi\occur{t}$ denotes $\varphi\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $\varphi$ in some way.
+
 
 
 \todo[inline]{substitutions}
@@ -57,11 +66,6 @@ If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note
 $s$ is a \defiemph{proper} instance (abstraction) of $t$ if $s$ is an instance (abstraction) of $t$ and $s\neq t$. \mytodo{possibly drop ``proper'' if not used}
 
 \todo[inline]{misc}
-
-The length of a term or formula $\varphi$ is the number of logical and non-logical symbols in $\varphi$.
-
-For formulas or terms $\varphi$, $\varphi\occurat{s}{p}$ denotes $\varphi$ with an occurrence of $s$ at position $p$.
-$\varphi\occur{s}$ denotes $\varphi$ where the term $s$ occurs on some set of positions $\Phi$. $\varphi\occur{t}$ denotes $\varphi\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $\varphi$ in some way.
 
 
 TODO: define: consistent, satisfiable (also say that they coincide?)

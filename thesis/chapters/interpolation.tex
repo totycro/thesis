@@ -18,7 +18,8 @@ We now present a formal definition of the notion of interpolation:
 
 	\begin{samepage}
 		A \defiemph{reverse interpolant} of $\Gamma$ and $\Delta$ is a first-order formula $I$ such that $I$ meets conditions \ref{int_1} and \ref{int_3} of an interpolant as well as:
-		\begin{enumerate}[\quad\:1'.]
+		\begin{enumerate}
+				\renewcommand{\theenumi}{\arabic{enumi}'}
 				\setcounter{enumi}{1}
 			\item $ \Delta \entails \lnot I $  \label{int_2prime}
 				\qedhere
@@ -113,10 +114,13 @@ In this thesis, the equality symbol as well as the symbols for truth and falsity
 This is justified by the following examples, which are referred to in \cite[Example 20.2 and 20.4]{boolos2007computability} as ``failure of interpolation'' and ``degenerate cases'' respectively:
 
 \begin{exa}
+	\label{exa:degenerate_equality}
 	Let $\Gamma = \{ a=b \} $ and $\Delta = \{P(a), \lnot P(b)\}$.
 	Note that here, the intersection of $\Lang(\Gamma)$ and $\Lang(\Delta)$ does not contain a predicate symbol.
 	By regarding $=$ as logical symbol and therefore permitting it to occur in an interpolant despite the fact that it does not occur in $\Delta$ allows for the interpolant $a=b$.
 	If we would not permit $=$ in the interpolant, there would be no interpolant for $\Gamma$ and $\Delta$, even though $\Gamma \cup \Delta$ clearly is unsatisfiable.
+
+	Similarily, for the pair $\Gamma' = \{ P(a) \land \lnot P(b) \}$ and $\Delta' = \{a\neq b\}$, the equality symbol must occur in the interpolant. In this instance, the occurrence must be negative.
 \end{exa}
 
 \begin{exa}

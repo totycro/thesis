@@ -8,45 +8,73 @@ This is relevant as later results on the interpolation theorem are only based on
 
 %\hl{in lit, first version is used sometimes (\cite{lyndon59}, \cite{Henkin63})} 
 
-Arguably one of the most important strenghtenings is due Lyndon. In \cite{lyndon59}, he showed that the interpolation theorem holds for the following definition of interpolant:
+Arguably one of the most important strenghtenings is due Lyndon. In \cite{lyndon59}, he shows the following:
 
-\begin{defi}[Lyndon interpolant]
-Let $\Gamma$ and $\Delta$ be sets of first-order formulas. A \defiemph{Lyndon interpolant} of $\Gamma$ and $\Delta$ is a first-order formula I such that the conditions \ref{int_1} and \ref{int_2} of Definition~\ref{def:interpolant} as well as the following:
-\begin{enumerate}[\quad\:1'.]
-	\setcounter{enumi}{2}
+\begin{thm}[Lyndon]
+	\label{thm:lyndon}
+Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma \entails\nolinebreak \Delta$. 
+Then there is a first-order formula $I$ such that the conditions \ref{int_1} and \ref{int_2} of Definition~\ref{def:interpolant} hold for $I$ as well as the following:
+\begin{enumerate}
+		\renewcommand{\theenumi}{\arabic{enumi}'}
+		\setcounter{enumi}{2}
 	\item Each predicate symbol occurring positively (negatively) in $I$ occurs positively (negatively) in both $\Gamma$ and $\Delta$.
+		\label{int_lyndon_3}
 \end{enumerate}
-\end{defi}
+\end{thm}
 
-proof of this:
+We do not give a proof here but only proof ideas.
+In \cite{lyndon59} and \cite{slagle70}, proofs based on Herbrand's theorem are given:
+Starting from two unsatisfiable sets of formulas $\Gamma$ and $\Delta$, unsatisfiable finite subsets are extracted by means of the compactness theorem and a set of unsatisfiable instances of these formulas are produced by Herbrand's theorem.
+From these, atoms with predicate symbols which are not contained in $\Lang(\Gamma) \cap \Lang(\Delta)$ are dropped to obtain the desired interpolant.
 
-in \cite{lyndon59}, based on cut eliminiation (just like craig) and also herbrand's theorem.
+Theorem~\ref{thm:lyndon} can however also be proven by model-theoretic means similar to the proof of the interpolation theorem given in \ref{sec:joint_consistency}
+and is worked out in full detail in \cite{Henkin63} and \cite[Theorem\ 2.2.24]{chang1990model}.
 
-in \cite{Henkin63} with a proof that extends \cite{sec:joint_consistency}
+The restriction of the admissible function and constant symbols to the ones in the common language of $\Gamma$ and $\Delta$ is absent in the original formulation of in Theorem~\ref{thm:lyndon}, but can easily be added\footnote{Cf.\ \cite{motohashi84}}.
+Therefore it is justified to refer to Lyndon interpolation as a strenghtening of Craig interpolation.
 
-~
+However it is not possible to give an analogous restriction on the sign of the occurrence of constants or function symbol, as the following example shows: 
+
+\begin{exa}[Cf.\ {\cite[p.\ 92]{chang1990model}}]
+	Let $\Gamma = \{ \exists x ( x = c \land \lnot P(x)) \}$ and $\Delta = \{ \lnot P(c) \}$.
+	Then the constant $c$ occurs positively in $\Gamma$ and negatively in $\Delta$, but must occur in any interpolant.
+\end{exa}
+
+Oberschelp shows in \cite{oberschelp68} that a slightly modified restriction the occurrences of the equality symbol in interpolants is feasible:
+
+\begin{thm}[Oberschelp]
+	\label{thm:oberschelp}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma \entails\nolinebreak \Delta$. 
+	Then there is a first-order formula $I$ such that the conditions \ref{int_1} and \ref{int_2} of Definition~\ref{def:interpolant} and condition \ref{int_lyndon_3} of Theorem~\ref{thm:lyndon} hold for $I$ as well as the following:
+
+	\begin{enumerate}[\quad\:1'.]
+		\setcounter{enumi}{3}
+		\item 
+			The equality symbol occurs positively in $I$ only if it occurs positvely in $\Gamma$.
+		\item
+			The equality symbol occurs negatively in $I$ only if it occurs negatively in $\Delta$.
+	\end{enumerate}
+\end{thm}
+
+The proof can again be given by model-theoretic means in the style of the aforementioned ones.
+Example~\ref{exa:degenerate_equality} illustrates these two cases and shows that given these occurrences of the equality symbol, there are sets of formulas which necessitate the equality symbol in their interpolant.
+Similar as for Theorem~\ref{thm:lyndon}, a restriction on the function and constant symbols is not given in the original formulation, but can be added as shown in \cite{fujiwara78}.
+
+Note that Theorem~\ref{thm:oberschelp} implies the following corollary on equality-free interpolation:
+\begin{corr}
+	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma \entails\nolinebreak \Delta$ and the equality symbol only occurs negatively in $\Gamma$ and only positively in $\Delta$. 
+	Then there exists an interpolant $I$ which does not contain the equality symbol.
+\end{corr}
 
 
 
-erroneous treatment of equality in lyndon (cf.\ \cite{motohashi84})
-
-but 
-
-In \cite{oberschelp68}, a related restriction is proved for the equality predicate.
-
-provides information about  degenerate cases (see \cite{})
-
-also corollary about interpolants with no equality
 
 
-TODO: martin otto ; slagle proof of lyndon
+%erroneous treatment of equality in lyndon (cf.\ \cite{motohashi84})
 
 
 
-
-\section*{notes}
-
-henkin gives nice proof basically just like our semantic proof, but with polarity, then extends it to equality.
-he shows that interpolation holds with equality, but adds axioms (doesn't say where), so equality has to be allowed in any interpolant.
-also further strenghtenings based on nicely writing the formula in some nnf-like style and then defining a form of an interpolant.
+%henkin gives nice proof basically just like our semantic proof, but with polarity, then extends it to equality.
+%he shows that interpolation holds with equality, but adds axioms (doesn't say where), so equality has to be allowed in any interpolant.
+%also further strenghtenings based on nicely writing the formula in some nnf-like style and then defining a form of an interpolant.
 

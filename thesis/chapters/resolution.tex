@@ -120,7 +120,7 @@ The following lemma shows that the restriction to tree refutations does not rest
 \end{proof}
 
 
-\section{Resolution and Interpolation}
+\subsection{Resolution and Interpolation}
 \label{sec:resolution_and_interpolation}
 
 
@@ -148,7 +148,7 @@ In this section, we will show that they nonetheless do preserve the set of inter
 This fact is vital for the use of resolution-based methods for interpolant computation of arbitrary formulas.
 
 
-\subsection{Interpolation and Skolemisation}
+\subsubsection{Interpolation and Skolemisation}
 
 Skolemisation is a procedure for replacing existential quantifiers by Skolem terms:
 
@@ -158,7 +158,7 @@ Skolemisation is a procedure for replacing existential quantifiers by Skolem ter
 	The skolemisation of a formula $A$ in NNF, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by a term $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
 	In case $V_{\exists x}$ is empty, the occurrence of $\exists x$ is replaced by a new Skolem constant symbol $c$.
 
-	The skolemisation of a set of formulas $\Phi$ is defined to be $\sk(\Phi) = \{ \sk(A) \mid A \in \Phi \}$.
+	For a set of formulas $\Phi$, the skolemisation $\sk(\Phi)$ is defined to be $\{ \sk(A) \mid A \in\nolinebreak \Phi \}$.
 \end{defi}
 
 Note that due to the introduction of Skolem symbols, it is not the case that $\Phi \semiff \sk(\Phi)$.
@@ -194,7 +194,7 @@ Note that due to the introduction of Skolem symbols, it is not the case that $\P
 \end{proof}
 
 
-\subsection{Interpolation and structure-preserving Normal Form Transformation}
+\subsubsection{Interpolation and structure-preserving Normal Form Transformation}
 
 In the following, we describe a common method for transforming a formula $A$ without existential quantifiers into CNF while preserving its structure.
 Note that the restriction to formulas without existential quantifiers can easily be established for arbitrary formulas by means of skolemisation and therefore does not limit the applicability of this procedure.

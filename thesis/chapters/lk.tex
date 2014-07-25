@@ -8,7 +8,7 @@ Its use of sequents in lieu of plain formulas allows for a natural mapping of th
 	For multisets of first-order formulas $\Gamma$ and $\Delta$,  $\Gamma \proves \Delta$ is called a \defiemph{sequent}. 
 	In this context $\Gamma$ forms the \defiemph{antecedent}, whereas $\Delta$ is referred to as \defiemph{succedent}.
 
-	A sequent $\Gamma \proves \Delta$ is called \defiemph{provable} if there is a sequent calculus proof of $\Gamma \proves \Delta$.
+	A sequent $\Gamma \proves \Delta$ is called \defiemph{provable} if there is a sequent calculus proof of $\Gamma \proves\nolinebreak \Delta$.
 \end{defi}
 
 The rules of sequent calculus are as follows:
@@ -247,9 +247,12 @@ The rules of sequent calculus are as follows:
 
 				\end{multicols}
 			\end{lkdefitem}
+			\vspace{0.6em}
 
 	(provided no free variable of $t$ becomes bound in $A[x/t]$ and
 	$y$ does not occur free in $\Gamma$, $\Delta$ or $A$)
+			\vspace{0.3em}
+
 	\end{lkdefitemize}
 
 
@@ -295,6 +298,7 @@ The rules of sequent calculus are as follows:
 				\end{prooftree}
 				%\end{multicols}
 			\end{lkdefitem}
+
 		(provided no free variable of $s$ or $t$ becomes bound in $A\occurat{t}{p}$ or $A\occurat{s}{p}$)
 			\end{lkdefitemize}
 
