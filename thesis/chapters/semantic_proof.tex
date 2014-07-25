@@ -6,6 +6,7 @@ It is based on the joint consistency theorem by Robinson (\cite{robinson1956resu
 The joint consistency theorem itself was presented as a proof of Beth's definability theorem, which is discussed in section~\ref{sec:beth}.
 
 \section{Joint consistentcy}
+\label{sec:joint_consistency}
 
 The notion of joint consistency is based on separability of sets of formulas:
 
@@ -32,7 +33,7 @@ The joint consistency theorem shows that if there exists no formula in the langu
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas.
 	Then $\Gamma \cup \Delta$ is consistent if and only if $\Gamma$ and $\Delta$ are inseparable.
 \end{thm}
-The following proof essentially follows \cite{chang1990model}.
+The following proof essentially follows \cite{Henkin63} and \cite{chang1990model}.
 \begin{proof}
 	Suppose that $\Gamma\cup\Delta$ is consistent and let $M$ be a model of it.
 	Then clearly for every formula $A$, if $\Gamma \entails A$, then $M \entails A$ as $M \entails \Gamma$.

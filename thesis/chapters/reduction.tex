@@ -264,8 +264,9 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	 Then there exists a proof of $\Gamma \proves \Delta$ that does not contain the equality symbol.
 \end{lemma}
 \begin{proof}
-	As sequent calculus without equality rules is complete for first-order logic without equality and we can assume that $\Gamma \proves \Delta$, there is a proof $\pi$ in this calculus.
-	However $\pi$ is also a proof in sequent calculus with equality rules.
+	By the soundness of sequent calculus, we obtain that $\Gamma \entails \Delta$.
+	But as sequent calculus without equality rules is complete for first-order logic without equality, there is a proof $\pi$ in this calculus.
+	However $\pi$ is obviously also a proof in sequent calculus with equality rules.
 \end{proof}
 
 \begin{comment}
