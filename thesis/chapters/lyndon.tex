@@ -1,10 +1,11 @@
 \section{Strengthenings of the interpolation theorem}
+\label{sec:strenghtenings}
 
 After Craig's initial result, several stronger versions of the theorem have been published.
 \cite{Craig57three} can already be counted among those,
 as it defines interpolants equivalently to our Definition~\ref{def:interpolant}, 
-but the first publication in \cite{Craig57linear} restricts interpolants only with regard to their predicate symbols, but allows non-common function and constant symbols to occur in it.
-This is relevant as later results on the interpolation theorem are only based on \cite{Craig57linear}, which usually is not to be understood as proper restriction of the result as it goes through with the extension of \cite{Craig57three} as well.
+whereas the first publication in \cite{Craig57linear} restricts interpolants only with regard to their predicate symbols, but allows non-common function and constant symbols to occur in it.
+This is relevant as some later results on the interpolation theorem are only based on \cite{Craig57linear}, which in many cases is not to be understood as proper restriction of the result.
 
 %\hl{in lit, first version is used sometimes (\cite{lyndon59}, \cite{Henkin63})} 
 
@@ -33,21 +34,23 @@ and is worked out in full detail in \cite{Henkin63} and \cite[Theorem\ 2.2.24]{c
 The restriction of the admissible function and constant symbols to the ones in the common language of $\Gamma$ and $\Delta$ is absent in the original formulation of in Theorem~\ref{thm:lyndon}, but can easily be added\footnote{Cf.\ \cite{motohashi84}}.
 Therefore it is justified to refer to Lyndon interpolation as a strenghtening of Craig interpolation.
 
-However it is not possible to give an analogous restriction on the sign of the occurrence of constants or function symbol, as the following example shows: 
+It is however not possible to give an analogous restriction on the sign of the occurrence of constants or function symbol in the interpolant, as the following example shows: 
 
 \begin{exa}[Cf.\ {\cite[p.\ 92]{chang1990model}}]
 	Let $\Gamma = \{ \exists x ( x = c \land \lnot P(x)) \}$ and $\Delta = \{ \lnot P(c) \}$.
-	Then the constant $c$ occurs positively in $\Gamma$ and negatively in $\Delta$, but must occur in any interpolant.
+	Here, the constant $c$ occurs positively in $\Gamma$ and negatively in $\Delta$, but must occur in any interpolant.
 \end{exa}
 
-Oberschelp shows in \cite{oberschelp68} that a slightly modified restriction the occurrences of the equality symbol in interpolants is feasible:
+Since we regard the equality symbol as a logical symbol, Theorem~\ref{thm:lyndon} does not apply to it.
+Nonetheless
+Oberschelp proofs in \cite{oberschelp68} that a slightly modified restriction the occurrences of the equality symbol in interpolants is feasible:
 
 \begin{thm}[Oberschelp]
 	\label{thm:oberschelp}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma \entails\nolinebreak \Delta$. 
 	Then there is a first-order formula $I$ such that the conditions \ref{int_1} and \ref{int_2} of Definition~\ref{def:interpolant} and condition \ref{int_lyndon_3} of Theorem~\ref{thm:lyndon} hold for $I$ as well as the following:
 
-	\begin{enumerate}[\quad\:1'.]
+	\begin{enumerate}%[\quad\:1'.]
 		\setcounter{enumi}{3}
 		\item 
 			The equality symbol occurs positively in $I$ only if it occurs positvely in $\Gamma$.
