@@ -12,6 +12,7 @@ Consider the following example:
 \todo{example notation reference}
 
 \begin{exa}
+	\label{exa:one_phase_motivation}
 	Let $\Gamma = \{ P(x) \lor Q(y) \}$ and $\Delta = \{\lnot P(a), \lnot Q(a)\}$.
 	We consider the following refutation of $\Gamma \cup \Delta$, which we annotate by the interpolation extraction by appending $\PI(C)$ to each clause $C$, separated by ``$|$''.
 	For the sake of brevity, we sometimes give simplified by logically equivalent versions of $\PI(C)$.
@@ -220,13 +221,13 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 
 		\item 
 Let $\lifsym_\mathrm{part}^*(\LIpre(C))$ be 
-$\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which occurs free, is substituted by a fresh lifting variable $z_{t'}$.
+$\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which occurs free, is substituted by a fresh lifting variable $z_{t'}$.\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.} 
 \label{lemma_part_renaming}
 
 		\item Let $X$ ($Y$) be the set of $\Delta$-($\Gamma$-)lifting variables which occur free in  
 			$\lifsym_\mathrm{part}^*(\LIpre(C))$.
-			Form an arrangement $\Q(C)$ of the elements of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes $z_r$.
-			Finally let $\LI(C) \defeq Q(C) \lifsym_\mathrm{part}^*(\LIpre(C))$.
+			Form an arrangement $\Q(C)$ of the elements of $\{\forall x_t \mid x_t \in X\}\cup\allowbreak\{\exists y_t \mid y_t \in Y\}$ such that if $s$ and $r$ are terms such that $s$ is a subterm of $r$, then $z_s$ precedes\nolinebreak{} $z_r$.
+			Finally, let $\LI(C) \defeq Q(C) \lifsym_\mathrm{part}^*(\LIpre(C))$.
 			\qedhere
 	\end{enumerate}
 \end{defi}
@@ -235,6 +236,11 @@ $\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which oc
 
 
 \mytodo{example showing that we can quantify locally}
+
+%\begin{remark}
+%	As a local optimisation, the quantifiers can be moved inwards such that they exhibit the smallest scope which covers every occurrence of the bound variable.
+%	Note that when doing so, non-maximal occurrences of these terms have to be taken as being lifted 
+%\end{remark}
 
 
 \section{Main lemma}
@@ -462,7 +468,7 @@ Now, we proceed to the main lemma:
 	If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
 	Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ occurs free at $\lifdeltanovar{\LIpre(C)}\atp$.
 	The renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure
-	ensures that $x_t$ is a fresh lifting variable and hence is not bound by quantifiers introduced to to other occurrences of the term $t$, which would otherwise also be lifted by the same lifting variable and bound by the same quantifier.
+	ensures that $x_t$ is a fresh lifting variable and hence is not bound by quantifiers introduced to to other occurrences of the term $t$, which would otherwise also be lifted by the same lifting variable and bound by the same quantifier\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.}.
 	Hence $x_t$ is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed universal quantifier. 
 
 	If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
@@ -490,6 +496,59 @@ Now, we proceed to the main lemma:
 			\qedhere
 	\end{itemize}
 \end{proof}
+
+We now present an example which demonstrates that $\LI$ does produce formulas realising the idea presented in Example~\ref{exa:one_phase_motivation}.
+
+\begin{exa}
+	\label{exa:lemma_part_renaming}
+	Let $\Gamma = \{ P(u, v) \lor Q(u) \lor R(v) \}$
+	and $\Delta = \{ \lnot P(w, z), \lnot Q(a), \lnot R(a)\}$.
+	We consider a resolution refutation of $\Gamma\cup\Delta$ combined with the interpolant extraction.
+	In order to emphasise the lifting steps,
+	we do not just write $C\mid \LI(C)$ in the derivation as usual for a clause $C$ but $C\mid\LIpre(C)$ above $C\mid \LI(C)$ without a separating line 
+	in case $\LIpre(C)$ is different from $\LI(C)$.
+	The primed variables make the renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure explicit.
+	\begin{prooftree}
+		\AxiomCm{ P(u, v) \lor Q(u) \lor R(v) \mid \bot}
+		\AxiomCm{ \lnot P(w, z) \mid \top }
+
+		\RightLabelm{\resrule{\resruleres}{w\mapsto u, v\mapsto z}}
+		\BinaryInfCm{ Q(u) \lor R(v) \mid P(u, v) }
+
+		\AxiomCm{ \lnot Q(a) \mid \top }
+
+		\RightLabelm{\resrule{\resruleres}{u\mapsto a}}
+		\BinaryInfCm{ R(v) \mid Q(a) \lor P(a, v) }
+		\noLine
+		\UnaryInfCm{ R(v) \mid \forall x_a( Q(x_a) \lor P(x_a, v) ) }
+
+		\AxiomCm{ \lnot R(a) \mid \top }
+
+		\RightLabelm{\resrule{\resruleres}{v\mapsto a}}
+		\BinaryInfCm{ \square \mid R(a) \lor  \forall x_a( Q(x_a) \lor P(x_a, a) ) }
+		\noLine
+		\UnaryInfCm{ \square \mid \forall x'_a \big( R(x'_a) \lor  \forall x_a( Q(x_a) \lor P(x_a, x'_a) ) \big) }
+	\end{prooftree}
+
+	Hence we obtain here a non-prenex interpolant which reflects the logical expressiveness of $\Gamma$, in contrast to 
+	the interpolant which is produced by the two phase approach described in chapter~\ref{sec:two_phases}, which in fact is
+	$\forall x_a \big( R(x_a) \lor Q(x_a) \lor P(x_a, x_a) \big)$.
+
+	Note that without the renaming of the lifting variables, the result of the extraction would be
+	$\forall x_a \big( R(x_a) \lor  \forall x_a( Q(x_a) \lor P(x_a, x_a) ) \big) $.
+	In order to emphasise the binding, we alpha-rename this formula to
+	$\forall x \big( R(x) \lor  \forall y( Q(y) \lor P(y, y) ) \big) $.
+	This is not an interpolant, as this formula is not entailed by $\Gamma$:
+
+	Consider a model $M$ of $\Gamma$ with domain $\domainofmodel{M} = \{0, 1\}$ and an interpretation $\interpretation{M}$ such that
+	$\interpretation{M}(R) = \{0\}$,
+	$\interpretation{M}(Q) = \emptyset$ and 
+	$\interpretation{M}(P) = \{ (0, 1), (1, 1) \}$.
+	Then clearly $M \entails P(u, v) \lor Q(y) \lor R(v) $ as depending on the value of $v$, either $R(v)$ or $P(u, v)$ holds.
+	But at the same time $M \notentails \forall x \big( R(x) \lor  \forall y( Q(y) \lor P(y, y) ) \big)$ since the instantiation of the bound variables $x$ to $1$ and $y$ to $0$ results in a formula which does not hold in $M$.
+
+\end{exa}
+
 
 \section{Towards an interpolant}
 
@@ -640,3 +699,45 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 	Therefore $\lifdeltanovar{\LI(\pi)} = \LI(\pi)$ and $\lifgammanovar{\LI(\pi)} = \LI(\pi)$.
 \end{proof}
 
+\mytodo{some words on example}
+
+\begin{exa}
+	\newcommand{\var}[1]{\ensuremath{v_{#1}}}
+	Let $\Gamma = \{R(f(\var{1}, \var{6})), P(f(\var{2}, g(\var{3}, \var{4}))) \lor Q(g(\var{3}, b)), \lnot S(b) \}$
+	and $\Delta = \{ S(\var{8}) \lor \lnot P(\var{5}) \lor \lnot R(\var{5}), \lnot Q(g(a, \var{7})) \}$.
+
+	\tiny
+
+	\begin{adjustwidth}{-3cm}{}
+
+	\begin{prooftree}
+		\AxiomCm{ P(f(\var{2}, g(\var{3}, \var{4}))) \lor Q(g(\var{3}, b)) \mid \bot }
+		\AxiomCm{ \lnot Q(g(a, \var{7})) \mid \top}
+
+		\RightLabelm{\resrule{\resruleres}{\var{3}\mapsto a, \var{7}\mapsto b}}
+		\BinaryInfCm{ P(f(\var{2}, g(a, \var{4}))) \mid Q(g(a, b))  }
+		\noLine
+		\UnaryInfCm{ P(f(\var{2}, g(a, \var{4}))) \mid \exists y_b Q(g(a, y_b))  }
+
+		\AxiomCm{  S(\var{8}) \lor \lnot P(\var{5}) \lor \lnot R(\var{5}) \mid \top }
+		\AxiomCm{  R(f(\var{1}, \var{6})) \mid \bot}
+		\RightLabelm{\resrule{\resruleres}{\var{5} \mapsto f(\var{1}, \var{6})}}
+		\BinaryInfCm{ S(\var{8}) \lor \lnot P(f(\var{1})) \mid R(f(\var{1}, \var{6}))}
+	
+		\RightLabelm{\resrule{\resruleres}{\var{1} \mapsto \var{2}, \var{6}\mapsto g(a, \var{4})}}
+		\BinaryInfCm{ S(\var{8}) \mid  P(f(\var{2}, g(a, \var{4}))) \land R(f(\var{1}, \var{6})) \spam \lor \lnot P(f(\var{2}, g(a, \var{4}))) \land \exists y_b Q(g(a, y_b))  }
+		\noLine
+		\UnaryInfCm{ S(\var{8}) \mid \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land R(f(\var{1}, \var{6})) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) }
+
+		\AxiomCm{\lnot S(b) \mid \top}
+		\RightLabelm{\resrule{\resruleres}{\var{8} \mapsto b}}
+
+		\BinaryInfCm{ \square \mid S(b) \land  \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land R(f(\var{1}, \var{6})) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) }
+		\UnaryInfCm{ \square \mid \exists y_b \big( S(y_b) \land  \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land R(f(\var{1}, \var{6})) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) \big) }
+	
+		
+	\end{prooftree}
+
+	\end{adjustwidth}
+
+\end{exa}
