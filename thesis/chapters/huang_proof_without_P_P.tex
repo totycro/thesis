@@ -113,14 +113,14 @@ This replacement is referred to as lifting:
 			\expa(s) & \text{if $t$ is a lifting variable $z_s$}
 	\end{cases}\]
 
-	The lifting of $\varphi$, denoted by $\lft{\Phi}{z}{\varphi}$, is an abbreviation of 
-	$\lft{\Phi}{z}{\varphi, Z}$ which is defined as follows:
+	The lifting of $\varphi$, denoted by $\lifphi{\varphi}$, is an abbreviation of 
+	$\lifphi{\varphi, Z}$ which is defined as follows:
 	\[
-		\lft{\Phi}{z}{\varphi, Z} \defeq
+		\lifphi{\varphi, Z} \defeq
 		\begin{cases}
 			\varphi & Z = \emptyset \\
-			%\lft{\Phi}{z}{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \\
-			\lft{\Phi}{z}{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.6\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$, $\psi$ is created from $\varphi$ by replacing every occcurrence of $\colterm{i}$ by $z_{\colterm{i}}$} 
+			%\lifphi{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \\
+			\lifphi{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.6\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$, $\psi$ is created from $\varphi$ by replacing every occcurrence of $\colterm{i}$ by $z_{\colterm{i}}$} 
 		\end{cases}
 	\]
 	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift respectively is clear from the context or not of the essence.
@@ -143,77 +143,161 @@ Some elementary properties of liftings are described by the following lemmas:
 	\end{enumerate}
 \end{lemma}
 
+
 For the proof, we also require a means for commuting substitutions and liftings.
 This however can not be achieved in a direct manner. The following examples illustrate
 that in general for a term $t$, it is not the case that
 $
-\lft{\Phi}{z}{t\sigma} =
-\lft{\Phi}{z}{t}\sigma 
-$. However Lemma~\ref{lemma:lif} defines a substitution $\sigma'$ such that 
-$
-\lft{\Phi}{z}{t\sigma} =
-\lft{\Phi}{z}{t}\sigma'
+\lifphi{t\sigma} =
+\lifphi{t}\sigma 
 $.
 
-\begin{subtheorem}{exa}
-	\begin{exa}
-		Let $t = f(x)$ be a $\Phi$-term and $\sigma = \{x \mapsto a\}$.
-		Then $\lft{\Phi}{z}{t\sigma} = \lft{\Phi}{z}{f(x)\sigma} = \lft{\Phi}{z}{f(a)} = z_{f(a)}$.
-		However $\lft{\Phi}{z}{t}\sigma = \lft{\Phi}{z}{f(x)}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
-	\end{exa}
-	\begin{exa}
-		Let $t=x$ be a variable and $\sigma = \{x\mapsto c\}$, where $c$ is a $\Phi$-term.
-		Then $\lft{\Phi}{z}{t\sigma} = 
-		\lft{\Phi}{z}{x\sigma} =
-		\lft{\Phi}{z}{c} = z_c$.
-		But 
-		$\lft{\Phi}{z}{t}\sigma = 
-		\lft{\Phi}{z}{x}\sigma = 
-		x\sigma = 
-		c$.
-	\end{exa}
-\end{subtheorem}
+\begin{exa}
+	\label{exa:lifting_commute}
+	~
+	\begin{enumerate}
+		\item
+			\label{exa:lifting_commute_1}
+			Let $t = f(x)$ be a $\Phi$-term and $\sigma = \{x \mapsto a\}$.
+			Then $\lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)}$.
+			However $\lifphi{t}\sigma = \lifphi{f(x)}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
 
+		\item
+			Let $s=x$ be a variable and $\sigma = \{x\mapsto c\}$, where $c$ is a $\Phi$-term.
+			Then $\lifphi{s\sigma} = 
+			\lifphi{x\sigma} =
+			\lifphi{c} = z_c$.
+			But 
+			$\lifphi{s}\sigma = 
+			\lifphi{x}\sigma = 
+			x\sigma = 
+			c$.
 
-%\begin{lemma}[Commutativity of lifting and substitution]
-\begin{restatable}[Commutativity of lifting and substitution]{lemma}{lemmaCommutLiftSubst}
-	\label{lemma:lif}
-	Let $C$ be a clause and $\sigma$ a substitution such that no lifting variable occurs in $C$ or $\sigma$.
-	%Let $t_1,\ldots,t_n$ be all maximal $\Delta$-terms in this context, i.e.\ those that occur in $C$ or $C\sigma$,  and 
-	%$x_1, \ldots, x_n$ the corresponding fresh variables to replace the $t_i$ (i.e.~none of the $x_i$ occur in $C$).
-	Define the infinite substitution $\sigma'$ with $\dom(\sigma') = \dom(\sigma) \cup \{ z_t \mid t\sigma \neq t \}$ such that for a variable $z$, 
+		\item
+			Let $r = \lifphi{f(x)} = z_{f(x)}$.
+			Then $\lifphi{r\sigma} = \lifphi{z_{f(x)}\sigma} = \lifphi{z_{f(x)}} = z_{f(x)}$.
+			Here however, $\lifphi{r}\sigma = \lifphi{z_{f(x)}}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
+			\qedhere
+	\end{enumerate}
+\end{exa}
+
+As a first step towards a solution, we define a substitution which acts as a tool to ensure that modifications to terms are also applied to lifting variables.
+This is vital for Item~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_commute}.
+
+\begin{defi}
+	For a substitution $\sigma$ we define the infinite substitution $\tau(\sigma)$ with $\dom(\tau(\sigma)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
+
 	\[
-		x \sigma' =
-		\begin{cases} 
-			z_{t\sigma} & \text{ if } x = z_t \text{ for some $t$ }\\%\text{ and } t\sigma \neq t \\
-			\lifphi{x\sigma} & \text{ otherwise}
+		x\tau(\sigma) =
+		\begin{cases}
+			x\sigma & \text{$x$ is a non-lifting variable} \\
+			z_{t\sigma} & \text{$x$ is a lifting variable $z_t$}
 		\end{cases} 
 	\]
+	%\qedhere
 
-	Then
-	$\lifphi{C\sigma} =
-	\lifphi{C}\sigma'$.
-\end{restatable}
+	If the substitution $\sigma$ is clear from the context, we abbreviate $\tau(\sigma)$ by $\tau$. 
+	For inferences $\inference$, we define $\tau(\inference)$ to be $\tau(\mgu(\inference))$.
+\end{defi}
+
+\addtocounter{exa}{-2}
+\begin{exa}[continued]
+	Using $\tau$, we can solve the first example as $\lifphi{t\tau} = \lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)} = z_{f(x)} \tau = \lifphi{f(x)}\tau = \lifphi{t}\tau$.
+	However the second example can not be dealt with analogously.
+\end{exa}
+\addtocounter{exa}{1}
+
+Still, when all terms are in fact lifted, the commutation can be done in general:
+
+
+%\begin{exa}
+%	\mytodo{ write in style of examples above; in examples above: write which symbols are of which color }
+%
+%	Let $\sigma = \{x \mapsto a\}$
+%	and consider the terms $f(x)$ and $f(a)$, where $f$ and $a$ are colored symbols.
+%	Clearly $f(x)\sigma = f(a)$ and therefore necessarily $z_{f(x)}\tau = z_{f(a)}$.
+%
+%	But now consider $z_{f(x)} \sigma$.
+%	As $z_{f(x)}$ is a lifting variable, $z_{f(x)} \not\in \dom(\sigma)$ as $\sigma$ is a unifier from a resolution derivation inference.
+%	Hence $z_{f(x)}\sigma = z_{f(x)}$ and therefore $\lifboth{z_{f(x)}\sigma} = \lifboth{z_{f(x)}} = z_{f(x)}$, but $\lifboth{z_{f(x)}}\tau = z_{f(x)}\tau = z_{f(a)}$.
+%	So $\lifboth{z_{f(x)}\sigma} \neq \lifboth{z_{f(x)}}\tau$.
+%\end{exa}
+\begin{lemma}
+	\label{lemma:lifting_tau_commute}
+	For a formula or term $\varphi$ and a substitution $\sigma$ which does not affect lifting variables such that $\tau = \tau(\sigma)$,
+	$\lifboth{\lifboth{ \varphi} \tau} =\nolinebreak \lifboth{ \varphi \tau } $.
+\end{lemma}
 \begin{proof}
-	As substitutions and liftings only affect the terms of a clause, it suffices to  show that 
-	$\lifphi{t\sigma} = \lifphi{t}\sigma'$ for for a term $t$ in $C$.
-	More precisely, only variables of $\dom(\sigma)$ and maximal $\Phi$-terms are affected. 
-	We show that for terms $t$ of either kind that
-	$ \lifphi{ t \sigma } = \lifphi{ t } \sigma'$ holds, which proves the lemma.
+	We proceed by induction.
 
-	Let $y$ be a variable in $\dom(\sigma)$, which occurs in $C$. Then $\lifphi{y}\sigma' = y\sigma' = \lifphi{y\sigma}$.
+	\begin{itemize}
+		\item Suppose that $t$ is a grey constant or function symbol of the form $f(t_1, \dots, t_n)$.
+			Then we can derive the following, where (IH) signifies a deduction by virtue of the induction hypothesis. 
+			\begin{align*}
+				\lifboth{\lifboth{t}\tau} &= \lifboth{\lifboth{ f(t_1, \dots, t_n)}\tau} \\
+																										 &= \lifboth{ f(\lifboth{t_1}\tau, \dots, \lifboth{t_n}\tau) } \\
+																							 &= f(\lifboth{\lifboth{t_1}\tau}, \dots, \lifboth{\lifboth{t_n}\tau}) \\
+																					&\stackrel{\mathclap{\text{(IH)}}}= f(\lifboth{t_1\tau}, \dots, \lifboth{t_n\tau}) \\
+																			&= \lifboth{f(t_1, \dots, t_n)\tau} \\
+																		&= \lifboth{t\tau}
+			\end{align*}
+		\item Suppose that $t$ is a colored constant or function symbol. Then:
+			\[
+				\lifboth{\lifboth{t}\tau}= \lifboth{z_t\tau} 
+				= \lifboth{z_{t\sigma}} 
+				= z_{t\sigma} 
+				= \lifboth{t\sigma} 
+				= \lifboth{t\tau}
+			\]
+		\item Suppose that $t$ is a variable $x$. Then:
+			\[
+				\lifboth{\lifboth{t}\tau} = \lifboth{\lifboth{ x}\tau} = \lifboth{x\tau} = \lifboth{t\tau}
+			\]
+		\item Suppose that $t$ is a lifting variable $z_t$. Then:
+			\[
+				\lifboth{\lifboth{z_t}\tau} = \lifboth{z_t\tau} 
+				\qedhere
+			\]
+	\end{itemize}
 
-	Let $t$ be a maximal $\Phi$-term in $C$.
-	Then $\lifphi{ t\sigma} = z_{t\sigma}$.
-	But also $\lifphi{t}\sigma' = z_t\sigma' = z_{t\sigma}$.
-	%
-	%Suppose that $t\sigma = t$. Then $\lifphi{t}\sigma' = z_t\sigma' = z_{t\sigma}$.
-	% this does not happen due to unfold-lift
-	%Note that $z_r$ must not occur in $t$ for some term $r$, as $z_r\sigma = z_r$, but potentially $z_r\sigma' \neq z_r$.
-	%
-	%Otherwise it is the case that $t\sigma \neq t$.
-	%Then $\lifphi{t}\sigma' = z_t\sigma'$, and by the definition of $\sigma'$, $z_t\sigma' = z_{t\sigma}$.
 \end{proof}
+
+The formulation of this Lemma can however be improved.
+First, note that the outer lifting of the expression $\lifboth{\lifboth{\varphi}\tau}$ is only applied to terms introduced by $\tau$, which motivates the following definition:
+
+\begin{defi}[$\tauell$]
+	We define the substitution $\tauell$ on variables $x$ as follows: 
+	$x\tauell \spas\defeq \lifboth{x\tau}$.
+\end{defi}
+
+
+
+\begin{lemma}
+	\label{lemma:lifting_tau_commute_2}
+	For a formula or term $\varphi$,
+	$\lifboth{\varphi}\tauell = \lifboth{\varphi\tau}$.
+\end{lemma}
+\begin{proof}~
+	Immediate by Lemma~\ref{lemma:lifting_tau_commute} and the definition of $\tauell$.
+\end{proof}
+
+Second, if we can exclude the case of lifting variables, we can apply $\sigma$ as desired:
+\begin{lemma}
+	\label{lemma:lifting_tau_commute_2}
+	For a formula or term $\psi$ and a substitution $\sigma$, such that no lifting variable occurs in $\psi$ or $\sigma$,
+	$\lifboth{\psi}\tauell = \lifboth{\psi\sigma}$.
+\end{lemma}
+\begin{proof}
+	Immediate by \ref{lemma:lifting_tau_commute_2} and the definition of $\tau$.
+\end{proof}
+
+
+
+
+
+
+
+
 
 
 
@@ -299,13 +383,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			Otherwise $C \in \Delta$ and $\PI(C) = \top$.
 
 		\item{Resolution.}
-			Suppose the last rule application is an instance of resolution. Then it is of the following form:
-			\begin{prooftree}
-				\AxiomCm{C_1: D \lor l}
-				\AxiomCm{C_2: E \lor \lnot l'}
-				\RightLabelm{\quad l\sigma = l'\sigma}
-				\BinaryInfCm{C: (D\lor E)\sigma}
-			\end{prooftree}
+			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
 
 			By the induction hypothesis, we can assume that
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{\PI(C_2) \lor (E\lor \lnot l')_\Gamma}$,
@@ -354,12 +432,8 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			\end{enumerate}
 
 		\item{Factorisation.}
-			Suppose the last rule application is an instance of factorisation. Then it is of the following form:
-			\begin{prooftree}
-				\AxiomCm{C_1: l \lor l' \lor D}
-				\RightLabelm{\quad \sigma = \mgu(l, l')}
-				\UnaryInfCm{C: (l \lor D)\sigma}
-			\end{prooftree}
+			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
+
 			% Then $\PI(C) = \PI(C_1)\sigma$.
 
 			The induction hypothesis gives that
@@ -376,13 +450,9 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			This in turn is nothing else than $\Gamma \entails \lifdelta{\PI(C) \lor C}$.
 
 		\item{Paramodulation.}
-			Suppose the last rule application is an instance of paramodulation. Then it is of the following form:
-			\begin{prooftree}
-				\AxiomCm{C_1: D \lor s=t}
-				\AxiomCm{C_2: E\occurat{r}{p}}
-				\RightLabel{$\quad \sigma = \mgu(s, r)$}
-				\BinaryInfCm{C: (D \lor E\occurat{t}{p})\sigma}
-			\end{prooftree}
+			Suppose the clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of $C_1: s=t \lor   D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
+
+
 			By the induction hypothesis, we get that 
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor s=t)_\Gamma}$ and 
 			$\Gamma \entails \lifdelta{\PI(C_2) \lor (E\occurat{r}{p})_\Gamma}$.
@@ -503,7 +573,7 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 						\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
 													&\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
 													&= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
-													 &= \lnot \PI(\primex C)  
+													&= \lnot \PI(\primex C)  
 					\end{align*}
 				\item $l$ is $\Delta$-colored. This case can be argued analogously.
 
@@ -513,13 +583,13 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 					\begin{align*}
 						\PI(C) 
 						&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
-					 &=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
-					 &\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
-					&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
-				 &= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
-				 &= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
-				 &= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
-				 &= \lnot \PI(\p C)
+						&=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
+						&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
+						&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
+						&= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
+					 &= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
+					 &= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
+					 &= \lnot \PI(\p C)
 					\end{align*}
 
 			\end{enumerate}
@@ -536,10 +606,10 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-												&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-										 &\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-									 &\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-								 &= \lnot \PI(\primex C)
+													&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+													&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+													&\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+													&= \lnot \PI(\primex C)
 					\end{align*}
 
 				\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
@@ -547,10 +617,10 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 				\item Otherwise:
 					\begin{align*}
 						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
-												 &= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
-												&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
-											&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
-										&= \lnot \PI(\primex C)
+													&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
+													&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
+													&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
+													&= \lnot \PI(\primex C)
 						\qedhere
 					\end{align*}
 			\end{enumerate}
@@ -672,19 +742,19 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	On the other hand
 	$\lft{\Gamma}{y}{ \lft{\Delta}{x}{ \varphi}  } = \lft{\Gamma}{y}{ \psi }$ such that $\psi$ is equal to $\varphi$ besides having $x_t$ at position $p$.
 	But $\lft{\Gamma}{y}{ \psi } = y_{\expa(\psi)} = y_\varphi$.
-%	\begin{comment}
-%		Suppose a term $t$ in $C$ is affected by a lifting.
-%		We only need to consider maximal colored terms as grey terms are not affected by the liftings.
-%		Without loss of generality let $t$ be a maximal $\Delta$-colored term.
-%
-%		Let $\Phi$ be the positions of maximal occurrences of $t$.
-%		Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
-%
-%		In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
-%		However after this step,
-%		all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
-%		Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
-%	\end{comment}
+	%	\begin{comment}
+	%		Suppose a term $t$ in $C$ is affected by a lifting.
+	%		We only need to consider maximal colored terms as grey terms are not affected by the liftings.
+	%		Without loss of generality let $t$ be a maximal $\Delta$-colored term.
+	%
+	%		Let $\Phi$ be the positions of maximal occurrences of $t$.
+	%		Then in the left hand side, exactly all terms at positions $\Phi$ are replaced by $x_i$ for some $i$.
+	%
+	%		In the right hand side, all terms at positions $\Phi$ are replaced by $\lft{\Gamma}{y'}{t}$ first. 
+	%		However after this step,
+	%		all these terms are equal to $\lft{\Gamma}{y'}{t}$, and as all distinct maximal $\Gamma$-terms are replaced by distinct variables, no other maximal colored term is equal to $\lft{\Gamma}{y'}{t}$.
+	%		Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
+	%	\end{comment}
 \end{proof}
 
 
@@ -786,7 +856,7 @@ We conclude by presenting the algorithm on an a larger instance:
 
 	In the following tree, we show the propositional interpolant $\PI(C)$ for the corresponding clauses $C$ (in simplified form):
 	{
-			\def\defaultHypSeparation{\hskip 4.4em}
+		\def\defaultHypSeparation{\hskip 4.4em}
 		\begin{prooftree}
 
 			\AxiomCm{ \top  }
@@ -809,7 +879,7 @@ We conclude by presenting the algorithm on an a larger instance:
 			\BinaryInfCm{ \lnot Z(d) \lor  \big( (d = f(d) \land \lnot Z(f(d)) ) \lor (d \neq f(d) \land L(d, f(d))) \big)}
 		\end{prooftree}
 	}
-	
+
 
 	\noindent
 	Hence
@@ -818,13 +888,13 @@ We conclude by presenting the algorithm on an a larger instance:
 	\[ \forall x_d \exists y_{f(d)} \big( \lnot Z(x_d) \spam\lor  (x_d = y_{f(d)} \land \lnot Z(y_{f(d)}) ) \spam\lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) \big)\]
 	\qedhere
 
-		%neg:
-		%$ \exists x_d \forall y_{f(d)} ( Z(x_d) \land  (x_d \neq y_{f(d)} \lor Z(y_{f(d)}) ) \land (x_d = y_{f(d)} \lor \lnot L(x_d, y_{f(d)})) )$
+	%neg:
+	%$ \exists x_d \forall y_{f(d)} ( Z(x_d) \land  (x_d \neq y_{f(d)} \lor Z(y_{f(d)}) ) \land (x_d = y_{f(d)} \lor \lnot L(x_d, y_{f(d)})) )$
 
 
 
 
-		\begin{comment}
+	\begin{comment}
 		\begin{prooftree}
 
 
@@ -852,8 +922,8 @@ We conclude by presenting the algorithm on an a larger instance:
 
 
 		\end{prooftree}
-		\end{comment}
+	\end{comment}
 
-	
+
 \end{exa}
 
