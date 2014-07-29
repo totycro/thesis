@@ -152,6 +152,9 @@ $
 \lifphi{t}\sigma 
 $.
 
+In the following, we assume that substitutions unless explicitly defined otherwise do not affect lifting variables.
+This is justified as all substitutions which occur in resolution refutations have this property.
+
 \begin{exa}
 	\label{exa:lifting_commute}
 	~
@@ -162,7 +165,10 @@ $.
 			Then $\lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)}$.
 			However $\lifphi{t}\sigma = \lifphi{f(x)}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
 
+			This suggests that substitutions also have to lifted terms.
+
 		\item
+			\label{exa:lifting_commute_2}
 			Let $s=x$ be a variable and $\sigma = \{x\mapsto c\}$, where $c$ is a $\Phi$-term.
 			Then $\lifphi{s\sigma} = 
 			\lifphi{x\sigma} =
@@ -173,10 +179,14 @@ $.
 			x\sigma = 
 			c$.
 
+			In this case, we see that terms in $\ran(\sigma)$ have to be lifted when the substitution is pulled out of the lifting.
+
 		\item
 			Let $r = \lifphi{f(x)} = z_{f(x)}$.
 			Then $\lifphi{r\sigma} = \lifphi{z_{f(x)}\sigma} = \lifphi{z_{f(x)}} = z_{f(x)}$.
 			Here however, $\lifphi{r}\sigma = \lifphi{z_{f(x)}}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
+			This shows that obviously, as lifting variables are affected neither by substitutions nor liftings, arbitrary commutations of these can be performed. 
+			Note however that in case~\ref{exa:lifting_commute_1}, lifting variables have to be modified.
 			\qedhere
 	\end{enumerate}
 \end{exa}
@@ -202,12 +212,13 @@ This is vital for Item~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_c
 
 \addtocounter{exa}{-2}
 \begin{exa}[continued]
-	Using $\tau$, we can solve the first example as $\lifphi{t\tau} = \lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)} = z_{f(x)} \tau = \lifphi{f(x)}\tau = \lifphi{t}\tau$.
+	Using $\tau$, we can solve the first example as $\lifphi{t\tau} = \lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)} = z_{f(x)\sigma} = z_{f(x)} \tau = \lifphi{f(x)}\tau = \lifphi{t}\tau$.
 	However the second example can not be dealt with analogously.
 \end{exa}
 \addtocounter{exa}{1}
 
-Still, when all terms are in fact lifted, the commutation can be done in general:
+Now we realise the idea motivated by Item~\ref{exa:lifting_commute_2} of Example~\ref{exa:lifting_commute} and lift all terms.
+It turns out that in this formulation, commutation can be done in general:
 
 
 %\begin{exa}
@@ -224,7 +235,7 @@ Still, when all terms are in fact lifted, the commutation can be done in general
 %\end{exa}
 \begin{lemma}
 	\label{lemma:lifting_tau_commute}
-	For a formula or term $\varphi$ and a substitution $\sigma$ which does not affect lifting variables such that $\tau = \tau(\sigma)$,
+	For a formula or term $\varphi$ and a substitution $\sigma$ such that $\tau = \tau(\sigma)$,
 	$\lifboth{\lifboth{ \varphi} \tau} =\nolinebreak \lifboth{ \varphi \tau } $.
 \end{lemma}
 \begin{proof}
@@ -283,21 +294,13 @@ First, note that the outer lifting of the expression $\lifboth{\lifboth{\varphi}
 
 Second, if we can exclude the case of lifting variables, we can apply $\sigma$ as desired:
 \begin{lemma}
-	\label{lemma:lifting_tau_commute_2}
+	\label{lemma:lifting_tau_commute_3}
 	For a formula or term $\psi$ and a substitution $\sigma$, such that no lifting variable occurs in $\psi$ or $\sigma$,
 	$\lifboth{\psi}\tauell = \lifboth{\psi\sigma}$.
 \end{lemma}
 \begin{proof}
 	Immediate by \ref{lemma:lifting_tau_commute_2} and the definition of $\tau$.
 \end{proof}
-
-
-
-
-
-
-
-
 
 
 
@@ -329,6 +332,7 @@ Second, if we can exclude the case of lifting variables, we can apply $\sigma$ a
 \end{comment}
 
 
+Another lemma required for the proof is the following:
 
 
 \begin{lemma}
