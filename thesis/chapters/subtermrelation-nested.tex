@@ -38,6 +38,7 @@ Consider the following example:
 
 \section{Preliminaries}
 
+\begin{comment}
 First, we define a substitution which ensures that modifications to terms are also applied to lifting variables. Note that it is conceptually similar to $\sigma'$ as employed in Lemma~\ref{lemma:lif}.\todo{merge these concepts?}
 
 \begin{defi}[Substitution $\tau(\inference)$]
@@ -144,6 +145,7 @@ First, we define a substitution which ensures that modifications to terms are al
 	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
 \end{proof}
 
+\end{comment}
 
 \section{Interpolant extraction with simultaneous lifting}
 
@@ -305,51 +307,50 @@ Now, we proceed to the main lemma:
 		\item{} Resolution.
 			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
 
-			By the induction hypothesis and Lemma~\ref{lemma:lift_commute} we obtain that
+			By the induction hypothesis and Lemma~\ref{lemma:lift_logic_commute} we obtain that
 			$\Gamma \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma} \lor \lifdeltanovar{l_\Gamma}$
 			as well as 
 			$\Gamma \entails \lifdeltanovar{\LI(C_2)} \lor \lifdeltanovar{E_\Gamma} \lor \lnot \lifdeltanovar{l'_\Gamma}$.
-			Hence by Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute}, we get:
+			Now we apply $\tauelldelta$ and by Lemma~\ref{lemma:lifting_subst_commute} get that 
 
-			$\Gamma \stackrel\markA\entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{D_\Gamma\tau} \lor \lifdeltanovar{l_\Gamma\tau}$
+			$\Gamma \stackrel\markA\entails \lifdeltanovar{\LI(C_1)\sigma} \lor \lifdeltanovar{D_\Gamma\sigma} \lor \lifdeltanovar{l_\Gamma\sigma}$
 
-			$\Gamma \stackrel\markB\entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{E_\Gamma\tau} \lor \lnot \lifdeltanovar{l'_\Gamma\tau}$
+			$\Gamma \stackrel\markB\entails \lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{E_\Gamma\sigma} \lor \lnot \lifdeltanovar{l'_\Gamma\sigma}$
 
-			As $l_\Gamma\sigma = l'_\Gamma\sigma$,
-			it holds that $l_\Gamma\tau = l'_\Gamma\tau$ and consequently 
-			$\lifdeltanovar{l_\Gamma\tau} = \lifdeltanovar{l'_\Gamma\tau}$.
+			As $l_\Gamma\sigma \syneq l'_\Gamma\sigma$,
+			$\lifdeltanovar{l_\Gamma\sigma} = \lifdeltanovar{l'_\Gamma\sigma}$.
 			We proceed by a case distinction on the color of the resolved literal to show that in each case, we have that
 			$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$:
 			\begin{itemize}
 				\item Suppose that $l$ is $\Gamma$-colored.
 					Then $l_\Gamma = l$ and $l'_\Gamma = l$, and we can perform a resolution step on \markA{} and \markB{} to obtain that
 					$\Gamma \entails
-					\lifdeltanovar{\LI(C_1)\tau} \lor
-					\lifdeltanovar{\LI(C_2)\tau} \lor 
-					\lifdeltanovar{D_\Gamma\tau}  \lor
-					\lifdeltanovar{E_\Gamma\tau}$.
+					\lifdeltanovar{\LI(C_1)\sigma} \lor
+					\lifdeltanovar{\LI(C_2)\sigma} \lor 
+					\lifdeltanovar{D_\Gamma\sigma}  \lor
+					\lifdeltanovar{E_\Gamma\sigma}$.
 					This however is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 				\item Suppose that $l$ is $\Delta$-colored.
 					Then \markA{} and \markB{} reduce to 
-					$\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{D_\Gamma\tau}$
+					$\Gamma \entails \lifdeltanovar{\LI(C_1)\sigma} \lor \lifdeltanovar{D_\Gamma\sigma}$
 					and
-					$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{E_\Gamma\tau}$
+					$\Gamma \entails \lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{E_\Gamma\sigma}$
 					respectively,
 					which clearly implies that 
-					$\Gamma \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{\LI(C_2)\tau} \lor (\lifdeltanovar{D_\Gamma\tau} \land \lifdeltanovar{E_\Gamma\tau})$.
-					This is turn is however just the unfolding of
+					$\Gamma \entails \lifdeltanovar{\LI(C_1)\sigma} \lor \lifdeltanovar{\LI(C_2)\sigma} \lor (\lifdeltanovar{D_\Gamma\sigma} \land \lifdeltanovar{E_\Gamma\sigma})$.
+					This is turn is however just the unfolding of the definition of
 					$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 				\item Suppose that $l$ is grey.
 					Then $l_\Gamma = l$ and $l'_\Gamma = l$, and 
 					\markA{} and \markB{} imply that
 					$\Gamma \entails
-					\lifdeltanovar{\LI(C_1)\tau} \spam\lor
-					\lifdeltanovar{\LI(C_2)\tau} \spam\lor\allowbreak
-					(\lifdeltanovar{l_\Gamma\tau} \land \lifdeltanovar{E_\Gamma\tau}) \spam\lor\allowbreak
-					(\lnot\lifdeltanovar{l'_\Gamma\tau} \land \lifdeltanovar{D_\Gamma\tau})$.
-					This however is equivalent to
+					\lifdeltanovar{\LI(C_1)\sigma} \spam\lor
+					\lifdeltanovar{\LI(C_2)\sigma} \spam\lor\allowbreak
+					(\lifdeltanovar{l_\Gamma\sigma} \land \lifdeltanovar{E_\Gamma\sigma}) \spam\lor\allowbreak
+					(\lnot\lifdeltanovar{l'_\Gamma\sigma} \land \lifdeltanovar{D_\Gamma\sigma})$.
+					But this is equivalent to
 					$\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 			\end{itemize}
@@ -358,12 +359,12 @@ Now, we proceed to the main lemma:
 			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
 
 			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ \LI(C_1) } \lor \lifdeltanovar{ l_\Gamma \lor l'_\Gamma \lor D_\Gamma }$.
-			By Lemma~\ref{lemma:substitute_and_lift}
-			and Lemma~\ref{lemma:lifting_tau_commute}, we obtain
-			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l_\Gamma\tau \lor l'_\Gamma\tau \lor D_\Gamma\tau }$.
-			As however $l\sigma \equiv l'\sigma$, 
-			also $l\tau \equiv l'\tau$, so we can apply a factorisation step and obtain that
-			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\tau } \lor \lifdeltanovar{ l_\Gamma\tau \lor D_\Gamma\tau }$,
+			By applying $\tauelldelta$
+			and Lemma~\ref{lemma:lifting_subst_commute}, we obtain
+			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\sigma } \lor \lifdeltanovar{ l_\Gamma\sigma \lor l'_\Gamma\sigma \lor D_\Gamma\sigma }$.
+			As however $l\sigma \syneq l'\sigma$, 
+			also $\lifboth{l\sigma} = \lifboth{l'\sigma}$, so we can apply a factorisation step and obtain that
+			$\Gamma \entails \lifdeltanovar{ \LI(C_1)\sigma } \lor \lifdeltanovar{ l_\Gamma\sigma \lor D_\Gamma\sigma }$,
 			which is nothing else than $\Gamma \entails \LIpre(C) \lor \lifdeltanovar{C_\Gamma}$.
 
 		\item{} Paramodulation.
@@ -376,37 +377,37 @@ Now, we proceed to the main lemma:
 			$\Gamma \stackrel\markB\entails \lifdeltanovar{\LI(C_2)} \lor \lifdeltanovar{(E\occatp{r})_\Gamma}$
 
 			Suppose now that for a model $M$ of $\Gamma$ and an assignment $\alpha$ of the free variables of $\lifdeltanovar{s}$ and $\lifdeltanovar{t}$ that $M_\alpha \entails \lifdeltanovar{s}\neq \lifdeltanovar{t}$.
-			Then we get by \markA{} that $M_\alpha \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma}$, which by Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} gives $M_\alpha \entails \lifdeltanovar{\LI(C_1)\tau} \lor \lifdeltanovar{D_\Gamma\tau}$.
-			Note that $M_\alpha \entails \lifdeltanovar{s\tau}\neq \lifdeltanovar{t\tau} \land \lifdeltanovar{\LI(C_1)\tau}$ suffices for $M_\alpha \entails \lifdeltanovar{\LIpre(C)}$ and $M_\alpha \entails \lifdeltanovar{D_\Gamma\tau}$ implies that $M_\alpha \entails \lifdeltanovar{C_\Gamma}$.
+			Then we get by \markA{} that $M_\alpha \entails \lifdeltanovar{\LI(C_1)} \lor \lifdeltanovar{D_\Gamma}$, which by applying $\tauelldelta$ and Lemma~\ref{lemma:lifting_subst_commute} gives $M_\alpha \entails \lifdeltanovar{\LI(C_1)\sigma} \lor \lifdeltanovar{D_\Gamma\sigma}$.
+			Note that $M_\alpha \entails \lifdeltanovar{s\sigma}\neq \lifdeltanovar{t\sigma} \land \lifdeltanovar{\LI(C_1)\sigma}$ suffices for $M_\alpha \entails \lifdeltanovar{\LIpre(C)}$ and $M_\alpha \entails \lifdeltanovar{D_\Gamma\sigma}$ implies that $M_\alpha \entails \lifdeltanovar{C_\Gamma}$.
 			Therefore we obtain that 
 			$M_\alpha \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 			Now suppose to the contrary that for a model $M$ of $\Gamma$ that for any assignment of free variables $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t}$.
 
-			By Lemma~\ref{lemma:substitute_and_lift} and  Lemma~\ref{lemma:lifting_tau_commute} we obtain from \markB{} that
-			$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{r})_\Gamma\tau}$.
-			As however $\sigma = \mgu(r, s)$, $r\tau \equiv s\tau$
-			and hence $\lifdeltanovar{r\tau} \equiv \lifdeltanovar{s\tau}$.
+			By applying $\tauelldelta$ and  Lemma~\ref{lemma:lifting_subst_commute} we obtain from \markB{} that
+			$\Gamma \entails \lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{(E\occatp{r})_\Gamma\sigma}$.
+			As however $r\sigma \syneq s\sigma$,
+			$\lifdeltanovar{r\sigma} = \lifdeltanovar{s\sigma}$.
 			Therefore we also have that 
-			$\Gamma \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\tau}$.
+			$\Gamma \entails \lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$.
 
 			We proceed by a case distinction:
 			\begin{itemize}
 				\item Suppose that the position $p$ in $E\occatp{s}$ is not contained in a $\Delta$-term.
 					Then
-					$\lifdeltanovar{(E\occatp{s})_\Gamma\tau}$
+					$\lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$
 					and
-					$\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
+					$\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$
 					only differ at at position $p$.
-					As $M \entails \lifdeltanovar{s} = \lifdeltanovar{t}$, we can apply Lemma~\ref{lemma:substitute_and_lift} and Lemma~\ref{lemma:lifting_tau_commute} to obtain that 
-					$M \entails \lifdeltanovar{s\tau} = \lifdeltanovar{t\tau}$.
+					As $M \entails \lifdeltanovar{s} = \lifdeltanovar{t}$, we can apply $\tauelldelta$ and by Lemma~\ref{lemma:lifting_subst_commute} obtain that 
+					$M \entails \lifdeltanovar{s\sigma} = \lifdeltanovar{t\sigma}$.
 					Thus
-					$M\entails \lifdeltanovar{(E\occatp{s})_\Gamma\tau} \semiff 
-					\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
+					$M\entails \lifdeltanovar{(E\occatp{s})_\Gamma\sigma} \semiff 
+					\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$
 					and consequently
-					$M \entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\tau}$.
-					As furthermore $\lifdeltanovar{\tau s} =\lifdeltanovar{t} \land \lifdeltanovar{\LI(C_2)\tau}$ entails $\lifdeltanovar{\LIpre(C)}$
-					and $\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$ is sufficient for $\lifdeltanovar{C_\Gamma}$,
+					$M \entails \lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$.
+					As furthermore $\lifdeltanovar{s\sigma} =\lifdeltanovar{t\sigma} \land \lifdeltanovar{\LI(C_2)\sigma}$ entails $\lifdeltanovar{\LIpre(C)}$
+					and $\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$ is sufficient for $\lifdeltanovar{C_\Gamma}$,
 					we have that 
 					$M\entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
@@ -415,28 +416,28 @@ Now, we proceed to the main lemma:
 					We distinguish further:
 
 					\begin{itemize}
-						\item Suppose $h\occ{s}$ occurs more than once in $\LI(C_2)\tau \lor E\occatp{s}\tau$ and let $\alpha$ be an arbitrary assignment to the variables $\lifdeltanovar{h\occ{s}} = x_{h\occ{s}}$ and $\lifdeltanovar{h\occ{t}} = x_{h\occ{t}}$.
+						\item Suppose $h\occ{s}$ occurs more than once in $\LI(C_2)\sigma \lor E\occatp{s}\sigma$ and let $\alpha$ be an arbitrary assignment to the variables $\lifdeltanovar{h\occ{s}} = x_{h\occ{s}}$ and $\lifdeltanovar{h\occ{t}} = x_{h\occ{t}}$.\todo{lifting sym useful here}
 
 							If $M_\alpha \entails \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, then we have that $M_\alpha \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M_\alpha \entails \lifdeltanovar{\LIpre(C)}$.
 
 							%Assume that $M \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$ as otherwise $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M \entails \lifdeltanovar{\LIpre(C)}$.
 							Otherwise it holds that $M_\alpha \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$.
 							But then 
-							$\lifdeltanovar{(E\occatp{s})_\Gamma\tau}$
+							$\lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$
 							and
-							$\lifdeltanovar{(E\occatp{t})_\Gamma\tau}$
+							$\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$
 							differ in subterms which are equal in the given model and with the given interpretation of the free variables,
 							%at position of $h\occ{s}$ and $h\occ{t}$ respectively and
 							so by a similar line of argument as in the preceding case, we can deduce that $M \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C}$.
 
-						\item Suppose $h\occ{s}$ occurs exactly once in $\LI(C_2)\tau \lor E\occatp{s}\tau$.
-							Then the lifting variable $x_{h\occ{s}}$ 
-							occurs exactly once in $\lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{E\occatp{s}\tau}$.
+						\item Suppose $h\occ{s}$ occurs exactly once in $\LI(C_2)\sigma \lor E\occatp{s}\sigma$.
+							Then the lifting variable $x_{h\occ{s}}$\todo{lifting sym useful here}
+							occurs exactly once in $\lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{E\occatp{s}\sigma}$.
 
-							Note that from \markB{} by applying Lemma~\ref{lemma:substitute_and_lift} as well as Lemma~\ref{lemma:lifting_tau_commute}, we obtain that $M\entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\tau}$.
-							As $x_{h\occ{s}}$ occurs only once and free in this formula, it is implicitly universally quantified and we can instantiate it arbitrarily, in particular by $z_{h\occ{t}}$.
+							Note that from \markB{} by applying $\tauelldelta$ and Lemma~\ref{lemma:lifting_subst_commute}, we obtain that $M\entails \lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$.
+							As $x_{h\occ{s}}$ occurs only once and free in this formula, it is implicitly universally quantified and we can instantiate it arbitrarily, in particular by $x_{h\occ{t}}$.
 							But thereby we get that 
-							$M\entails \lifdeltanovar{\LI(C_2)\tau} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\tau}$, 
+							$M\entails \lifdeltanovar{\LI(C_2)\sigma} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$, 
 							which implies that
 							$\Gamma\entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 					\end{itemize}

@@ -310,7 +310,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 			$\Gamma \entails \lift{\Delta}{ \PI(C_2) \lor (E \lor \lnot l)_\Gamma }{x}$
 
-			which by Lemma \ref{lemma:lift_commute} is equivalent to
+			which by Lemma \ref{lemma:lift_logic_commute} is equivalent to
 
 			$\Gamma \entails \lift{\Delta}{ \PI(C_1) }{x} \lor
 			\lift{\Delta}{ D_\Gamma }{x} \lor
@@ -329,7 +329,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					$$\Gamma \entails\lift{\Delta}{ \PI(C_1) }{x} \lor \lift{\Delta}{ \PI(C_2) }{x} \lor
 					\lift{\Delta}{ D_\Gamma }{x} \lor
 					\lift{\Delta}{ E_\Gamma }{x}.$$
-					Several applications of Lemma \ref{lemma:lift_commute} give
+					Several applications of Lemma \ref{lemma:lift_logic_commute} give
 					$\Gamma \entails\lift{\Delta}{ \PI(C_1)  \lor  \PI(C_2) \lor (D \lor E)_\Gamma }{x}$.
 
 				\item Suppose $l$ is $\Delta$-colored.
@@ -346,7 +346,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 					So if in a model $M$ of $\Gamma$ we have that
 					$M \notentails \lift{\Delta}{ D_\Gamma }{x}$ and 
-					$M \notentails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $M \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $M \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_commute}
+					$M \notentails \lift{\Delta}{ E_\Gamma }{x}$, it follows that $M \entails \lift{\Delta}{ \PI(C_1) }{x}$ and $M \entails \lift{\Delta}{ \PI(C_2) }{x}$. Hence by Lemma~\ref{lemma:lift_logic_commute}
 					$M \entails \lift{\Delta}{ \PI(C_1) \land \PI(C_2) }{x} \lor
 					\lift{\Delta}{ (D \lor E)_\Gamma }{x}$.
 
@@ -375,7 +375,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 					Therefore
 					$M\entails (\lif{l} \land \lif{\PI(C_2)}) \lor (\lnot \lif{l} \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{E_\Gamma}) $,
-					and several applications of Lemma \ref{lemma:lift_commute} give
+					and several applications of Lemma \ref{lemma:lift_logic_commute} give
 					$M\entails \lif{(l \land \PI(C_2)) \lor (\lnot {l} \land {\PI(C_1)}) \lor ({D_\Gamma} \lor {E_\Gamma})} $.
 			\end{enumerate}
 
@@ -389,7 +389,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			The propositional interpolant directly carried over from $C_1$, i.e.~$\PI(C) = \PI(C_1)$.
 
 			By the induction hypothesis, we get that $\Gamma \entails \lif{\PI(C_1) \lor (l \lor l \lor D)_\Gamma}$.
-			By Lemma \ref{lemma:lift_commute}, 
+			By Lemma \ref{lemma:lift_logic_commute}, 
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor  \lif{l_\Gamma} \lor \lif{D_\Gamma})$,
 
@@ -397,7 +397,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor (\lif{l_\Gamma} \lor \lif{D_\Gamma})$,
 
-			so by again applying Lemma \ref{lemma:lift_commute}, we arrive at
+			so by again applying Lemma \ref{lemma:lift_logic_commute}, we arrive at
 
 			$\Gamma \entails \lif{\PI(C_1) \lor (l \lor D)_\Gamma}$.
 
@@ -416,7 +416,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 			$\Gamma \entails \lif{\PI(C_2) \lor (E\occurat{s}{p})_\Gamma}$.
 
-			By Lemma \ref{lemma:lift_commute}, we get that 
+			By Lemma \ref{lemma:lift_logic_commute}, we get that 
 
 			$\Gamma \entails \lif{\PI(C_1)} \lor \lif{D_\Gamma} \lor \lif{s}=\lif{t}$ and 
 
@@ -427,7 +427,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
 
 					We show that $\Gamma \entails \lif{ (s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) \lor (D \lor E\occurat{t}{p})_\Gamma}$, which subsumes the cases \ref{def:PI_paramod_2} and \ref{def:PI_paramod_3} of 
-					Definition \ref{def:PI_paramod}. By Lemma \ref{lemma:lift_commute}, this is equivalent to
+					Definition \ref{def:PI_paramod}. By Lemma \ref{lemma:lift_logic_commute}, this is equivalent to
 
 					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{(E\occurat{t}{p})_\Gamma})$
 

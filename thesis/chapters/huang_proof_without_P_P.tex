@@ -134,7 +134,7 @@ Some elementary properties of liftings are described by the following lemmas:
 
 
 \begin{lemma}[Commutativity of lifting and logical operators]
-	\label{lemma:lift_commute}
+	\label{lemma:lift_logic_commute}
 	Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
 	\begin{enumerate}
 		\item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
@@ -182,6 +182,7 @@ This is justified as all substitutions which occur in resolution refutations hav
 			In this case, we see that terms in $\ran(\sigma)$ have to be lifted when the substitution is pulled out of the lifting.
 
 		\item
+			\label{exa:lifting_commute_3}
 			Let $r = \lifphi{f(x)} = z_{f(x)}$.
 			Then $\lifphi{r\sigma} = \lifphi{z_{f(x)}\sigma} = \lifphi{z_{f(x)}} = z_{f(x)}$.
 			Here however, $\lifphi{r}\sigma = \lifphi{z_{f(x)}}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
@@ -194,7 +195,7 @@ This is justified as all substitutions which occur in resolution refutations hav
 As a first step towards a solution, we define a substitution which acts as a tool to ensure that modifications to terms are also applied to lifting variables.
 This is vital for Item~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_commute}.
 
-\begin{defi}
+\begin{defi}[$\tau$]
 	For a substitution $\sigma$ we define the infinite substitution $\tau(\sigma)$ with $\dom(\tau(\sigma)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
 
 	\[
@@ -277,8 +278,10 @@ The formulation of this Lemma can however be improved.
 First, note that the outer lifting of the expression $\lifboth{\lifboth{\varphi}\tau}$ is only applied to terms introduced by $\tau$, which motivates the following definition:
 
 \begin{defi}[$\tauell$]
-	We define the substitution $\tauell$ on variables $x$ as follows: 
-	$x\tauell \spas\defeq \lifboth{x\tau}$.
+	For a substitution $\sigma$, we define the infinite substitution $\tauellphi(\sigma)$ on variables $x$ as follows: 
+	$x\tauellphi(\sigma) \spas\defeq \lifphinovar{x\tau(\sigma)}$.
+
+	If $\sigma$ is clear from the context, we just write $\tauellphi$.
 \end{defi}
 
 
@@ -294,13 +297,18 @@ First, note that the outer lifting of the expression $\lifboth{\lifboth{\varphi}
 
 Second, if we can exclude the case of lifting variables, we can apply $\sigma$ as desired:
 \begin{lemma}
-	\label{lemma:lifting_tau_commute_3}
+	\label{lemma:lifting_subst_commute}
 	For a formula or term $\psi$ and a substitution $\sigma$, such that no lifting variable occurs in $\psi$ or $\sigma$,
 	$\lifboth{\psi}\tauell = \lifboth{\psi\sigma}$.
 \end{lemma}
 \begin{proof}
 	Immediate by \ref{lemma:lifting_tau_commute_2} and the definition of $\tau$.
 \end{proof}
+
+Note that if the formula or term contains lifting variables,
+it is not possible to perform the commutation with $\sigma$ as in Lemma~\ref{lemma:lifting_subst_commute}.
+As illustrated in Item~\ref{exa:lifting_commute_3} of Example~\ref{exa:lifting_commute}, in these cases, $\tauell$ would have to leave lifting variables unchanged, which contradicts other use cases.
+However in the context of interpolant extraction, one can deal with interpolants containing free occurrences of lifting variables by just employing $\tau$ in their construction instead of $\sigma$.
 
 
 
@@ -391,7 +399,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 
 			By the induction hypothesis, we can assume that
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{\PI(C_2) \lor (E\lor \lnot l')_\Gamma}$,
-			which by Lemma \ref{lemma:lift_commute} implies 
+			which by Lemma \ref{lemma:lift_logic_commute} implies 
 			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ and \markB{} $\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
 			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif}.
 
@@ -405,7 +413,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
 					Hence by applying $\sigma'$ to \markA{} and \markB{} (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and obtain
 					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma} \sigma' \spas\lor \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma} \sigma'$.
-					Now we apply Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute} in the other direction 
+					Now we apply Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute} in the other direction 
 					and get that 
 					$\Gamma \entails \lifdelta{\PI(C_1)\sigma \lor \PI(C_2)\sigma \lor\allowbreak (D \lor E)_\Gamma \sigma}$.
 					This however is nothing else than 
@@ -417,13 +425,13 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma}\sigma' $ and $\Gamma \entails \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma}\sigma'$.
 					These together imply that 
 					$\Gamma \entails \Big(\lifdelta{\PI(C_1)}\sigma' \spas\land \lifdelta{\PI(C_2)}\sigma'\Big) \spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \spas\lor\allowbreak \lifdelta{E_\Gamma}\sigma'$.
-					By Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif}, this is equivalent to 
+					By Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif}, this is equivalent to 
 					$\Gamma \entails \lifdelta{(\PI(C_1) \land \PI(C_2))\sigma \spas\lor (D \lor E)_\Gamma\sigma}$, which is nothing else than
 					$\Gamma \entails \lifdelta{\PI(C) \lor C_\Gamma}$.
 
 				\item $l$ is grey. Then $\PI(C) = [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_1))]\sigma$.
 
-					We show that $\Gamma \entails\allowbreak \lifdelta{ \Big((l \land \PI(C_2) ) \lor\allowbreak (\lnot l' \land \PI(C_2)) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, for which by Lemma~\ref{lemma:lift_commute} and Lemma~\ref{lemma:lif} it suffices to show that 
+					We show that $\Gamma \entails\allowbreak \lifdelta{ \Big((l \land \PI(C_2) ) \lor\allowbreak (\lnot l' \land \PI(C_2)) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, for which by Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif} it suffices to show that 
 					$\Gamma \entails\allowbreak \big(\lifdelta{l}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
 
 					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lifdelta{D_\Gamma}\sigma'$ and $M\notentails \lifdelta{E_\Gamma}\sigma'$ as otherwise we are done.
@@ -443,13 +451,13 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			The induction hypothesis gives that
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}$.
 			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif}.
-			Then $\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}\sigma'$ and by Lemma \ref{lemma:lif} and Lemma~\ref{lemma:lift_commute},
+			Then $\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}\sigma'$ and by Lemma \ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute},
 			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \spas\lor \lifdelta{l\sigma} \spas\lor \lifdelta{l'\sigma} \spas\lor \lifdelta{D\sigma}$.
 
 			As $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and hence $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
 			But then we can apply a factorisation step and get that
 			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \spas\lor \lifdelta{l\sigma} \spas\lor \lifdelta{D\sigma}$
-			which by Lemma \ref{lemma:lif} and Lemma \ref{lemma:lift_commute} is equivalent to 
+			which by Lemma \ref{lemma:lif} and Lemma \ref{lemma:lift_logic_commute} is equivalent to 
 			$\Gamma \entails\nolinebreak \lifdelta{\PI(C_1)\sigma \lor l\sigma \lor D\sigma}$.
 			This in turn is nothing else than $\Gamma \entails \lifdelta{\PI(C) \lor C}$.
 
@@ -460,7 +468,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			By the induction hypothesis, we get that 
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor s=t)_\Gamma}$ and 
 			$\Gamma \entails \lifdelta{\PI(C_2) \lor (E\occurat{r}{p})_\Gamma}$.
-			This is by Lemma~\ref{lemma:lift_commute} equivalent to
+			This is by Lemma~\ref{lemma:lift_logic_commute} equivalent to
 			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor \lifdelta{s} = \lifdelta{t}$
 			and \markB{} 
 			$\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{(E\occurat{r}{p})_\Gamma}$ respectively.
@@ -520,7 +528,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 					\spas{\lor}\allowbreak
 					\Big(\lifdelta{s\sigma} =\nolinebreak \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma}) \Big)
 					\spas\lor\allowbreak \Big(\lifdelta{D_\Gamma\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}\Big)$, 
-					which by Lemma~\ref{lemma:lift_commute} is nothing else than
+					which by Lemma~\ref{lemma:lift_logic_commute} is nothing else than
 					$\Gamma \entails \lifdelta{\PI(C) \lor C}$.
 
 				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$, which occurs more than once in $E\occat{s}{p}$.
@@ -535,7 +543,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 					\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land (\lifdelta{h\occur{s}}\sigma') \neq (\lifdelta{h\occur{t}}\sigma' )\Big) \spas\lor\allowbreak
 					\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
 
-					This however is by Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_commute} equivalent to $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
+					This however is by Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute} equivalent to $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
 					\qedhere
 			\end{enumerate}
 	\end{description}
