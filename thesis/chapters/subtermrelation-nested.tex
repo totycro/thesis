@@ -36,7 +36,6 @@ Consider the following example:
 
 %The key idea which enables this early lifting of colored terms is that proofs often consist of several parts which are independent of each other. 
 
-\section{Preliminaries}
 
 \begin{comment}
 First, we define a substitution which ensures that modifications to terms are also applied to lifting variables. Note that it is conceptually similar to $\sigma'$ as employed in Lemma~\ref{lemma:lif}.\todo{merge these concepts?}
@@ -169,21 +168,21 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then define $\LI(C)$ as follows:
 			\begin{enumerate}
 				\item If $l$ is $\Gamma$-colored:
-					$\LIpre(C) \defeq \LI(C_1)\tau\spas\lor \LI(C_2)\tau $
+					$\LIpre(C) \defeq \LI(C_1)\sigma\spas\lor \LI(C_2)\sigma $
 
 				\item If $l$ is $\Delta$-colored:
-					$\LIpre(C) \defeq \LI(C_1)\tau\spas\land \LI(C_2)\tau$
+					$\LIpre(C) \defeq \LI(C_1)\sigma\spas\land \LI(C_2)\sigma$
 
 				\item If $l$ is grey:
 					$\LIpre(C) \defeq
-					(l\tau \land \LI(C_2)\tau) \spas\lor
-					(\lnot l'\tau\land \LI(C_1)\tau)
+					(l\sigma \land \LI(C_2)\sigma) \spas\lor
+					(\lnot l'\sigma\land \LI(C_1)\sigma)
 					$
 
 			\end{enumerate}
 
 		\item{} Factorisation.
-			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\LIpre(C) \defeq \lifboth{\LI(C_1)\tau}$.
+			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\LIpre(C) \defeq \lifboth{\LI(C_1)\sigma}$.
 
 		\item{} Paramodulation.
 			If the clause $C$ is the result of a paramodulation step $\inference$ of $C_1 : s = t \lor D$ and $C_2: E\occ{r}$ with $\sigma = \mgu(\inference)$.
@@ -192,20 +191,20 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 
 			\begin{enumerate}
 
-				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $\LI(C_2)\tau \lor E\occ{r}\tau$:
+				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $\LI(C_2)\sigma \lor E\occ{r}\sigma$:
 					%\label{def:PI_paramod_1}
 					\newline
-					$\LIpre(C) \defeq  ( s=t \land \LI(C_2) )\tau \lor (s\neq t \land \LI(C_1))\tau \lor (s=t \land h\occur{s} \neq      h\occur{t})\tau$
+					$\LIpre(C) \defeq  ( s=t \land \LI(C_2) )\sigma \lor (s\neq t \land \LI(C_1))\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
 
-				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $\LI(C_2)\tau \lor E\occ{r}\tau$:
+				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $\LI(C_2)\sigma \lor E\occ{r}\sigma$:
 					%\label{def:PI_paramod_2}
 					\newline
-					$\LIpre(C)\defeq{} [ ( s=t \land \LI(C_2) )\tau \lor (s\neq t \land \LI(C_1))\tau ] \land\allowbreak (s\neq t \lor h\occur{s} = h\occur{t})\tau$
+					$\LIpre(C)\defeq{} [ ( s=t \land \LI(C_2) )\sigma \lor (s\neq t \land \LI(C_1))\sigma ] \land\allowbreak (s\neq t \lor h\occur{s} = h\occur{t})\sigma$
 
-				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in $\LI(C_2)\tau \lor E\occ{r}\tau$:
+				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in $\LI(C_2)\sigma \lor E\occ{r}\sigma$:
 					%\label{def:PI_paramod_3}
 					\newline
-					$\LIpre(C) \defeq{} ( s=t \land \LI(C_2) )\tau \lor (s\neq t \land \LI(C_1))\tau $ 
+					$\LIpre(C) \defeq{} ( s=t \land \LI(C_2) )\sigma \lor (s\neq t \land \LI(C_1))\sigma $ 
 
 			\end{enumerate}
 	\end{description}
@@ -570,20 +569,17 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 		\item[Resolution.]
 			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
 
-			As $\tau$ depends only on $\sigma$,
-			$\tau$ is the same for both $\pi$ and $\bhat \pi$.
-
-			We now distinguish the following cases:
+			We distinguish the following cases:
 
 			\begin{enumerate}
 
 				\item $l$ is $\Gamma$-colored:
 					\begin{align*}
 						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-						\LIpre(C)	&= \LI(C_1)\tau\spas\lor {\LI(C_2)\tau} \\
-															 &\semiff \lnot (\lnot{\LI(C_1)\tau}\spas\land \lnot {\LI(C_2)\tau}) \\
-						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\tau}\spas\land \lifboth{(\lnot \LI(C_2))\tau}) \\
-															 &\semiff \lnot ({\LI(\bhat C_1)\tau}\spas\land {\LI(\bhat C_2)\tau}) \\
+						\LIpre(C)	&= \LI(C_1)\sigma\spas\lor {\LI(C_2)\sigma} \\
+															 &\semiff \lnot (\lnot{\LI(C_1)\sigma}\spas\land \lnot {\LI(C_2)\sigma}) \\
+						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\sigma}\spas\land \lifboth{(\lnot \LI(C_2))\sigma}) \\
+															 &\semiff \lnot ({\LI(\bhat C_1)\sigma}\spas\land {\LI(\bhat C_2)\sigma}) \\
 															 &= \lnot \LIpre(\bhat C)
 					\end{align*}
 
@@ -591,19 +587,19 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 					This case can be argued analogously.
 
 				\item $l$ is grey:
-					Note ${l\tau} \stackrel{{\markB}}= {l'\tau}$.
+					Note ${l\sigma} \stackrel{{\markB}}= {l'\sigma}$.
 					\begin{align*}
 						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 						\LIpre(C) &\stackrel{{\phantom{\markB}}}=
-						(\lnot {{l'\tau}} \land {\LI(C_1)\tau}) \spam\lor 
-						({l\tau} \land {\LI(C_2)\tau})\\
+						(\lnot {{l'\sigma}} \land {\LI(C_1)\sigma}) \spam\lor 
+						({l\sigma} \land {\LI(C_2)\sigma})\\
 						&\stackrel{{\markB}}\semiff\,
-						({{l'\tau}} \lor {\LI(C_1)\tau}) \spam\land 
-						(\lnot {l\tau} \lor {\LI(C_2)\tau})\\
-						&\stackrel{{\phantom{\markB}}}\semiff \lnot [ (\lnot {{l'\tau}} \land \lnot {\LI(C_1)\tau}) \spam\lor 
-					({l\tau} \land \lnot{\LI(C_2)\tau}) ] \\
-					&\stackrel{{\phantom{\markB}}}=\lnot [ (\lnot {{\bhat l'\tau}} \land {\LI(\bhat C_1)\tau}) \spam\lor 
-				({\bhat l\tau} \land {\LI(\bhat C_2)\tau}) ]\\
+						({{l'\sigma}} \lor {\LI(C_1)\sigma}) \spam\land 
+						(\lnot {l\sigma} \lor {\LI(C_2)\sigma})\\
+						&\stackrel{{\phantom{\markB}}}\semiff \lnot [ (\lnot {{l'\sigma}} \land \lnot {\LI(C_1)\sigma}) \spam\lor 
+					({l\sigma} \land \lnot{\LI(C_2)\sigma}) ] \\
+					&\stackrel{{\phantom{\markB}}}=\lnot [ (\lnot {{\bhat l'\sigma}} \land {\LI(\bhat C_1)\sigma}) \spam\lor 
+				({\bhat l\sigma} \land {\LI(\bhat C_2)\sigma}) ]\\
 				& \stackrel{{\phantom{\markB}}}= \lnot \LIpre(\bhat C) 
 			\end{align*}
 	\end{enumerate}
@@ -613,9 +609,9 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 	Suppose the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
 	with $\sigma = \mgu(\inference)$.
 
-	As the construction is not influenced by the coloring, the induction hypothesis $\LIpre(C) = \LI(C_1)\tau$ suffices.
+	As the construction is not influenced by the coloring, the induction hypothesis $\LIpre(C) = \LI(C_1)\sigma$ suffices.
 
-	Then $\LIpre(C) = \lifboth{\LI(C_1)\tau}$, so the construction is not influenced by the coloring and by the induction hypothesis, $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$.
+	Then $\LIpre(C) = \lifboth{\LI(C_1)\sigma}$, so the construction is not influenced by the coloring and by the induction hypothesis, $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$.
 
 \item[Paramodulation.]
 	Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
@@ -632,10 +628,10 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 				\begin{align*}
 					%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 					\LIpre(C) 
-					&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \lor ({s\tau=t\tau} \land {h\occur{s}\tau \neq h\occur{t}\tau}) \\
-					&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \land ({s\tau= t\tau} \lor \lnot{\LI(C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
-					&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ] \\
-					&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) \land ({s\tau\neq t\tau} \lor {h\occur{s}\tau = h\occur{t}\tau}) ]\\
+					&= ({s\sigma=t\sigma} \land {\LI(C_2)\sigma} ) \lor ({s\sigma\neq t\sigma} \land {\LI(C_1)\sigma}) \lor ({s\sigma=t\sigma} \land {h\occur{s}\sigma \neq h\occur{t}\sigma}) \\
+					&\semiff \lnot [ ({s\sigma\neq t\sigma} \lor \lnot {\LI(C_2)\sigma} ) \land ({s\sigma= t\sigma} \lor \lnot{\LI(C_1)\sigma}) \land ({s\sigma\neq t\sigma} \lor {h\occur{s}\sigma = h\occur{t}\sigma}) ] \\
+					&= \lnot [ ({s\sigma\neq t\sigma} \lor {\LI(\bhat C_2)\sigma} ) \land ({s\sigma= t\sigma} \lor {\LI(\bhat C_1)\sigma}) \land ({s\sigma\neq t\sigma} \lor {h\occur{s}\sigma = h\occur{t}\sigma}) ] \\
+					&\semiff \lnot [ ({s\sigma= t\sigma} \land {\LI(\bhat C_2)\sigma} ) \lor ({s\sigma\neq t\sigma} \land {\LI(\bhat C_1)\sigma}) \land ({s\sigma\neq t\sigma} \lor {h\occur{s}\sigma = h\occur{t}\sigma}) ]\\
 					&= \lnot \LIpre(\bhat C)
 				\end{align*}
 			}\par
@@ -644,15 +640,16 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 			This case can be argued analogously.
 
 		\item Otherwise:
+			\todo{format like proof for $\PI$, if this are even kept as separate proofs}
 			%\hspace*{\dimexpr-\leftmargini-\leftmarginii-\leftmarginiii}\parbox{\linewidth}{%
 			%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
 			\begin{align*}
 				%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
 				\LIpre(C) 
-				&= ({s\tau=t\tau} \land {\LI(C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(C_1)\tau}) \\
-				&\semiff \lnot [ ({s\tau\neq t\tau} \lor \lnot {\LI(C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor \lnot {\LI(C_1)\tau}) ] \\
-				&= \lnot [ ({s\tau\neq t\tau} \lor {\LI(\bhat C_2)\tau} ) \spam\land ({s\tau= t\tau} \lor {\LI(\bhat C_1)\tau}) ] \\
-				&\semiff \lnot [ ({s\tau= t\tau} \land {\LI(\bhat C_2)\tau} ) \spam\lor ({s\tau\neq t\tau} \land {\LI(\bhat C_1)\tau}) ] \\
+				&= ({s\sigma=t\sigma} \land {\LI(C_2)\sigma} ) \spam\lor ({s\sigma\neq t\sigma} \land {\LI(C_1)\sigma}) \\
+				&\semiff \lnot [ ({s\sigma\neq t\sigma} \lor \lnot {\LI(C_2)\sigma} ) \spam\land ({s\sigma= t\sigma} \lor \lnot {\LI(C_1)\sigma}) ] \\
+				&= \lnot [ ({s\sigma\neq t\sigma} \lor {\LI(\bhat C_2)\sigma} ) \spam\land ({s\sigma= t\sigma} \lor {\LI(\bhat C_1)\sigma}) ] \\
+				&\semiff \lnot [ ({s\sigma= t\sigma} \land {\LI(\bhat C_2)\sigma} ) \spam\lor ({s\sigma\neq t\sigma} \land {\LI(\bhat C_1)\sigma}) ] \\
 				&= \lnot \LIpre(\bhat C)
 			\end{align*}
 			%}\par

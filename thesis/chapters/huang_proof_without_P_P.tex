@@ -399,8 +399,12 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 
 			By the induction hypothesis, we can assume that
 			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{\PI(C_2) \lor (E\lor \lnot l')_\Gamma}$,
-			which by Lemma \ref{lemma:lift_logic_commute} implies 
-			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ and \markB{} $\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
+			which by Lemma \ref{lemma:lift_logic_commute} implies the following:
+
+			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ 
+			
+			\markB{} $\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
+
 			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif}.
 
 			We proceed by a case distinction on the color of $l$:
@@ -582,9 +586,9 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 			\begin{enumerate}
 				\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
 					\begin{align*}
-						\PI(C) &= \PI(C_1) \lor \PI(C_2)\\
-													&\semiff \lnot ( \lnot \PI(C_1) \land \lnot \PI(C_2) )\\
-													&= \lnot ( \PI(\primex C_1) \land \PI(\primex C_2) ) \\
+						\PI(C) &= \PI(C_1)\sigma \lor \PI(C_2)\sigma\\
+													&\semiff \lnot ( \lnot \PI(C_1)\sigma \land \lnot \PI(C_2)\sigma )\\
+													&= \lnot ( \PI(\primex C_1)\sigma \land \PI(\primex C_2)\sigma ) \\
 													&= \lnot \PI(\primex C)  
 					\end{align*}
 				\item $l$ is $\Delta$-colored. This case can be argued analogously.
@@ -594,7 +598,6 @@ The symmetry-property of $\PI$ can be stated formally as follows:
 					\nopagebreak 
 					\begin{align*}
 						\PI(C) 
-						&=  [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1))] \sigma\\
 						&=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
 						&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
 						&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
