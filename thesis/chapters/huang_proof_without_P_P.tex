@@ -19,8 +19,68 @@ These are eliminated (lifted) by replacing them with bound variables whose quant
 \section{Extraction of propositional interpolants}
 
 We define a procedure $\PI$, which produces propositional interpolants from resolution refutations and is based on the ``Interpolation algorithm'' in \cite{Huang95}.
+It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 
-\begin{defi}[Propositional interpolant extraction.]
+\begin{defi}[$\PIinit$]
+	For clauses $C \in \Gamma\cup\Delta$, we define $\PIinit(C)$ as follows:
+
+	If $C \in \Gamma$, $\PI(C) \defeq \bot$.
+	If otherwise $C \in \Delta$, $\PI(C) \defeq \top$.
+\end{defi}
+
+\begin{defi}[$\PIstep$]
+	Let $\inference$ be an inference of a resolution refutation of $\Gamma\cup\Delta$ which derives $C$ from from formulas $\bar C = C_1, \dots, C_n$ where $n=1$  if $\inference$ is a factorisation inference or $n=2$. 
+	Let $\bar I = I_1, \dots, I_n$ be formulas.
+
+	Then $\PIstep(\inference, \bar I)$ is defined according to the following cases:
+
+	\begin{itemize}
+		\item[Resolution.]
+			\label{def:PI_resolution}
+
+			If $\inference$ is a resolution inference of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$, then $\PIstep(\inference, I_1, I_2)$ is defined as follows:
+			%$\PI(C)$ is defined according to this case distinction:
+			\begin{enumerate}
+				\item If $l$ is $\Gamma$-colored: $\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \lor I_2]\sigma$
+				\item If $l$ is $\Delta$-colored: $\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \land I_2]\sigma$
+				\item If $l$ is grey: $\PIstep(\inference, I_1, I_2) \defeq{} [(l \land I_2) \lor (\lnot l' \land I_1) ]\sigma $
+			\end{enumerate}
+
+		\item[Factorisation.]
+			If $\inference$ is a factorisation inference of $C_1: l \lor l' \lor D$ with $\sigma = \mgu(\inference)$,
+			then $\PIstep(\inference, I_1) \defeq I_1\sigma$.
+
+		\item[Paramodulation.]
+			\label{def:PI_paramod}
+			Suppose that $\inference$ is a paramodulation inference of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ 
+			with $\sigma = \mgu(\inference)$ such that $s\sigma = r\sigma$.
+			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
+			Then $\PIstep(\inference, I_1, I_2)$ is defined according to the following case distinction:
+
+			\begin{enumerate}
+				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occur{r})\sigma$:
+					\label{def:PI_paramod_1}
+					\newline
+					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
+				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occur{r})\sigma$:
+					\label{def:PI_paramod_2}
+					\newline
+					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \land (s\neq t \lor h\occur{s} =     h\occur{t})\sigma$
+				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in\nolinebreak{} $(I_2 \lor E\occur{r})\sigma$:
+					\label{def:PI_paramod_3}
+					\newline
+					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma$ \qedhere
+
+			\end{enumerate}
+
+	\end{itemize}
+
+
+\end{defi}
+
+
+
+\begin{defi}[Propositional interpolant $\PI$]
 	\label{def:PI}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
@@ -28,51 +88,10 @@ We define a procedure $\PI$, which produces propositional interpolants from reso
 	For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
 	\begin{itemize}
 		\item[Base case.]
-			If $C \in \Gamma$, $\PI(C) \defeq \bot$.
-			If otherwise $C \in \Delta$, $\PI(C) \defeq \top$.
-		\item[Resolution.]
-			\label{def:PI_resolution}
-			%Suppose the clause $C$ is the result of a resolution step. Then it has the following form: 
+			If $C \in \Gamma\cup\Delta$, then $\PI(C) \defeq \PIinit(C)$.
+		\item[Induction step.]
+			If $C$ is the result of an inference $\inference$ using the clauses $\bar C$, then $\PI(C) \defeq \PIstep(\inference, \PI(C_1), \dots, \PI(C_n))$.
 
-			% \begin{prooftree}
-			%   \AxiomCm{C_1: D \lor l}
-			%   \AxiomCm{C_2: E \lor \lnot l'}
-			%   \RightLabelm{\quad l\sigma = l'\sigma}
-			%   \BinaryInfCm{C: (D\lor E)\sigma}
-			% \end{prooftree}
-			%\todo{write as prooftree? (not necessary, but nicer)}
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C)$ is defined as follows:
-			%$\PI(C)$ is defined according to this case distinction:
-			\begin{enumerate}
-				\item If $l$ is $\Gamma$-colored: $\PI(C) \defeq{} [\PI(C_1) \lor \PI(C_2)]\sigma$
-				\item If $l$ is $\Delta$-colored: $\PI(C) \defeq{} [\PI(C_1) \land \PI(C_2)]\sigma$
-				\item If $l$ is grey: $\PI(C) \defeq{} [(l \land \PI(C_2)) \lor (\lnot l' \land \PI(C_1)) ]\sigma $
-			\end{enumerate}
-
-		\item[Factorisation.]
-			If the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\PI(C) = \PI(C_1)\sigma$.
-
-		\item[Paramodulation.]
-			\label{def:PI_paramod}
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a       unifier $\sigma$ such that $r\sigma = s\sigma$.
-			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
-			Then $\PI(C)$ is defined according to the following case distinction:
-			\begin{enumerate}
-
-				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-					\label{def:PI_paramod_1}
-					\newline
-					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
-				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$:
-					\label{def:PI_paramod_2}
-					\newline
-					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \land (s\neq t \lor h\occur{s} =     h\occur{t})\sigma$
-				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in\nolinebreak{} $E\occur{r}$:
-					\label{def:PI_paramod_3}
-					\newline
-					$\PI(C) \defeq{} [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma$ \qedhere
-
-			\end{enumerate}
 
 	\end{itemize}
 \end{defi}
@@ -247,11 +266,11 @@ It turns out that in this formulation, commutation can be done in general:
 			Then we can derive the following, where (IH) signifies a deduction by virtue of the induction hypothesis. 
 			\begin{align*}
 				\lifboth{\lifboth{t}\tau} &= \lifboth{\lifboth{ f(t_1, \dots, t_n)}\tau} \\
-																										 &= \lifboth{ f(\lifboth{t_1}\tau, \dots, \lifboth{t_n}\tau) } \\
-																							 &= f(\lifboth{\lifboth{t_1}\tau}, \dots, \lifboth{\lifboth{t_n}\tau}) \\
-																					&\stackrel{\mathclap{\text{(IH)}}}= f(\lifboth{t_1\tau}, \dots, \lifboth{t_n\tau}) \\
-																			&= \lifboth{f(t_1, \dots, t_n)\tau} \\
-																		&= \lifboth{t\tau}
+																													&= \lifboth{ f(\lifboth{t_1}\tau, \dots, \lifboth{t_n}\tau) } \\
+																											&= f(\lifboth{\lifboth{t_1}\tau}, \dots, \lifboth{\lifboth{t_n}\tau}) \\
+																									&\stackrel{\mathclap{\text{(IH)}}}= f(\lifboth{t_1\tau}, \dots, \lifboth{t_n\tau}) \\
+																							&= \lifboth{f(t_1, \dots, t_n)\tau} \\
+																					 &= \lifboth{t\tau}
 			\end{align*}
 		\item Suppose that $t$ is a colored constant or function symbol. Then:
 			\[
@@ -371,20 +390,106 @@ Another lemma required for the proof is the following:
 \section{Main lemma}
 \label{sec:two_phase_main_lemma}
 
-By lifting the propositional interpolant, we are able to already obtain a formula partially fulfilling the requirements for interpolants:
+By lifting the propositional interpolant, we are able to already obtain a formula partially fulfilling the requirements for interpolants.
+The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectively to be later combined to a result for $\PI$.
+
+\mytodo{ do both proofs and combine them for $\PI$}
+
+\mytodo{make sure to explain $C_\Gamma$ notation}
+\begin{lemma}
+	Let $C$ be an clause in $\Gamma \cup \Delta$ 
+	Then $\Gamma \entails \lifdelta{\PIinit(C) \lor\nolinebreak C_\Gamma} $.
+\end{lemma}
 
 
-%Now we show the ``main'' lemma of Huang's proof without using a propositional deduction $P_P$.
-%The remaining part of his proof after this lemma does not use the restriction to propositional deductions and hence goes through.
+
 
 \begin{lemma}
-	\label{lemma:gamma_entails_lifted_interpolant}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
-	Then for a clause $C$ in $\pi$,
-	$ \Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C} $.
+	Let $\inference$ be an inference in a resolution refutation of $\Gamma \cup \Delta$ using the clauses $\bar C = C_1, \dots, C_n$
+	and let $\bar I = I_1, \dots, I_n$ be formulas such that 
+	$\Gamma \entails \lifdelta{I_i \lor\nolinebreak (C_i)_\Gamma} $ for $1 \varleq i \varleq n$.
+	Then
+	$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor\nolinebreak C_\Gamma} $.
+
 \end{lemma}
 
 \begin{proof}
+	\begin{description}
+		\item{Resolution.}
+			Suppose that $\inference$ is a resolution inference of the clauses $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
+
+			We may assume that 
+			$\Gamma \entails \lifdelta{I_1 \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{I_2 \lor (E\lor \lnot l')_\Gamma}$,
+			which by Lemma \ref{lemma:lift_logic_commute} implies the following:
+
+			\markA{} $\Gamma \entails \lifdelta{I_1} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ 
+
+			\markB{} $\Gamma \entails \lifdelta{I_2} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
+
+			We proceed by a case distinction on the color of $l$:
+			\begin{enumerate}
+				\item $l$ is $\Gamma$-colored. Then $\PIstep(\inference, \bar I) = [\PI(C_1\label{aou5jklah}) \lor I_2]\sigma$.
+					\label{aou5jklah}
+
+					Since $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and therefore $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
+					As by Lemma~\ref{lemma:lifting_subst_commute} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
+					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
+					Hence by applying $\sigma'$ to \markA{} and \markB{} (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and obtain
+					$\Gamma \entails \lifdelta{I_1}\sigma' \spas\lor \lifdelta{D_\Gamma} \sigma' \spas\lor \lifdelta{I_2}\sigma' \spas\lor \lifdelta{E_\Gamma} \sigma'$.
+					Now we apply Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute} in the other direction 
+					and get that 
+					$\Gamma \entails \lifdelta{I_1\sigma \lor I_2\sigma \lor\allowbreak (D \lor E)_\Gamma \sigma}$.
+					This however is nothing else than 
+					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
+
+				\item $l$ is $\Delta$-colored. Then $\PIstep(\inference, \bar I) = [I_1 \land I_2]\sigma$.
+
+					As $l$ and $l'$ are $\Delta$-colored, we can simplify \markA{} and \markB{} as follows and apply $\sigma'$:
+					$\Gamma \entails \lifdelta{I_1}\sigma' \spas\lor \lifdelta{D_\Gamma}\sigma' $ and $\Gamma \entails \lifdelta{I_2}\sigma' \spas\lor \lifdelta{E_\Gamma}\sigma'$.
+					These together imply that 
+					$\Gamma \entails \Big(\lifdelta{I_1}\sigma' \spas\land \lifdelta{I_2}\sigma'\Big) \spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \spas\lor\allowbreak \lifdelta{E_\Gamma}\sigma'$.
+					By Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif}, this is equivalent to 
+					$\Gamma \entails \lifdelta{(I_1 \land I_2)\sigma \spas\lor (D \lor E)_\Gamma\sigma}$, which is nothing else than
+					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
+
+				\item $l$ is grey. Then $\PIstep(\inference, \bar I) = [(l \land I_2 ) \lor (\lnot l' \land I_1)]\sigma$.
+
+					We show that $\Gamma \entails\allowbreak \lifdelta{ \Big((l \land I_2 ) \lor\allowbreak (\lnot l' \land I_2) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, for which by Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif} it suffices to show that 
+					$\Gamma \entails\allowbreak \big(\lifdelta{l}\sigma' \land \lifdelta{I_2}\sigma'\big)\spas\lor\allowbreak \big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{I_2}\sigma'\big)\spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
+
+					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lifdelta{D_\Gamma}\sigma'$ and $M\notentails \lifdelta{E_\Gamma}\sigma'$ as otherwise we are done.
+					But then by \markA{} and \markB{}, we get that 
+					$M \entails \lifdelta{I_1}\sigma' \lor \lifdelta{l}\sigma'$ and
+					$M \entails\nolinebreak \lifdelta{I_2}\sigma' \lor \lnot\lifdelta{l'}\sigma'$.
+					As observed in case \ref{aou5jklah}, $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
+					We obtain the result by a case distinction on the truth value of $\lifdelta{l}\sigma'$.
+
+			\end{enumerate}
+	\end{description}
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:gamma_entails_lifted_interpolant}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $C$ be a clause occurring in $\pi$
+	Then $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
+\end{lemma}
+\begin{proof}
+	We proceed by induction on the strengthening
+	Then $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$.
+
+	If $C \in \Gamma\cup\Delta$, then by Lemma~TODO gives the result.
+
+	For clauses $C$ inferred by $\inference$ from the clauses $C_1, \dots, C_n$, $\PI(C) = \PIstep(\inference, \PI(C_1), \dots, \PI(C_n))$.
+	By induction hypothesis, $\Gamma \entails \lifdelta{\PI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
+	Lemma~TODO gives the induction step.
+\end{proof}
+
+
+{\tiny
+
+
+\begin{proof}
+	\largered{OLD}
 	We proceed by induction on the resolution refutation of the strengthening $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$,
 	where $D_\Phi$ denotes the clause created from $D$ by removing all literals which are not contained $\Lang(\Phi)$.
 	%i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
@@ -402,7 +507,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			which by Lemma \ref{lemma:lift_logic_commute} implies the following:
 
 			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ 
-			
+
 			\markB{} $\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
 
 			\mytodo{ HERE }
@@ -554,6 +659,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			\end{enumerate}
 	\end{description}
 \end{proof}
+}
 
 
 \section{Symmetry of the extracted interpolants}
@@ -564,6 +670,18 @@ The interpolant extraction procedure $\PI$ exhibits a convenient property which 
 The symmetry-property of $\PI$ can be stated formally as follows:
 
 \newcommand{\primex}[1]{\ensuremath{\bhat{#1}}}
+lemma: symm for $\PIinit$
+
+\begin{lemma}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	$\PIstep(\inference, I_1, I_2) \semiff \PIstep(\primex\inference, \primex I_1, \primex I_2)$
+
+	\mytodo{ICI: formulate appropraitely, make sure it goes through: check what the $I$'s have to fulfill (should be obvious from proof)}
+
+	\mytodo{make sure induction goes through with $\PI$ then}
+\end{lemma}
+
 \begin{lemma}
 	\label{lemma:symmetry}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
