@@ -391,275 +391,196 @@ Another lemma required for the proof is the following:
 \label{sec:two_phase_main_lemma}
 
 By lifting the propositional interpolant, we are able to already obtain a formula partially fulfilling the requirements for interpolants.
-The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectively to be later combined to a result for $\PI$.
+The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectively to be later combined to a result for\nolinebreak{} $\PI$.
 
-\mytodo{ do both proofs and combine them for $\PI$}
-
-\mytodo{make sure to explain $C_\Gamma$ notation}
 \begin{lemma}
+	\label{lemma:gamma_entails_init}
 	Let $C$ be an clause in $\Gamma \cup \Delta$ 
-	Then $\Gamma \entails \lifdelta{\PIinit(C) \lor\nolinebreak C_\Gamma} $.
+	Then $\Gamma \entails \lifdelta{\PIinit(C) \lor\nolinebreak C_\Gamma}$.
 \end{lemma}
-
+\begin{proof}
+	If $C \in \Gamma$, then $\Gamma \entails \lifdelta{C_\Gamma}$ as $C_\Gamma = C$ and $\lifdelta{C} = C$.
+	Otherwise $C \in \Gamma$, but then $\PIinit(C) =\nolinebreak{} \top$.
+\end{proof}
 
 
 
 \begin{lemma}
+	\label{lemma:gamma_entails_step}
 	Let $\inference$ be an inference in a resolution refutation of $\Gamma \cup \Delta$ using the clauses $\bar C = C_1, \dots, C_n$
 	and let $\bar I = I_1, \dots, I_n$ be formulas such that 
 	$\Gamma \entails \lifdelta{I_i \lor\nolinebreak (C_i)_\Gamma} $ for $1 \varleq i \varleq n$.
 	Then
 	$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor\nolinebreak C_\Gamma} $.
-
 \end{lemma}
-
 \begin{proof}
+	We distinguish based on the type of $\inference$.
 	\begin{description}
 		\item{Resolution.}
 			Suppose that $\inference$ is a resolution inference of the clauses $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
 
-			We may assume that 
-			$\Gamma \entails \lifdelta{I_1 \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{I_2 \lor (E\lor \lnot l')_\Gamma}$,
-			which by Lemma \ref{lemma:lift_logic_commute} implies the following:
+			By Lemma~\ref{lemma:lift_logic_commute} we obtain from the assumption that
+			$\Gamma \entails \lifdeltanovar{I_1} \lor \lifdeltanovar{D_\Gamma} \lor \lifdeltanovar{l_\Gamma}$
+			as well as 
+			$\Gamma \entails \lifdeltanovar{I_2} \lor \lifdeltanovar{E_\Gamma} \lor \lnot \lifdeltanovar{l'_\Gamma}$.
+			Now we apply $\tauelldelta$ and by Lemma~\ref{lemma:lifting_subst_commute} get that:
 
-			\markA{} $\Gamma \entails \lifdelta{I_1} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ 
+			$\Gamma \stackrel\markA\entails \lifdeltanovar{I_1\sigma} \lor \lifdeltanovar{D_\Gamma\sigma} \lor \lifdeltanovar{l_\Gamma\sigma}$
 
-			\markB{} $\Gamma \entails \lifdelta{I_2} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
+			$\Gamma \stackrel\markB\entails \lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{E_\Gamma\sigma} \lor \lnot \lifdeltanovar{l'_\Gamma\sigma}$
 
-			We proceed by a case distinction on the color of $l$:
-			\begin{enumerate}
-				\item $l$ is $\Gamma$-colored. Then $\PIstep(\inference, \bar I) = [\PI(C_1\label{aou5jklah}) \lor I_2]\sigma$.
-					\label{aou5jklah}
+			As $l_\Gamma\sigma \syneq l'_\Gamma\sigma$,
+			we also have that
+			$\lifdeltanovar{l_\Gamma\sigma} = \lifdeltanovar{l'_\Gamma\sigma}$.
+			We proceed by a case distinction on the color of the resolved literal to show that in each case, we have that
+			$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$,
+			which by Lemma~\ref{lemma:lift_logic_commute} suffices for the result.
+			\begin{itemize}
+				\item Suppose that $l$ is $\Gamma$-colored.
+					Then $l_\Gamma = l$ and $l'_\Gamma = l$, and we can perform a resolution step on \markA{} and \markB{} to obtain that
+					$\Gamma \entails
+					\lifdeltanovar{I_1\sigma} \lor
+					\lifdeltanovar{I_2\sigma} \lor 
+					\lifdeltanovar{D_\Gamma\sigma}  \lor
+					\lifdeltanovar{E_\Gamma\sigma}$.
+					This however is nothing else than $\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$.
 
-					Since $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and therefore $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
-					As by Lemma~\ref{lemma:lifting_subst_commute} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
-					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
-					Hence by applying $\sigma'$ to \markA{} and \markB{} (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and obtain
-					$\Gamma \entails \lifdelta{I_1}\sigma' \spas\lor \lifdelta{D_\Gamma} \sigma' \spas\lor \lifdelta{I_2}\sigma' \spas\lor \lifdelta{E_\Gamma} \sigma'$.
-					Now we apply Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute} in the other direction 
-					and get that 
-					$\Gamma \entails \lifdelta{I_1\sigma \lor I_2\sigma \lor\allowbreak (D \lor E)_\Gamma \sigma}$.
-					This however is nothing else than 
-					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
+				\item Suppose that $l$ is $\Delta$-colored.
+					Then \markA{} and \markB{} reduce to 
+					$\Gamma \entails \lifdeltanovar{I_1\sigma} \lor \lifdeltanovar{D_\Gamma\sigma}$
+					and
+					$\Gamma \entails \lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{E_\Gamma\sigma}$
+					respectively,
+					which clearly implies that 
+					$\Gamma \entails \lifdeltanovar{I_1\sigma} \lor \lifdeltanovar{I_2\sigma} \lor (\lifdeltanovar{D_\Gamma\sigma} \land \lifdeltanovar{E_\Gamma\sigma})$.
+					This is turn is however just the unfolding of the definition of
+					$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$.
 
-				\item $l$ is $\Delta$-colored. Then $\PIstep(\inference, \bar I) = [I_1 \land I_2]\sigma$.
+				\item Suppose that $l$ is grey.
+					Then $l_\Gamma = l$ and $l'_\Gamma = l$, and 
+					\markA{} and \markB{} imply that
+					$\Gamma \entails
+					\lifdeltanovar{I_1\sigma} \spam\lor
+					\lifdeltanovar{I_2\sigma} \spam\lor\allowbreak
+					(\lifdeltanovar{l_\Gamma\sigma} \land \lifdeltanovar{E_\Gamma\sigma}) \spam\lor\allowbreak
+					(\lnot\lifdeltanovar{l'_\Gamma\sigma} \land \lifdeltanovar{D_\Gamma\sigma})$.
+					But this is equivalent to
+					$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$.
 
-					As $l$ and $l'$ are $\Delta$-colored, we can simplify \markA{} and \markB{} as follows and apply $\sigma'$:
-					$\Gamma \entails \lifdelta{I_1}\sigma' \spas\lor \lifdelta{D_\Gamma}\sigma' $ and $\Gamma \entails \lifdelta{I_2}\sigma' \spas\lor \lifdelta{E_\Gamma}\sigma'$.
-					These together imply that 
-					$\Gamma \entails \Big(\lifdelta{I_1}\sigma' \spas\land \lifdelta{I_2}\sigma'\Big) \spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \spas\lor\allowbreak \lifdelta{E_\Gamma}\sigma'$.
-					By Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif}, this is equivalent to 
-					$\Gamma \entails \lifdelta{(I_1 \land I_2)\sigma \spas\lor (D \lor E)_\Gamma\sigma}$, which is nothing else than
-					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
+			\end{itemize}
 
-				\item $l$ is grey. Then $\PIstep(\inference, \bar I) = [(l \land I_2 ) \lor (\lnot l' \land I_1)]\sigma$.
 
-					We show that $\Gamma \entails\allowbreak \lifdelta{ \Big((l \land I_2 ) \lor\allowbreak (\lnot l' \land I_2) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, for which by Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif} it suffices to show that 
-					$\Gamma \entails\allowbreak \big(\lifdelta{l}\sigma' \land \lifdelta{I_2}\sigma'\big)\spas\lor\allowbreak \big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{I_2}\sigma'\big)\spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
+		\item{} Factorisation. 
+			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
 
-					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lifdelta{D_\Gamma}\sigma'$ and $M\notentails \lifdelta{E_\Gamma}\sigma'$ as otherwise we are done.
-					But then by \markA{} and \markB{}, we get that 
-					$M \entails \lifdelta{I_1}\sigma' \lor \lifdelta{l}\sigma'$ and
-					$M \entails\nolinebreak \lifdelta{I_2}\sigma' \lor \lnot\lifdelta{l'}\sigma'$.
-					As observed in case \ref{aou5jklah}, $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
-					We obtain the result by a case distinction on the truth value of $\lifdelta{l}\sigma'$.
+			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ I_1 } \lor \lifdeltanovar{ l_\Gamma \lor l'_\Gamma \lor D_\Gamma }$.
+			By applying $\tauelldelta$
+			and Lemma~\ref{lemma:lifting_subst_commute}, we obtain
+			$\Gamma \entails \lifdeltanovar{ I_1\sigma } \lor \lifdeltanovar{ l_\Gamma\sigma \lor l'_\Gamma\sigma \lor D_\Gamma\sigma }$.
+			As however $l\sigma \syneq l'\sigma$, 
+			also $\lifboth{l\sigma} = \lifboth{l'\sigma}$, so we can apply a factorisation step and obtain that
+			$\Gamma \entails \lifdeltanovar{ I_1\sigma } \lor \lifdeltanovar{ l_\Gamma\sigma \lor D_\Gamma\sigma }$,
+			which is nothing else than $\Gamma \entails \PIstep(\inference, \bar I) \lor \lifdeltanovar{C_\Gamma}$.
 
-			\end{enumerate}
+		\item{} Paramodulation.
+			Suppose the clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
+
+			By the induction hypothesis, we obtain the following: 
+
+			$\Gamma \stackrel\markA\entails \lifdeltanovar{I_1} \lor \lifdeltanovar{D_\Gamma} \lor \lifdeltanovar{s}=\lifdeltanovar{t}$
+
+			$\Gamma \stackrel\markB\entails \lifdeltanovar{I_2} \lor \lifdeltanovar{(E\occatp{r})_\Gamma}$
+
+			Suppose now that for a model $M$ of $\Gamma$ and an assignment $\alpha$ of the free variables of $\lifdeltanovar{s}$ and $\lifdeltanovar{t}$ that $M_\alpha \entails \lifdeltanovar{s}\neq \lifdeltanovar{t}$.
+			Then we get by \markA{} that $M_\alpha \entails \lifdeltanovar{I_1} \lor \lifdeltanovar{D_\Gamma}$, which by applying $\tauelldelta$ and Lemma~\ref{lemma:lifting_subst_commute} gives $M_\alpha \entails \lifdeltanovar{I_1\sigma} \lor \lifdeltanovar{D_\Gamma\sigma}$.
+			Note that $M_\alpha \entails \lifdeltanovar{s\sigma}\neq \lifdeltanovar{t\sigma} \land \lifdeltanovar{I_1\sigma}$ suffices for $M_\alpha \entails \lifdeltanovar{\PIstep(\inference, \bar I)}$ and $M_\alpha \entails \lifdeltanovar{D_\Gamma\sigma}$ implies that $M_\alpha \entails \lifdeltanovar{C_\Gamma}$.
+			Therefore we obtain that 
+			$M_\alpha \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$.
+
+			Now suppose to the contrary that for a model $M$ of $\Gamma$ that for any assignment of free variables $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t}$.
+
+			By applying $\tauelldelta$ and  Lemma~\ref{lemma:lifting_subst_commute} we obtain from \markB{} that
+			$\Gamma \entails \lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{(E\occatp{r})_\Gamma\sigma}$.
+			As however $r\sigma \syneq s\sigma$,
+			$\lifdeltanovar{r\sigma} = \lifdeltanovar{s\sigma}$.
+			Therefore we also have that 
+			$\Gamma \entails \lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$.
+
+			We proceed by a case distinction:
+			\begin{itemize}
+				\item Suppose that the position $p$ in $E\occatp{s}$ is not contained in a $\Delta$-term.
+					Then
+					$\lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$
+					and
+					$\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$
+					only differ at at position $p$.
+					As $M \entails \lifdeltanovar{s} = \lifdeltanovar{t}$, we can apply $\tauelldelta$ and by Lemma~\ref{lemma:lifting_subst_commute} obtain that 
+					$M \entails \lifdeltanovar{s\sigma} = \lifdeltanovar{t\sigma}$.
+					Thus
+					$M\entails \lifdeltanovar{(E\occatp{s})_\Gamma\sigma} \semiff 
+					\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$
+					and consequently
+					$M \entails \lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$.
+					As furthermore $\lifdeltanovar{s\sigma} =\lifdeltanovar{t\sigma} \land \lifdeltanovar{I_2\sigma}$ entails $\lifdeltanovar{\PIstep(\inference, \bar I)}$
+					and $\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$ is sufficient for $\lifdeltanovar{C_\Gamma}$,
+					we have that 
+					$M\entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$.
+
+				\item
+					Suppose that the position $p$ in $E\occatp{s}$ is contained in a maximal $\Delta$-term $h\occ{s}$.
+					We distinguish further:
+
+					\begin{itemize}
+						\item Suppose $h\occ{s}$ occurs more than once in $I_2\sigma \lor E\occatp{s}\sigma$ and let $\alpha$ be an arbitrary assignment to the variables $\lifdeltanovar{h\occ{s}} = x_{h\occ{s}}$ and $\lifdeltanovar{h\occ{t}} = x_{h\occ{t}}$.\todo{lifting sym useful here}
+
+							If $M_\alpha \entails \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, then we have that $M_\alpha \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M_\alpha \entails \lifdeltanovar{\PIstep(\inference, \bar I)}$.
+
+							%Assume that $M \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$ as otherwise $M \entails \lifdeltanovar{s}\nolinebreak=\lifdeltanovar{t} \land\allowbreak \lifdeltanovar{h\occ{s}} \neq \lifdeltanovar{h\occ{t}}$, which implies that $M \entails \lifdeltanovar{\PIstep(\inference, \bar I)}$.
+							Otherwise it holds that $M_\alpha \entails \lifdeltanovar{h\occ{s}} = \lifdeltanovar{h\occ{t}}$.
+							But then 
+							$\lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$
+							and
+							$\lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$
+							differ in subterms which are equal in the given model and with the given interpretation of the free variables,
+							%at position of $h\occ{s}$ and $h\occ{t}$ respectively and
+							so by a similar line of argument as in the preceding case, we can deduce that $M \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C}$.
+
+						\item Suppose $h\occ{s}$ occurs exactly once in $I_2\sigma \lor E\occatp{s}\sigma$.
+							Then the lifting variable $x_{h\occ{s}}$\todo{lifting sym useful here}
+							occurs exactly once in $\lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{E\occatp{s}\sigma}$.
+
+							Note that from \markB{} by applying $\tauelldelta$ and Lemma~\ref{lemma:lifting_subst_commute}, we obtain that $M\entails \lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{(E\occatp{s})_\Gamma\sigma}$.
+							As $x_{h\occ{s}}$ occurs only once and free in this formula, it is implicitly universally quantified and we can instantiate it arbitrarily, in particular by $x_{h\occ{t}}$.
+							But thereby we get that 
+							$M\entails \lifdeltanovar{I_2\sigma} \lor \lifdeltanovar{(E\occatp{t})_\Gamma\sigma}$, 
+							which implies that
+							$\Gamma\entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$.
+							\qedhere
+					\end{itemize}
+			\end{itemize}
+
 	\end{description}
 \end{proof}
 
 \begin{lemma}
 	\label{lemma:gamma_entails_lifted_interpolant}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $C$ be a clause occurring in $\pi$
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and $C$ be a clause occurring in $\pi$.
 	Then $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction on the strengthening
-	Then $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$.
+	$\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$.
 
-	If $C \in \Gamma\cup\Delta$, then by Lemma~TODO gives the result.
+	If $C \in \Gamma\cup\Delta$, then by Lemma~\ref{lemma:gamma_entails_init} gives the result.
 
-	For clauses $C$ inferred by $\inference$ from the clauses $C_1, \dots, C_n$, $\PI(C) = \PIstep(\inference, \PI(C_1), \dots, \PI(C_n))$.
+	For the induction step, suppose the clause $C$ is the result of an inference $\inference$ using the clauses $C_1, \dots, C_n$.
 	By induction hypothesis, $\Gamma \entails \lifdelta{\PI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
-	Lemma~TODO gives the induction step.
+	by Lemma~\ref{lemma:gamma_entails_step}, we obtain that 
+	$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
+	This however is nothing else than $\Gamma \entails \lifdelta{\PI(C) \lor C_\Gamma}$.
 \end{proof}
 
 
-{\tiny
-
-
-\begin{proof}
-	\largered{OLD}
-	We proceed by induction on the resolution refutation of the strengthening $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$,
-	where $D_\Phi$ denotes the clause created from $D$ by removing all literals which are not contained $\Lang(\Phi)$.
-	%i.e.\ we only consider literals of $C$ which are contained in $\Lang(\Gamma)$.
-
-	\begin{description}
-		\item{Base case.}
-			Either $C \in \Gamma$, then $\lifdelta{C} = C$ and $\Gamma \entails C$.
-			Otherwise $C \in \Delta$ and $\PI(C) = \top$.
-
-		\item{Resolution.}
-			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
-
-			By the induction hypothesis, we can assume that
-			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor l)_\Gamma}$ and $\Gamma \entails \lifdelta{\PI(C_2) \lor (E\lor \lnot l')_\Gamma}$,
-			which by Lemma \ref{lemma:lift_logic_commute} implies the following:
-
-			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor\allowbreak \lifdelta{l_\Gamma}$ 
-
-			\markB{} $\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
-
-			\mytodo{ HERE }
-
-			\mytodo{ merge proofs somehow? }
-
-			We proceed by a case distinction on the color of $l$:
-			\begin{enumerate}
-				\item $l$ is $\Gamma$-colored. Then $\PI(C) = [\PI(C_1\label{aou5jklah}) \lor \PI(C_2)]\sigma$.
-					\label{aou5jklah}
-
-					Since $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and therefore $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
-					As by Lemma~\ref{lemma:lifting_subst_commute} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
-					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
-					Hence by applying $\sigma'$ to \markA{} and \markB{} (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and obtain
-					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma} \sigma' \spas\lor \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma} \sigma'$.
-					Now we apply Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute} in the other direction 
-					and get that 
-					$\Gamma \entails \lifdelta{\PI(C_1)\sigma \lor \PI(C_2)\sigma \lor\allowbreak (D \lor E)_\Gamma \sigma}$.
-					This however is nothing else than 
-					$\Gamma \entails \lifdelta{\PI(C) \lor C_\Gamma}$.
-
-				\item $l$ is $\Delta$-colored. Then $\PI(C) = [\PI(C_1) \land \PI(C_2)]\sigma$.
-
-					As $l$ and $l'$ are $\Delta$-colored, we can simplify \markA{} and \markB{} as follows and apply $\sigma'$:
-					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma}\sigma' $ and $\Gamma \entails \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma}\sigma'$.
-					These together imply that 
-					$\Gamma \entails \Big(\lifdelta{\PI(C_1)}\sigma' \spas\land \lifdelta{\PI(C_2)}\sigma'\Big) \spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \spas\lor\allowbreak \lifdelta{E_\Gamma}\sigma'$.
-					By Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif}, this is equivalent to 
-					$\Gamma \entails \lifdelta{(\PI(C_1) \land \PI(C_2))\sigma \spas\lor (D \lor E)_\Gamma\sigma}$, which is nothing else than
-					$\Gamma \entails \lifdelta{\PI(C) \lor C_\Gamma}$.
-
-				\item $l$ is grey. Then $\PI(C) = [(l \land \PI(C_2) ) \lor (\lnot l' \land \PI(C_1))]\sigma$.
-
-					We show that $\Gamma \entails\allowbreak \lifdelta{ \Big((l \land \PI(C_2) ) \lor\allowbreak (\lnot l' \land \PI(C_2)) \lor D_\Gamma \lor E_\Gamma\Big)\sigma}$, for which by Lemma~\ref{lemma:lift_logic_commute} and Lemma~\ref{lemma:lif} it suffices to show that 
-					$\Gamma \entails\allowbreak \big(\lifdelta{l}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \big(\lnot \lifdelta{l'}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\big)\spas\lor\allowbreak \lifdelta{D_\Gamma}\sigma' \lor \lifdelta{E_\Gamma}\sigma'$.
-
-					Suppose for a model $M$ of $\Gamma$ that  $M \notentails \lifdelta{D_\Gamma}\sigma'$ and $M\notentails \lifdelta{E_\Gamma}\sigma'$ as otherwise we are done.
-					But then by \markA{} and \markB{}, we get that 
-					$M \entails \lifdelta{\PI(C_1)}\sigma' \lor \lifdelta{l}\sigma'$ and
-					$M \entails\nolinebreak \lifdelta{\PI(C_2)}\sigma' \lor \lnot\lifdelta{l'}\sigma'$.
-					As observed in case \ref{aou5jklah}, $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
-					We obtain the result by a case distinction on the truth value of $\lifdelta{l}\sigma'$.
-
-			\end{enumerate}
-
-		\item{Factorisation.}
-			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
-
-			% Then $\PI(C) = \PI(C_1)\sigma$.
-
-			The induction hypothesis gives that
-			$\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}$.
-			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif}.
-			Then $\Gamma \entails \lifdelta{\PI(C_1) \lor l \lor l' \lor D}\sigma'$ and by Lemma \ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute},
-			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \spas\lor \lifdelta{l\sigma} \spas\lor \lifdelta{l'\sigma} \spas\lor \lifdelta{D\sigma}$.
-
-			As $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and hence $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
-			But then we can apply a factorisation step and get that
-			$\Gamma \entails \lifdelta{\PI(C_1)\sigma} \spas\lor \lifdelta{l\sigma} \spas\lor \lifdelta{D\sigma}$
-			which by Lemma \ref{lemma:lif} and Lemma \ref{lemma:lift_logic_commute} is equivalent to 
-			$\Gamma \entails\nolinebreak \lifdelta{\PI(C_1)\sigma \lor l\sigma \lor D\sigma}$.
-			This in turn is nothing else than $\Gamma \entails \lifdelta{\PI(C) \lor C}$.
-
-		\item{Paramodulation.}
-			Suppose the clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of $C_1: s=t \lor   D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
-
-
-			By the induction hypothesis, we get that 
-			$\Gamma \entails \lifdelta{\PI(C_1) \lor (D\lor s=t)_\Gamma}$ and 
-			$\Gamma \entails \lifdelta{\PI(C_2) \lor (E\occurat{r}{p})_\Gamma}$.
-			This is by Lemma~\ref{lemma:lift_logic_commute} equivalent to
-			\markA{} $\Gamma \entails \lifdelta{\PI(C_1)} \spas\lor\allowbreak \lifdelta{D_\Gamma} \spas\lor \lifdelta{s} = \lifdelta{t}$
-			and \markB{} 
-			$\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{(E\occurat{r}{p})_\Gamma}$ respectively.
-
-
-			We distinguish two cases:\nopagebreak
-			\begin{enumerate}
-				\item Suppose $s$ does not occur in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$, which occurs more than once in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
-					\label{klehjy}
-
-					Let $M$ be a model of $\Gamma$.
-					First, assume that $M \entails \lifdelta{s} \neq \lifdelta{t}$.
-					Then by \markA{} we have that $M \entails \lifdelta{\PI(C_1)} \lor \lifdelta{D_\Gamma}$.
-					By applying $\sigma'$ and Lemma~\ref{lemma:lif}, we hence can conclude from 
-					$M \entails \lifdelta{s\sigma} \neq \lifdelta{t\sigma}$ that 
-					$M \entails \lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma\sigma}$.
-
-
-					Second, assume to the contrary that $M \entails \lifdelta{s} = \lifdelta{t}$.
-					\todo{this is wrong in the same way as the -nested proof was, fix just like the other one}
-					We distinguish cases:
-					\begin{itemize}
-						\item
-							Suppose that $s$ does not occur in a maximal $\Delta$-term in $(E\occat{s}{p})_\Gamma$.
-							Then by Lemma~\ref{aga5tg5ba} $M\entails \lifdelta{(E\occat{t}{p})_\Gamma} \semiff M \entails \lifdelta{(E\occat{s}{t})_\Gamma}$.
-
-							Due to $\sigma=\mgu(s, r)$, $s\sigma \syneq r\sigma$.
-							Suppose they are both not $\Delta$-colored.
-							Then the lifting does not affect them and 
-							$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
-							Otherwise the lifting will replace them with the same variable and we as well get that
-							$\lifdelta{(E\occurat{s}{p})_\Gamma\sigma} \syneq \lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$.
-							Hence $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma\sigma} \semiff\allowbreak M\entails 
-							\lifdelta{(E\occurat{r}{p})_\Gamma\sigma}$
-
-						\item
-							Otherwise $r$ occurs in a maximal $\Delta$-term $h\occ{r}$ in $(E\occat{r}{p})_\Gamma$, but $h\occur{r}$ does not occur elsewhere in $\PI(C_2) \lor (E\occurat{r}{p})_\Gamma$.
-							Then the lifting variable $x_{h\occur{r}}$ occurs only once in \markB{}.
-							Hence $\Gamma$ does not pose any restriction on $x_{h\occur{r}}$ and we can substitute it by $x_{h\occur{t}}$. 
-							So in $M$ we have that $M\entails \lifdelta{(E\occurat{t}{p})_\Gamma} \semiff\allowbreak M\entails \lifdelta{(E\occurat{r}{p})_\Gamma}$.
-
-					\end{itemize}
-
-					Hence in any of the cases, by \markB{} and by applying $\sigma'$ and Lemma~\ref{lemma:lif}
-					it follows from $M\entails \lifdelta{s\sigma} = \lifdelta{t\sigma}$ 
-					that $M \entails \lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occurat{t}{p})_\Gamma\sigma}$. 
-					\medskip
-
-					In conclusion, we can derive that 
-					$\Gamma \entails
-					(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land\allowbreak (\lifdelta{\PI(C_1)\sigma} \lor \lifdelta{D_\Gamma}\sigma))
-					\spam{\lor}\allowbreak
-					(\lifdelta{s\sigma} = \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}))$.
-					This however implies that
-					$\Gamma \entails
-					\Big(\lifdelta{s\sigma} \neq \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_1)\sigma} )\Big)
-					\spas{\lor}\allowbreak
-					\Big(\lifdelta{s\sigma} =\nolinebreak \lifdelta{t\sigma} \spas\land (\lifdelta{\PI(C_2)\sigma}) \Big)
-					\spas\lor\allowbreak \Big(\lifdelta{D_\Gamma\sigma} \lor \lifdelta{(E\occat{t}{p})_\Gamma\sigma}\Big)$, 
-					which by Lemma~\ref{lemma:lift_logic_commute} is nothing else than
-					$\Gamma \entails \lifdelta{\PI(C) \lor C}$.
-
-				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occurat{s}{q}$ in $E\occurat{s}{p}$, which occurs more than once in $E\occat{s}{p}$.
-
-					Then a similar line of argument as in case~\ref{klehjy} can be employed, with the difference that the application of Lemma~\ref{aga5tg5ba} in the case of $M\entails \lifdelta{s} = \lifdelta{t}$ yields the additional possibility that 
-					$M\entails \lifdelta{h\occur{s}} \neq \lifdelta{h\occur{t}}$.
-					Hence we arrive at:
-
-					$\Gamma \entails
-					\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land \lifdelta{\PI(C_2)}\sigma'\Big) \spas\lor\allowbreak
-					\Big(\lifdelta{s}\sigma'\neq\lifdelta{t}\sigma' \land \lifdelta{\PI(C_1)}\sigma'\Big) \spas\lor\allowbreak
-					\Big(\lifdelta{s}\sigma'=\lifdelta{t}\sigma' \land (\lifdelta{h\occur{s}}\sigma') \neq (\lifdelta{h\occur{t}}\sigma' )\Big) \spas\lor\allowbreak
-					\Big(\lifdelta{D_\Gamma}\sigma' \lor \lifdelta{(E\occurat{t}{p})_\Gamma}\sigma'\Big)$
-
-					This however is by Lemma~\ref{lemma:lif} and Lemma~\ref{lemma:lift_logic_commute} equivalent to $\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C}$.
-					\qedhere
-			\end{enumerate}
-	\end{description}
-\end{proof}
-}
 
 
 \section{Symmetry of the extracted interpolants}
