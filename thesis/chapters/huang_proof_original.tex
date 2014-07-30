@@ -54,8 +54,8 @@ We refer to Definition~\ref{def:PI} for the definition of $\PI$.
 	$\Gamma \entails \PI(C) \lor C_\Gamma$ and
 	$\Delta \entails \lnot \PI(C) \lor C_\Delta$, where $D_\Phi$ denotes the clause D with only the literals which are contained in $\Lang(\Phi)$. They clearly imply conditions \ref{huang_orig_rel_prop_interpol_cond1} and \ref{huang_orig_rel_prop_interpol_cond2} of definition \ref{def:huang_orig_rel_prop_interpol}. 
 
-	\begin{itemize}
-		\item[Base case.]
+	\begin{indproof}
+		\indproofitem{Base case}
 			Suppose no rules were applied. We distinguish two possible cases:
 			\begin{enumerate}
 				\item $C \in \Gamma$.
@@ -68,7 +68,7 @@ We refer to Definition~\ref{def:PI} for the definition of $\PI$.
 			Suppose the property holds for $n$ rule applications.
 			We show that it holds for $n+1$ applications by considering the last one:
 
-		\item[Resolution.]
+		\indproofitem{Resolution}
 			Suppose the last rule application is an instance of resolution. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor l}
@@ -99,7 +99,7 @@ We refer to Definition~\ref{def:PI} for the definition of $\PI$.
 					as well as $\Gamma \entails (\PI(C_2) \lor E_\Gamma\lor \lnot l')\sigma$.
 					By a resolution step, we get $\Gamma \entails (\PI(C_1) \lor \PI(C_2))\sigma \lor ((D \lor E)\sigma)_\Gamma$.
 
-					Furthermore, as $\Pred(l) \not\in \Lang(\PI)$, 
+					Furthermore, as $\Pred(l) \not\in \Lang(\Delta)$, 
 					$\Delta \entails (\lnot\PI(C_1) \lor D_\Delta)\sigma$
 					as well as $\Delta \entails (\lnot\PI(C_2) \lor E_\Delta)\sigma$.
 					Hence it certainly holds that $\Delta \entails (\lnot \PI(C_1) \lor \lnot\PI(C_2))\sigma \lor (D \lor E)\sigma_\Delta$.
@@ -146,7 +146,7 @@ We refer to Definition~\ref{def:PI} for the definition of $\PI$.
 
 			\end{enumerate}
 
-		\item[Factorisation.]	
+			\indproofitem{Factorisation}
 			Suppose the last rule application is an instance of factorisation. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: l \lor l' \lor D}
@@ -170,7 +170,7 @@ We refer to Definition~\ref{def:PI} for the definition of $\PI$.
 			The restriction on the language trivially remains intact.
 
 
-		\item[Paramodulation.]	
+		\indproofitem{Paramodulation}	
 			Suppose the last rule application is an instance of paramodulation. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
@@ -218,7 +218,7 @@ We refer to Definition~\ref{def:PI} for the definition of $\PI$.
 			For condition \ref{huang_orig_rel_prop_interpol_cond2}, consider that the negated interpolant for case \ref{def:PI_paramod_1} implies the negated interpolant for this case.
 			The language condition again remains intact.
 			\qedhere
-	\end{itemize}
+	\end{indproof}
 \end{proof}
 
 \section{Propositional refutations}
@@ -288,16 +288,16 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 	Similar to the proof of \ref{prop:prop_interpol}, we show the strengthening:
 	$\Gamma \entails \lift{\Delta}{ \PI(C) \lor C_\Gamma }{x} $ for $C$ in $\pi$.
 
-	\begin{itemize}
+	\begin{indproof}
 
 			\newcommand{\lif}[1]{\lift{\Delta}{#1}{x}}
-		\item[Base case.]
+			\indproofitem{Base case}
 
 			If no rules have been applied, $C$ is an instance of a clause of either $\Gamma$ or $\Delta$.
 			In the former case, all $\Delta$-terms of $C$ were added by unification, hence by replacing them with variables, we obtain a clause $C'$ which still is an instance of $C$ and consequently is implied by $\Gamma$. 
 			In the latter case, $\PI(C) = \top$. 
 
-		\item[Resolution.] Suppose the last rule application is an instance of resolution. Then it is of the form:
+		\indproofitem{Resolution} Suppose the last rule application is an instance of resolution. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D\lor l}
 				\AxiomCm{C_2: E\lor \lnot l}
@@ -380,7 +380,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 			\end{enumerate}
 
 
-		\item[Factorisation.] Suppose the last rule application is an instance of factorisation. Then it is of the form:
+		\indproofitem{Factorisation} Suppose the last rule application is an instance of factorisation. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: l \lor l \lor D}
 				\UnaryInfCm{C: l \lor D}
@@ -403,7 +403,7 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 
 
-		\item[Paramodulation.] Suppose the last rule application is an instance of paramodulation. Then it is of the form:
+		\indproofitem{Paramodulation} Suppose the last rule application is an instance of paramodulation. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: D \lor s=t}
 				\AxiomCm{C_2: E\occurat{s}{p}}
@@ -431,15 +431,16 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 
 					$\Gamma \entails (\lif{s}=\lif{t} \land \lif{\PI(C_2)}) \lor (\lif s\neq \lif t \land \lif{\PI(C_1)}) \lor (\lif{D_\Gamma} \lor \lif{(E\occurat{t}{p})_\Gamma})$
 
-					Suppose that in a model $M$ of $\Gamma$,
-					$M \notentails \lift{\Delta}{ D_\Gamma }{x}$ and 
-					$M \notentails \lift{\Delta}{ (E\occurat{t}{p})_\Gamma }{x}$.
-					We show that then, depending on whether $\lif{s} = \lif{t}$ holds in $M$, one of the first two disjuncts holds in $M$.
+					Suppose that $M$ is a model and $\alpha$ an assignment to the free variables 
+					such that $M_\alpha \entails \Gamma$,
+					$M_\alpha \notentails \lift{\Delta}{ D_\Gamma }{x}$ and 
+					$M_\alpha \notentails \lift{\Delta}{ (E\occurat{t}{p})_\Gamma }{x}$.
+					We show that then, depending on whether $\lif{s} = \lif{t}$ holds in $M_\alpha$, one of the first two disjuncts holds in $M_\alpha$.
 
-					Then in case $M \entails \lif{s} = \lif{t}$ we also get
-					$M \notentails \lift{\Delta}{ (E\occurat{s}{p})_\Gamma }{x}$ and consequently by the induction hypothesis $M\entails \lif{\PI(C_2)}$.
+					In case $M_\alpha \entails \lif{s} = \lif{t}$ we also get
+					$M_\alpha \notentails \lift{\Delta}{ (E\occurat{s}{p})_\Gamma }{x}$ and consequently by the induction hypothesis $M_\alpha\entails \lif{\PI(C_2)}$.
 
-					However in case $M \entails \lif{s} \neq \lif{t}$ we get by the induction hypothesis that 
+					However in case $M_\alpha \entails \lif{s} \neq \lif{t}$ we get by the induction hypothesis that 
 					$M\entails \lif{\PI(C_1)}$.
 
 					\label{njktahjtkhltah}
@@ -447,26 +448,25 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 				\item Otherwise $s$ occurs in a maximal $\Delta$-term $h\occur{s}$ in $E\occurat{s}{p}$ which occurs more than once in $\PI(E(s)) \lor E\occurat{s}{p}$.
 				This reflects case \ref{def:PI_paramod_1} of Definition \ref{def:PI_paramod}.
 
-				\todo{this is probably wrong in the same way as -nested was, fix just like there}
-					Then models are possible in which $s=t$ and therefore $\lif{s}=\lif{t}$ holds, while at the same time $\lif{h\occur{s}} \neq \lif{h\occur{t}}$ does not as $h\occur{s}$ and $h\occur{t}$ are replaced by distinct variables due to being different $\Delta$-terms.
+					Then models are possible in which $s=t$ holds, while at the same time $\lif{h\occur{s}} \neq \lif{h\occur{t}}$ does not as $h\occur{s}$ and $h\occur{t}$ are replaced by distinct variables due to being different $\Delta$-terms.
 
 					Therefore we amend the proof of case \ref{njktahjtkhltah} as follows:
 
-					In case $M \entails \lif{s} = \lif{t}$ (otherwise proceed as in case \ref{njktahjtkhltah}), 
+					In case $M_\alpha \entails \lif{s} = \lif{t}$ (otherwise proceed as in case \ref{njktahjtkhltah}), 
 					one of the following cases holds:
 
 					\begin{itemize}
-					\item $M\entails \lif{h\occur{s}} = \lif{h\occur{t}}$. From this, it follows that as in the proof of case \ref{njktahjtkhltah}, $M \not\entails \lif{(E\occurat{s}{p})_\Gamma}$ and consequently $M \entails \lif{\PI(C_2)}$ again by the induction hypothesis.
+					\item $M_\alpha\entails \lif{h\occur{s}} = \lif{h\occur{t}}$. From this, it follows that as in the proof of case \ref{njktahjtkhltah}, $M \not\entails \lif{(E\occurat{s}{p})_\Gamma}$ and consequently $M \entails \lif{\PI(C_2)}$ again by the induction hypothesis.
 
 					\item 
-						$M \entails \lif{h\occur{s}} \neq \lif{h\occur{t}}$.
+						$M_\alpha \entails \lif{h\occur{s}} \neq \lif{h\occur{t}}$.
 						However as here $\PI(C)$ contains the with respect to case \ref{njktahjtkhltah} additional disjunct $s=t \land h\occur{s} \neq h\occur{t}$,
-						$M \entails \lif{PI(C)}$ due to $M \entails \lif{s}=\lif{t} \land \lif{h\occur{s}} \neq \lif{h\occur{t}}$
+						$M_\alpha \entails \lif{PI(C)}$ due to $M_\alpha \entails \lif{s}=\lif{t} \land \lif{h\occur{s}} \neq \lif{h\occur{t}}$
 					\qedhere
 					\end{itemize}
 			\end{enumerate}
 
-	\end{itemize}
+	\end{indproof}
 \end{proof}
 
 \begin{thm}
