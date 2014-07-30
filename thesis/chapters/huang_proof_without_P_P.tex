@@ -34,10 +34,9 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 
 	Then $\PIstep(\inference, \bar I)$ is defined according to the following cases:
 
-	\begin{itemize}
-		\item[Resolution.]
-			\label{def:PI_resolution}
-
+	\begin{indproof}
+		\indproofitem{Resolution}
+		\label{def:PI_resolution}
 			If $\inference$ is a resolution inference of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$, then $\PIstep(\inference, I_1, I_2)$ is defined as follows:
 			%$\PI(C)$ is defined according to this case distinction:
 			\begin{enumerate}
@@ -46,11 +45,11 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 				\item If $l$ is grey: $\PIstep(\inference, I_1, I_2) \defeq{} [(l \land I_2) \lor (\lnot l' \land I_1) ]\sigma $
 			\end{enumerate}
 
-		\item[Factorisation.]
+			\indproofitem{Factorisation}
 			If $\inference$ is a factorisation inference of $C_1: l \lor l' \lor D$ with $\sigma = \mgu(\inference)$,
 			then $\PIstep(\inference, I_1) \defeq I_1\sigma$.
 
-		\item[Paramodulation.]
+		\indproofitem{Paramodulation}
 			\label{def:PI_paramod}
 			Suppose that $\inference$ is a paramodulation inference of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ 
 			with $\sigma = \mgu(\inference)$ such that $s\sigma = r\sigma$.
@@ -73,8 +72,7 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 
 			\end{enumerate}
 
-	\end{itemize}
-
+	\end{indproof}
 
 \end{defi}
 
@@ -86,14 +84,12 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
 
 	For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
-	\begin{itemize}
-		\item[Base case.]
+	\begin{indproof}
+		\indproofitem{Base case}
 			If $C \in \Gamma\cup\Delta$, then $\PI(C) \defeq \PIinit(C)$.
-		\item[Induction step.]
+		\indproofitem{Induction step}
 			If $C$ is the result of an inference $\inference$ using the clauses $\bar C$, then $\PI(C) \defeq \PIstep(\inference, \PI(C_1), \dots, \PI(C_n))$.
-
-
-	\end{itemize}
+	\end{indproof}
 \end{defi}
 
 \begin{remark}
@@ -415,8 +411,8 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 \end{lemma}
 \begin{proof}
 	We distinguish based on the type of $\inference$.
-	\begin{description}
-		\item{Resolution.}
+	\begin{indproof}
+		\indproofitem{Resolution}
 			Suppose that $\inference$ is a resolution inference of the clauses $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
 
 			By Lemma~\ref{lemma:lift_logic_commute} we obtain from the assumption that
@@ -435,7 +431,7 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 			We proceed by a case distinction on the color of the resolved literal to show that in each case, we have that
 			$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$,
 			which by Lemma~\ref{lemma:lift_logic_commute} suffices for the result.
-			\begin{itemize}
+			\begin{enumerate}
 				\item Suppose that $l$ is $\Gamma$-colored.
 					Then $l_\Gamma = l$ and $l'_\Gamma = l$, and we can perform a resolution step on \markA{} and \markB{} to obtain that
 					$\Gamma \entails
@@ -467,10 +463,10 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 					But this is equivalent to
 					$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I)} \lor \lifdeltanovar{C_\Gamma}$.
 
-			\end{itemize}
+			\end{enumerate}
 
 
-		\item{} Factorisation. 
+			\indproofitem{Factorisation}
 			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
 
 			The induction hypothesis gives $\Gamma \entails \lifdeltanovar{ I_1 } \lor \lifdeltanovar{ l_\Gamma \lor l'_\Gamma \lor D_\Gamma }$.
@@ -482,7 +478,7 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 			$\Gamma \entails \lifdeltanovar{ I_1\sigma } \lor \lifdeltanovar{ l_\Gamma\sigma \lor D_\Gamma\sigma }$,
 			which is nothing else than $\Gamma \entails \PIstep(\inference, \bar I) \lor \lifdeltanovar{C_\Gamma}$.
 
-		\item{} Paramodulation.
+		\indproofitem{Paramodulation}
 			Suppose the clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
 
 			By the induction hypothesis, we obtain the following: 
@@ -559,7 +555,7 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 					\end{itemize}
 			\end{itemize}
 
-	\end{description}
+	\end{indproof}
 \end{proof}
 
 \begin{lemma}
@@ -624,8 +620,8 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 
 	We distinguish cases based on the type of $\inference$:
 
-	\begin{itemize}
-		\item[Resolution.]
+	\begin{indproof}
+		\indproofitem{Resolution}
 			\newcommand{\p}[1]{\primex{#1}}
 
 			Suppose that $\inference$ is a resolution inference of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
@@ -655,12 +651,12 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 					\end{align*}
 			\end{enumerate}
 
-				\item[Factorisation.]
+				\indproofitem{Factorisation}
 					Suppose that $\inference$ is a factorisation inference of $C_1: l \lor l' \lor D$
 					with $\sigma = \mgu(\inference)$.
 					Then $\PIstep(\inference, I_1) = I_1\sigma \spas\semiff \lnot \p I_1\sigma = \lnot \PIstep(\p \inference, \p I_1)$.
 
-				\item[Paramodulation.]
+				\indproofitem{Paramodulation}
 					Suppose that $\inference$ is a paramodulation inference of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ 
 					with $\sigma = \mgu(\inference)$.
 
@@ -692,7 +688,7 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 					\end{enumerate}
 
 
-	\end{itemize}
+	\end{indproof}
 
 \end{proof}
 
