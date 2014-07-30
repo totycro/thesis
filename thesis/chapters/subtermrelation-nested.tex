@@ -49,55 +49,14 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 	Let $C$ be a clause in $\pi$. 
 	%For a literal $\lambda$ in $C$, we denote the corresponding literal in $\LIcl(C)$ by $\lambda\cll$, whose existence is ensured Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}.
 	%We define $\LIcl(C) \defeq C$. \mytodo{if this version is final, drop $\LIcl(C)$ everywhere}
-	We define the intermediary formula $\LI^\bullet(C)$ as follows:
+	We define the intermediary formula $\LIpre(C)$ as follows:
 	\begin{description}
 		\item{} Base case.
-			If $C \in \Gamma$, $\LI^\bullet(C) \defeq \bot$.
-			If otherwise $C \in \Delta$, $\LI^\bullet(C) \defeq \top$.
+			If $C \in \Gamma\cup \Delta$, $\LIpre(C) \defeq \PIinit(C)$.
 
-		\item{} Resolution.
-			If the clause $C$ is the result of a resolution step $\inference$ of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma =  l'\sigma$, then define $\LI(C)$ as follows:
-			\begin{enumerate}
-				\item If $l$ is $\Gamma$-colored:
-					$\LIpre(C) \defeq \LI(C_1)\sigma\spas\lor \LI(C_2)\sigma $
+		\item{} Induction step.
+			If $C$ is the result of an inference $\inference$ using the clauses $\bar C$, then $\LIpre(C) \defeq \PIstep(\inference, \LIpre(C_1), \dots, \LIpre(C_n))$.
 
-				\item If $l$ is $\Delta$-colored:
-					$\LIpre(C) \defeq \LI(C_1)\sigma\spas\land \LI(C_2)\sigma$
-
-				\item If $l$ is grey:
-					$\LIpre(C) \defeq
-					(l\sigma \land \LI(C_2)\sigma) \spas\lor
-					(\lnot l'\sigma\land \LI(C_1)\sigma)
-					$
-
-			\end{enumerate}
-
-		\item{} Factorisation.
-			If the clause $C$ is the result of a factorisation step $\inference$ of $C_1: l \lor l' \lor D$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then $\LIpre(C) \defeq \lifboth{\LI(C_1)\sigma}$.
-
-		\item{} Paramodulation.
-			If the clause $C$ is the result of a paramodulation step $\inference$ of $C_1 : s = t \lor D$ and $C_2: E\occ{r}$ with $\sigma = \mgu(\inference)$.
-			Let $h\occ{r}$ be the maximal colored term in which $r$ occurs in $E\occ{r}$
-			and define $\LI(C)$ as follows:
-
-			\begin{enumerate}
-
-				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $\LI(C_2)\sigma \lor E\occ{r}\sigma$:
-					%\label{def:PI_paramod_1}
-					\newline
-					$\LIpre(C) \defeq  ( s=t \land \LI(C_2) )\sigma \lor (s\neq t \land \LI(C_1))\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
-
-				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $\LI(C_2)\sigma \lor E\occ{r}\sigma$:
-					%\label{def:PI_paramod_2}
-					\newline
-					$\LIpre(C)\defeq{} [ ( s=t \land \LI(C_2) )\sigma \lor (s\neq t \land \LI(C_1))\sigma ] \land\allowbreak (s\neq t \lor h\occur{s} = h\occur{t})\sigma$
-
-				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in $\LI(C_2)\sigma \lor E\occ{r}\sigma$:
-					%\label{def:PI_paramod_3}
-					\newline
-					$\LIpre(C) \defeq{} ( s=t \land \LI(C_2) )\sigma \lor (s\neq t \land \LI(C_1))\sigma $ 
-
-			\end{enumerate}
 	\end{description}
 
 	\noindent
@@ -452,107 +411,18 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 \end{lemma}
 \begin{proof}
 	We proceed by induction to show that $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$:
-	\begin{itemize}
-		\item[Base case.]
-			If $C \in \Gamma$, then $\LI(C) = \bot \semiff \lnot \top \semiff \lnot \LI(\bhat C)$ as $\bhat C\in\Delta$. 
-			The case for $C\in\Delta$ can be argued analogously.
 
-		\item[Resolution.]
-			Suppose the clause $C$ is the result of a resolution step \inference{} of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
+	If $C \in \Gamma\cup \Delta$, we obtain the result by Lemma~\ref{lemma:symmetry_base}.
 
-			We distinguish the following cases:
-
-			\begin{enumerate}
-
-				\item $l$ is $\Gamma$-colored:
-					\begin{align*}
-						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-						\LIpre(C)	&= \LI(C_1)\sigma\spas\lor {\LI(C_2)\sigma} \\
-															 &\semiff \lnot (\lnot{\LI(C_1)\sigma}\spas\land \lnot {\LI(C_2)\sigma}) \\
-						%&\semiff \lnot (\lifboth{(\lnot \LI(C_1))\sigma}\spas\land \lifboth{(\lnot \LI(C_2))\sigma}) \\
-															 &\semiff \lnot ({\LI(\bhat C_1)\sigma}\spas\land {\LI(\bhat C_2)\sigma}) \\
-															 &= \lnot \LIpre(\bhat C)
-					\end{align*}
-
-				\item $l$ is $\Delta$-colored:
-					This case can be argued analogously.
-
-				\item $l$ is grey:
-					Note ${l\sigma} \stackrel{{\markB}}= {l'\sigma}$.
-					\begin{align*}
-						\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-						\LIpre(C) &\stackrel{{\phantom{\markB}}}=
-						(\lnot {{l'\sigma}} \land {\LI(C_1)\sigma}) \spam\lor 
-						({l\sigma} \land {\LI(C_2)\sigma})\\
-						&\stackrel{{\markB}}\semiff\,
-						({{l'\sigma}} \lor {\LI(C_1)\sigma}) \spam\land 
-						(\lnot {l\sigma} \lor {\LI(C_2)\sigma})\\
-						&\stackrel{{\phantom{\markB}}}\semiff \lnot [ (\lnot {{l'\sigma}} \land \lnot {\LI(C_1)\sigma}) \spam\lor 
-					({l\sigma} \land \lnot{\LI(C_2)\sigma}) ] \\
-					&\stackrel{{\phantom{\markB}}}=\lnot [ (\lnot {{\bhat l'\sigma}} \land {\LI(\bhat C_1)\sigma}) \spam\lor 
-				({\bhat l\sigma} \land {\LI(\bhat C_2)\sigma}) ]\\
-				& \stackrel{{\phantom{\markB}}}= \lnot \LIpre(\bhat C) 
-			\end{align*}
-	\end{enumerate}
-
-
-\item[Factorisation.]
-	Suppose the clause $C$ is the result of a factorisation $\inference$ of $C_1: l \lor l' \lor D$ 
-	with $\sigma = \mgu(\inference)$.
-
-	As the construction is not influenced by the coloring, the induction hypothesis $\LIpre(C) = \LI(C_1)\sigma$ suffices.
-
-	Then $\LIpre(C) = \lifboth{\LI(C_1)\sigma}$, so the construction is not influenced by the coloring and by the induction hypothesis, $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$.
-
-\item[Paramodulation.]
-	Suppose the clause $C$ is the result of a paramodulation inference $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
-
-
-	We proceed by a case distinction:
-	\begin{itemize}
-		\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Delta$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
-			Then $p$ in $\bhat E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $\bhat E\occatp{r} \lor \LI(\bhat E\occatp{r})$. 
-
-			\hspace*{\dimexpr-\leftmargini-1em}\parbox{\linewidth}{%
-			%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-				%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-				\begin{align*}
-					%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-					\LIpre(C) 
-					&= ({s\sigma=t\sigma} \land {\LI(C_2)\sigma} ) \lor ({s\sigma\neq t\sigma} \land {\LI(C_1)\sigma}) \lor ({s\sigma=t\sigma} \land {h\occur{s}\sigma \neq h\occur{t}\sigma}) \\
-					&\semiff \lnot [ ({s\sigma\neq t\sigma} \lor \lnot {\LI(C_2)\sigma} ) \land ({s\sigma= t\sigma} \lor \lnot{\LI(C_1)\sigma}) \land ({s\sigma\neq t\sigma} \lor {h\occur{s}\sigma = h\occur{t}\sigma}) ] \\
-					&= \lnot [ ({s\sigma\neq t\sigma} \lor {\LI(\bhat C_2)\sigma} ) \land ({s\sigma= t\sigma} \lor {\LI(\bhat C_1)\sigma}) \land ({s\sigma\neq t\sigma} \lor {h\occur{s}\sigma = h\occur{t}\sigma}) ] \\
-					&\semiff \lnot [ ({s\sigma= t\sigma} \land {\LI(\bhat C_2)\sigma} ) \lor ({s\sigma\neq t\sigma} \land {\LI(\bhat C_1)\sigma}) \land ({s\sigma\neq t\sigma} \lor {h\occur{s}\sigma = h\occur{t}\sigma}) ]\\
-					&= \lnot \LIpre(\bhat C)
-				\end{align*}
-			}\par
-
-		\item Suppose that $p$ in $E\occatp{r}$ is contained in a maximal $\Gamma$-term $h\occ{r}$, which occurs more than once in $E\occatp{r} \lor \LI(E\occatp{r})$. 
-			This case can be argued analogously.
-
-		\item Otherwise:
-			\todo{format like proof for $\PI$, if this are even kept as separate proofs}
-			%\hspace*{\dimexpr-\leftmargini-\leftmarginii-\leftmarginiii}\parbox{\linewidth}{%
-			%\hspace*{\dimexpr-\leftmargini-\leftmarginii}\parbox{\linewidth}{%
-			\begin{align*}
-				%\hspace*{\dimexpr-\leftmargini-\leftmarginii}
-				\LIpre(C) 
-				&= ({s\sigma=t\sigma} \land {\LI(C_2)\sigma} ) \spam\lor ({s\sigma\neq t\sigma} \land {\LI(C_1)\sigma}) \\
-				&\semiff \lnot [ ({s\sigma\neq t\sigma} \lor \lnot {\LI(C_2)\sigma} ) \spam\land ({s\sigma= t\sigma} \lor \lnot {\LI(C_1)\sigma}) ] \\
-				&= \lnot [ ({s\sigma\neq t\sigma} \lor {\LI(\bhat C_2)\sigma} ) \spam\land ({s\sigma= t\sigma} \lor {\LI(\bhat C_1)\sigma}) ] \\
-				&\semiff \lnot [ ({s\sigma= t\sigma} \land {\LI(\bhat C_2)\sigma} ) \spam\lor ({s\sigma\neq t\sigma} \land {\LI(\bhat C_1)\sigma}) ] \\
-				&= \lnot \LIpre(\bhat C)
-			\end{align*}
-			%}\par
-
-	\end{itemize}
-
-	\end{itemize}
+	For the induction step, suppose that the clause $C$ is the result of an inference $\inference$ of the clauses $\bar C = C_1, \dots, C_n$.
+	Then by the induction hypothesis, $\LI(C_i) \semiff \lnot \LI(\primex C_i)$ for $1 \varleq i \varleq n$. 
+	Hence we can apply Lemma~\ref{lemma:symmetry_step} to obtain that $\PIstep(\inference, \LI(C_1), \dots, \LI(C_n)) \semiff \lnot \PIstep(\primex \inference, \LI(\primex C_1), \dots, \LI(\primex C_n))$.
+	But this is nothing else than $\LIpre(C) \spas\semiff \lnot \LIpre(\primex C)$.
 
 
 	We conclude by showing that 
 	$\LIpre(C) \semiff \lnot \LIpre(\bhat C)$ 
-	entails that 
+	implies that 
 	$\LI(C) \semiff \lnot \LI(\bhat C)$:
 	Clearly the terms to be lifted in $\LIpre(C)$ and $\LIpre(\bhat C)$ are the same and differ only in their color.
 	Even though this results in different lifting variables, that is of no relevance as all lifted variables are instantly bound.
@@ -641,7 +511,7 @@ We finish this chapter by an example demonstrating the application of the interp
 			\qedhere
 		\end{adjustwidth}
 		\vspace*{\fill}
-		
+
 	\end{landscape}
 	\global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 00}
 \end{exa}

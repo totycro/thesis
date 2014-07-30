@@ -665,51 +665,58 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 \section{Symmetry of the extracted interpolants}
 \label{sec:symmetry}
 
-
-The interpolant extraction procedure $\PI$ exhibits a convenient property which is termed \emph{symmetry} in \cite[Definition 5]{interpolantStrenth} and will be used to show that results concerning $\Gamma$ can easily be generalised to results for $\Delta$.
-The symmetry-property of $\PI$ can be stated formally as follows:
+The interpolant extraction procedure $\PI$ exhibits a convenient property which is termed \emph{symmetry} in \cite[Definition 3]{interpolantStrenth} and will be used to show that results concerning $\Gamma$ can easily be generalised to results for $\Delta$.
+We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it for $\PI$. 
 
 \newcommand{\primex}[1]{\ensuremath{\bhat{#1}}}
-lemma: symm for $\PIinit$
 
 \begin{lemma}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	$\PIstep(\inference, I_1, I_2) \semiff \PIstep(\primex\inference, \primex I_1, \primex I_2)$
-
-	\mytodo{ICI: formulate appropraitely, make sure it goes through: check what the $I$'s have to fulfill (should be obvious from proof)}
-
-	\mytodo{make sure induction goes through with $\PI$ then}
-\end{lemma}
-
-\begin{lemma}
-	\label{lemma:symmetry}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	Then $\PI(\pi) \semiff \lnot \PI(\primex\pi)$.
+	\label{lemma:symmetry_base}
+	Let $C$ be a clause in $\Gamma \cup \Delta$ and $\primex C$ the same clause in $\primex\Gamma\cup \primex\Delta$ such that $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	Then $\PIinit(C) \semiff \lnot \PIinit(\primex C)$. 
 \end{lemma}
 \begin{proof}
-	We prove this lemma by induction on $\pi$.
+	\[
+		\PIinit(C) =
+	\begin{cases} \top & \text{ if $C \in \Delta$} \\ \bot & \text{ if $C \in \Gamma$}\end{cases}
+	\spam= \begin{cases} \top & \text{ if $\primex C \in \primex\Gamma$} \\ \bot & \text{ if $\primex C \in \primex\Delta$}\end{cases}\\
+		\spam =
+	 \begin{cases} \lnot \bot & \text{ if $\primex C \in \primex\Gamma$} \\ \lnot \top & \text{ if $\primex C \in \primex\Delta$}\end{cases}
+		=
+		\lnot \PIinit(\primex C) 
+		\qedhere
+	\]
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:symmetry_step}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	If $\inference$ is an inference of $\pi$ using the clauses $\bar C = C_1, \dots, C_n$ and
+	$I_1, \dots, I_n$ and 
+	$\primex I_1, \dots, \primex I_n$ are formulas  
+	such that $I_i \semiff \lnot \primex I_i$ for $1\varleq i \varleq n$, then
+	$\PIstep(\inference, I_1, \dots, I_n) \spas\semiff \PIstep(\primex\inference, \primex I_1, \dots, \primex I_n)$.
+\end{lemma}
+\begin{proof}
 	Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
 
-	\newcommand{\p}[1]{\primex{#1}}
-	\begin{itemize}
-		\item[Base case.]
-			If $C \in \Gamma$, then $C' \in \Delta'$ and $\PI(C) = \bot \semiff \lnot \top = \lnot \PI(C')$. 
-			The case for $C\in \Delta$ is analogous.
+	We distinguish cases based on the type of $\inference$:
 
+	\begin{itemize}
 		\item[Resolution.]
-			If the clause $C$ is the result of a resolution step of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ using a unifier $\sigma$ such that $l\sigma = l'\sigma$, then by induction hypothesis, we get that
-			$\PI(C_i) = \lnot \PI(C'_i)$ for $i\in \{1,2\}$.
+			\newcommand{\p}[1]{\primex{#1}}
+
+			Suppose that $\inference$ is a resolution inference of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
 
 			We distinguish the following cases:
 			\begin{enumerate}
 				\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
 					\begin{align*}
-						\PI(C) &= \PI(C_1)\sigma \lor \PI(C_2)\sigma\\
-													&\semiff \lnot ( \lnot \PI(C_1)\sigma \land \lnot \PI(C_2)\sigma )\\
-													&= \lnot ( \PI(\primex C_1)\sigma \land \PI(\primex C_2)\sigma ) \\
-													&= \lnot \PI(\primex C)  
+						\PIstep(\inference, I_1, \dots, I_n) &= I_1\sigma \lor I_2\sigma\\
+													 &\semiff \lnot ( \lnot I_1\sigma \land \lnot I_2\sigma )\\
+														&\semiff \lnot ( \p I_1\sigma \land \p I_2\sigma ) \\
+														&= \lnot \PIstep(\primex \inference, \p I_1, \p I_2)  
 					\end{align*}
 				\item $l$ is $\Delta$-colored. This case can be argued analogously.
 
@@ -717,53 +724,77 @@ lemma: symm for $\PIinit$
 					Note that $l\sigma \syneq l'\sigma$ \markB.
 					\nopagebreak 
 					\begin{align*}
-						\PI(C) 
-						&=  (l\sigma \land \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \PI(C_1)\sigma)\\
-						&\stackrel{\markB}\semiff\,(\lnot l\sigma \lor \PI(C_2)\sigma) \land (l'\sigma \lor \PI(C_1)\sigma)\\
-						&\semiff \lnot [(l\sigma \land \lnot \PI(C_2)\sigma) \lor (\lnot l' \sigma \land \lnot \PI(C_1)\sigma)]\\
-						&= \lnot [(\p l\sigma \land \lnot \PI(C_2)\sigma ) \lor (\lnot \p{l'}\sigma \land \lnot \PI(C_1)\sigma)\\
-					 &= \lnot [(\p l \land\lnot \PI(C_2) ) \lor (\lnot \p{l'}\land \lnot \PI(C_1) )]\sigma\\
-					 &= \lnot  [(\p l \land \PI(\p C_2) ) \lor (\lnot \p{l'} \land \PI(\p C_1))]\sigma \\
-					 &= \lnot \PI(\p C)
-					\end{align*}
-
-			\end{enumerate}
-
-		\item[Factorisation.]
-			Suppose the clause $C$ is the result of a factorisation of $C_1: l \lor l' \lor D$. Then $\PI(C) = \PI(C_1)\sigma$ and the induction hypothesis gives the result.
-
-		\item[Paramodulation.]
-			Suppose the clause $C$ is the result of a paramodulation of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ using a unifier $\sigma$ such that $r\sigma = s\sigma$. 
-			We distinguish the following cases:
-
-			\begin{enumerate}
-				\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
-					Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
-					\begin{align*}
-						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-													&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-													&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s= t \lor \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-													&\semiff \lnot [ ( s = t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
-													&= \lnot \PI(\primex C)
-					\end{align*}
-
-				\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $E\occur{r} \lor \PI(E\occur{r})$.
-					This case can be argued analogously.
-				\item Otherwise:
-					\begin{align*}
-						\PI(C) &= [ ( s=t \land \PI(C_2) ) \lor (s\neq t \land \PI(C_1)) ]\sigma \\
-													&= [ ( s=t \land \lnot \PI(\primex C_2) ) \lor (s\neq t \land \lnot \PI(\primex C_1)) ]\sigma \\
-													&\semiff \lnot [ ( s\neq t \lor \PI(\primex C_2) ) \land (s=t \lor \PI(\primex C_1)) ]\sigma \\
-													&\semiff \lnot [ ( s=t \land \PI(\primex C_2) ) \lor (s\neq t \land \PI(\primex C_1)) ]\sigma \\
-													&= \lnot \PI(\primex C)
-						\qedhere
+						\PIstep(\inference, I_1, \dots, I_n) 
+						&=  [(l \land I_2) \lor (\lnot l'  \land I_1)]\sigma\\
+						&\hspace{-1pt}\stackrel{\mathclap{\markB}}\semiff[(\lnot l \lor I_2) \land (l' \lor I_1)]\sigma\\
+						 &\semiff \lnot [(l \land \lnot I_2) \lor (\lnot l'  \land \lnot I_1)]\sigma\\
+						 &= \lnot [(\p l \land\lnot I_2 ) \lor (\lnot \p{l'}\land \lnot I_1 )]\sigma\\
+						 &= \lnot  [(\p l \land \p I_2 ) \lor (\lnot \p{l'} \land \p I_1)]\sigma \\
+						 &= \lnot \PIstep(\p \inference, \p I_1, \dots, \p I_n)
 					\end{align*}
 			\end{enumerate}
+
+				\item[Factorisation.]
+					Suppose that $\inference$ is a factorisation inference of $C_1: l \lor l' \lor D$
+					with $\sigma = \mgu(\inference)$.
+					Then $\PIstep(\inference, I_1) = I_1\sigma \spas\semiff \lnot \p I_1\sigma = \lnot \PIstep(\p \inference, \p I_1)$.
+
+				\item[Paramodulation.]
+					Suppose that $\inference$ is a paramodulation inference of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ 
+					with $\sigma = \mgu(\inference)$.
+
+					We proceed by a case distinction:
+					$\PIstep(\inference, I_1, I_2)$
+
+					\begin{enumerate}
+						\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $I_2 \lor E\occur{r}$.
+							Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
+							\begin{align*}
+								\PIstep(\inference, I_1, I_2) &= [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+														&= [ ( s=t \land \lnot \p I_2 ) \lor (s\neq t \land \lnot \p I_1) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+														&\semiff \lnot [ ( s\neq t \lor \p I_2 ) \land (s= t \lor \p I_1) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+														&\semiff \lnot [ ( s = t \land \p I_2 ) \lor (s\neq t \land \p I_1) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
+													 &= \lnot \PIstep(\primex \inference, \p I_1, \p I_2)
+							\end{align*}
+
+						\item $r$ occurs in a maximal $\Gamma$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $I_2 \lor E\occur{r}$.
+							This case can be argued analogously.
+						\item Otherwise:
+							\begin{align*}
+								\PIstep(\inference, I_1, I_2) &= [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \\
+														&= [ ( s=t \land \lnot \p I_2 ) \lor (s\neq t \land \lnot \p I_1) ]\sigma \\
+														&\semiff \lnot [ ( s\neq t \lor \p I_2 ) \land (s=t \lor \p I_1) ]\sigma \\
+														&\semiff \lnot [ ( s=t \land \p I_2 ) \lor (s\neq t \land \p I_1) ]\sigma \\
+													 &= \lnot \PIstep(\primex \inference, \p I_1, \p I_2)
+								\qedhere
+							\end{align*}
+					\end{enumerate}
 
 
 	\end{itemize}
 
 \end{proof}
+
+
+
+\begin{lemma}
+	\label{lemma:symmetry}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	Then for a clause $C$ and its corresponding clause $\primex C$ in $\primex \pi$, $\PI(C) \semiff \lnot \PI(\primex C)$.
+\end{lemma}
+\begin{proof}
+	We prove this lemma by induction.
+
+	For $C \in \Gamma \cup \Delta$, we obtain the result by Lemma~\ref{lemma:symmetry_base}.
+
+
+	For the induction step, suppose that the clause $C$ is the result of an inference $\inference$ of the clauses $\bar C = C_1, \dots, C_n$.
+	Then by the induction hypothesis, $\PI(C_i) \semiff \lnot \PI(\primex C_i)$ for $1 \varleq i \varleq n$. 
+	Hence we can apply Lemma~\ref{lemma:symmetry_step} to obtain that $\PIstep(\inference, \PI(C_1), \dots, \PI(C_n)) \semiff \lnot \PIstep(\primex \inference, \PI(\primex C_1), \dots, \PI(\primex C_n))$.
+	But this is nothing else than $\PI(C) \spas\semiff \lnot \PI(\primex C)$.
+\end{proof}
+
 
 \begin{corr}
 	\label{cor:delta_entails_lifted_interpolant}
@@ -772,8 +803,8 @@ lemma: symm for $\PIinit$
 \end{corr}
 \begin{proof}
 	Form $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$. 
-	By Lemma \ref{lemma:symmetry},
+	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, it holds that $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$ and 
+	by Lemma \ref{lemma:symmetry}, we obtain that 
 	$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
 	This however is nothing else than 
 	$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
