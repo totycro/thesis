@@ -37,115 +37,6 @@ Consider the following example:
 %The key idea which enables this early lifting of colored terms is that proofs often consist of several parts which are independent of each other. 
 
 
-\begin{comment}
-First, we define a substitution which ensures that modifications to terms are also applied to lifting variables. Note that it is conceptually similar to $\sigma'$ as employed in Lemma~\ref{lemma:lif}.\todo{merge these concepts?}
-
-\begin{defi}[Substitution $\tau(\inference)$]
-	For an inference $\inference$ with $\sigma = \mgu(\inference)$, we define the infinite substitution $\tau(\inference)$ with $\dom(\tau(\inference)) = \dom(\sigma) \cup \{z_s \mid s\sigma \neq s\}$ as follows for a variable $x$:
-
-	\[
-		x\tau(\inference) =
-		\begin{cases}
-			x\sigma & \text{$x$ is a non-lifting variable} \\
-			z_{t\sigma} & \text{$x$ is a lifting variable $z_t$}
-		\end{cases} 
-	\]
-	%\qedhere
-
-	If the inference $\inference$ is clear from the context, we abbreviate $\tau(\inference)$ by $\tau$. 
-\end{defi}
-
-\mytodo{need commutativity, but the easy version does not work out: ($\lifboth{t\sigma} = \lifboth{t}\mathrm{somesubst}$)}
-
-\mytodo{does work out but not for lifting variables} 
-
-\mytodo{possibly show where we need this exactly: in induction step where hypothesis is lifted.}
-
-
-\begin{exa}
-	Let $\inference$ be an inference with $\mgu(\inference) = \sigma = \{x \mapsto a\}$
-	and consider the terms $f(x)$ and $f(a)$, where $f$ and $a$ are colored symbols.
-	Clearly $f(x)\sigma = f(a)$ and therefore necessarily $z_{f(x)}\tau = z_{f(a)}$.
-
-	But now consider $z_{f(x)} \sigma$.
-	As $z_{f(x)}$ is a lifting variable, $z_{f(x)} \not\in \dom(\sigma)$ as $\sigma$ is a unifier from a resolution derivation inference.
-	Hence $z_{f(x)}\sigma = z_{f(x)}$ and therefore $\lifboth{z_{f(x)}\sigma} = \lifboth{z_{f(x)}} = z_{f(x)}$, but $\lifboth{z_{f(x)}}\tau = z_{f(x)}\tau = z_{f(a)}$.
-	So $\lifboth{z_{f(x)}\sigma} \neq \lifboth{z_{f(x)}}\tau$.
-
-	We see here that there are circumstances under which in order to commute lifting and substitution,
-	the substitution $\tau$ is required to conform to the equation
-	$z_{f(x)}\tau =\nolinebreak z_{f(a)}$,
-	whereas in others, it must hold that
-	$z_{f(x)}\tau = z_{f(x)}$.
-\end{exa}
-
-\begin{lemma}
-	\label{lemma:lifting_tau_commute}
-	For a formula or term $\varphi$ and an inference $\inference$ such that $\tau = \tau(\inference)$,
-	$\lifboth{\lifboth{ \varphi} \tau} =\nolinebreak \lifboth{ \varphi \tau } $.
-\end{lemma}
-\begin{proof}
-	We proceed by induction.
-
-	\begin{itemize}
-		\item Suppose that $t$ is a grey constant or function symbol of the form $f(t_1, \dots, t_n)$.
-			Then we can derive the following, where (IH) signifies a deduction by virtue of the induction hypothesis. 
-			\begin{align*}
-				\lifboth{\lifboth{t}\tau} &= \lifboth{\lifboth{ f(t_1, \dots, t_n)}\tau} \\
-																							&= \lifboth{ f(\lifboth{t_1}\tau, \dots, \lifboth{t_n}\tau) } \\
-																				&= f(\lifboth{\lifboth{t_1}\tau}, \dots, \lifboth{\lifboth{t_n}\tau}) \\
-																		&\stackrel{\mathclap{\text{(IH)}}}= f(\lifboth{t_1\tau}, \dots, \lifboth{t_n\tau}) \\
-																	 &= \lifboth{f(t_1, \dots, t_n)\tau} \\
-																	 &= \lifboth{t\tau}
-			\end{align*}
-		\item Suppose that $t$ is a colored constant or function symbol. Then:
-			\[
-				\lifboth{\lifboth{t}\tau}= \lifboth{z_t\tau} 
-				= \lifboth{z_{t\sigma}} 
-				= z_{t\sigma} 
-				= \lifboth{t\sigma} 
-				= \lifboth{t\tau}
-			\]
-		\item Suppose that $t$ is a variable $x$. Then:
-			\[
-				\lifboth{\lifboth{t}\tau} = \lifboth{\lifboth{ x}\tau} = \lifboth{x\tau} = \lifboth{t\tau}
-			\]
-		\item Suppose that $t$ is a lifting variable $z_t$. Then:
-			\[
-				\lifboth{\lifboth{z_t}\tau} = \lifboth{z_t\tau} 
-				\qedhere
-			\]
-	\end{itemize}
-
-\end{proof}
-
-\addtocounter{exa}{-2}
-\begin{exa}[continued]
-	In the formulation as given in Lemma~\ref{lemma:lifting_tau_commute}, we observe the required property:
-	
-	$\lifboth{ \lifboth{ x} } \sigma = \lifboth{x \sigma}$
-
-	$\lifboth{ \lifboth{ z_{f(x)} } \sigma } = \lifboth{z_{f(x)} \sigma}$
-
-	\mytodo{elaborate, make connection to example above obvious}
-\end{exa}
-\addtocounter{exa}{1}
-
-
-\begin{lemma}
-	\label{lemma:substitute_and_lift}
-	Let $\sigma$ be a substitution and $F$ a formula without $\Phi$-colored terms such that for a set of formulas $\Psi$ which does not contain $\Phi$-lifting variables, $\Psi \entails F$.
-	Then $\Psi \entails \lifphinovar{F\sigma}$.
-\end{lemma}
-\begin{proof}
-	$\lifphinovar{F\sigma}$ is an instance of $F$:
-	$\sigma$ substitutes variables either for terms which do not contain $\Phi$-colored symbols or by terms containing $\Phi$-colored symbols.
-	For the first kind, the lifting has no effect.
-	For the latter, the lifting only replaces subterms of the terms introduced by the substitution by a lifting variable such that the original structure of $F$ remains invariant as it by assumption does not contain colored terms.
-\end{proof}
-
-\end{comment}
-
 \section{Interpolant extraction with simultaneous lifting}
 
 We now define the lifted interpolant $\LI$.
@@ -705,6 +596,8 @@ We finish this chapter by an example demonstrating the application of the interp
 	and $\Delta = \{ S(\var{8}) \lor \lnot P(\var{5}) \lor \lnot R(\var{5}), \lnot Q(g(a, \var{7})) \}$.
 	We can produce an interpolant for $\Gamma$ and $\Delta$ using the following refutation and extraction in the same notation as Example~\ref{exa:lemma_part_renaming}:
 
+
+	\mytodo{more text, use figure to make clear that it's a spearate page?}
 
 	%\tiny
 

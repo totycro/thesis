@@ -1,9 +1,60 @@
 
+
 The notion of interpolation has been introduced by Craig in \cite{Craig57linear}.
+Loosely speaking, given two formulas such that one implies the other, an interpolant is implied by the first and itself implies the latter.
+Hence it in some sense captures the logical content of the first formula which necessarily makes the latter true and therefore acts as a link between the original formulas.
 
-bindeglied zwischen formeln
 
-aussage über sprache
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[
+			implies/.style={double,double equal sign distance,-implies},
+			mynode/.style={draw,circle,outer sep=3pt}
+		]
+		\node[mynode] (A) at (0,0) {$A$};
+		\node[mynode] (B) at (4,0) {$B$};
+		\node[mynode] (I) at (2,-1.5) {$I$};
+
+		%\draw[->,implies] (A) to (B);
+		\draw (A) edge[implies]  (B);
+		\draw (A) edge[implies]  (I);
+		\draw (I) edge[implies]  (B);
+
+	\end{tikzpicture}
+	\caption{Given two formulas $A$ and $B$ such that $A$ implies $B$, an interpolant is a formula $I$ which is implied by $A$ and implies $B$.}
+\end{figure}
+
+\mytodo{use A, B in the text?}
+
+Moreover, interpolants are not arbitrary formulas, but their language is restricted to those symbols, which are common to both original formulas.
+Thus they represent the logical connection solely by statements on notions, which are relevant to both original formulas.
+
+As Craig has shown that interpolants always exist, they represent a justification for material implication in classical logic:
+If under any circumstance an implication in classical logic holds, then there is a formula which contains the logical content explaining this implication.
+Or conversely, if such a summary of a potential implication does not exist, the implication does not hold in general.
+Furthermore, if formulas are concerned with different matters (such that their language is disjoint), there certainly can not be a logical relation among them, as for such formulas, no interpolant can be found.
+
+Craig interpolation has been and still is studied with respect to a wide variety of logics.
+Most notably, it holds for propositional and first-order logic.
+This fact can be proven by different means:
+Interpolants can be directly extracted from proofs of logical relations of formulas thus showing their existence in a constructive manner.
+Alternatively, also semantic arguments for the existence of interpolants can be brought up:
+Assuming the non-existence of interpolants, one can build a model contradicting an assumed logical relation of the original formulas.
+
+The applications of Craig interpolation are manifold:
+As a theoretic tool, it can for instance be employed to proof Beth's definability theorem or also to show lower bounds on the length of proofs of propositional proof systems (\cite{Pudlak97,krajivcek1997interpolation}).
+In recent years, it has been discovered that interpolants serve well in the area of model checking as a means to find formulas overapproximating reachable states of a program (\cite{McMillan03}), which is now an active area of research.
+Furthermore, in the field of program analysis, there are also approaches making use of interpolation to extract information about the changes of program state inflicted by loop iterations in order to detect loop invariants  (\cite{weissenbacher2010}).
+
+
+
+
+
+
+
+~
+
+~
 
 verschiedene logiken, insbes prop + fol
 
@@ -11,7 +62,7 @@ konstruktive beweistheoretische ansätze aber auch modelltheoretisch
 
 korollary: beth; andere anwendungen: invariant generation, etc
 description logic (talk von workshop)
-	uniform interpolation?
+uniform interpolation?
 
 \url{http://en.wikipedia.org/wiki/Craig_interpolation}
 

@@ -405,7 +405,9 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 			
 			\markB{} $\Gamma \entails \lifdelta{\PI(C_2)} \spas\lor \lifdelta{E_\Gamma} \spas\lor \lnot \lifdelta{l'_\Gamma}$.
 
-			Let $\sigma'$ be defined as in Lemma \ref{lemma:lif}.
+			\mytodo{ HERE }
+
+			\mytodo{ merge proofs somehow? }
 
 			We proceed by a case distinction on the color of $l$:
 			\begin{enumerate}
@@ -413,7 +415,7 @@ By lifting the propositional interpolant, we are able to already obtain a formul
 					\label{aou5jklah}
 
 					Since $\sigma = \mgu(l, l')$, $l\sigma \syneq l'\sigma$ and therefore $\lifdelta{l\sigma} = \lifdelta{l'\sigma}$.
-					As by Lemma~\ref{lemma:lif} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
+					As by Lemma~\ref{lemma:lifting_subst_commute} $\lifdelta{l\sigma} = \lifdelta{l}\sigma'$ and $\lifdelta{l'\sigma} = \lifdelta{l'}\sigma'$,
 					we get $\lifdelta{l}\sigma' = \lifdelta{l'}\sigma'$.
 					Hence by applying $\sigma'$ to \markA{} and \markB{} (note that $l_\Gamma = l$ and $l'_\Gamma = l'$ as they are $\Gamma$-colored), we can perform a resolution step on $\lifdelta{l}\sigma'$ and obtain
 					$\Gamma \entails \lifdelta{\PI(C_1)}\sigma' \spas\lor \lifdelta{D_\Gamma} \sigma' \spas\lor \lifdelta{\PI(C_2)}\sigma' \spas\lor \lifdelta{E_\Gamma} \sigma'$.
