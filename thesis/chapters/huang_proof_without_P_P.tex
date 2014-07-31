@@ -256,7 +256,6 @@ It turns out that in this formulation, commutation can be done in general:
 
 
 %\begin{exa}
-%	\mytodo{ write in style of examples above; in examples above: write which symbols are of which color }
 %
 %	Let $\sigma = \{x \mapsto a\}$
 %	and consider the terms $f(x)$ and $f(a)$, where $f$ and $a$ are colored symbols.
@@ -341,7 +340,7 @@ Second, if we can exclude the case of lifting variables, we can apply $\sigma$ a
 Note that if the formula or term contains lifting variables,
 it is not possible to perform the commutation with $\sigma$ as in Lemma~\ref{lemma:lifting_subst_commute}.
 As illustrated in Item~\ref{exa:lifting_commute_3} of Example~\ref{exa:lifting_commute},
-we here have that $\lifboth{z_t\sigma} = \lifboth{z_t} = z_t$, but $\lifboth{z_t\tauell} = \lifboth{z_{{t\sigma}}} = z_{{t\sigma}}$
+we here have that $\lifphi{z_t\sigma} = \lifphi{z_t} = z_t$, but $\lifphi{z_t\tauell} = \lifphi{z_{{t\sigma}}} = z_{{t\sigma}}$
 Hence in these cases, $\tauell$ would have to leave lifting variables unchanged, which contradicts other use cases such as Item ~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_commute}.
 
 However in the context of interpolant extraction, one can deal with interpolants containing free occurrences of lifting variables by just employing $\tau$ in their construction instead of $\sigma$.

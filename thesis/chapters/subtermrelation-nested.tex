@@ -47,7 +47,6 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 
 	Let $C$ be a clause in $\pi$. 
 	%For a literal $\lambda$ in $C$, we denote the corresponding literal in $\LIcl(C)$ by $\lambda\cll$, whose existence is ensured Lemma~\ref{lemma:li_vs_clause_plus_literals_equal}.
-	%We define $\LIcl(C) \defeq C$. \mytodo{if this version is final, drop $\LIcl(C)$ everywhere}
 	We define the intermediary formula $\LIpre(C)$ as follows:
 	\begin{description}
 		\item{} Base case.
@@ -147,10 +146,10 @@ Now, we proceed to the main lemma:
 	If $C\in \Gamma\cup\Delta$, then Lemma~\ref{lemma:gamma_entails_init} shows that $\Gamma \entails \lifdeltanovar{\PIinit(C) \lor C_\Gamma}$, which is the unfolded definition of $\lifdeltanovar{\LIpre(C) \lor C_\Gamma}$.
 
 	For the induction step, suppose the clause $C$ is the result of an inference $\inference$ using the clauses $C_1, \dots, C_n$.
-	By induction hypothesis, $\Gamma \entails \lifdelta{\PI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
+	By induction hypothesis, $\Gamma \entails \lifdeltanovar{\PI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
 	by Lemma~\ref{lemma:gamma_entails_step}, we obtain that 
-	$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
-	This however is nothing else than $\Gamma \entails \lifdelta{\LIpre(C) \lor C_\Gamma}$.
+	$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
+	This however is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C) \lor C_\Gamma}$.
 
 
 	As we have now established that
