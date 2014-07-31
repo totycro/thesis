@@ -9,7 +9,6 @@ This however neglects the fact that proofs are frequently structured in a way su
 By lifting these and prefixing the entire interpolant with their respective quantifier, the resulting formula is not optimal in the sense that the quantifier scope can be minimised.
 
 Consider the following example:
-\todo{example notation reference}
 
 \begin{exa}
 	\label{exa:one_phase_motivation}
@@ -27,8 +26,8 @@ Consider the following example:
 	\end{prooftree}
 
 	Lifting and quantification of this propositional interpolant according to Theorem~\ref{thm:two_phases} gives the interpolant $\forall x_a (Q(x_a) \lor P(x_a))$.
-	Note however that the more general formula $(\forall x_a Q(x_a) ) \lor (\forall x_a P(x_a))$ is an interpolant as well which cannot be constructed by this method.
-	Consider yet that $\Delta$ entails only the negated interpolant, so by generalising the interpolant, the formula entailed by $\Delta$ becomes more specialised.
+	Note however that the more general formula $(\forall x_a Q(x_a) ) \lor (\forall x_a P(x_a))$ is an interpolant as well, but can not be constructed by this method.
+	Consider yet that $\Delta$ entails the negated interpolant, so by generalising the interpolant, the formula entailed by $\Delta$ becomes more specialised.
 \end{exa}
 
 %Colored terms satisfying certain restrictions which allow for determining the order of the quantifier of the their corresponding lifting variables are lifted and bound during the extractions of the interpolants.
@@ -42,7 +41,7 @@ Consider the following example:
 We now define the lifted interpolant $\LI$.
 Note that the structure of the resulting formula coincides the ones from $\PI$ as defined in Definition~\ref{def:PI} except for quantifiers and, of course, the colored terms.
 
-\begin{defi}[Incrementally lifted interpolant]
+\begin{defi}[Incrementally lifted interpolant $\LI$]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	We define $\LI(\pi)$ to be $\LI(\square)$, where $\square$ is the empty clause derived in $\pi$.
 
@@ -55,7 +54,7 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 			If $C \in \Gamma\cup \Delta$, $\LIpre(C) \defeq \PIinit(C)$.
 
 		\item{} Induction step.
-			If $C$ is the result of an inference $\inference$ using the clauses $\bar C$, then $\LIpre(C) \defeq \PIstep(\inference, \LIpre(C_1), \dots, \LIpre(C_n))$.
+			If $C$ is the result of an inference $\inference$ using the clauses $\bar C$, then $\LIpre(C) \defeq \PIstep(\inference, \LI(C_1), \dots, \LI(C_n))$.
 
 	\end{description}
 
@@ -72,7 +71,7 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 
 		\item 
 Let $\lifsym_\mathrm{part}^*(\LIpre(C))$ be 
-$\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which occurs free, is substituted by a fresh lifting variable $z_{t'}$.\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.} 
+$\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which occurs free, is substituted by a fresh lifting variable $z'_{t}$.\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.} 
 \label{lemma_part_renaming}
 
 		\item Let $X$ ($Y$) be the set of $\Delta$-($\Gamma$-)lifting variables which occur free in  
@@ -86,7 +85,6 @@ $\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which oc
 %\section{Properties of $\LI$ and $\LIcl$}
 
 
-\mytodo{example showing that we can quantify locally}
 
 %\begin{remark}
 %	As a local optimisation, the quantifiers can be moved inwards such that they exhibit the smallest scope which covers every occurrence of the bound variable.
@@ -224,6 +222,7 @@ We now present an example which demonstrates that $\LI$ does produce formulas re
 
 		\AxiomCm{ \lnot R(a) \mid \top }
 
+		\insertBetweenHyps{\hskip -1cm}
 		\RightLabelm{\resrule{\resruleres}{v\mapsto a}}
 		\BinaryInfCm{ \square \mid R(a) \lor  \forall x_a( Q(x_a) \lor P(x_a, a) ) }
 		\noLine
@@ -275,7 +274,7 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 	implies that 
 	$\LI(C) \semiff \lnot \LI(\bhat C)$:
 	Clearly the terms to be lifted in $\LIpre(C)$ and $\LIpre(\bhat C)$ are the same and differ only in their color.
-	Even though this results in different lifting variables, that is of no relevance as all lifted variables are instantly bound.
+	Even though this results in different lifting variables, that is of no relevance as all lifted variables are bound, which makes the formulas alpha-equivalent.
 	Additionally, the quantifier type of any given lifting variable in $\Q(C)$ is dual to the respective one in $\Q(\bhat C)$.
 	Furthermore note that the subterm-relation is not affected by the coloring, so the ordering of the quantifiers in $\Q(C)$ and $\Q(\bhat C)$ is identical.
 	Hence 
@@ -308,16 +307,15 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 	Therefore $\lifdeltanovar{\LI(\pi)} = \LI(\pi)$ and $\lifgammanovar{\LI(\pi)} = \LI(\pi)$.
 \end{proof}
 
-We finish this chapter by an example demonstrating the application of the interpolant extraction procedure $\LI$ on a larger example:
+We finish this chapter by demonstrating the application of the interpolant extraction procedure $\LI$ on a larger example:
 
 \begin{exa}
 	\newcommand{\var}[1]{\ensuremath{v_{#1}}}
 	Let $\Gamma = \{R(f(\var{1}, \var{6})), P(f(\var{2}, g(\var{3}, \var{4}))) \lor Q(g(\var{3}, b)), \lnot S(b) \}$
 	and $\Delta = \{ S(\var{8}) \lor \lnot P(\var{5}) \lor \lnot R(\var{5}), \lnot Q(g(a, \var{7})) \}$.
-	We can produce an interpolant for $\Gamma$ and $\Delta$ using the following refutation and extraction in the same notation as Example~\ref{exa:lemma_part_renaming}:
+	We can produce an interpolant for $\Gamma$ and $\Delta$ using the following refutation and extraction in the same notation as Example~\ref{exa:lemma_part_renaming}.
+	We emphasise liftings of terms justified by being a ground term not occurring in the clause by \markA{}, and those justified by occurrences of variables which do not occur in the clause by \markB.
 
-
-	\mytodo{more text, use figure to make clear that it's a separate page?}
 
 	%\tiny
 
@@ -335,18 +333,21 @@ We finish this chapter by an example demonstrating the application of the interp
 				\RightLabelm{\resrule{\resruleres}{\var{3}\mapsto a, \var{7}\mapsto b}}
 				\BinaryInfCm{ P(f(\var{2}, g(a, \var{4}))) \mid Q(g(a, b))  }
 				\noLine
-				\UnaryInfCm{ P(f(\var{2}, g(a, \var{4}))) \mid \exists y_b Q(g(a, y_b))  }
+				\LeftLabel{\markA}
+				\UnaryInfCm{  P(f(\var{2}, g(a, \var{4}))) \mid \exists y_b Q(g(a, y_b)) }
 
 				\AxiomCm{  S(\var{8}) \lor \lnot P(\var{5}) \lor \lnot R(\var{5}) \mid \top }
 				\AxiomCm{  R(f(\var{1}, \var{6})) \mid \bot}
 				\RightLabelm{\resrule{\resruleres}{\var{5} \mapsto f(\var{1}, \var{6})}}
 				\BinaryInfCm{ S(\var{8}) \lor \lnot P(f(\var{1})) \mid R(f(\var{1}, \var{6}))}
 				\noLine
+				\LeftLabel{\markB}
 				\UnaryInfCm{ S(\var{8}) \lor \lnot P(f(\var{1})) \mid \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})})}
 
 				\RightLabelm{\resrule{\resruleres}{\var{1} \mapsto \var{2}, \var{6}\mapsto g(a, \var{4})}}
 				\BinaryInfCm{ S(\var{8}) \mid  P(f(\var{2}, g(a, \var{4}))) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(f(\var{2}, g(a, \var{4}))) \land \exists y_b Q(g(a, y_b))  }
 				\noLine
+				\LeftLabel{\markA\markB}
 				\UnaryInfCm{ S(\var{8}) \mid \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) }
 
 				\AxiomCm{\lnot S(b) \mid \top}
@@ -355,6 +356,7 @@ We finish this chapter by an example demonstrating the application of the interp
 				\insertBetweenHyps{\hskip -2cm}
 				\BinaryInfCm{ \square \mid S(b) \land  \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) }
 				\noLine
+				\LeftLabel{\markA}
 				\UnaryInfCm{ \square \mid \exists y_b \big( S(y_b) \land  \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) \big) }
 
 			\end{prooftree}

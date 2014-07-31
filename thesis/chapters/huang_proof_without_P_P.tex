@@ -101,6 +101,8 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 	\end{indproof}
 \end{defi}
 
+For an illustration of the application of $\PI$ to a resolution refuation, see Example~\ref{exa:two_phase}
+
 \begin{remark}
 	The control flow of the procedure $\PI$ is predominantly determined by the coloring of literals.
 	In this context, two distinct but similar interpretation of the notion of color are viable: 
@@ -603,8 +605,9 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 \begin{lemma}
 	\label{lemma:symmetry_step}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	If $\inference$ is an inference of $\pi$ using the clauses $C_1, \dots, C_n$ and
+	$\primex\pi$ be $\pi$ with opposite coloring, i.e.\ $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	If $\inference$ is an inference of $\pi$ using the clauses $C_1, \dots, C_n$,
+	and
 	$I_1, \dots, I_n$ and 
 	$\primex I_1, \dots, \primex I_n$ are formulas  
 	such that $I_i \semiff \lnot \primex I_i$ for $1\varleq i \varleq n$, then
@@ -613,7 +616,7 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 \begin{proof}
 	Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
 
-	We distinguish cases based on the type of $\inference$:
+	We distinguish cases based on the type of the inference $\inference$:
 
 	\begin{indproof}
 		\indproofitem{Resolution}
@@ -641,7 +644,7 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 						&\hspace{-1pt}\stackrel{\mathclap{\markB}}\semiff[(\lnot l \lor I_2) \land (l' \lor I_1)]\sigma\\
 						 &\semiff \lnot [(l \land \lnot I_2) \lor (\lnot l'  \land \lnot I_1)]\sigma\\
 						 &= \lnot [(\p l \land\lnot I_2 ) \lor (\lnot \p{l'}\land \lnot I_1 )]\sigma\\
-						 &= \lnot  [(\p l \land \p I_2 ) \lor (\lnot \p{l'} \land \p I_1)]\sigma \\
+						 &\semiff \lnot  [(\p l \land \p I_2 ) \lor (\lnot \p{l'} \land \p I_1)]\sigma \\
 						 &= \lnot \PIstep(\p \inference, \p I_1, \dots, \p I_n)
 					\end{align*}
 			\end{enumerate}
@@ -656,14 +659,13 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 					with $\sigma = \mgu(\inference)$.
 
 					We proceed by a case distinction:
-					$\PIstep(\inference, I_1, I_2)$
 
 					\begin{enumerate}
 						\item $r$ occurs in a maximal $\Delta$-term $h\occur{r}$ in $E\occur{r}$ and $h\occur{r}$ occurs more than once in $I_2 \lor E\occur{r}$.
 							Then $\primex r$ occurs in a maximal $\Gamma$-term $\primex h\occur{r}$ in $\primex E\occur{r}$ and $\primex h\occur{r}$ occurs more than once in $\primex E\occur{r} \lor \PI(\primex E\occur{r})$.
 							\begin{align*}
 								\PIstep(\inference, I_1, I_2) &= [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
-														&= [ ( s=t \land \lnot \p I_2 ) \lor (s\neq t \land \lnot \p I_1) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
+														&\semiff [ ( s=t \land \lnot \p I_2 ) \lor (s\neq t \land \lnot \p I_1) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma\\
 														&\semiff \lnot [ ( s\neq t \lor \p I_2 ) \land (s= t \lor \p I_1) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
 														&\semiff \lnot [ ( s = t \land \p I_2 ) \lor (s\neq t \land \p I_1) ]\sigma \land \lnot (s\neq t \lor h\occur{s} = h\occur{t})\sigma\\
 													 &= \lnot \PIstep(\primex \inference, \p I_1, \p I_2)
@@ -674,7 +676,7 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 						\item Otherwise:
 							\begin{align*}
 								\PIstep(\inference, I_1, I_2) &= [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \\
-														&= [ ( s=t \land \lnot \p I_2 ) \lor (s\neq t \land \lnot \p I_1) ]\sigma \\
+														&\semiff\, [ ( s=t \land \lnot \p I_2 ) \lor (s\neq t \land \lnot \p I_1) ]\sigma \\
 														&\semiff \lnot [ ( s\neq t \lor \p I_2 ) \land (s=t \lor \p I_1) ]\sigma \\
 														&\semiff \lnot [ ( s=t \land \p I_2 ) \lor (s\neq t \land \p I_1) ]\sigma \\
 													 &= \lnot \PIstep(\primex \inference, \p I_1, \p I_2)
@@ -700,10 +702,9 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 
 	For $C \in \Gamma \cup \Delta$, we obtain the result by Lemma~\ref{lemma:symmetry_base}.
 
-
 	For the induction step, suppose that the clause $C$ is the result of an inference $\inference$ of the clauses $C_1, \dots, C_n$.
-	Then by the induction hypothesis, $\PI(C_i) \semiff \lnot \PI(\primex C_i)$ for $1 \varleq i \varleq n$. 
-	Hence we can apply Lemma~\ref{lemma:symmetry_step} to obtain that $\PIstep(\inference, \PI(C_1), \dots, \PI(C_n)) \semiff \lnot \PIstep(\primex \inference, \PI(\primex C_1), \dots, \PI(\primex C_n))$.
+	Then by the induction hypothesis, we obtain that  $\PI(C_i) \semiff \lnot \PI(\primex C_i)$ for $1 \varleq i \varleq n$. 
+	Hence we can apply Lemma~\ref{lemma:symmetry_step} and get that  $\PIstep(\inference, \PI(C_1), \dots, \PI(C_n)) \semiff \lnot \PIstep(\primex \inference, \PI(\primex C_1), \dots, \PI(\primex C_n))$.
 	But this is nothing else than $\PI(C) \spas\semiff \lnot \PI(\primex C)$.
 \end{proof}
 
@@ -726,13 +727,13 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 \section{Propositional and one-sided interpolants}
 
 We now show that the results presented in section \ref{sec:two_phase_main_lemma} and \ref{sec:symmetry}
-already are give interpolants which are propositional interpolants in the sense that besides possibly containing colored terms, they are proper interpolants.
+already give propositional interpolants in the sense that besides possibly containing colored terms, they are proper interpolants.
 Note that this coincides with the notion of ``relational interpolant'' as given in \cite{Huang95} and is defined formally in our notation in~\ref{def:huang_orig_rel_prop_interpol}.
 
 \begin{corr}
 	\label{cor:propositional_interpolant}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
-	Then
+	Then $\PI(\pi)$ is a propositional interpolant, i.e.\ it holds that:
 	\begin{enumerate}
 		\item$\Gamma\entails \PI(\pi)$
 		\item$\Delta\entails \lnot \PI(\pi)$
@@ -779,15 +780,16 @@ Note that if $I$ is a one-sided interpolant for $\Gamma$ and $\Delta$ and additi
 	By Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we have that
 	$ \Gamma \entails \lifdelta{\PI(\pi)}$,
 	or equivalently
-	$\Gamma \entails \forall x_1 \quantifierdots \forall x_n  \PI(\pi)$, where $x_1, \dots, x_n$ are the $\Delta$-lifting variables occurring in $\PI(\pi)$.
+	$\Gamma \entails \forall x_{t_1} \quantifierdots \forall x_{t_n}  \PI(\pi)$, where $x_{t_1}, \dots, x_{t_n}$ are the $\Delta$-lifting variables occurring in $\PI(\pi)$.
 
 	By Corollary~\ref{cor:propositional_interpolant}, we get that
 	$\Delta \entails \lnot \PI(\pi)$.
-	This however provides witness terms for 
-	$\Delta \entails \exists x_1 \quantifierdots \exists x_n \lnot \lifdelta{ \PI(\pi) }$, where we can pull the quantifiers inwards to obtain that
-	$\Delta \entails \lnot  \forall x_1 \quantifierdots \forall x_n \lnot \lifdelta{ \PI(\pi) }$.
+	This however provides witness terms for the formula
+	$\exists x_{t_1} \quantifierdots \exists x_{t_n} \lnot \lifdelta{ \PI(\pi) }$, hence
+	$\Delta \entails \exists x_{t_1} \quantifierdots \exists x_{t_n} \lnot \lifdelta{ \PI(\pi) }$. Now we pull the quantifiers inwards to obtain that
+	$\Delta \entails \lnot  \forall x_{t_1} \quantifierdots \forall x_{t_n} \lifdelta{ \PI(\pi) }$.
 
-	Clearly $\forall x_1 \quantifierdots \forall x_n \lifdelta{ \PI(\pi) }$ is devoid of $\Delta$-terms and hence a one-sided interpolant, which is a $\PI_1$ formula.
+	Clearly $\forall x_{t_1} \quantifierdots \forall x_{t_n} \lifdelta{ \PI(\pi) }$ is devoid of $\Delta$-terms and hence a one-sided interpolant, which is a $\Pi_1$ formula.
 \end{proof}
 
 
@@ -812,7 +814,7 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 \end{lemma}
 \begin{proof}
 	Let $\varphi$ be a term which contains a colored term which in turn contains a term of different color.
-	Suppose without loss of generality that it is a $\Gamma$-term which contains a maximal $\Delta$-term $t$ as position $p$.
+	Suppose without loss of generality that it is a $\Gamma$-term which contains a maximal $\Delta$-term $t$ at position $p$.
 	Then $\lft{\Delta}{x}{ \lft{\Gamma}{y}{ \varphi }  }
 	= \lft{\Delta}{x}{ y_\varphi }
 	= y_\varphi $.
@@ -841,7 +843,7 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
 	$t_1, \dots, t_n$ be an arrangement of the maximal colored terms in $\PI(\pi)$ according to the subterm order, i.e.\ if $t_i$ is a subterm of $t_j$, then $i<j$.
 	Then
-	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_{t_i}$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
+	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_{t_i}$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant for $\Gamma$ and $\Delta$.
 \end{thm}
 \begin{proof}
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
@@ -862,11 +864,11 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 
 	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_{u_1} \dots \forall y_{u_{k'}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $u_1, \dots u_{k'}$ are the maximal colored $\Gamma$-terms in $\PI(\pi)$.
 
-	By a similar line of argumentation as above, we can replace the maximal $\Delta$-\nolinebreak{}terms by variables which are then existentially quantified and arrive at
+	By a similar line of argumentation as above, we can replace the maximal $\Delta$-\nolinebreak{}terms by lifting variables which are then existentially quantified and arrive at
 	$\Delta \entails\nolinebreak{} \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also
 	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
-	finally by Lemma \ref{lemma:lifting_order_not_relevant},
+	finally by Lemma \ref{lemma:lifting_order_not_relevant}, we obtain that 
 	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
 
 	As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
@@ -964,8 +966,11 @@ We conclude by presenting the algorithm on an a larger instance:
 	Hence
 	\[\PI(\pi) \spal=  \lnot Z(d) \spam\lor  (d = f(d) \land \lnot Z(f(d)) ) \spam\lor (d \neq f(d) \land L(d, f(d))) \]
 	and lifting and quantification gives the final interpolant
-	\[ \forall x_d \exists y_{f(d)} \big( \lnot Z(x_d) \spam\lor  (x_d = y_{f(d)} \land \lnot Z(y_{f(d)}) ) \spam\lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) \big)\]
+	\[ \forall x_d \exists y_{f(d)} \big( \lnot Z(x_d) \spam\lor  (x_d = y_{f(d)} \land \lnot Z(y_{f(d)}) ) \spam\lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) \big)
 	\qedhere
+\]
+\end{exa}
+
 
 	%neg:
 	%$ \exists x_d \forall y_{f(d)} ( Z(x_d) \land  (x_d \neq y_{f(d)} \lor Z(y_{f(d)}) ) \land (x_d = y_{f(d)} \lor \lnot L(x_d, y_{f(d)})) )$
@@ -1003,6 +1008,4 @@ We conclude by presenting the algorithm on an a larger instance:
 		\end{prooftree}
 	\end{comment}
 
-
-\end{exa}
 

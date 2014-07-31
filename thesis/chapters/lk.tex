@@ -5,10 +5,12 @@ The famous sequent calculus was introduced in \cite{Gentzen}.
 Its use of sequents in lieu of plain formulas allows for a natural mapping of the logical relations expressed by the connectives to the structure of proofs.
 
 \begin{defi} 
-	For multisets of first-order formulas $\Gamma$ and $\Delta$,  $\Gamma \proves \Delta$ is called a \defiemph{sequent}. 
+	For multisets of first-order formulas $\Gamma$ and $\Delta$, $\Gamma \proves \Delta$ is called a \defiemph{sequent}. 
 	In this context $\Gamma$ forms the \defiemph{antecedent}, whereas $\Delta$ is referred to as \defiemph{succedent}.
 
-	A sequent $\Gamma \proves \Delta$ is called \defiemph{provable} if there is a sequent calculus proof of $\Gamma \proves\nolinebreak \Delta$.
+	A sequent calculus proof of a sequent $\Gamma \proves \Delta$ is a tree such that the root is the sequent $\Gamma \proves \Delta$, the leaves are axioms and each edge is labelled by a rule of sequent calculus as given in Figure~\ref{fig:lk}, such that the nodes connected by the edge match the given form. 
+
+	A sequent $\Gamma \proves \Delta$ is called \defiemph{provable} if there exists a sequent calculus proof of $\Gamma \proves\nolinebreak \Delta$.
 \end{defi}
 
 The rules of sequent calculus are as follows:
