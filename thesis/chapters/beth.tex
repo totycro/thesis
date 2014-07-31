@@ -43,9 +43,11 @@ to finite sets, which exist by the compactness theorem.
 	Suppose that $\Gamma_P$ defines $P$ explicitly. 
 	Then there exists some formula $\varphi$ such that 
 	$\Gamma_P\entails \forall x_1\quantifierdots \forall x_n (  P(x_1, \dots, x_n) \liff \varphi)$.
-	But then it also holds that 
-	$\Gamma_{P'}\entails \forall x_1\quantifierdots \forall x_n (  P'(x_1, \dots, x_n) \liff \varphi)$, hence
-	$\Gamma_{P} \cup \Gamma_{P'} \entails \forall x_1\quantifierdots \forall x_n (P(x_1, \dots, x_n) \liff P'(x_1, \dots, x_n))$.
+	But then it clearly also holds that 
+	$\Gamma_{P'}\entails \forall x_1\quantifierdots \forall x_n (  P'(x_1, \dots, x_n) \liff \varphi)$,
+	hence
+	\[
+	\Gamma_{P} \cup \Gamma_{P'} \entails \forall x_1\quantifierdots \forall x_n (P(x_1, \dots, x_n) \liff P'(x_1, \dots, x_n)).\]
 	Therefore $\Gamma_P$ is an implicit definition of $P$.
 
 	For the other direction, suppose that $\Gamma_P$ defines $P$ implicitly. 
@@ -80,6 +82,12 @@ to finite sets, which exist by the compactness theorem.
 	$\Gamma_{P} \entails \forall y_1\quantifierdots\forall y_n \left( \chi \liff  P(y_1, \dots, y_n)\right)$.
 	So clearly $\Gamma_P$ defines $P$ explicitly.
 \end{proof}
+
+In this thesis, we restrict our attention to first-order logic.
+This is not only a matter of reasonable scope, but justified by the fact that the interpolation theorem does not hold in second-order logic.
+This has been discovered by Craig in \cite{Craig65}.
+There, he presents a second-order formula and shows that it is implicitly, but not explicitly definable.
+This immediately leads to a failure of Beth definability, and consequently also interpolation, in this logic.
 
 
 

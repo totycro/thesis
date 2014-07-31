@@ -311,7 +311,8 @@ We finish this chapter by demonstrating the application of the interpolant extra
 \begin{exa}
 	\newcommand{\var}[1]{\ensuremath{v_{#1}}}
 	Let $\Gamma = \{R(f(\var{1}, \var{6})), P(f(\var{2}, g(\var{3}, \var{4}))) \lor Q(g(\var{3}, b)), \lnot S(b) \}$
-	and $\Delta = \{ S(\var{8}) \lor \lnot P(\var{5}) \lor \lnot R(\var{5}), \lnot Q(g(a, \var{7})) \}$.
+	and $\Delta = \{ S(\var{8}) \lor \lnot P(\var{9}) \lor \lnot R(\var{5}), \lnot Q(g(a, \var{7})) \}$.
+	Hence $\Lang(\Gamma) \cap \Lang(\Delta) = \{ R, P, Q, S, g\}$, $\Lang(\Gamma) \setminus \Lang(\Delta) = \{f, b\}$ and $\Lang(\Delta)\setminus\Lang(\Gamma) = \{ a \}$.
 	We can produce an interpolant for $\Gamma$ and $\Delta$ using the following refutation and extraction in the same notation as Example~\ref{exa:lemma_part_renaming}.
 	We emphasise liftings of terms justified by being a ground term not occurring in the clause by \markA{}, and those justified by occurrences of variables which do not occur in the clause by \markB.
 
@@ -335,15 +336,15 @@ We finish this chapter by demonstrating the application of the interpolant extra
 				\LeftLabel{\markA}
 				\UnaryInfCm{  P(f(\var{2}, g(a, \var{4}))) \mid \exists y_b Q(g(a, y_b)) }
 
-				\AxiomCm{  S(\var{8}) \lor \lnot P(\var{5}) \lor \lnot R(\var{5}) \mid \top }
+				\AxiomCm{  S(\var{8}) \lor \lnot P(\var{9}) \lor \lnot R(\var{5}) \mid \top }
 				\AxiomCm{  R(f(\var{1}, \var{6})) \mid \bot}
 				\RightLabelm{\resrule{\resruleres}{\var{5} \mapsto f(\var{1}, \var{6})}}
-				\BinaryInfCm{ S(\var{8}) \lor \lnot P(f(\var{1})) \mid R(f(\var{1}, \var{6}))}
+				\BinaryInfCm{ S(\var{8}) \lor \lnot P(\var{9}) \mid R(f(\var{1}, \var{6}))}
 				\noLine
 				\LeftLabel{\markB}
-				\UnaryInfCm{ S(\var{8}) \lor \lnot P(f(\var{1})) \mid \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})})}
+				\UnaryInfCm{ S(\var{8}) \lor \lnot P(\var{9}) \mid \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})})}
 
-				\RightLabelm{\resrule{\resruleres}{\var{1} \mapsto \var{2}, \var{6}\mapsto g(a, \var{4})}}
+				\RightLabelm{\resrule{\resruleres}{\var{9}\mapsto f(v_2, g(a, \var{4}))}}
 				\BinaryInfCm{ S(\var{8}) \mid  P(f(\var{2}, g(a, \var{4}))) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(f(\var{2}, g(a, \var{4}))) \land \exists y_b Q(g(a, y_b))  }
 				\noLine
 				\LeftLabel{\markA\markB}
