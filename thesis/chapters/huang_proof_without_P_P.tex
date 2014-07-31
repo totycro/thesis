@@ -2,12 +2,14 @@
 \label{sec:two_phases}
 
 In \cite{Huang95}, Huang proposes an algorithm for computing interpolants of two sets of first-order formulas $\Gamma$ and $\Delta$, where $\Gamma\cup\Delta$ is unsatisfiable, by traversing a resolution refutation of $\Gamma \cup \Delta$.
-We present his proof in a modified form in this section and in a more original form in appendix~\ref{sec:huang}.
-The central difference lies in the treatment of the interplay of substitutions and liftings. While in \cite{Huang95}, propositional deductions are employed where only trivial substitutions occur, we provide a method which allows for commuting substitutions and liftings under certain conditions.
+We present his proof in a modified form in this section and in more original form in appendix~\ref{sec:huang}.
+The central difference between these versions lies in the treatment of the interplay of substitutions and liftings.
+While in \cite{Huang95}, propositional deductions are employed, in which all substitutions are trivial,
+we provide a method which allows for commuting substitutions and liftings under certain conditions.
 
 \section{Layout of the proof}
 
-The underlying algorithm produces in the first phase propositional interpolants inductively for every clause which occurs in the resolution refutation.
+The underlying algorithm produces in a first phase propositional interpolants inductively for every clause which occurs in the resolution refutation.
 These interpolants are propositional in the sense that they only obey the language restriction on predicates and may contain colored terms.
 The propositional interpolant assigned to the last clause, the empty clause, is a propositional interpolant for the initial clause sets.
 
@@ -24,12 +26,17 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 \begin{defi}[$\PIinit$]
 	For clauses $C \in \Gamma\cup\Delta$, we define $\PIinit(C)$ as follows:
 
-	If $C \in \Gamma$, $\PI(C) \defeq \bot$.
-	If otherwise $C \in \Delta$, $\PI(C) \defeq \top$.
+	\[\PIinit(C) \defeq
+	\begin{cases}
+		\bot & \text{ if $C \in \Gamma$} \\
+		\top & \text{ if $C \in \Delta$}  
+	\end{cases}
+	\qedhere
+\]
 \end{defi}
 
 \begin{defi}[$\PIstep$]
-	Let $\inference$ be an inference of a resolution refutation of $\Gamma\cup\Delta$ which derives $C$ from from formulas $\bar C = C_1, \dots, C_n$ where $n=1$  if $\inference$ is a factorisation inference or $n=2$. 
+	Let $\inference$ be an inference of a resolution refutation of $\Gamma\cup\Delta$ which derives $C$ from the clauses $C_1, \dots, C_n$ where $n=1$ if $\inference$ is a factorisation inference and $n=2$ in case of a resolution or paramodulation inference. 
 	Let $\bar I = I_1, \dots, I_n$ be formulas.
 
 	Then $\PIstep(\inference, \bar I)$ is defined according to the following cases:
@@ -40,9 +47,12 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 			If $\inference$ is a resolution inference of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$, then $\PIstep(\inference, I_1, I_2)$ is defined as follows:
 			%$\PI(C)$ is defined according to this case distinction:
 			\begin{enumerate}
-				\item If $l$ is $\Gamma$-colored: $\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \lor I_2]\sigma$
-				\item If $l$ is $\Delta$-colored: $\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \land I_2]\sigma$
-				\item If $l$ is grey: $\PIstep(\inference, I_1, I_2) \defeq{} [(l \land I_2) \lor (\lnot l' \land I_1) ]\sigma $
+				\item If $l$ is $\Gamma$-colored: 
+					$\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \lor I_2]\sigma$
+				\item If $l$ is $\Delta$-colored: 
+					$\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \land I_2]\sigma$
+				\item If $l$ is grey: 
+					$\PIstep(\inference, I_1, I_2) \defeq{} [(l \land I_2) \lor (\lnot l' \land I_1) ]\sigma $
 			\end{enumerate}
 
 			\indproofitem{Factorisation}
@@ -60,53 +70,55 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occur{r})\sigma$:
 					\label{def:PI_paramod_1}
 					\newline
-					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \lor (s=t \land h\occur{s} \neq      h\occur{t})\sigma$
+					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$
 				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occur{r})\sigma$:
 					\label{def:PI_paramod_2}
 					\newline
-					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \land (s\neq t \lor h\occur{s} =     h\occur{t})\sigma$
+					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$
 				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in\nolinebreak{} $(I_2 \lor E\occur{r})\sigma$:
 					\label{def:PI_paramod_3}
 					\newline
-					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma$ \qedhere
+					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma$
+					\qedhere
 
 			\end{enumerate}
-
 	\end{indproof}
-
 \end{defi}
 
 
 
-\begin{defi}[Propositional interpolant $\PI$]
+\begin{defi}[Propositional interpolant extraction $\PI$]
 	\label{def:PI}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
 	\defiemph{${\PI(\pi)}$} is defined to be $\PI(\square)$, where $\square$ is the empty clause derived in $\pi$.
-
 	For a clause $C$ in $\pi$, \defiemph{$\PI(C)$} is defined as follows:
 	\begin{indproof}
 		\indproofitem{Base case}
 			If $C \in \Gamma\cup\Delta$, then $\PI(C) \defeq \PIinit(C)$.
 		\indproofitem{Induction step}
-			If $C$ is the result of an inference $\inference$ using the clauses $\bar C$, then $\PI(C) \defeq \PIstep(\inference, \PI(C_1), \dots, \PI(C_n))$.
+			If $C$ is the result of an inference $\inference$ using the clauses $C_1, \dots, C_n$, then $\PI(C) \defeq \PIstep(\inference, \PI(C_1), \dots, \PI(C_n))$.
+			\qedhere
 	\end{indproof}
 \end{defi}
 
 \begin{remark}
-	The control flow of the procedure $\PI$ is mainly determined by the coloring of literals.
+	The control flow of the procedure $\PI$ is predominantly determined by the coloring of literals.
 	In this context, two distinct but similar interpretation of the notion of color are viable: 
 	On the one hand, one can employ the usual, symbol-based interpretation as given in Definition~\ref{def:coloring}, where a (predicate) symbol is considered grey if there are any formulas in $\Gamma$ as well as $\Delta$ which contain the symbol. 
-	Note that this does not necessarily capture the logical function of the symbol, as the symbol then is allowed to occur in the interpolant if in the resolution refutation, only formulas from say $\Gamma$ contain the symbol.
-	It is obvious that one can then also find an interpolant which does not contain the symbol by computing an interpolant for $\Gamma'$ and $\Delta$, where $\Gamma'$ is derived from $\Gamma$ by omitting any formula containing the symbol. 
+	Note that this does not necessarily capture the logical meaning of the symbol, as the symbol then is allowed to occur in the interpolant even if among the clauses used in the resolution refutation, only for instance clauses from $\Gamma$ contain the symbol.
+	It is obvious that one can then also find an interpolant which does not contain the symbol by computing an interpolant for $\Gamma'$ and $\Delta$, where $\Gamma'$ is derived from $\Gamma$ by omitting any formula containing that symbol. 
 	Clearly the refutation of $\Gamma \cup \Delta$ is also a refutation of $\Gamma' \cup \Delta$.
 
-	However in \cite{Huang95}, a stricter notion is utilised.
-	Here, a predicate symbol is colored based on its occurrence:
-	All occurrences of predicate symbols in formulas in $\Gamma$ ($\Delta$) are considered to be $\Gamma$-($\Delta$)-colored.
-	A predicate symbol occurring in the resolution derivation is $\Phi$-colored if its corresponding predecessor is.
+	However in \cite{Huang95}, a stricter notion of coloring is employed.
+	There, a predicate symbol is colored based on its occurrence:
+	All occurrences of predicate symbols in formulas in $\Gamma$ ($\Delta$) are considered to be $\Gamma$-($\Delta$-)colored.
+	A predicate symbol occurring in a clause in the resolution derivation is $\Phi$-colored if its predecessor is.
 	Factorisation inferences may create grey literals if the factorised literals are respectively $\Gamma$- and $\Delta$-colored.
 
-	The definition above can be understood in this sense by reading conditions on the coloring of a resolved or factorised literals $l$ as being true if they apply to \emph{both} resolved or factorised literals $l$ and $l'$.
+	The definition above can be understood in this sense by only considering a minor adaption:
+	Resolved or factorised literals $l$ are to be read as $\Gamma$-($\Delta$-)colored only if \emph{both} resolved or factorised literals $l$ and $l'$ in fact are $\Gamma$-($\Delta$-)colored and otherwise to be treated as grey. 
+	This is necessitated by the fact that in our definition, we may conclude from the circumstance that two resolved or factorised literals have the same predicate symbol that they also do possess the same coloring.
+	In the definition due to \cite{Huang95}, this is not the case in general.
 \end{remark}
 
 
@@ -118,31 +130,33 @@ This replacement is referred to as lifting:
 
 
 \begin{defi}[Lifting]
+\newcommand{\colterm}[1]{s_{#1}}
 	Let $\varphi$ a formula or a term and $Z=\{\colterm{1}, \dotsc, \colterm{n}\}$ the maximal $\Phi$-colored terms in $\varphi$.
 
 	Let furthermore $z_{\expa(\colterm{1})}, \ldots, z_{\expa(\colterm{n})}$ be fresh variables, referred to as \defiemph{$\Phi$-lifting variables} or \defiemph{lifting variables} if the coloring is clear from the context.
-	The function $\expa$ replaces lifting variables occurring in colored terms by the term they lift in order to avoid lifting variables in the index of other lifting variables and is defined as follows:  
+
+	We first define the function $\expa$, which replaces lifting variables occurring in colored terms by the term they lift in order to avoid lifting variables in the index of other lifting variables and is defined as follows for terms $t$:
 	\[\expa(t) \defeq \begin{cases}
 			f(\expa(t_1),\dots, \expa(t_m)) & \text{if $t=f(t_1, \dots, t_m)$} \\
 			t & \text{if $t$ is a non-lifting variable $x$} \\
 			\expa(s) & \text{if $t$ is a lifting variable $z_s$}
 	\end{cases}\]
 
-	The lifting of $\varphi$, denoted by $\lifphi{\varphi}$, is an abbreviation of 
-	$\lifphi{\varphi, Z}$ which is defined as follows:
+	The \defiemph{lifting} of $\varphi$, denoted by $\lifphi{\varphi}$, is an abbreviation for 
+	$\lifphi{\varphi, Z}$, which is defined as follows:
 	\[
 		\lifphi{\varphi, Z} \defeq
 		\begin{cases}
 			\varphi & Z = \emptyset \\
 			%\lifphi{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \\
-			\lifphi{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.6\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$, $\psi$ is created from $\varphi$ by replacing every occcurrence of $\colterm{i}$ by $z_{\colterm{i}}$} 
+			\lifphi{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.6\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$, $\psi$ is created from $\varphi$ by replacing every occurrence of $\colterm{i}$ by $z_{\expa(\colterm{i})}$} 
 		\end{cases}
 	\]
-	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift respectively is clear from the context or not of the essence.
+	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift are clear from the context or not of the essence.
 	%	We denote $\varphi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\varphi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
 \end{defi}
 
-We usually lift $\Delta$-terms by variables with the letter $x$ and $\Gamma$-terms with the letter $y$. If the lifting is not specific to a color, we use variables with the letter $z$.
+We usually lift $\Delta$-terms by variables with the letter $x$ and $\Gamma$-terms with the letter\nolinebreak{} $y$. If the lifting is not specific to a color, we use variables with the letter $z$.
 
 
 Some elementary properties of liftings are described by the following lemmas:
@@ -153,13 +167,14 @@ Some elementary properties of liftings are described by the following lemmas:
 	Let $A$ and $B$ be first-order formulas and $s$ and $t$ be terms. Then it holds that:
 	\begin{enumerate}
 		\item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
-		\item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ \lift{\Phi}{B}{z} )$ for  $\circ \in \{\land, \lor\}$
+		\item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ \lift{\Phi}{B}{z} )$ for $\circ \in \{\land, \lor\}$
 		\item $\lift{\Phi}{s = t}{z} \spas\semiff{} ( \lift{\Phi}{s}{z} = \lift{\Phi}{t}{z} )$
+	\hfill\lemmaqed
 	\end{enumerate}
 \end{lemma}
 
 
-For the proof, we also require a means for commuting substitutions and liftings.
+We furthermore require a means for commuting substitutions and liftings.
 This however can not be achieved in a direct manner. The following examples illustrate
 that in general for a term $t$, it is not the case that
 $
@@ -167,7 +182,7 @@ $
 \lifphi{t}\sigma 
 $.
 
-In the following, we assume that substitutions unless explicitly defined otherwise do not affect lifting variables.
+Below, we assume that substitutions unless explicitly defined otherwise do not affect lifting variables.
 This is justified as all substitutions which occur in resolution refutations have this property.
 
 \begin{exa}
@@ -180,7 +195,7 @@ This is justified as all substitutions which occur in resolution refutations hav
 			Then $\lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)}$.
 			However $\lifphi{t}\sigma = \lifphi{f(x)}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
 
-			This suggests that substitutions also have to lifted terms.
+			This suggests that substitutions also have to be applied to lifted terms.
 
 		\item
 			\label{exa:lifting_commute_2}
@@ -198,9 +213,10 @@ This is justified as all substitutions which occur in resolution refutations hav
 
 		\item
 			\label{exa:lifting_commute_3}
-			Let $r = \lifphi{f(x)} = z_{f(x)}$.
+			Let $r = \lifphi{f(x)} = z_{f(x)}$ and $\sigma = \{x\mapsto a\}$.
 			Then $\lifphi{r\sigma} = \lifphi{z_{f(x)}\sigma} = \lifphi{z_{f(x)}} = z_{f(x)}$.
 			Here however, $\lifphi{r}\sigma = \lifphi{z_{f(x)}}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
+
 			This shows that obviously, as lifting variables are affected neither by substitutions nor liftings, arbitrary commutations of these can be performed. 
 			Note however that in case~\ref{exa:lifting_commute_1}, lifting variables have to be modified.
 			\qedhere
@@ -228,12 +244,12 @@ This is vital for Item~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_c
 
 \addtocounter{exa}{-2}
 \begin{exa}[continued]
-	Using $\tau$, we can solve the first example as $\lifphi{t\tau} = \lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)} = z_{f(x)\sigma} = z_{f(x)} \tau = \lifphi{f(x)}\tau = \lifphi{t}\tau$.
+	Using $\tau(\sigma)$, we can solve the first example as $\lifphi{t\tau(\sigma)} = \lifphi{f(x)\tau(\sigma)} = \lifphi{f(a)} = z_{f(a)} = z_{f(x)\sigma} = z_{f(x)}\tau(\sigma) = \lifphi{f(x)}\tau(\sigma) = \lifphi{t}\tau(\sigma)$.
 	However the second example can not be dealt with analogously.
 \end{exa}
 \addtocounter{exa}{1}
 
-Now we realise the idea motivated by Item~\ref{exa:lifting_commute_2} of Example~\ref{exa:lifting_commute} and lift all terms.
+Now we implement the idea motivated by Item~\ref{exa:lifting_commute_2} of Example~\ref{exa:lifting_commute} by lifting also the terms introduced by $\tau$.
 It turns out that in this formulation, commutation can be done in general:
 
 
@@ -273,7 +289,7 @@ It turns out that in this formulation, commutation can be done in general:
 				\lifboth{\lifboth{t}\tau}= \lifboth{z_t\tau} 
 				= \lifboth{z_{t\sigma}} 
 				= z_{t\sigma} 
-				= \lifboth{t\sigma} 
+				= z_t\tau
 				= \lifboth{t\tau}
 			\]
 		\item Suppose that $t$ is a variable $x$. Then:
@@ -292,7 +308,7 @@ It turns out that in this formulation, commutation can be done in general:
 The formulation of this Lemma can however be improved.
 First, note that the outer lifting of the expression $\lifboth{\lifboth{\varphi}\tau}$ is only applied to terms introduced by $\tau$, which motivates the following definition:
 
-\begin{defi}[$\tauell$]
+\begin{defi}[$\tauellphi$]
 	For a substitution $\sigma$, we define the infinite substitution $\tauellphi(\sigma)$ on variables $x$ as follows: 
 	$x\tauellphi(\sigma) \spas\defeq \lifphinovar{x\tau(\sigma)}$.
 
@@ -313,7 +329,7 @@ First, note that the outer lifting of the expression $\lifboth{\lifboth{\varphi}
 Second, if we can exclude the case of lifting variables, we can apply $\sigma$ as desired:
 \begin{lemma}
 	\label{lemma:lifting_subst_commute}
-	For a formula or term $\psi$ and a substitution $\sigma$, such that no lifting variable occurs in $\psi$ or $\sigma$,
+	For a formula or term $\psi$ and a substitution $\sigma$, such that no lifting variable occurs in $\psi$ or $\ran(\sigma)$,
 	$\lifboth{\psi}\tauell = \lifboth{\psi\sigma}$.
 \end{lemma}
 \begin{proof}
@@ -322,9 +338,11 @@ Second, if we can exclude the case of lifting variables, we can apply $\sigma$ a
 
 Note that if the formula or term contains lifting variables,
 it is not possible to perform the commutation with $\sigma$ as in Lemma~\ref{lemma:lifting_subst_commute}.
-As illustrated in Item~\ref{exa:lifting_commute_3} of Example~\ref{exa:lifting_commute}, in these cases, $\tauell$ would have to leave lifting variables unchanged, which contradicts other use cases.
-However in the context of interpolant extraction, one can deal with interpolants containing free occurrences of lifting variables by just employing $\tau$ in their construction instead of $\sigma$.
+As illustrated in Item~\ref{exa:lifting_commute_3} of Example~\ref{exa:lifting_commute},
+we here have that $\lifboth{z_t\sigma} = \lifboth{z_t} = z_t$, but $\lifboth{z_t\tauell} = \lifboth{z_{{t\sigma}}} = z_{{t\sigma}}$
+Hence in these cases, $\tauell$ would have to leave lifting variables unchanged, which contradicts other use cases such as Item ~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_commute}.
 
+However in the context of interpolant extraction, one can deal with interpolants containing free occurrences of lifting variables by just employing $\tau$ in their construction instead of $\sigma$.
 
 
 
@@ -359,8 +377,10 @@ However in the context of interpolant extraction, one can deal with interpolants
 \section{Main lemma}
 \label{sec:two_phase_main_lemma}
 
-By lifting the propositional interpolant, we are able to already obtain a formula partially fulfilling the requirements for interpolants.
+By lifting symbols of one color of the propositional interpolant, we are able to already obtain a formula partially fulfilling the requirements for interpolants.
 The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectively to be later combined to a result for\nolinebreak{} $\PI$.
+
+We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes the clause created from $C$ by removing all literals which are not $\Phi$-colored.
 
 \begin{lemma}
 	\label{lemma:gamma_entails_init}
@@ -376,7 +396,7 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 
 \begin{lemma}
 	\label{lemma:gamma_entails_step}
-	Let $\inference$ be an inference in a resolution refutation of $\Gamma \cup \Delta$ using the clauses $\bar C = C_1, \dots, C_n$
+	Let $\inference$ be an inference in a resolution refutation of $\Gamma \cup \Delta$ using the clauses $C_1, \dots, C_n$
 	and let $\bar I = I_1, \dots, I_n$ be formulas such that 
 	$\Gamma \entails \lifdelta{I_i \lor\nolinebreak (C_i)_\Gamma} $ for $1 \varleq i \varleq n$.
 	Then
@@ -421,18 +441,20 @@ The proof is separated into parts dealing with $\PIinit$ and $\PIstep$ respectiv
 					$\Gamma \entails \lifdelta{I_2\sigma} \lor \lifdelta{E_\Gamma\sigma}$
 					respectively,
 					which clearly implies that 
-					$\Gamma \entails \lifdelta{I_1\sigma} \lor \lifdelta{I_2\sigma} \lor (\lifdelta{D_\Gamma\sigma} \land \lifdelta{E_\Gamma\sigma})$.
+					$\Gamma \entails \left(\lifdelta{I_1\sigma} \land \lifdelta{I_2\sigma}\right) \lor \lifdelta{D_\Gamma\sigma} \lor \lifdelta{E_\Gamma\sigma}$.
 					This is turn is however just the unfolding of the definition of
 					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I)} \lor \lifdelta{C_\Gamma}$.
 
 				\item Suppose that $l$ is grey.
-					Then $l_\Gamma = l$ and $l'_\Gamma = l$, and 
-					\markA{} and \markB{} imply that
+					Then $l_\Gamma = l$ and $l'_\Gamma = l$.
+					Suppose that for a model $M$ of $\Gamma$ that $M \notentails \lifdelta{E_\Gamma\sigma}$ and $M \notentails \lifdelta{D_\Gamma\sigma}$.
+					Then as $\lifdelta{l_\Gamma \sigma} = \lifdelta{l'_\Gamma\sigma}$, by \markA{} and \markB{}, depending on the truth value of $\lifdelta{l_\Gamma \sigma}$ in $M$, we have that either $M \entails \lifdelta{l_\Gamma\sigma} \land \lifdelta{I_2\sigma}$ or $M \entails \lnot\lifdelta{l'_\Gamma\sigma} \land \lifdelta{I_1\sigma}$ holds.
+					Hence altogether we obtain that 
 					$\Gamma \entails
-					\lifdelta{I_1\sigma} \spam\lor
-					\lifdelta{I_2\sigma} \spam\lor\allowbreak
-					(\lifdelta{l_\Gamma\sigma} \land \lifdelta{E_\Gamma\sigma}) \spam\lor\allowbreak
-					(\lnot\lifdelta{l'_\Gamma\sigma} \land \lifdelta{D_\Gamma\sigma})$.
+					\lifdelta{D_\Gamma\sigma} \spam\lor
+					\lifdelta{E_\Gamma\sigma} \spam\lor\allowbreak
+					(\lifdelta{l_\Gamma\sigma} \land \lifdelta{I_2\sigma}) \spam\lor\allowbreak
+					(\lnot\lifdelta{l'_\Gamma\sigma} \land \lifdelta{I_1\sigma})$.
 					But this is equivalent to
 					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I)} \lor \lifdelta{C_\Gamma}$.
 
@@ -582,7 +604,7 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 	\label{lemma:symmetry_step}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
 	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	If $\inference$ is an inference of $\pi$ using the clauses $\bar C = C_1, \dots, C_n$ and
+	If $\inference$ is an inference of $\pi$ using the clauses $C_1, \dots, C_n$ and
 	$I_1, \dots, I_n$ and 
 	$\primex I_1, \dots, \primex I_n$ are formulas  
 	such that $I_i \semiff \lnot \primex I_i$ for $1\varleq i \varleq n$, then
@@ -679,7 +701,7 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 	For $C \in \Gamma \cup \Delta$, we obtain the result by Lemma~\ref{lemma:symmetry_base}.
 
 
-	For the induction step, suppose that the clause $C$ is the result of an inference $\inference$ of the clauses $\bar C = C_1, \dots, C_n$.
+	For the induction step, suppose that the clause $C$ is the result of an inference $\inference$ of the clauses $C_1, \dots, C_n$.
 	Then by the induction hypothesis, $\PI(C_i) \semiff \lnot \PI(\primex C_i)$ for $1 \varleq i \varleq n$. 
 	Hence we can apply Lemma~\ref{lemma:symmetry_step} to obtain that $\PIstep(\inference, \PI(C_1), \dots, \PI(C_n)) \semiff \lnot \PIstep(\primex \inference, \PI(\primex C_1), \dots, \PI(\primex C_n))$.
 	But this is nothing else than $\PI(C) \spas\semiff \lnot \PI(\primex C)$.
@@ -860,6 +882,7 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 We conclude by presenting the algorithm on an a larger instance: 
 
 \begin{exa}
+	\label{exa:two_phase}
 	Let $\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot Z(w) \lor \lnot Z(f(w)) \}$
 	and 
 	$\Delta = \{ Z(d), \lnot Z(z) \lor \lnot L(z, u) \}$.
