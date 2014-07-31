@@ -464,19 +464,19 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 			\indproofitem{Factorisation}
 			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
 
-			The induction hypothesis gives $\Gamma \entails \lifdelta{ I_1 } \lor \lifdelta{ l_\Gamma \lor l'_\Gamma \lor D_\Gamma }$.
-			By applying $\tauelldelta$
-			and Lemma~\ref{lemma:lifting_subst_commute}, we obtain
-			$\Gamma \entails \lifdelta{ I_1\sigma } \lor \lifdelta{ l_\Gamma\sigma \lor l'_\Gamma\sigma \lor D_\Gamma\sigma }$.
+			By Lemma~\ref{lemma:lift_logic_commute}, the induction hypothesis gives $\Gamma \entails \lifdelta{ I_1 } \lor \lifdelta{ l_\Gamma} \lor \lifdelta{l'_\Gamma} \lor \lifdelta{D_\Gamma }$.
+			Now we apply $\tauelldelta$
+			and by Lemma~\ref{lemma:lifting_subst_commute}, obtain that 
+			$\Gamma \entails \lifdelta{ I_1\sigma } \lor \lifdelta{ l_\Gamma\sigma } \lor  \lifdelta{l'_\Gamma\sigma} \lor \lifdelta{D_\Gamma\sigma }$.
 			As however $l\sigma \syneq l'\sigma$, 
 			also $\lifboth{l\sigma} = \lifboth{l'\sigma}$, so we can apply a factorisation step and obtain that
-			$\Gamma \entails \lifdelta{ I_1\sigma } \lor \lifdelta{ l_\Gamma\sigma \lor D_\Gamma\sigma }$,
-			which is nothing else than $\Gamma \entails \PIstep(\inference, \bar I) \lor \lifdelta{C_\Gamma}$.
+			$\Gamma \entails \lifdelta{ I_1\sigma } \lor \lifdelta{ l_\Gamma\sigma} \lor \lifdelta{D_\Gamma\sigma }$,
+			which by Lemma~\ref{lemma:lift_logic_commute} is nothing else than $\Gamma \entails \PIstep(\inference, \bar I) \lor \lifdelta{C_\Gamma}$.
 
 		\indproofitem{Paramodulation}
 			Suppose the clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)$.
 
-			By the induction hypothesis, we obtain the following: 
+			By the induction hypothesis and Lemma~\ref{lemma:lift_logic_commute}, we obtain the following: 
 
 			$\Gamma \stackrel\markA\entails \lifdelta{I_1} \lor \lifdelta{D_\Gamma} \lor \lifdelta{s}=\lifdelta{t}$
 
@@ -493,7 +493,7 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 			By applying $\tauelldelta$ and  Lemma~\ref{lemma:lifting_subst_commute} we obtain from \markB{} that
 			$\Gamma \entails \lifdelta{I_2\sigma} \lor \lifdelta{(E\occatp{r})_\Gamma\sigma}$.
 			As however $r\sigma \syneq s\sigma$,
-			$\lifdelta{r\sigma} = \lifdelta{s\sigma}$.
+			$\lifdelta{r\sigma} \syneq \lifdelta{s\sigma}$.
 			Therefore we also have that 
 			$\Gamma \entails \lifdelta{I_2\sigma} \lor \lifdelta{(E\occatp{s})_\Gamma\sigma}$.
 
@@ -532,7 +532,7 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 							$\lifdelta{(E\occatp{s})_\Gamma\sigma}$
 							and
 							$\lifdelta{(E\occatp{t})_\Gamma\sigma}$
-							differ in subterms which are equal in the given model and with the given interpretation of the free variables,
+							differ in subterms which are equal in $M_\alpha$,
 							%at position of $h\occ{s}$ and $h\occ{t}$ respectively and
 							so by a similar line of argument as in the preceding case, we can deduce that $M \entails \lifdelta{\PIstep(\inference, \bar I)} \lor \lifdelta{C}$.
 
