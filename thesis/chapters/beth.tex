@@ -5,7 +5,7 @@
 
 In this section, we illustrate the interpolation theorem by presenting Beth's definability theorem, which admits a straightforward proof by means of the interpolation theorem. 
 The definability theorem deals with definitions of predicates by means of formulas and bridges the gap between implicit definitions, where predicates are defined by its use, and explicit definitions, which define a formula by means of another formula, by even showing their equivalence.
-This is given significance by the circumstance that implicit definitions occur in mathematics, but are by this theorem in no sense weaker than explicit defintions.
+This is given significance by the circumstance that implicit definitions occur in mathematics, but are by this theorem in no sense weaker than explicit definitions.
 
 Its original publication in \cite{beth1953} precedes Craig's papers on interpolation (\cite{Craig57linear,Craig57three}) by four years and relies on a direct proof.
  
@@ -37,6 +37,7 @@ to finite sets, which exist by the compactness theorem.
 \end{samepage}
 
 \begin{thm}[Beth's definability theorem]
+	\label{thm:beth}
 	$\Gamma_P$ defines $P$ explicitly if and only if $\Gamma_P$ defines $P$ implicitly.
 \end{thm}
 \begin{proof}
@@ -83,11 +84,13 @@ to finite sets, which exist by the compactness theorem.
 	So clearly $\Gamma_P$ defines $P$ explicitly.
 \end{proof}
 
+\section{Interpolation in higher-order logic}
+\label{sec:interpol_hol}
 In this thesis, we restrict our attention to first-order logic.
-This is not only a matter of reasonable scope, but justified by the fact that the interpolation theorem does not hold in second-order logic.
-This has been discovered by Craig in \cite{Craig65}.
-There, he presents a second-order formula and shows that it is implicitly, but not explicitly definable.
-This immediately leads to a failure of Beth definability, and consequently also interpolation, in this logic.
+This is not only a matter of reasonable scope, but justified by the fact that the interpolation theorem does not hold even in second-order logic as discovered by Craig in \cite{Craig65}.
+There, a second-order formula is presented and shown to be implicitly, but not explicitly definable.
+This failure of Beth definability directly leads to a failure of interpolation in this logic, which can easily be seen by the proof of Theorem~\ref{thm:beth}.
+%This immediately leads to a failure of Beth definability, and consequently also interpolation, in this logic.
 
 
 

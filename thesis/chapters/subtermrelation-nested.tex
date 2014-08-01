@@ -92,10 +92,10 @@ $\lifsym_\mathrm{part}(\LIpre(C))$  where every lifting variable $z_t$, which oc
 
 
 \section{Main lemma}
-Note the the lifting conditions ensure that only terms are lifted,
+Note that the lifting conditions ensure that only terms are lifted,
 which do not exhibit a direct logical relation with any term in the remaining clause.
 More precisely, they do not influence the subsequent resolution derivation: 
-If a variable $x$ occurs in $\LI(C)$ but not in $C$, then as clauses are variable-disjoint, the variable $x$ does not occur in any other clause.
+If a variable $x$ occurs in $\LI(C)$ but not in $C$, then as all clauses in a resolution refutation are pairwise variable-disjoint, the variable $x$ does not occur in any other clause.
 For ground terms $r$ however which occur in $\LI(C)$ but not in $C$,
 it is possible for them to cooccur in a subsequent clause. Let $p$ be the occurrence of $r$ in $\LI(C)$ and $q$ the occurrence of $r$ in a successor-clause of $C$.
 Then due to the fact that $p$ is not used in any unification, 
@@ -323,7 +323,7 @@ We finish this chapter by demonstrating the application of the interpolant extra
 	\begin{landscape}
 		\global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 90}
 		\vspace*{\fill}
-		\centering
+		\begin{center}
 		%\small
 		\begin{adjustwidth}{-4cm}{}
 			\begin{prooftree}
@@ -333,7 +333,7 @@ We finish this chapter by demonstrating the application of the interpolant extra
 				\RightLabelm{\resrule{\resruleres}{\var{3}\mapsto a, \var{7}\mapsto b}}
 				\BinaryInfCm{ P(f(\var{2}, g(a, \var{4}))) \mid Q(g(a, b))  }
 				\noLine
-				\LeftLabel{\markA}
+				\LeftLabelm{\markA_1}
 				\UnaryInfCm{  P(f(\var{2}, g(a, \var{4}))) \mid \exists y_b Q(g(a, y_b)) }
 
 				\AxiomCm{  S(\var{8}) \lor \lnot P(\var{9}) \lor \lnot R(\var{5}) \mid \top }
@@ -341,13 +341,13 @@ We finish this chapter by demonstrating the application of the interpolant extra
 				\RightLabelm{\resrule{\resruleres}{\var{5} \mapsto f(\var{1}, \var{6})}}
 				\BinaryInfCm{ S(\var{8}) \lor \lnot P(\var{9}) \mid R(f(\var{1}, \var{6}))}
 				\noLine
-				\LeftLabel{\markB}
+				\LeftLabelm{\markB_2}
 				\UnaryInfCm{ S(\var{8}) \lor \lnot P(\var{9}) \mid \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})})}
 
 				\RightLabelm{\resrule{\resruleres}{\var{9}\mapsto f(v_2, g(a, \var{4}))}}
 				\BinaryInfCm{ S(\var{8}) \mid  P(f(\var{2}, g(a, \var{4}))) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(f(\var{2}, g(a, \var{4}))) \land \exists y_b Q(g(a, y_b))  }
 				\noLine
-				\LeftLabel{\markA\markB}
+				\LeftLabelm{\markA\markB_3}
 				\UnaryInfCm{ S(\var{8}) \mid \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) }
 
 				\AxiomCm{\lnot S(b) \mid \top}
@@ -356,14 +356,30 @@ We finish this chapter by demonstrating the application of the interpolant extra
 				\insertBetweenHyps{\hskip -2cm}
 				\BinaryInfCm{ \square \mid S(b) \land  \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) }
 				\noLine
-				\LeftLabel{\markA}
-				\UnaryInfCm{ \square \mid \exists y_b \big( S(y_b) \land  \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) \big) }
+				\LeftLabelm{\markA_4}
+				\UnaryInfCm{ \square \mid \exists y'_b \big( S(y'_b) \land  \forall x_a \exists y_{f(\var{2}, g(a, \var{4}))} \big(  P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_{f(\var{1}, \var{6})} R(y_{f(\var{1}, \var{6})}) \spam \lor \lnot P(y_{f(\var{2}, g(a, \var{4}))}) \land \exists y_b Q(g(x_a, y_b)) \big) \big) }
 
 			\end{prooftree}
 			\qedhere
 		\end{adjustwidth}
-		\vspace*{\fill}
+		\end{center}
+		\medskip
 
+		\begin{adjustwidth}{-1cm}{}
+		\begin{multicols}{2}
+		$\markA_1$: The maximal colored term $b$ is lifted as it does not occur in the clause. On the other hand, the maximal colored term $a$ can not be lifted due to the opposite reason.
+
+		$\markB_2$: The maximal colored term $f(v_1, v_6)$ contains the variables $v_1$ and $v_6$, which are not present in the clause.
+		Due to the variable-disjointness restriction on clauses, these variables do not occur in any subsequent clause.
+
+		$\markA\markB_3$: Clearly, the term $a$ is a subterm of $f(v_2, g(a, v_4))$, hence we must quantify $x_a$ before $y_{f(v_2, g(a, v_4))}$.
+
+		$\markA_4$: We encounter another occurrence of the maximal colored term $b$ (cf.\ $\markA_1$).
+		The lifting conditions however ensure that different lifting variables ($y_b$ and $y'_b$ respectively) are justified.
+	\end{multicols}
+		\end{adjustwidth}
+
+		\vspace*{\fill}
 	\end{landscape}
 	\global\pdfpageattr\expandafter{\the\pdfpageattr/Rotate 00}
 \end{exa}

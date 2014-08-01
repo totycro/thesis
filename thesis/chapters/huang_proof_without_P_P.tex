@@ -106,21 +106,21 @@ For an illustration of the application of $\PI$ to a resolution refuation, see E
 \begin{remark}
 	The control flow of the procedure $\PI$ is predominantly determined by the coloring of literals.
 	In this context, two distinct but similar interpretation of the notion of color are viable: 
-	On the one hand, one can employ the usual, symbol-based interpretation as given in Definition~\ref{def:coloring}, where a (predicate) symbol is considered grey if there are any formulas in $\Gamma$ as well as $\Delta$ which contain the symbol. 
+	On the one hand, one can employ the usual, symbol-based interpretation as given in Definition~\ref{def:coloring}, where a (predicate) symbol is considered grey if there is at least one formula in $\Gamma$ as well as at least one formula in $\Delta$ which contain the symbol, and otherwise the symbol is considered to be colored in the respective color. 
 	Note that this does not necessarily capture the logical meaning of the symbol, as the symbol then is allowed to occur in the interpolant even if among the clauses used in the resolution refutation, only for instance clauses from $\Gamma$ contain the symbol.
 	It is obvious that one can then also find an interpolant which does not contain the symbol by computing an interpolant for $\Gamma'$ and $\Delta$, where $\Gamma'$ is derived from $\Gamma$ by omitting any formula containing that symbol. 
-	Clearly the refutation of $\Gamma \cup \Delta$ is also a refutation of $\Gamma' \cup \Delta$.
+	Clearly the refutation of $\Gamma \cup \Delta$ is also a refutation of $\Gamma' \cup \Delta$ and an appropriate interpolant can hence easily be computed.
 
 	However in \cite{Huang95}, a stricter notion of coloring is employed.
 	There, a predicate symbol is colored based on its occurrence:
 	All occurrences of predicate symbols in formulas in $\Gamma$ ($\Delta$) are considered to be $\Gamma$-($\Delta$-)colored.
-	A predicate symbol occurring in a clause in the resolution derivation is $\Phi$-colored if its predecessor is.
-	Factorisation inferences may create grey literals if the factorised literals are respectively $\Gamma$- and $\Delta$-colored.
+	A predicate symbol occurring in a clause in the resolution derivation is $\Phi$-colored if its predecessor in the preceding clause is.
+	Factorisation inferences create grey literals in case the factorised literals are respectively $\Gamma$- and $\Delta$-colored.
 
 	The definition above can be understood in this sense by only considering a minor adaption:
 	Resolved or factorised literals $l$ are to be read as $\Gamma$-($\Delta$-)colored only if \emph{both} resolved or factorised literals $l$ and $l'$ in fact are $\Gamma$-($\Delta$-)colored and otherwise to be treated as grey. 
 	This is necessitated by the fact that in our definition, we may conclude from the circumstance that two resolved or factorised literals have the same predicate symbol that they also do possess the same coloring.
-	In the definition due to \cite{Huang95}, this is not the case in general.
+	In the definition due to \cite{Huang95}, this is in general not the case.
 \end{remark}
 
 
@@ -880,13 +880,16 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	The proof of the theorem above however shows that both of these approaches are equally valid, but clearly the subterm-based ordering in general allows for more permutations than the length-based ordering. 
 \end{remark}
 
-We conclude by presenting the algorithm on an a larger instance: 
+We conclude by presenting the execution of the algorithm on an example:
 
 \begin{exa}
 	\label{exa:two_phase}
 	Let $\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot Z(w) \lor \lnot Z(f(w)) \}$
 	and 
 	$\Delta = \{ Z(d), \lnot Z(z) \lor \lnot L(z, u) \}$.
+	Hence $\Lang(\Gamma)\cap \Lang(\Delta) = \{ Z, L \}$,
+	$\Lang(\Gamma)\setminus \Lang(\Delta) = \{ G,  f \}$ and
+	$\Lang(\Delta)\setminus \Lang(\Gamma) = \{ d \}$.
 
 	We use the following resolution refutation $\pi$ for the extraction of the interpolant:
 
@@ -963,9 +966,9 @@ We conclude by presenting the algorithm on an a larger instance:
 
 	\noindent
 	Hence
-	\[\PI(\pi) \spal=  \lnot Z(d) \spam\lor  (d = f(d) \land \lnot Z(f(d)) ) \spam\lor (d \neq f(d) \land L(d, f(d))) \]
+	\[\PI(\pi) \spam=  \lnot Z(d) \spas\lor  (d = f(d) \land \lnot Z(f(d)) ) \spas\lor (d \neq f(d) \land L(d, f(d))) \]
 	and lifting and quantification gives the final interpolant
-	\[ \forall x_d \exists y_{f(d)} \big( \lnot Z(x_d) \spam\lor  (x_d = y_{f(d)} \land \lnot Z(y_{f(d)}) ) \spam\lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) \big)
+	\[ \forall x_d \exists y_{f(d)} \big( \lnot Z(x_d) \spam\lor  (x_d = y_{f(d)} \land \lnot Z(y_{f(d)}) ) \spam\lor (x_d \neq y_{f(d)} \land L(x_d, y_{f(d)})) \big).
 	\qedhere
 \]
 \end{exa}

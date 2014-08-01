@@ -275,7 +275,7 @@ that the algorithm stated in \ref{def:PI} gives closely related results for both
 \section{Lifting of colored symbols}
 
 We rely on the same definition of lifting as given in \ref{sec:lifting}.
-First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
+First, we consider the lifting of the $\Delta$-terms, which corresponds to Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, but differs in the proof by relying on propositional refutations.\nopagebreak[4]
 
 \begin{lemma}
 	\label{lemma:gamma_entails_lifted_interpolantHuang}
@@ -460,13 +460,15 @@ First, we consider the lifting of the $\Delta$-terms:\nopagebreak[4]
 					\item 
 						$M_\alpha \entails \lif{h\occur{s}} \neq \lif{h\occur{t}}$.
 						However as here $\PI(C)$ contains the with respect to case \ref{njktahjtkhltah} additional disjunct $s=t \land h\occur{s} \neq h\occur{t}$,
-						$M_\alpha \entails \lif{PI(C)}$ due to $M_\alpha \entails \lif{s}=\lif{t} \land \lif{h\occur{s}} \neq \lif{h\occur{t}}$
+						$M_\alpha \entails \lif{PI(C)}$ due to $M_\alpha \entails \lif{s}=\lif{t} \land \lif{h\occur{s}} \neq \lif{h\occur{t}}.$
 					\qedhere
 					\end{itemize}
 			\end{enumerate}
 
 	\end{indproof}
 \end{proof}
+
+From this, we can directly proof the theorem by relying on the notion of symmetry already shown in Section~\ref{sec:symmetry}.
 
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and

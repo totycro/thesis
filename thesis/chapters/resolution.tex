@@ -13,6 +13,8 @@ We first specify the unification algorithm which is vital for resolution calculu
 Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable to signify that the $\mgu$ of the given arguments is not defined. We treat constants as $0$-ary functions.
 Let $s$ and $t$ denote terms and $x$ a variable.
 
+\begin{defi}[Most general unifier]
+
 The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
 
 
@@ -21,7 +23,7 @@ The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
 \noindent
 $
 \mgu(\emptyset) \defeq \id
-$
+$\nopagebreak
 
 \newcommand{\aatahfdgasdfg}{.4\textwidth}
 \noindent
@@ -36,10 +38,9 @@ $
 	\mgu(T) 							& \text{if $t=(s, s)$} \\
 \end{cases}
 $
-
+\end{defi}
 
 \subsection{Definition of the calculus}
-
 
 \begin{defi}
 	A \defiemph{clause} is a finite set of literals. The empty clause will be denoted by $\square$.
