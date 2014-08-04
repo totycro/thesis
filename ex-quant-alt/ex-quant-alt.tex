@@ -1,0 +1,307 @@
+\documentclass[,fontsize=10pt,%
+	paper=27cm:25cm,% 
+	%a4paper,
+	%landscape,
+	%DIV12, % mehr text pro seite als defaultyyp
+	DIV22,
+	%DIV=calc,%
+	%twoside=false,%
+	liststotoc,
+	bibtotoc,
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+]{scrartcl}
+
+
+\usepackage{lscape}
+\usepackage{stackengine}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+
+\usepackage[bitstream-charter]{mathdesign}
+%\usepackage[utopia]{mathdesign}
+%\usepackage[garamond]{mathdesign}
+%\usepackage{amssymb}
+
+
+%\input{../latex_header.tex}
+\usepackage{bm}
+
+%\usepackage[doublespacing]{setspace}
+\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+\usepackage{comment}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{bussproofs}
+
+
+\newcommand{\true}[0]{\textbf{1}}
+\newcommand{\false}[0]{\textbf{0}}
+\newcommand{\tr}{\true}
+\newcommand{\fa}{\false}
+
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\Lra}{\Leftrightarrow}
+
+\newcommand{\lifsym}{\ell}
+%\newcommand{\lift}[3]{\lifsym_{#1,#3}[#2]}
+\newcommand{\lift}[3]{\lifsym_{#1}^{#3}[#2]}
+\newcommand{\liftnovar}[2]{\lifsym_{#1}[#2]}
+
+%\newcommand{\lft}[3]{\lifsym_{#1,#2}[#3]}
+\newcommand{\lft}[3]{\lift{#1}{#3}{#2}}
+\newcommand{\lifboth}[1]{\lifsym[#1]}
+
+%\newcommand{\lifi}{\mathop{\ell\text{}i}}
+%\newcommand{\lifiboth}[1]{\lifi[#1]}
+%\newcommand{\lifidelta}[1]{\lifi_\Delta^x[#1]}
+%\newcommand{\lifideltanovar}[1]{\lifi_\Delta[#1]}
+
+\newcommand{\lifdelta}[1]{\lift{\Delta}{#1}{x}}
+\newcommand{\lifdeltanovar}[1]{\liftnovar{\Delta}{#1}}
+\newcommand{\lifgamma}[1]{\lift{\Gamma}{#1}{y}}
+\newcommand{\lifgammanovar}[1]{\liftnovar{\Gamma}{#1}}
+\newcommand{\lifphinovar}[1]{\liftnovar{\Phi}{#1}}
+\newcommand{\lifphi}[1]{\lift{\Phi}{#1}{z}}
+
+
+
+\newcommand{\entails}{\vDash}
+\newcommand{\notentails}{\nvDash}
+\newcommand{\proves}{\vdash}
+
+
+\DeclareMathOperator{\arr}{\mathcal{A}}
+%\DeclareMathOperator{\arrFinal}{{\mathcal{A}^{\bm*}}}
+\DeclareMathOperator{\arrFinal}{{\mathcal{\bm{\hat}A}}}
+\DeclareMathOperator{\warr}{\marr}
+\DeclareMathOperator{\marr}{\mathcal{M}}
+
+
+
+
+
+\newcommand{\mymark}[1]{\ensuremath{(#1)}}
+\newcommand{\markA}{\mymark \circ}
+\newcommand{\markB}{\mymark *}
+\newcommand{\markC}{\mymark \divideontimes}
+
+\newcommand{\wrong}[1]{{\color{red}WRONG: #1}}
+\newcommand{\NB}[1]{{\color{blue}NB: #1}}
+\newcommand{\mytodo}[1]{{\color{red}TODO: #1}}
+\newcommand{\largered}[1]{{
+
+		\LARGE\bfseries\color{red}
+		#1
+
+}}
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\newcommand{\UICm}[1]{\UnaryInfCm{#1}}
+\newcommand{\UnaryInfCm}[1]{\UnaryInfC{$#1$}}
+\newcommand{\BICm}[1]{\BinaryInfCm{#1}}
+\newcommand{\BinaryInfCm}[1]{\BinaryInfC{$#1$}}
+\newcommand{\RightLabelm}[1]{\RightLabel{$#1$}}
+\newcommand{\LeftLabelm}[1]{\LeftLabel{$#1$}}
+\newcommand{\AXCm}[1]{\AxiomCm{#1}}
+\newcommand{\AxiomCm}[1]{\AxiomC{$#1$}}
+\newcommand{\mt}[1]{\textnormal{#1}}
+
+
+\newcommand{\lkrule}[2]{\ensuremath{\operatorname{#1}:#2}} % operatorname fixes spacing issues for =
+
+\newcommand{\parti}[4]{\ensuremath{ \langle (#1; #2), (#3; #4)\rangle  }}
+
+\newcommand{\partisym}{\ensuremath{\chi}}
+
+\newcommand{\occur}[1]{\ensuremath{[#1]}}
+\newcommand{\occ}[1]{\occur{#1}}
+
+\newcommand{\occurat}[2]{\ensuremath{{\occur{#1}_{#2}}}}
+\newcommand{\occat}[2]{\occurat{#1}{#2}}
+
+\newcommand{\colterm}[1]{\zeta_{#1}}
+
+
+
+\newcommand{\UnaryInfm}[1]{\UnaryInf$#1$}
+\newcommand{\BinaryInfm}[1]{\BinaryInf$#1$}
+\newcommand{\Axiomm}[1]{\Axiom$#1$}
+
+
+% http://tex.stackexchange.com/questions/35717/how-to-draw-arrows-between-parts-of-an-equation-to-show-the-math-distributive-pr
+\tikzset{square arrow/.style={to path={ -- ++(.0,-.15)  -| (\tikztotarget)}}}
+\tikzset{square arrow2/.style={to path={ -- ++(.0,-.25)  -| (\tikztotarget)}}}
+%\tikzset{square arrow/.style={to path={ -- ++(00,-.01) -- ++(0.5,-0.1) -- ++(0.5,-0.1) -| (\tikztotarget)},color=red}}
+
+
+% have arrows from a to b and from c to d here
+% just use: texttext\arrowA texttest \arrowB texttext
+\newcommand{\arrowA}{\tikz[overlay,remember picture] \node (a) {};}
+\newcommand{\arrowB}{\tikz[overlay,remember picture] \node (b) {};}
+\newcommand{\drawAB}{
+	\tikz[overlay,remember picture]
+	{\draw[->,bend left=5,color=red] (a.south) to (b.south);}
+	%{\draw[->,square arrow,color=red] (a.south) to (b.south);}
+}
+
+\newcommand{\arrowAP}{\tikz[overlay,remember picture] \node (ap) {};}
+\newcommand{\arrowBP}{\tikz[overlay,remember picture] \node (bp) {};}
+\newcommand{\drawABP}{
+	\tikz[overlay,remember picture]
+	{\draw[->,bend right=5,color=red] (ap.south) to (bp.south);}
+	%{\draw[->,square arrow,color=red] (ap.south) to (bp.south);}
+}
+
+
+\newcommand{\arrowAB}{\tikz[overlay,remember picture] \node (ab) {};}
+\newcommand{\arrowBA}{\tikz[overlay,remember picture] \node (ba) {};}
+\newcommand{\drawAABB}{
+	\tikz[overlay,remember picture]
+	%{\draw[->,bend left=80] (a.north) to (b.north);}
+	{\draw[->,square arrow,color=brown] (ab.south) to (ba.south);
+	\draw[->,square arrow,color=brown] (ba.south) to (ab.south);}
+}
+
+
+\newcommand{\arrowCD}{\tikz[overlay,remember picture] \node (cd) {};}
+\newcommand{\arrowDC}{\tikz[overlay,remember picture] \node (dc) {};}
+\newcommand{\drawCCDD}{
+	\tikz[overlay,remember picture]
+	%{\draw[->,bend left=80] (a.north) to (b.north);}
+	{\draw[<->,dashed,square arrow,color=green] (cd.south) to (dc.south); }
+}
+
+
+
+\newcommand{\arrowC}{\tikz[overlay,remember picture] \node (c) {};}
+\newcommand{\arrowD}{\tikz[overlay,remember picture] \node (d) {};}
+\newcommand{\drawCD}{
+	\tikz[overlay,remember picture]
+	{\draw[->,square arrow,color=blue] (c.south) to (d.south);}
+}
+
+\newcommand{\arrowE}{\tikz[overlay,remember picture] \node (e) {};}
+\newcommand{\arrowF}{\tikz[overlay,remember picture] \node (f) {};}
+\newcommand{\drawEF}{
+	\tikz[overlay,remember picture]
+	{\draw[->,square arrow2,color=orange] (e.south) to (f.south);}
+}
+
+
+\newcommand{\arrAP}{\arrowAP}
+\newcommand{\arrBP}{\arrowBP}
+
+
+
+\newcommand{\arrA}{\arrowA}
+\newcommand{\arrB}{\arrowB}
+\newcommand{\arrC}{\arrowC}
+\newcommand{\arrD}{\arrowD}
+\newcommand{\arrE}{\arrowE}
+\newcommand{\arrF}{\arrowF}
+
+\newcommand{\refsub}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
+
+
+%\def\fCenter{\ \proves\ }
+\def\fCenter{\proves}
+
+
+
+%\usepackage[square, authoryear]{natbib}
+%\usepackage[language=english]{biblatex}
+
+%\bibliographystyle{plain}
+%\bibliographystyle{alphadin}
+%\bibliographystyle{dinat}
+%\bibliographystyle{chicago}
+%\bibliographystyle{plainnat}
+
+\renewcommand*{\partformat}{\partname\ \thepart\ -}
+\let\partheadmidvskip\
+
+\newcommand{\comp}{\ensuremath{\text{comp}}}
+% smaller url style
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+%\urlstyle{leo}
+
+\newcommand{\myfig}[5] {
+	\begin{figure}[tbph]
+		\centering
+		\includegraphics[#3]{#1}
+		\caption[#4]{#5}
+		\label{fig:#2}
+	\end{figure}
+}
+
+\setlength{\parindent}{0em}
+
+\DeclareMathOperator{\PI}{PI}
+\DeclareMathOperator{\LI}{LI}
+\DeclareMathOperator{\Congr}{Congr}
+\DeclareMathOperator{\Refl}{Refl}
+\DeclareMathOperator{\aiu}{au}
+\DeclareMathOperator{\expa}{unfold-lift}
+
+\newcommand{\PIinc}{\LI}
+\newcommand{\PIincde}{\LIde}
+
+\newcommand{\LIde}{\ensuremath{\LI^\Delta}}
+
+\newcommand{\LIcl}{\ensuremath{\LI_{\operatorname{cl}}}}
+\newcommand{\LIclde}{\ensuremath{\LI_{\operatorname{cl}}^\Delta}}
+
+
+%\usepackage{thmtools} % actually already in latex_header.tex ...
+
+
+%\newcommand{\sig}[1]{{#1}_\Sigma}
+%\newcommand{\p}[1]{{#1}_\Pi}
+\newcommand{\sig}[1]{\stackrel{\Sigma}{#1}}
+\newcommand{\p}[1]{\stackrel{\Pi}{#1}}
+
+\newcommand{\e}[1]{\vskip .7em   \subsection*{#1}}
+
+\def\proofSkipAmount{ \vskip -1em}
+
+\begin{document}
+
+\newcommand{\ha}[1]{ {\color{red} #1} }
+\newcommand{\hb}[1]{ {\color{blue} #1} }
+\newcommand{\hc}[1]{ {\color{violet} #1} }
+
+\newcommand{\spaced}[1]{\ \ #1 \ \ }
+\newcommand{\spa}[1]{\spaced{#1}}
+\newcommand{\spas}[1]{\;{#1}\;}
+\newcommand{\spam}[1]{\;\,{#1}\;\,}
+\newcommand{\spal}[1]{\spa{#1}}
+
+
+
+\e{501 -- like 502 but easier}
+
+\end{document}

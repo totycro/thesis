@@ -1,0 +1,187 @@
+\documentclass[,%fontsize=11pt,%
+	%landscape,
+	%DIV8, % mehr text pro seite als defaultyyp
+	%DIV10,
+	%DIV=calc,%
+	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%titlepage,
+	numbers=noendperiod
+	11pt,
+	a4paper,
+	oneside,% apparently, this should stay below some other parameter to have an effect
+	openany,
+	%]{scrartcl}
+]{memoir}
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+
+\newcommand{\changefont}[3]{
+\fontfamily{#1}\fontseries{#2}\fontshape{#3}\selectfont}
+\usepackage[bitstream-charter]{mathdesign}
+
+
+%\renewcommand{\familydefault}{ \sfdefault }
+%\renewcommand{\rmdefault}{ppl}
+
+
+%\usepackage[urw-garamond]{mathdesign}
+
+\usepackage{lscape}
+\usepackage{stackengine}
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,backgrounds,graphs,%
+	matrix,patterns,arrows,decorations.pathmorphing,decorations.pathreplacing,%
+	positioning,fit,calc,decorations.text,shadows%
+}
+
+
+\input{../latex_header.tex}
+
+
+% subsections also in toc
+\setcounter{tocdepth}{2}
+\setsecnumdepth{subsection}
+
+
+\definethms
+
+\def\proofSkipAmount{ \vskip -0.1em }
+
+
+%\usepackage{bussproof}
+
+%\usepackage{vaucanson-g}
+%\usepackage{amssymb}
+\usepackage{latexsym}
+
+% for color-highlighted code
+%\usepackage{color} % for grey comments
+%\usepackage{alltt}
+
+%\usepackage[doublespacing]{setspace}
+%\usepackage[onehalfspacing]{setspace}
+%\usepackage[singlespacing]{setspace}
+
+
+\usepackage{amsthm}
+
+
+\chapterstyle{madsen}
+
+
+% define page numbering styles
+\makepagestyle{numberCorner}
+\makeevenfoot{numberCorner}{\thepage}{}{}
+\makeoddfoot{numberCorner}{}{}{\thepage}
+
+\makepagestyle{numberCenter}
+%\makeevenfoot{numberCenter}{}{\thepage}{}
+%\makeoddfoot{numberCenter}{}{\thepage}{}
+%
+%\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
+%\makeoddhead{numberCenter}{\thesection }{}{\thechapter}
+\makeheadrule{numberCenter}{\textwidth}{1pt}
+
+\makeevenhead{numberCenter}{\thepage}{}{\leftmark}
+\makeoddhead{numberCenter}{\rightmark}{}{\thepage}
+
+
+\makeatletter
+\makepsmarks{numberCenter}{
+	\def\chaptermark##1{\markboth{%
+			\ifnum \value{secnumdepth} > -1
+			\if@mainmatter
+			\chaptername\ \thechapter\ --- %
+			\fi
+			\fi
+	##1}{}}
+	\def\sectionmark##1{\markright{%
+			\ifnum \value{secnumdepth} > 0
+			\thesection. \ %
+			\fi
+	##1}}
+}
+\makeatother
+\newcommand{\mysetpagestyle}{
+	%\pagestyle{numberCorner}
+	\pagestyle{numberCenter}
+}
+\mysetpagestyle
+
+
+
+
+
+\usepackage{refcheck}
+
+\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
+\setlrmargins{*}{*}{1.2}
+\setulmargins{*}{*}{1.4}
+\checkandfixthelayout[nearest]
+
+
+\begin{document}
+
+\chapter{ Number of quantifier alternations in Huang and nested }
+
+\section{ Outline }
+
+Goal: try proof Huang and nested equal.
+
+Method: proof for both:
+
+\begin{cprop}
+	Let $I$ be an interpolant created by \$algorithm.
+	If $I$ contains a term $t$ such that $t$ has $n$ color changes, then $I$ has at least $n$ quantifier alternations.
+\end{cprop}
+
+\section{ Preliminaries }
+
+Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimising arrangement of quantifiers in $I$ 
+
+\begin{defi}[Color alternation $\ca$]
+	Colors $\Gamma$ and $\Delta$, term $t$:
+
+	$\ca(t) \defeq \ca_\bot(t)$
+
+	Let $t = f(t_1, \dots, t_n)$ for constant, function and variable symbols (syntax abuse)
+
+	
+	$\ca_\Phi(t) \defeq 
+	\begin{cases}
+		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is grey} \\
+		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is of color $\Phi$} \\
+		1 + \max(\ca_\Psi(t_1), \dots, \ca_\Psi(t_n)) & \text{$f$ is of color $\Psi$, $\Phi \neq \Psi$} \\
+	\end{cases}
+	$
+\end{defi}
+
+\section{ Random thoughts }
+
+\begin{itemize}
+	\item Quantifiers are introduced for lifting variables which actually occur in the interpolant
+	\item If term $t$ with $\ca(t) = n$ enters $I$, we need subterm $s$ of $t$ with $\ca(s) = n-1$ to be in $I$ (of course colors of $t$ and $s$ are exactly opposite)
+\end{itemize}
+
+
+\subsection{ Proof}
+\begin{itemize}
+\item Induction over $\lifdelta{\PI(C) \lor C}$ and also about $\Gamma$-terms with $\Delta$-lifting vars in that formula. Cf. \texttt{-final}
+\end{itemize}
+
+\section{ Proof port attempt from \texttt{-final} }
+
+\begin{clemma}
+	Resolution or factorisation step $\inference$ from $\bar C$.
+
+	If $x$ col-change var (where?), then $x$ also occurs grey (where?).
+\end{clemma}
+
+\end{document}
