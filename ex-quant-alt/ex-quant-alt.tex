@@ -302,6 +302,15 @@
 
 
 
-\e{501 -- like 502 but easier}
+\e{701 -- term with color alternations in clause which are not present in interpolant}
+~
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ P(x, f(x)) \lor B } }
+	\AxiomCm{ \p{ P(a, y) \lor \lnot B } }
+	\BinaryInfCm{ P(x, f(x)) \lor P(a, y) \mid B }
+	\UnaryInfCm{ P(a, f(a))  \mid B\sigma }
+\end{prooftree}
+(can produce e.g.\ $n$ color alternations with predicates $P$ of arity $n+1$)
 
 \end{document}

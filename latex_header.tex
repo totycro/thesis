@@ -167,6 +167,8 @@ positioning,fit,calc,decorations.text,shadows,decorations.markings%
 \newcommand{\PIstep}{\PI_{\mathrm{step}}}
 \newcommand{\PIinit}{\PI_{\mathrm{init}}}
 
+\newcommand{\PIstepnosigma}{\PI^{\circ}_{\mathrm{step}}}
+
 \newcommand{\cll}{\ensuremath{_{\operatorname{LIcl}}}}
 \newcommand{\cllde}{\ensuremath{_{\operatorname{LIcl}^\Delta}}}
 
@@ -487,9 +489,10 @@ positioning,fit,calc,decorations.text,shadows,decorations.markings%
 \newcommand{\refsub}[2]{\hyperref[#2]{\ref*{#1}.\ref*{#2}}}
 
 %\newcommand{\sigmarange}[2]{\sigma_{#1}^{#2} }
-\newcommand{\sigmarange}[2]{\sigma_{(#1,#2)} }
+\newcommand{\sigmarange}[2]{\sigma_{(#1,\,#2)} }
 \newcommand{\sigmaz}[1]{\sigmarange{0}{#1} }
 \newcommand{\sigmazi}[0]{\sigmaz{i} }
+\newcommand{\sigmazmi}[0]{\sigmaz{i-1} }
 
 \DeclareMathOperator{\lit}{lit}
 

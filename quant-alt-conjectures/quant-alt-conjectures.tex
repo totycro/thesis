@@ -163,6 +163,10 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 	$
 \end{defi}
 
+\begin{defi}
+	$\PIstepnosigma$ is the same as $\PIstep$ but no $\sigma$ occurs in its definition.
+\end{defi}
+
 \section{ Random thoughts }
 
 \begin{itemize}
@@ -173,7 +177,22 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 
 \subsection{ Proof}
 \begin{itemize}
-\item Induction over $\lifdelta{\PI(C) \lor C}$ and also about $\Gamma$-terms with $\Delta$-lifting vars in that formula. Cf. \texttt{-final}
+	\item Induction over $\lifdelta{\PI(C) \lor C}$ and also about $\Gamma$-terms with $\Delta$-lifting vars in that formula. Cf. \texttt{-final}
+	\item TODO: describe proof method with $\sigmazi$: which $\PI$? 
+		\begin{itemize}
+			\item Factorisation:
+				easy: just apply $\sigma_i$ for all $i$ to $\PI(C) \lor C$. 
+				When done, a literal will be there twice and we can remove it without losing anything
+			\item Resolution:
+				create propositional structure first.
+
+				Ex.: $C_1 : D \lor l$, $ C_2: \lnot l \lor E$:
+
+				If we talk about properties for which it holds that if they hold for $\PI(C_i) \lor C_i$, $i\in\{1,2\}$, then they also hold for $ A \equiv \Big((l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1))\Big) \lor C$, then we can apply $\sigma_i$ for all $i$ to that formula.
+
+				So if we can assume it for $A$ and show it for all $\sigma_i$, we get that it holds for $\PI(C) \lor C$.
+
+		\end{itemize}
 \end{itemize}
 
 \section{ Proof port attempt from \texttt{-final} }
@@ -183,5 +202,53 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 
 	If $x$ col-change var (where?), then $x$ also occurs grey (where?).
 \end{clemma}
+$\Ra$ fill in blanks when known where we need this
+
+\begin{clemma}
+	If ${\PI(C) \lor C}$ contains a maximal colored occurrence of a $\Gamma$-term $t\occ{s}$ containing $\Delta$-term $s$, then 
+	$s$ occurs grey in $\PI(C) \lor C$.
+\end{clemma}
+\begin{proof}
+	Note that it suffices to show that at the step where $s$ is introduced as subterm of $t\occ{s}$, $s$ occurs grey in $\PI(C) \lor C$ as any later modification by substitution is applied to both occurrences $s$, so they stay equal throughout the remaining derivation. \mytodo{what if it's in $\PI(C)$ and it disappears due to not being a colored literal?}
+	\medskip
+
+	\noindent
+	Induction over $\pi$ and $\sigma$.
+	\medskip
+
+	\noindent
+	Base case: \checkmark
+	\medskip
+
+	\noindent
+	Step:
+	Resolution or factorisation inference $\inference$, $\mgu(\inference) = \sigma = \sigma_1\cdots\sigma_n$ 
+	The term $t\occ{s}$ is created by one of the following two ways: 
+	\begin{itemize}
+		\item
+			A variable $u$ occurs in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
+
+			Then $u$ occurs in a resolved or factorised literal $\lambda\sigmazmi$ at $\bhat u$ such that at the other resolved or factorised literal $\lambda'\sigmaz{i-1}$, $\lambda'\sigmazmi\at{\bhat u} = t\occ{s}$.
+			Then the condition is present at $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$ and we get the result by the induction hypothesis.
+
+		\item 
+			Note that we only consider maximal colored terms.
+			\todo{is probably not same $t$ as in lemma statement, which isn't technically wrong but confusing} Let $t\occ{u}$ be a maximal colored $\Gamma$-term in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Delta$-symbol.
+
+			Suppose that $u$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$.
+			Then $s$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazi$ and we are done.
+
+			Now suppose that $u$ does not occur grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$.
+
+			\mytodo{need color changing variable lemma for $\PI(C) \lor C$, or actually the $\PIstep$-representation}
+
+			\mytodo{case with $u$ in s.c.\ $\Gamma$-term}
+			
+
+
+	\end{itemize}
+
+\end{proof}
 
 \end{document}
+
