@@ -167,7 +167,8 @@ positioning,fit,calc,decorations.text,shadows,decorations.markings%
 \newcommand{\PIstep}{\PI_{\mathrm{step}}}
 \newcommand{\PIinit}{\PI_{\mathrm{init}}}
 
-\newcommand{\PIstepnosigma}{\PI^{\circ}_{\mathrm{step}}}
+\newcommand{\PIstepnosigma}{\PI\nosigma_{\mathrm{step}}}
+\newcommand{\nosigma}{^\circ}
 
 \newcommand{\cll}{\ensuremath{_{\operatorname{LIcl}}}}
 \newcommand{\cllde}{\ensuremath{_{\operatorname{LIcl}^\Delta}}}
@@ -674,7 +675,7 @@ positioning,fit,calc,decorations.text,shadows,decorations.markings%
 
 \newcommand{\allbold}[1]{\textbf{\boldmath{#1}}}
 
-\usepackage{lscape}
+\usepackage{pdflscape} % like lscape but rotates pdf-page automatically
 
 \newenvironment{indproof}{ \begin{itemize} }{ \end{itemize} } \newcommand{\indproofitem}[1]{\item[#1.]}
 %\newenvironment{indproof}{ \begin{description} }{ \end{description} } \newcommand{\indproofitem}[1]{\item{}#1.}

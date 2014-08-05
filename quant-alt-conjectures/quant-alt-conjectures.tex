@@ -6,7 +6,7 @@
 	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
 	%titlepage,
 	numbers=noendperiod
-	11pt,
+	12pt,
 	a4paper,
 	oneside,% apparently, this should stay below some other parameter to have an effect
 	openany,
@@ -142,6 +142,12 @@ Method: proof for both:
 	If $I$ contains a term $t$ such that $t$ has $n$ color changes, then $I$ has at least $n$ quantifier alternations.
 \end{cprop}
 
+\subsection{generally keep in mind}
+
+\begin{itemize}
+	\item Need to define all new terms here: color-changing, single-color, $\Phi$-literal
+\end{itemize}
+
 \section{ Preliminaries }
 
 Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimising arrangement of quantifiers in $I$ 
@@ -164,8 +170,10 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 \end{defi}
 
 \begin{defi}
-	$\PIstepnosigma$ is the same as $\PIstep$ but no $\sigma$ occurs in its definition.
+	$\PIstepnosigma$ is defined just like $\PIstep$ but without applying any substitution.
 \end{defi}
+Hence $\PIstepnosigma(\cdot) \sigma = \PIstep(\cdot)$.
+$C\nosigma$ is somehow the same, i.e.\ if $C = D\sigma$, then $C\nosigma = D$ where $\sigma$ is derived from the context.
 
 \section{ Random thoughts }
 
@@ -188,21 +196,138 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 
 				Ex.: $C_1 : D \lor l$, $ C_2: \lnot l \lor E$:
 
-				If we talk about properties for which it holds that if they hold for $\PI(C_i) \lor C_i$, $i\in\{1,2\}$, then they also hold for $ A \equiv \Big((l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1))\Big) \lor C$, then we can apply $\sigma_i$ for all $i$ to that formula.
+				If we talk about properties for which it holds that if they hold for $\PI(C_i) \lor C_i$, $i\in\{1,2\}$, then they also hold for $ A \equiv \Big((l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1))\Big) \lor C\nosigma$, then we can apply $\sigma_i$ for all $i$ to that formula.
 
 				So if we can assume it for $A$ and show it for all $\sigma_i$, we get that it holds for $\PI(C) \lor C$.
 
 		\end{itemize}
 \end{itemize}
 
+
 \section{ Proof port attempt from \texttt{-final} }
+
+\largered{ need to show that grey occurrences are in grey literals, all grey literals end up in the interpolant! }
+
+conj: if a $\Delta$-term $t$ occurs in a $\Gamma$-literal in a clause $C$, then $t$ occurs in a grey literal in $\PI(C)$.
+
+evidence:
+\begin{itemize}
+	\item situation does not occur in $\Gamma$ or $\Delta$
+	\item terms are only changed by unificators
+	\item $\Delta$- and $\Gamma$-terms are not unifiable, so one of the literals has to have a variable at a grey position when a $\Delta$-term enters a $\Gamma$-literal
+	\item that literal has to be grey
+	\item QED?
+\end{itemize}
+
+\begin{clemma}
+	If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in $\PI(C)$.
+\end{clemma}
+\begin{proof}
+	As all grey literals of clauses involved in a refutation end up in the interpolant, it suffices to show that $t$ occurs at a grey position in a grey literal. 
+
+	Substitutions are applied to all variables, hence we only need to consider terms $t$ which just enter a foreign colored literal.
+
+	\mytodo{propagation 1: $\Phi$-terms vs $\Psi$-terms (in $\Psi$-literals)}
+
+	\mytodo{propagation 2: $\Phi$-terms vs other $\Phi$-terms (in $\Psi$-literals)}
+
+	Induction on refutation and $\sigma$; base case easy.
+
+	Resolution or factorisation inference $\inference$. 
+	Let $\lambda$ be a $\Gamma$-literal containing a variable $u$ at position $\bhat u$ such that $u\sigma_i$ contains a $\Delta$-term $t$.
+
+	If the resolved or factorised literals are grey, they become part of $\PI(C)$ and if $t$ occurs grey there, we are done.
+
+	\begin{itemize}
+		\item Suppose the resolved literals are $\Gamma$-colored. Then IH.
+		\item Suppose the resolved literals are $\Delta$-colored.
+			\mytodo{}
+		\item Suppose the resolved literals are grey and $t$ does not occur at a grey position in $\lambda\sigma = \lambda'\sigma$.
+			\mytodo{}
+
+	\end{itemize}
+
+
+	~
+
+	~
+
+	~
+
+
+
+	Let $\lambda'$ be the other resolved or factorised literal.
+
+	\begin{itemize}
+		\item Suppose $\lambda'$ is $\Gamma$-colored
+		\item Suppose $\lambda'$ is grey.
+	\end{itemize}
+
+
+	
+
+
+
+	
+\end{proof}
 
 \begin{clemma}
 	Resolution or factorisation step $\inference$ from $\bar C$.
 
-	If $x$ col-change var (where?), then $x$ also occurs grey (where?).
+	If $u$ col-change var in $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)\sigmazi$, then $u$ also occurs grey in that formula.
 \end{clemma}
-$\Ra$ fill in blanks when known where we need this
+\begin{proof}
+	Abbreviation: $F \equiv (\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$
+
+	Induction over refutation and $\sigma$; base case easy.
+
+Step:
+Supp color change var $u$ present in 
+$F\sigmazi$. (could also say introduced, then proof would be somehow different)
+
+Supp $u$ not grey in 
+$F\sigmazmi$ as otherwise done.
+As a first step, we show that if a (not necessarily color-changing) variable $v$ occurs in a single-colored $\Phi$-term $t\occ{v}$ in $F\sigmazi$,
+then at least one of the following holds:
+\begin{compactenum}
+\item $v$ occurs in some single-colored $\Phi$-term in $F\sigmazmi$ \label{var_occ_1}
+\item there is a color-changing variable $w$ in $F\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.  \label{var_occ_2}
+\end{compactenum}
+We consider the different cases which can introduce a variable $v$ in a single-colored term $\Phi$: Either it has been there before, it was introduced in a s.c. $\Phi$-colored term, or a s.c.\ $\Phi$-term containing the var is in $\ran(\sigma)$.
+\begin{itemize}
+	\item
+		Suppose a term $t'\occ{v}$ is present in $F\sigmazmi$ such that $t'\occ{v}\sigma_i = t\occ{v}$.
+		Then \ref{var_occ_1} is the case.
+	\item
+		Suppose a variable $w$ occurs in a single-colored $\Phi$-term in $F\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.
+		Suppose furthermore that \ref{var_occ_1} is not the case, i.e.\ $v$ does not occur in a s.c.\ $\Phi$-term in $F\sigmazmi$, as otherwise we would be done.
+		We show that \ref{var_occ_2} is the case.
+
+		As $v$ occurs neither grey nor in a s.c.\ $\Phi$-term in $F\sigmazmi$ but occurs in $\ran(\sigma_i)$, it must occur in $F\sigmazmi$ and this can only be in a single-colored $\Psi$-term.
+
+		As by assumption $v$ occurs grey in $w\sigma_i$, there must be an occurrence $\bbar w$ of $w$ in a resolved or factorised literal, say $\lambda\sigmazmi$ such that for the other resolved literal $\lambda'\sigmazmi$, $\lambda'\sigmazmi\at{\bbar w}$ is a subterm in which $v$ occurs grey.
+		But as the occurrence of $v$ in $\lambda'\sigmazmi\at{\bbar w}$ must be contained in a single-colored $\Psi$-term, so is $\lambda\sigmazmi\at{\bbar w}$, hence $z$ occurs in a single-colored $\Psi$-term as well.
+		Therefore \ref{var_occ_2} is the case.
+
+	\item
+		Suppose there is a variable $z$ in $F\sigmazmi$ such that $v$ occurs in a single-colored $\Phi$-term in $z\sigma_i$.
+		Then $z\sigma_i$ occurs in $F\sigmazmi$, but this is a witness for \ref{var_occ_1}.
+\end{itemize}
+
+Now recall that we have assumed $u$ to be a color-changing variable in $F\sigmazi$.
+Hence it occurs in a single-colored $\Gamma$-term as well as in a single-colored $\Delta$-term.
+By the reasoning above, this leads to two case:
+\begin{itemize}
+	\item In $F\sigmazmi$, $u$ occurs both in some single-colored $\Gamma$-term as well as in some single-colored $\Delta$-term.
+		Then we get the result by the induction hypothesis and the fact that $u\not\in\dom(\sigma_i)$ as $u$ does occur in $F\sigmazi$.
+	\item Otherwise for some color $\Phi$, $u$ does not occur in a single-colored $\Phi$-term in $F\sigmazmi$.
+		Then case \ref{var_occ_2} above must hold and there is some color-changing variable $w$ in $F\sigmazmi$ such that $u$ occurs grey in $w\sigmazi$.
+		But then by the induction hypothesis, $w$ occurs grey in $F\sigmazmi$ and hence $u$ occurs grey in $F\sigmazi$.
+		\qedhere
+\end{itemize}
+
+
+\end{proof}
 
 \begin{clemma}
 	If ${\PI(C) \lor C}$ contains a maximal colored occurrence of a $\Gamma$-term $t\occ{s}$ containing $\Delta$-term $s$, then 
@@ -226,24 +351,24 @@ $\Ra$ fill in blanks when known where we need this
 	The term $t\occ{s}$ is created by one of the following two ways: 
 	\begin{itemize}
 		\item
-			A variable $u$ occurs in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
+			A variable $u$ occurs in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
 
 			Then $u$ occurs in a resolved or factorised literal $\lambda\sigmazmi$ at $\bhat u$ such that at the other resolved or factorised literal $\lambda'\sigmaz{i-1}$, $\lambda'\sigmazmi\at{\bhat u} = t\occ{s}$.
-			Then the condition is present at $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$ and we get the result by the induction hypothesis.
+			Then the condition is present at $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$ and we get the result by the induction hypothesis.
 
 		\item 
 			Note that we only consider maximal colored terms.
-			\todo{is probably not same $t$ as in lemma statement, which isn't technically wrong but confusing} Let $t\occ{u}$ be a maximal colored $\Gamma$-term in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Delta$-symbol.
+			\todo{is probably not same $t$ as in lemma statement, which isn't technically wrong but confusing} Let $t\occ{u}$ be a maximal colored $\Gamma$-term in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Delta$-symbol.
 
-			Suppose that $u$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$.
-			Then $s$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazi$ and we are done.
+			Suppose that $u$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$.
+			Then $s$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazi$ and we are done.
 
-			Now suppose that $u$ does not occur grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C)\sigmazmi$.
+			Now suppose that $u$ does not occur grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$.
 
 			\mytodo{need color changing variable lemma for $\PI(C) \lor C$, or actually the $\PIstep$-representation}
 
 			\mytodo{case with $u$ in s.c.\ $\Gamma$-term}
-			
+
 
 
 	\end{itemize}
