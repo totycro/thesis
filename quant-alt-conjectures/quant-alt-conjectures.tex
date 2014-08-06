@@ -219,9 +219,9 @@ evidence:
 	\item QED?
 \end{itemize}
 
-\begin{clemma}
+\begin{rlemma}
 	If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in $\PI(C)$.
-\end{clemma}
+\end{rlemma}
 \begin{proof}
 	As all grey literals of clauses involved in a refutation end up in the interpolant, it suffices to show that $t$ occurs at a grey position in a grey literal. 
 
@@ -243,6 +243,7 @@ evidence:
 		\item Suppose the resolved literals are $\Delta$-colored.
 			\mytodo{}
 		\item Suppose the resolved literals are grey and $t$ does not occur at a grey position in $\lambda\sigma = \lambda'\sigma$.
+
 			\mytodo{}
 
 	\end{itemize}
@@ -250,25 +251,40 @@ evidence:
 
 	~
 
-	~
-
-	~
-
-
-
-	Let $\lambda'$ be the other resolved or factorised literal.
-
-	\begin{itemize}
-		\item Suppose $\lambda'$ is $\Gamma$-colored
-		\item Suppose $\lambda'$ is grey.
-	\end{itemize}
 
 
 	
+\end{proof}
+
+\begin{clemma}
+	If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in a grey literal in $\PI(C) \lor C$.
+\end{clemma}
+there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contains $t$.
+
+\begin{clemma}
+	If a variable $u$ occurs in a $\Phi$-literal as well as in a $\Psi$-literal in a clause $C$, then $t$ also occurs at a grey position in a grey literal in $\PI(C)$.
+\end{clemma}
+\begin{proof}
+	Initially not the case.
+
+	Note that we can only resolve/factorise $\Gamma$-/$\Delta$-/grey literals with other $\Gamma$-/$\Delta$-/grey literals as clearly the predicate symbol must be the same for both literals.
+	Hence if a variable occurs only in $\Gamma$- or only in $\Delta$-literals, then it can never escape these.
+	Hence $u$ certainly is contained in a grey literal.
+
+	Now suppose that $u$ only occurs colored in grey literals.
+	Then it occurs in a $\Gamma$-($\Delta$-) term in the original $\Gamma$-($\Delta$-)clauses which contain it.
+
+	As shown before $u$ must occur in some grey literal.
+	Suppose it does not occur at a grey position in a grey literal as otherwise we are done.
+	Then $u$ only occurs in $\Gamma$-terms in grey literals as 
+
+	\mytodo{it seems that now we have to deal with possible $\Gamma$-terms in $\Delta$-literals and so on $\Ra$ circular reasoning}
 
 
 
-	
+	The situation in question arises if some variable $u$ occurs in a $\Gamma$-literal in some clause and some variable $v$ occurs in a $\Delta$-literal in some clause (possibly the same), such that in the unified literals, $u$ and $v$ both occur at the same position in the respective literals.
+
+
 \end{proof}
 
 \begin{clemma}
@@ -305,8 +321,8 @@ We consider the different cases which can introduce a variable $v$ in a single-c
 
 		As $v$ occurs neither grey nor in a s.c.\ $\Phi$-term in $F\sigmazmi$ but occurs in $\ran(\sigma_i)$, it must occur in $F\sigmazmi$ and this can only be in a single-colored $\Psi$-term.
 
-		As by assumption $v$ occurs grey in $w\sigma_i$, there must be an occurrence $\bbar w$ of $w$ in a resolved or factorised literal, say $\lambda\sigmazmi$ such that for the other resolved literal $\lambda'\sigmazmi$, $\lambda'\sigmazmi\at{\bbar w}$ is a subterm in which $v$ occurs grey.
-		But as the occurrence of $v$ in $\lambda'\sigmazmi\at{\bbar w}$ must be contained in a single-colored $\Psi$-term, so is $\lambda\sigmazmi\at{\bbar w}$, hence $z$ occurs in a single-colored $\Psi$-term as well.
+		As by assumption $v$ occurs grey in $w\sigma_i$, there must be an occurrence $\bhat w$ of $w$ in a resolved or factorised literal, say $\lambda\sigmazmi$ such that for the other resolved literal $\lambda'\sigmazmi$, $\lambda'\sigmazmi\at{\bhat w}$ is a subterm in which $v$ occurs grey.
+		But as the occurrence of $v$ in $\lambda'\sigmazmi\at{\bhat w}$ must be contained in a single-colored $\Psi$-term, so is $\lambda\sigmazmi\at{\bhat w}$, hence $z$ occurs in a single-colored $\Psi$-term as well.
 		Therefore \ref{var_occ_2} is the case.
 
 	\item

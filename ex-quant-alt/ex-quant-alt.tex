@@ -313,4 +313,31 @@
 \end{prooftree}
 (can produce e.g.\ $n$ color alternations with predicates $P$ of arity $n+1$)
 
+
+~
+
+~
+\e{702 -- $\Phi$-term in $\Psi$-literal which isn't in the interpolant straight away}
+
+~
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ P(x) \lor Q(x) \lor B }}
+	\AxiomCm{ \p{ \lnot B \lor  Q(y) \lor R(y) }}
+	\BinaryInfCm{ { P(x) \lor Q(x) \lor  Q(y) \lor R(y) \mid B }}
+	\UnaryInfCm{ { P(x) \lor Q(x)  \lor R(x) \mid B }}
+	\AxiomCm{ \p{ \lnot R(a) }}
+	\BinaryInfCm{ { P(a) \lor Q(a)  \mid B  }}
+	\noLine
+	\UnaryInfC{$R(a)$ is a colored literal and hence not in the interpolant}
+	\noLine
+	\UnaryInfC{Q(a) on the other hand will end up there}
+\end{prooftree}
+
+~
+
+~
+
+
+
 \end{document}
