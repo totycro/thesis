@@ -20,9 +20,7 @@
 \usepackage[english]{babel}
 
 
-\newcommand{\changefont}[3]{
-\fontfamily{#1}\fontseries{#2}\fontshape{#3}\selectfont}
-\usepackage[bitstream-charter]{mathdesign}
+%\usepackage[bitstream-charter]{mathdesign}
 
 
 %\renewcommand{\familydefault}{ \sfdefault }
@@ -121,10 +119,10 @@
 
 \usepackage{refcheck}
 
-\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
-\setlrmargins{*}{*}{1.2}
-\setulmargins{*}{*}{1.4}
-\checkandfixthelayout[nearest]
+%\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
+%\setlrmargins{*}{*}{1.2}
+%\setulmargins{*}{*}{1.4}
+%\checkandfixthelayout[nearest]
 
 
 \begin{document}
@@ -145,7 +143,7 @@ Method: proof for both:
 \subsection{generally keep in mind}
 
 \begin{itemize}
-	\item Need to define all new terms here: color-changing, single-color, $\Phi$-literal
+	\item Need to define all new terms here: color-changing, single-color, $\Phi$-literal, substitutions from $0$ to $n$
 \end{itemize}
 
 \section{ Preliminaries }
@@ -287,11 +285,16 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 
 \end{proof}
 
-\begin{clemma}
+\newpage
+
+\section{directly from old proof}
+
+\begin{lemma}
+	\label{lemma:col_change}
 	Resolution or factorisation step $\inference$ from $\bar C$.
 
 	If $u$ col-change var in $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)\sigmazi$, then $u$ also occurs grey in that formula.
-\end{clemma}
+\end{lemma}
 \begin{proof}
 	Abbreviation: $F \equiv (\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$
 
@@ -327,7 +330,7 @@ We consider the different cases which can introduce a variable $v$ in a single-c
 
 	\item
 		Suppose there is a variable $z$ in $F\sigmazmi$ such that $v$ occurs in a single-colored $\Phi$-term in $z\sigma_i$.
-		Then $z\sigma_i$ occurs in $F\sigmazmi$, but this is a witness for \ref{var_occ_1}.
+		Then $z\sigma_i$ occurs in $F\sigmazmi$, but this is a witness for~\ref{var_occ_1}.
 \end{itemize}
 
 Now recall that we have assumed $u$ to be a color-changing variable in $F\sigmazi$.
@@ -341,14 +344,16 @@ By the reasoning above, this leads to two case:
 		But then by the induction hypothesis, $w$ occurs grey in $F\sigmazmi$ and hence $u$ occurs grey in $F\sigmazi$.
 		\qedhere
 \end{itemize}
-
-
 \end{proof}
 
-\begin{clemma}
+~
+
+\NB{this is the heart of the proof:}\nopagebreak
+\begin{lemma}
 	If ${\PI(C) \lor C}$ contains a maximal colored occurrence of a $\Gamma$-term $t\occ{s}$ containing $\Delta$-term $s$, then 
 	$s$ occurs grey in $\PI(C) \lor C$.
-\end{clemma}
+\end{lemma}
+\hl{works if todo's are handled in sublemmas}
 \begin{proof}
 	Note that it suffices to show that at the step where $s$ is introduced as subterm of $t\occ{s}$, $s$ occurs grey in $\PI(C) \lor C$ as any later modification by substitution is applied to both occurrences $s$, so they stay equal throughout the remaining derivation. \mytodo{what if it's in $\PI(C)$ and it disappears due to not being a colored literal?}
 	\medskip
@@ -358,38 +363,114 @@ By the reasoning above, this leads to two case:
 	\medskip
 
 	\noindent
-	Base case: \checkmark
+	Base case: works
 	\medskip
 
 	\noindent
 	Step:
 	Resolution or factorisation inference $\inference$, $\mgu(\inference) = \sigma = \sigma_1\cdots\sigma_n$ 
 	The term $t\occ{s}$ is created by one of the following two ways: 
+
+	(we abbreviate 
+	$(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma$ by $F$.)
 	\begin{itemize}
 		\item
-			A variable $u$ occurs in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
+			A variable $u$ occurs in $F\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
 
 			Then $u$ occurs in a resolved or factorised literal $\lambda\sigmazmi$ at $\bhat u$ such that at the other resolved or factorised literal $\lambda'\sigmaz{i-1}$, $\lambda'\sigmazmi\at{\bhat u} = t\occ{s}$.
-			Then the condition is present at $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$ and we get the result by the induction hypothesis.
+			Then the condition is present at $F\sigmazmi$ and we get the result by the induction hypothesis. \mytodo{add grey here but get for free}
 
 		\item 
 			Note that we only consider maximal colored terms.
-			\todo{is probably not same $t$ as in lemma statement, which isn't technically wrong but confusing} Let $t\occ{u}$ be a maximal colored $\Gamma$-term in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Delta$-symbol.
-
-			Suppose that $u$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$.
-			Then $s$ occurs grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazi$ and we are done.
-
-			Now suppose that $u$ does not occur grey in $(\PIstepnosigma(\inference, \PI(C_1), \PI(C_2)) \lor C\nosigma)\sigmazmi$.
-
-			\mytodo{need color changing variable lemma for $\PI(C) \lor C$, or actually the $\PIstep$-representation}
-
-			\mytodo{case with $u$ in s.c.\ $\Gamma$-term}
+			
+			\todo{are probably not same $t$ and $s$ as in lemma statement, which isn't technically wrong but confusing}
+			Let $t\occ{u}$ be a maximal colored $\Gamma$-term in $F\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Delta$-symbol, and $u\sigma_i$ contains a grey occurrence of $s$.
 
 
+			Suppose that $u$ occurs grey in $F\sigmazmi$.
+			Then $s$ occurs grey in $F\sigmazi$ and we are done.
 
+			Now suppose that $u$ does not occur grey in $F\sigmazmi$.
+
+			If $u$ occurs in a single-colored $\Delta$-term in $F\sigmazmi$, then by Lemma~\ref{lemma:col_change}, $u$ also occurs grey in $F\sigmazmi$ and $s$ hence occurs grey in $F\sigmazi$. \mytodo{must be in grey literals}
+
+			Otherwise $u$ only occurs in single-colored $\Gamma$-terms in $F\sigmazmi$. 
+			As $u\sigma_i$ contains a grey occurrence of $s$, there is a position $p$ in the two resolved or factorised literals $\lambda$ and $\lambda'$ such that $\lambda\at{p} = u$ and $\lambda'\at{p}$ contains a grey occurrence of $s$.
+			Furthermore, the prefix along the path to $p$ is the same in both $\lambda$ and $\lambda'$.
+			But as by assumption $u$ only occurs in single-colored $\Gamma$-terms, $\lambda'\at{p}$ does so as well, so $s$ is contained in a single-colored $\Gamma$-term in $F\sigmazmi$.
+			Since $s$ is a $\Delta$-term, by the induction hypothesis, $s$ occurs grey in $F\sigmazmi$ and hence also in $F\sigma_i$.
+\mytodo{add grey here but get for free}
+			\qedhere
 	\end{itemize}
 
 \end{proof}
+
+\clearpage
+\section{random}
+
+\begin{clemma}
+	Supp $u$ in s.c. $\Phi$-term and that  no variable occurs grey in a grey literal.
+	Then $u$ does not occur grey in a $\Psi$-literal.
+\end{clemma}
+\begin{proof}
+	Holds initially.
+
+	Supp holds for first $k$ deductions.
+
+	Supp that then there is some $\Psi$-literal $l$ which contains $v$ at a grey position such that $v\sigma_i$ contains a grey $u$.
+	Then $u$ and $v$ face each other in the res/fac literals in at stage $k-1$.
+	By IH, there, $u$ does not occur grey in a $\Psi$-literal (and of course not grey in a grey literal). 
+
+	As $v$ occurs grey in a $\Psi$-literal, by contraposition, $v$ does not occur in a s.c. $\Phi$-term.
+
+	\begin{itemize}
+		\item
+			Supp res/fac lits are $\Psi$-colored.
+			Then $u$ does not occur grey here.
+
+			\mytodo{}
+
+		\item
+			Supp res/fac lits are grey.
+			Then $u$ and $v$ do not occur grey here.
+			\mytodo{}
+
+		\item
+			Supp res/fac lits are $\Phi$-colored.
+			\mytodo{}
+	\end{itemize}
+
+
+
+
+\end{proof}
+
+
+~
+
+\begin{clemma}
+	Every variable, which does not occur grey in a grey literal either does not occur in a single-colored $\Phi$-($\Psi$)-term or does not occur grey in a $\Psi$-($\Phi$)-literal.
+\end{clemma}
+\begin{proof}
+	Supp $u$ occurs grey in $\Phi$-literal.
+	We show that $u$ does not occur in a s.c.\ $\Psi$-term given that it does not occur grey in a grey literal.
+
+	Supp s.c.\ $\Psi$-term $t\occ{v}$ s.t. $v\sigma_i$ contains grey $u$\todo{basically also grey occ of $v$ with $t\occ{u}$ conceivable, but that should be IH}.
+	By IH, $v$ does not occur grey in a a $\Phi$-literal (given it does not occur grey in a grey literal). 
+
+	By IH, there is no s.c.{} $\Psi$-term which contains $u$.
+	Hence $t\occ{v}$ is not directly unified with some $t\occ{u}$.
+
+	Supp $v$ occs grey where it is unified. then $u$ occs grey there as well.
+	Then it can't be a grey literal, and it can't be a $\Phi$-literal. So it is a $\Psi$-literal.
+
+\end{proof}
+
+~
+
+\begin{clemma}
+	If a var occurs in $\Gamma$ but not grey in a grey literal, it does not occur grey in $\Delta$.
+\end{clemma}
 
 \end{document}
 
