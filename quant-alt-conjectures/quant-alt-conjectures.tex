@@ -144,6 +144,9 @@ Method: proof for both:
 
 \begin{itemize}
 	\item Need to define all new terms here: color-changing, single-color, $\Phi$-literal, substitutions from $0$ to $n$
+\begin{itemize}
+	\item essentially same position: path from one position to other only contains grey symbol (this def allows for identical position as well)
+\end{itemize}
 \end{itemize}
 
 \section{ Preliminaries }
@@ -471,6 +474,95 @@ By the reasoning above, this leads to two case:
 \begin{clemma}
 	If a var occurs in $\Gamma$ but not grey in a grey literal, it does not occur grey in $\Delta$.
 \end{clemma}
+
+~
+
+\clearpage
+
+\section{Thursday:}
+
+\begin{clemma}
+	\label{last_lemma}
+	Suppose a variable $u$ occurs  in $\PI(C) \lor C$ in a s.c.\ $\Phi$-term OR grey in a $\Phi$-literal.
+	If $u$ occurs in $\PI(C) \lor C$ in a grey position in a $\Psi$-literal OR in s.c.\ $\Psi$-term in any literal, then it also occurs at a grey position in a grey literal in $\PI(C) \lor C$.
+\end{clemma}
+\begin{proof}
+	ind step; supp $u$ as in statement ubiquitously
+
+	Supp $\Psi$-literal with grey $v$ such that $u$ grey in $v\sigma_i$.
+	Other occs of $v$:
+
+	If $v$ also occurs in $\Phi$-term, then it occurs in a $\Phi$-term and in a grey position in a $\Psi$-literal, then by IH, it occurs grey in a grey literal in $F\sigmazmi$.
+	By $\sigma_i$, in $F\sigma_i$, $u$ occurs at a grey position in a grey literal in $\PI(C) \lor C$.
+
+	If $v$ also occurs grey in a $\Phi$-literal, then similar argument.
+
+	done?
+
+	~
+
+	Supp s.c.\ $\Psi$-term contains $w$ such that $u$ grey in $w\sigma_i$.
+	Supp $u$ not grey in grey literal as otw done.
+	other occs of $w$:
+
+	Supp $w$ in s.c. $\Phi$-term: then IH.
+
+	Supp $u$ in $\Psi$-term: then IH
+
+	Supp grey in res/fac lit:
+	\begin{quote}
+		Supp grey: then both occ grey in grey, done.
+
+		Supp $\Phi$-lit: then IH on $w$
+
+		Supp $\Psi$-: then IH on $u$
+	\end{quote}
+
+\end{proof}
+
+\begin{clemma}
+	\ref{last_lemma} nochmal gscheid:
+
+	Let $u$ be a variable which occurs in $\PI(C)\lor C$ in some literal in a single-colored $\Phi$-term or grey in a $\Phi$-literal.
+
+	Suppose that $u$ also occurs in $\PI(C) \lor C$ in some literal in a single-colored $\Psi$-term or grey in a $\Psi$-literal.
+
+	Then $u$ occurs grey in a grey literal.
+
+\end{clemma}
+\begin{proof}
+	Note that initially, every pair of clauses is variable-disjoint and all symbols of a clause are either all grey or $\Phi$-colored or all grey or $\Psi$-colored, hence the lemma is vacuously true.
+
+	Induction of $\pi$ and $\sigma$.
+
+	Let $u$ occur in $F\sigmazi$ in a s.c.\ $\Phi$-term.
+	\hl{Suppose $u$ also occurs in $F\sigmazi$ in a s.c.\ $\Phi$-term.)}
+	Supppose that $u$ occurs in $F\sigmazi$ in a s.c.\ $\Psi$-term but not in $F\sigmazmi$ as otherwise we are done by the induction hypothesis.
+	Then one of the following cases applies:
+	\begin{itemize}
+		\item There is a s.c.\ $\Psi$-term in $F\sigmazmi$ containing a variable $v$ such that $u$ occurs grey in $v\sigma_i$.
+			
+			In the res/fac lits in $\lambda$ and $\lambda'$ respectively, $u$ and $v$ occur at the essentially same position.
+
+			If that position is in an s.c. $\Phi$-term, then we are done by the IH on $v$.
+
+			If that position is in an s.c. $\Psi$-term, then we are done by the IH on $u$.
+
+			Hence suppose that position is grey:
+			If it's in a $\Phi$-literal, then we are done by the IH on $v$.
+			If it's in a $\Psi$-literal, then we are done by the IH on $u$.
+			Otherwise the occurrence is grey in a grey literal, which we wanted to show.
+			
+
+		\item There is a variable $v$ in $F\sigmazmi$ such that $v\sigma_i$ contains a s.c.\ $\Psi$-term which contains $u$.
+			Then $v\sigma_i$ occurs in $F\sigmazmi$ and we are done by the induction hypothesis.
+	\end{itemize}
+
+
+
+	
+	
+\end{proof}
 
 \end{document}
 
