@@ -144,9 +144,10 @@ Method: proof for both:
 
 \begin{itemize}
 	\item Need to define all new terms here: color-changing, single-color, $\Phi$-literal, substitutions from $0$ to $n$
-\begin{itemize}
-	\item essentially same position: path from one position to other only contains grey symbol (this def allows for identical position as well)
-\end{itemize}
+		\begin{itemize}
+			\item essentially same position: path from one position to other only contains grey symbol (this def allows for identical position as well)
+		\end{itemize}
+	\item also note: literal is sometimes used for negated or not negated predicate with terms but in regular formulas with arbitrary connectives
 \end{itemize}
 
 \section{ Preliminaries }
@@ -160,7 +161,7 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 
 	Let $t = f(t_1, \dots, t_n)$ for constant, function and variable symbols (syntax abuse)
 
-	
+
 	$\ca_\Phi(t) \defeq 
 	\begin{cases}
 		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is grey} \\
@@ -202,6 +203,10 @@ $C\nosigma$ is somehow the same, i.e.\ if $C = D\sigma$, then $C\nosigma = D$ wh
 				So if we can assume it for $A$ and show it for all $\sigma_i$, we get that it holds for $\PI(C) \lor C$.
 
 		\end{itemize}
+
+		Also: clauses are variable disjoint, so e.g. it's not possible that a color-changing var is created by $\PIstep$
+
+		Also: do it like a few lemmas further down, like $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma ) \sigmazi$
 \end{itemize}
 
 
@@ -254,7 +259,7 @@ evidence:
 
 
 
-	
+
 \end{proof}
 
 \begin{clemma}
@@ -303,50 +308,50 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 
 	Induction over refutation and $\sigma$; base case easy.
 
-Step:
-Supp color change var $u$ present in 
-$F\sigmazi$. (could also say introduced, then proof would be somehow different)
+	Step:
+	Supp color change var $u$ present in 
+	$F\sigmazi$. (could also say introduced, then proof would be somehow different)
 
-Supp $u$ not grey in 
-$F\sigmazmi$ as otherwise done.
-As a first step, we show that if a (not necessarily color-changing) variable $v$ occurs in a single-colored $\Phi$-term $t\occ{v}$ in $F\sigmazi$,
-then at least one of the following holds:
-\begin{compactenum}
-\item $v$ occurs in some single-colored $\Phi$-term in $F\sigmazmi$ \label{var_occ_1}
-\item there is a color-changing variable $w$ in $F\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.  \label{var_occ_2}
-\end{compactenum}
-We consider the different cases which can introduce a variable $v$ in a single-colored term $\Phi$: Either it has been there before, it was introduced in a s.c. $\Phi$-colored term, or a s.c.\ $\Phi$-term containing the var is in $\ran(\sigma)$.
-\begin{itemize}
-	\item
-		Suppose a term $t'\occ{v}$ is present in $F\sigmazmi$ such that $t'\occ{v}\sigma_i = t\occ{v}$.
-		Then \ref{var_occ_1} is the case.
-	\item
-		Suppose a variable $w$ occurs in a single-colored $\Phi$-term in $F\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.
-		Suppose furthermore that \ref{var_occ_1} is not the case, i.e.\ $v$ does not occur in a s.c.\ $\Phi$-term in $F\sigmazmi$, as otherwise we would be done.
-		We show that \ref{var_occ_2} is the case.
+	Supp $u$ not grey in 
+	$F\sigmazmi$ as otherwise done.
+	As a first step, we show that if a (not necessarily color-changing) variable $v$ occurs in a single-colored $\Phi$-term $t\occ{v}$ in $F\sigmazi$,
+	then at least one of the following holds:
+	\begin{compactenum}
+	\item $v$ occurs in some single-colored $\Phi$-term in $F\sigmazmi$ \label{var_occ_1}
+	\item there is a color-changing variable $w$ in $F\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.  \label{var_occ_2}
+	\end{compactenum}
+	We consider the different cases which can introduce a variable $v$ in a single-colored term $\Phi$: Either it has been there before, it was introduced in a s.c. $\Phi$-colored term, or a s.c.\ $\Phi$-term containing the var is in $\ran(\sigma)$.
+	\begin{itemize}
+		\item
+			Suppose a term $t'\occ{v}$ is present in $F\sigmazmi$ such that $t'\occ{v}\sigma_i = t\occ{v}$.
+			Then \ref{var_occ_1} is the case.
+		\item
+			Suppose a variable $w$ occurs in a single-colored $\Phi$-term in $F\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.
+			Suppose furthermore that \ref{var_occ_1} is not the case, i.e.\ $v$ does not occur in a s.c.\ $\Phi$-term in $F\sigmazmi$, as otherwise we would be done.
+			We show that \ref{var_occ_2} is the case.
 
-		As $v$ occurs neither grey nor in a s.c.\ $\Phi$-term in $F\sigmazmi$ but occurs in $\ran(\sigma_i)$, it must occur in $F\sigmazmi$ and this can only be in a single-colored $\Psi$-term.
+			As $v$ occurs neither grey nor in a s.c.\ $\Phi$-term in $F\sigmazmi$ but occurs in $\ran(\sigma_i)$, it must occur in $F\sigmazmi$ and this can only be in a single-colored $\Psi$-term.
 
-		As by assumption $v$ occurs grey in $w\sigma_i$, there must be an occurrence $\bhat w$ of $w$ in a resolved or factorised literal, say $\lambda\sigmazmi$ such that for the other resolved literal $\lambda'\sigmazmi$, $\lambda'\sigmazmi\at{\bhat w}$ is a subterm in which $v$ occurs grey.
-		But as the occurrence of $v$ in $\lambda'\sigmazmi\at{\bhat w}$ must be contained in a single-colored $\Psi$-term, so is $\lambda\sigmazmi\at{\bhat w}$, hence $z$ occurs in a single-colored $\Psi$-term as well.
-		Therefore \ref{var_occ_2} is the case.
+			As by assumption $v$ occurs grey in $w\sigma_i$, there must be an occurrence $\bhat w$ of $w$ in a resolved or factorised literal, say $\lambda\sigmazmi$ such that for the other resolved literal $\lambda'\sigmazmi$, $\lambda'\sigmazmi\at{\bhat w}$ is a subterm in which $v$ occurs grey.
+			But as the occurrence of $v$ in $\lambda'\sigmazmi\at{\bhat w}$ must be contained in a single-colored $\Psi$-term, so is $\lambda\sigmazmi\at{\bhat w}$, hence $z$ occurs in a single-colored $\Psi$-term as well.
+			Therefore \ref{var_occ_2} is the case.
 
-	\item
-		Suppose there is a variable $z$ in $F\sigmazmi$ such that $v$ occurs in a single-colored $\Phi$-term in $z\sigma_i$.
-		Then $z\sigma_i$ occurs in $F\sigmazmi$, but this is a witness for~\ref{var_occ_1}.
-\end{itemize}
+		\item
+			Suppose there is a variable $z$ in $F\sigmazmi$ such that $v$ occurs in a single-colored $\Phi$-term in $z\sigma_i$.
+			Then $z\sigma_i$ occurs in $F\sigmazmi$, but this is a witness for~\ref{var_occ_1}.
+	\end{itemize}
 
-Now recall that we have assumed $u$ to be a color-changing variable in $F\sigmazi$.
-Hence it occurs in a single-colored $\Gamma$-term as well as in a single-colored $\Delta$-term.
-By the reasoning above, this leads to two case:
-\begin{itemize}
-	\item In $F\sigmazmi$, $u$ occurs both in some single-colored $\Gamma$-term as well as in some single-colored $\Delta$-term.
-		Then we get the result by the induction hypothesis and the fact that $u\not\in\dom(\sigma_i)$ as $u$ does occur in $F\sigmazi$.
-	\item Otherwise for some color $\Phi$, $u$ does not occur in a single-colored $\Phi$-term in $F\sigmazmi$.
-		Then case \ref{var_occ_2} above must hold and there is some color-changing variable $w$ in $F\sigmazmi$ such that $u$ occurs grey in $w\sigmazi$.
-		But then by the induction hypothesis, $w$ occurs grey in $F\sigmazmi$ and hence $u$ occurs grey in $F\sigmazi$.
-		\qedhere
-\end{itemize}
+	Now recall that we have assumed $u$ to be a color-changing variable in $F\sigmazi$.
+	Hence it occurs in a single-colored $\Gamma$-term as well as in a single-colored $\Delta$-term.
+	By the reasoning above, this leads to two case:
+	\begin{itemize}
+		\item In $F\sigmazmi$, $u$ occurs both in some single-colored $\Gamma$-term as well as in some single-colored $\Delta$-term.
+			Then we get the result by the induction hypothesis and the fact that $u\not\in\dom(\sigma_i)$ as $u$ does occur in $F\sigmazi$.
+		\item Otherwise for some color $\Phi$, $u$ does not occur in a single-colored $\Phi$-term in $F\sigmazmi$.
+			Then case \ref{var_occ_2} above must hold and there is some color-changing variable $w$ in $F\sigmazmi$ such that $u$ occurs grey in $w\sigmazi$.
+			But then by the induction hypothesis, $w$ occurs grey in $F\sigmazmi$ and hence $u$ occurs grey in $F\sigmazi$.
+			\qedhere
+	\end{itemize}
 \end{proof}
 
 ~
@@ -385,7 +390,7 @@ By the reasoning above, this leads to two case:
 
 		\item 
 			Note that we only consider maximal colored terms.
-			
+
 			\todo{are probably not same $t$ and $s$ as in lemma statement, which isn't technically wrong but confusing}
 			Let $t\occ{u}$ be a maximal colored $\Gamma$-term in $F\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Delta$-symbol, and $u\sigma_i$ contains a grey occurrence of $s$.
 
@@ -402,7 +407,7 @@ By the reasoning above, this leads to two case:
 			Furthermore, the prefix along the path to $p$ is the same in both $\lambda$ and $\lambda'$.
 			But as by assumption $u$ only occurs in single-colored $\Gamma$-terms, $\lambda'\at{p}$ does so as well, so $s$ is contained in a single-colored $\Gamma$-term in $F\sigmazmi$.
 			Since $s$ is a $\Delta$-term, by the induction hypothesis, $s$ occurs grey in $F\sigmazmi$ and hence also in $F\sigma_i$.
-\mytodo{add grey here but get for free}
+			\mytodo{add grey here but get for free}
 			\qedhere
 	\end{itemize}
 
@@ -520,6 +525,7 @@ By the reasoning above, this leads to two case:
 
 \end{proof}
 
+\clearpage
 \begin{clemma}
 	\ref{last_lemma} nochmal gscheid:
 
@@ -530,6 +536,7 @@ By the reasoning above, this leads to two case:
 	Then $u$ occurs grey in a grey literal.
 
 \end{clemma}
+Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.\ $\Gamma$ and $\Delta$ as well as $\Delta$ and $\Gamma$.
 \begin{proof}
 	Note that initially, every pair of clauses is variable-disjoint and all symbols of a clause are either all grey or $\Phi$-colored or all grey or $\Psi$-colored, hence the lemma is vacuously true.
 
@@ -537,32 +544,286 @@ By the reasoning above, this leads to two case:
 
 	Let $u$ occur in $F\sigmazi$ in a s.c.\ $\Phi$-term.
 	\hl{Suppose $u$ also occurs in $F\sigmazi$ in a s.c.\ $\Phi$-term.)}
-	Supppose that $u$ occurs in $F\sigmazi$ in a s.c.\ $\Psi$-term but not in $F\sigmazmi$ as otherwise we are done by the induction hypothesis.
-	Then one of the following cases applies:
+	Suppose that $u$ occurs in $F\sigmazi$ in a s.c.\ $\Psi$-term but not in $F\sigmazmi$ as otherwise we are done by the induction hypothesis \hl{($u$ in s.c.\ $\Psi$-term before)}.
+	Then one of the following cases applies (positions of $v$ in res/fac lit):
 	\begin{itemize}
 		\item There is a s.c.\ $\Psi$-term in $F\sigmazmi$ containing a variable $v$ such that $u$ occurs grey in $v\sigma_i$.
-			
+
 			In the res/fac lits in $\lambda$ and $\lambda'$ respectively, $u$ and $v$ occur at the essentially same position.
 
-			If that position is in an s.c. $\Phi$-term, then we are done by the IH on $v$.
+			\begin{itemize}
+				\item
+					If that position is in an s.c. $\Phi$-term, then we are done by the IH on~$v$.
+					\hl{$v$ col change}
 
-			If that position is in an s.c. $\Psi$-term, then we are done by the IH on $u$.
+				\item
+					If that position is in an s.c. $\Psi$-term, then we are done by the IH on~$u$.
+					\hl{$u$ col change} \NB{also: $u$ is in $\Phi$-term before}
 
-			Hence suppose that position is grey:
-			If it's in a $\Phi$-literal, then we are done by the IH on $v$.
-			If it's in a $\Psi$-literal, then we are done by the IH on $u$.
-			Otherwise the occurrence is grey in a grey literal, which we wanted to show.
-			
+				\item
+					Hence suppose that position is grey:
+
+					If it's in a $\Phi$-literal, then we are done by the IH on $v$. \hl{$\Phi$-lit + s.c.\ $\Psi$-term}
+
+					If it's in a $\Psi$-literal, then we are done by the IH on $u$. \hl{$\Psi$-lit + s.c.\ $\Phi$-term} (basically somewhat of propagation of preexisting circumstances)
+
+					Otherwise the occurrence is grey in a grey literal, which we wanted to show. \hl{?}
+			\end{itemize}
+
 
 		\item There is a variable $v$ in $F\sigmazmi$ such that $v\sigma_i$ contains a s.c.\ $\Psi$-term which contains $u$.
 			Then $v\sigma_i$ occurs in $F\sigmazmi$ and we are done by the induction hypothesis.
+			\hl{$u$ in s.c.\ $\Psi$-term before}
 	\end{itemize}
 
+	\mytodo{ formulate as other proof, this part more or less must work out }
+
+	~
+
+	\hl{2nd part:} 
+
+	Let $u$ occur in $F\sigmazi$ in a s.c.\ $\Phi$-term.
+
+	Supp $u$ occs grey in $\Psi$-literal in $F\sigmazi$.
+	Supp not in $F\sigmazmi$ as then IH would take effect. \hl{$u$ grey in $\Psi$-lit}
+
+	Then exists $v$ grey in $\Psi$-literal in $F\sigmazmi$ s.t.\ $u$ grey in $v\sigma_i$.
+	Distinguish based on occurrence of $u$, $v$ pair in res/fac lit:
+
+	\begin{itemize}
+		\item supp in s.c.\ $\Psi$-term. then IH on $u$. \hl{$u$ col change}
+		\item supp in s.c.\ $\Phi$-term. then IH on $v$. \hl{$v$ grey in $\Psi$-lit and in s.c.\ $\Phi$-term}
+		\item supp grey.
+			\begin{itemize}
+				\item supp in $\Phi$-lit: then IH on $v$ \hl{$\Psi$-lit + $\Phi$-lit}
+				\item supp in $\Psi$-lit: IH on $u$ \hl{$\Psi$-lit + s.c.\ $\Phi$-term}, but basically same as before
+				\item supp in grey lit: done
+
+			\end{itemize}
+
+	\end{itemize}
+
+	\mytodo{formulate similarily, in any case the IH or the desired statement is the case}
 
 
-	
-	
+
+	~
+
+	\hl{3rd/4th part:} 
+
+	Let $u$ occur in $F\sigmazi$ in grey in a $\Phi$-lit. 
+	Either it was there before, or:
+
+	There exists a $\Phi$-lit with a variable $v$ at a grey position such that $v\sigma_i$ contains a grey $u$.
+	Occurrences of position of $u$ and $v$ in res/fac lit:
+
+	\begin{itemize}
+		\item Supp in s.c.\ $\Psi$-term. Then IH on $v$. \hl{$v$ in s.c. $\Psi$-term and grey in $\Phi$-lit}
+		\item Supp in s.c.\ $\Phi$-term. 
+	\end{itemize}
+
 \end{proof}
+
+Reformulation sketch:
+
+If some var $u$ occs in $F\sigmazi$ in a s.c.\ $\Phi$-term, then:
+\begin{itemize}
+	\item was there before
+	\item exists col change var which is substituted for $u$ in $F\sigmazi$
+	\item exists var grey in $\Phi$-lit and (usually elsewhere) in s.c. $\Psi$-term (or opposite coloring)
+\end{itemize}
+
+~
+
+\noindent
+Sublemma: If $u$ occurs grey in a $\Phi$-literal in $F\sigmazi$, then at least one of the following statments hold:
+\begin{enumerate}
+	\item $u$ occurs grey in a $\Phi$-literal in $F\sigmazi$.
+		\label{14_1}
+
+	\item 
+		\label{14_2}
+		A variable $v$ occurs grey in a $\Phi$-lit and grey in a $\Psi$-lit such that $v\sigma_i$ contains a grey occ of $u$.
+
+	\item 
+		\label{14_3}
+		A variable occurs grey in a $\Phi$-lit and in an s.c. $\Psi$-term, OR
+
+		a variable occurs grey in a $\Psi$-lit and in an s.c. $\Phi$-term.
+
+		Additionally, either this variable is $u$ or it is some variable $v$ such that $v\sigma_i$ contains a grey $u$.
+
+	\item
+		\label{14_4}
+		$u$ occurs at a grey position in a grey literal.
+
+\end{enumerate}
+\noindent
+Subproof:
+Suppose the lemma precondition. we consider the formation cases for this:
+\begin{itemize}
+	\item $u$ occurs grey in a $\Phi$-literal in $F\sigmazi$ and this fact is not changed by $\sigma_i$.
+		Then we clearly have \ref{14_1}.
+
+	\item Some $\Phi$-literal $\lambda$ in $F\sigmazmi$ contains a variable $v$ at a grey position such that $v\sigma_i$ contains a grey occ of $u$. 
+		We distinguish further based on the position $p$ in the literal where $v$ and $u$ face each other.
+
+		\begin{itemize}
+			\item Suppose $p$ is in a s.c.\ $\Phi$-term. Then we have \ref{14_3} on $v$.
+			\item Suppose $p$ is in a s.c.\ $\Psi$-term. Then we have \ref{14_3} on $u$.
+			\item Suppose the res/fac lit is $\Psi$-colored, and the position is grey. Then we have \ref{14_2} on $v$.
+			\item Suppose the res/fac lit is $\Phi$-colored, and the position is grey. Then we have \ref{14_1}
+			\item Suppose the res/fac lit is grey, and the position is grey. Then we have \ref{14_4}
+
+		\end{itemize}
+
+
+\end{itemize}
+
+
+\clearpage
+\newcommand{\inv}{\ensuremath{\chi}}
+
+In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$ by $\inv$.
+
+\begin{lemma}
+	Let $\inference$ be an inference in a refutation of $\Gamma\cup\Delta$.
+	Suppose that a variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$.
+	Then at least one of the following statements holds:
+	\begin{enumerate}
+		\item
+			\label{14_1}
+			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
+
+		\item 
+			\label{14_2}
+			Some variable $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal such that $u$ occurs grey in $v\sigma_i$.
+
+		\item 
+			\label{14_3}
+			There is a variable $v$ such that $v\sigma_i = u$\footnotemark and $v$ occurs in $\inv\sigmazmi$
+			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
+			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
+			\footnotetext{Note that this includes the case that $v=u$ and $\sigma_i$ is trivial on $u$.}
+
+		\item
+			\label{14_4}
+			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	We consider the different cases which lead to the variable $u$ in a grey position in a $\Phi$-literal in $\inv\sigmazi$:
+	\begin{itemize}
+		\item
+			There already is a $\Phi$-literal in $\inv\sigmazmi$ which contains $u$ at a grey position and $\sigma_i$ does not change this. Then clearly \ref{14_1} is the case.
+
+		\item
+			Otherwise there must be a $\Phi$-literal in $\inv\sigmazmi$, which contains a variable $v$ at a grey position such that $u$ occurs grey in $v\sigma_i$.
+			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$, there is a position $p$ such that w.l.o.g.\ $\lambda\at{p} = v$ and $\lambda'\at{p}$ contains a grey occurrence of $u$, and $\lambda$ and $\lambda$ coincide along $p$.
+			We distinguish based properties of the position $p$:
+
+			\begin{itemize}
+				\item
+					Suppose that $p$ is contained in a single-colored $\Phi$-term.
+					Then $v$ occurs grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term, which suffices for \ref{14_3} as $u$ occurs grey in $v\sigma_i$.
+
+				\item 
+					Suppose that $p$ is contained in a single-colored $\Psi$-term.
+					Then $u$ occurs grey in a $\Phi$-literal as well in a single-colored $\Psi$-term, which implies \ref{14_3}.
+
+				\item
+					Otherwise $p$ is a grey position.
+					We distinguish further:
+
+					\begin{itemize}
+						\item Suppose that the resolved or factorised literal is $\Phi$-colored.
+							Then $u$ occurs grey in a $\Phi$-colored literal and we have established item \ref{14_3}.
+
+						\item Suppose that the resolved or factorised literal is $\Psi$-colored.
+							Then the variable $v$ occurs grey in a $\Phi$-literal as well as grey in a $\Psi$-literal, hence \ref{14_2} is the case.
+
+							Otherwise the resolved or factorised literal is grey and $u$ occurs grey in a grey literal, which is sufficient for \ref{14_4}.
+							\qedhere
+					\end{itemize}
+
+			\end{itemize}
+
+	\end{itemize}
+
+\end{proof}
+
+\begin{clemma}
+	Let $\inference$ be an inference in a refutation of $\Gamma\cup\Delta$.
+	Suppose that a variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazi$.
+	Then at least one of the following statements holds:
+	\begin{enumerate}
+		\item
+			\label{15_1}
+			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+
+		\item
+			\label{15_2}
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
+
+
+		\item
+			\label{15_4}
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in $\inv\sigmazmi$ in a single-colored $\Phi$-term as well as at a grey position in a $\Psi$-literal.
+
+		\item
+			\label{15_3}
+			The variable $u$ occurs grey in a $\Phi$-colored literal in $\inv\sigmazmi$.
+
+		\item
+			\label{15_5}
+			The variable $u$ occurs grey in a grey literal in $\inv\sigmazmi$.
+
+	\end{enumerate}
+\end{clemma}
+\begin{proof}
+	We consider the different cases which lead to the variable $u$ in a single-colored $\Phi$-term in $\inv\sigmazi$:
+
+	\begin{itemize}
+		\item There is a single-colored $\Phi$-term in $\inv\sigmazmi$ which contains $u$ such that $\sigma_i$ does not change this.
+			Then \ref{15_1} is the case.
+
+		\item Suppose that there is a single-colored $\Phi$-term in $\inv\sigmazmi$ which contains a variable $v$ such that $u$ occurs grey in $v\sigma_i$.
+
+			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$, there is a position $p$ such that w.l.o.g.\ $\lambda\at{p} = v$ and $\lambda'\at{p}$ contains a grey occurrence of $u$, and $\lambda$ and $\lambda$ coincide along $p$.
+			We distinguish based properties of the position $p$:
+
+			\begin{itemize}
+				\item Suppose that $p$ is contained in a single-colored $\Phi$-term.
+					Then $u$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$ and item \ref{15_1} holds.
+
+				\item Suppose that $p$ is contained in a single-colored $\Psi$-term.
+					As then $v$ is contained in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term, \ref{15_2} is the case.
+
+				\item Suppose that $p$ is a grey position.
+					We distinguish further:
+
+					\begin{itemize}
+						\item Suppose that the resolved or factorised literal is $\Phi$-colored.
+							Then $u$ occurs grey in a $\Phi$-colored literal, which suffices for \ref{15_3}. 
+
+						\item Suppose that the resolved or factorised literal is $\Psi$-colored.
+							Then the variable $v$ occurs in a single-colored $\Phi$-term as well as grey in a $\Psi$-colored literal, which implies \ref{15_4}.
+
+						\item
+							Otherwise the resolved or factorised literal is grey. 
+							But then $u$ occurs grey in a grey literal and we have established item \ref{15_5}.
+					\end{itemize}
+
+
+				\item Suppose that a variable $w$ occurs in $\inv\sigmazmi$ such that $u$ occurs in a single-colored $\Phi$-term in $w\sigma_i$.
+					This can only be the case if $w\sigma$ already occurs in $\inv\sigmazmi$, which implies that \ref{15_1} is the case.
+					\qedhere
+			\end{itemize}
+	\end{itemize}
+
+\end{proof}
+
 
 \end{document}
 
