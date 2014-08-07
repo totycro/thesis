@@ -526,6 +526,8 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 \end{proof}
 
 \clearpage
+
+{\tiny
 \begin{clemma}
 	\ref{last_lemma} nochmal gscheid:
 
@@ -679,6 +681,7 @@ Suppose the lemma precondition. we consider the formation cases for this:
 
 
 \end{itemize}
+}
 
 
 \clearpage
@@ -687,6 +690,7 @@ Suppose the lemma precondition. we consider the formation cases for this:
 In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$ by $\inv$.
 
 \begin{lemma}
+	\label{lemma:var_grey_col_lit}
 	Let $\inference$ be an inference in a refutation of $\Gamma\cup\Delta$.
 	Suppose that a variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$.
 	Then at least one of the following statements holds:
@@ -701,7 +705,7 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 
 		\item 
 			\label{14_3}
-			There is a variable $v$ such that $v\sigma_i = u$\footnotemark and $v$ occurs in $\inv\sigmazmi$
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$\footnotemark and $v$ occurs in $\inv\sigmazmi$
 			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
 			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
 			\footnotetext{Note that this includes the case that $v=u$ and $\sigma_i$ is trivial on $u$.}
@@ -738,7 +742,7 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 
 					\begin{itemize}
 						\item Suppose that the resolved or factorised literal is $\Phi$-colored.
-							Then $u$ occurs grey in a $\Phi$-colored literal and we have established item \ref{14_3}.
+							Then $u$ occurs grey in a $\Phi$-literal and we have established item \ref{14_3}.
 
 						\item Suppose that the resolved or factorised literal is $\Psi$-colored.
 							Then the variable $v$ occurs grey in a $\Phi$-literal as well as grey in a $\Psi$-literal, hence \ref{14_2} is the case.
@@ -753,7 +757,8 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 
 \end{proof}
 
-\begin{clemma}
+\begin{lemma}
+	\label{lemma:var_in_sc_term}
 	Let $\inference$ be an inference in a refutation of $\Gamma\cup\Delta$.
 	Suppose that a variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazi$.
 	Then at least one of the following statements holds:
@@ -773,14 +778,14 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 
 		\item
 			\label{15_3}
-			The variable $u$ occurs grey in a $\Phi$-colored literal in $\inv\sigmazmi$.
+			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
 
 		\item
 			\label{15_5}
 			The variable $u$ occurs grey in a grey literal in $\inv\sigmazmi$.
 
 	\end{enumerate}
-\end{clemma}
+\end{lemma}
 \begin{proof}
 	We consider the different cases which lead to the variable $u$ in a single-colored $\Phi$-term in $\inv\sigmazi$:
 
@@ -805,10 +810,10 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 
 					\begin{itemize}
 						\item Suppose that the resolved or factorised literal is $\Phi$-colored.
-							Then $u$ occurs grey in a $\Phi$-colored literal, which suffices for \ref{15_3}. 
+							Then $u$ occurs grey in a $\Phi$-literal, which suffices for \ref{15_3}. 
 
 						\item Suppose that the resolved or factorised literal is $\Psi$-colored.
-							Then the variable $v$ occurs in a single-colored $\Phi$-term as well as grey in a $\Psi$-colored literal, which implies \ref{15_4}.
+							Then the variable $v$ occurs in a single-colored $\Phi$-term as well as grey in a $\Psi$-literal, which implies \ref{15_4}.
 
 						\item
 							Otherwise the resolved or factorised literal is grey. 
@@ -823,6 +828,70 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 	\end{itemize}
 
 \end{proof}
+
+\begin{lemma}
+	Let $C$ be a clause in the resolution refutation $\pi$ of $\Gamma \cup \Delta$
+	and $u$ be a variable which occurs in $\PI(C)\lor C$ in some literal in a single-colored $\Phi$-term or grey in a $\Phi$-literal.
+
+	Suppose that $u$ also occurs in $\PI(C) \lor C$ in some literal in a single-colored $\Psi$-term or grey in a $\Psi$-literal.
+
+	Then $u$ occurs grey in a grey literal.
+
+\end{lemma}
+Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.\ $\Gamma$ and $\Delta$ as well as $\Delta$ and $\Gamma$.
+\begin{proof}
+	We proceed by induction over $\pi$. \mytodo{ also this proof strategy as outlined above }
+
+	Note that initially, every pair of clauses is variable-disjoint and all symbols of a clause are either all grey or $\Phi$-colored or all grey or $\Psi$-colored, hence the lemma is vacuously true.
+
+	For the induction step,
+	suppose that $u$ occurs in $\chi\sigmazi$ in a single-colored $\Phi$-term or grey in a $\Phi$-literal and 
+	that $u$ also occurs in $\chi\sigmazi$ in a single-colored $\Psi$-term or grey in a $\Psi$-literal.
+
+	Then we can deduce by Lemma~\ref{lemma:var_grey_col_lit} and Lemma~\ref{lemma:var_in_sc_term} that at least one of the following statements holds:
+	\begin{enumerate}
+		\item
+			\label{oozoh7Oh1}
+			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
+
+		\item 
+			\label{oozoh7Oh2}
+			Some variable $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal such that $u$ occurs grey in $v\sigma_i$.
+
+		\item 
+			\label{oozoh7Oh3}
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in $\inv\sigmazmi$
+			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
+			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
+
+		\item
+			\label{oozoh7Oh4}
+			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+
+		\item
+			\label{oozoh7Oh5}
+			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+
+		\item
+			\label{oozoh7Oh6}
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
+
+
+	\end{enumerate}
+
+	\newcommand{\othercase}{$^*$}
+
+	By the same lemmata, we get the same set of statements where $\Phi$ and $\Psi$ are interchanged. We refer to them by the respective number followed by \othercase.
+
+	Suppose that \ref{oozoh7Oh4} is not the case as otherwise we are done since $\sigma_i$ is trivial on $u$ as $u$ occurs in $\inv\sigmazi$.
+	Furthermore, there are a number of cases which give the result by the induction hypothesis:
+	For the cases \ref{oozoh7Oh2}, \ref{oozoh7Oh3} and \ref{oozoh7Oh6}, we can infer that by the induction hypothesis, there is a grey occurrence of the variable $v$ in a grey literal in $\inv\sigmazmi$, and as $u$ occurs grey in $v\sigma_i$, there is a grey occurrence of $u$ in a grey literal in $\inv\sigmazi$.
+
+	It remains to show that the lemma holds true in case the statements \ref{oozoh7Oh1} or \ref{oozoh7Oh5} as well as \ref{oozoh7Oh1}\othercase or \ref{oozoh7Oh5}\othercase hold.
+	But note that in any combination of \ref{oozoh7Oh1} or \ref{oozoh7Oh5} and \ref{oozoh7Oh1}\othercase or \ref{oozoh7Oh5}\othercase in effect yields a situation under which the induction hypothesis again is applicable.
+	Hence we may infer that $u$ occurs grey in a grey literal in $\inv\sigmazmi$ and since $\sigma_i$ is trivial $u$ as shown above, $u$ occurs grey in a grey literal in $\inv\sigmazi$.
+\end{proof}
+
 
 
 \end{document}
