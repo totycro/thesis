@@ -162,16 +162,16 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 
 	$\ca(t) \defeq \ca_\bot(t)$
 
-	Let $t = f(t_1, \dots, t_n)$ for constant, function and variable symbols (syntax abuse)
-
+	Let $t = f(t_1, \dots, t_n)$ for constant, function and variable symbols (syntax abuse):
 
 	$\ca_\Phi(t) \defeq 
 	\begin{cases}
-		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is grey} \\
+		\max\footnotemark(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is grey} \\
 		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is of color $\Phi$} \\
 		1 + \max(\ca_\Psi(t_1), \dots, \ca_\Psi(t_n)) & \text{$f$ is of color $\Psi$, $\Phi \neq \Psi$} \\
 	\end{cases}
 	$
+	\footnotetext{We assume that the maximum of an empty list of arguments is $0$.}
 \end{defi}
 
 \begin{defi}
@@ -214,6 +214,7 @@ $C\nosigma$ is somehow the same, i.e.\ if $C = D\sigma$, then $C\nosigma = D$ wh
 \end{itemize}
 
 
+\begin{comment}
 \section{ Proof port attempt from \texttt{-final} }
 
 \largered{ need to show that grey occurrences are in grey literals, all grey literals end up in the interpolant! }
@@ -298,6 +299,7 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 \end{proof}
 
 \newpage
+\end{comment}
 
 \section{directly from old proof}
 
@@ -847,11 +849,8 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.
 
 \section{Friday}
 
-
-
-\NB{this is the heart of the proof:}\nopagebreak
 \begin{lemma}
-	If ${\PI(C) \lor C}$ contains a maximal colored occurrence of a $\Gamma$-term $t\occ{s}$ containing $\Delta$-term $s$, then 
+	If ${\PI(C) \lor C}$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$ containing $\Psi$-term $s$, then 
 	$s$ occurs grey in a grey literal in $\PI(C) \lor C$.
 \end{lemma}
 \begin{proof}
@@ -884,27 +883,60 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.
 			Note that we only consider maximal colored terms.
 
 			\todo{are probably not same $t$ and $s$ as in lemma statement, which isn't technically wrong but confusing}
-			Let $t\occ{u}$ be a maximal colored $\Gamma$-term in $\inv\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Delta$-symbol, and $u\sigma_i$ contains a grey occurrence of $s$.
+			Let $t\occ{u}$ be a maximal colored $\Phi$-term in $\inv\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Psi$-symbol, and $u\sigma_i$ contains a grey occurrence of $s$.
 
 
 			Suppose that $u$ occurs grey in a grey literal in $\inv\sigmazmi$.
 			Then $s$ occurs grey in a grey literal in $\inv\sigmazi$ as $\sigma_i$ does not affect $u$ since $u$ occurs in $\inv\sigmazi$ and we are done.
 
-			If $u$ occurs grey in a $\Delta$-literal or
-			if $u$ occurs in a single-colored $\Delta$-term in $\inv\sigmazmi$, then by Lemma~\ref{lemma:col_change_and_grey_in_col_lit}, $u$ also occurs grey in a grey literal in $\inv\sigmazmi$ and $s$ hence occurs grey in a grey literal in $\inv\sigmazi$. 
+			If $u$ occurs grey in a $\Psi$-literal or
+			if $u$ occurs in a single-colored $\Psi$-term in $\inv\sigmazmi$, then by Lemma~\ref{lemma:col_change_and_grey_in_col_lit}, $u$ also occurs grey in a grey literal in $\inv\sigmazmi$ and $s$ hence occurs grey in a grey literal in $\inv\sigmazi$. 
 
 			Now suppose that $u$ does not occur grey in a grey literal $\inv\sigmazmi$ as otherwise clearly we are done.
 
-			Hence as all other cases are excluded, $u$ can only occur in $\inv\sigmazmi$ in a single-colored $\Gamma$-term or grey in a $\Gamma$-colored literal.
+			Hence as all other cases are excluded, $u$ can only occur in $\inv\sigmazmi$ in a single-colored $\Phi$-term or grey in a $\Phi$-colored literal.
 			But then, 
 			since $u\sigma_i$ contains a grey occurrence of $s$, there is a position $p$ in the two resolved or factorised literals $\lambda$ and $\lambda'$ such that $\lambda\at{p} = u$ and $\lambda'\at{p}$ contains a grey occurrence of $s$.
 			Furthermore, the prefix along the path to $p$ is the same in both $\lambda$ and $\lambda'$.
-			As $u$ only occurs in single-colored $\Gamma$-terms, $\lambda'\at{p}$ does so as well, so $s$ is contained in a single-colored $\Gamma$-term in $\inv\sigmazmi$.
-			Since $s$ is a $\Delta$-term, by the induction hypothesis, $s$ occurs grey in a grey literal in $\inv\sigmazmi$ and hence also in $\inv\sigma_i$.
+			As $u$ only occurs in single-colored $\Phi$-terms, $\lambda'\at{p}$ does so as well, so $s$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+			Since $s$ is a $\Psi$-term, by the induction hypothesis, $s$ occurs grey in a grey literal in $\inv\sigmazmi$ and hence also in $\inv\sigma_i$.
 			\qedhere
 	\end{itemize}
 
 \end{proof}
 
+\begin{lemma}
+	\label{lemma:grey_lits_all_in_PI}
+	If there is a grey literal $\lambda$ in a clause $C$ of a resolution refutation $\pi$,
+	then a successor of $\lambda$ occurs in $\PI(\pi)$.
+\end{lemma}
+\begin{proof}
+	Immediate by the definition of $\PI$.
+\end{proof}
+
+
+\mytodo{define quantifier alternations as $\ca$, 0 == no quants, 1 == one quant, 2 is $\Pi_2$ or $\Sigma_2$}
+
+\begin{prop}
+	If a term with $n$ color alternations occurs in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
+\end{prop}
+\begin{proof}
+	We perform an induction on $n$
+	and show the strenghtening that
+	the quantification of the lifting variable corresponding to a term with $n$ color alternations is required to be in the scope of the quantification of $n-1$ alternating quantifiers.
+	
+	For $n=0$, no colored terms occur in $I$ and hence by construction no quantifiers
+	and for $n=1$, there are only single-colored terms 
+
+	Suppose the statement holds for $n-1$ for $n>1$ and a term $t$ with $\ca(t) = n$ occurs in $\PI(C)$.
+	We assume that $t$ is a $\Phi$-term.
+	Then $t$ contains a $\Psi$-colored term $s$ and
+	by Lemma~\ref{lemma:col_change_and_grey_in_col_lit}, $s$ occurs grey in a grey literal in $\PI(C) \lor C$.
+	By Lemma~\ref{lemma:grey_lits_all_in_PI}, a successor of $s$ occurs in $\PI(\pi)$.
+	By the induction hypothesis, the quantification of the lifting variable for $s$ requires $n-1$ alternated quantifiers.
+	As $s$ is a subterm of $t$ and $t$ is lifted, $t$ must be quantified in the scope of the quantification of $s$, and as $t$ and $s$ are of different color, their quantifier type is different. 
+	Hence the quantification of the lifting variable for $t$ requires $n$ quantifier alternations.
+\end{proof}
 
 \end{document}
+
