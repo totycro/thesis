@@ -3,6 +3,7 @@
 	%DIV8, % mehr text pro seite als defaultyyp
 	%DIV10,
 	%DIV=calc,%
+	%article,
 	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
 	%titlepage,
 	numbers=noendperiod
@@ -124,13 +125,15 @@
 %\setulmargins{*}{*}{1.4}
 %\checkandfixthelayout[nearest]
 
+\counterwithout{section}{chapter}
+
 
 
 \newcommand{\inv}{\ensuremath{\chi}}
 
 \begin{document}
 
-\chapter{ Number of quantifier alternations in Huang and nested }
+%\chapter{ Number of quantifier alternations in Huang and nested }
 
 \section{ Outline }
 
@@ -303,6 +306,8 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 
 \section{directly from old proof}
 
+
+\largered{just for repetition:}
 \begin{lemma}
 	\label{lemma:col_change}
 	Resolution or factorisation step $\inference$ from $\bar C$.
@@ -433,7 +438,7 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 \end{comment}
 
 
-\section{Thursday:}
+\section{Thursday}
 
 \begin{comment}
 	\begin{clemma}
@@ -658,11 +663,15 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$\footnotemark and $v$ occurs in $\inv\sigmazmi$
 			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
 			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
-			\footnotetext{Note that this includes the case that $v=u$ and $\sigma_i$ is trivial on $u$.}
+			\footnotetext{Note that this includes the case that $v=u$ and $\sigma_i$ is trivial on $u$. \mytodo{this really necessary? what about case \ref{14_1}, doesn't that one subsume this?}}
 
 		\item
 			\label{14_4}
 			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+
+		\item
+			\label{14_5}
+			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
 
 	\end{enumerate}
 \end{lemma}
@@ -674,13 +683,16 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 
 		\item
 			Otherwise there must be a $\Phi$-literal in $\inv\sigmazmi$, which contains a variable $v$ at a grey position such that $u$ occurs grey in $v\sigma_i$.
-			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$, there is a position $p$ such that w.l.o.g.\ $\lambda\at{p} = v$ and $\lambda'\at{p}$ contains a grey occurrence of $u$, and $\lambda$ and $\lambda$ coincide along $p$.
+			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$, there is a position $p$ such that w.l.o.g.\ $\lambda\at{p} = v$ and $\lambda'\at{p}$ contains a grey occurrence of $u$, and $\lambda$ and $\lambda$ coincide along the path to $p$.
 			We distinguish based properties of the position $p$:
 
 			\begin{itemize}
 				\item
 					Suppose that $p$ is contained in a single-colored $\Phi$-term.
+					%Then $u$ occurs in a single-colored $\POh
 					Then $v$ occurs grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term, which suffices for \ref{14_3} as $u$ occurs grey in $v\sigma_i$.
+					
+					\wrong{we only know that $v$ is contained in a grey position in $\chi\sigmazmi$ in a $\Phi$-literal (as $u$ ends up there, and now we also know that it's in a s.c.\ $\Phi$-term}
 
 				\item 
 					Suppose that $p$ is contained in a single-colored $\Psi$-term.
@@ -721,7 +733,6 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 			\label{15_2}
 			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
 
-
 		\item
 			\label{15_4}
 			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in $\inv\sigmazmi$ in a single-colored $\Phi$-term as well as at a grey position in a $\Psi$-literal.
@@ -742,6 +753,7 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 	\begin{itemize}
 		\item There is a single-colored $\Phi$-term in $\inv\sigmazmi$ which contains $u$ such that $\sigma_i$ does not change this.
 			Then \ref{15_1} is the case.
+
 
 		\item Suppose that there is a single-colored $\Phi$-term in $\inv\sigmazmi$ which contains a variable $v$ such that $u$ occurs grey in $v\sigma_i$.
 
@@ -937,6 +949,57 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.
 	As $s$ is a subterm of $t$ and $t$ is lifted, $t$ must be quantified in the scope of the quantification of $s$, and as $t$ and $s$ are of different color, their quantifier type is different. 
 	Hence the quantification of the lifting variable for $t$ requires $n$ quantifier alternations.
 \end{proof}
+
+\section{Monday: Paramodulation}
+
+\subsection{Notes}
+\begin{enumerate}
+	\item Every equality which is used ends up in the interpolant, i.e. it's a grey literal (binary)
+	\item Every equality is used eventually
+\end{enumerate}
+\subsection{Proof}
+
+Extension of Lemma \ref{lemma:var_grey_col_lit}
+	
+\begin{lemma}
+	\label{lemma:var_grey_col_lit_paramod}
+	Let $\inference$ be a \textbf{paramodulation} inference in a refutation of $\Gamma\cup\Delta$.
+	Suppose that a variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$.
+	Then at least one of the following statements holds:
+	\begin{enumerate}
+		\item
+			\label{11_1}
+			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
+
+		\item 
+			\label{11_2}
+			Some variable $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal such that $u$ occurs grey in $v\sigma_i$.
+
+		\item 
+			\label{11_3}
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$\footnotemark and $v$ occurs in $\inv\sigmazmi$
+			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
+			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
+
+		\item
+			\label{11_4}
+			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	Consider paramodulation: $s=t \lor D$ and $E\occatp{r}$ create $C: (D\lor E\occatp{t})\sigma$ where $\sigma = \mgu(s, r)$.
+
+	A grey occurrence of variable can be created in $C$ by 2 means:
+	either $t$ contains a grey variable and $p$ is a grey position or $\sigma$ introduces a grey occurrence of a variable in a grey position
+
+	\begin{itemize}
+			\item case 1: 
+				everything which is grey in an equality predicate ends up grey in the interpolant, so this case is easy
+		\end{itemize}
+
+\end{proof}
+
 
 \end{document}
 
