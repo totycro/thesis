@@ -57,7 +57,8 @@
 %\usepackage{bussproof}
 
 %\usepackage{vaucanson-g}
-%\usepackage{amssymb}
+\usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{latexsym}
 
 % for color-highlighted code
@@ -218,94 +219,96 @@ $C\nosigma$ is somehow the same, i.e.\ if $C = D\sigma$, then $C\nosigma = D$ wh
 
 
 \begin{comment}
-\section{ Proof port attempt from \texttt{-final} }
+	\section{ Proof port attempt from \texttt{-final} }
 
-\largered{ need to show that grey occurrences are in grey literals, all grey literals end up in the interpolant! }
+	\largered{ need to show that grey occurrences are in grey literals, all grey literals end up in the interpolant! }
 
-conj: if a $\Delta$-term $t$ occurs in a $\Gamma$-literal in a clause $C$, then $t$ occurs in a grey literal in $\PI(C)$.
+	conj: if a $\Delta$-term $t$ occurs in a $\Gamma$-literal in a clause $C$, then $t$ occurs in a grey literal in $\PI(C)$.
 
-evidence:
-\begin{itemize}
-	\item situation does not occur in $\Gamma$ or $\Delta$
-	\item terms are only changed by unificators
-	\item $\Delta$- and $\Gamma$-terms are not unifiable, so one of the literals has to have a variable at a grey position when a $\Delta$-term enters a $\Gamma$-literal
-	\item that literal has to be grey
-	\item QED?
-\end{itemize}
-
-\begin{rlemma}
-	If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in $\PI(C)$.
-\end{rlemma}
-\begin{proof}
-	As all grey literals of clauses involved in a refutation end up in the interpolant, it suffices to show that $t$ occurs at a grey position in a grey literal. 
-
-	Substitutions are applied to all variables, hence we only need to consider terms $t$ which just enter a foreign colored literal.
-
-	\mytodo{propagation 1: $\Phi$-terms vs $\Psi$-terms (in $\Psi$-literals)}
-
-	\mytodo{propagation 2: $\Phi$-terms vs other $\Phi$-terms (in $\Psi$-literals)}
-
-	Induction on refutation and $\sigma$; base case easy.
-
-	Resolution or factorisation inference $\inference$. 
-	Let $\lambda$ be a $\Gamma$-literal containing a variable $u$ at position $\bhat u$ such that $u\sigma_i$ contains a $\Delta$-term $t$.
-
-	If the resolved or factorised literals are grey, they become part of $\PI(C)$ and if $t$ occurs grey there, we are done.
-
+	evidence:
 	\begin{itemize}
-		\item Suppose the resolved literals are $\Gamma$-colored. Then IH.
-		\item Suppose the resolved literals are $\Delta$-colored.
-			\mytodo{}
-		\item Suppose the resolved literals are grey and $t$ does not occur at a grey position in $\lambda\sigma = \lambda'\sigma$.
-
-			\mytodo{}
-
+		\item situation does not occur in $\Gamma$ or $\Delta$
+		\item terms are only changed by unificators
+		\item $\Delta$- and $\Gamma$-terms are not unifiable, so one of the literals has to have a variable at a grey position when a $\Delta$-term enters a $\Gamma$-literal
+		\item that literal has to be grey
+		\item QED?
 	\end{itemize}
 
+	\begin{rlemma}
+		If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in $\PI(C)$.
+	\end{rlemma}
+	\begin{proof}
+		As all grey literals of clauses involved in a refutation end up in the interpolant, it suffices to show that $t$ occurs at a grey position in a grey literal. 
 
-	~
+		Substitutions are applied to all variables, hence we only need to consider terms $t$ which just enter a foreign colored literal.
 
+		\mytodo{propagation 1: $\Phi$-terms vs $\Psi$-terms (in $\Psi$-literals)}
 
+		\mytodo{propagation 2: $\Phi$-terms vs other $\Phi$-terms (in $\Psi$-literals)}
 
+		Induction on refutation and $\sigma$; base case easy.
 
-\end{proof}
+		Resolution or factorisation inference $\inference$. 
+		Let $\lambda$ be a $\Gamma$-literal containing a variable $u$ at position $\bhat u$ such that $u\sigma_i$ contains a $\Delta$-term $t$.
 
-\begin{clemma}
-	If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in a grey literal in $\PI(C) \lor C$.
-\end{clemma}
-there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contains $t$.
+		If the resolved or factorised literals are grey, they become part of $\PI(C)$ and if $t$ occurs grey there, we are done.
 
-\begin{clemma}
-	If a variable $u$ occurs in a $\Phi$-literal as well as in a $\Psi$-literal in a clause $C$, then $t$ also occurs at a grey position in a grey literal in $\PI(C)$.
-\end{clemma}
-\begin{proof}
-	Initially not the case.
+		\begin{itemize}
+			\item Suppose the resolved literals are $\Gamma$-colored. Then IH.
+			\item Suppose the resolved literals are $\Delta$-colored.
+				\mytodo{}
+			\item Suppose the resolved literals are grey and $t$ does not occur at a grey position in $\lambda\sigma = \lambda'\sigma$.
 
-	Note that we can only resolve/factorise $\Gamma$-/$\Delta$-/grey literals with other $\Gamma$-/$\Delta$-/grey literals as clearly the predicate symbol must be the same for both literals.
-	Hence if a variable occurs only in $\Gamma$- or only in $\Delta$-literals, then it can never escape these.
-	Hence $u$ certainly is contained in a grey literal.
+				\mytodo{}
 
-	Now suppose that $u$ only occurs colored in grey literals.
-	Then it occurs in a $\Gamma$-($\Delta$-) term in the original $\Gamma$-($\Delta$-)clauses which contain it.
-
-	As shown before $u$ must occur in some grey literal.
-	Suppose it does not occur at a grey position in a grey literal as otherwise we are done.
-	Then $u$ only occurs in $\Gamma$-terms in grey literals as 
-
-	\mytodo{it seems that now we have to deal with possible $\Gamma$-terms in $\Delta$-literals and so on $\Ra$ circular reasoning}
+		\end{itemize}
 
 
+		~
 
-	The situation in question arises if some variable $u$ occurs in a $\Gamma$-literal in some clause and some variable $v$ occurs in a $\Delta$-literal in some clause (possibly the same), such that in the unified literals, $u$ and $v$ both occur at the same position in the respective literals.
 
 
-\end{proof}
 
-\newpage
+	\end{proof}
+
+	\begin{clemma}
+		If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in a grey literal in $\PI(C) \lor C$.
+	\end{clemma}
+	there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contains $t$.
+
+	\begin{clemma}
+		If a variable $u$ occurs in a $\Phi$-literal as well as in a $\Psi$-literal in a clause $C$, then $t$ also occurs at a grey position in a grey literal in $\PI(C)$.
+	\end{clemma}
+	\begin{proof}
+		Initially not the case.
+
+		Note that we can only resolve/factorise $\Gamma$-/$\Delta$-/grey literals with other $\Gamma$-/$\Delta$-/grey literals as clearly the predicate symbol must be the same for both literals.
+		Hence if a variable occurs only in $\Gamma$- or only in $\Delta$-literals, then it can never escape these.
+		Hence $u$ certainly is contained in a grey literal.
+
+		Now suppose that $u$ only occurs colored in grey literals.
+		Then it occurs in a $\Gamma$-($\Delta$-) term in the original $\Gamma$-($\Delta$-)clauses which contain it.
+
+		As shown before $u$ must occur in some grey literal.
+		Suppose it does not occur at a grey position in a grey literal as otherwise we are done.
+		Then $u$ only occurs in $\Gamma$-terms in grey literals as 
+
+		\mytodo{it seems that now we have to deal with possible $\Gamma$-terms in $\Delta$-literals and so on $\Ra$ circular reasoning}
+
+
+
+		The situation in question arises if some variable $u$ occurs in a $\Gamma$-literal in some clause and some variable $v$ occurs in a $\Delta$-literal in some clause (possibly the same), such that in the unified literals, $u$ and $v$ both occur at the same position in the respective literals.
+
+
+	\end{proof}
+
+	\newpage
 \end{comment}
 
 \section{directly from old proof}
 
+
+\largered{this may not be correct any more w.r.t. notation ($\inv$)}
 
 \largered{just for repetition:}
 \begin{lemma}
@@ -365,88 +368,44 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 	\end{itemize}
 \end{proof}
 
-~
-
 \clearpage
-\begin{comment}
-	\section{random}
-
-	\begin{clemma}
-		Supp $u$ in s.c. $\Phi$-term and that  no variable occurs grey in a grey literal.
-		Then $u$ does not occur grey in a $\Psi$-literal.
-	\end{clemma}
-	\begin{proof}
-		Holds initially.
-
-		Supp holds for first $k$ deductions.
-
-		Supp that then there is some $\Psi$-literal $l$ which contains $v$ at a grey position such that $v\sigma_i$ contains a grey $u$.
-		Then $u$ and $v$ face each other in the res/fac literals in at stage $k-1$.
-		By IH, there, $u$ does not occur grey in a $\Psi$-literal (and of course not grey in a grey literal). 
-
-		As $v$ occurs grey in a $\Psi$-literal, by contraposition, $v$ does not occur in a s.c. $\Phi$-term.
-
-		\begin{itemize}
-			\item
-				Supp res/fac lits are $\Psi$-colored.
-				Then $u$ does not occur grey here.
-
-				\mytodo{}
-
-			\item
-				Supp res/fac lits are grey.
-				Then $u$ and $v$ do not occur grey here.
-				\mytodo{}
-
-			\item
-				Supp res/fac lits are $\Phi$-colored.
-				\mytodo{}
-		\end{itemize}
 
 
+\section{Thursday prime}
 
+\begin{defi}[$\PI^*$]
+	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be grey.
+\end{defi}
 
-	\end{proof}
+Hence $\PIinit^*$ coincides with $\PIinit$.
 
+$\PIstep^*$ coincides with $\PIstep$ in case of factorisation and paramodulation inferences.
 
-	~
+For resolution inferences, the first two cases in the definition of $\PIstep$ do not occur for $\PIstep^*$.
 
-	\begin{clemma}
-		Every variable, which does not occur grey in a grey literal either does not occur in a single-colored $\Phi$-($\Psi$)-term or does not occur grey in a $\Psi$-($\Phi$)-literal.
-	\end{clemma}
-	\begin{proof}
-		Supp $u$ occurs grey in $\Phi$-literal.
-		We show that $u$ does not occur in a s.c.\ $\Psi$-term given that it does not occur grey in a grey literal.
+\begin{prop}
+	For every literal which occurs in a clause of a resolution refutation $\pi$, a respective successor occurs in $\PI^*(\pi)$.
+\end{prop}
+\begin{proof}
+	By structural induction.
+\end{proof}
 
-		Supp s.c.\ $\Psi$-term $t\occ{v}$ s.t. $v\sigma_i$ contains grey $u$\todo{basically also grey occ of $v$ with $t\occ{u}$ conceivable, but that should be IH}.
-		By IH, $v$ does not occur grey in a a $\Phi$-literal (given it does not occur grey in a grey literal). 
+\begin{lemma}
+	\label{ref:grey_lits_of_pi_star_in_pi}
+	For every clause $C$ of a resolution refutation,
+	every literal which is actually grey and occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
+\end{lemma}
+\begin{proof}
+	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
+	But more specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no grey literals are lost.
+\end{proof}
 
-		By IH, there is no s.c.{} $\Psi$-term which contains $u$.
-		Hence $t\occ{v}$ is not directly unified with some $t\occ{u}$.
+Note that in $\PI^*$, we can conveniently reason about the occurrence of terms as no terms are lost throughout the extraction.
+However Lemma~\ref{ref:grey_lits_of_pi_star_in_pi} allows us to transfer results about grey literals to $\PI$.
 
-		Supp $v$ occs grey where it is unified. then $u$ occs grey there as well.
-		Then it can't be a grey literal, and it can't be a $\Phi$-literal. So it is a $\Psi$-literal.
+Recall that by a postfix $\circ$, we denote the version where some context-dependent substitution $\sigma$ is not applied.
 
-	\end{proof}
-
-	~
-
-	\begin{clemma}
-		If a var occurs in $\Gamma$ but not grey in a grey literal, it does not occur grey in $\Delta$.
-	\end{clemma}
-
-\end{comment}
-
-
-\section{Thursday}
-{
-	\fontsize{4}{4} \selectfont 
-
-
-
-\wrong{the resolved/factorised literal is in general not contained in $\inv$}
-
-In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$ by $\inv$.
+In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma$ by $\inv$.
 
 \begin{lemma}
 	\label{lemma:var_grey_col_lit}
@@ -483,14 +442,14 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 			{
 				\renewcommand{\labelitemi}{\textendash}
 				\begin{itemize}
-					\item $u$ occurs grey in $v\sigma_i$\footnotemark  and
+					\item $u$ occurs grey in $v\sigma_i$ and
 					\item
 						$v$ occurs in $\inv\sigmazmi$
 						either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
 						or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
 				\end{itemize}
 			}
-			\footnotetext{Note that this includes the case that $v=u$ and $\sigma_i$ is trivial on $u$. \mytodo{this really necessary? what about case \ref{14_1}, doesn't that one subsume this?}}
+
 
 
 
@@ -505,6 +464,9 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 		\item
 			Otherwise there must be a $\Phi$-literal in $\inv\sigmazmi$, which contains a variable $v$ at a grey position such that $u$ occurs grey in $v\sigma_i$.
 			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$, there is a position $p$ such that w.l.o.g.\ $\lambda\at{p} = v$ and $\lambda'\at{p}$ contains a grey occurrence of $u$, and $\lambda$ and $\lambda$ coincide along the path to $p$.
+
+			Note that $\lambda$ and $\lambda'$ are contained in $\inv$ as all literals are added to the interpolant since the definition of $\inv$ is based on $\PI^*$.
+
 			We distinguish based properties of the position $p$:
 
 			\begin{itemize}
@@ -548,29 +510,49 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 	Then at least one of the following statements holds:
 	\begin{enumerate}
 		\item
-			\label{15_1}
-			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
-
-		\item
-			\label{15_2}
-			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
-
-		\item
-			\label{15_4}
-			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in $\inv\sigmazmi$ in a single-colored $\Phi$-term as well as at a grey position in a $\Psi$-literal.
-
-		\item
 			\label{15_3}
 			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
 
 		\item
+			\label{15_1}
+			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+
+		\item
 			\label{15_5}
-			The variable $u$ occurs grey in a grey literal in $\inv\sigmazmi$.
+			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+
+		\item
+			\label{15_2}
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and 
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item
+						$v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
+				\end{itemize}
+			}
+
+
+		\item
+			\label{15_4}
+			There is a variable $v$ such that 
+
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item
+						$v$ occurs in $\inv\sigmazmi$
+						grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term.
+				\end{itemize}
+			}
+
 
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	We consider the different cases which lead to the variable $u$ in a single-colored $\Phi$-term in $\inv\sigmazi$:
+	We consider the different cases of the unification process which lead to the variable $u$ in a single-colored $\Phi$-term in $\inv\sigmazi$:
 
 	\begin{itemize}
 		\item There is a single-colored $\Phi$-term in $\inv\sigmazmi$ which contains $u$ such that $\sigma_i$ does not change this.
@@ -579,12 +561,12 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 
 		\item Suppose that there is a single-colored $\Phi$-term in $\inv\sigmazmi$ which contains a variable $v$ such that $u$ occurs grey in $v\sigma_i$.
 
-			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$, there is a position $p$ such that w.l.o.g.\ $\lambda\at{p} = v$ and $\lambda'\at{p}$ contains a grey occurrence of $u$, and $\lambda$ and $\lambda$ coincide along $p$.
+			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$ (which are both contained in $\inv$), there is a position $p$ such that w.l.o.g.\ $\lambda\at{p} = v$ and $\lambda'\at{p}$ contains a grey occurrence of $u$, and $\lambda$ and $\lambda'$ coincide along $p$.
 			We distinguish based properties of the position $p$:
 
 			\begin{itemize}
 				\item Suppose that $p$ is contained in a single-colored $\Phi$-term.
-					Then $u$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$ and item \ref{15_1} holds.
+					Then $u$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$ and \ref{15_1} holds.
 
 				\item Suppose that $p$ is contained in a single-colored $\Psi$-term.
 					As then $v$ is contained in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term, \ref{15_2} is the case.
@@ -605,32 +587,33 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 					\end{itemize}
 
 
-				\item Suppose that a variable $w$ occurs in $\inv\sigmazmi$ such that $u$ occurs in a single-colored $\Phi$-term in $w\sigma_i$.
-					This can only be the case if $w\sigma$ already occurs in $\inv\sigmazmi$, which implies that \ref{15_1} is the case.
-					\qedhere
 			\end{itemize}
+		\item Otherwise there is a variable $w$ which occurs in $\inv\sigmazmi$ such that $u$ occurs in a single-colored $\Phi$-term in $w\sigma_i$.
+			This can only be the case if $w\sigma$ already occurs in $\inv\sigmazmi$, which implies that \ref{15_1} is the case.
+			\qedhere
 	\end{itemize}
 
 \end{proof}
 
 \begin{lemma}
-	\label{lemma:col_change_and_grey_in_col_lit}
+	\label{lemma:col_change_and_grey_in_col_lit_star}
 	Let $C$ be a clause in the resolution refutation $\pi$ of $\Gamma \cup \Delta$
-	and $u$ be a variable which occurs in $\PI(C)\lor C$ in some literal in a single-colored $\Phi$-term or grey in a $\Phi$-literal.
+	and $u$ be a variable which occurs in $\PI^*(C)\lor C$ in some literal in a single-colored $\Phi$-term or grey in a $\Phi$-literal.
 
-	Suppose that $u$ also occurs in $\PI(C) \lor C$ in some literal in a single-colored $\Psi$-term or grey in a $\Psi$-literal.
+	Suppose that $u$ also occurs in $\PI^*(C) \lor C$ in some literal in a single-colored $\Psi$-term or grey in a $\Psi$-literal.
 
 	Then $u$ occurs grey in a grey literal.
 \end{lemma}
-Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.\ $\Gamma$ and $\Delta$ as well as $\Delta$ and $\Gamma$.
+Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\ $\Gamma$ and $\Delta$ as well as $\Delta$ and $\Gamma$.
 \begin{proof}
 	We proceed by induction over $\pi$ and $\sigma$. 
 
 	Note that initially, every pair of clauses is variable-disjoint and all symbols of a clause are either all grey or $\Phi$-colored or all grey or $\Psi$-colored, hence the lemma is vacuously true.
 
 	For the induction step,
-	we assume that the property holds for $\PI(C_i) \lor C_i$, $1\varleq i \varleq n$, where $C_1, \dots, C_n$ are the clauses used in a resolution or factorisation inference $\inference$.
-	Note that then, the property also holds for $\inv$, i.e.\ for $\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma$ as it contains all the grey literals present in $\PI(C_i) \lor C_i$ for any $i$ (this is evident by the definition of $\PIstepnosigma$), and as clauses are pairwise variable-disjoint, the lemma condition can not become true for a variable for which it was not true in $\PI(C_i)\lor C$ for some $i$.
+	we assume that the property holds for $\PI^*(C_i) \lor C_i$, $1\varleq i \varleq n$, where $C_1, \dots, C_n$ are the clauses used in a resolution or factorisation inference $\inference$.
+	Note that then, the property also holds for $\inv$, i.e.\ for $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma$
+	as it contains all the literals present in $\PI^*(C_i) \lor C_i$ for any $i$ (this is evident by the definition of $\PIstepstarnosigma$), and as clauses are pairwise variable-disjoint, the lemma condition can not become true for a variable for which it was not true in $\PI^*(C_i)\lor C$ for some $i$.
 
 
 	Suppose that $u$ occurs in $\chi\sigmazi$ in a single-colored $\Phi$-term or grey in a $\Phi$-literal and 
@@ -642,71 +625,78 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.
 			\label{oozoh7Oh1}
 			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
 
-		\item 
-			\label{oozoh7Oh2}
-			Some variable $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal such that $u$ occurs grey in $v\sigma_i$.
-
-		\item 
-			\label{oozoh7Oh3}
-			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in $\inv\sigmazmi$
-			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
-			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
-
-		\item
-			\label{oozoh7Oh4}
-			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
-
 		\item
 			\label{oozoh7Oh5}
 			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
 
 		\item
+			\label{oozoh7Oh4}
+			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+
+		\item 
+			\label{oozoh7Oh2}
+			There is a variable $v$ such that 
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal.
+				\end{itemize}
+			}
+
+
+		\item
 			\label{oozoh7Oh6}
-			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and 
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item
+						$v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
+				\end{itemize}
+			}
+
+
+
+		\item 
+			\label{oozoh7Oh3}
+			There is a variable $v$ such that
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item
+						$v$ occurs in $\inv\sigmazmi$
+						either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
+						or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
+				\end{itemize}
+			}
 
 
 	\end{enumerate}
 
-	\newcommand{\othercase}{$^*$}
+	\newcommand{\othercase}{$^\triangle$}
 
 	By the same lemmata, we get the same set of statements where $\Phi$ and $\Psi$ are interchanged. We refer to them by the respective number followed by \othercase.
 
 	Suppose that \ref{oozoh7Oh4} is not the case as otherwise we are done since $\sigma_i$ is trivial on $u$ as $u$ occurs in $\inv\sigmazi$.
 	Furthermore, there are a number of cases which give the result by the induction hypothesis:
-	For the cases \ref{oozoh7Oh2}, \ref{oozoh7Oh3} and \ref{oozoh7Oh6}, we can infer that by the induction hypothesis, there is a grey occurrence of the variable $v$ in a grey literal in $\inv\sigmazmi$, and as $u$ occurs grey in $v\sigma_i$, there is a grey occurrence of $u$ in a grey literal in $\inv\sigmazi$.
+	For the cases \ref{oozoh7Oh2}, \ref{oozoh7Oh6} and \ref{oozoh7Oh3} we can infer that by the induction hypothesis, there is a grey occurrence of the variable $v$ in a grey literal in $\inv\sigmazmi$, and as $u$ occurs grey in $v\sigma_i$, there is a grey occurrence of $u$ in a grey literal in $\inv\sigmazi$.
 
 	It remains to show that the lemma holds true in case the statements \ref{oozoh7Oh1} or \ref{oozoh7Oh5} as well as \ref{oozoh7Oh1}\othercase or \ref{oozoh7Oh5}\othercase hold.
 	But note that in any combination of \ref{oozoh7Oh1} or \ref{oozoh7Oh5} and \ref{oozoh7Oh1}\othercase or \ref{oozoh7Oh5}\othercase in effect yields a situation under which the induction hypothesis again is applicable.
 	Hence we may infer that $u$ occurs grey in a grey literal in $\inv\sigmazmi$ and since $\sigma_i$ is trivial $u$ as shown above, $u$ occurs grey in a grey literal in $\inv\sigmazi$.
 \end{proof}
-}
-
-\section{Thursday prime}
-
-\begin{defi}[$\PI^*$]
-	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be grey.
-\end{defi}
-
-	Hence $\PIinit^*$ coincides with $\PIinit$.
-
-	$\PIstep^*$ coincides with $\PIstep$ in case of factorisation and paramodulation inferences.
-
-	For resolution inferences, the first two cases in the definition of $\PIstep$ do not occur for $\PIstep^*$.
-
-\begin{prop}
-	For every literal which occurs in a clause of a resolution refutation $\pi$, a respective successor occurs in $\PI^*(\pi)$.
-\end{prop}
-\begin{proof}
-	By structural induction.
-\end{proof}
 
 \begin{lemma}
-	For every clause $C$ of a resolution refutation,
-	every literal which is actually grey and occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
+	\label{lemma:col_change_and_grey_in_col_lit}
+	Same as \ref{lemma:col_change_and_grey_in_col_lit_star} with $\PI$ in place of $\PI^*$.
 \end{lemma}
 \begin{proof}
-	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
-	But more specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no grey literals are lost.
+	As $\PI(C)$ for any clause $C$ is comprised of a subset of the literals of $\PI^*(C)$, the lemma prerequesites hold true only for variables in $\PI(C)$ for which they also hold true in $\PI^*(C)$.
+	As by Lemma~\ref{lemma:col_change_and_grey_in_col_lit_star} the lemma holds for $\PI^*(C)$, respective grey literals with grey occurrences of the variables in question exist in $\PI^*(C)$.
+	But by Lemma~\ref{lemma:grey_lits_all_in_PI}, these literals also occur in $\PI(C)$.
 \end{proof}
 
 
@@ -828,7 +818,7 @@ Extension of Lemma \ref{lemma:var_grey_col_lit}
 
 		\item 
 			\label{11_3}
-			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$\footnotemark and $v$ occurs in $\inv\sigmazmi$
+			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$ and $v$ occurs in $\inv\sigmazmi$
 			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
 			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
 
