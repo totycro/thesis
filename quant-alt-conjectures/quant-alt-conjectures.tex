@@ -21,7 +21,7 @@
 \usepackage[english]{babel}
 
 
-\usepackage[bitstream-charter]{mathdesign}
+%\usepackage[bitstream-charter]{mathdesign}
 
 
 %\renewcommand{\familydefault}{ \sfdefault }
@@ -439,6 +439,10 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 
 
 \section{Thursday}
+{
+	\fontsize{4}{4} \selectfont 
+
+
 
 \wrong{the resolved/factorised literal is in general not contained in $\inv$}
 
@@ -674,6 +678,35 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.
 	It remains to show that the lemma holds true in case the statements \ref{oozoh7Oh1} or \ref{oozoh7Oh5} as well as \ref{oozoh7Oh1}\othercase or \ref{oozoh7Oh5}\othercase hold.
 	But note that in any combination of \ref{oozoh7Oh1} or \ref{oozoh7Oh5} and \ref{oozoh7Oh1}\othercase or \ref{oozoh7Oh5}\othercase in effect yields a situation under which the induction hypothesis again is applicable.
 	Hence we may infer that $u$ occurs grey in a grey literal in $\inv\sigmazmi$ and since $\sigma_i$ is trivial $u$ as shown above, $u$ occurs grey in a grey literal in $\inv\sigmazi$.
+\end{proof}
+}
+
+\section{Thursday prime}
+
+\begin{defi}[$\PI^*$]
+	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be grey.
+\end{defi}
+
+	Hence $\PIinit^*$ coincides with $\PIinit$.
+
+	$\PIstep^*$ coincides with $\PIstep$ in case of factorisation and paramodulation inferences.
+
+	For resolution inferences, the first two cases in the definition of $\PIstep$ do not occur for $\PIstep^*$.
+
+\begin{prop}
+	For every literal which occurs in a clause of a resolution refutation $\pi$, a respective successor occurs in $\PI^*(\pi)$.
+\end{prop}
+\begin{proof}
+	By structural induction.
+\end{proof}
+
+\begin{lemma}
+	For every clause $C$ of a resolution refutation,
+	every literal which is actually grey and occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
+\end{lemma}
+\begin{proof}
+	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
+	But more specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no grey literals are lost.
 \end{proof}
 
 
