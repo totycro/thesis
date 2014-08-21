@@ -21,7 +21,7 @@
 \usepackage[english]{babel}
 
 
-%\usepackage[bitstream-charter]{mathdesign}
+\usepackage[bitstream-charter]{mathdesign}
 
 
 %\renewcommand{\familydefault}{ \sfdefault }
@@ -331,7 +331,7 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 	\item $v$ occurs in some single-colored $\Phi$-term in $\inv\sigmazmi$ \label{var_occ_1}
 	\item there is a color-changing variable $w$ in $\inv\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.  \label{var_occ_2}
 	\end{compactenum}
-	We consider the different cases which can introduce a variable $v$ in a single-colored term $\Phi$: Either it has been there before, it was introduced in a s.c. $\Phi$-colored term, or a s.c.\ $\Phi$-term containing the var is in $\ran(\sigma)$.
+	We consider unification process, and particularly the different cases which can introduce a variable $v$ in a single-colored term $\Phi$: Either it has been there before, it was introduced in a s.c. $\Phi$-colored term, or a s.c.\ $\Phi$-term containing the var is in $\ran(\sigma)$.
 	\begin{itemize}
 		\item
 			Suppose a term $t'\occ{v}$ is present in $\inv\sigmazmi$ such that $t'\occ{v}\sigma_i = t\occ{v}$.
@@ -440,207 +440,7 @@ there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contain
 
 \section{Thursday}
 
-\begin{comment}
-	\begin{clemma}
-		\label{last_lemma}
-		Suppose a variable $u$ occurs  in $\PI(C) \lor C$ in a s.c.\ $\Phi$-term OR grey in a $\Phi$-literal.
-		If $u$ occurs in $\PI(C) \lor C$ in a grey position in a $\Psi$-literal OR in s.c.\ $\Psi$-term in any literal, then it also occurs at a grey position in a grey literal in $\PI(C) \lor C$.
-	\end{clemma}
-	\begin{proof}
-		ind step; supp $u$ as in statement ubiquitously
-
-		Supp $\Psi$-literal with grey $v$ such that $u$ grey in $v\sigma_i$.
-		Other occs of $v$:
-
-		If $v$ also occurs in $\Phi$-term, then it occurs in a $\Phi$-term and in a grey position in a $\Psi$-literal, then by IH, it occurs grey in a grey literal in $\inv\sigmazmi$.
-		By $\sigma_i$, in $\inv\sigma_i$, $u$ occurs at a grey position in a grey literal in $\PI(C) \lor C$.
-
-		If $v$ also occurs grey in a $\Phi$-literal, then similar argument.
-
-		done?
-
-		~
-
-		Supp s.c.\ $\Psi$-term contains $w$ such that $u$ grey in $w\sigma_i$.
-		Supp $u$ not grey in grey literal as otw done.
-		other occs of $w$:
-
-		Supp $w$ in s.c. $\Phi$-term: then IH.
-
-		Supp $u$ in $\Psi$-term: then IH
-
-		Supp grey in res/fac lit:
-		\begin{quote}
-			Supp grey: then both occ grey in grey, done.
-
-			Supp $\Phi$-lit: then IH on $w$
-
-			Supp $\Psi$-: then IH on $u$
-		\end{quote}
-
-	\end{proof}
-
-\end{comment}
-
-\begin{comment}
-
-	\begin{clemma}
-		\ref{last_lemma} nochmal gscheid:
-
-		Let $u$ be a variable which occurs in $\PI(C)\lor C$ in some literal in a single-colored $\Phi$-term or grey in a $\Phi$-literal.
-
-		Suppose that $u$ also occurs in $\PI(C) \lor C$ in some literal in a single-colored $\Psi$-term or grey in a $\Psi$-literal.
-
-		Then $u$ occurs grey in a grey literal.
-
-	\end{clemma}
-	Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.\ $\Gamma$ and $\Delta$ as well as $\Delta$ and $\Gamma$.
-	\begin{proof}
-		Note that initially, every pair of clauses is variable-disjoint and all symbols of a clause are either all grey or $\Phi$-colored or all grey or $\Psi$-colored, hence the lemma is vacuously true.
-
-		Induction of $\pi$ and $\sigma$.
-
-		Let $u$ occur in $\inv\sigmazi$ in a s.c.\ $\Phi$-term.
-		\hl{Suppose $u$ also occurs in $\inv\sigmazi$ in a s.c.\ $\Phi$-term.)}
-		Suppose that $u$ occurs in $\inv\sigmazi$ in a s.c.\ $\Psi$-term but not in $\inv\sigmazmi$ as otherwise we are done by the induction hypothesis \hl{($u$ in s.c.\ $\Psi$-term before)}.
-		Then one of the following cases applies (positions of $v$ in res/fac lit):
-		\begin{itemize}
-			\item There is a s.c.\ $\Psi$-term in $\inv\sigmazmi$ containing a variable $v$ such that $u$ occurs grey in $v\sigma_i$.
-
-				In the res/fac lits in $\lambda$ and $\lambda'$ respectively, $u$ and $v$ occur at the essentially same position.
-
-				\begin{itemize}
-					\item
-						If that position is in an s.c. $\Phi$-term, then we are done by the IH on~$v$.
-						\hl{$v$ col change}
-
-					\item
-						If that position is in an s.c. $\Psi$-term, then we are done by the IH on~$u$.
-						\hl{$u$ col change} \NB{also: $u$ is in $\Phi$-term before}
-
-					\item
-						Hence suppose that position is grey:
-
-						If it's in a $\Phi$-literal, then we are done by the IH on $v$. \hl{$\Phi$-lit + s.c.\ $\Psi$-term}
-
-						If it's in a $\Psi$-literal, then we are done by the IH on $u$. \hl{$\Psi$-lit + s.c.\ $\Phi$-term} (basically somewhat of propagation of preexisting circumstances)
-
-						Otherwise the occurrence is grey in a grey literal, which we wanted to show. \hl{?}
-				\end{itemize}
-
-
-			\item There is a variable $v$ in $\inv\sigmazmi$ such that $v\sigma_i$ contains a s.c.\ $\Psi$-term which contains $u$.
-				Then $v\sigma_i$ occurs in $\inv\sigmazmi$ and we are done by the induction hypothesis.
-				\hl{$u$ in s.c.\ $\Psi$-term before}
-		\end{itemize}
-
-		\mytodo{ formulate as other proof, this part more or less must work out }
-
-		~
-
-		\hl{2nd part:} 
-
-		Let $u$ occur in $\inv\sigmazi$ in a s.c.\ $\Phi$-term.
-
-		Supp $u$ occs grey in $\Psi$-literal in $\inv\sigmazi$.
-		Supp not in $\inv\sigmazmi$ as then IH would take effect. \hl{$u$ grey in $\Psi$-lit}
-
-		Then exists $v$ grey in $\Psi$-literal in $\inv\sigmazmi$ s.t.\ $u$ grey in $v\sigma_i$.
-		Distinguish based on occurrence of $u$, $v$ pair in res/fac lit:
-
-		\begin{itemize}
-			\item supp in s.c.\ $\Psi$-term. then IH on $u$. \hl{$u$ col change}
-			\item supp in s.c.\ $\Phi$-term. then IH on $v$. \hl{$v$ grey in $\Psi$-lit and in s.c.\ $\Phi$-term}
-			\item supp grey.
-				\begin{itemize}
-					\item supp in $\Phi$-lit: then IH on $v$ \hl{$\Psi$-lit + $\Phi$-lit}
-					\item supp in $\Psi$-lit: IH on $u$ \hl{$\Psi$-lit + s.c.\ $\Phi$-term}, but basically same as before
-					\item supp in grey lit: done
-
-				\end{itemize}
-
-		\end{itemize}
-
-		\mytodo{formulate similarly, in any case the IH or the desired statement is the case}
-
-
-
-		~
-
-		\hl{3rd/4th part:} 
-
-		Let $u$ occur in $\inv\sigmazi$ in grey in a $\Phi$-lit. 
-		Either it was there before, or:
-
-		There exists a $\Phi$-lit with a variable $v$ at a grey position such that $v\sigma_i$ contains a grey $u$.
-		Occurrences of position of $u$ and $v$ in res/fac lit:
-
-		\begin{itemize}
-			\item Supp in s.c.\ $\Psi$-term. Then IH on $v$. \hl{$v$ in s.c. $\Psi$-term and grey in $\Phi$-lit}
-			\item Supp in s.c.\ $\Phi$-term. 
-		\end{itemize}
-
-	\end{proof}
-
-	Reformulation sketch:
-
-	If some var $u$ occs in $\inv\sigmazi$ in a s.c.\ $\Phi$-term, then:
-	\begin{itemize}
-		\item was there before
-		\item exists col change var which is substituted for $u$ in $\inv\sigmazi$
-		\item exists var grey in $\Phi$-lit and (usually elsewhere) in s.c. $\Psi$-term (or opposite coloring)
-	\end{itemize}
-
-	~
-
-	\noindent
-	Sublemma: If $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$, then at least one of the following statements hold:
-	\begin{enumerate}
-		\item $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$.
-			\label{14_1}
-
-		\item 
-			\label{14_2}
-			A variable $v$ occurs grey in a $\Phi$-lit and grey in a $\Psi$-lit such that $v\sigma_i$ contains a grey occ of $u$.
-
-		\item 
-			\label{14_3}
-			A variable occurs grey in a $\Phi$-lit and in an s.c. $\Psi$-term, OR
-
-			a variable occurs grey in a $\Psi$-lit and in an s.c. $\Phi$-term.
-
-			Additionally, either this variable is $u$ or it is some variable $v$ such that $v\sigma_i$ contains a grey $u$.
-
-		\item
-			\label{14_4}
-			$u$ occurs at a grey position in a grey literal.
-
-	\end{enumerate}
-	\noindent
-	Subproof:
-	Suppose the lemma precondition. we consider the formation cases for this:
-	\begin{itemize}
-		\item $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$ and this fact is not changed by $\sigma_i$.
-			Then we clearly have \ref{14_1}.
-
-		\item Some $\Phi$-literal $\lambda$ in $\inv\sigmazmi$ contains a variable $v$ at a grey position such that $v\sigma_i$ contains a grey occ of $u$. 
-			We distinguish further based on the position $p$ in the literal where $v$ and $u$ face each other.
-
-			\begin{itemize}
-				\item Suppose $p$ is in a s.c.\ $\Phi$-term. Then we have \ref{14_3} on $v$.
-				\item Suppose $p$ is in a s.c.\ $\Psi$-term. Then we have \ref{14_3} on $u$.
-				\item Suppose the res/fac lit is $\Psi$-colored, and the position is grey. Then we have \ref{14_2} on $v$.
-				\item Suppose the res/fac lit is $\Phi$-colored, and the position is grey. Then we have \ref{14_1}
-				\item Suppose the res/fac lit is grey, and the position is grey. Then we have \ref{14_4}
-
-			\end{itemize}
-
-
-	\end{itemize}
-
-\end{comment}
-
-
+\wrong{the resolved/factorised literal is in general not contained in $\inv$}
 
 In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$ by $\inv$.
 
@@ -654,29 +454,46 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 			\label{14_1}
 			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
 
-		\item 
-			\label{14_2}
-			Some variable $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal such that $u$ occurs grey in $v\sigma_i$.
-
-		\item 
-			\label{14_3}
-			There is a variable $v$ such that $u$ occurs grey in $v\sigma_i$\footnotemark and $v$ occurs in $\inv\sigmazmi$
-			either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
-			or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
-			\footnotetext{Note that this includes the case that $v=u$ and $\sigma_i$ is trivial on $u$. \mytodo{this really necessary? what about case \ref{14_1}, doesn't that one subsume this?}}
+		\item
+			\label{14_5}
+			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
 
 		\item
 			\label{14_4}
 			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
 
-		\item
-			\label{14_5}
-			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+		\item 
+			\label{14_2}
+			There is a variable $v$ such that 
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal.
+				\end{itemize}
+			}
+
+		\item 
+			\label{14_3}
+			There is a variable $v$ such that
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$\footnotemark  and
+					\item
+						$v$ occurs in $\inv\sigmazmi$
+						either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
+						or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
+				\end{itemize}
+			}
+			\footnotetext{Note that this includes the case that $v=u$ and $\sigma_i$ is trivial on $u$. \mytodo{this really necessary? what about case \ref{14_1}, doesn't that one subsume this?}}
+
+
 
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	We consider the different cases which lead to the variable $u$ in a grey position in a $\Phi$-literal in $\inv\sigmazi$:
+	We consider the unification process, and particularly the different cases which lead to the variable $u$ in a grey position in a $\Phi$-literal in $\inv\sigmazi$:
 	\begin{itemize}
 		\item
 			There already is a $\Phi$-literal in $\inv\sigmazmi$ which contains $u$ at a grey position and $\sigma_i$ does not change this. Then clearly \ref{14_1} is the case.
@@ -689,10 +506,11 @@ In the following, we abbreviate $(\PIstepnosigma(\inference, \PI(C_1), \dots, \P
 			\begin{itemize}
 				\item
 					Suppose that $p$ is contained in a single-colored $\Phi$-term.
-					%Then $u$ occurs in a single-colored $\POh
-					Then $v$ occurs grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term, which suffices for \ref{14_3} as $u$ occurs grey in $v\sigma_i$.
-					
-					\wrong{we only know that $v$ is contained in a grey position in $\chi\sigmazmi$ in a $\Phi$-literal (as $u$ ends up there, and now we also know that it's in a s.c.\ $\Phi$-term}
+					Then $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$ and \ref{14_5} is the case.
+
+					% OLD AND WRONG: Then $v$ occurs grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term, which suffices for \ref{14_3} as $u$ occurs grey in $v\sigma_i$.
+
+					%\wrong{we only know that $v$ is contained in a grey position in $\chi\sigmazmi$ in a $\Phi$-literal (as $u$ ends up there, and now we also know that it's in a s.c.\ $\Phi$-term}
 
 				\item 
 					Suppose that $p$ is contained in a single-colored $\Psi$-term.
@@ -936,7 +754,7 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.
 	We perform an induction on $n$
 	and show the strenghtening that
 	the quantification of the lifting variable corresponding to a term with $n$ color alternations is required to be in the scope of the quantification of $n-1$ alternating quantifiers.
-	
+
 	For $n=0$, no colored terms occur in $I$ and hence by construction no quantifiers
 	and for $n=1$, there are only single-colored terms 
 
@@ -960,7 +778,7 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of different colors, i.e.
 \subsection{Proof}
 
 Extension of Lemma \ref{lemma:var_grey_col_lit}
-	
+
 \begin{lemma}
 	\label{lemma:var_grey_col_lit_paramod}
 	Let $\inference$ be a \textbf{paramodulation} inference in a refutation of $\Gamma\cup\Delta$.
@@ -994,9 +812,9 @@ Extension of Lemma \ref{lemma:var_grey_col_lit}
 	either $t$ contains a grey variable and $p$ is a grey position or $\sigma$ introduces a grey occurrence of a variable in a grey position
 
 	\begin{itemize}
-			\item case 1: 
-				everything which is grey in an equality predicate ends up grey in the interpolant, so this case is easy
-		\end{itemize}
+		\item case 1: 
+			everything which is grey in an equality predicate ends up grey in the interpolant, so this case is easy
+	\end{itemize}
 
 \end{proof}
 
