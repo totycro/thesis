@@ -150,72 +150,80 @@ Method: proof for both:
 \subsection{generally keep in mind}
 
 \begin{itemize}
-	\item Need to define all new terms here: color-changing, single-color, $\Phi$-literal, substitutions from $0$ to $n$
-		\begin{itemize}
-			\item essentially same position: path from one position to other only contains grey symbol (this def allows for identical position as well)
-		\end{itemize}
 	\item also note: literal is sometimes used for negated or not negated predicate with terms but in regular formulas with arbitrary connectives
 \end{itemize}
 
 \section{ Preliminaries }
 
+For $\sigma = \mgu(\varphi, \psi)$ for two terms or literals $\varphi$ and $\psi$, we denote by $\sigma_i$ for $1\varleq i \varleq n$ the $i$th substitution which is added to $\sigma$ by the unification algorithm, where $n = |\dom(\sigma)|$.
+We define $\sigma_0 \defeq \id$.
+
+We furthermore denote the composition of all $\sigma_k$ for $i\varleq k \varleq j$ by $\sigmarange{i}{j}$.
+Hence $\sigma = \sigmarange{1}{n} = \sigmarange{0}{n}$.
+
+~
+
+A term $t$ is \defiemph{single-colored} if $t$ is $\Phi$-colored for some $\Phi$ and all colored symbols in $t$ are $\Phi$-colored.
+
+A literal $l$ is called a $\Phi$-literal if its predicate symbol is $\Phi$-colored.
+
+~
+
 Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimizing arrangement of quantifiers in $I$ 
 
-\begin{defi}[Color alternation $\ca$]
-	Colors $\Gamma$ and $\Delta$, term $t$:
 
+
+\begin{defi}[Color alternation $\ca$]
+	Let $\Gamma$ and $\Delta$ be sets of formulas and $t$ be a term.
+	We assume that the maximum $\max$ of an empty sequence is defined to be $0$.
+	We define:
+
+	\noindent
 	$\ca(t) \defeq \ca_\bot(t)$
 
-	Let $t = f(t_1, \dots, t_n)$ for constant, function and variable symbols (syntax abuse):
-
-	$\ca_\Phi(t) \defeq 
+	\noindent
+	$
+	\ca_\Phi(t) \defeq 
 	\begin{cases}
-		\max\footnotemark(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is grey} \\
-		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$f$ is of color $\Phi$} \\
-		1 + \max(\ca_\Psi(t_1), \dots, \ca_\Psi(t_n)) & \text{$f$ is of color $\Psi$, $\Phi \neq \Psi$} \\
+		0 & \text{$t$ is a variable} \\
+		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$t = f(t_1, \dots, t_n)$ is grey} \\
+		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \parbox[t]{0.4\textwidth}{$t = f(t_1, \dots, t_n)$ is of color $\Phi$} \\
+		1 + \max(\ca_\Psi(t_1), \dots, \ca_\Psi(t_n)) & \parbox[t]{0.38\textwidth}{$t = f(t_1, \dots, t_n)$ is of color $\Psi$, $\Phi \neq \Psi$} \\
 	\end{cases}
 	$
-	\footnotetext{We assume that the maximum of an empty list of arguments is $0$.}
+\end{defi}
+
+
+\begin{defi}[Quantifier alternation $\qa$]
+	Let $A$ be a formula.
+	We assume that the maximum $\max$ of an empty sequence is defined to be $0$.
+	We define:
+
+	\noindent
+	$\qa(A) \defeq \qa_\bot(A)$
+	\nopagebreak
+
+	\noindent
+	$
+	\qa_Q(A) \defeq 
+	\begin{cases}
+		0 & \text{$A$ is an atom} \\
+		\qa_Q(B) & \text{$A \equiv \lnot B$} \\
+		\max(\parbox[t]{0.2\textwidth}{$\qa_Q(B),$\newline$ \qa_Q(C))$} & \text{$A \equiv B \circ C$, $\circ \in \{\land, \lor, \limpl\}$} \\
+		\qa_Q(B) & \text{$A \equiv Q' B$, $Q = Q'$} \\
+		1+\qa_{Q'}(B) & \text{$A \equiv Q' B$, $Q \neq Q'$}  \\
+	\end{cases}
+	$
+	\nopagebreak
+
+	\qedhere
 \end{defi}
 
 \begin{defi}
-	$\PIstepnosigma$ is defined just like $\PIstep$ but without applying any substitution.
+	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
+	Analogously, if $C \equiv D\sigma$, we use $C\nosigma$ to denote $D$.
 \end{defi}
 Hence $\PIstepnosigma(\cdot) \sigma = \PIstep(\cdot)$.
-$C\nosigma$ is somehow the same, i.e.\ if $C = D\sigma$, then $C\nosigma = D$ where $\sigma$ is derived from the context.
-
-\section{ Random thoughts }
-
-\begin{itemize}
-	\item Quantifiers are introduced for lifting variables which actually occur in the interpolant
-	\item If term $t$ with $\ca(t) = n$ enters $I$, we need subterm $s$ of $t$ with $\ca(s) = n-1$ to be in $I$ (of course colors of $t$ and $s$ are exactly opposite)
-\end{itemize}
-
-
-\subsection{ Proof}
-\begin{itemize}
-	\item Induction over $\lifdelta{\PI(C) \lor C}$ and also about $\Gamma$-terms with $\Delta$-lifting vars in that formula. Cf. \texttt{-final}
-
-	\item \NB{now somewhat described in the proper proof below} describe proof method with $\sigmazi$: which $\PI$? 
-		\begin{itemize}
-			\item Factorisation:
-				easy: just apply $\sigma_i$ for all $i$ to $\PI(C) \lor C$. 
-				When done, a literal will be there twice and we can remove it without losing anything
-			\item Resolution:
-				create propositional structure first.
-
-				Ex.: $C_1 : D \lor l$, $ C_2: \lnot l \lor E$:
-
-				If we talk about properties for which it holds that if they hold for $\PI(C_i) \lor C_i$, $i\in\{1,2\}$, then they also hold for $ A \equiv \Big((l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1))\Big) \lor C\nosigma$, then we can apply $\sigma_i$ for all $i$ to that formula.
-
-				So if we can assume it for $A$ and show it for all $\sigma_i$, we get that it holds for $\PI(C) \lor C$.
-
-		\end{itemize}
-
-		Also: clauses are variable disjoint, so e.g. it's not possible that a color-changing var is created by $\PIstep$
-
-		Also: do it like a few lemmas further down, like $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma ) \sigmazi$
-\end{itemize}
 
 
 \begin{comment}
@@ -305,72 +313,6 @@ $C\nosigma$ is somehow the same, i.e.\ if $C = D\sigma$, then $C\nosigma = D$ wh
 	\newpage
 \end{comment}
 
-\section{directly from old proof}
-
-
-\largered{this may not be correct any more w.r.t. notation ($\inv$)}
-
-\largered{just for repetition:}
-\begin{lemma}
-	\label{lemma:col_change}
-	Resolution or factorisation step $\inference$ from $\bar C$.
-
-	If $u$ col-change var in $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)\sigmazi$, then $u$ also occurs grey in that formula.
-\end{lemma}
-\begin{proof}
-	Abbreviation: $F \equiv (\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$
-
-	Induction over refutation and $\sigma$; base case easy.
-
-	Step:
-	Supp color change var $u$ present in 
-	$\inv\sigmazi$. (could also say introduced, then proof would be somehow different)
-
-	Supp $u$ not grey in 
-	$\inv\sigmazmi$ as otherwise done.
-	As a first step, we show that if a (not necessarily color-changing) variable $v$ occurs in a single-colored $\Phi$-term $t\occ{v}$ in $\inv\sigmazi$,
-	then at least one of the following holds:
-	\begin{compactenum}
-	\item $v$ occurs in some single-colored $\Phi$-term in $\inv\sigmazmi$ \label{var_occ_1}
-	\item there is a color-changing variable $w$ in $\inv\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.  \label{var_occ_2}
-	\end{compactenum}
-	We consider unification process, and particularly the different cases which can introduce a variable $v$ in a single-colored term $\Phi$: Either it has been there before, it was introduced in a s.c. $\Phi$-colored term, or a s.c.\ $\Phi$-term containing the var is in $\ran(\sigma)$.
-	\begin{itemize}
-		\item
-			Suppose a term $t'\occ{v}$ is present in $\inv\sigmazmi$ such that $t'\occ{v}\sigma_i = t\occ{v}$.
-			Then \ref{var_occ_1} is the case.
-		\item
-			Suppose a variable $w$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.
-			Suppose furthermore that \ref{var_occ_1} is not the case, i.e.\ $v$ does not occur in a s.c.\ $\Phi$-term in $\inv\sigmazmi$, as otherwise we would be done.
-			We show that \ref{var_occ_2} is the case.
-
-			As $v$ occurs neither grey nor in a s.c.\ $\Phi$-term in $\inv\sigmazmi$ but occurs in $\ran(\sigma_i)$, it must occur in $\inv\sigmazmi$ and this can only be in a single-colored $\Psi$-term.
-
-			As by assumption $v$ occurs grey in $w\sigma_i$, there must be an occurrence $\bhat w$ of $w$ in a resolved or factorised literal, say $\lambda\sigmazmi$ such that for the other resolved literal $\lambda'\sigmazmi$, $\lambda'\sigmazmi\at{\bhat w}$ is a subterm in which $v$ occurs grey.
-			But as the occurrence of $v$ in $\lambda'\sigmazmi\at{\bhat w}$ must be contained in a single-colored $\Psi$-term, so is $\lambda\sigmazmi\at{\bhat w}$, hence $z$ occurs in a single-colored $\Psi$-term as well.
-			Therefore \ref{var_occ_2} is the case.
-
-		\item
-			Suppose there is a variable $z$ in $\inv\sigmazmi$ such that $v$ occurs in a single-colored $\Phi$-term in $z\sigma_i$.
-			Then $z\sigma_i$ occurs in $\inv\sigmazmi$, but this is a witness for~\ref{var_occ_1}.
-	\end{itemize}
-
-	Now recall that we have assumed $u$ to be a color-changing variable in $\inv\sigmazi$.
-	Hence it occurs in a single-colored $\Gamma$-term as well as in a single-colored $\Delta$-term.
-	By the reasoning above, this leads to two case:
-	\begin{itemize}
-		\item In $\inv\sigmazmi$, $u$ occurs both in some single-colored $\Gamma$-term as well as in some single-colored $\Delta$-term.
-			Then we get the result by the induction hypothesis and the fact that $u\not\in\dom(\sigma_i)$ as $u$ does occur in $\inv\sigmazi$.
-		\item Otherwise for some color $\Phi$, $u$ does not occur in a single-colored $\Phi$-term in $\inv\sigmazmi$.
-			Then case \ref{var_occ_2} above must hold and there is some color-changing variable $w$ in $\inv\sigmazmi$ such that $u$ occurs grey in $w\sigmazi$.
-			But then by the induction hypothesis, $w$ occurs grey in $\inv\sigmazmi$ and hence $u$ occurs grey in $\inv\sigmazi$.
-			\qedhere
-	\end{itemize}
-\end{proof}
-
-\clearpage
-
-
 \section{Thursday prime}
 
 \begin{defi}[$\PI^*$]
@@ -378,10 +320,10 @@ $C\nosigma$ is somehow the same, i.e.\ if $C = D\sigma$, then $C\nosigma = D$ wh
 \end{defi}
 
 Hence $\PIinit^*$ coincides with $\PIinit$.
-
 $\PIstep^*$ coincides with $\PIstep$ in case of factorisation and paramodulation inferences.
-
 For resolution inferences, the first two cases in the definition of $\PIstep$ do not occur for $\PIstep^*$.
+
+$\PI^*$ enjoys the convenient property that it absorbs every literal which occurs some clause:
 
 \begin{prop}
 	For every literal which occurs in a clause of a resolution refutation $\pi$, a respective successor occurs in $\PI^*(\pi)$.
@@ -393,7 +335,7 @@ For resolution inferences, the first two cases in the definition of $\PIstep$ do
 \begin{lemma}
 	\label{ref:grey_lits_of_pi_star_in_pi}
 	For every clause $C$ of a resolution refutation,
-	every literal which is actually grey and occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
+	every grey literal, which occurs in $\PI^*(C)$, also occurs in $\PI(C)$.
 \end{lemma}
 \begin{proof}
 	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
@@ -403,13 +345,12 @@ For resolution inferences, the first two cases in the definition of $\PIstep$ do
 Note that in $\PI^*$, we can conveniently reason about the occurrence of terms as no terms are lost throughout the extraction.
 However Lemma~\ref{ref:grey_lits_of_pi_star_in_pi} allows us to transfer results about grey literals to $\PI$.
 
-Recall that by a postfix $\circ$, we denote the version where some context-dependent substitution $\sigma$ is not applied.
-
+We now make some considerations in the form of four lemmata about the construction of terms of certain shapes in the context of interpolant extraction.
 In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma$ by $\inv$.
 
 \begin{lemma}
 	\label{lemma:var_grey_col_lit}
-	Let $\inference$ be an inference in a refutation of $\Gamma\cup\Delta$.
+	Let $\inference$ be a resolution or factorisation inference in a refutation of $\Gamma\cup\Delta$.
 	Suppose that a variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$.
 	Then at least one of the following statements holds:
 	\begin{enumerate}
@@ -502,7 +443,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 \begin{lemma}
 	\label{lemma:var_in_sc_term}
-	Let $\inference$ be an inference in a refutation of $\Gamma\cup\Delta$.
+	Let $\inference$ be a resolution or factorisation inference in a refutation of $\Gamma\cup\Delta$.
 	Suppose that a variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazi$.
 	Then at least one of the following statements holds:
 	\begin{enumerate}
@@ -591,6 +532,236 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 	\end{itemize}
 
 \end{proof}
+
+\begin{lemma}
+	\label{lemma:var_grey_col_lit_paramod}
+	Let $\inference$ be a paramodulation inference in a refutation of $\Gamma\cup\Delta$.
+	Suppose that a variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$.
+	Then at least one of the following statements holds:
+	\begin{enumerate}
+		\item
+			\label{16_1}
+			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
+
+		\item
+			\label{16_5}
+			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+
+		\item
+			\label{16_6}
+			The variable $u$ occurs grey in an equality in $\inv\sigmazmi$
+			or 
+			some variable $v$ occurs grey in an equality in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
+
+
+			\NB{not subsumed by \ref{16_1}}
+
+
+			%\item
+			%	\label{16_4}
+			%	The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+
+			%\item 
+			%	\label{16_2}
+			%	There is a variable $v$ such that 
+			%	{
+			%		\renewcommand{\labelitemi}{\textendash}
+			%		\begin{itemize}
+			%			\item $u$ occurs grey in $v\sigma_i$ and
+			%			\item $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal.
+			%		\end{itemize}
+			%	}
+
+		\item 
+			\label{16_3}
+			There is a variable $v$ such that
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item
+						$v$ occurs in $\inv\sigmazmi$
+						either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
+						or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
+				\end{itemize}
+			}
+
+
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	Consider paramodulation: $s=t \lor D$ and $E\occatp{r}$ create $C: (D\lor E\occatp{t})\sigma$ where $\sigma = \mgu(s, r)$.
+
+	A grey occurrence of variable $u$ can be created in $C$ by 2 means:
+	either $t$ contains a grey variable and $p$ is a grey position or $\sigma$ introduces a grey occurrence of a variable in a grey position
+
+	% this reads somewhat odd:
+	% As we have the induction hypothesis for the clauses used in the derivation, we know that the statement holds for $\inv$ by the same arguments as given in the proof of Lemma~\ref{lemma:var_grey_col_lit} but for $\PIstep$ in the case of paramodulation inferences.
+
+	Let $u$ be a variable in a grey position in a $\Phi$-literal in $\chi\sigmazi$.
+	We consider the cases which lead to this situation:
+
+
+	\begin{itemize}
+
+		\item The variable $u$ is present in a $\Phi$-literal in $\chi\sigmazmi$. Then clearly \ref{16_1} is the case.
+
+		\item Suppose that $t$ contains a grey occurrence of $u$ and $p$ is a grey position in a $\Phi$-literal.
+			Then $u$ occurs grey in an equality in $\inv\sigmazmi$ and \ref{16_6} is the case.
+
+		\item Suppose that $\sigma_i$ introduces a grey occurrence of $u$ in a $\Phi$-literal (but not in $p$\footnote{not sure if this remark is really useful}).
+			Then there exists a variable $v$ which occurs grey in a $\Phi$-literal in $\chi\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
+			By that, we can derive that there exists a position $q$ in $s$ and $r$ respectively such that 
+			\circled{1} $s\atq = v$ and $r\atq$ contains $u$ grey OR 
+			\circled{2}
+			$r\atq = v$ and $s\atq$ contains $u$ grey. Furthermore, $s$ and $r$ agree on the path to $q$
+
+			We distinguish:
+
+
+			\begin{itemize}
+				\item Suppose that $q$ is contained in a single-colored $\Phi$-term.
+
+					Then $u$ is contained in a single-colored $\Phi$-term in $\chi\sigmazmi$ which establishes \ref{16_5}.(\circled{1} + \circled{2}).
+
+					($r$ might still be contained in other colored terms, but $u$ remains in a single-colored $\Phi$-term.
+
+				\item Suppose that $q$ is contained in a single-colored $\Psi$-term.
+					Then in $\inv\sigmazmi$, $v$ occurs grey in a $\Phi$-literal and in a s.c.\ $\Psi$-term and $v\sigma_i$ contains $u$ grey, thus establishing \ref{16_3}.
+
+
+				\item Suppose that $q$ is a grey position.
+
+					NOTE: $r$ might be in a colored term.
+
+					In case \circled{2}, 
+					$u$ occurs at in a grey position in an equality in $\inv\sigmazmi$, which shows that \ref{16_6} is the case.
+
+					In case \circled{1}, 
+					$v$ occurs at in a grey position in an equality in $\inv\sigmazmi$ and $v\sigma_i$ contains $u$ grey, which also that \ref{16_6} is the case.
+					\qedhere
+
+
+
+			\end{itemize}
+
+	\end{itemize}
+
+\end{proof}
+
+
+\begin{lemma}
+	\label{lemma:var_in_sc_term_paramod}
+	Let $\inference$ be a paramodulation inference in a refutation of $\Gamma\cup\Delta$.
+	Suppose that a variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazi$.
+
+	Then at least one of the following statements holds:
+	\begin{enumerate}
+			% would not hurt but apparently not needed
+			%\item
+			%\label{17_1}
+			%The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
+
+		\item
+			\label{17_5}
+			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+
+		\item
+			\label{17_6}
+			The variable $u$ occurs grey in an equality in $\inv\sigmazmi$
+			or 
+			some variable $v$ occurs grey in an equality in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
+
+
+
+			%	\item
+			%		\label{17_6}
+			%		The variable $u$ occurs in a single-colored $\Phi$-term an equality in $\inv\sigmazmi$.
+			%		\NB{indeed subsumed by \ref{17_5}}
+
+
+			% would not hurt but apparently not needed
+			%\item 
+			%	\label{17_3}
+			%	There is a variable $v$ such that
+			%	{
+			%		\renewcommand{\labelitemi}{\textendash}
+			%		\begin{itemize}
+			%			\item $u$ occurs grey in $v\sigma_i$ and
+			%			\item
+			%				$v$ occurs in $\inv\sigmazmi$
+			%				either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
+			%				or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
+			%		\end{itemize}
+			%	}
+
+		\item
+			\label{17_2}
+			There is a variable $v$ such that 
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item
+						$v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
+				\end{itemize}
+			}
+
+
+	\end{enumerate}
+
+\end{lemma}
+\begin{proof}
+	Let $u$ be a variable in a in single-colored $\Phi$-term in $\inv\sigmazi$. 
+	We consider the cases which lead to this:
+	\begin{itemize}
+		\item The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$ and $\sigma_i$ does not change this.
+			Then \ref{17_5} is the case.
+
+		\item
+			Suppose that $t$ contains an occurrence of $u$ a single-colored $\Phi$-term in $\inv\sigmazmi$.
+			Then \ref{17_5} is the case.
+
+			\NB{the single-colored $\Phi$-term which contains $u$ occurs in an equality, but this is not relevant, i.e.\ we do not need a special equality case here like in the other lemma.}
+
+		\item
+			Suppose that $\sigma_i$ introduces a grey occurrence of $u$ in a single-colored $\Phi$-term.
+			Then there exists a variable $v$ which occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
+
+			Hence in $s$ and $r$, there exists a position $q$ such that 
+			either $s\atq$ or $r\atq$ is $v$ and the respective other subterm contains $u$ grey. 
+			As $s$ and $r$ are unifiable, they agree on the path up to $q$.
+
+			We distinguish:
+			\begin{itemize}
+				\item
+					Suppose that $q$ is contained in a single-colored $\Phi$-term.
+					Then $u$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$ and \ref{17_5} is the case.
+
+				\item
+					Suppose that $q$ is contained in a single-colored $\Psi$-term.
+					Then $v$ occurs in $\inv\sigmazmi$ in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term and $u$ occurs grey in $v\sigma_i$. Hence \ref{17_2} holds.
+
+				\item 
+					Suppose that $q$ is a grey position.
+					Then $s\atq$ occurs grey in an equality.
+					Hence either $v$ or $u$ occur grey in an equality in $\inv\sigmazmi$.
+					Both of these cases satisfy \ref{17_6}.
+
+
+			\end{itemize}
+
+
+		\item 
+			Suppose that a single-colored $\Phi$-term containing $u$ is contained in $\ran(\sigma_i)$ and let $\dom(\sigma_i) = \{v\}$.
+			Then $v$ is unified with a term containing a single-colored $\Phi$-term containing $u$, and $v\sigma_i$ occurs in $\inv\sigmazmi$. This implies that \ref{17_5} is the case.
+			\qedhere
+
+
+	\end{itemize}
+\end{proof}
+
+The preceding lemmata allow us to formulate a result which acts as the core machinery for the proof of existence of terms in grey literals or equalities. We first give it for $\PI^*$ but then generalise it to $\PI$.
 
 \begin{lemma}
 	\label{lemma:col_change_and_grey_in_col_lit_star}
@@ -708,6 +879,7 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 \section{Friday}
 
 \begin{lemma}
+	\label{lemma:subterm_in_grey_lit}
 	If ${\PI(C) \lor C}$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$ containing $\Psi$-term $s$, then 
 	$s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
 \end{lemma}
@@ -775,20 +947,40 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 \begin{lemma}
 	\label{lemma:equalities_all_in_PI}
 	For every equality $s=t$ of a clause in a resolution refutation $\pi$,
-	a successor of $s=t$ occurs in $\PI(\pi)$>
+	a successor of $s=t$ occurs in $\PI(\pi)$.
 \end{lemma}
 \begin{proof}
 	Equalities in clauses are only removed by means of paramodulation and as $\pi$ derives the empty clause, all equalities are removed eventually.
 	For any paramodulation inference $\inference$, $\PIstep(\inference, I_1, I_2)$ contains $s=t$.
 \end{proof}
 
+We present an example which illustrates that the occurrence of a term with $n$ color alternations in $\PI(C) \lor C$ for a clause $C$ can lead to an interpolant with $n-1$ quantifier alternations (but no less as Proposition~\ref{prop:color_alt_eq_quant_alt} shows).
+\begin{exa}
+	Let $\Gamma = \{ \lnot P(a) \}$ and $\Delta = \{ P(x) \lor Q(f(x)), \lnot Q(y) \}$.
+	Consider the following refutation of $\Gamma \cup \Delta$:
+	\begin{prooftree}
+		\AxiomCm{ \lnot P(a) \mid \bot }
+		\AxiomCm{ P(x) \lor Q(f(x)) \mid \top }
+
+		\RightLabelm{\resrule{\resruleres}{x\mapsto a}}
+		\BinaryInfCm{ Q(f(a)) \mid \lnot P(a) }
+
+		\AxiomCm{ \lnot Q(y) \mid \top }
+		\RightLabelm{\resrule{\resruleres}{y\mapsto f(a)}}
+		\BinaryInfCm{ \square \mid \lnot P(a) }
+	\end{prooftree}
+
+	In this example, Theorem~\ref{thm:two_phases} yields the interpolant $I \equiv \exists y_a \lnot P(y_a)$ with $\qa(I) =\nolinebreak 1$.
+	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
+\end{exa}
+	
 
 
-\mytodo{define quantifier alternations as $\ca$, 0 == no quants, 1 == one quant, 2 is $\Pi_2$ or $\Sigma_2$}
 
-\begin{prop}
-	If a term with $n$ color alternations occurs in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
-\end{prop}
+\begin{lemma}
+	\label{lemma:col_alt_in_grey_lit_then_quant_alt}
+	If a term with $n$ color alternations occurs in a grey literal or an equality $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
+\end{lemma}
 \begin{proof}
 	We perform an induction on $n$
 	and show the strenghtening that
@@ -800,13 +992,24 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI(C)$.
 	We assume without loss of generality that $t$ is a $\Phi$-term.
 	Then $t$ contains a $\Psi$-colored term $s$ and
-	by Lemma~\ref{lemma:col_change_and_grey_in_col_lit}, $s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
+	by Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
 	By Lemma~\ref{lemma:grey_lits_all_in_PI} and Lemma~\ref{lemma:equalities_all_in_PI}, a successor of $s$ occurs in $\PI(\pi)$. Note that as $s$ occurs in a grey position, any successor of $s$ also occurs in a grey position.
 
 	By the induction hypothesis, the quantification of the lifting variable for $s$ requires $n-1$ alternated quantifiers.
 	As $s$ is a subterm of $t$ and $t$ is lifted, $t$ must be quantified in the scope of the quantification of $s$, and as $t$ and $s$ are of different color, their quantifier type is different. 
 	Hence the quantification of the lifting variable for $t$ requires $n$ quantifier alternations.
 \end{proof}
+
+\begin{prop}
+	\label{prop:color_alt_eq_quant_alt}
+	If a term with $n$ color alternations occurs in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n-1$ quantifier alternations.
+\end{prop}
+\begin{proof}
+	By Lemma~\ref{lemma:subterm_in_grey_lit}, a term with $n-1$ color alternations occurs in a grey literal or an equality in $\PI(C) \lor C$.
+	Lemma~\ref{lemma:col_alt_in_grey_lit_then_quant_alt} gives the result.
+\end{proof}
+
+
 
 \section{Monday: Paramodulation}
 
@@ -819,235 +1022,107 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 
 Extension of Lemma \ref{lemma:var_grey_col_lit}
 
+\section{Monday prime: $\LI$}
+
+\begin{enumerate}
+	\item Agrees with $\PI$ except if lifting conditions apply.
+\end{enumerate}
+
 \begin{lemma}
-	\label{lemma:var_grey_col_lit_paramod}
-	Let $\inference$ be a \textbf{paramodulation} inference in a refutation of $\Gamma\cup\Delta$.
-	Suppose that a variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazi$.
-	Then at least one of the following statements holds:
-	\begin{enumerate}
-		\item
-			\label{16_1}
-			The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
-
-		\item
-			\label{16_5}
-			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
-
-		\item
-			\label{16_6}
-			The variable $u$ occurs grey in an equality in $\inv\sigmazmi$
-			or 
-			some variable $v$ occurs grey in an equality in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
+	If a 
+\end{lemma}
 
 
-			\NB{not subsumed by \ref{16_1}}
+
+\section{directly from old proof}
 
 
-			%\item
-			%	\label{16_4}
-			%	The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+\largered{this may not be correct any more w.r.t. notation ($\inv$)}
 
-			%\item 
-			%	\label{16_2}
-			%	There is a variable $v$ such that 
-			%	{
-			%		\renewcommand{\labelitemi}{\textendash}
-			%		\begin{itemize}
-			%			\item $u$ occurs grey in $v\sigma_i$ and
-			%			\item $v$ occurs in $\inv\sigmazmi$ grey in a $\Phi$-literal as well as grey in a $\Psi$-literal.
-			%		\end{itemize}
-			%	}
+\largered{just for repetition:}
+\begin{lemma}
+	\label{lemma:col_change}
+	Resolution or factorisation step $\inference$ from $\bar C$.
 
-		\item 
-			\label{16_3}
-			There is a variable $v$ such that
-			{
-				\renewcommand{\labelitemi}{\textendash}
-				\begin{itemize}
-					\item $u$ occurs grey in $v\sigma_i$ and
-					\item
-						$v$ occurs in $\inv\sigmazmi$
-						either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
-						or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
-				\end{itemize}
-			}
-
-
-	\end{enumerate}
+	If $u$ col-change var in $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)\sigmazi$, then $u$ also occurs grey in that formula.
 \end{lemma}
 \begin{proof}
-	Consider paramodulation: $s=t \lor D$ and $E\occatp{r}$ create $C: (D\lor E\occatp{t})\sigma$ where $\sigma = \mgu(s, r)$.
+	Abbreviation: $F \equiv (\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma)$
 
-	A grey occurrence of variable $u$ can be created in $C$ by 2 means:
-	either $t$ contains a grey variable and $p$ is a grey position or $\sigma$ introduces a grey occurrence of a variable in a grey position
+	Induction over refutation and $\sigma$; base case easy.
 
-	% this reads somewhat odd:
-	% As we have the induction hypothesis for the clauses used in the derivation, we know that the statement holds for $\inv$ by the same arguments as given in the proof of Lemma~\ref{lemma:var_grey_col_lit} but for $\PIstep$ in the case of paramodulation inferences.
+	Step:
+	Supp color change var $u$ present in 
+	$\inv\sigmazi$. (could also say introduced, then proof would be somehow different)
 
-	Let $u$ be a variable in a grey position in a $\Phi$-literal in $\chi\sigmazi$.
-	We consider the cases which lead to this situation:
-
-
+	Supp $u$ not grey in 
+	$\inv\sigmazmi$ as otherwise done.
+	As a first step, we show that if a (not necessarily color-changing) variable $v$ occurs in a single-colored $\Phi$-term $t\occ{v}$ in $\inv\sigmazi$,
+	then at least one of the following holds:
+	\begin{compactenum}
+	\item $v$ occurs in some single-colored $\Phi$-term in $\inv\sigmazmi$ \label{var_occ_1}
+	\item there is a color-changing variable $w$ in $\inv\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.  \label{var_occ_2}
+	\end{compactenum}
+	We consider unification process, and particularly the different cases which can introduce a variable $v$ in a single-colored term $\Phi$: Either it has been there before, it was introduced in a s.c. $\Phi$-colored term, or a s.c.\ $\Phi$-term containing the var is in $\ran(\sigma)$.
 	\begin{itemize}
+		\item
+			Suppose a term $t'\occ{v}$ is present in $\inv\sigmazmi$ such that $t'\occ{v}\sigma_i = t\occ{v}$.
+			Then \ref{var_occ_1} is the case.
+		\item
+			Suppose a variable $w$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$ such that $v$ occurs grey in $w\sigma_i$.
+			Suppose furthermore that \ref{var_occ_1} is not the case, i.e.\ $v$ does not occur in a s.c.\ $\Phi$-term in $\inv\sigmazmi$, as otherwise we would be done.
+			We show that \ref{var_occ_2} is the case.
 
-		\item The variable $u$ is present in a $\Phi$-literal in $\chi\sigmazmi$. Then clearly \ref{16_1} is the case.
+			As $v$ occurs neither grey nor in a s.c.\ $\Phi$-term in $\inv\sigmazmi$ but occurs in $\ran(\sigma_i)$, it must occur in $\inv\sigmazmi$ and this can only be in a single-colored $\Psi$-term.
 
-		\item Suppose that $t$ contains a grey occurrence of $u$ and $p$ is a grey position in a $\Phi$-literal.
-			Then $u$ occurs grey in an equality in $\inv\sigmazmi$ and \ref{16_6} is the case.
+			As by assumption $v$ occurs grey in $w\sigma_i$, there must be an occurrence $\bhat w$ of $w$ in a resolved or factorised literal, say $\lambda\sigmazmi$ such that for the other resolved literal $\lambda'\sigmazmi$, $\lambda'\sigmazmi\at{\bhat w}$ is a subterm in which $v$ occurs grey.
+			But as the occurrence of $v$ in $\lambda'\sigmazmi\at{\bhat w}$ must be contained in a single-colored $\Psi$-term, so is $\lambda\sigmazmi\at{\bhat w}$, hence $z$ occurs in a single-colored $\Psi$-term as well.
+			Therefore \ref{var_occ_2} is the case.
 
-		\item Suppose that $\sigma_i$ introduces a grey occurrence of $u$ in a $\Phi$-literal (but not in $p$\footnote{not sure if this remark is really useful}).
-			Then there exists a variable $v$ which occurs grey in a $\Phi$-literal in $\chi\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
-			By that, we can derive that there exists a position $q$ in $s$ and $r$ respectively such that 
-			\circled{1} $s\atq = v$ and $r\atq$ contains $u$ grey OR 
-			\circled{2}
-			$r\atq = v$ and $s\atq$ contains $u$ grey. Furthermore, $s$ and $r$ agree on the path to $q$
-
-			We distinguish:
-
-
-			\begin{itemize}
-				\item Suppose that $q$ is contained in a single-colored $\Phi$-term.
-
-					Then $u$ is contained in a single-colored $\Phi$-term in $\chi\sigmazmi$ which establishes \ref{16_5}.(\circled{1} + \circled{2}).
-
-					($r$ might still be contained in other colored terms, but $u$ remains in a single-colored $\Phi$-term.
-
-				\item Suppose that $q$ is contained in a single-colored $\Psi$-term.
-					Then in $\inv\sigmazmi$, $v$ occurs grey in a $\Phi$-literal and in a s.c.\ $\Psi$-term and $v\sigma_i$ contains $u$ grey, thus establishing \ref{16_3}.
-
-
-				\item Suppose that $q$ is a grey position.
-
-					NOTE: $r$ might be in a colored term.
-
-					In case \circled{2}, 
-					$u$ occurs at in a grey position in an equality in $\inv\sigmazmi$, which shows that \ref{16_6} is the case.
-
-					In case \circled{1}, 
-					$v$ occurs at in a grey position in an equality in $\inv\sigmazmi$ and $v\sigma_i$ contains $u$ grey, which also that \ref{16_6} is the case.
-					\qedhere
-
-
-
-			\end{itemize}
-
+		\item
+			Suppose there is a variable $z$ in $\inv\sigmazmi$ such that $v$ occurs in a single-colored $\Phi$-term in $z\sigma_i$.
+			Then $z\sigma_i$ occurs in $\inv\sigmazmi$, but this is a witness for~\ref{var_occ_1}.
 	\end{itemize}
 
-\end{proof}
-
-
-\begin{lemma}
-	\label{lemma:var_in_sc_term_paramod}
-	Let $\inference$ be a \textbf{paramodulation} inference in a refutation of $\Gamma\cup\Delta$.
-	Suppose that a variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazi$.
-
-	Then at least one of the following statements holds:
-	\begin{enumerate}
-			% would not hurt but apparently not needed
-			%\item
-			%\label{17_1}
-			%The variable $u$ occurs grey in a $\Phi$-literal in $\inv\sigmazmi$.
-
-		\item
-			\label{17_5}
-			The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$.
-
-		\item
-			\label{17_6}
-			The variable $u$ occurs grey in an equality in $\inv\sigmazmi$
-			or 
-			some variable $v$ occurs grey in an equality in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
-
-
-
-			%	\item
-			%		\label{17_6}
-			%		The variable $u$ occurs in a single-colored $\Phi$-term an equality in $\inv\sigmazmi$.
-			%		\NB{indeed subsumed by \ref{17_5}}
-
-
-			% would not hurt but apparently not needed
-			%\item 
-			%	\label{17_3}
-			%	There is a variable $v$ such that
-			%	{
-			%		\renewcommand{\labelitemi}{\textendash}
-			%		\begin{itemize}
-			%			\item $u$ occurs grey in $v\sigma_i$ and
-			%			\item
-			%				$v$ occurs in $\inv\sigmazmi$
-			%				either grey in a $\Phi$-literal as well as in a single-colored $\Psi$-term in any literal, 
-			%				or grey in a $\Psi$-literal as well as in a single-colored $\Phi$-term in any literal.
-			%		\end{itemize}
-			%	}
-
-		\item
-			\label{17_2}
-			There is a variable $v$ such that 
-			{
-				\renewcommand{\labelitemi}{\textendash}
-				\begin{itemize}
-					\item $u$ occurs grey in $v\sigma_i$ and
-					\item
-						$v$ occurs in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term in $\inv\sigmazmi$.
-				\end{itemize}
-			}
-
-
-
-
-	\end{enumerate}
-
-\end{lemma}
-\begin{proof}
-	Let $u$ be a variable in a in single-colored $\Phi$-term in $\inv\sigmazi$. 
-	We consider the cases which lead to this:
+	Now recall that we have assumed $u$ to be a color-changing variable in $\inv\sigmazi$.
+	Hence it occurs in a single-colored $\Gamma$-term as well as in a single-colored $\Delta$-term.
+	By the reasoning above, this leads to two case:
 	\begin{itemize}
-		\item The variable $u$ occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$ and $\sigma_i$ does not change this.
-			Then \ref{17_5} is the case.
-
-		\item
-			Suppose that $t$ contains an occurrence of $u$ a single-colored $\Phi$-term in $\inv\sigmazmi$.
-			Then \ref{17_5} is the case.
-
-			\NB{the single-colored $\Phi$-term which contains $u$ occurs in an equality, but this is not relevant, i.e.\ we do not need a special equality case here like in the other lemma.}
-
-		\item
-			Suppose that $\sigma_i$ introduces a grey occurrence of $u$ in a single-colored $\Phi$-term.
-			Then there exists a variable $v$ which occurs in a single-colored $\Phi$-term in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
-
-			Hence in $s$ and $r$, there exists a position $q$ such that 
-			either $s\atq$ or $r\atq$ is $v$ and the respective other subterm contains $u$ grey. 
-			As $s$ and $r$ are unifiable, they agree on the path up to $q$.
-
-			We distinguish:
-			\begin{itemize}
-				\item
-					Suppose that $q$ is contained in a single-colored $\Phi$-term.
-					Then $u$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$ and \ref{17_5} is the case.
-
-				\item
-					Suppose that $q$ is contained in a single-colored $\Psi$-term.
-					Then $v$ occurs in $\inv\sigmazmi$ in a single-colored $\Phi$-term as well as in a single-colored $\Psi$-term and $u$ occurs grey in $v\sigma_i$. Hence \ref{17_2} holds.
-
-				\item 
-					Suppose that $q$ is a grey position.
-					Then $s\atq$ occurs grey in an equality.
-					Hence either $v$ or $u$ occur grey in an equality in $\inv\sigmazmi$.
-					Both of these cases satisfy \ref{17_6}.
-
-
-			\end{itemize}
-
-
-		\item 
-			Suppose that a single-colored $\Phi$-term containing $u$ is contained in $\ran(\sigma_i)$ and let $\dom(\sigma_i) = \{v\}$.
-			Then $v$ is unified with a term containing a single-colored $\Phi$-term containing $u$, and $v\sigma_i$ occurs in $\inv\sigmazmi$. This implies that \ref{17_5} is the case.
+		\item In $\inv\sigmazmi$, $u$ occurs both in some single-colored $\Gamma$-term as well as in some single-colored $\Delta$-term.
+			Then we get the result by the induction hypothesis and the fact that $u\not\in\dom(\sigma_i)$ as $u$ does occur in $\inv\sigmazi$.
+		\item Otherwise for some color $\Phi$, $u$ does not occur in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+			Then case \ref{var_occ_2} above must hold and there is some color-changing variable $w$ in $\inv\sigmazmi$ such that $u$ occurs grey in $w\sigmazi$.
+			But then by the induction hypothesis, $w$ occurs grey in $\inv\sigmazmi$ and hence $u$ occurs grey in $\inv\sigmazi$.
 			\qedhere
-
-
 	\end{itemize}
 \end{proof}
+
+
+\subsection{ Proof}
+\begin{itemize}
+	\item Induction over $\lifdelta{\PI(C) \lor C}$ and also about $\Gamma$-terms with $\Delta$-lifting vars in that formula. Cf. \texttt{-final}
+
+	\item \NB{now somewhat described in the proper proof below} describe proof method with $\sigmazi$: which $\PI$? 
+		\begin{itemize}
+			\item Factorisation:
+				easy: just apply $\sigma_i$ for all $i$ to $\PI(C) \lor C$. 
+				When done, a literal will be there twice and we can remove it without losing anything
+			\item Resolution:
+				create propositional structure first.
+
+				Ex.: $C_1 : D \lor l$, $ C_2: \lnot l \lor E$:
+
+				If we talk about properties for which it holds that if they hold for $\PI(C_i) \lor C_i$, $i\in\{1,2\}$, then they also hold for $ A \equiv \Big((l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1))\Big) \lor C\nosigma$, then we can apply $\sigma_i$ for all $i$ to that formula.
+
+				So if we can assume it for $A$ and show it for all $\sigma_i$, we get that it holds for $\PI(C) \lor C$.
+
+		\end{itemize}
+
+		Also: clauses are variable disjoint, so e.g. it's not possible that a color-changing var is created by $\PIstep$
+
+		Also: do it like a few lemmas further down, like $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma ) \sigmazi$
+\end{itemize}
+
+
 
 \end{document}
-
