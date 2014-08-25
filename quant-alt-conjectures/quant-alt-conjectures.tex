@@ -226,94 +226,7 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 Hence $\PIstepnosigma(\cdot) \sigma = \PIstep(\cdot)$.
 
 
-\begin{comment}
-	\section{ Proof port attempt from \texttt{-final} }
-
-	\largered{ need to show that grey occurrences are in grey literals, all grey literals end up in the interpolant! }
-
-	conj: if a $\Delta$-term $t$ occurs in a $\Gamma$-literal in a clause $C$, then $t$ occurs in a grey literal in $\PI(C)$.
-
-	evidence:
-	\begin{itemize}
-		\item situation does not occur in $\Gamma$ or $\Delta$
-		\item terms are only changed by unificators
-		\item $\Delta$- and $\Gamma$-terms are not unifiable, so one of the literals has to have a variable at a grey position when a $\Delta$-term enters a $\Gamma$-literal
-		\item that literal has to be grey
-		\item QED?
-	\end{itemize}
-
-	\begin{rlemma}
-		If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in $\PI(C)$.
-	\end{rlemma}
-	\begin{proof}
-		As all grey literals of clauses involved in a refutation end up in the interpolant, it suffices to show that $t$ occurs at a grey position in a grey literal. 
-
-		Substitutions are applied to all variables, hence we only need to consider terms $t$ which just enter a foreign colored literal.
-
-		\mytodo{propagation 1: $\Phi$-terms vs $\Psi$-terms (in $\Psi$-literals)}
-
-		\mytodo{propagation 2: $\Phi$-terms vs other $\Phi$-terms (in $\Psi$-literals)}
-
-		Induction on refutation and $\sigma$; base case easy.
-
-		Resolution or factorisation inference $\inference$. 
-		Let $\lambda$ be a $\Gamma$-literal containing a variable $u$ at position $\bhat u$ such that $u\sigma_i$ contains a $\Delta$-term $t$.
-
-		If the resolved or factorised literals are grey, they become part of $\PI(C)$ and if $t$ occurs grey there, we are done.
-
-		\begin{itemize}
-			\item Suppose the resolved literals are $\Gamma$-colored. Then IH.
-			\item Suppose the resolved literals are $\Delta$-colored.
-				\mytodo{}
-			\item Suppose the resolved literals are grey and $t$ does not occur at a grey position in $\lambda\sigma = \lambda'\sigma$.
-
-				\mytodo{}
-
-		\end{itemize}
-
-
-		~
-
-
-
-
-	\end{proof}
-
-	\begin{clemma}
-		If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in a grey literal in $\PI(C) \lor C$.
-	\end{clemma}
-	there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contains $t$.
-
-	\begin{clemma}
-		If a variable $u$ occurs in a $\Phi$-literal as well as in a $\Psi$-literal in a clause $C$, then $t$ also occurs at a grey position in a grey literal in $\PI(C)$.
-	\end{clemma}
-	\begin{proof}
-		Initially not the case.
-
-		Note that we can only resolve/factorise $\Gamma$-/$\Delta$-/grey literals with other $\Gamma$-/$\Delta$-/grey literals as clearly the predicate symbol must be the same for both literals.
-		Hence if a variable occurs only in $\Gamma$- or only in $\Delta$-literals, then it can never escape these.
-		Hence $u$ certainly is contained in a grey literal.
-
-		Now suppose that $u$ only occurs colored in grey literals.
-		Then it occurs in a $\Gamma$-($\Delta$-) term in the original $\Gamma$-($\Delta$-)clauses which contain it.
-
-		As shown before $u$ must occur in some grey literal.
-		Suppose it does not occur at a grey position in a grey literal as otherwise we are done.
-		Then $u$ only occurs in $\Gamma$-terms in grey literals as 
-
-		\mytodo{it seems that now we have to deal with possible $\Gamma$-terms in $\Delta$-literals and so on $\Ra$ circular reasoning}
-
-
-
-		The situation in question arises if some variable $u$ occurs in a $\Gamma$-literal in some clause and some variable $v$ occurs in a $\Delta$-literal in some clause (possibly the same), such that in the unified literals, $u$ and $v$ both occur at the same position in the respective literals.
-
-
-	\end{proof}
-
-	\newpage
-\end{comment}
-
-\section{Thursday prime}
+\section{Occurrence of crucial terms in the interpolant}
 
 \begin{defi}[$\PI^*$]
 	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be grey.
@@ -333,7 +246,7 @@ $\PI^*$ enjoys the convenient property that it absorbs every literal which occur
 \end{proof}
 
 \begin{lemma}
-	\label{ref:grey_lits_of_pi_star_in_pi}
+	\label{lemma:grey_lits_of_pi_star_in_pi}
 	For every clause $C$ of a resolution refutation,
 	every grey literal, which occurs in $\PI^*(C)$, also occurs in $\PI(C)$.
 \end{lemma}
@@ -344,6 +257,27 @@ $\PI^*$ enjoys the convenient property that it absorbs every literal which occur
 
 Note that in $\PI^*$, we can conveniently reason about the occurrence of terms as no terms are lost throughout the extraction.
 However Lemma~\ref{ref:grey_lits_of_pi_star_in_pi} allows us to transfer results about grey literals to $\PI$.
+We can also give similar results about general literals and equalities occurring in the resolution refutation:
+
+\begin{lemma}
+	\label{lemma:grey_lits_all_in_PI}
+	If there is a grey literal $\lambda$ in a clause $C$ of a resolution refutation $\pi$,
+	then a successor of $\lambda$ occurs in $\PI(\pi)$.
+\end{lemma}
+\begin{proof}
+	Immediate by the definition of $\PI$.
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:equalities_all_in_PI}
+	For every equality $s=t$ of a clause in a resolution refutation $\pi$,
+	a successor of $s=t$ occurs in $\PI(\pi)$.
+\end{lemma}
+\begin{proof}
+	Equalities in clauses are only removed by means of paramodulation and as $\pi$ derives the empty clause, all equalities are removed eventually.
+	For any paramodulation inference $\inference$, $\PIstep(\inference, I_1, I_2)$ contains $s=t$.
+\end{proof}
+
 
 We now make some considerations in the form of four lemmata about the construction of terms of certain shapes in the context of interpolant extraction.
 In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma$ by $\inv$.
@@ -872,11 +806,11 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 
 	As $\PI(C)$ for any clause $C$ is comprised of a subset of the literals of $\PI^*(C)$, the lemma prerequesites hold true only for variables in $\PI(C)$ for which they also hold true in $\PI^*(C)$.
 	As by Lemma~\ref{lemma:col_change_and_grey_in_col_lit_star} the lemma holds for $\PI^*(C)$, respective grey literals with grey occurrences of the variables in question exist in $\PI^*(C)$.
-	But by Lemma~\ref{lemma:grey_lits_all_in_PI}, these literals also occur in $\PI(C)$.
+	But by Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi}, these literals also occur in $\PI(C)$.
 \end{proof}
 
 
-\section{Friday}
+\section{Lifting of crucial terms leads to quantifier alternations}
 
 \begin{lemma}
 	\label{lemma:subterm_in_grey_lit}
@@ -885,23 +819,18 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 \end{lemma}
 \begin{proof}
 	Note that it suffices to show that at the step where $s$ is introduced as subterm of $t\occ{s}$, $s$ occurs grey in $\PI(C) \lor C$ as any later modification by substitution is applied to both occurrences $s$, so they stay equal throughout the remaining derivation.
-	\medskip
 
-	\noindent
-	Induction over $\pi$ and $\sigma$. \mytodo{ as in Lemma~\ref{lemma:col_change_and_grey_in_col_lit} }
-	\medskip
+	We perform an induction over $\pi$ and $\sigma$. 
+	For the base case, the lemma is vacuously true as all original clauses contain only symbols of one color.
 
-	\noindent
-	Base case: vacuously true.
-	\medskip
-
-	\noindent
+	\largered{  GO THROUGH THIS AGAIN AND CONSIDER PARAMODULATION }
+	For the induction step,
 	Step:
 	Resolution or factorisation inference $\inference$, $\mgu(\inference) = \sigma = \sigma_1\cdots\sigma_n$ 
 	The term $t\occ{s}$ is created by one of the following two ways: 
 
-	(we abbreviate 
-	$(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma$ by $F$.)
+	%(we abbreviate 
+	%$(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma$ by $F$.)
 	\begin{itemize}
 		\item
 			A variable $u$ occurs in $\inv\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
@@ -933,25 +862,6 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 			\qedhere
 	\end{itemize}
 
-\end{proof}
-
-\begin{lemma}
-	\label{lemma:grey_lits_all_in_PI}
-	If there is a grey literal $\lambda$ in a clause $C$ of a resolution refutation $\pi$,
-	then a successor of $\lambda$ occurs in $\PI(\pi)$.
-\end{lemma}
-\begin{proof}
-	Immediate by the definition of $\PI$.
-\end{proof}
-
-\begin{lemma}
-	\label{lemma:equalities_all_in_PI}
-	For every equality $s=t$ of a clause in a resolution refutation $\pi$,
-	a successor of $s=t$ occurs in $\PI(\pi)$.
-\end{lemma}
-\begin{proof}
-	Equalities in clauses are only removed by means of paramodulation and as $\pi$ derives the empty clause, all equalities are removed eventually.
-	For any paramodulation inference $\inference$, $\PIstep(\inference, I_1, I_2)$ contains $s=t$.
 \end{proof}
 
 We present an example which illustrates that the occurrence of a term with $n$ color alternations in $\PI(C) \lor C$ for a clause $C$ can lead to an interpolant with $n-1$ quantifier alternations (but no less as Proposition~\ref{prop:color_alt_eq_quant_alt} shows).
@@ -1123,6 +1033,93 @@ Extension of Lemma \ref{lemma:var_grey_col_lit}
 		Also: do it like a few lemmas further down, like $(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma ) \sigmazi$
 \end{itemize}
 
+
+\begin{comment}
+	\section{ Proof port attempt from \texttt{-final} }
+
+	\largered{ need to show that grey occurrences are in grey literals, all grey literals end up in the interpolant! }
+
+	conj: if a $\Delta$-term $t$ occurs in a $\Gamma$-literal in a clause $C$, then $t$ occurs in a grey literal in $\PI(C)$.
+
+	evidence:
+	\begin{itemize}
+		\item situation does not occur in $\Gamma$ or $\Delta$
+		\item terms are only changed by unificators
+		\item $\Delta$- and $\Gamma$-terms are not unifiable, so one of the literals has to have a variable at a grey position when a $\Delta$-term enters a $\Gamma$-literal
+		\item that literal has to be grey
+		\item QED?
+	\end{itemize}
+
+	\begin{rlemma}
+		If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in $\PI(C)$.
+	\end{rlemma}
+	\begin{proof}
+		As all grey literals of clauses involved in a refutation end up in the interpolant, it suffices to show that $t$ occurs at a grey position in a grey literal. 
+
+		Substitutions are applied to all variables, hence we only need to consider terms $t$ which just enter a foreign colored literal.
+
+		\mytodo{propagation 1: $\Phi$-terms vs $\Psi$-terms (in $\Psi$-literals)}
+
+		\mytodo{propagation 2: $\Phi$-terms vs other $\Phi$-terms (in $\Psi$-literals)}
+
+		Induction on refutation and $\sigma$; base case easy.
+
+		Resolution or factorisation inference $\inference$. 
+		Let $\lambda$ be a $\Gamma$-literal containing a variable $u$ at position $\bhat u$ such that $u\sigma_i$ contains a $\Delta$-term $t$.
+
+		If the resolved or factorised literals are grey, they become part of $\PI(C)$ and if $t$ occurs grey there, we are done.
+
+		\begin{itemize}
+			\item Suppose the resolved literals are $\Gamma$-colored. Then IH.
+			\item Suppose the resolved literals are $\Delta$-colored.
+				\mytodo{}
+			\item Suppose the resolved literals are grey and $t$ does not occur at a grey position in $\lambda\sigma = \lambda'\sigma$.
+
+				\mytodo{}
+
+		\end{itemize}
+
+
+		~
+
+
+
+
+	\end{proof}
+
+	\begin{clemma}
+		If a $\Phi$-term $t$ occurs in a $\Psi$-literal in a clause $C$, then $t$ occurs at a grey position in a grey literal in $\PI(C) \lor C$.
+	\end{clemma}
+	there has to be a variable $u$ in a $\Psi$-literal such that $u\sigma_i$ contains $t$.
+
+	\begin{clemma}
+		If a variable $u$ occurs in a $\Phi$-literal as well as in a $\Psi$-literal in a clause $C$, then $t$ also occurs at a grey position in a grey literal in $\PI(C)$.
+	\end{clemma}
+	\begin{proof}
+		Initially not the case.
+
+		Note that we can only resolve/factorise $\Gamma$-/$\Delta$-/grey literals with other $\Gamma$-/$\Delta$-/grey literals as clearly the predicate symbol must be the same for both literals.
+		Hence if a variable occurs only in $\Gamma$- or only in $\Delta$-literals, then it can never escape these.
+		Hence $u$ certainly is contained in a grey literal.
+
+		Now suppose that $u$ only occurs colored in grey literals.
+		Then it occurs in a $\Gamma$-($\Delta$-) term in the original $\Gamma$-($\Delta$-)clauses which contain it.
+
+		As shown before $u$ must occur in some grey literal.
+		Suppose it does not occur at a grey position in a grey literal as otherwise we are done.
+		Then $u$ only occurs in $\Gamma$-terms in grey literals as 
+
+		\mytodo{it seems that now we have to deal with possible $\Gamma$-terms in $\Delta$-literals and so on $\Ra$ circular reasoning}
+
+
+
+		The situation in question arises if some variable $u$ occurs in a $\Gamma$-literal in some clause and some variable $v$ occurs in a $\Delta$-literal in some clause (possibly the same), such that in the unified literals, $u$ and $v$ both occur at the same position in the respective literals.
+
+
+	\end{proof}
+
+	\newpage
+\end{comment}
 
 
 \end{document}
