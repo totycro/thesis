@@ -204,7 +204,7 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 
 	\qedhere
 \end{defi}
-Note that this definition of quantifier alternations handles formulas in prenex and non-prenex forms.
+Note that this definition of quantifier alternations handles formulas in prenex and non-prenex form.
 
 \begin{defi}
 	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
@@ -213,7 +213,7 @@ Note that this definition of quantifier alternations handles formulas in prenex 
 Hence $\PIstepnosigma(\cdot) \sigma = \PIstep(\cdot)$.
 
 
-\section{Occurrence of crucial terms in the interpolant}
+\section{Occurrence of terms in the interpolant}
 
 \begin{defi}[$\PI^*$]
 	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be grey.
@@ -262,7 +262,7 @@ We can also give similar results about general literals and equalities occurring
 \end{lemma}
 \begin{proof}
 	Equalities in clauses are only removed by means of paramodulation and as $\pi$ derives the empty clause, all equalities are removed eventually.
-	For any paramodulation inference $\inference$, $\PIstep(\inference, I_1, I_2)$ contains $s=t$.
+	For any paramodulation inference $\inference$ using the equality $s=t$, $\PIstep(\inference, I_1, I_2)$ contains $s=t$. 
 \end{proof}
 
 
@@ -784,6 +784,7 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 	Hence we may infer that $u$ occurs grey in a grey literal in $\inv\sigmazmi$ and since $\sigma_i$ is trivial $u$ as shown above, $u$ occurs grey in a grey literal in $\inv\sigmazi$.
 \end{proof}
 
+\mytodo{ remove this and do same thing for lemma \ref{lemma:subterm_in_grey_lit} because it's actually required for that }
 \begin{lemma}
 	\label{lemma:col_change_and_grey_in_col_lit}
 	Same as \ref{lemma:col_change_and_grey_in_col_lit_star} with $\PI$ in place of $\PI^*$.
@@ -797,57 +798,128 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 \end{proof}
 
 
-\section{Lifting of crucial terms leads to quantifier alternations}
+\section{Lifting of terms leads to quantifier alternations}
 
 \begin{lemma}
 	\label{lemma:subterm_in_grey_lit}
-	If ${\PI(C) \lor C}$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$ containing $\Psi$-term $s$, then 
+	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$ containing $\Psi$-term $s$, then 
 	$s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
 \end{lemma}
 \begin{proof}
-	Note that it suffices to show that at the step where $s$ is introduced as subterm of $t\occ{s}$, $s$ occurs grey in $\PI(C) \lor C$ as any later modification by substitution is applied to both occurrences $s$, so they stay equal throughout the remaining derivation.
+	Note that it suffices to show that at the step where $s$ is introduced as subterm of $t\occ{s}$, $s$ occurs grey in $\PI(C) \lor C$ as any later modification by substitution is applied to both occurrences $s$, so they remain equal throughout the remaining derivation.
 
 	We perform an induction over $\pi$ and $\sigma$. 
 	For the base case, the lemma is vacuously true as all original clauses contain only symbols of one color.
 
-	\largered{  GO THROUGH THIS AGAIN AND CONSIDER PARAMODULATION }
+
 	For the induction step,
-	Step:
-	Resolution or factorisation inference $\inference$, $\mgu(\inference) = \sigma = \sigma_1\cdots\sigma_n$ 
-	The term $t\occ{s}$ is created by one of the following two ways: 
+	we assume that the property holds for $\PI^*(C_i) \lor C_i)$, $1\varleq i \varleq n$ where $C_1, \dots, C_n$ are the clauses used in $\inference$. Then the property also holds for $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma$ by the same argument as given in the proof of Lemma~\ref{lemma:col_change_and_grey_in_col_lit_star}.
+This formula is however the unfolded definition of $\inv$,
 
-	%(we abbreviate 
-	%$(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma$ by $F$.)
-	\begin{itemize}
-		\item
-			A variable $u$ occurs in $\inv\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
+Hence it remains to show that the property holds for $\inv\sigma = \inv \sigma_0 \quantifierdots \sigma_m = \PI^*(C)\lor C$.
+We do so by induction on $m$. 
+Suppose the property holds for $\inv\sigmazmi$.
+We consider all situations where a $\Phi$-term $t\occ{s}$ containing a  $\Psi$-term $s$ is introduced by means of unification. 
 
-			Then $u$ occurs in a resolved or factorised literal $\lambda\sigmazmi$ at $\bhat u$ such that at the other resolved or factorised literal $\lambda'\sigmaz{i-1}$, $\lambda'\sigmazmi\at{\bhat u} = t\occ{s}$.
-			Then the condition is present at $\inv\sigmazmi$ and we get the result by the induction hypothesis.
+\begin{itemize}
+	\item Suppose that a variable $u$ occurs in $\inv\sigmazmi$ such that $u\sigma_i$ contains $t\occ{s}$.
+		Then $u$ is unified with a term in $\inv\sigmazmi$ which is $t\occ{s}$, hence this term occurs there and we obtain the result by the induction hypothesis.
 
-		\item 
-			Note that we only consider maximal colored terms.
+	\item Suppose that a variable $u$ occurs in $\inv\sigmazmi$ in a maximal colored $\Phi$-term $t$ such that $u\sigma_i$ contains $s$ at a grey position.
 
-			\todo{are probably not same $t$ and $s$ as in lemma statement, which isn't technically wrong but confusing}
-			Let $t\occ{u}$ be a maximal colored $\Phi$-term in $\inv\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Psi$-symbol, and $u\sigma_i$ contains a grey occurrence of $s$.
+		We distinguish based on the occurrence of $u$ in $\inv\sigmazmi$:
+
+		\begin{itemize}
+			\item Suppose that $u$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazmi$. 
+				Then we are done.
+
+			\item Suppose that $u$ occurs grey in a $\Psi$-literal or in a single-colored $\Psi$-term in $\inv\sigmazmi$.
+				Then by Lemma~\ref{lemma:col_change_and_grey_in_col_lit_star}, $u$ also occurs grey in a grey literal or an equality in $\inv\sigmazmi$ and we are done.
+
+			\item If none of the above cases apply, then $u$ occurs only grey in $\Phi$-literals and in single-colored $\Phi$-terms in $\inv\sigmazmi$.
+
+				%Note that due to the definition of the unification algorithm, $u\sigma_i$ must occur in $\inv\sigmazmi$.
+				%The concrete position of the occurrence is determined by the type of the current inference but immaterial to this reasoning. 
+
+				We distinguish further based on the type of the inference:
+
+				\begin{itemize}
+					\item Suppose that $\inference$ is a resolution or factorisation inference. 
+						As $u \in \dom(\sigma_i)$, $u$ occurs in on of the resolved or factorised literals $\lambda$ and $\lambda'$. Let it occur in $\lambda$ at position $p$.
+						Then $\lambda'\atp = u\sigma_i$. 
+
+						Due to the definition of the unification algorithm, $\lambda$ and $\lambda'$ must agree on the path to $p$.
+						Hence as $u$ only occurs grey in a $\Phi$-colored literal or in a single-colored $\Phi$-term, so does $u\sigma_i$.
+
+						However $u\sigma_i$ contains $s$ at a grey position.
+						So if $\lambda'\atp$ is contained in a single-colored $\Phi$-term, then $s$ occurs here in a $\Phi$-term and we obtain the result by the induction hypothesis.
+
+						Otherwise $\lambda'\atp$ is a grey position in a $\Phi$-literal.
+						\mytodo{}
+
+					\item Suppose that $\inference$ is a paramodulation inference of $r_1 = r_2 \lor D$ and $E\occ{r}$ which results in $(D \lor E\occ{r_2})\sigma$.
+						As $\sigma = \mgu(r_1, r)$ and $u \in \dom(\sigma_i)$, $u$ occurs either in $r_1$ or $r$ at position $p$ such that the respective other term contains $s$ grey at $p$.
+
+						\mytodo{}
 
 
-			Suppose that $u$ occurs grey in a grey literal in $\inv\sigmazmi$.
-			Then $s$ occurs grey in a grey literal in $\inv\sigmazi$ as $\sigma_i$ does not affect $u$ since $u$ occurs in $\inv\sigmazi$ and we are done.
 
-			If $u$ occurs grey in a $\Psi$-literal or
-			if $u$ occurs in a single-colored $\Psi$-term in $\inv\sigmazmi$, then by Lemma~\ref{lemma:col_change_and_grey_in_col_lit}, $u$ also occurs grey in a grey literal or an equality in $\inv\sigmazmi$ and $s$ hence occurs grey in a grey literal or an equality in $\inv\sigmazi$. 
+				\end{itemize}
 
-			Now suppose that $u$ does not occur grey in a grey literal or an equality in $\inv\sigmazmi$ as otherwise clearly we are done.
+		\end{itemize}
 
-			Hence as all other cases are excluded, $u$ can only occur in $\inv\sigmazmi$ in a single-colored $\Phi$-term or grey in a $\Phi$-colored literal.
-			But then, 
-			since $u\sigma_i$ contains a grey occurrence of $s$, there is a position $p$ in the two resolved or factorised literals $\lambda$ and $\lambda'$ such that $\lambda\at{p} = u$ and $\lambda'\at{p}$ contains a grey occurrence of $s$.
-			Furthermore, the prefix along the path to $p$ is the same in both $\lambda$ and $\lambda'$.
-			As $u$ only occurs in single-colored $\Phi$-terms, $\lambda'\at{p}$ does so as well, so $s$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$.
-			Since $s$ is a $\Psi$-term, by the induction hypothesis, $s$ occurs grey in a grey literal in $\inv\sigmazmi$ and hence also in $\inv\sigma_i$.
-			\qedhere
-	\end{itemize}
+
+\end{itemize}
+
+
+
+
+
+~
+
+~
+
+~
+
+\largered{  GO THROUGH THIS AGAIN AND CONSIDER PARAMODULATION }
+For the induction step,
+Step:
+Resolution or factorisation inference $\inference$, $\mgu(\inference) = \sigma = \sigma_1\cdots\sigma_n$ 
+The term $t\occ{s}$ is created by one of the following two ways: 
+
+%(we abbreviate 
+%$(\PIstepnosigma(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C\nosigma$ by $F$.)
+\begin{itemize}
+	\item
+		A variable $u$ occurs in $\inv\sigmazmi$ such that $u\sigma_i = t\occ{s}$.
+
+		Then $u$ occurs in a resolved or factorised literal $\lambda\sigmazmi$ at $\bhat u$ such that at the other resolved or factorised literal $\lambda'\sigmaz{i-1}$, $\lambda'\sigmazmi\at{\bhat u} = t\occ{s}$.
+		Then the condition is present at $\inv\sigmazmi$ and we get the result by the induction hypothesis.
+
+	\item 
+		Note that we only consider maximal colored terms.
+
+		\todo{are probably not same $t$ and $s$ as in lemma statement, which isn't technically wrong but confusing}
+		Let $t\occ{u}$ be a maximal colored $\Phi$-term in $\inv\sigmazmi$ such that in the tree-representation of $t\occ{u}$, the path from the root to $u$ does not contain a node labelled with a $\Psi$-symbol, and $u\sigma_i$ contains a grey occurrence of $s$.
+
+
+		Suppose that $u$ occurs grey in a grey literal in $\inv\sigmazmi$.
+		Then $s$ occurs grey in a grey literal in $\inv\sigmazi$ as $\sigma_i$ does not affect $u$ since $u$ occurs in $\inv\sigmazi$ and we are done. \hl{wtf, probably wrong}
+
+		If $u$ occurs grey in a $\Psi$-literal or
+		if $u$ occurs in a single-colored $\Psi$-term in $\inv\sigmazmi$, then by Lemma~\ref{lemma:col_change_and_grey_in_col_lit_star}, $u$ also occurs grey in a grey literal or an equality in $\inv\sigmazmi$ and $s$ hence occurs grey in a grey literal or an equality in $\inv\sigmazi$. 
+
+		Now suppose that $u$ does not occur grey in a grey literal or an equality in $\inv\sigmazmi$ as otherwise we are done.
+
+		Hence as all other cases are excluded, $u$ can only occur in $\inv\sigmazmi$ in a single-colored $\Phi$-term or grey in a $\Phi$-colored literal.
+		But then, 
+		since $u\sigma_i$ contains a grey occurrence of $s$, there is a position $p$ in the two resolved or factorised literals $\lambda$ and $\lambda'$ such that $\lambda\at{p} = u$ and $\lambda'\at{p}$ contains a grey occurrence of $s$.
+		Furthermore, the prefix along the path to $p$ is the same in both $\lambda$ and $\lambda'$.
+		As $u$ only occurs in single-colored $\Phi$-terms, $\lambda'\at{p}$ does so as well, so $s$ is contained in a single-colored $\Phi$-term in $\inv\sigmazmi$.
+		Since $s$ is a $\Psi$-term, by the induction hypothesis, $s$ occurs grey in a grey literal in $\inv\sigmazmi$ and hence also in $\inv\sigma_i$.
+		\hl{ INCOMPLETE: does not consider $s$ grey in $\Phi$-lits}
+		\qedhere
+\end{itemize}
 
 \end{proof}
 
@@ -870,7 +942,7 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	In this example, Theorem~\ref{thm:two_phases} yields the interpolant $I \equiv \exists y_a \lnot P(y_a)$ with $\qa(I) =\nolinebreak 1$.
 	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
 \end{exa}
-	
+
 
 
 
