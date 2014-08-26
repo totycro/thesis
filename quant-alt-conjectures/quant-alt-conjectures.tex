@@ -134,24 +134,7 @@
 
 \begin{document}
 
-%\chapter{ Number of quantifier alternations in Huang and nested }
-
-\section{ Outline }
-
-Goal: try proof Huang and nested equal.
-
-Method: proof for both:
-
-\begin{cprop}
-	Let $I$ be an interpolant created by \$algorithm.
-	If $I$ contains a term $t$ such that $t$ has $n$ color changes, then $I$ has at least $n$ quantifier alternations.
-\end{cprop}
-
-\subsection{generally keep in mind}
-
-\begin{itemize}
-	\item also note: literal is sometimes used for negated or not negated predicate with terms but in regular formulas with arbitrary connectives
-\end{itemize}
+\chapter{ Number of quantifier alternations in Huang and nested }
 
 \section{ Preliminaries }
 
@@ -169,17 +152,20 @@ A literal $l$ is called a $\Phi$-literal if its predicate symbol is $\Phi$-color
 
 ~
 
-Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimizing arrangement of quantifiers in $I$ 
+Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimizing arrangement of quantifiers in $I$. The lemma statements hence talk about the \emph{minimal} number of quantifier alternations, which is indeed easily obtainable, i.e.\ it's a lower and upper bound at the same time.
 
+~
 
-
+In the following, we assume that the maximum $\max$ of an empty sequence is defined to be $0$ and constants are treated as function symbols of arity $0$.
+Furthermore $\bot$ is used to denote a color which is not possessed by any symbol.
 \begin{defi}[Color alternation $\ca$]
 	Let $\Gamma$ and $\Delta$ be sets of formulas and $t$ be a term.
-	We assume that the maximum $\max$ of an empty sequence is defined to be $0$.
-	We define:
+
+	\medskip
 
 	\noindent
 	$\ca(t) \defeq \ca_\bot(t)$
+	\medskip
 
 	\noindent
 	$
@@ -195,13 +181,13 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 
 
 \begin{defi}[Quantifier alternation $\qa$]
-	Let $A$ be a formula.
-	We assume that the maximum $\max$ of an empty sequence is defined to be $0$.
-	We define:
+	Let $A$ be a formula.\nopagebreak
+	\medskip
 
 	\noindent
 	$\qa(A) \defeq \qa_\bot(A)$
 	\nopagebreak
+	\medskip
 
 	\noindent
 	$
@@ -218,6 +204,7 @@ Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimi
 
 	\qedhere
 \end{defi}
+Note that this definition of quantifier alternations handles formulas in prenex and non-prenex forms.
 
 \begin{defi}
 	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
