@@ -458,9 +458,9 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 \end{proof}
 
 
-\begin{clemma}
+\begin{lemma}
 	If $\PI^*(C) \lor C$ for a clause $C$ in a resolution refutation of $\Gamma \cup \Delta$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs grey in a grey literal or grey in an equality in $\PI^*(C) \lor C$.
-\end{clemma}
+\end{lemma}
 \begin{proof}
 	We proceed by induction over the resolution refutation.
 	As the original clauses each contain symbols of at most one color, the base case is trivially true.
@@ -504,7 +504,6 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 							As $u$ is affected by $\sigma_i$, it must occur in $r_1$ or $r$. Let $\bhat u$ refer to this occurrence.
 
-							\cbstart
 							\begin{itemize}
 								\item
 									Suppose that $\bhat u$ occurs directly below a $\Phi$-colored function symbol. 
@@ -522,74 +521,16 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 								\item
 									Suppose that $\bhat u$ occurs directly below a $\Phi$-colored predicate symbol. 
 
+									Then as the equality predicate is not considered to be colored, $u$ must occur grey in $r$.
+									But then as $r_1$ and $r$ are unifiable, $s$ must occur grey in $r_1$ and hence grey in an equality.
+									\qedhere
 							\end{itemize}
-							\cbend
-
 
 					\end{itemize}
 
 			\end{itemize}
 
-			{
-				\color{gray}
-				LESS PROPERLY:
-				\tiny
-				\begin{itemize}
-					\item $u$ anywhere grey in grey lit or grey in equa: done
-					\item $u$ anywhere dir below a $\Psi$-symbol: Lemma~\ref{lemma:col_change} on $u$ 
-					\item Otw: $u$ only below $\Phi$-symbol
-
-						\begin{itemize}
-							\item Supp directly below $\Phi$-col function symbol
-
-								\begin{itemize}
-									\item Supp res/fac inf.
-										Then $u$ and $s$ at essentially corresponding positions in $\lambda$ and $\lambda'$.
-										hence $s$ also dir below $\Phi$-symbol and IH to the rescue.
-									\item Supp paramod inf.
-
-										Notation:
-										The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
-										the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
-
-										$u$ and $s$ occur in essentially corresponding positions in $r_1$ and $r$.
-										same argument: if one dir below $\Phi$-symbol, so is other, hence $s$ is and IH.
-
-								\end{itemize}
-
-							\item Supp directly below $\Phi$-col predicate symbol
-
-								\begin{itemize}
-									\item Supp res/fac inf.
-
-										as $u$ dir below $\Phi$-col sym, which is a predicate, then only so in res/fac lit.
-
-										Hence other res fac lit contains $s$ grey, hence IH. 
-
-									\item Supp paramod.
-
-										Notation:
-										The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
-										the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
-
-										Then  $u$ cannot occur in equality used in paramodulation as this is not a $\Phi$-colored literal and by assumption, $u$ does not occur grey here.
-
-										Hence $u$ occs in $r$, and $E$ is $\Phi$-colored and $p$ is a grey position and $u$ occurs grey in $r$.
-
-										... $u$ occurs elsewhere in $C_2$ directly below a $\Phi$-colored symbol (predicate symbol that is)
-
-										$s$ occs in $r_1$ grey???
-
-
-
-								\end{itemize}
-						\end{itemize}
-				\end{itemize}
-			}
 	\end{itemize}
-
-
-
 
 \end{proof}
 
