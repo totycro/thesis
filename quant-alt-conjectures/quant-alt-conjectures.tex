@@ -803,7 +803,7 @@ Note that $\Phi$ and $\Psi$ are to be read as any pair of distinct colors, i.e.\
 \begin{lemma}
 	\label{lemma:subterm_in_grey_lit}
 	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$ containing $\Psi$-term $s$, then 
-	$s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
+	$s$ occurs grey in a grey literal or an equality in $\PI^*(C) \lor C$.
 \end{lemma}
 \begin{proof}
 	Note that it suffices to show that at the step where $s$ is introduced as subterm of $t\occ{s}$, $s$ occurs grey in $\PI(C) \lor C$ as any later modification by substitution is applied to both occurrences $s$, so they remain equal throughout the remaining derivation.
