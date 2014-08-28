@@ -286,7 +286,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 		\item
 			\label{14_4}
-			The variable $u$ occurs at a grey position in a grey literal in $\inv\sigmazmi$.
+			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazmi$.
 
 		\item 
 			\label{14_2}
@@ -333,12 +333,108 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 					Then $v$ occurs directly below a $\Psi$-symbol in $\lambda\atp$ and clearly \ref{14_2} is the case.
 
 				\item
-					\mytodo{grey}
+					Suppose that $p$ does not occur directly below a colored symbol.
+					Then $p$ does not occur below any colored symbol, hence it is contained in a grey literal in a grey position and \ref{14_4} is the case.
 
 			\end{itemize}
 	\end{itemize}
 
 \end{proof}
+
+\begin{lemma}
+	\label{lemma:var_below_phi_symbol_paramod}
+	Let $\inference$ be a paramodulation inference in a refutation of $\Gamma\cup\Delta$.
+	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazi$ for $i\vargeq 1$.
+	Then at least one of the following statements holds:
+	\begin{enumerate}
+		\item
+			\label{15_1}
+			The variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$.
+
+		\item
+			\label{15_4}
+			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazmi$.
+
+		\item
+			\label{15_3}
+			$u$ grey in equality in $\inv\sigmazi$. \mytodo{possibly merge with \ref{15_4} since that one implies this one.}
+
+		\item 
+			\label{15_2}
+			There is a variable $v$ such that 
+			{
+				\renewcommand{\labelitemi}{\textendash}
+				\begin{itemize}
+					\item $u$ occurs grey in $v\sigma_i$ and
+					\item $v$ occurs in $\inv\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
+				\end{itemize}
+			}
+
+
+	\end{enumerate}
+\end{lemma}
+\cbstart
+\begin{proof}
+	We consider the different situations under which the situation in question is introduced by means of unification: 
+	\begin{itemize}
+		\item
+			was there before, \ref{15_1}
+
+		\item
+			$u$ direcly below $\Phi$-term in $\ran(\sigma_i)$, then \ref{15_1}
+
+		\item
+			$u$ occs grey in $t$ and $p$ occs direcly below $\Phi$-symbol.
+			Then $u$ grey in an equality in $\inv\sigmazmi$, \ref{15_4}
+
+		\item
+			Supp var $v$ somewhere directly below $\Phi$-symbol s.t.\ $u$ grey in $v\sigma_i$.
+
+			We consider a paramodultion inference of the following form:
+			The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
+			The clauses $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(s, r)$ yield $C: (D\lor E\occatp{t})\sigma$.
+
+			Hence by the definition of the unification algorithm, there exists a position $q$ such that one of $s\atp$ and $r\atp$ is $v$ and the other one contains a grey occurrence of $u$.
+
+			We distinguish cases based on the coloring of the position $q$:
+
+			\begin{itemize}
+				\item Supp $q$ dir below $\Phi$: Then $u$ dir below $\Phi$ in $\inv\sigmazmi$ and \ref{15_1}.
+				\item Supp $q$ dir below $\Psi$: Then $v$ dir below $\Phi$ and dir below $\Psi$ in $\inv\sigmazmi$ and \ref{15_2}.
+				\item Supp $q$ grey.
+
+					Then irrespective if where $u$ and $v$ are (as $u$ grey in $v\sigma_i$), in $\inv\sigmazi$ $u$ is grey in equality and \ref{15_3}.
+			\end{itemize}
+
+
+
+	\end{itemize}
+\end{proof}
+\cbend
+
+
+\begin{clemma}
+	Let $\inference$ be an inference of a resolution refutation of $\Gamma \cup \Delta$.
+	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol in $\inv\sigmazi$.
+	Then $u$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazi$.
+\end{clemma}
+\begin{proof}
+	We proceed by induction over the refutation.
+	As the original clauses each contain symbols of at most one color, the base case is trivially true.
+
+	For the induction step, suppose that an inference makes use of the clauses $C_1, \dots, C_n$ and that the lemma holds for $\PI^*(C_i) \lor C_i$ for $1\varleq i \varleq n$. 
+
+	Note that then, the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma)$.
+	This is because as all clauses are variable-disjoint, no variable can occur $\inv$ both directly below a $\Phi$ as well as directly below a $\Psi$-term if this was not the case in $\PI^*(C_i) \lor C_i$ for some $i$, for which the lemma by assumption holds.
+	Furthermore, by the definition of $\PI^*$, every literal which occurs in $\PI^*(C_i) \lor C_i$ for some $i$ occurs in $\inv$.
+
+	Hence it remains to show that the lemma holds for $\inv\sigma = \inv\sigma_0\quantifierdots\sigma_m$, which we do by induction over $i$ for $1\varleq i \varleq m$.
+	Suppose that the lemma holds for $\inv\sigmazmi$ and in $\inv\sigmazi$, the variable $u$ occurs directly below a $\Phi$-term as well as directly below a $\Psi$-term.
+
+	Then by the lemmata~\ref{lemma:var_below_phi_symbol} and \ref{lemma:var_below_phi_symbol_paramod}, we can deduce that one of the following statements holds for $\Omega = \Phi$ as well as $\Omega = \Psi$.
+
+\end{proof}
+
 
 
 
