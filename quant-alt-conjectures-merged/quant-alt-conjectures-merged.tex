@@ -490,69 +490,102 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 					Here, we differentiate between the types of inference of the current induction step:
 
 					\begin{itemize}
-							Suppose that the current 
-							\mytodo{ICI}
+						\item
+							Suppose that the inference of the current induction step is a resolution or a factorisation inference.
+							As $u$ occurs grey in $v\sigma_i$, there is a position $p$ such that for the resolved or factorised literals $\lambda$ and $\lambda'$ it holds without loss of generality that $\lambda\atp = u$ and $s$ occurs grey in $\lambda'\atp$.
+							Note that $\lambda$ and $\lambda'$ agree on the path to $p$, including the predicate symbol..
+
+							Now as by assumption $u$ only occurs directly below a $\Phi$-symbol, so must $s$.
+							But then $s$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$ and we get the result by the induction hypothesis.
+
+						\item
+							Suppose that the inference of the current induction step is a paramodultion inference.
+							In order to fix notation, say that clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
+
+							As $u$ is affected by $\sigma_i$, it must occur in $r_1$ or $r$. Let $\bhat u$ refer to this occurrence.
+
+							\cbstart
+							\begin{itemize}
+								\item
+									Suppose that $\bhat u$ occurs directly below a $\Phi$-colored function symbol. 
+
+									If $\bhat u$ is contained in $r_1$, then $s$ must be contained in $r$ directly below a $\Phi$-symbol as $r_1$ and $r$ are unifiable. We then get the result by the induction hypothesis.
+
+									If otherwise $\bhat u$ is contained in $r$, 
+									then there are two possibilities for the occurrence of $s$ in $r_1$:
+
+									Either $\bhat u$ occurs in a $\Phi$-colored function symbol in $r$. Then $s$ occurs in a $\Phi$-colored function symbol in $r_1$ and we get the result by the induction hypothesis.
+
+									Otherwise $\bhat u$ occurs grey in $r$, but $r$ occurs directly below a $\Phi$-colored function symbol in $E$.
+									Then however, as $r$ and $r_1$ are unifiable, $s$ must occur grey in $r_1$ and hence grey in an equality.
+
+								\item
+									Suppose that $\bhat u$ occurs directly below a $\Phi$-colored predicate symbol. 
+
+							\end{itemize}
+							\cbend
+
+
 					\end{itemize}
 
 			\end{itemize}
 
 			{
+				\color{gray}
 				LESS PROPERLY:
 				\tiny
-			\cbstart
-			\begin{itemize}
-				\item $u$ anywhere grey in grey lit or grey in equa: done
-				\item $u$ anywhere dir below a $\Psi$-symbol: Lemma~\ref{lemma:col_change} on $u$ 
-				\item Otw: $u$ only below $\Phi$-symbol
+				\begin{itemize}
+					\item $u$ anywhere grey in grey lit or grey in equa: done
+					\item $u$ anywhere dir below a $\Psi$-symbol: Lemma~\ref{lemma:col_change} on $u$ 
+					\item Otw: $u$ only below $\Phi$-symbol
 
-					\begin{itemize}
-						\item Supp directly below $\Phi$-col function symbol
+						\begin{itemize}
+							\item Supp directly below $\Phi$-col function symbol
 
-							\begin{itemize}
-								\item Supp res/fac inf.
-									Then $u$ and $s$ at essentially corresponding positions in $\lambda$ and $\lambda'$.
-									hence $s$ also dir below $\Phi$-symbol and IH to the rescue.
-								\item Supp paramod inf.
+								\begin{itemize}
+									\item Supp res/fac inf.
+										Then $u$ and $s$ at essentially corresponding positions in $\lambda$ and $\lambda'$.
+										hence $s$ also dir below $\Phi$-symbol and IH to the rescue.
+									\item Supp paramod inf.
 
-									Notation:
-									The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
-									the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
+										Notation:
+										The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
+										the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
 
-									$u$ and $s$ occur in essentially corresponding positions in $r_1$ and $r$.
-									same argument: if one dir below $\Phi$-symbol, so is other, hence $s$ is and IH.
+										$u$ and $s$ occur in essentially corresponding positions in $r_1$ and $r$.
+										same argument: if one dir below $\Phi$-symbol, so is other, hence $s$ is and IH.
 
-							\end{itemize}
+								\end{itemize}
 
-						\item Supp directly below $\Phi$-col predicate symbol
+							\item Supp directly below $\Phi$-col predicate symbol
 
-							\begin{itemize}
-								\item Supp res/fac inf.
+								\begin{itemize}
+									\item Supp res/fac inf.
 
-									as $u$ dir below $\Phi$-col sym, which is a predicate, then only so in res/fac lit.
+										as $u$ dir below $\Phi$-col sym, which is a predicate, then only so in res/fac lit.
 
-									Hence other res fac lit contains $s$ grey, hence IH. 
+										Hence other res fac lit contains $s$ grey, hence IH. 
 
-								\item Supp paramod.
+									\item Supp paramod.
 
-									Notation:
-									The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
-									the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
+										Notation:
+										The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
+										the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
 
-									Then  $u$ cannot occur in equality used in paramodulation as this is not a $\Phi$-colored literal and by assumption, $u$ does not occur grey here.
+										Then  $u$ cannot occur in equality used in paramodulation as this is not a $\Phi$-colored literal and by assumption, $u$ does not occur grey here.
 
-									Hence $u$ occs in $r$, and $E$ is $\Phi$-colored and $p$ is a grey position and $u$ occurs grey in $r$.
+										Hence $u$ occs in $r$, and $E$ is $\Phi$-colored and $p$ is a grey position and $u$ occurs grey in $r$.
 
-									... $u$ occurs elsewhere in $C_2$ directly below a $\Phi$-colored symbol (predicate symbol that is)
-									 
-									$s$ occs in $r_1$ grey???
-								
+										... $u$ occurs elsewhere in $C_2$ directly below a $\Phi$-colored symbol (predicate symbol that is)
+
+										$s$ occs in $r_1$ grey???
 
 
-							\end{itemize}
-					\end{itemize}
-			\end{itemize}
-			\cbend
-		}
+
+								\end{itemize}
+						\end{itemize}
+				\end{itemize}
+			}
 	\end{itemize}
 
 
