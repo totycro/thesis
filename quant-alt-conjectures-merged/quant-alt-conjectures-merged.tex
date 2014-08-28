@@ -383,7 +383,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 			We consider a paramodultion inference of the following form:
 			The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
-			The clauses $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(s, r)$ yield $C: (D\lor E\occatp{t})\sigma$.
+			the clauses $C_1: s=t \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(s, r)$ yield $C: (D\lor E\occatp{t})\sigma$.
 
 			Hence by the definition of the unification algorithm, there exists a position $q$ such that one of $s\atp$ and $r\atp$ is $v$ and the other one contains a grey occurrence of $u$.
 
@@ -417,11 +417,11 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 	For the induction step, suppose that an inference makes use of the clauses $C_1, \dots, C_n$ and that the lemma holds for $\PI^*(C_j) \lor C_j$ for $1\varleq j \varleq n$. 
 
 	Note that then, the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma)$.
-	This is because as all clauses are variable-disjoint, no variable can occur $\inv$ both directly below a $\Phi$ as well as directly below a $\Psi$-term if this was not the case in $\PI^*(C_j) \lor C_j$ for some $j$, for which the lemma by assumption holds.
+	This is because as all clauses are variable-disjoint, no variable can occur $\inv$ both directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol if this was not the case in $\PI^*(C_j) \lor C_j$ for some $j$, for which the lemma by assumption holds.
 	Furthermore, by the definition of $\PI^*$, every literal which occurs in $\PI^*(C_j) \lor C_i$ for some $j$ occurs in $\inv$.
 
 	Hence it remains to show that the lemma holds for $\inv\sigma = \inv\sigma_0\quantifierdots\sigma_m$, which we do by induction over $i$ for $1\varleq i \varleq m$.
-	Suppose that the lemma holds for $\inv\sigmazmi$ and in $\inv\sigmazi$, the variable $u$ occurs directly below a $\Phi$-term as well as directly below a $\Psi$-term.
+	Suppose that the lemma holds for $\inv\sigmazmi$ and in $\inv\sigmazi$, the variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-term.
 
 	Then by the lemmata~\ref{lemma:var_below_phi_symbol} and \ref{lemma:var_below_phi_symbol_paramod}, we can deduce that one of the following statements holds for $\Omega = \Phi$ as well as $\Omega = \Psi$. We denote case $j$ for $\Omega = \Phi$ by $j^\Phi$ and for $\Omega = \Psi$ by $j^\Psi$.
 
@@ -470,8 +470,43 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 	Then the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma)$ as no new terms are introduced in $\inv$ and all literals from $\PI^*(C_j) \lor C_j)$ for $1\varleq j \varleq n$ occur in~$\inv$.
 
 	It remains to show that the lemma holds for $\inv\sigma = \inv \sigma_0 \quantifierdots \sigma_m$, which we do by induction over $i$ for $0 \varleq i \varleq m$.
+	We distinguish on the situation under which a unification leads to the term $t\occ{s}$.
 
-	\mytodo{}
+	\begin{itemize}
+		\item 
+			Suppose for some variable $u$ that $u\sigma_i$ contains $t\occ{s}$. 
+			Then $u$ is unified with a term which contains $t\occ{s}$ and occurs in $\inv\sigmazmi$.
+			Hence by the induction hypothesis, $s$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazmi$ and ,as $\sigma_i$ does not change this, also in $\inv\sigmazi$.
+
+		\item 
+			Otherwise there is a variable $u$ which occurs directly below a $\Phi$-symbol and $v\sigma_i$ contains a grey occurrence of $s$.
+			We distinguish based on the occurrences of $u$ in $\inv\sigmazmi$:
+
+			\cbstart
+			\begin{itemize}
+				\item $u$ anywhere grey in grey lit or grey in equa: done
+				\item $u$ anywhere dir below a $\Psi$-symbol: Lemma~\ref{lemma:col_change} on $u$ 
+				\item Otw: $u$ only below $\Phi$-symbol
+					\begin{itemize}
+							\item Supp res/fac inf.
+								Then $u$ and $s$ at essentially corresponding positions in $\lambda$ and $\lambda'$.
+								hence $s$ also dir below $\Phi$-symbol and IH to the rescue.
+							\item Supp paramod inf.
+
+								Notation:
+								The clause $C$ is the result of a paramodulation inference\nolinebreak{} $\inference$ of
+								the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yield $C: (D\lor E\occatp{r_2})\sigma$.
+
+								$u$ and $s$ occur in essentially corresponding positions in $r_1$ and $r$.
+								same argument: if one dir below $\Phi$-symbol, so is other, hence $s$ is and IH.
+
+								\mytodo{ WHAT IF PREDICATE SYMBOL IS THE COLORED SYMBOL? }
+					\end{itemize}
+			\end{itemize}
+			\cbend
+	\end{itemize}
+
+
 
 
 \end{proof}
