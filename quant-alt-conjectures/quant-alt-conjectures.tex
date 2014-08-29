@@ -925,27 +925,6 @@ The term $t\occ{s}$ is created by one of the following two ways:
 
 \end{proof}
 
-We present an example which illustrates that the occurrence of a term with $n$ color alternations in $\PI(C) \lor C$ for a clause $C$ can lead to an interpolant with $n-1$ quantifier alternations (but no less as Proposition~\ref{prop:color_alt_eq_quant_alt} shows).
-\begin{exa}
-	Let $\Gamma = \{ \lnot P(a) \}$ and $\Delta = \{ P(x) \lor Q(f(x)), \lnot Q(y) \}$.
-	Consider the following refutation of $\Gamma \cup \Delta$:
-	\begin{prooftree}
-		\AxiomCm{ \lnot P(a) \mid \bot }
-		\AxiomCm{ P(x) \lor Q(f(x)) \mid \top }
-
-		\RightLabelm{\resrule{\resruleres}{x\mapsto a}}
-		\BinaryInfCm{ Q(f(a)) \mid \lnot P(a) }
-
-		\AxiomCm{ \lnot Q(y) \mid \top }
-		\RightLabelm{\resrule{\resruleres}{y\mapsto f(a)}}
-		\BinaryInfCm{ \square \mid \lnot P(a) }
-	\end{prooftree}
-
-	In this example, Theorem~\ref{thm:two_phases} yields the interpolant $I \equiv \exists y_a \lnot P(y_a)$ with $\qa(I) =\nolinebreak 1$.
-	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
-\end{exa}
-
-
 
 
 \begin{lemma}
