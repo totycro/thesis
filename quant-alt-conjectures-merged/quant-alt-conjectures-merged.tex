@@ -276,8 +276,8 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 			The variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$.
 
 		\item
-			\label{14_4}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazmi$.
+			\label{14_5}
+			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazi$.
 
 		\item 
 			\label{14_2}
@@ -307,12 +307,10 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 		\item
 			There is a variable $v$ which occurs directly below a $\Phi$-symbol such that $u$ occurs grey in $v\sigma_i$.
 
-			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$, there is a position $p$ such that without loss of generality $\lambda\atp = v$ and $u$ occurs grey in $\lambda'\atp$. 
+			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$ in $\inv\sigmazmi$, there is a position $p$ such that without loss of generality $\lambda\atp = v$ and $u$ occurs grey in $\lambda'\atp$. 
 			Note that due to the definition of the unification algorithm, $\lambda$ and $\lambda'$ must coincide on the path to $p$.
 
 			By Proposition \ref{prop:every_lit_in_pi_star}, $\lambda$ and $\lambda'$ occur in $\inv$ irrespective of their coloring.
-
-			\mytodo{ it must be $\lambda$ and $\lambda'$ with the appropriate amount of $\sigma$ steps applied }
 
 			We distinguish cases based on the position $p$:
 
@@ -325,7 +323,8 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 				\item
 					Suppose that $p$ does not occur directly below a colored symbol.
-					Then $p$ does not occur below any colored symbol, hence it is contained in a grey literal in a grey position and \ref{14_4} is the case.
+					Then $p$ does not occur below any colored symbol, hence $u$ is contained in a grey literal in a grey position in $\inv\sigmazmi$. 
+					As $\sigma_i$ is trivial on $u$, this occurrence of $u$ also is present in $\inv\sigmazi$ and hence \ref{14_5} is the case.
 
 			\end{itemize}
 	\end{itemize}
@@ -343,12 +342,8 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 			The variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$.
 
 		\item
-			\label{15_4}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazmi$.
-
-		\item
-			\label{15_3}
-			$u$ grey in equality in $\inv\sigmazi$. \mytodo{possibly merge with \ref{15_4} since that one implies this one.}
+			\label{15_5}
+			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazi$.
 
 		\item 
 			\label{15_2}
@@ -376,7 +371,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 		\item
 			$u$ occs grey in $t$ and $p$ occs direcly below $\Phi$-symbol.
-			Then $u$ grey in an equality in $\inv\sigmazmi$, \ref{15_4}
+			Then $u$ grey in an equality in $\inv\sigmazmi$ and also in $\inv\sigmazi$, \ref{15_5}
 
 		\item
 			Supp var $v$ somewhere directly below $\Phi$-symbol s.t.\ $u$ grey in $v\sigma_i$.
@@ -394,11 +389,9 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 				\item Supp $q$ dir below $\Psi$: Then $v$ dir below $\Phi$ and dir below $\Psi$ in $\inv\sigmazmi$ and \ref{15_2}.
 				\item Supp $q$ grey.
 
-					Then irrespective if where $u$ and $v$ are (as $u$ grey in $v\sigma_i$), in $\inv\sigmazi$ $u$ is grey in equality and \ref{15_3}.
+					Then irrespective if where $u$ and $v$ are (as $u$ grey in $v\sigma_i$), in $\inv\sigmazi$ $u$ is grey in equality in $\inv\sigmazmi$ as well as in $\inv\sigmazi$ and \ref{15_5}.
+					\qedhere
 			\end{itemize}
-
-
-
 	\end{itemize}
 \end{proof}
 \cbend
@@ -433,8 +426,6 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 		\item
 			\label{16_4}
 			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazi$.
-
-			\mytodo{ propagate upwards }
 
 		\item 
 			\label{16_2}
