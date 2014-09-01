@@ -122,36 +122,37 @@
 
 
 
-\newcommand{\inv}{\ensuremath{\chi}}
+\newcommand{\inv}{\ensuremath{\PIstarnosigma(C)\lor C\nosigma}}
+\newcommand{\invp}{\ensuremath{(\inv)}}
 
 \begin{document}
 
-\chapter{ Number of quantifier alternations in Huang and nested }
+\chapter{ Number of quantifier alternations of the extracted interpolants }
 
-\section{ Preliminaries }
+In this chapter, we derive lower bounds for the number of quantifier alternations for the extraction procedure in two phases as well as the one in one phase.
+We arrive at the conclusion that both procedures are equal with respect to this measure and that there is a tight connection between color alternations in terms and quantifier alternations in the interpolant.
 
-For $\sigma = \mgu(\varphi, \psi)$ for two terms or literals $\varphi$ and $\psi$, we denote by $\sigma_i$ for $1\varleq i \varleq n$ the $i$th substitution which is added to $\sigma$ by the unification algorithm, where $n = |\dom(\sigma)|$.
-We define $\sigma_0 \defeq \id$.
+%Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimizing arrangement of quantifiers in $I$. The lemma statements hence talk about the \emph{minimal} number of quantifier alternations, which is indeed easily obtainable, i.e.\ it's a lower and upper bound at the same time.
 
-We furthermore denote the composition of all $\sigma_k$ for $i\varleq k \varleq j$ by $\sigmarange{i}{j}$.
-Hence $\sigma = \sigmarange{1}{n} = \sigmarange{0}{n}$.
 
-~
+\section{Additional notation and definitions}
 
 A literal $l$ is called a $\Phi$-literal if its predicate symbol is $\Phi$-colored.
-
-
-%A term $t$ is \defiemph{single-colored} if $t$ is $\Phi$-colored for some $\Phi$ and all colored symbols in $t$ are $\Phi$-colored.
-\NB{The notion of single-colored is considered to be deprecated here.}
 
 In a literal or term $\phi$ containing a subterm $t$, $t$ is said to occur \defiemph{below} a $\Phi$-symbol $s$ if in the syntax tree representation of $\phi$, there is a node labelled $s$ on the path from the root to $t$. Note that the colored symbol may also be the predicate symbol.
 Moreover, $t$ is said to occur \defiemph{directly below} a $\Phi$-symbol if it occurs below the $\Phi$-symbol $s$ and in the syntax tree representation of $\phi$ on the path from $s$ to $t$, no nodes with labels with colored symbol occur.
 
-~
 
-Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimizing arrangement of quantifiers in $I$. The lemma statements hence talk about the \emph{minimal} number of quantifier alternations, which is indeed easily obtainable, i.e.\ it's a lower and upper bound at the same time.
+\subsection{Unification}
 
-~
+Let $\varphi$ and $\psi$ be two terms or literals.
+For $\sigma = \mgu(\varphi, \psi)$, we denote by $\sigma_i$ for $1\varleq i \varleq |\dom(\sigma)|$ the $i$th substitution which is added to $\sigma$ by the unification algorithm.
+We define $\sigma_0 \defeq \id$.
+
+We furthermore denote the composition $\sigma_i \quantifierdots \sigma_j$ by $\sigmarange{i}{j}$.
+Hence $\sigma = \sigmarange{1}{|\dom(\sigma)|} = \sigmarange{0}{|\dom(\sigma)|}$.
+
+\subsection{Color and quantifier alternations}
 
 In the following, we assume that the maximum $\max$ of an empty sequence is defined to be $0$ and constants are treated as function symbols of arity $0$.
 Furthermore $\bot$ is used to denote a color which is not possessed by any symbol.
@@ -193,8 +194,8 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 		0 & \text{$A$ is an atom} \\
 		\qa_Q(B) & \text{$A \equiv \lnot B$} \\
 		\max(\parbox[t]{0.2\textwidth}{$\qa_Q(B),$\newline$ \qa_Q(C))$} & \text{$A \equiv B \circ C$, $\circ \in \{\land, \lor, \limpl\}$} \\
-		\qa_Q(B) & \text{$A \equiv Q' B$, $Q = Q'$} \\
-		1+\qa_{Q'}(B) & \text{$A \equiv Q' B$, $Q \neq Q'$}  \\
+		\qa_Q(B) & \text{$A \equiv Q x B$} \\
+		1+\qa_{Q'}(B) & \text{$A \equiv Q' x B$, $Q \neq Q'$}  \\
 	\end{cases}
 	$
 	\nopagebreak
@@ -203,16 +204,12 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 \end{defi}
 Note that this definition of quantifier alternations handles formulas in prenex and non-prenex form.
 
-\begin{defi}
-	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
-	Analogously, if $C \equiv D\sigma$, we use $C\nosigma$ to denote\nolinebreak{} $D$.
-\end{defi}
-Hence $\PIstepnosigma(\cdot) \sigma = \PIstep(\cdot)$.
-
 \section{Occurrence of terms in the interpolant}
+
 
 \begin{defi}[$\PI^*$]
 	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be grey.
+	$\PIinit^*$ and $\PIstep^*$ are defined analogously.
 \end{defi}
 
 Hence $\PIinit^*$ coincides with $\PIinit$.
@@ -222,12 +219,15 @@ For resolution inferences, the first two cases in the definition of $\PIstep$ do
 $\PI^*$ enjoys the convenient property that it absorbs every literal which occurs some clause:
 
 \begin{prop}
-	\label{prop:every_lit_in_pi_star},
+	\label{prop:every_lit_in_pi_star}
 	For every literal which occurs in a clause of a resolution refutation $\pi$, a respective successor occurs in $\PI^*(\pi)$.
 \end{prop}
 \begin{proof}
 	By structural induction.
 \end{proof}
+
+Note that in $\PI^*$, we can conveniently reason about the occurrence of terms as no terms are lost throughout the extraction.
+However Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi} allows us to transfer results about grey literals to $\PI$:
 
 \begin{lemma}
 	\label{lemma:grey_lits_of_pi_star_in_pi}
@@ -236,12 +236,9 @@ $\PI^*$ enjoys the convenient property that it absorbs every literal which occur
 \end{lemma}
 \begin{proof}
 	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
-	But more specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no grey literals are lost.
+	More specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no grey literals are removed but only colored ones.
 \end{proof}
 
-Note that in $\PI^*$, we can conveniently reason about the occurrence of terms as no terms are lost throughout the extraction.
-However Lemma~\ref{ref:grey_lits_of_pi_star_in_pi} allows us to transfer results about grey literals to $\PI$.
-We can also give similar results about general literals and equalities occurring in the resolution refutation:
 
 \begin{lemma}
 	\label{lemma:grey_lits_all_in_PI}
@@ -263,22 +260,41 @@ We can also give similar results about general literals and equalities occurring
 \end{proof}
 
 
-We now make some considerations in the form of four lemmata about the construction of terms of certain shapes in the context of interpolant extraction.
-In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma$ by $\inv$.
+We now make some considerations in the form of four lemmata about the construction of certain terms in the context of interpolant extraction.
+In order to do so, we frequently reason over the stepwise application of the respective unifiers, for which we employ the following definition:
+
+\begin{defi}
+	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
+	Analogously, if $C \equiv D\sigma$, we use $C\nosigma$ to denote\nolinebreak{} $D$.
+\end{defi}
+
+In the context of an inference $\inference$ using the clauses $C_1, \dots, C_m$ to infer $C$, it holds that 
+\begin{align*}
+	& \PI^*(C) \lor C = \\
+	& \Big(\PIstep^*(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C = \\
+	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigma = \\
+	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigmarange{0}{|\dom(\sigma)|} 
+\end{align*}
+In the following, we abbreviate
+$\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)$
+by $\inv$.
+Note that if we are able to show that the application of a substitution $\sigma_i$ to $\invp\sigmazmi$ maintains an invariant and the invariant holds for $\inv$, then it immediately follows that it holds for $\PI^*(C) \lor C$. 
+
+
 
 \begin{lemma}
 	\label{lemma:var_below_phi_symbol}
 	Let $\inference$ be a resolution or factorisation inference in a refutation of $\Gamma\cup\Delta$.
-	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazi$ for $i\vargeq 1$.
+	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazi$ for $i\vargeq 1$.
 	Then at least one of the following statements holds:
 	\begin{enumerate}
 		\item
 			\label{14_1}
-			The variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$.
+			The variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$.
 
 		\item
 			\label{14_5}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazi$.
+			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\invp\sigmazi$.
 
 		\item 
 			\label{14_2}
@@ -287,7 +303,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 				\renewcommand{\labelitemi}{\textendash}
 				\begin{itemize}
 					\item $u$ occurs grey in $v\sigma_i$ and
-					\item $v$ occurs in $\inv\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
+					\item $v$ occurs in $\invp\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
 				\end{itemize}
 			}
 
@@ -298,17 +314,17 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 	\begin{itemize}
 		\item
-			There is already a literal in $\inv\sigmazmi$ where $u$ occurs directly below a $\Phi$-symbol and $\sigma_i$ does not change this.
+			There is already a literal in $\invp\sigmazmi$ where $u$ occurs directly below a $\Phi$-symbol and $\sigma_i$ does not change this.
 			Then clearly \ref{14_1} is the case.
 
 		\item
-			There is a variable $v$ in $\inv\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
-			As then $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\inv\sigmazmi$, which implies that \ref{14_1} is the case.
+			There is a variable $v$ in $\invp\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
+			As then $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{14_1} is the case.
 
 		\item
 			There is a variable $v$ which occurs directly below a $\Phi$-symbol such that $u$ occurs grey in $v\sigma_i$.
 
-			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$ in $\inv\sigmazmi$, there is a position $p$ such that without loss of generality $\lambda\atp = v$ and $u$ occurs grey in $\lambda'\atp$. 
+			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$ in $\invp\sigmazmi$, there is a position $p$ such that without loss of generality $\lambda\atp = v$ and $u$ occurs grey in $\lambda'\atp$. 
 			Note that due to the definition of the unification algorithm, $\lambda$ and $\lambda'$ must coincide on the path to $p$.
 
 			By Proposition \ref{prop:every_lit_in_pi_star}, $\lambda$ and $\lambda'$ occur in $\inv$ irrespective of their coloring.
@@ -317,15 +333,15 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 			\begin{itemize}
 				\item Suppose that $p$ occurs directly below a $\Phi$-symbol.
-					Then as $u$ occurs grey in  $\lambda'\atp$, $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$ and \ref{14_1} is the case.
+					Then as $u$ occurs grey in  $\lambda'\atp$, $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ and \ref{14_1} is the case.
 
 				\item Suppose that $p$ occurs directly below a $\Psi$-symbol.
 					Then $v$ occurs directly below a $\Psi$-symbol in $\lambda\atp$ and clearly \ref{14_2} is the case.
 
 				\item
 					Suppose that $p$ does not occur directly below a colored symbol.
-					Then $p$ does not occur below any colored symbol, hence $u$ is contained in a grey literal in a grey position in $\inv\sigmazmi$. 
-					As $\sigma_i$ is trivial on $u$, this occurrence of $u$ also is present in $\inv\sigmazi$ and hence \ref{14_5} is the case.
+					Then $p$ does not occur below any colored symbol, hence $u$ is contained in a grey literal in a grey position in $\invp\sigmazmi$. 
+					As $\sigma_i$ is trivial on $u$, this occurrence of $u$ also is present in $\invp\sigmazi$ and hence \ref{14_5} is the case.
 					\qedhere
 
 			\end{itemize}
@@ -336,16 +352,16 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 \begin{lemma}
 	\label{lemma:var_below_phi_symbol_paramod}
 	Let $\inference$ be a paramodulation inference in a refutation of $\Gamma\cup\Delta$.
-	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazi$ for $i\vargeq 1$.
+	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazi$ for $i\vargeq 1$.
 	Then at least one of the following statements holds:
 	\begin{enumerate}
 		\item
 			\label{15_1}
-			The variable $u$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$.
+			The variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$.
 
 		\item
 			\label{15_5}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazi$.
+			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\invp\sigmazi$.
 
 		\item 
 			\label{15_2}
@@ -354,7 +370,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 				\renewcommand{\labelitemi}{\textendash}
 				\begin{itemize}
 					\item $u$ occurs grey in $v\sigma_i$ and
-					\item $v$ occurs in $\inv\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
+					\item $v$ occurs in $\invp\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
 				\end{itemize}
 			}
 
@@ -367,19 +383,19 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 
 	\begin{itemize}
 		\item
-			There is already a literal in $\inv\sigmazmi$ where $u$ occurs directly below a $\Phi$-symbol and $\sigma_i$ does not change this.
+			There is already a literal in $\invp\sigmazmi$ where $u$ occurs directly below a $\Phi$-symbol and $\sigma_i$ does not change this.
 			Then \ref{15_1} is the case.
 
 		\item
-			There is a variable $v$ in $\inv\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
-			As then $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\inv\sigmazmi$, which implies that \ref{15_1} is the case.
+			There is a variable $v$ in $\invp\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
+			As then $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{15_1} is the case.
 
 		\item
 			The variable $u$ occurs grey in $r_2$ and $p$ in $E$ is directly below a $\Phi$-symbol. 
-			But then $u$ occurs grey in an equality in $\inv\sigmazmi$ and as $\sigma_i$ is trivial on $u$ also in $\inv\sigmazi$, hence \ref{15_5} holds.
+			But then $u$ occurs grey in an equality in $\invp\sigmazmi$ and as $\sigma_i$ is trivial on $u$ also in $\invp\sigmazi$, hence \ref{15_5} holds.
 
 		\item
-			Suppose that some variable $v$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
+			Suppose that some variable $v$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
 			Then by the definition of the unification algorithm, there exists a position $q$ such that one of $r_1\atq$ and $r\atq$ is $v$ and the other one contains a grey occurrence of $u$.
 
 			We distinguish cases based on the position $q$:
@@ -394,8 +410,8 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 				\item
 					Suppose that $q$ is a grey position.
 					Then \ref{15_5} is the case: 
-					Either $u$ occurs grey in $r_1$ in $\inv\sigmazmi$ and then also in $\inv\sigmazi$, 
-					or otherwise $v$ occurs grey in $r_1$ in $\inv\sigmazmi$, but as $v\sigma_i$ contains $u$ grey, then $u$ occurs grey in the successor of $r_1$ in $\inv\sigmazi$.
+					Either $u$ occurs grey in $r_1$ in $\invp\sigmazmi$ and then also in $\invp\sigmazi$, 
+					or otherwise $v$ occurs grey in $r_1$ in $\invp\sigmazmi$, but as $v\sigma_i$ contains $u$ grey, then $u$ occurs grey in the successor of $r_1$ in $\invp\sigmazi$.
 					\qedhere
 			\end{itemize}
 
@@ -407,8 +423,8 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 \begin{lemma}
 	\label{lemma:col_change}
 	Let $\inference$ be an inference of a resolution refutation of $\Gamma \cup \Delta$.
-	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol in $\inv\sigmazi$.
-	Then $u$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazi$.
+	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol in $\invp\sigmazi$.
+	Then $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazi$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction over the refutation.
@@ -420,19 +436,19 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 	This is because as all clauses are variable-disjoint, no variable can occur $\inv$ both directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol if this was not the case in $\PI^*(C_j) \lor C_j$ for some $j$, for which the lemma by assumption holds.
 	Furthermore, by the definition of $\PI^*$, every literal which occurs in $\PI^*(C_j) \lor C_i$ for some $j$ occurs in $\inv$.
 
-	Hence it remains to show that the lemma holds for $\inv\sigma = \inv\sigma_0\quantifierdots\sigma_m$, which we do by induction over $i$ for $1\varleq i \varleq m$.
-	Suppose that the lemma holds for $\inv\sigmazmi$ and in $\inv\sigmazi$, the variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-term.
+	Hence it remains to show that the lemma holds for $\invp\sigma = \invp\sigma_0\quantifierdots\sigma_m$, which we do by induction over $i$ for $1\varleq i \varleq m$.
+	Suppose that the lemma holds for $\invp\sigmazmi$ and in $\invp\sigmazi$, the variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-term.
 
 	Then by the lemmata~\ref{lemma:var_below_phi_symbol} and \ref{lemma:var_below_phi_symbol_paramod}, we can deduce that one of the following statements holds for $\Omega = \Phi$ as well as $\Omega = \Psi$. We denote case $j$ for $\Omega = \Phi$ by $j^\Phi$ and for $\Omega = \Psi$ by $j^\Psi$.
 
-\begin{enumerate}
+	\begin{enumerate}
 		\item
 			\label{16_1}
-			The variable $u$ occurs directly below a $\Omega$-symbol in $\inv\sigmazmi$.
+			The variable $u$ occurs directly below a $\Omega$-symbol in $\invp\sigmazmi$.
 
 		\item
 			\label{16_4}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\inv\sigmazi$.
+			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\invp\sigmazi$.
 
 		\item 
 			\label{16_2}
@@ -441,18 +457,18 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 				\renewcommand{\labelitemi}{\textendash}
 				\begin{itemize}
 					\item $u$ occurs grey in $v\sigma_i$ and
-					\item $v$ occurs in $\inv\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
+					\item $v$ occurs in $\invp\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
 				\end{itemize}
 			}
 	\end{enumerate}
 
 	If \ref{16_4}$^\Phi$ or \ref{16_4}$^\Psi$ is the case, we clearly are done.
-	On the other hand \ref{16_2}$^\Phi$ or \ref{16_2}$^\Psi$ is the case, then by the induction hypothesis, $v$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazmi$. 
+	On the other hand \ref{16_2}$^\Phi$ or \ref{16_2}$^\Psi$ is the case, then by the induction hypothesis, $v$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$. 
 	As $u$ occurs grey in $v\sigma_i$, we obtain that then, $u$ occurs grey in a grey literal or grey in an equality in $\inv$.
 
 	Hence the only remaining possibility is that both \ref{16_1}$^\Phi$
 	and \ref{16_1}$^\Psi$ hold.
-	But then $u$ occurs directly below a $\Phi$-symbol as well as below a $\Psi$-symbol in $\inv\sigmazmi$ and again by the induction hypothesis, we obtain that $u$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazmi$ and as $\sigma_i$ is trivial on $u$, the same occurrence of $u$ is present in $\inv\sigmazi$.
+	But then $u$ occurs directly below a $\Phi$-symbol as well as below a $\Psi$-symbol in $\invp\sigmazmi$ and again by the induction hypothesis, we obtain that $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$ and as $\sigma_i$ is trivial on $u$, the same occurrence of $u$ is present in $\invp\sigmazi$.
 \end{proof}
 
 
@@ -468,24 +484,24 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 	We suppose that an inference makes use of the clauses $C_1, \dots, C_n$ and that the lemma holds for $\PI^*(C_j) \lor C_j$ for $1\varleq j \varleq n$. 
 	Then the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma)$ as no new terms are introduced in $\inv$ and all literals from $\PI^*(C_j) \lor C_j)$ for $1\varleq j \varleq n$ occur in~$\inv$.
 
-	It remains to show that the lemma holds for $\inv\sigma = \inv \sigma_0 \quantifierdots \sigma_m$, which we do by induction over $i$ for $0 \varleq i \varleq m$.
+	It remains to show that the lemma holds for $\invp\sigma = \invp\sigma_0 \quantifierdots \sigma_m$, which we do by induction over $i$ for $0 \varleq i \varleq m$.
 	We distinguish on the situation under which a unification leads to the term $t\occ{s}$.
 
 	\begin{itemize}
 		\item 
 			Suppose for some variable $u$ that $u\sigma_i$ contains $t\occ{s}$. 
-			Then $u$ is unified with a term which contains $t\occ{s}$ and occurs in $\inv\sigmazmi$.
-			Hence by the induction hypothesis, $s$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazmi$ and ,as $\sigma_i$ does not change this, also in $\inv\sigmazi$.
+			Then $u$ is unified with a term which contains $t\occ{s}$ and occurs in $\invp\sigmazmi$.
+			Hence by the induction hypothesis, $s$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$ and ,as $\sigma_i$ does not change this, also in $\invp\sigmazi$.
 
 		\item 
 			Otherwise there is a variable $u$ which occurs directly below a $\Phi$-symbol and $v\sigma_i$ contains a grey occurrence of $s$.
-			We distinguish based on the occurrences of $u$ in $\inv\sigmazmi$:
+			We distinguish based on the occurrences of $u$ in $\invp\sigmazmi$:
 
 			\begin{itemize}
-				\item Suppose that $u$ occurs in $\inv\sigmazmi$ in grey a grey literal or grey in an equality. Then clearly we are done.
-				\item Suppose that $u$ occurs in $\inv\sigmazmi$ directly below a $\Psi$-symbol.
-					Then by Lemma~\ref{lemma:col_change}, $u$ occurs grey in a grey literal or grey in an equality in $\inv\sigmazmi$, whose successor in $\inv\sigmazi$ is an occurrence of $s$ of the same coloring.
-				\item Suppose that $u$ occurs in $\inv\sigmazmi$ only directly below a $\Psi$-symbol.
+				\item Suppose that $u$ occurs in $\invp\sigmazmi$ in grey a grey literal or grey in an equality. Then clearly we are done.
+				\item Suppose that $u$ occurs in $\invp\sigmazmi$ directly below a $\Psi$-symbol.
+					Then by Lemma~\ref{lemma:col_change}, $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$, whose successor in $\invp\sigmazi$ is an occurrence of $s$ of the same coloring.
+				\item Suppose that $u$ occurs in $\invp\sigmazmi$ only directly below a $\Psi$-symbol.
 					Here, we differentiate between the types of inference of the current induction step:
 
 					\begin{itemize}
@@ -495,7 +511,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 							Note that $\lambda$ and $\lambda'$ agree on the path to $p$, including the predicate symbol..
 
 							Now as by assumption $u$ only occurs directly below a $\Phi$-symbol, so must $s$.
-							But then $s$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$ and we get the result by the induction hypothesis.
+							But then $s$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ and we get the result by the induction hypothesis.
 
 						\item
 							Suppose that the inference of the current induction step is a paramodulation inference.
@@ -642,14 +658,14 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	For the sake of contradiction, suppose that this is the case in the inference creating the clause $C'$. Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
 
 	\begin{itemize}
-			\item 
-				Suppose that $s'$ is lifted due to containing a variable which does not occur in $C'$.
-				Then as $s'$ is a subterm of $t'$ , $t'$ contains this variable as well and therefore is lifted in $\LI(C')$, contradicting the assumption. 
+		\item 
+			Suppose that $s'$ is lifted due to containing a variable which does not occur in $C'$.
+			Then as $s'$ is a subterm of $t'$ , $t'$ contains this variable as well and therefore is lifted in $\LI(C')$, contradicting the assumption. 
 
-			\item
-				Suppose that $s'$ is lifted due to being a ground term which does not occur in $C$.
-				Then $t'$ does not occur in $C'$ either as any occurrence of $t'$ would contain $s'$.
-				Hence $t'$ is lifted in $\LI(C')$, contradicting the assumption.
+		\item
+			Suppose that $s'$ is lifted due to being a ground term which does not occur in $C$.
+			Then $t'$ does not occur in $C'$ either as any occurrence of $t'$ would contain $s'$.
+			Hence $t'$ is lifted in $\LI(C')$, contradicting the assumption.
 
 			\qedhere
 	\end{itemize}
