@@ -726,11 +726,36 @@ OR:
 				Suppose that $s'$ is lifted due to containing a variable which does not occur in $C'$.
 				Then as $s'$ is a subterm of $t'$ , $t'$ contains this variable as well and therefore is lifted in $\LI(C')$, contradicting the assumption. 
 
-				\largered{ICI}
+			\item
+				Suppose that $s'$ is lifted due to being a ground term which does not occur in $C$.
+				Then $t'$ does not occur in $C'$ either as any occurrence of $t'$ would contain $s'$.
+				Hence $t'$ is lifted in $\LI(C')$, contradicting the assumption.
+
 			\qedhere
 	\end{itemize}
 
 \end{proof}
+
+\begin{defi}
+	Alternative, equaivalent definition of $\LI$.
+
+	Let $\LIpre_0(C) = \LIpre(C)$.
+
+	\begin{enumerate}
+		\item
+			Let $Z$ be the set of terms in $\LIpre_i(C)$ for which some lifting conditions holds.
+
+		\item
+			Let $r \in Z$ be such that $r$ is not subterm of any other term in $Z$.
+			If no such $r$ exists, let $\LI(C) = \LIpre_i(C)$.
+
+		\item
+			Let $\LIpre_{i+1}(C)$ be built from $\LIpre{_i}(C)$ such that $r$ is lifted by a fresh lifting variable $z_r'$ and the formula is prefixed by $\forall x_r $ if $r$ is a $\Delta$-term and $\exists y_r$ if $r$ is a $\Gamma$ term.
+
+	\end{enumerate}
+
+
+\end{defi}
 
 \begin{clemma}
 	\label{lemma:grey_lits_all_in_LI}
