@@ -379,7 +379,7 @@ In the following, we abbreviate $\PIstepstarnosigma(\inference, \PI^*(C_1), \dot
 			But then $u$ occurs grey in an equality in $\inv\sigmazmi$ and as $\sigma_i$ is trivial on $u$ also in $\inv\sigmazi$, hence \ref{15_5} holds.
 
 		\item
-			Suppose that some varaible $v$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
+			Suppose that some variable $v$ occurs directly below a $\Phi$-symbol in $\inv\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
 			Then by the definition of the unification algorithm, there exists a position $q$ such that one of $r_1\atq$ and $r\atq$ is $v$ and the other one contains a grey occurrence of $u$.
 
 			We distinguish cases based on the position $q$:
@@ -688,7 +688,8 @@ OR:
 	then $t$ also occurs in a corresponding literal at position $p$ in $\PI(C)$.
 \end{clemma}
 \begin{proof}
-	\mytodo{}
+	Note that $\PI$ and $\LI$ differ only in the lifting conditions of $\LI$.
+	As $t$ however is a colored term and hence not a lifting variable and it occurs in $\LIpre(C)$, the lifting conditions have not become true during the derivation leading to $\LIpre(C)$.
 \end{proof}
 
 \begin{clemma}
@@ -698,7 +699,10 @@ OR:
 	then either $t$ or $z_t$ occurs in a corresponding literal at position $p$ in $\LIpre(C)$.
 \end{clemma}
 \begin{proof}
-	\mytodo{}
+	As pointed out previously, $\PI$ and $\LI$ differ only in the lifting conditions of $\LI$.
+	Suppose that the term in $\LI(C)$ which corresponds to $t$ or some respective predecessor fulfills a lifting condition.
+	Then $z_t$ occurs at the position $p$ in $\LIpre(C)$.
+	Otherwise $t$ occurs at position $p$ in $\LIpre(C)$.
 \end{proof}
 
 \begin{clemma}
@@ -711,7 +715,7 @@ OR:
 \begin{proof}
 	By the construction of $\LI$, this lemma is only violated if the term $s$ or a respective predecessor is lifted due to fulfilling one of the lifting conditions.
 
-	For the sake of constradiction, suppose that this is the case in the inference creating the clause $C'$. Let $s'$ and $t'$ be the respective predcessors of $s$ and $t$ in $C'$
+	For the sake of contradiction, suppose that this is the case in the inference creating the clause $C'$. Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
 
 	\begin{itemize}
 			\item 
@@ -729,7 +733,7 @@ OR:
 \end{proof}
 
 \begin{defi}
-	Alternative, equaivalent definition of $\LI$.
+	Alternative, equivalent definition of $\LI$.
 
 	<insert def for base case>
 
@@ -826,7 +830,7 @@ OR:
 
 		Then $s$ occurs in $\LIpre(C)' \lor C$.
 		Hence by the induction hypothesis, the successor of $\LIpre(C)'$ in $\LI(\pi)$ is enclosed by $n-1$ quantifier alternations.
-		As $s$ and $t$ are of opposite colores, their quantifier type is different and the lifting and quantification of $t$ adds one more quantifier alternation to $\LIpre(C)$. 
+		As $s$ and $t$ are of opposite colors, their quantifier type is different and the lifting and quantification of $t$ adds one more quantifier alternation to $\LIpre(C)$. 
 		Hence the successor of $\LIpre(C)$ in $\LI(\pi)$ is enclosed by $n$ quantifier alternations.
 	}
 
