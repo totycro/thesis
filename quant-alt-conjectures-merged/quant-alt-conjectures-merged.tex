@@ -122,8 +122,6 @@
 
 
 
-\newcommand{\inv}{\ensuremath{\PIstarnosigma(C)\lor C\nosigma}}
-\newcommand{\invp}{\ensuremath{(\inv)}}
 
 \begin{document}
 
@@ -265,6 +263,8 @@ In order to do so, we frequently reason over the stepwise application of the res
 
 \begin{defi}
 	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
+	Furthermore, $\PIstarnosigma(C)$ is an abbreviation of $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m))$.
+
 	Analogously, if $C \equiv D\sigma$, we use $C\nosigma$ to denote\nolinebreak{} $D$.
 \end{defi}
 
@@ -273,11 +273,14 @@ In the context of an inference $\inference$ using the clauses $C_1, \dots, C_m$ 
 	& \PI^*(C) \lor C = \\
 	& \Big(\PIstep^*(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C = \\
 	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigma = \\
-	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigmarange{0}{|\dom(\sigma)|}
+	& \Big(\PIstarnosigma(C)\lor C\nosigma \Big) \sigma = \\
+	& \Big(\PIstarnosigma(C)\lor C\nosigma \Big) \sigmarange{0}{|\dom(\sigma)|}
 \end{align*}
-In the following, we abbreviate
-$\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)$
-by $\inv$.
+
+\newcommand{\inv}{\ensuremath{\PIstarnosigma(C)\lor C\nosigma}}
+\newcommand{\invp}{\ensuremath{(\inv)}}
+
+
 Note that if we are able to show that the application of a substitution $\sigma_i$ to $\invp\sigmazmi$ maintains an invariant and the invariant holds for $\inv$, then it immediately follows that it holds for $\PI^*(C) \lor C$. 
 
 
@@ -336,7 +339,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 					Then as $u$ occurs grey in  $\lambda'\atp$, $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ and \ref{14_1} is the case.
 
 				\item Suppose that $p$ occurs directly below a $\Psi$-symbol.
-					Then $v$ occurs directly below a $\Psi$-symbol in $\lambda\atp$ and clearly \ref{14_2} is the case.
+					Then $v$ occurs directly below a $\Psi$-symbol in $\lambda\atp$ and  \ref{14_2} holds.
 
 				\item
 					Suppose that $p$ does not occur directly below a colored symbol.
