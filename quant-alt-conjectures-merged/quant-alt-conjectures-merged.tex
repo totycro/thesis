@@ -268,12 +268,12 @@ In order to do so, we frequently reason over the stepwise application of the res
 	Analogously, if $C \equiv D\sigma$, we use $C\nosigma$ to denote\nolinebreak{} $D$.
 \end{defi}
 
-In the context of an inference $\inference$ using the clauses $C_1, \dots, C_m$ to infer $C$, it holds that 
+In the context of an inference $\inference$ using the clauses $C_1, \dots, C_m$ to infer $C$, it holds that:
 \begin{align*}
 	& \PI^*(C) \lor C = \\
 	& \Big(\PIstep^*(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C = \\
 	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigma = \\
-	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigmarange{0}{|\dom(\sigma)|} 
+	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigmarange{0}{|\dom(\sigma)|}
 \end{align*}
 In the following, we abbreviate
 $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)$
