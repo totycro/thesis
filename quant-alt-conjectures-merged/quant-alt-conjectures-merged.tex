@@ -278,19 +278,19 @@ In order to do so, we frequently reason over the stepwise application of the res
 	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
 	Furthermore, $\PIstarnosigma(C)$ is an abbreviation of $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m))$.
 
-	Analogously, if $C \equiv D\sigma$, we use $C\nosigma$ to denote\nolinebreak{} $D$.
+	Analogously, if $C \equiv D\sigma$, we use $\nosigma{C}$ to denote\nolinebreak{} $D$.
 \end{defi}
 
 In the context of an inference $\inference$ using the clauses $C_1, \dots, C_m$ to infer $C$, it holds that:
 \begin{align*}
 	& \PI^*(C) \lor C = \\
 	& \Big(\PIstep^*(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C = \\
-	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C\nosigma \Big) \sigma = \\
-	& \Big(\PIstarnosigma(C)\lor C\nosigma \Big) \sigma = \\
-	& \Big(\PIstarnosigma(C)\lor C\nosigma \Big) \sigmarange{0}{|\dom(\sigma)|}
+	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor \nosigma{C} \Big) \sigma = \\
+	& \Big(\PIstarnosigma(C)\lor \nosigma{C} \Big) \sigma = \\
+	& \Big(\PIstarnosigma(C)\lor \nosigma{C} \Big) \sigmarange{0}{|\dom(\sigma)|}
 \end{align*}
 
-\newcommand{\inv}{\ensuremath{\PIstarnosigma(C)\lor C\nosigma}}
+\newcommand{\inv}{\ensuremath{\PIstarnosigma(C)\lor \nosigma{C}}}
 \newcommand{\invp}{\ensuremath{(\inv)}}
 
 
@@ -448,8 +448,10 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 	For the induction step, suppose that an inference makes use of the clauses $C_1, \dots, C_n$ and that the lemma holds for $\PI^*(C_j) \lor C_j$ for $1\varleq j \varleq n$. 
 
-	Note that then, the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma)$.
-	This is because as all clauses are variable-disjoint, no variable can occur $\inv$ both directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol if this was not the case in $\PI^*(C_j) \lor C_j$ for some $j$, for which the lemma by assumption holds.
+	Note that then, the lemma holds for $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor \nosigma{C}) = \inv$.
+	This is because as all clauses are variable-disjoint, 
+	if a variable occurs in $\inv$ both directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol, then this must be the case also in 
+	$\PI^*(C_j) \lor C_j$ for some $j$, for which the lemma by assumption holds.
 	Furthermore, by the definition of $\PI^*$, every literal which occurs in $\PI^*(C_j) \lor C_i$ for some $j$ occurs in $\inv$.
 
 	Hence it remains to show that the lemma holds for $\invp\sigma = \invp\sigma_0\quantifierdots\sigma_m$, which we do by induction over $i$ for $1\varleq i \varleq m$.
@@ -479,26 +481,27 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	\end{enumerate}
 
 	If \ref{16_4}$^\Phi$ or \ref{16_4}$^\Psi$ is the case, we clearly are done.
-	On the other hand \ref{16_2}$^\Phi$ or \ref{16_2}$^\Psi$ is the case, then by the induction hypothesis, $v$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$. 
-	As $u$ occurs grey in $v\sigma_i$, we obtain that then, $u$ occurs grey in a grey literal or grey in an equality in $\inv$.
+	On the other hand if \ref{16_2}$^\Phi$ or \ref{16_2}$^\Psi$ is the case, then by the induction hypothesis, $v$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$. 
+	As $u$ occurs grey in $v\sigma_i$, we obtain that then, $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazi$.
 
 	Hence the only remaining possibility is that both \ref{16_1}$^\Phi$
 	and \ref{16_1}$^\Psi$ hold.
-	But then $u$ occurs directly below a $\Phi$-symbol as well as below a $\Psi$-symbol in $\invp\sigmazmi$ and again by the induction hypothesis, we obtain that $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$ and as $\sigma_i$ is trivial on $u$, the same occurrence of $u$ is present in $\invp\sigmazi$.
+	But then $u$ occurs directly below a $\Phi$-symbol as well as below a $\Psi$-symbol in $\invp\sigmazmi$ and again by the induction hypothesis, we obtain that $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$, and as $\sigma_i$ is trivial on $u$, the same occurrence of $u$ is present in $\invp\sigmazi$.
 \end{proof}
 
 
 \begin{lemma}
 	\label{lemma:subterm_in_grey_lit_star}
-	If $\PI^*(C) \lor C$ for a clause $C$ in a resolution refutation of $\Gamma \cup \Delta$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs grey in a grey literal or grey in an equality in $\PI^*(C) \lor C$.
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs grey in a grey literal or grey in an equality in $\PI^*(C) \lor C$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction over the resolution refutation.
-	As the original clauses each contain symbols of at most one color, the base case is trivially true.
+	As the original clauses each contain symbols of at most one color, the base case is vacuously true.
 
 	The induction step is laid out similarly as in the proof of Lemma~\ref{lemma:col_change}. 
 	We suppose that an inference makes use of the clauses $C_1, \dots, C_n$ and that the lemma holds for $\PI^*(C_j) \lor C_j$ for $1\varleq j \varleq n$. 
-	Then the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor C\nosigma)$ as no new terms are introduced in $\inv$ and all literals from $\PI^*(C_j) \lor C_j)$ for $1\varleq j \varleq n$ occur in~$\inv$.
+	Then the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor \nosigma{C})$ as no new terms are introduced in $\inv$ and all literals from $\PI^*(C_j) \lor C_j)$ for $1\varleq j \varleq n$ occur in~$\inv$.
 
 	It remains to show that the lemma holds for $\invp\sigma = \invp\sigma_0 \quantifierdots \sigma_m$, which we do by induction over $i$ for $0 \varleq i \varleq m$.
 	We distinguish on the situation under which a unification leads to the term $t\occ{s}$.

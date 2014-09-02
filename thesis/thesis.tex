@@ -1,9 +1,27 @@
-\documentclass[
-	a4paper,
-	11pt,
-	oneside,
-	%twoside, openany % no blank page after chapter such that chapters start on odd pages
+\documentclass[%fontsize=11pt,%
+  %landscape,
+  %DIV8, % mehr text pro seite als defaultyyp
+  %DIV10,
+  %DIV=calc,%
+  %article,
+  draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+  %titlepage,
+  numbers=noendperiod,%
+  11pt,%
+  a4paper,%
+  oneside,% apparently, this should stay below some other parameter to have an effect
+  openany,%
+  %]{scrartcl}
 ]{memoir}
+
+
+%\documentclass[%
+%	11pt,%
+%	a4paper,%
+%	oneside,%
+%	openany%
+%	%twoside, openany % no blank page after chapter such that chapters start on odd pages
+%]{memoir}
 
 %\settrimmedsize{0.9\stockheight}{0.9\stockwidth}{*}
 
@@ -51,6 +69,8 @@
 
 
 \input{../latex_header.tex}
+
+\usepackage{amssymb}
 
 % in conflict with beamer:
 \usepackage{paralist} % compactenum
@@ -112,8 +132,8 @@
 \def\proofSkipAmount{ \vskip -0.0em } % NOTE: proofSkipAmount is by default something positive, i.e. having a skip of 0 here makes it less already
 
 
-
 \usepackage{TUINFDA}
+\input{titledata}
 
 \usepackage{url}
 \usepackage{hyperref}					% links in pdf
@@ -131,21 +151,6 @@
 % to use the german charset include cp850 for MS-DOS, ansinew for Windows and latin1 for Linux.
 % \usepackage[latin1]{inputenc}
 
-\thesistitle{Interpolation in First-Order Logic with Equality}
-%\thesissubtitle{Optional Subtitle} % optional
-\thesisdate{TT.MM.JJJJ}
-
-% all titles and designations have to be gender-related!
-\thesisdegree{Diplom-Ingenieur}{Diplom-Ingenieur}
-\thesiscurriculum{Computational Intelligence}{Computational Intelligence} % your study
-\thesisverfassung{Verfasser} % Verfasser
-\thesisauthor{Bernhard Mallinger} % your name
-\thesisauthoraddress{Gassergasse 25/17-18, 1050 Wien} % your address
-\thesismatrikelno{0707663} % your registration number
-
-\thesisbetreins{Ass.Prof.~Stefan Hetzl}
-%\thesisbetrzwei{Dr. Vorname Familienname}
-%\thesisbetrdrei{Dr. Vorname Familienname} % optional
 
 
 % define page numbering styles
@@ -244,14 +249,14 @@
 
 \usepackage{blindtext}
 
-% somewhat of a compromise, still long lines:
-\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
-%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
-%\settypeblocksize{0.64\stockheight}{0.64\stockwidth}{*}
-%\settypeblocksize{0.63\stockheight}{0.63\stockwidth}{*}
-\setlrmargins{*}{*}{1.0}
-\setulmargins{*}{*}{1.4}
-\checkandfixthelayout[nearest]
+%% somewhat of a compromise, still long lines:
+%\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
+%%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
+%%\settypeblocksize{0.64\stockheight}{0.64\stockwidth}{*}
+%%\settypeblocksize{0.63\stockheight}{0.63\stockwidth}{*}
+%\setlrmargins{*}{*}{1.0}
+%\setulmargins{*}{*}{1.4}
+%\checkandfixthelayout[nearest]
 
 \usepackage{mathabx}
 

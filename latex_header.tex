@@ -167,12 +167,22 @@ positioning,fit,calc,decorations.text,shadows,decorations.markings%
 \newcommand{\PIstep}{\PI_{\mathrm{step}}}
 \newcommand{\PIinit}{\PI_{\mathrm{init}}}
 
-\newcommand{\nosigmasym}{\circ}
-\newcommand{\nosigma}{^\nosigmasym}
-\newcommand{\PIstepnosigma}{\PI^{\nosigmasym}_{\mathrm{step}}}
-\newcommand{\PIstepstarnosigma}{\PI^{*\nosigmasym}_{\mathrm{step}}}
+%\newcommand{\nosigmasym}{\circ}
+%\newcommand{\nosigma}{^\nosigmasym}
 
-\newcommand{\PIstarnosigma}{\PI^{*\nosigmasym}}
+%$\newcommand{\Wtilde}[1]{\stackrel{\sim}{\smash{#1}\rule{0pt}{1.1ex}}}
+%\newcommand{\Wtilde}[1]{\stackrel{\sim}{#1}}
+\newcommand{\Wtilde}[1]{\bm\tilde{#1}}
+
+
+\newcommand{\nosigma}[1]{\Wtilde{#1}}
+\newcommand{\PInosigma}{\Wtilde{\PI}}
+
+\newcommand{\PIstepnosigma}{\PInosigma_{\mathrm{step}}}
+\newcommand{\PIstepstarnosigma}{\PInosigma^{*}_{\mathrm{step}}}
+
+%\newcommand{\PIstarnosigma}{\bm\tilde\PI^{*\nosigmasym}}
+\newcommand{\PIstarnosigma}{\PInosigma^{*}}
 
 %\newcommand{\star}{^*}
 
