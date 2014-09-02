@@ -138,6 +138,7 @@
 \begin{document}
 
 
+
 \chapter{ Number of quantifier alternations of extracted interpolants }
 
 In this chapter, we derive lower bounds for the number of quantifier alternations for the extraction procedure in two phases as well as the one in one phase.
@@ -504,22 +505,22 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	Then the lemma holds for $\inv = \PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor \nosigma{C})$ as no new terms are introduced in $\inv$ and all literals from $\PI^*(C_j) \lor C_j)$ for $1\varleq j \varleq n$ occur in~$\inv$.
 
 	It remains to show that the lemma holds for $\invp\sigma = \invp\sigma_0 \quantifierdots \sigma_m$, which we do by induction over $i$ for $0 \varleq i \varleq m$.
-	We distinguish on the situation under which a unification leads to the term $t\occ{s}$.
+	We distinguish based on the situation under which a unification leads to the term $t\occ{s}$.
 
 	\begin{itemize}
 		\item 
 			Suppose for some variable $u$ that $u\sigma_i$ contains $t\occ{s}$. 
-			Then $u$ is unified with a term which contains $t\occ{s}$ and occurs in $\invp\sigmazmi$.
-			Hence by the induction hypothesis, $s$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$ and ,as $\sigma_i$ does not change this, also in $\invp\sigmazi$.
+			Then $u$ is unified with a term which contains $t\occ{s}$ and which occurs in $\invp\sigmazmi$.
+			Hence by the induction hypothesis, $s$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$ and, as $\sigma_i$ does not change this, also in $\invp\sigmazi$.
 
 		\item 
 			Otherwise there is a variable $u$ which occurs directly below a $\Phi$-symbol and $v\sigma_i$ contains a grey occurrence of $s$.
 			We distinguish based on the occurrences of $u$ in $\invp\sigmazmi$:
 
 			\begin{itemize}
-				\item Suppose that $u$ occurs in $\invp\sigmazmi$ in grey a grey literal or grey in an equality. Then clearly we are done.
-				\item Suppose that $u$ occurs in $\invp\sigmazmi$ directly below a $\Psi$-symbol.
-					Then by Lemma~\ref{lemma:col_change}, $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$, whose successor in $\invp\sigmazi$ is an occurrence of $s$ of the same coloring.
+				\item Suppose that $u$ occurs somewhere in $\invp\sigmazmi$ grey in a grey literal or grey in an equality. Then clearly we are done.
+				\item Suppose that $u$ occurs somewhere in $\invp\sigmazmi$ directly below a $\Psi$-symbol.
+					Then by Lemma~\ref{lemma:col_change}, $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$, whose successor in $\invp\sigmazi$ is an occurrence of $s$ of the same coloring. Hence we are done a well.
 				\item Suppose that $u$ occurs in $\invp\sigmazmi$ only directly below a $\Psi$-symbol.
 					Here, we differentiate between the types of inference of the current induction step:
 
@@ -534,7 +535,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 						\item
 							Suppose that the inference of the current induction step is a paramodulation inference.
-							Let it use the the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ to yield $C: (D\lor E\occatp{r_2})\sigma$.
+							Assume it uses the the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ to yield $C: (D\lor E\occatp{r_2})\sigma$.
 
 							As $u$ is affected by $\sigma_i$, it must occur in $r_1$ or $r$. Let $\bhat u$ refer to this occurrence.
 
@@ -542,7 +543,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 								\item
 									Suppose that $\bhat u$ occurs directly below a $\Phi$-colored function symbol. 
 
-									If $\bhat u$ is contained in $r_1$, then $s$ must be contained in $r$ directly below a $\Phi$-symbol as $r_1$ and $r$ are unifiable. We then get the result by the induction hypothesis.
+									If $\bhat u$ is contained in $r_1$, then $s$ must be contained in $r$ directly below a $\Phi$-colored function symbol as $r_1$ and $r$ are unifiable. We then get the result by the induction hypothesis.
 
 									If otherwise $\bhat u$ is contained in $r$, 
 									then there are two possibilities for the occurrence of $s$ in $r_1$:
@@ -594,7 +595,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	For $n=0$, no colored terms occur in $I$ and hence also no quantifiers.
 	Moreover for $n=1$, there are terms of one color which evidently require at least one quantifier.
 
-	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI(C)$.
+	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI(C) \lor C$.
 	We assume without loss of generality that $t$ is a $\Phi$-term.
 	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$ and
 	by Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
@@ -638,6 +639,9 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 
 
 \section{$\LI$}
+
+We now show that the result of Proposition~\ref{prop:color_alt_eq_quant_alt} holds in a very similar way also for $\LI$,
+which we work out in detail in this section.
 
 
 \begin{clemma}
@@ -780,6 +784,13 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 %	\end{itemize}
 
 \largered{conclude by explaining two main results ; describe how to apply result (term $t$ occs in ??)} 
+
+\clearpage
+\begin{thm}
+	<Huang's thm> (this is here only to make the references to it in this document work)
+\label{thm:two_phases}
+\end{thm}
+\clearpage
 
 \section{cruft}
 
