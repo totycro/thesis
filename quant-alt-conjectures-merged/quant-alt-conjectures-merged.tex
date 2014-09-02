@@ -1,4 +1,4 @@
-\documentclass[,%fontsize=11pt,%
+\documentclass[%fontsize=11pt,%
 	%landscape,
 	%DIV8, % mehr text pro seite als defaultyyp
 	%DIV10,
@@ -6,13 +6,15 @@
 	%article,
 	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
 	%titlepage,
-	numbers=noendperiod
-	12pt,
-	a4paper,
+	numbers=noendperiod,%
+	11pt,%
+	a4paper,%
 	oneside,% apparently, this should stay below some other parameter to have an effect
-	openany,
+	openany,%
 	%]{scrartcl}
 ]{memoir}
+
+
 
 
 
@@ -118,6 +120,16 @@
 %\setulmargins{*}{*}{1.4}
 %\checkandfixthelayout[nearest]
 
+%% somewhat of a compromise, still long lines:
+%\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
+%%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
+%%\settypeblocksize{0.64\stockheight}{0.64\stockwidth}{*}
+%%\settypeblocksize{0.63\stockheight}{0.63\stockwidth}{*}
+%\setlrmargins{*}{*}{1.2}
+%\setulmargins{*}{*}{1.4}
+%\checkandfixthelayout[nearest]
+
+
 \counterwithout{section}{chapter}
 
 
@@ -125,7 +137,8 @@
 
 \begin{document}
 
-\chapter{ Number of quantifier alternations of the extracted interpolants }
+
+\chapter{ Number of quantifier alternations of extracted interpolants }
 
 In this chapter, we derive lower bounds for the number of quantifier alternations for the extraction procedure in two phases as well as the one in one phase.
 We arrive at the conclusion that both procedures are equal with respect to this measure and that there is a tight connection between color alternations in terms and quantifier alternations in the interpolant.
@@ -313,7 +326,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	We consider the different situations under which the situation in question is introduced by means of unification: 
+	We consider the different situations under which the situation in question arises:
 
 	\begin{itemize}
 		\item
@@ -322,7 +335,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 		\item
 			There is a variable $v$ in $\invp\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
-			As then $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{14_1} is the case.
+			As $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{14_1} is the case.
 
 		\item
 			There is a variable $v$ which occurs directly below a $\Phi$-symbol such that $u$ occurs grey in $v\sigma_i$.
@@ -382,7 +395,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 \end{lemma}
 \begin{proof}
 	Let  $\inference$ be a paramodulation inference  of the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yielding $C: (D\lor E\occatp{r_2})\sigma$.
-	We consider the different situations under which the situation in question is introduced by means of unification: 
+	We consider the different situations under which the situation in question arises:
 
 	\begin{itemize}
 		\item
@@ -391,7 +404,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 		\item
 			There is a variable $v$ in $\invp\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
-			As then $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{15_1} is the case.
+			As $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{15_1} is the case.
 
 		\item
 			The variable $u$ occurs grey in $r_2$ and $p$ in $E$ is directly below a $\Phi$-symbol. 
@@ -414,7 +427,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 					Suppose that $q$ is a grey position.
 					Then \ref{15_5} is the case: 
 					Either $u$ occurs grey in $r_1$ in $\invp\sigmazmi$ and then also in $\invp\sigmazi$, 
-					or otherwise $v$ occurs grey in $r_1$ in $\invp\sigmazmi$, but as $v\sigma_i$ contains $u$ grey, then $u$ occurs grey in the successor of $r_1$ in $\invp\sigmazi$.
+					or otherwise $v$ occurs grey in $r_1$ in $\invp\sigmazmi$, but as $v\sigma_i$ contains $u$ grey, $u$ occurs grey in of $r_1\sigma_i$ in $\invp\sigmazi$.
 					\qedhere
 			\end{itemize}
 
@@ -762,6 +775,8 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 %			The lifting and quantification of $t$ adds one quantifier to $\LIpre(C)$.
 %			As $s$ is a subterm of $t$, $s$ is lifted and quantified only later than $t$ and the quantifier for $t$ is hence in the scope of the quantifier for $s$.
 %	\end{itemize}
+
+\largered{conclude by explaining two main results ; describe how to apply result (term $t$ occs in ??)} 
 
 \section{cruft}
 
