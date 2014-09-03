@@ -52,7 +52,7 @@ We now present a formal definition of the notion of interpolation:
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \entails \Delta$.
 	Then $\Gamma \cup \lnot \Delta$ is unsatisfiable.
 	By Theorem \ref{thm:interpolation}, there exists a reverse interpolant $I$ for $\Gamma$ and $\lnot \Delta$.
-	As $\lnot \Delta \entails \lnot I$, we get by contraposition that $I \entails \Delta$, hence $I$ is an interpolant for $\Gamma$ and $\Delta$
+	As $\lnot \Delta \entails \lnot I$, we get by contraposition that $I \entails \Delta$, hence $I$ is an interpolant for $\Gamma$ and $\Delta$.
 
 	For the other direction,
 	let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $ \Gamma \cup \Delta$ is unsatisfiable.
@@ -60,7 +60,7 @@ We now present a formal definition of the notion of interpolation:
 	But as thus $ I\entails \lnot \Delta$, we get by contraposition that $\Delta \entails \lnot I$, so $I$ is a reverse interpolant for $\Gamma$ and $\Delta$.
 \end{proof}
 
-As the notions of interpolation and reverse interpolation in this sense coincide, we will in the following only speak of interpolation where  will be clear from the context which definition applies.
+As the notions of interpolation and reverse interpolation in this sense coincide, we will in the following only speak of interpolation where it will be clear from the context which definition applies.
 
 \begin{lemma}
 	\label{lemma:logically_equivalent_sets}
@@ -92,7 +92,7 @@ In the context of interpolation, every non-logical symbol is assigned a color wh
 \begin{defi}[Coloring]
 	\label{def:coloring}
 A non-logical symbol is said to be \defiemph{$\Gamma$ ($\Delta$)-colored} if it only occurs in $\Gamma$ ($\Delta$) and \defiemph{grey} in case it occurs in both $\Gamma$ and $\Delta$. A symbol is \defiemph{colored} if it is $\Gamma$- or $\Delta$-colored.
-A term is \defiemph{$\Phi$-colored} if its outermost symbol is $\Phi$-colored.
+A term is \defiemph{$\Phi$-colored} for $\Phi \in \{\Gamma, \Delta\}$ if its outermost symbol is $\Phi$-colored.
 We also refer to $\Phi$-colored terms simply as \defiemph{$\Phi$-terms}.
 
 %A term $t$ is \defiemph{single-colored} if $t$ is $\Phi$-colored for some $\Phi$ and all colored symbols in $t$ are $\Phi$-colored.
@@ -105,8 +105,26 @@ An occurrence of a colored term $t$ is a maximal colored term if it does not occ
 \end{defi}
 
 We sometimes use $\Phi$ and $\Psi$ as colors to emphasise that the reasoning at hand is valid irrespective of the actual color assignment and solely assuming that $\Phi \neq \Psi$. 
-%both if $\Phi = \Gamma$ and $\Psi = \Delta  $ as well as if $\Phi = \Delta$ and $\Psi = \Delta$.
 
+\begin{exa}
+	Let
+	$\Gamma = \{ P(f(a)) \limpl Q(h(x)), R(h(a), b) \} $
+	and 
+	$\Delta = \{ R(h(b), x) \}$.
+	Then the predicate symbols $P$ and $Q$ are $\Gamma$-colored and $R$ is grey.
+	The function symbol $f$ is $\Gamma$-colored whereas $h$ is grey.
+	Among the constant symbols, $a$ is $\Gamma$-colored and $b$ is grey.
+
+	Note that in $\Gamma$, $a$ occurs twice:
+	In $R(h(a), b)$, it occurs as a maximal colored term since it does not occur as subterm of a larger colored term.
+	It is also a maximal $\Gamma$-term as it is not contained in a $\Gamma$-term.
+	In $P(f(a))$ on the other hand, it does occur in a $\Gamma$-term and hence is neither a maximal colored nor a maximal $\Gamma$-colored occurrence.
+
+	Now consider the term $g(a)$.
+	Here, $a$ occurs as subterm of a colored term and therefore it is not a maximal colored occurrence.
+	It is however a maximal $\Gamma$-colored occurrence, as it is not contained in a $\Gamma$-term. 
+	By the definition of the coloring, terms containing symbols of different colors are not contained in $\Gamma$ or $\Delta$.
+\end{exa}
 
 
 \subsection{Degenerate cases}
@@ -129,5 +147,5 @@ This is justified by the following examples, which are referred to in \cite[Exam
 	In this instance, the interpolant must be either $\bot$ or a formula logically equivalent to $\bot$.
 	By merely swapping $\Gamma$ and $\Delta$, we arrive at a situation where the interpolant must be equivalent to $\top$.
 
-	Note that as we can express a formulas, which are logically equivalent to $\bot$ and $\top$ respectively by employing the equality symbol\footnote{$\forall x\,x\neq x$ and $\forall x\,x=x$ are suitable examples for $\bot$ and $\top$ respectively.}, the symbols for truth and falsity are not strictly required to be regarded as logical symbols for the interpolation theorem to hold.
+	Note that as we can express formulas, which are logically equivalent to $\bot$ and $\top$ respectively by employing the equality symbol\footnote{$\forall x\,x\neq x$ and $\forall x\,x=x$ are suitable examples for $\bot$ and $\top$ respectively.}, the symbols for truth and falsity are not strictly required to be regarded as logical symbols for the interpolation theorem to hold.
 \end{exa}
