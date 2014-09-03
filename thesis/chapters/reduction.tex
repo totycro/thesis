@@ -157,24 +157,27 @@ Note that $\TransAll(A)$ contains neither the equality predicate nor function sy
 %\end{defi}
 
 
-\begin{lemma}~ 
-	\label{lemma:transLang}
-	\begin{compactenum}
-	\item
-		Let $\Phi$ be a set of first-order formulas. Then $\TransAll(\Phi)$ is in the language~$\Trans(\Lang(\Phi))$.
-		\label{lemma:transLang1}
 
-	\item 
-		If $\Psi$ is in the language $\Trans(\LangSym)$, then $\TransInv(\Psi)$ is in the language~$\LangSym$.
-		\label{lemma:transLang2}
-	\end{compactenum}
-\end{lemma}
+\begin{samepage}
+	\begin{lemma}~
+		\label{lemma:transLang}
+		\begin{compactenum}
+		\item
+			Let $\Phi$ be a set of first-order formulas. Then $\TransAll(\Phi)$ is in the language~$\Trans(\Lang(\Phi))$.
+			\label{lemma:transLang1}
+
+		\item 
+			If $\Psi$ is in the language $\Trans(\LangSym)$, then $\TransInv(\Psi)$ is in the language~$\LangSym$.
+			\label{lemma:transLang2}
+		\end{compactenum}
+	\end{lemma}
+\end{samepage}
 
 \begin{prop}
 	\label{prop:transSatEquiv}
 	Let $\Phi$ be a set of first-order formulas.
 	\begin{compactenum}
-		\item If $\Phi$ is satisfiable, then so is $\TransAll(\Phi)$.
+	\item If $\Phi$ is satisfiable, then so is $\TransAll(\Phi)$.
 			\label{prop:transSatEquiv1}
 		\item Let $\LangSym$ be a first-order language and $\Phi$ a set of first-order formulas in the language~$\Trans(\LangSym)$.
 			If $\FAX(\LangSym) \cup \EAX(\LangSym) \cup \Phi $ is satisfiable, then so is $\TransInv(\Phi)$.
@@ -264,8 +267,8 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 	 Then there exists a proof of $\Gamma \proves \Delta$ that does not contain the equality symbol.
 \end{lemma}
 \begin{proof}
-	By the soundness of sequent calculus, we obtain that $\Gamma \entails \Delta$.
-	But as sequent calculus without equality rules is complete for first-order logic without equality, there is a proof $\pi$ in this calculus.
+	By the soundness of sequent calculus, we obtain that $\Gamma \entails A$ for some $A \in \Delta$.
+	But as sequent calculus without equality rules is complete for first-order logic without equality, there is a proof $\pi$ of $\Gamma \proves A$ in this calculus.
 	However $\pi$ is obviously also a proof in sequent calculus with equality rules.
 \end{proof}
 
