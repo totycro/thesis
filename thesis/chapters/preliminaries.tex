@@ -5,14 +5,16 @@ Here, we give all required notations and basic concepts which will be used throu
 
 \subsubsection*{Formulas and language}
 
+We work in classical first-order logic with equality.
 Formulas are usually denoted by $A$ or $B$, constant symbols by $a$, $b$, $c$ or $d$, function symbols by $f$, $g$ or $h$ and variables by $x$, $y$, $z$, $u$, $v$ or $w$.
 
 The language of a first-order formula $A$ is designated by $\Lang(A)$ and contains all predicate, constant and function symbols that occur in $A$.
 For formulas $A_1, \ldots, A_n$, $\Lang(A_1, \ldots, A_n) = \bigcup_{1\varleq i \varleq n} \Lang(A_i)$.
 These are also referred to as the \emph{\mbox{non-logical} symbols} of $A$.
 The \emph{logical symbols} on the other hand include all logical connectives, quantifiers, the equality symbol ($=$) as well as symbols denoting truth ($\top$) and falsity ($\bot$).
-Among the usual symbols for the logical connectives $\land$ (conjunction), $\lor$ (disjunction), $\limpl$ (implication), we use $\semiff$ to indicate logical equivalence and $\liff$ for implication in both direction.
-Syntactic equality is denoted by $\syneq$.
+Among the usual symbols for the logical connectives $\land$ (conjunction), $\lor$ (disjunction), $\limpl$ (implication),
+we use $A \liff B$ as an abbreviation for $(A\limpl B) \land (B\limpl A)$.
+Furthermore, $\semiff$ indicates logical equivalence and syntactic equality is denoted by $\syneq$.
 For a set of formulas $\Phi$, $\lnot \Phi$ denotes $\{\lnot A \mid A \in \Phi\}$.
 
 
@@ -35,7 +37,7 @@ $\varphi\sigma$ denotes a formula or term $\varphi$ where each occurrence of the
 This is done in a capture avoiding manner, i.e.\ if a variable $y$ occurs free in $t$ and $y$ is also bound in $\varphi$ such that a free occurrence of $x$ is in the scope of this quantifier, the bound variable is renamed by a fresh variable.
 
 Unnamed substitution applications are written as $\varphi\subst{x/t}$.
-A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial.
+A substitution $\sigma$ is called trivial on $x$ if $x\sigma = x$. Otherwise it is called non-trivial on $x$.
 
 In some situations, mappings of infinitely many variables to terms are required. We denote such as infinite substitutions.
 
@@ -51,30 +53,24 @@ If $s$ is an instance of $t$, then $t$ is an \defiemph{abstraction} of $s$. Note
 The length of a term or formula $\varphi$ is the number of logical and non-logical symbols in $\varphi$.
 
 For formulas or terms $\varphi$, $\varphi\occurat{s}{p}$ denotes $\varphi$ with an occurrence of $s$ at position $p$.
-$\varphi\occur{s}$ denotes $\varphi$ where the term $s$ occurs on some set of positions $\Phi$. $\varphi\occur{t}$ denotes $\varphi\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasis that the term $s$ does occur in $\varphi$ in some way.
+$\varphi\occur{s}$ denotes $\varphi$ where the term $s$ occurs on some set of positions $\Phi$. $\varphi\occur{t}$ denotes $\varphi\occur{s}$ where on each position in $\Phi$, $s$ has been replaced by $t$. Due to its vagueness, this notation is mostly used in order to emphasize that the term $s$ does occur in $\varphi$ in some way.
 
-The set of free variables of a term, formula or language $\varphi$ is denoted by $\FV(\varphi)$.
+The function $\FV(\cdot)$ returns the set of free variables for terms and formulas.
 Moreover,
-$\FS(\varphi)$ designates the set of function symbols in $\varphi$ and in case of formulas or languages, $\PS(\varphi)$ denotes the set of predicate symbols.
+$\FS(\cdot)$ returns the set of function symbols for terms, formulas and languages and $\PS(\cdot)$ the set of predicate symbols for formulas and languages.
 
 
 \subsubsection*{Models}
 A model $M$ for a first-order language $\LangSym$ is a pair $(\domainofmodel{M}, \interpretation{M})$, where $\domainofmodel{M}$ is the domain and $\interpretation{M}$ the interpretation, which assigns a domain element to every constant symbol, a function $f : \domainofmodel{M}^n \mapsto \domainofmodel{M}$ to every function symbol of arity $n$ and an $n$-ary relation of domain elements to every predicate symbol of arity $n$ in the language $\LangSym$.
 
 For formulas or sets of formulas $\varphi$, we write $M \entails \varphi$ to denote that $\varphi$ holds in $M$.
-For an additional formulas or sets of formulas $\psi$, $\varphi \entails \psi$ holds if for every model $M$ of $\varphi$, it holds that $M \entails \psi$.
- $\varphi$ is said to be \defiemph{satisfiable} if there is a model $M$ such that $M \entails \varphi$
-and \defiemph{consistent} if it is not the case that $\varphi \entails \bot$.
+For an additional formula or sets of formulas $\psi$, $\varphi \entails \psi$ holds if for every model $M$ of $\varphi$, it holds that $M \entails \psi$.
+ $\varphi$ is said to be \defiemph{satisfiable} if there is a model $M$ such that $M \entails \varphi$.
+
 
 For formulas $A$ with $\FV(A) = \{x_1, \dots, x_n\}$ and a model $M$, $M\entails A$ denotes $M \entails \forall x_1 \quantifierdots \forall x_n A$.
 In instances where an explicit assignment $\alpha$ to the free variables is desired,
 we write $M_\alpha \entails A$ 
 to signify that $M$ entails the formula $A$ where the free variable assignment concurs with $\alpha$ and the free variables not assigned by $\alpha$ are universally quantified.
-
-
-
-
-
-
 
 
