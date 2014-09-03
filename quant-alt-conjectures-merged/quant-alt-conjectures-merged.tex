@@ -216,7 +216,7 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 \end{defi}
 Note that this definition of quantifier alternations handles formulas in prenex and non-prenex form.
 
-\section{Occurrence of terms in the interpolant}
+\section{Quantifier alternations in $\PI$}
 
 
 \begin{defi}[$\PI^*$]
@@ -253,23 +253,34 @@ However Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi} allows us to transfer resul
 
 
 \begin{lemma}
-	\label{lemma:grey_lits_all_in_PI}
-	If there is a grey literal $\lambda$ in $\PI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
-	then a successor of $\lambda$ occurs in $\PI(\pi)$.
+	\label{lemma:Ot8Gie7y}
+	Let $\inference$ be an inference of a resolution refutation using the clauses $C_1, \dots, C_n$ which creates the clause $C$.
+	If there is a grey literal $\lambda$ or an equality $s=t$ in $\PI(C_i) \lor C_i$ for $1 \varleq i \varleq n$, 
+	then a successor of $\lambda$ or $s=t$ respectively occurs in $\PIstep(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C$.
 \end{lemma}
 \begin{proof}
 	Immediate by the definition of $\PI$.
 \end{proof}
 
-\begin{lemma}
-	\label{lemma:equalities_all_in_PI}
-	For every equality $s=t$ in $\PI(C) \lor C$ for a clause $C$ in a resolution refutation $\pi$,
-	a successor of $s=t$ occurs in $\PI(\pi)$.
-\end{lemma}
+\begin{corr}
+	\label{lemma:grey_lits_and_eq_all_in_PI}
+	If there is a grey literal $\lambda$ or an equality $s=t$ in $\PI(C) \lor C$ or $\LI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
+	then a successor of $\lambda$ or $s=t$ respectively occurs in $\PI(\pi)$ 
+\end{corr}
 \begin{proof}
-	Equalities in clauses are only removed by means of paramodulation and as $\pi$ derives the empty clause, all equalities are removed eventually.
-	For any paramodulation inference $\inference$ using the equality $s=t$, $\PIstep(\inference, I_1, I_2)$ contains $s=t$. 
+	This is a direct consequence of Lemma~\ref{lemma:Ot8Gie7y}.
 \end{proof}
+
+\begin{corr}
+	\label{lemma:grey_lits_and_eq_all_in_LI}
+	If there is a grey literal $\lambda$ or an equality $s=t$ in $\LI(C) \lor C$ or $\LI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
+	then a successor of $\lambda$ or $s=t$ respectively occurs in $\LI(\pi)$ 
+\end{corr}
+\begin{proof}
+	This is a direct consequence of Lemma~\ref{lemma:Ot8Gie7y}.
+\end{proof}
+
+
 
 
 We now make some considerations in the form of four lemmata about the construction of certain terms in the context of interpolant extraction.
@@ -570,6 +581,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 \end{proof}
 
 \begin{lemma}
+	\largered{ SHOULD SAY IF TERM OCCS IN $\PI^*$, THEN TERM OCCS IN $\PI$ }
 	\label{lemma:subterm_in_grey_lit}
 	Same as \ref{lemma:subterm_in_grey_lit_star} with $\PI$ in place of $\PI^*$.
 \end{lemma}
@@ -599,7 +611,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	We assume without loss of generality that $t$ is a $\Phi$-term.
 	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$ and
 	by Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
-	By Lemma~\ref{lemma:grey_lits_all_in_PI} and Lemma~\ref{lemma:equalities_all_in_PI}, a successor of $s$ occurs in $\PI(\pi)$. Note that as $s$ occurs in a grey position, any successor of $s$ also occurs in a grey position.
+	By Lemma~\ref{lemma:grey_lits_and_eq_all_in_PI}, a successor of $s$ occurs in $\PI(\pi)$. Note that as $s$ occurs in a grey position, any successor of $s$ also occurs in a grey position.
 
 	By the induction hypothesis, the quantification of the lifting variable for $s$ requires $n-1$ alternated quantifiers.
 	As $s$ is a subterm of $t$ and $t$ is lifted, $t$ must be quantified in the scope of the quantification of $s$, and as $t$ and $s$ are of different color, their quantifier type is different. 
@@ -637,12 +649,10 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 \end{exa}
 
 
-
-\section{$\LI$}
+\section{Quantifier alternations in $\LI$}
 
 We now show that the result of Proposition~\ref{prop:color_alt_eq_quant_alt} holds in a very similar way also for $\LI$,
 which we work out in detail in this section.
-
 
 \begin{clemma}
 	\label{lemma:pi_li_1}
@@ -652,20 +662,20 @@ which we work out in detail in this section.
 \end{clemma}
 \begin{proof}
 	Note that $\PI$ and $\LI$ differ only in the lifting conditions of $\LI$.
-	As $t$ however is a colored term and hence not a lifting variable and it occurs in $\LIpre(C)$, the lifting conditions have not become true during the derivation leading to $\LIpre(C)$.
+	As $t$ however is a colored term and not a lifting variable, and it also occurs in $\LIpre(C)$, the lifting conditions are not true for any predecessor of $t$ in $\LIpre(C)$.
 \end{proof}
 
 \begin{clemma}
 	\label{lemma:pi_li_2}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
 	If a maximal colored term $t$ occurs in $\PI(C)$ in a literal $\lambda$ at position $p$, 
-	then either $t$ or $z_t$ occurs in a corresponding literal at position $p$ in $\LIpre(C)$.
+	then either $t$ or $z_{t'}$, where $t'$ is an abstraction of $t$, occurs in a corresponding literal at position $p$ in $\LIpre(C)$.
 \end{clemma}
 \begin{proof}
 	As pointed out previously, $\PI$ and $\LI$ differ only in the lifting conditions of $\LI$.
-	Suppose that the term in $\LI(C)$ which corresponds to $t$ or some respective predecessor fulfills a lifting condition.
-	Then $z_t$ occurs at the position $p$ in $\LIpre(C)$.
-	Otherwise $t$ occurs at position $p$ in $\LIpre(C)$.
+	Suppose that no predecessor of the term in $\LI(C)$ which corresponds to $t$  fulfills a lifting condition.
+	Then $t$ occurs at position $p$ in $\LIpre(C)$.
+	Otherwise $z_{t'}$ occurs at the position $p$ in $\LIpre(C)$, where $t'\tau = t$ for some substitution\nolinebreak{} $\tau$.
 \end{proof}
 
 \begin{clemma}
@@ -679,7 +689,6 @@ which we work out in detail in this section.
 	By the construction of $\LI$, this lemma is only violated if the term $s$ or a respective predecessor is lifted due to fulfilling one of the lifting conditions.
 
 	For the sake of contradiction, suppose that this is the case in the inference creating the clause $C'$. Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
-
 	\begin{itemize}
 		\item 
 			Suppose that $s'$ is lifted due to containing a variable which does not occur in $C'$.
@@ -689,7 +698,6 @@ which we work out in detail in this section.
 			Suppose that $s'$ is lifted due to being a ground term which does not occur in $C$.
 			Then $t'$ does not occur in $C'$ either as any occurrence of $t'$ would contain $s'$.
 			Hence $t'$ is lifted in $\LI(C')$, contradicting the assumption.
-
 			\qedhere
 	\end{itemize}
 
@@ -720,34 +728,14 @@ which we work out in detail in this section.
 
 \end{defi}
 
-\begin{clemma}
-	\label{lemma:grey_lits_all_in_LI}
-	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma \cup \Delta$.
-	Then for any grey literal $\lambda$ in $\LIpre(C) \lor C$, a successor of $\lambda$ occurs in $\LIpre(C') \lor C'$, where $C'$ is a successor of $C$.
-\end{clemma}
+\cbstart
+\begin{lemma}
+	\label{lemma:subterm_of_multicol_term}
+	Let $t$ be a term with $\ca(t)=n$ which occurs grey in a grey literal or grey in an equality $\LIpre(C) \lor C$ for some clause $C$ and let $s$ be a subterm of $t$ with $\ca(s) = n-1$.
+	Then there exists a clause $C'$ which is a successor of $C$ such that respective successors of $t$ and $s$, which are not lifting variables, occur in $\LIpre(C') \lor C'$, and the successor of $t$ in $\LI(C) \lor C$ is a lifting variable.
+\end{lemma}
 \begin{proof}
-	Consider that $\PI$ and $\LI$ coincide besides the lifting conditions of $\LI$. Hence Lemma \ref{lemma:grey_lits_all_in_PI} gives the result.
-\end{proof}
-
-\begin{clemma}
-	\label{lemma:equalities_all_in_LI}
-	Let $C$ be a clause in a resolution refutation $\pi$ of $\Gamma \cup \Delta$.
-	Then for any equality $s=t$ in $\LIpre(C) \lor C$, a successor of $s=t$ occurs in $\LIpre(C') \lor C'$, where $C'$ is a successor of $C$.
-\end{clemma}
-\begin{proof}
-	Consider that $\PI$ and $\LI$ coincide besides the lifting conditions of $\LI$. Hence Lemma \ref{lemma:equalities_all_in_PI} gives the result.
-\end{proof}
-
-\begin{clemma}
-	If a term $t$ with $\ca(t)=n$ occurs grey in a grey literal or grey in an equality $\LIpre(C) \lor C$ for some $C$, then $\LI(\pi)$ has at least $n$ quantifier alternations.
-\end{clemma}
-\begin{proof}
-	We proceed by induction over $n$.
-
-	\mytodo{base case}
-
-	We now turn to the induction step.
-	By the Lemmata~\ref{lemma:grey_lits_all_in_LI} and \ref{lemma:equalities_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
+By Lemma~\ref{lemma:grey_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
 	Let $C'$ be the successor of $C$ such that $\LIpre(C')$ contains a successor of $t$ which is not a lifting variable and $\LI(C')$ contains a successor of $t$ which is a lifting variable.
 	As all colored terms are lifted eventually, such a clause $C'$ must occur.
 
@@ -756,129 +744,44 @@ which we work out in detail in this section.
 	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$.
 	By Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or grey in an equality in $\PI(C')\lor C'$.
 
-	By Lemma~\ref{lemma:pi_li_2}, then either $s$ or $z_s$ occurs in $\LIpre(C')$ at a corresponding literal and position. 
-	As $t$ is not lifted in $\LIpre(C') \lor C'$ and $s$ is a subterm of $t$, by Lemma~\ref{lemma:pi_li_3}, $s$ is also not lifted in $\LIpre(C') \lor C'$.
-
-	We show that if $t$ occurs in $\LIpre(C)$, then the ``successor'' of $\LIpre(C)$ which is contained in $\LI(\pi)$ is enclosed by $n$ alternating quantifiers. 
-
-	%The lifting and quantification of $t$ adds one quantifier to $\LIpre(C)$.
-	Note that as $s$ is a subterm of $t$, $s$ is only lifted and quantified after $t$ (either in this stage or some subsequent one) such that the quantifier for $t$ is in the scope of the quantifier for $s$. 
-
-	Let $i$ be the step where the lifted term in  $\LIpre_i(C)$ is $t$.
-	In $\LIpre_{i+1}(C)$, one quantifier is added in order to quantify the lifting variable for $t$.
-	As $s$ can only be lifted after $t$, $s$ does occur in $\LIpre_{i+1}(C)$ and by the induction hypothesis, $n-1$ alternated quantifiers are still added to $\LIpre_{i+1}(C)$.
-	As $t$ adds another one, we can infer that $t$ causes $\LI(\pi)$ to contain at least $n$ quantifier alternations.
+	By Lemma~\ref{lemma:pi_li_2}, then either $s$ or $z_{s'}$, where $s'$ is an abstraction of $s$, occurs in $\LIpre(C')$ at a corresponding literal and position. 
+	As $t$ is not lifted in $\LIpre(C') \lor C'$ and $s$ is a subterm of $t$, Lemma~\ref{lemma:pi_li_3} proves that $s$ is also not lifted in $\LIpre(C') \lor C'$. Hence the case of $z_{s'}$ is excluded.
 \end{proof}
 
 
-%	\begin{itemize}
-%		\item
-%			Suppose that $s$ is not lifted in this step.
-%			The lifting and quantification of $t$ adds one quantifier to $\LIpre(C)$.
-%			By the induction hypothesis, as $s$ is contained in $\LI(C)$ and hence by construction of $\LIpre$ in $\LIpre(C')$ for every immediate successor $C'$ of $C$, $n-1$ quantifier alternations are added to $\LIpre(C')$.
-%
-%		\item
-%			Suppose that $s$ is lifted in this step.
-%			The lifting and quantification of $t$ adds one quantifier to $\LIpre(C)$.
-%			As $s$ is a subterm of $t$, $s$ is lifted and quantified only later than $t$ and the quantifier for $t$ is hence in the scope of the quantifier for $s$.
-%	\end{itemize}
+\begin{clemma}
+	If a term $t$ with $\ca(t)=n$ occurs grey in a grey literal or grey in an equality $\LIpre(C) \lor C$ for some $C$, then $\LI(\pi)$ has at least $n$ quantifier alternations.
+\end{clemma}
+\begin{proof}
+	We proceed by induction over $n$ to show that the lifting variable, which replace the successor of $t$ in $\LI(\pi)$, is enclosed by $n$ alternating quantifiers.
 
-\largered{conclude by explaining two main results ; describe how to apply result (term $t$ occs in ??)} 
+	For $n=0$, no colored terms occur and hence no lifting variables which induce quantifiers.
+	Moreover, for $n=1$, the interpolant clearly must have at least one quantifier.
 
-\clearpage
+	We now turn to the induction step and suppose that the lemma holds for $n-1$ for $n>1$.
+	By Lemma~\ref{lemma:subterm_of_multicol_term},
+	there exists a clause $C'$ which is a successor of $C$ such that respective successors of $t$ and $s$, which are not lifting variables, occur in $\LIpre(C') \lor C'$, and the successor of $t$ in $\LI(C) \lor C$ is a lifting variable.
+	
+	Note that as $s$ is a subterm of $t$, $s$ is only quantified after $t$ (either in this stage or some subsequent one) such that the quantifier for $t$ is in the scope of the quantifier for $s$. 
+
+	By the induction hypothesis, the quantifier for the lifting variable, which is the successor of $s$ in $\LI(\pi)$, is enclosed by $n-1$ alternating quantifiers in $\LI(\pi)$. 
+	As $s$ and $t$ are of different colors, their quantifier type is different.
+	Since the quantifier for $t$ occurs in the scope of the quantifier for $s$, we get that the lifting variable replacing the successor of $t$ in $\LI(\pi)$ is enclosed by $n$ alternating quantifiers.
+	%The lifting and quantification of $t$ adds one quantifier to $\LIpre(C)$.
+	%Let $i$ be the step where the lifted term in  $\LIpre_i(C)$ is $t$.
+	%In $\LIpre_{i+1}(C)$, one quantifier is added in order to quantify the lifting variable for $t$.
+	%As $s$ can only be lifted after $t$, $s$ does occur in $\LIpre_{i+1}(C)$ and by the induction hypothesis, $n-1$ alternated quantifiers are still added to $\LIpre_{i+1}(C)$.
+	%As $t$ adds another one, we can infer that $t$ causes $\LI(\pi)$ to contain at least $n$ quantifier alternations.
+\end{proof}
+\cbend
+
+
+\mytodo{conclude by explaining two main results ; describe how to apply result (term $t$ occs in ??)} 
+
+\vfill
 \begin{thm}
 	<Huang's thm> (this is here only to make the references to it in this document work)
 \label{thm:two_phases}
 \end{thm}
-\clearpage
-
-\section{cruft}
-
-\subsection{Big picture}
-
-\begin{itemize}
-	\item if max col term $t$ in $\LI(C)$ not lifted, then $t$ also occurs in $\PI(C)$ \circled{1}.
-	\item for every max col term $t$ in $\PI(C)$, either $t$ or $\lifboth{t}$ occurs in $\LI(C)$
-		\circled{2}
-	\item if max col term $t$ in $\LI(C)$ not lifted, then all subterms $s$ of $t$ are not lifted as well.
-		\circled{3}
-	\item Hence: 
-
-		Supp max col $t$ in $\LI(C)$ is lifted in $\LI(C)$ but not in $\LIpre(C)$. \newline
-		Then $t$ also occs in $\PI(C)$ by \circled{1}. \newline
-		Then by that lemma, any subterm $s$ of $t$ occs in $\PI(C)$ grey in grey lit or grey in equality.
-		Hence it occs also in $\LI(C)$, either lifted or not lifted \circled{2} .\newline
-		By \circled{3}, it is not lifted.
-
-		It however will eventually be lifted (cf.\ TODO), so the quantification of $t$ will be in the scope of the quantifier for $s$.
-\end{itemize}
-
-
-{
-	\color{gray}
-	As $t$ is lifted in this step, one quantifier is added.
-	Note that even if $s$ is also lifted in this step, then it is lifted after $t$, or otherwise it is lifted at a later stage.
-
-	Let $\LIpre(C)'$ be the ``formula right after $t$ has been lifted and quantified, but not the remaining ones of this stage''.
-
-	Then $s$ occurs in $\LIpre(C)' \lor C$.
-	Hence by the induction hypothesis, the successor of $\LIpre(C)'$ in $\LI(\pi)$ is enclosed by $n-1$ quantifier alternations.
-	As $s$ and $t$ are of opposite colors, their quantifier type is different and the lifting and quantification of $t$ adds one more quantifier alternation to $\LIpre(C)$. 
-	Hence the successor of $\LIpre(C)$ in $\LI(\pi)$ is enclosed by $n$ quantifier alternations.
-}
-
-{
-	\color{gray}
-
-	\begin{proof}
-		Supp $t$ not lifted in $\LIpre(C)$ but in $\LI(C)$ and $\ca(t) = 1$.
-		Then $t$ is colored and $\LI(C)$ (and $\LI(\pi)$) has one color alternation
-
-		Supp $t$ not lifted in $\LIpre(C)$ but in $\LI(C)$ and $\ca(t) = n$.
-		Then by Lemma~\ref{lemma:pi_li_3}, no subterm of $t$ is lifted.
-		By TODO, the subterm $s$ of $t$ occs in $\LIpre(C)$ and by the argument above is not lifted.
-		By the induction hypothesis, $n-1$ quantifier alternations are added to the ``current lifted interpolant''.
-
-		as $s$ and $t$ of different color, different quantifier.
-		hence the lifting of $t$ adds one quantifier alternation, plus the $n-1$ which come later, so we have at least $n$ in the end.
-	\end{proof}
-}
-
-{
-	\color{gray}
-	\begin{clemma}
-		Let $\pi$ be a refutation of $\Gamma \cup \Delta$ and $C$ a clause in $\pi$.
-		Let $t$ be a term with $n$ color alternations such that $t$ is not a lifting variable.
-		If $t$ occurs in a grey literal or in an equality in $\LIpre(C) \lor C$, then $\LI(\pi)$ contains at least $n$ quantifier alternations.
-	\end{clemma}
-	\begin{proof}
-		ONLY IND STEP FOR NOW: 
-
-		%By Lemma~\ref{lemma:grey_lits_all_in_LI}, a successor of $t$ is contained in $\LI(\pi)$. ???
-
-		By the Lemmata~\ref{lemma:grey_lits_all_in_LI} and \ref{lemma:equalities_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
-		Let $C'$ be the successor of $C$ such that $\LIpre(C')$ contains a successor of $t$ which is not a lifting variable and $\LI(C')$ contains a successor of $t$ which is a lifting variable.
-		As all colored terms are lifted eventually, such a clause $C'$ must occur.
-
-
-		By Lemma~\ref{lemma:pi_li_1}, $t$ occurs at the same position in $\PI(C')$.
-		We assume without loss of generality that $t$ is a $\Phi$-term.
-		Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$.
-		By Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or grey in an equality in $\PI(C')\lor C'$.
-
-		By Lemma~\ref{lemma:pi_li_2}, then either $s$ or $z_s$ occurs in $\LI(C')$ \mytodo{ OR $\LIpre(C')$ } at a corresponding literal and position. 
-		As $t$ is not lifted in $\LIpre(C') \lor C'$ and $s$ is a subterm of $t$, by Lemma~\ref{lemma:pi_li_3}, $s$ is also not lifted in $\LIpre(C') \lor C'$.
-
-		As however $s$ is a colored term which occurs in a grey literal or an equality in $\LIpre(C') \lor C'$, by the induction hypothesis, $\LI(\pi)$ contains at least $n-1$ quantifier alternations. \mytodo{weak!}
-
-		\largered{ OTHER STATEMENT: $n$ col alt $\Ra$ $n$ nested liftings still to come }
-
-	\end{proof}
-}
-
-\mytodo{ show that terms in $\PI(C)$ actually occur in $\LI(C)$, hence $\PI(C)$ and $\LI(C)$ have same quant alts }
 
 \end{document}
-
-
-
