@@ -8,7 +8,7 @@ Due to the simplicity of its rules, it is widely used in the area of automated d
 
 \subsection{Unification}
 
-We first specify the unification algorithm which is vital for resolution calculus.
+We first specify the unification algorithm which is vital for the resolution calculus.
 
 Let $\id$ denote the identity function and $\textbf{fail}$ be returned by $\mgu$ in case the arguments are not unifiable to signify that the $\mgu$ of the given arguments is not defined. We treat constants as $0$-ary functions.
 Let $s$ and $t$ denote terms and $x$ a variable.
@@ -19,13 +19,15 @@ The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l'
 
 
 The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
+\medskip
 
+\begin{adjustwidth}{-1.85em}{0em}
 \noindent
 $
 \mgu(\emptyset) \defeq \id
 $\nopagebreak
 
-\newcommand{\aatahfdgasdfg}{.4\textwidth}
+\newcommand{\aatahfdgasdfg}{.44\textwidth}
 \noindent
 $
 \mbox{$\mgu(\{t\} \cup T)$} \defeq
@@ -38,7 +40,11 @@ $
 	\mgu(T) 							& \text{if $t=(s, s)$} \\
 \end{cases}
 $
+\end{adjustwidth}
 \end{defi}
+
+Note that despite the nondeterminism inherent in this definition, it is unique up to renaming of variables.
+See \cite{BaaderSnyderHandbook00} for a detailed discussion of unification.
 
 \subsection{Definition of the calculus}
 
@@ -100,7 +106,9 @@ Optional labels for clauses precede the clause and are separated by a colon.
 	A resolution refutation is a \defiemph{tree refutation} if every clause is used at most once.
 \end{defi}
 
-The following lemma shows that the restriction to tree refutations does not restrict the calculus given that we allow multisets as initial clause sets.
+The following lemma shows that the restriction to tree refutations does not restrict the calculus given that we allow multiple occurrences of the clauses of the initial clause sets.
+%multisets as initial clause sets.
+
 \begin{lemma}
 	\label{lemma:bin_tree_deduction}
 	Every resolution refutation can be transformed into a tree refutation.
@@ -130,7 +138,7 @@ In order to apply resolution to arbitrary first-order formulas, they have to be 
 This usually makes use of intermediate normal forms which are defined as follows:
 
 \begin{defi}
-	A formula is in \defiemph{Negation Normal Form (NNF)} if negations only occur directly before of atoms.
+	occurring in the formula A formula is in \defiemph{Negation Normal Form (NNF)} if negations only occur directly before atoms and the only other connectives occurring in the formula are conjunction and disjunction.
 	A formula is in \defiemph{Conjunctive Normal Form (CNF)} if it is a conjunction of disjunctions of literals.
 \end{defi}
 
@@ -147,7 +155,7 @@ Step \ref{step_nnf_trans} can be achieved by solely pushing the negation inwards
 As this transformation yields logically equivalent formulas without affecting the language, by Lemma \ref{lemma:logically_equivalent_sets}, the set of interpolants remains unchanged.
 Step \ref{step_skolem_trans} and \ref{step_cnf_trans} on the other hand do not produce logically equivalent formulas since they introduce new symbols.
 In this section, we will show that they nonetheless do preserve the set of interpolants.
-This fact is vital for the use of resolution-based methods for interpolant computation of arbitrary formulas.
+This fact is vital for the use of resolution-based methods for the computation of interpolants of arbitrary formulas.
 
 
 \subsubsection{Interpolation and Skolemisation}
@@ -157,13 +165,14 @@ Skolemisation is a procedure for replacing existential quantifiers by Skolem ter
 \begin{defi}
 	Let $V_{\exists x}$ be the set of universally bound variables whose scope includes
 	the occurrence of $\exists x$ in a formula.
-	The skolemisation of a formula $A$ in NNF, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by a term $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
+	The Skolemisation of a formula $A$ in NNF, denoted by $\sk(A)$, is the result of replacing every occurrence of an existential quantifier $\exists x$ in $A$ by a term $f(y_1, \ldots, y_n)$ where $f$ is a new Skolem function symbol and $V_{\exists x} = \{y_1, \ldots, y_n\}$.
 	In case $V_{\exists x}$ is empty, the occurrence of $\exists x$ is replaced by a new Skolem constant symbol $c$.
 
-	For a set of formulas $\Phi$, the skolemisation $\sk(\Phi)$ is defined to be $\{ \sk(A) \mid A \in\nolinebreak \Phi \}$.
+	For a set of formulas $\Phi$, the Skolemisation $\sk(\Phi)$ is defined to be $\{ \sk(A) \mid A \in\nolinebreak \Phi \}$.
 \end{defi}
 
-Note that due to the introduction of Skolem symbols, it is not the case that $\Phi \semiff \sk(\Phi)$.
+Note that Skolemisation has the property that $\Phi$ and $\sk(\Phi)$ are equisatisfiable for any set of formulas $\Phi$, but due to the introduction of Skolem symbols, it is in general not the case that $\Phi \semiff \sk(\Phi)$.
+In the context of interpolation, we can show the following:
 
 \begin{prop}
 	\label{prop:sk_interpolant}
@@ -184,8 +193,8 @@ Note that due to the introduction of Skolem symbols, it is not the case that $\P
 
 	We conclude the proof by showing that $\Phi \entails A$ iff $\sk(\Phi) \entails A$ for $\Phi \in \{\Gamma, \Delta\}$ and $A \in \{I, \lnot I\}$.
 
-	Suppose that for a model that $M \entails \sk(\Phi)$ and $\Phi \entails A$.
-	Note that the interpretation of the skolem symbols of $\sk(\Phi)$ in $M$ presents witnesses for the corresponding existential quantifiers in $\Phi$.
+	Let $M$ be a model such that $M \entails \sk(\Phi)$ and suppose that $\Phi \entails A$.
+	Note that the interpretation of the Skolem symbols of $\sk(\Phi)$ in $M$ presents witnesses for the corresponding existential quantifiers in $\Phi$.
 	Hence $M \entails \Phi$ and consequently $M\entails A$.
 
 	On the other hand, suppose that $M \entails \Phi$ and $\sk(\Phi) \entails A$.
@@ -199,7 +208,7 @@ Note that due to the introduction of Skolem symbols, it is not the case that $\P
 \subsubsection{Interpolation and structure-preserving Normal Form Transformation}
 
 In the following, we describe a common method for transforming a formula $A$ without existential quantifiers into CNF while preserving its structure.
-Note that the restriction to formulas without existential quantifiers can easily be established for arbitrary formulas by means of skolemisation and therefore does not limit the applicability of this procedure.
+Note that the restriction to formulas without existential quantifiers can easily be established for arbitrary formulas by means of Skolemisation and therefore does not limit the applicability of this procedure.
 
 In the following, we use the notational convention that $\{\bar y\} \cup \{\bar z\} = \{\bar x\}$ expressing the intuition that the free variables $\bar x$ of a formula $B$ are comprised of the not necessarily disjoint free variables  $\bar y$ and $\bar z$ of $B$'s direct subformulas.
 
@@ -342,15 +351,15 @@ We continue by working out the logical relations of formulas and their image und
 
 \begin{lemma}
 	\label{lemma:definitional}
-	Let $A$ be a formula and $\Phi$ a set of formulas without existential quantifiers with such that $\Lang(A) \subseteq \Lang(\Phi)$.
+	Let $A$ be a formula and $\Phi$ a set of formulas without existential quantifiers such that $\Lang(A) \subseteq \Lang(\Phi)$.
 	Then $\Phi \entails A$ if and only if $\delta(\Phi) \entails A$.
 \end{lemma}
 \begin{proof}
-	If $\Phi \entails A$, then $\Phi \cup \{A\}$ is unsatisfiable and thus by the Compactness Theorem,
-	there exists a finite $\Phi' \subseteq \Phi$ such that $\Phi' \cup \{A\}$ is unsatisfiable, or in other words $\Phi' \entails A$.
+	If $\Phi \entails A$, then $\Phi \cup \{\lnot A\}$ is unsatisfiable and thus by the Compactness Theorem,
+	there exists a finite $\Phi' \subseteq \Phi$ such that $\Phi' \cup \{\lnot A\}$ is unsatisfiable, or in other words $\Phi' \entails A$.
 	Extend $\Phi'$ such that $\Lang(A) \subseteq \Lang(\Phi')$.
 	Let $B = \bigwedge_{C\in \Phi'} C$.
-	We show that $B \entails A$ if and only if $\delta(B) \entails A$ by induction on the structure of $B$.
+	We show that $B \entails A$ if and only if $\delta(B) \entails A$ by induction on the structure of\nolinebreak{} $B$.
 
 	For the if-direction, assume that $\delta(B) \entails A$ and let $M$ be a model 
 	such that the $\Lang(B)$-reduct of $M$, $M|_{\Lang(B)}$, is a model of $B$.

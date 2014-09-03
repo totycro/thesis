@@ -4,8 +4,8 @@
 \label{sec:beth}
 
 In this section, we illustrate the interpolation theorem by presenting Beth's definability theorem, which admits a straightforward proof by means of the interpolation theorem. 
-The definability theorem deals with definitions of predicates by means of formulas and bridges the gap between implicit definitions, where predicates are defined by its use, and explicit definitions, which define a formula by means of another formula, by even showing their equivalence.
-This is given significance by the circumstance that implicit definitions occur in mathematics, but are by this theorem in no sense weaker than explicit definitions.
+The definability theorem deals with definitions of predicates by means of formulas and bridges the gap between implicit definitions, where predicates are defined by its use, and explicit definitions, which define a predicate by means of another formula, by even showing their equivalence.
+This is given significance by the circumstance that implicit definitions occur in mathematics, but by this theorem do not have less expressive power than explicit definitions.
 
 Its original publication in \cite{beth1953} precedes Craig's papers on interpolation (\cite{Craig57linear,Craig57three}) by four years and relies on a direct proof.
  
@@ -27,14 +27,14 @@ Note that the definition of implicit definitions is essentially second-order
 and 
 can be expressed by the second-order sentence
 %\[ \forall P\,\forall P' \left(  \left(\bigwedge_{\varphi \in \Gamma^*_P \cup \Gamma^*_{P'}} \varphi \right) \limpl P=P'\right),\] 
-\begin{samepage}
+%\begin{samepage}
 \[ \forall P\,\forall P' \left(  \left(\Gamma^*_P \land \Gamma^*_{P'} \right) \limpl P=P'\right),\] 
 where $\Gamma^*_P$ and $\Gamma^*_{P'}$ are conjunctions of the formulas of 
 respective reductions of $\Gamma_P$ and $\Gamma_{P'}$ 
 to finite sets, which exist by the compactness theorem.
 %by reducing $\Gamma_P$ and $\Gamma_{P'}$ to finite sets $\Gamma^*_P$ and $\Gamma^*_{P'}$ by a suitable application of the compactness theorem
 % cite chang/keisler page 324
-\end{samepage}
+%\end{samepage}
 
 \begin{thm}[Beth's definability theorem]
 	\label{thm:beth}
@@ -67,12 +67,15 @@ to finite sets, which exist by the compactness theorem.
 	such that
 	$\Gamma_P \cup \{P(y_1, \dots, y_n)\} \entails \chi$ and
 	$\chi \entails \Gamma^*_{P'} \limpl  P'(y_1, \dots, y_n)$,
-	while additionally $\Lang(\chi) = \Lang(\Gamma_P) \cap \Lang(\Gamma_{P'})$. This implies that neither $P$ nor $P'$ occur in\nolinebreak{} $\chi$.
+	while additionally $\Lang(\chi) = \Lang(\Gamma_P) \cap \Lang(\Gamma_{P'})$.
+	This implies that neither $P$ nor $P'$ occur in\nolinebreak{} $\chi$.
+	By interpreting the free variables as contants for the purposes of the application of the interpolation theorem, we can also ensure that the only free variables in $\chi$ are $y_1, \dots, y_n$. 
+
 
 	Now we apply the deduction theorem another time and get that
 	\markA{} $\Gamma_P \entails P(y_1, \dots, y_n) \limpl \chi$ and
 	$\Gamma^*_{P'} \entails \chi \limpl  P'(y_1, \dots, y_n)$.
-	As $\Gamma^*_{P'}$ implies $\Gamma_{P'}$, we also have that
+	As $\Gamma_{P'}$ implies $\Gamma^*_{P'}$, we also have that
 	$\Gamma_{P'} \entails \chi \limpl  P'(y_1, \dots, y_n)$.
 	Since $P$ does not occur in this entailment, it remains valid if we replace every occurrence of the symbol $P'$ by $P$
 	and obtain that

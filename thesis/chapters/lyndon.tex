@@ -5,7 +5,7 @@ After Craig's initial result, several stronger versions of the theorem have been
 \cite{Craig57three} can already be counted among those,
 as it defines interpolants equivalently to our Definition~\ref{def:interpolant}, 
 whereas the first publication in \cite{Craig57linear} restricts interpolants only with regard to their predicate symbols, but allows non-common function and constant symbols to occur in it.
-This is relevant as some later results on the interpolation theorem are only based on \cite{Craig57linear}, which in many cases is not to be understood as proper restriction of the result.
+%This is relevant as some later results on the interpolation theorem are only based on \cite{Craig57linear}, which in many cases is not to be understood as proper restriction of the result.
 
 %\hl{in lit, first version is used sometimes (\cite{lyndon59}, \cite{Henkin63})} 
 
@@ -38,12 +38,12 @@ It is however not possible to give an restriction on the polarity of the occurre
 
 \begin{exa}[Cf.\ {\cite[p.\ 92]{chang1990model}}]
 	Let $\Gamma = \{ \exists x ( x = c \land \lnot P(x)) \}$ and $\Delta = \{ \lnot P(c) \}$.
-	Here, the constant $c$ occurs positively in $\Gamma$ and negatively in $\Delta$, but must occur in any interpolant.
+	Here, the constant $c$ occurs only positively in $\Gamma$ and only negatively in $\Delta$, but must occur in any interpolant.
 \end{exa}
 
-Since we regard the equality symbol as a logical symbol, Theorem~\ref{thm:lyndon} does not apply to it.
+Since we regard the equality symbol as a logical symbol, condition \ref{int_lyndon_3} of Theorem~\ref{thm:lyndon} does not apply to it.
 Nonetheless
-Oberschelp proofs in \cite{oberschelp68} that a slightly modified restriction on the polarity of the occurrences of the equality symbol in interpolants is feasible:
+Oberschelp proves in \cite{oberschelp68} that a slightly modified restriction on the polarity of the occurrences of the equality symbol in interpolants is feasible:
 
 \begin{thm}[Oberschelp]
 	\label{thm:oberschelp}
@@ -55,7 +55,7 @@ Oberschelp proofs in \cite{oberschelp68} that a slightly modified restriction on
 		\item 
 			The equality symbol occurs positively in $I$ only if it occurs positively in $\Gamma$.
 		\item
-			The equality symbol occurs negatively in $I$ only if it occurs negatively in $\Delta$.
+			The equality symbol occurs negatively in $I$ only if it occurs negatively in\nolinebreak{} $\Delta$.
 	\end{enumerate}
 \end{thm}
 
