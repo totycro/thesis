@@ -338,6 +338,51 @@
 
 ~
 
+\e{703 -- in $\LI$, term does not actually occur as it is lifted due to containing single var}
+
+$\LI$:
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ Q(g(x, y_1)) \lor P(x) }}
+	\AxiomCm{ \p{ \lnot Q(z)) }}
+	\BinaryInfCm{ P(x) \mid Q(g(x, y_1)) }
+	\noLine
+	\UnaryInfCm{ P(x) \mid \forall z_{g(x, y_1)} Q(z_{g(x, y_1)}) }
+
+	\AxiomCm{ \p{ \lnot P(f(u, y_2)) \lor P(u) }}
+
+	\BinaryInfCm{ P(u) \mid \forall z_{g(x, y)} Q(z_{g(x, y_1)}) \dots P(f(u, y_2)) }
+	\noLine
+	\UnaryInfCm{ P(u) \mid \exists z_{f(u, y_2)} \Big( \forall z_{g(x, y)} Q(z_{g(x, y_1)}) \dots P(z_{f(u, y_2)}) \Big) }
+
+	\AxiomCm{ \sig{ \lnot P(a) } }
+
+	\BinaryInfCm{ \square \mid \exists z_{f(u, y_2)} \Big( \forall z_{g(x, y)} Q(z_{g(x, y_1)}) \dots P(z_{f(u, y_2)})  \Big) \dots P(a) }
+	\noLine
+	\UnaryInfCm{ \square \mid \forall z_a \Big( \exists z_{f(u, y_2)} \Big( \forall z_{g(x, y)} Q(z_{g(x, y_1)}) \dots P(z_{f(u, y_2)})  \Big) \dots P(z_a) \Big)}
+
+\end{prooftree}
+
+corresponding $\PI$:
+
+\begin{prooftree}
+	\AxiomCm{ \sig{ Q(g(x, y_1)) \lor P(x) }}
+	\AxiomCm{ \p{ \lnot Q(z)) }}
+	\BinaryInfCm{ P(x) \mid Q(g(x, y_1)) }
+
+	\AxiomCm{ \p{ \lnot P(f(u, y_2)) \lor P(u) }}
+
+	\BinaryInfCm{ P(u) \mid Q( g(f(u, y_2), y_1)) \dots P(f(u, y_2)) }
+
+	\AxiomCm{ \sig{ \lnot P(a) } }
+
+	\BinaryInfCm{ \square \mid Q( g(f(a, y_2), y_1)) \dots P(f(a, y_2)) \dots P(a)}
+	\noLine
+	\UnaryInfCm{ \square \mid \forall z_a \exists z_{f(a, y_2)} \forall z_{g(f(a, y_2), y_1)} \Big( Q( z_{g(f(a, y_2), y_1)}) \dots P(z_{f(a, y_2)}) \dots P(z_a)\Big)}
+
+
+\end{prooftree}
+
 
 
 \end{document}

@@ -244,7 +244,7 @@ However Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi} allows us to transfer resul
 \begin{lemma}
 	\label{lemma:grey_lits_of_pi_star_in_pi}
 	For every clause $C$ of a resolution refutation,
-	every grey literal, which occurs in $\PI^*(C)$, also occurs in $\PI(C)$.
+	every grey literal and equality, which occurs in $\PI^*(C)$, also occurs in $\PI(C)$.
 \end{lemma}
 \begin{proof}
 	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
@@ -502,13 +502,17 @@ Note that if we are able to show that the application of a substitution $\sigma_
 \end{proof}
 
 
+
 \begin{lemma}
-	\label{lemma:subterm_in_grey_lit_star}
+	\label{lemma:subterm_in_grey_lit}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs grey in a grey literal or grey in an equality in $\PI^*(C) \lor C$.
+	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs grey in a grey literal or grey in an equality in $\PI(C) \lor C$.
 \end{lemma}
 \begin{proof}
-	We proceed by induction over the resolution refutation.
+	Note that it suffices to show that the desired term occurs in a grey literal or equality in $\PI^*(C) \lor C$
+	since by Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi}, all grey literals and equalities of $\PI^*(C)$ also occur in $\PI(C)$.
+	We do so by induction over the resolution refutation.
+	
 	As the original clauses each contain symbols of at most one color, the base case is vacuously true.
 
 	The induction step is laid out similarly as in the proof of Lemma~\ref{lemma:col_change}. 
@@ -578,26 +582,16 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 	\end{itemize}
 
-\end{proof}
 
-\begin{lemma}
-	\largered{ SHOULD SAY IF TERM OCCS IN $\PI^*$, THEN TERM OCCS IN $\PI$ }
-	\label{lemma:subterm_in_grey_lit}
-	Same as \ref{lemma:subterm_in_grey_lit_star} with $\PI$ in place of $\PI^*$.
-\end{lemma}
-\begin{proof}
-	Note that $\PI$ and $\PI^*$ only differ with respect to colored literals.
-	Let $C$ be a clause of a resolution refutation of $\Gamma \cup \Delta$.
-	As the literals occurring in $\PI(C)$ are a subset of the literals occurring in $\PI^*(C)$, the lemma prerequisites hold true only for terms for which they also hold in $\PI^*(C)$.
-
-	Therefore we can deduce that if a maximal colored $\Phi$-term $t\occ{s}$ containing a maximal $\Psi$-colored term $s$ occurs in $\PI(C)\lor C$, then $t\occ{s}$ also occurs in $\PI^*(C) \lor C$ and by Lemma~\ref{lemma:subterm_in_grey_lit_star},
-	the term $s$ occurs grey in a grey literal or grey in an equality in $\PI^*(C) \lor C$.
-	However by Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi}, all grey literals and equalities of $\PI^*(C)$ also occur in $\PI(C)$.
+	%Let $C$ be a clause of a resolution refutation of $\Gamma \cup \Delta$.
+	%As the literals occurring in $\PI(C)$ are a subset of the literals occurring in $\PI^*(C)$, the lemma prerequisites hold true only for terms for which they also hold in $\PI^*(C)$.
+	%Therefore we can deduce that if a maximal colored $\Phi$-term $t\occ{s}$ containing a maximal $\Psi$-colored term $s$ occurs in $\PI(C)\lor C$, then $t\occ{s}$ also occurs in $\PI^*(C) \lor C$ and by Lemma~\ref{lemma:subterm_in_grey_lit_star},
+	%the term $s$ occurs grey in a grey literal or grey in an equality in $\PI^*(C) \lor C$.
 \end{proof}
 
 \begin{lemma}
 	\label{lemma:col_alt_in_grey_lit_then_quant_alt}
-	If a term with $n$ color alternations occurs in a grey literal or in an equality in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
+	If a term with $n$ color alternations occurs in a grey literal or in an equality in $\PI^*(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
 \end{lemma}
 \begin{proof}
 	We perform an induction on $n$
@@ -607,7 +601,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	For $n=0$, no colored terms occur in $I$ and hence also no quantifiers.
 	Moreover for $n=1$, there are terms of one color which evidently require at least one quantifier.
 
-	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI(C) \lor C$.
+	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI^*(C) \lor C$.
 	We assume without loss of generality that $t$ is a $\Phi$-term.
 	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$ and
 	by Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
@@ -620,7 +614,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 \begin{prop}
 	\label{prop:color_alt_eq_quant_alt}
-	If a term with $n$ color alternations occurs in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n-1$ quantifier alternations.
+	If a term with $n$ color alternations occurs in $\PI^*(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n-1$ quantifier alternations.
 \end{prop}
 \begin{proof}
 	By Lemma~\ref{lemma:subterm_in_grey_lit}, a term with $n-1$ color alternations occurs in a grey literal or an equality in $\PI(C) \lor C$.
@@ -777,6 +771,18 @@ By Lemma~\ref{lemma:grey_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\
 
 
 \mytodo{conclude by explaining two main results ; describe how to apply result (term $t$ occs in ??)} 
+
+\begin{clemma}
+	need term which exist initially, and with all substs applied has max color alternations
+
+	note that there is no term in PI, LI, or anywhere, with more alternations
+
+	this term does occur in $\PI^*$
+
+	hence a term with one less col alt occs grey in $\PI^*$, hence also in $\PI$. (then the usual)
+
+	however this term may not actually occur in $\LI$ (cf.\ 703)
+\end{clemma}
 
 \vfill
 \begin{thm}
