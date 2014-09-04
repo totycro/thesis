@@ -8,7 +8,7 @@ This method is due to Craig (\cite{Craig57linear,Craig57three}).
 In order to simplify notation, we shall consider constant symbols to be function symbols of arity $0$ in this section.
 The general layout of this approach is the following:
 From two sets $\Gamma$ and $\Delta$, where $\Gamma \cup \Delta$ is unsatisfiable, we compute two sets $\Gamma'$ and $\Delta'$ which do not make use of equality but simulate the effects of equality in $\Gamma$ and $\Delta$ via axioms.
-In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that the behaviour of these function-representing predicates is compatible to the one of actual functions.
+In the process of this transformation, also function symbols are replaced by predicate symbols with appropriate axioms to make sure that the behavior of these function-representing predicates is compatible to the one of actual functions.
 Now an interpolant for $\Gamma'$ and $\Delta'$ can be derived using an algorithm that is only capable of handling predicate symbols as all other non-logical symbols have been removed.
 Since the additional axioms ensure that the newly added predicate symbols mimic equality and functions respectively, we will see that the occurrences of these predicates in the interpolant can be translated back to occurrences of equality and function symbols in first-order logic with equality in the language of $\Gamma$ and $\Delta$, thereby yielding the originally desired interpolant.
 
@@ -25,7 +25,7 @@ First, we define axioms in a language with fresh symbols which allows for simula
 \end{defi}
 
 \begin{defi}[Equality and function axioms]
-	For a first-order language $\LangSym$ we define the following axions in $\Trans(\LangSym)$:\nopagebreak
+	For a first-order language $\LangSym$ we define the following axioms in $\Trans(\LangSym)$:\nopagebreak
 	\begin{align*}
 		\FAX(\LangSym) \defeq{}& \smashoperator{\bigcup_{f \in \FS(\LangSym)}}  \forall \bar x \exists y (F_f(\bar x, y) \land (\forall z (F_f(\bar x, z) \limpl E(y, z)))) \\
 %		\EAX(A) \defeq{} & \forall x \; x=x~\land  \\
