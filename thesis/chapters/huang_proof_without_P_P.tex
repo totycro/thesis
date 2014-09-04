@@ -101,7 +101,7 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 	\end{indproof}
 \end{defi}
 
-For an illustration of the application of $\PI$ to a resolution refuation, see Example~\ref{exa:two_phase}
+For an illustration of the application of $\PI$ to a resolution refutation, see Example~\ref{exa:two_phase}
 
 \begin{remark}
 	The control flow of the procedure $\PI$ is predominantly determined by the coloring of literals.
@@ -621,22 +621,30 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 
 \newcommand{\primex}[1]{\ensuremath{\bhat{#1}}}
 
+In the following, additionally to $\Gamma$ and $\Delta$, we consider the sets $\primex{\Gamma}$ and $\primex{\Delta}$ such that $\primex{\Gamma}$ comprises the clauses of $\Delta$ and $\primex{\Gamma}$ comprises the clauses of $\Gamma$. 
+Then for a clause $C$ in $\Gamma$ or $\Delta$, we denote by $\primex C$ the according clause in $\primex \Delta$ or $\primex \Gamma$ respectively.
+In the context of clauses in $\primex \Gamma$ and $\primex \Delta$, the procedures $\PI$, $\PIinit$ and $\PIstep$ are to be read as being defined with respect to $\primex \Gamma$ and $\primex \Delta$.
+
+
+
 \begin{lemma}
 	\label{lemma:symmetry_base}
-	Let $C$ be a clause in $\Gamma \cup \Delta$ and $\primex C$ the same clause in $\primex\Gamma\cup \primex\Delta$ such that $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	Let $C$ be a clause in $\Gamma \cup \Delta$.
 	Then $\PIinit(C) \semiff \lnot \PIinit(\primex C)$. 
 \end{lemma}
 \begin{proof}
-	\[
+	\begin{adjustwidth}{-1em}{}
+		\[
 		\PIinit(C) =
 	\begin{cases} \top & \text{ if $C \in \Delta$} \\ \bot & \text{ if $C \in \Gamma$}\end{cases}
 	\spam= \begin{cases} \top & \text{ if $\primex C \in \primex\Gamma$} \\ \bot & \text{ if $\primex C \in \primex\Delta$}\end{cases}\\
 		\spam =
-	 \begin{cases} \lnot \bot & \text{ if $\primex C \in \primex\Gamma$} \\ \lnot \top & \text{ if $\primex C \in \primex\Delta$}\end{cases}
+	\begin{cases} \lnot \bot & \text{ if $\primex C \in \primex\Gamma$} \\ \lnot \top & \text{ if $\primex C \in \primex\Delta$}\end{cases}
 		=
 		\lnot \PIinit(\primex C) 
 		\qedhere
 	\]
+	\end{adjustwidth}
 \end{proof}
 
 \begin{lemma}
@@ -810,7 +818,7 @@ Note that if $I$ is a one-sided interpolant for $\Gamma$ and $\Delta$ and additi
 
 \begin{prop}
 	Let $\Gamma$ and $\Delta$ be sets of first-order formulas such that $\Gamma\cup\Delta$ is unsatisfiable.
-	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$ formula.
+	Then there is a one-sided interpolant of $\Gamma$ and $\Delta$ which is a $\Pi_1$-formula.
 \end{prop}
 \begin{proof}
 	Let $\pi$ be a resolution refutation of $\Gamma\cup\Delta$.
@@ -826,14 +834,15 @@ Note that if $I$ is a one-sided interpolant for $\Gamma$ and $\Delta$ and additi
 	$\Delta \entails \exists x_{t_1} \quantifierdots \exists x_{t_n} \lnot \lifdelta{ \PI(\pi) }$. Now we pull the quantifiers inwards to obtain that
 	$\Delta \entails \lnot  \forall x_{t_1} \quantifierdots \forall x_{t_n} \lifdelta{ \PI(\pi) }$.
 
-	Clearly $\forall x_{t_1} \quantifierdots \forall x_{t_n} \lifdelta{ \PI(\pi) }$ is devoid of $\Delta$-terms and hence a one-sided interpolant, which is a $\Pi_1$ formula.
+	Clearly $\forall x_{t_1} \quantifierdots \forall x_{t_n} \lifdelta{ \PI(\pi) }$ is devoid of $\Delta$-terms and hence a one-sided interpolant, which is a $\Pi_1$-formula.
 \end{proof}
-
 
 
 \section{Quantifying over lifting variables}
 
-As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\PI(\pi)$ forms a propositional interpolant, it remains to lift all colored terms and quantify over the resulting lifting variables in a viable order.
+As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\PI(\pi)$ forms a propositional interpolant, we now move on to the second phase of the algorithm.
+The propositional structure is considered to be fixed at this point and 
+it remains to lift all colored terms and quantify over the resulting lifting variables in a viable order.
 
 
 \begin{lemma}
@@ -883,9 +892,46 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_{t_i}$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant for $\Gamma$ and $\Delta$.
 \end{thm}
 \begin{proof}
+
+	%A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-term.
+	%Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
+
+	Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ and
+	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\lifdelta{\PI(\pi)}$.
+	Furthermore let $Z^0 = \emptyset$ and $Z^i = \{r_1, \dots, r_i \}$ for $1\varleq i \varleq k$.
+	Finally for $0\varleq i \varleq k$, 
+	$t_1^i, \dots, t_{m+i}^i$ is arrangement of $Z^i \union \{ s_1, \dots, s_m \}$ according to subterm order and
+	let $Q_j^i$ be $\forall$~($\exists$) if $t_j^i$ is a $\Delta$ ($\Gamma$)-term for $1\varleq j \varleq m+i$.
+	We use $z_{t_j^i}$ to denote $x_{t_j^i}$ or $y_{t_j^i}$ depending on the coloring of $t_j^i$.
+
+	We show by induction that by iteratively lifting and appropriately quantifying the maximal $\Gamma$-terms in $\lifdelta{\PI(\pi)}$, we obtain a formula which is entailed by $\Gamma$.
+	The induction operates over $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ for $0 \varleq i \varleq k$.
+
+	For $i=0$, $Z^0 = \emptyset$, so $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ is nothing else than $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, which we get by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}.
+
+	Now suppose that $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ for some $i < k$.
+	$\lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ differs from $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ insofar as $r_{i+1}$ is lifted as well.
+	However in the quantifier prefix 
+	$Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}}$, $Q z_{r_{i+1}}$
+	
+	$r_{i+1}$ witness for $z_{r_{i+1}}$.
+
+	$Z^{i+1} = Z^i \cup \{ r_{i+1} \}$
+
+	quantifier prefix: $\exists z_{r_{i+1}}$ inserted somewhere
+
+
+
+	~
+
+
+
+	\mytodo{}
+\end{proof}
+\begin{proof}
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
 
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-terms.
+	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-term.
 	Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
 	Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
 	Note that as all of ${r_1}, \dots, {r_k}$ are subterms of $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
@@ -895,7 +941,7 @@ As we have already seen in Corollary~\ref{cor:propositional_interpolant} that $\
 	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are grey terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
 
 	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is lifted by $y_t$, which is existentially quantified.
-	Hence $t$ is a witness for $y_j$ as due to the quantifier ordering,
+	Hence $t$ is a witness for $y_t$ as due to the quantifier ordering,
 	it is bound in the scope of the quantification of the lifting variables $x_{r_1}, \dots, x_{r_k}$.
 	Therefore $\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
 
@@ -922,7 +968,15 @@ We conclude by presenting the execution of the algorithm on an example:
 
 \begin{exa}
 	\label{exa:two_phase}
-	Let $\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot Z(w) \lor \lnot Z(f(w)) \}$
+	In order to facilitate the reading of the formulas in this example, we borrow to notions from the natural numbers.
+	In the following, 
+	the intended interpretation for the predicate $G$ is the $>$-relation, for $L$, it is the $<$-relation and for $Z$, it is the predicate indicating whether the argument is zero.
+	Hence for instance the clause $G(x, y) \lor L(x, y) \lor x = y$ expresses that for any two numbers $x$ and $y$, either $x>y$, $x<y$ or $x=t$ is the case.
+	In order to produce a contradiction, it is necessary to also include a clause which expresses a false statement under this interpretation, which here is $\lnot Z(z) \lor \lnot L(z, u)$. 
+	This clause can be read as follows: If $z$ is zero, then $z$ is not less than any number $u$.
+
+	The complete initial clause sets for this example are defined as follows:
+	$\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot Z(w) \lor \lnot Z(f(w)) \}$
 	and 
 	$\Delta = \{ Z(d), \lnot Z(z) \lor \lnot L(z, u) \}$.
 	Hence $\Lang(\Gamma)\cap \Lang(\Delta) = \{ Z, L \}$,
@@ -930,13 +984,13 @@ We conclude by presenting the execution of the algorithm on an example:
 	$\Lang(\Delta)\setminus \Lang(\Gamma) = \{ d \}$.
 
 	We use the following resolution refutation $\pi$ for the extraction of the interpolant:
-
+	\smallskip
 	{ %\small
 
-		~
+		
 
 
-		\begin{adjustwidth}{8em}{0em}
+		\begin{adjustwidth}{7em}{0em}
 			\def\defaultHypSeparation{\hskip 1.4em}
 			\def\ScoreOverhang{-0em}
 			\begin{prooftree}
