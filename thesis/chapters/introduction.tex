@@ -27,7 +27,7 @@ Moreover, interpolants are not arbitrary formulas, but their language is restric
 Thus they represent the logical connection solely by statements on notions, which are of significance to both $A$ and $B$.
 This criterion establishes that the actually represented content meets some level of relevance and avoids unnecessary information, thereby ensuring that interpolants enjoy the favorable property of conciseness.
 
-As Craig has shown that interpolants always exist in classical first-order logic, they can be regarded as a justification for material implication in classical logic:
+As Craig has shown that interpolants always exist in classical first-order logic, they can be regarded as a justification for material implication in this logic:
 If an implication in classical logic holds under any circumstance, then there is a formula which contains the logical content explaining this implication.
 Or conversely, if such a summary of a potential implication does not exist, then the implication itself does not and in fact can not hold in general.
 Furthermore, if formulas are concerned with different matters (such that their language is disjoint), there certainly can not be a logical relation between them, as for such formulas, only trivial interpolants can be found.
@@ -45,5 +45,22 @@ In recent years, it has been discovered that interpolants serve well in the area
 Furthermore, in the field of program analysis, there are approaches making use of interpolation to extract information about the changes of program state inflicted by loop iterations in order to detect loop invariants  (\cite{weissenbacher2010}).
 This list is however merely a non-exhaustive selection of relevant use cases of interpolation.
 
-\mytodo
+
+In this thesis, we consider classical first-order logic with equality.
+We present different proofs of the interpolation theorem with a focus on constructive proofs which give rise to concrete algorithms for finding interpolants.
+The central calculus employed in this thesis is the resolution calculus including paramodulation.
+
+In Chapter~\ref{chap:interpolation_and_proof_theory}, among defining the notation and calculi, we present the interpolation theorem as such including several strengthenings and its application in the proof of Beth's definability theorem.
+
+A first proof is given in Chapter~\ref{chap:reduction}, where the added complexity of equality and function symbols is expressed in a logic without these concepts in order to prove the interpolation theorem in the reduced logic.
+
+Chapter~\ref{chap:two_phases} then presents a constructive proof of the interpolation theorem by Huang in a somewhat modified form based on extracting interpolants from resolution refutations in two phases.
+
+In Chapter~\ref{chap:one_phase}, we introduce an algorithm based on the one described in the previous chapter which combines the two phases and thereby is capable of producing different interpolants.
+
+The proof-theoretic proofs of the previous chapters are then complemented by a model-theoretic one in Chapter~\ref{chap:semantic} based on Robinson's joint consistency theorem.
+
+Finally, Appendix~\ref{chap:huang} presents the aforementioned proof by Huang in a version closer to his publication.
+
+
 

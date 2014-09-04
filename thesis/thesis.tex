@@ -4,16 +4,23 @@
   %DIV10,
   %DIV=calc,%
   %article,
-  draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+  %draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
+	%final,%
   %titlepage,
+  a4paper,%
   numbers=noendperiod,%
   11pt,%
-  a4paper,%
-  oneside,% apparently, this should stay below some other parameter to have an effect
+	twoside,%
+  %oneside,% apparently, this should stay below some other parameter to have an effect
 	%one,%
+	%openright,%
   %openany,%
   %]{scrartcl}
 ]{memoir}
+
+% default for memoir is:
+%\documentclass[letterpaper,10pt,twoside,onecolumn,openright,final]{memoir}
+
 
 
 %\documentclass[%
@@ -159,20 +166,24 @@
 \makeevenfoot{numberCorner}{\thepage}{}{}
 \makeoddfoot{numberCorner}{}{}{\thepage}
 
-\makepagestyle{numberCenter}
-%\makeevenfoot{numberCenter}{}{\thepage}{}
-%\makeoddfoot{numberCenter}{}{\thepage}{}
+\makepagestyle{somePageStyle}
+%\makeevenfoot{somePageStyle}{}{}{}
+%\makeoddfoot{somePageStyle}{}{}{}
 %
-%\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
-%\makeoddhead{numberCenter}{\thesection }{}{\thechapter}
-\makeheadrule{numberCenter}{\textwidth}{1pt}
+%\makeevenhead{somePageStyle}{\thechapter}{}{\thesection}
+%\makeoddhead{somePageStyle}{\thesection }{}{\thechapter}
+\makeheadrule{somePageStyle}{\textwidth}{1pt}
 
-\makeevenhead{numberCenter}{\thepage}{}{\leftmark}
-\makeoddhead{numberCenter}{\rightmark}{}{\thepage}
+\makeevenhead{somePageStyle}{\thepage}{}{\leftmark}
+\makeoddhead{somePageStyle}{\rightmark}{}{\thepage}
+
+
+\makepagestyle{emptyPageStyle}
+\aliaspagestyle{chapter}{emptyPageStyle}
 
 
 \makeatletter
-\makepsmarks{numberCenter}{
+\makepsmarks{somePageStyle}{
   \def\chaptermark##1{\markboth{%
         \ifnum \value{secnumdepth} > -1
           \if@mainmatter
@@ -190,7 +201,7 @@
 
 \newcommand{\mysetpagestyle}{ 
 	%\pagestyle{numberCorner}
-	\pagestyle{numberCenter}
+	\pagestyle{somePageStyle} 
 }
 \mysetpagestyle
 
@@ -207,6 +218,7 @@
 	\input{chapters/introduction}
 
 	\chapter{Interpolation and proof theory}
+	\label{chap:interpolation_and_proof_theory}
 	In this chapter, we introduce basic technical notions (\ref{sec:preliminaries}) in order to then formulate the interpolation theorem (\ref{sec:interpolation}).
 	We furthermore present strengthenings of the theorem\nolinebreak{} (\ref{sec:strengthenings}) as well as an application in the form of Beth's definability theorem\nolinebreak{} (\ref{sec:beth}).
 	This result is used in discussing the failure of interpolation in higher-order logic\nolinebreak{} (\ref{sec:interpol_hol}).
@@ -360,10 +372,10 @@
 %%%   ABSTRACT    %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\input{chapters/abstract_en}
-%\cleardoublepage
+\input{chapters/abstract_en}
+\cleardoublepage
 \selectlanguage{ngerman}
-%\input{chapters/abstract_de}
+\input{chapters/abstract_de}
 \selectlanguage{english}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

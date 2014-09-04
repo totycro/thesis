@@ -1,5 +1,6 @@
 \chapter{Interpolant extraction from resolution proofs in one phase}
 \label{sec:one_phase}
+\label{chap:one_phase}
 
 In contrast to the approach described in chapter \ref{sec:two_phases}, where propositional interpolants are extracted first and colored terms lifted just in a second, separate phase, 
 we now present a method which is based on the former but merges the two phases.
@@ -63,7 +64,7 @@ Note that the structure of the resulting formula coincides the ones from $\PI$ a
 	\begin{enumerate}
 		\item Lift all maximal colored occurrences of a term $t$ in $\LIpre(C)$ for which at least one of the following conditions, referred to as \defiemph{lifting conditions}, applies:
 			\begin{itemize} 
-				\item The term $t$ contains some variable $x$ such that $x$ does not occur in $C$.
+				\item The term $t$ contains some variable $x$ such that $x$ does not occur in\nolinebreak{} $C$.
 				\item The term $t$ is ground and $C$ does not contain $t$.
 			\end{itemize} 
 			Denote the resulting formula by $\lifsym_\mathrm{part}(\LIpre(C))$.

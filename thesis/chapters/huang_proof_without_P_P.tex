@@ -1,8 +1,9 @@
 \chapter{Interpolant extraction from resolution proofs in two phases}
 \label{sec:two_phases}
+\label{chap:two_phases}
 
-In \cite{Huang95}, Huang proposes an algorithm for computing interpolants of two sets of first-order formulas $\Gamma$ and $\Delta$, where $\Gamma\cup\Delta$ is unsatisfiable, by traversing a resolution refutation of $\Gamma \cup \Delta$.
-We present his proof in a modified form in this section and in more original form in appendix~\ref{sec:huang}.
+In \cite{Huang95}, Huang proposes an algorithm for computing interpolants of two disjoint sets of first-order formulas $\Gamma$ and $\Delta$, where $\Gamma\cup\Delta$ is unsatisfiable, by traversing a resolution refutation of $\Gamma \cup \Delta$.
+We present his proof in a modified form in this section and in a form closer to \cite{Huang95} in Appendix~\ref{sec:huang}.
 The central difference between these versions lies in the treatment of the interplay of substitutions and liftings.
 While in \cite{Huang95}, propositional deductions are employed, in which all substitutions are trivial,
 we provide a method which allows for commuting substitutions and liftings under certain conditions.
@@ -61,21 +62,20 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 
 		\indproofitem{Paramodulation}
 			\label{def:PI_paramod}
-			Suppose that $\inference$ is a paramodulation inference of $C_1: s=t \lor D$ and $C_2: E\occur{r}$ 
+			Suppose that $\inference$ is a paramodulation inference of $C_1: s=t \lor D$ and $C_2: E\occuratp{r}$ 
 			with $\sigma = \mgu(\inference)$ such that $s\sigma = r\sigma$.
-			Let $h\occur{r}$ be the maximal colored term in which $r$ occurs in $E\occur{r}$.
+			Let $h\occur{r}$ be the maximal colored term\footnote{Cf.\ Definition~\ref{def:coloring} for a definition of the notion of maximal colored terms.} in which $r$ occurs in $E\occuratp{r}$.
 			Then $\PIstep(\inference, I_1, I_2)$ is defined according to the following case distinction:
 
 			\begin{enumerate}
-				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occur{r})\sigma$:
+				\item If $h\occur{r}$ is $\Delta$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occuratp{r})\sigma$: %\newline
 					\label{def:PI_paramod_1}
-					\newline
 					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \lor (s=t \land h\occur{s} \neq h\occur{t})\sigma$
-				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occur{r})\sigma$:
+				\item If $h\occur{r}$ is $\Gamma$-colored and $h\occur{r}$ occurs more than once in $(I_2 \lor E\occuratp{r})\sigma$:
+					%\newline
 					\label{def:PI_paramod_2}
-					\newline
 					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma \land (s\neq t \lor h\occur{s} = h\occur{t})\sigma$
-				\item If $r$ does not occur in a colored term in $E\occur{r}$ which occurs more than once in\nolinebreak{} $(I_2 \lor E\occur{r})\sigma$:
+				\item If $r$ does not occur in a colored term in $E\occuratp{r}$ which occurs more than once in\nolinebreak{} $(I_2 \lor E\occuratp{r})\sigma$:
 					\label{def:PI_paramod_3}
 					\newline
 					$\PIstep(\inference, I_1, I_2) \defeq{} [ ( s=t \land I_2 ) \lor (s\neq t \land I_1) ]\sigma$
@@ -105,7 +105,7 @@ For an illustration of the application of $\PI$ to a resolution refuation, see E
 
 \begin{remark}
 	The control flow of the procedure $\PI$ is predominantly determined by the coloring of literals.
-	In this context, two distinct but similar interpretation of the notion of color are viable: 
+	In this context, two distinct but similar interpretations of the notion of color are viable: 
 	On the one hand, one can employ the usual, symbol-based interpretation as given in Definition~\ref{def:coloring}, where a (predicate) symbol is considered grey if there is at least one formula in $\Gamma$ as well as at least one formula in $\Delta$ which contain the symbol, and otherwise the symbol is considered to be colored in the respective color. 
 	Note that this does not necessarily capture the logical meaning of the symbol, as the symbol then is allowed to occur in the interpolant even if among the clauses used in the resolution refutation, only for instance clauses from $\Gamma$ contain the symbol.
 	It is obvious that one can then also find an interpolant which does not contain the symbol by computing an interpolant for $\Gamma'$ and $\Delta$, where $\Gamma'$ is derived from $\Gamma$ by omitting any formula containing that symbol. 
@@ -126,40 +126,80 @@ For an illustration of the application of $\PI$ to a resolution refuation, see E
 
 \section{Lifting of colored symbols}
 \label{sec:lifting}
-As $\PI$ only fixes the propositional structure of the interpolant but still contains colored symbol, 
+As $\PI$ only fixes the propositional structure of the interpolant but still contains colored symbols, 
 we define a procedure which replaces colored terms by variables, which eventually will become bound by appropriate quantifiers.
 This replacement is referred to as lifting:
 
 
 \begin{defi}[Lifting]
 \newcommand{\colterm}[1]{s_{#1}}
-	Let $\varphi$ a formula or a term and $Z=\{\colterm{1}, \dotsc, \colterm{n}\}$ the maximal $\Phi$-colored terms in $\varphi$.
+Let $\varphi$ a formula or a term and $\colterm{1}, \dotsc, \colterm{n}$ the $\Phi$-terms which have a maximal $\Phi$-colored occurrence in $\varphi$.
 
 	Let furthermore $z_{\expa(\colterm{1})}, \ldots, z_{\expa(\colterm{n})}$ be fresh variables, referred to as \defiemph{$\Phi$-lifting variables} or \defiemph{lifting variables} if the coloring is clear from the context.
 
 	We first define the function $\expa$, which replaces lifting variables occurring in colored terms by the term they lift in order to avoid lifting variables in the index of other lifting variables and is defined as follows for terms $t$:
-	\[\expa(t) \defeq \begin{cases}
-			f(\expa(t_1),\dots, \expa(t_m)) & \text{if $t=f(t_1, \dots, t_m)$} \\
-			t & \text{if $t$ is a non-lifting variable $x$} \\
-			\expa(s) & \text{if $t$ is a lifting variable $z_s$}
-	\end{cases}\]
+	\medskip
 
-	The \defiemph{lifting} of $\varphi$, denoted by $\lifphi{\varphi}$, is an abbreviation for 
-	$\lifphi{\varphi, Z}$, which is defined as follows:
+	%\vspace{-\bigskipamount}
+	\begin{adjustwidth}{-1em}{}
+	%\[
+		\noindent $
+		\expa(t) \defeq \begin{cases}
+			t & \text{if $t$ is a constant $c$} \\
+			t & \text{if $t$ is a non-lifting variable $x$} \\
+			f(\expa(t_1),\dots, \expa(t_m)) & \text{if $t=f(t_1, \dots, t_m)$} \\
+			\expa(s) & \text{if $t$ is a lifting variable $z_s$}
+	\end{cases}
+	$
+%\]
+	\end{adjustwidth}
+	\medskip
+
+	The \defiemph{lifting} of the formula or term $\varphi$, denoted by $\lifphi{\varphi}$, is an abbreviation for 
+	$\lifphi{\varphi, Z}$ where $Z = \{ \colterm{1}, \dotsc, \colterm{n} \}$.
+		$\lifphi{\varphi, Z}$ is defined as follows:
 	\[
 		\lifphi{\varphi, Z} \defeq
 		\begin{cases}
-			\varphi & Z = \emptyset \\
+			\varphi & \text{if $Z = \emptyset$} \\
 			%\lifphi{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \\
-			\lifphi{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.6\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$, $\psi$ is created from $\varphi$ by replacing every occurrence of $\colterm{i}$ by $z_{\expa(\colterm{i})}$} 
+			\lifphi{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.622\linewidth}{if $\colterm{i} \in Z$  and $\psi$ is created from $\varphi$ by replacing every occurrence of $\colterm{i}$ by $z_{\expa(\colterm{i})}$} 
 		\end{cases}
 	\]
-	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift are clear from the context or not of the essence.
+	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift are clear from the context or not of essence.
 	%	We denote $\varphi$ lifted of both $\Gamma$- and $\Delta$-terms by $\lifboth{\varphi}$ if the variables replacing the colored terms are clear from the context or are not crucial.
 \end{defi}
 
-We usually lift $\Delta$-terms by variables with the letter $x$ and $\Gamma$-terms with the letter\nolinebreak{} $y$. If the lifting is not specific to a color, we use variables with the letter $z$.
+We usually lift $\Delta$-terms by variables with the letter $x$ and $\Gamma$-terms with the letter\nolinebreak{} $y$. If the lifting is not specific to a color, we use variables with the letter\nolinebreak{} $z$.
+In order to illustrate this definition, we present a examples:
 
+\begin{exa}
+	Let $f$ and $a$ be $\Gamma$-colored, $g$ and $b$ be $\Delta$-colored and $h$ be grey.
+	\begin{enumerate}
+		\item
+			Consider the lifting of the $\Gamma$-terms of the formula $P(a, h(g(a)), f(b, x))$:
+			\begin{align*}
+				& \lifgamma{ P(a, h(g(a)), f(b, x)) } = \\
+		 & \lifgamma{ P(a, h(g(a)), f(b, x)), \{a, f(b, x)\} } = \\
+		 & \lifgamma{ P(y_{\expa(a)}, h(g(y_{\expa(a)})), f(b, x)), \{f(b, x)\} } = \\
+		& \lifgamma{ P(y_a, h(g(y_a)), f(b, x)), \{f(b, x)\} } = \\
+		& \lifgamma{ P(y_a, h(g(y_a)), y_{\expa(f(b,\,x))}), \emptyset } = \\
+		& \lifgamma{ P(y_a, h(g(y_a)), y_{f(b,\,x)}), \emptyset } = \\
+		& P(y_a, h(g(y_a)), y_{f(b,\,x)})
+			\end{align*}
+
+		\item
+			By lifting the $\Delta$-terms of $P(y_a, h(g(y_a)), y_{f(b,\,x)})$, we witness the application of the function $\expa$:
+			\begin{align*}
+				& \lifdelta{ P(y_a, h(g(y_a)), y_{f(b,\,x)}) } = \\
+			& \lifdelta{ P(y_a, h(g(y_a)), y_{f(b,\,x)}), \{g(y_a)\} } = \\
+		 & \lifdelta{P(y_a, h(x_{\expa(g(y_a))}), y_{f(b,\,x)}), \emptyset } = \\
+		 & \lifdelta{P(y_a, h(x_{g(a)}), y_{f(b,\,x)}), \emptyset } = \\
+		 & P(y_a, h(x_{g(a)}), y_{f(b,\,x)})
+			\qedhere
+			\end{align*}
+	\end{enumerate}
+\end{exa}
 
 Some elementary properties of liftings are described by the following lemmas:
 
@@ -171,7 +211,7 @@ Some elementary properties of liftings are described by the following lemmas:
 		\item $\lift{\Phi}{\lnot A}{z} \spas\semiff{} \lnot \lift{\Phi}{A}{z}$
 		\item $\lift{\Phi}{A \circ B}{z} \spas\semiff{} ( \lift{\Phi}{A}{z} \circ \lift{\Phi}{B}{z} )$ for $\circ \in \{\land, \lor\}$
 		\item $\lift{\Phi}{s = t}{z} \spas\semiff{} ( \lift{\Phi}{s}{z} = \lift{\Phi}{t}{z} )$
-	\hfill\lemmaqed
+			\hfill\lemmaqed
 	\end{enumerate}
 \end{lemma}
 
