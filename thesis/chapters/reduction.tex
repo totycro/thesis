@@ -365,13 +365,25 @@ This allows us to state the central theorem of this section:
 	\label{thm:prop_interpol}
 	Let $\Gamma$ and $\Delta$ be sets of closed first-order formulas without equality and function symbols such that $\Gamma \cup \Delta$ is unsatisfiable. Then there is an interpolant for $\Gamma$ and~$\Delta$.
 \end{thm}
+%\begin{proof}
+%	We show that there is an interpolant for $\Gamma \entails \lnot \Delta$, which
+%	by Proposition \ref{prop:interpolations_equivalent} proves the theorem.
+%	By the completeness of cut-free sequent calculus, there is a cut-free proof of $\Gamma \vdash \lnot \Delta$.
+%	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{\Gamma}{}{}{\lnot \Delta}.
+%	$I$ is the desired interpolant for $\Gamma\entails\lnot\Delta$.
+%\end{proof}
 \begin{proof}
-	We show that there is an interpolant for $\Gamma \entails \lnot \Delta$, which
-	by Proposition \ref{prop:interpolations_equivalent} proves the theorem.
-	By the completeness of cut-free sequent calculus, there is a cut-free proof of $\Gamma \vdash \lnot \Delta$.
-	By Lemma \ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{\Gamma}{}{}{\lnot \Delta}.
-	$I$ is the desired interpolant for $\Gamma\entails\lnot\Delta$.
+	As $\Gamma \cup \Delta$ are unsatisfiable, by the compactness theorem, there exists a finite conjunction $\Gamma^*$ of formulas of $\Gamma$ as well as a finite conjunction $\Delta^*$ of formulas of $\Delta$ such that $\Gamma^* \land \Delta^*$ are unsatisfiable.
+	We may also write this as $\Gamma^* \entails \lnot \Delta^*$.
 
+	By the completeness of cut-free sequent calculus, there is a cut-free proof of $\Gamma^* \proves \lnot \Delta^*$.
+	So by Lemma~\ref{lemma:maehara}, there is an interpolant $I$ for the partition \parti{\Gamma^*}{}{}{\lnot \Delta^*}
+	such that $\Gamma^* \proves I$, $I \proves \lnot \Delta^*$ and $\Lang(I) \subseteq \Lang(\Gamma^*) \intersect \Lang(\Delta^*)$.
+	Clearly then also $\Delta^* \proves \lnot I$ holds.
+
+	As $\Gamma^*$ and $\Delta^*$ are merely conjunctions of formulas of $\Gamma$ and $\Delta$ respectively, we get that
+	$\Gamma \entails I$, $\Delta \entails \lnot I$ as well as
+	$\Lang(I) \subseteq \Lang(\Gamma) \intersect \Lang(\Delta)$, which by Proposition~\ref{prop:interpolations_equivalent} gives the result.
 \end{proof}
 
 
