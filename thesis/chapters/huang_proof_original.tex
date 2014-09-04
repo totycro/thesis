@@ -231,7 +231,7 @@ This insight allows us to push substitutions of the variables upwards along this
 
 
 %For every unification $\sigma$ in the deduction and for every variable $x$, either $x\sigma = x$ or $x\sigma = t$ where $x$ does not occur in $t$.
-%Hence along the path from the input clause to its unification or removal by resolution or factorisation, it occurs unchanged.
+%Hence along the path from the input clause to its unification or removal by resolution or factorization, it occurs unchanged.
 %Therefore replacing $x$ along the path with $\sigma x$, where $\sigma$ is a non-trivial unifier used on $x$ in the derivation creates still a valid refutation of whatever.
 
 \begin{defi}
@@ -350,7 +350,7 @@ First, we consider the lifting of the $\Delta$-terms, which corresponds to Lemma
 					$M \entails \lift{\Delta}{ \PI(C_1) \land \PI(C_2) }{x} \lor
 					\lift{\Delta}{ (D \lor E)_\Gamma }{x}$.
 
-				\item Suppose $l$ is grey.
+				\item Suppose $l$ is gray.
 					Then $\PI(C) =  (l \land \PI(C_2)) \lor (\lnot l \land \PI(C_1))$.
 
 					We show that 
@@ -380,7 +380,7 @@ First, we consider the lifting of the $\Delta$-terms, which corresponds to Lemma
 			\end{enumerate}
 
 
-		\indproofitem{Factorisation} Suppose the last rule application is an instance of factorisation. Then it is of the form:
+		\indproofitem{Factorization} Suppose the last rule application is an instance of factorization. Then it is of the form:
 			\begin{prooftree}
 				\AxiomCm{C_1: l \lor l \lor D}
 				\UnaryInfCm{C: l \lor D}
@@ -480,14 +480,14 @@ From this, we can directly proof the theorem by relying on the notion of symmetr
 \begin{proof}
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
 
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-terms.
+	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-terms.
 	Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
 	Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
 	Note that as all of ${r_1}, \dots, {r_k}$ due to being strict subterms of $t$ are of strictly smaller length than $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
 	%Note that all of $r_1, \dots, r_k$ are subterms of $t$.
 	%Note that the $\Delta$-terms, which are replaced by $x_{r_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
 
-	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are grey terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
+	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are gray terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
 
 	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is lifted by $y_t$, which is existentially quantified.
 	Hence $t$ is a witness for $y_j$ as due to the quantifier ordering,
@@ -536,7 +536,7 @@ We present the following example, which illustrates that the definition of the c
 	$\Gamma = \{ P(x) \lor \lnot Q(x), \lnot P(y) \lor Q(y), c=d, \lnot R(g(d)), \lnot S(g(c))  \}$
 	and
 	$\Delta = \{ S(v) \lor \lnot Q(h(v)), R(u) \lor  Q(h(u)), T(c, d)\}$.
-	Hence $h$ is a $\Delta$-colored function symbol and $g$ a $\Gamma$-colored function symbol, while the constant symbols $c$ and $d$ are grey.
+	Hence $h$ is a $\Delta$-colored function symbol and $g$ a $\Gamma$-colored function symbol, while the constant symbols $c$ and $d$ are gray.
 	%\Gamma = \{ P(x) \lor \lnot Q(x), c=d, \lnot R(g(d)), \lnot P(v)  \}$
 	%and $\Delta = \{ R(u) \lor  Q(h(u)) \}$.
 

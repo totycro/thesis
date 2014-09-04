@@ -37,7 +37,7 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 \end{defi}
 
 \begin{defi}[$\PIstep$]
-	Let $\inference$ be an inference of a resolution refutation of $\Gamma\cup\Delta$ which derives $C$ from the clauses $C_1, \dots, C_n$ where $n=1$ if $\inference$ is a factorisation inference and $n=2$ in case of a resolution or paramodulation inference. 
+	Let $\inference$ be an inference of a resolution refutation of $\Gamma\cup\Delta$ which derives $C$ from the clauses $C_1, \dots, C_n$ where $n=1$ if $\inference$ is a factorization inference and $n=2$ in case of a resolution or paramodulation inference. 
 	Let $\bar I = I_1, \dots, I_n$ be formulas.
 
 	Then $\PIstep(\inference, \bar I)$ is defined according to the following cases:
@@ -52,12 +52,12 @@ It is structured in the two subprocedures $\PIinit$ and $\PIstep$:
 					$\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \lor I_2]\sigma$
 				\item If $l$ is $\Delta$-colored: 
 					$\PIstep(\inference, I_1, I_2) \defeq{} [I_1 \land I_2]\sigma$
-				\item If $l$ is grey: 
+				\item If $l$ is gray: 
 					$\PIstep(\inference, I_1, I_2) \defeq{} [(l \land I_2) \lor (\lnot l' \land I_1) ]\sigma $
 			\end{enumerate}
 
-			\indproofitem{Factorisation}
-			If $\inference$ is a factorisation inference of $C_1: l \lor l' \lor D$ with $\sigma = \mgu(\inference)$,
+			\indproofitem{Factorization}
+			If $\inference$ is a factorization inference of $C_1: l \lor l' \lor D$ with $\sigma = \mgu(\inference)$,
 			then $\PIstep(\inference, I_1) \defeq I_1\sigma$.
 
 		\indproofitem{Paramodulation}
@@ -106,7 +106,7 @@ For an illustration of the application of $\PI$ to a resolution refutation, see 
 \begin{remark}
 	The control flow of the procedure $\PI$ is predominantly determined by the coloring of literals.
 	In this context, two distinct but similar interpretations of the notion of color are viable: 
-	On the one hand, one can employ the usual, symbol-based interpretation as given in Definition~\ref{def:coloring}, where a (predicate) symbol is considered grey if there is at least one formula in $\Gamma$ as well as at least one formula in $\Delta$ which contain the symbol, and otherwise the symbol is considered to be colored in the respective color. 
+	On the one hand, one can employ the usual, symbol-based interpretation as given in Definition~\ref{def:coloring}, where a (predicate) symbol is considered gray if there is at least one formula in $\Gamma$ as well as at least one formula in $\Delta$ which contain the symbol, and otherwise the symbol is considered to be colored in the respective color. 
 	Note that this does not necessarily capture the logical meaning of the symbol, as the symbol then is allowed to occur in the interpolant even if among the clauses used in the resolution refutation, only for instance clauses from $\Gamma$ contain the symbol.
 	It is obvious that one can then also find an interpolant which does not contain the symbol by computing an interpolant for $\Gamma'$ and $\Delta$, where $\Gamma'$ is derived from $\Gamma$ by omitting any formula containing that symbol. 
 	Clearly the refutation of $\Gamma \cup \Delta$ is also a refutation of $\Gamma' \cup \Delta$ and an appropriate interpolant can hence easily be computed.
@@ -115,10 +115,10 @@ For an illustration of the application of $\PI$ to a resolution refutation, see 
 	There, a predicate symbol is colored based on its occurrence:
 	All occurrences of predicate symbols in formulas in $\Gamma$ ($\Delta$) are considered to be $\Gamma$-($\Delta$-)colored.
 	A predicate symbol occurring in a clause in the resolution derivation is $\Phi$-colored if its predecessor in the preceding clause is.
-	Factorisation inferences create grey literals in case the factorised literals are respectively $\Gamma$- and $\Delta$-colored.
+	Factorization inferences create gray literals in case the factorised literals are respectively $\Gamma$- and $\Delta$-colored.
 
 	The definition above can be understood in this sense by only considering a minor adaption:
-	Resolved or factorised literals $l$ are to be read as $\Gamma$-($\Delta$-)colored only if \emph{both} resolved or factorised literals $l$ and $l'$ in fact are $\Gamma$-($\Delta$-)colored and otherwise to be treated as grey. 
+	Resolved or factorised literals $l$ are to be read as $\Gamma$-($\Delta$-)colored only if \emph{both} resolved or factorised literals $l$ and $l'$ in fact are $\Gamma$-($\Delta$-)colored and otherwise to be treated as gray. 
 	This is necessitated by the fact that in our definition, we may conclude from the circumstance that two resolved or factorised literals have the same predicate symbol that they also do possess the same coloring.
 	In the definition due to \cite{Huang95}, this is in general not the case.
 \end{remark}
@@ -174,7 +174,7 @@ We usually lift $\Delta$-terms by variables with the letter $x$ and $\Gamma$-ter
 In order to illustrate this definition, we present a examples:
 
 \begin{exa}
-	Let $f$ and $a$ be $\Gamma$-colored, $g$ and $b$ be $\Delta$-colored and $h$ be grey.
+	Let $f$ and $a$ be $\Gamma$-colored, $g$ and $b$ be $\Delta$-colored and $h$ be gray.
 	\begin{enumerate}
 		\item
 			Consider the lifting of the $\Gamma$-terms of the formula $P(a, h(g(a)), f(b, u))$:
@@ -316,7 +316,7 @@ It turns out that in this formulation, the following property holds for any form
 	We proceed by induction on the structure of a term $\varphi$.
 
 	\begin{itemize}
-		\item Suppose that $t$ is a grey constant or function symbol of the form $f(t_1, \dots, t_n)$.
+		\item Suppose that $t$ is a gray constant or function symbol of the form $f(t_1, \dots, t_n)$.
 			Then we can derive the following, where (IH) signifies a deduction by virtue of the induction hypothesis. 
 			\begin{align*}
 				\lifboth{\lifboth{t}\tau} &= \lifboth{\lifboth{ f(t_1, \dots, t_n)}\tau} \\
@@ -484,7 +484,7 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 					This is turn is however just the unfolding of the definition of
 					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I)} \lor \lifdelta{C_\Gamma}$.
 
-				\item Suppose that $l$ is grey.
+				\item Suppose that $l$ is gray.
 					Then $l_\Gamma = l$ and $l'_\Gamma = l'$.
 					Suppose that for a model $M$ of $\Gamma$ that $M \notentails \lifdelta{E_\Gamma\sigma}$ and $M \notentails \lifdelta{D_\Gamma\sigma}$.
 					Then as $\lifdelta{l_\Gamma \sigma} = \lifdelta{l'_\Gamma\sigma}$, by \markA{} and \markB{}, depending on the truth value of $\lifdelta{l_\Gamma \sigma}$ in $M$, we have that either $M \entails \lifdelta{l_\Gamma\sigma} \land \lifdelta{I_2\sigma}$ or $M \entails \lnot\lifdelta{l'_\Gamma\sigma} \land \lifdelta{I_1\sigma}$ holds.
@@ -500,15 +500,15 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 			\end{enumerate}
 
 
-			\indproofitem{Factorisation}
-			Suppose the clause $C$ is the result of a factorisation inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
+			\indproofitem{Factorization}
+			Suppose the clause $C$ is the result of a factorization inference $\inference$ of $C_1: l \lor l' \lor D$ with $\sigma=\mgu(\inference)$.
 
 			By Lemma~\ref{lemma:lift_logic_commute}, the induction hypothesis gives $\Gamma \entails \lifdelta{ I_1 } \lor \lifdelta{ l_\Gamma} \lor \lifdelta{l'_\Gamma} \lor \lifdelta{D_\Gamma }$.
 			Now we apply $\tauelldelta$
 			and by Lemma~\ref{lemma:lifting_subst_commute}, obtain that 
 			$\Gamma \entails \lifdelta{ I_1\sigma } \lor \lifdelta{ l_\Gamma\sigma } \lor  \lifdelta{l'_\Gamma\sigma} \lor \lifdelta{D_\Gamma\sigma }$.
 			As however $l\sigma \syneq l'\sigma$, 
-			also $\lifboth{l\sigma} = \lifboth{l'\sigma}$, so we can apply a factorisation step and obtain that
+			also $\lifboth{l\sigma} = \lifboth{l'\sigma}$, so we can apply a factorization step and obtain that
 			$\Gamma \entails \lifdelta{ I_1\sigma } \lor \lifdelta{ l_\Gamma\sigma} \lor \lifdelta{D_\Gamma\sigma }$,
 			which by Lemma~\ref{lemma:lift_logic_commute} is nothing else than $\Gamma \entails \PIstep(\inference, \bar I) \lor \lifdelta{C_\Gamma}$.
 
@@ -680,7 +680,7 @@ In the context of clauses in $\primex \Gamma$ and $\primex \Delta$, the procedur
 					\end{align*}
 				\item $l$ is $\Delta$-colored. This case can be argued analogously.
 
-				\item $l$ is grey. Then $\primex l$ is grey. 
+				\item $l$ is gray. Then $\primex l$ is gray. 
 					Note that $l\sigma \syneq l'\sigma$ \markB.
 					\nopagebreak 
 					\begin{align*}
@@ -694,8 +694,8 @@ In the context of clauses in $\primex \Gamma$ and $\primex \Delta$, the procedur
 					\end{align*}
 			\end{enumerate}
 
-				\indproofitem{Factorisation}
-					Suppose that $\inference$ is a factorisation inference of $C_1: l \lor l' \lor D$
+				\indproofitem{Factorization}
+					Suppose that $\inference$ is a factorization inference of $C_1: l \lor l' \lor D$
 					with $\sigma = \mgu(\inference)$.
 					Then $\PIstep(\inference, I_1) = I_1\sigma \spas\semiff \lnot \p I_1\sigma = \lnot \PIstep(\p \inference, \p I_1)$.
 
@@ -797,7 +797,7 @@ Note that this coincides with the notion of ``relational interpolant'' as given 
 	thus by a similar argument as above, $\Delta \entails \lnot \PI(\pi)$.
 
 
-	Finally, by the construction of $\PI$, $\PI(\pi)$ is solely comprised of grey predicate symbols.
+	Finally, by the construction of $\PI$, $\PI(\pi)$ is solely comprised of gray predicate symbols.
 \end{proof}
 
 
@@ -870,7 +870,7 @@ it remains to lift all colored terms and quantify over the resulting lifting var
 	But $\lft{\Gamma}{y}{ \psi } = y_{\expa(\psi)} = y_\varphi$.
 	%	\begin{comment}
 	%		Suppose a term $t$ in $C$ is affected by a lifting.
-	%		We only need to consider maximal colored terms as grey terms are not affected by the liftings.
+	%		We only need to consider maximal colored terms as gray terms are not affected by the liftings.
 	%		Without loss of generality let $t$ be a maximal $\Delta$-colored term.
 	%
 	%		Let $\Phi$ be the positions of maximal occurrences of $t$.
@@ -893,7 +893,7 @@ it remains to lift all colored terms and quantify over the resulting lifting var
 \end{thm}
 \begin{proof}
 
-	%A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-term.
+	%A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-term.
 	%Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
 
 	Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ and
