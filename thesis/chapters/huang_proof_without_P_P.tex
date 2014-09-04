@@ -177,25 +177,25 @@ In order to illustrate this definition, we present a examples:
 	Let $f$ and $a$ be $\Gamma$-colored, $g$ and $b$ be $\Delta$-colored and $h$ be grey.
 	\begin{enumerate}
 		\item
-			Consider the lifting of the $\Gamma$-terms of the formula $P(a, h(g(a)), f(b, x))$:
+			Consider the lifting of the $\Gamma$-terms of the formula $P(a, h(g(a)), f(b, u))$:
 			\begin{align*}
-				& \lifgamma{ P(a, h(g(a)), f(b, x)) } = \\
-		 & \lifgamma{ P(a, h(g(a)), f(b, x)), \{a, f(b, x)\} } = \\
-		 & \lifgamma{ P(y_{\expa(a)}, h(g(y_{\expa(a)})), f(b, x)), \{f(b, x)\} } = \\
-		& \lifgamma{ P(y_a, h(g(y_a)), f(b, x)), \{f(b, x)\} } = \\
-		& \lifgamma{ P(y_a, h(g(y_a)), y_{\expa(f(b,\,x))}), \emptyset } = \\
-		& \lifgamma{ P(y_a, h(g(y_a)), y_{f(b,\,x)}), \emptyset } = \\
-		& P(y_a, h(g(y_a)), y_{f(b,\,x)})
+				& \lifgamma{ P(a, h(g(a)), f(b, u)) } = \\
+		 & \lifgamma{ P(a, h(g(a)), f(b, u)), \{a, f(b, u)\} } = \\
+		 & \lifgamma{ P(y_{\expa(a)}, h(g(y_{\expa(a)})), f(b, u)), \{f(b, u)\} } = \\
+		& \lifgamma{ P(y_a, h(g(y_a)), f(b, u)), \{f(b, u)\} } = \\
+		& \lifgamma{ P(y_a, h(g(y_a)), y_{\expa(f(b,\,u))}), \emptyset } = \\
+		& \lifgamma{ P(y_a, h(g(y_a)), y_{f(b,\,u)}), \emptyset } = \\
+		& P(y_a, h(g(y_a)), y_{f(b,\,u)})
 			\end{align*}
 
 		\item
-			By lifting the $\Delta$-terms of $P(y_a, h(g(y_a)), y_{f(b,\,x)})$, we witness the application of the function $\expa$:
+			By lifting the $\Delta$-terms of $P(y_a, h(g(y_a)), y_{f(b,\,u)})$, we witness the application of the function $\expa$:
 			\begin{align*}
-				& \lifdelta{ P(y_a, h(g(y_a)), y_{f(b,\,x)}) } = \\
-			& \lifdelta{ P(y_a, h(g(y_a)), y_{f(b,\,x)}), \{g(y_a)\} } = \\
-		 & \lifdelta{P(y_a, h(x_{\expa(g(y_a))}), y_{f(b,\,x)}), \emptyset } = \\
-		 & \lifdelta{P(y_a, h(x_{g(a)}), y_{f(b,\,x)}), \emptyset } = \\
-		 & P(y_a, h(x_{g(a)}), y_{f(b,\,x)})
+				& \lifdelta{ P(y_a, h(g(y_a)), y_{f(b,\,u)}) } = \\
+			& \lifdelta{ P(y_a, h(g(y_a)), y_{f(b,\,u)}), \{g(y_a)\} } = \\
+		 & \lifdelta{P(y_a, h(x_{\expa(g(y_a))}), y_{f(b,\,u)}), \emptyset } = \\
+		 & \lifdelta{P(y_a, h(x_{g(a)}), y_{f(b,\,u)}), \emptyset } = \\
+		 & P(y_a, h(x_{g(a)}), y_{f(b,\,u)})
 			\qedhere
 			\end{align*}
 	\end{enumerate}
@@ -233,33 +233,33 @@ This is justified as all substitutions which occur in resolution refutations hav
 	\begin{enumerate}
 		\item
 			\label{exa:lifting_commute_1}
-			Let $t = f(x)$ be a $\Phi$-term and $\sigma = \{x \mapsto a\}$.
-			Then $\lifphi{t\sigma} = \lifphi{f(x)\sigma} = \lifphi{f(a)} = z_{f(a)}$.
-			However $\lifphi{t}\sigma = \lifphi{f(x)}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
+			Let $t = f(u)$ be a $\Gamma$-term and $\sigma = \{u \mapsto a\}$.
+			Then $\lifgamma{t\sigma} = \lifgamma{f(u)\sigma} = \lifgamma{f(a)} = y_{f(a)}$.
+			However $\lifgamma{t}\sigma = \lifgamma{f(u)}\sigma = y_{f(u)}\sigma = y_{f(u)}$.
 
 			This suggests that substitutions also have to be applied to lifted terms.
 
 		\item
 			\label{exa:lifting_commute_2}
-			Let $s=x$ be a variable and $\sigma = \{x\mapsto c\}$, where $c$ is a $\Phi$-term.
-			Then $\lifphi{s\sigma} = 
-			\lifphi{x\sigma} =
-			\lifphi{c} = z_c$.
+			Let $s=u$ be a variable and $\sigma = \{u\mapsto c\}$, where $c$ is a $\Gamma$-term.
+			Then $\lifgamma{s\sigma} = 
+			\lifgamma{u\sigma} =
+			\lifgamma{c} = y_c$.
 			But 
-			$\lifphi{s}\sigma = 
-			\lifphi{x}\sigma = 
-			x\sigma = 
+			$\lifgamma{s}\sigma = 
+			\lifgamma{u}\sigma = 
+			u\sigma = 
 			c$.
 
 			In this case, we see that terms in $\ran(\sigma)$ have to be lifted when the substitution is pulled out of the lifting.
 
 		\item
 			\label{exa:lifting_commute_3}
-			Let $r = \lifphi{f(x)} = z_{f(x)}$ and $\sigma = \{x\mapsto a\}$.
-			Then $\lifphi{r\sigma} = \lifphi{z_{f(x)}\sigma} = \lifphi{z_{f(x)}} = z_{f(x)}$.
-			Here however, $\lifphi{r}\sigma = \lifphi{z_{f(x)}}\sigma = z_{f(x)}\sigma = z_{f(x)}$.
+			Let $r = \lifgamma{f(u)} = y_{f(u)}$ and $\sigma = \{u\mapsto a\}$.
+			Then $\lifgamma{r\sigma} = \lifgamma{y_{f(u)}\sigma} = \lifgamma{y_{f(u)}} = y_{f(u)}$.
+			Here however, $\lifgamma{r}\sigma = \lifgamma{y_{f(u)}}\sigma = y_{f(u)}\sigma = y_{f(u)}$.
 
-			This shows that obviously, as lifting variables are affected neither by substitutions nor liftings, arbitrary commutations of these can be performed. 
+			This shows that obviously, as lifting variables are affected neither by substitutions nor liftings, they can simply be interchanged.
 			Note however that in case~\ref{exa:lifting_commute_1}, lifting variables have to be modified.
 			\qedhere
 	\end{enumerate}
@@ -292,7 +292,7 @@ This is vital for Item~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_c
 \addtocounter{exa}{1}
 
 Now we implement the idea motivated by Item~\ref{exa:lifting_commute_2} of Example~\ref{exa:lifting_commute} by lifting also the terms introduced by $\tau$.
-It turns out that in this formulation, commutation can be done in general:
+It turns out that in this formulation, the following property holds for any formula or term:
 
 
 %\begin{exa}
@@ -312,7 +312,8 @@ It turns out that in this formulation, commutation can be done in general:
 	$\lifboth{\lifboth{ \varphi} \tau} =\nolinebreak \lifboth{ \varphi \tau } $.
 \end{lemma}
 \begin{proof}
-	We proceed by induction.
+	Note that as liftings and substitutions only apply to terms, it suffices to show this property on terms.
+	We proceed by induction on the structure of a term $\varphi$.
 
 	\begin{itemize}
 		\item Suppose that $t$ is a grey constant or function symbol of the form $f(t_1, \dots, t_n)$.
@@ -381,11 +382,9 @@ Note that if the formula or term contains lifting variables,
 it is not possible to perform the commutation with $\sigma$ as in Lemma~\ref{lemma:lifting_subst_commute}.
 As illustrated in Item~\ref{exa:lifting_commute_3} of Example~\ref{exa:lifting_commute},
 we here have that $\lifphi{z_t\sigma} = \lifphi{z_t} = z_t$, but $\lifphi{z_t\tauell} = \lifphi{z_{{t\sigma}}} = z_{{t\sigma}}$
-Hence in these cases, $\tauell$ would have to leave lifting variables unchanged, which contradicts other use cases such as Item ~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_commute}.
+Hence in these cases, $\tauell$ would have to leave lifting variables unchanged, which contradicts other use cases such as Item~\ref{exa:lifting_commute_1} of Example~\ref{exa:lifting_commute}.
 
 However in the context of interpolant extraction, one can deal with interpolants containing free occurrences of lifting variables by just employing $\tau$ in their construction instead of $\sigma$.
-
-
 
 \begin{comment}
 	\begin{lemma}
@@ -407,7 +406,7 @@ However in the context of interpolant extraction, one can deal with interpolants
 
 			But as the maximal $\Delta$-term $t_i$ occurs in $s$ at $p$ and $M \entails \lft{\Phi}{x}{s} = \lft{\Phi}{x}{t}$, there is a function symbol $u'$ in $\lft{\Phi}{x}{s}$ corresponding to $u$ which also does not depend on this argument.
 
-			Hence even though $s$ and $t$ are not syntactically equal, $M\entails s=t$ in this case. \qedhere
+			Hence even though $s$ and $t$ are not syntactically equal, $M\entails s=t$ in this case.\qedhere
 		\end{compactenum}
 
 	\end{proof}
@@ -430,9 +429,8 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 \end{lemma}
 \begin{proof}
 	If $C \in \Gamma$, then $\Gamma \entails \lifdelta{C_\Gamma}$ as $C_\Gamma = C$ and $\lifdelta{C} = C$.
-	Otherwise $C \in \Gamma$, but then $\PIinit(C) =\nolinebreak{} \top$.
+	Otherwise $C \not\in \Gamma$, but then $\PIinit(C) =\nolinebreak{} \top$.
 \end{proof}
-
 
 
 \begin{lemma}
@@ -467,7 +465,7 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 			which by Lemma~\ref{lemma:lift_logic_commute} suffices for the result.
 			\begin{enumerate}
 				\item Suppose that $l$ is $\Gamma$-colored.
-					Then $l_\Gamma = l$ and $l'_\Gamma = l$, and we can perform a resolution step on \markA{} and \markB{} to obtain that
+					Then $l_\Gamma = l$ and $l'_\Gamma = l'$, and we can perform a resolution step on \markA{} and \markB{} to obtain that
 					$\Gamma \entails
 					\lifdelta{I_1\sigma} \lor
 					\lifdelta{I_2\sigma} \lor 
@@ -487,7 +485,7 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 					$\Gamma \entails \lifdelta{\PIstep(\inference, \bar I)} \lor \lifdelta{C_\Gamma}$.
 
 				\item Suppose that $l$ is grey.
-					Then $l_\Gamma = l$ and $l'_\Gamma = l$.
+					Then $l_\Gamma = l$ and $l'_\Gamma = l'$.
 					Suppose that for a model $M$ of $\Gamma$ that $M \notentails \lifdelta{E_\Gamma\sigma}$ and $M \notentails \lifdelta{D_\Gamma\sigma}$.
 					Then as $\lifdelta{l_\Gamma \sigma} = \lifdelta{l'_\Gamma\sigma}$, by \markA{} and \markB{}, depending on the truth value of $\lifdelta{l_\Gamma \sigma}$ in $M$, we have that either $M \entails \lifdelta{l_\Gamma\sigma} \land \lifdelta{I_2\sigma}$ or $M \entails \lnot\lifdelta{l'_\Gamma\sigma} \land \lifdelta{I_1\sigma}$ holds.
 					Hence altogether we obtain that 
@@ -545,7 +543,7 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 					$\lifdelta{(E\occatp{s})_\Gamma\sigma}$
 					and
 					$\lifdelta{(E\occatp{t})_\Gamma\sigma}$
-					only differ at at position $p$.
+					only differ at position $p$.
 					As $M \entails \lifdelta{s} = \lifdelta{t}$, we can apply $\tauelldelta$ and by Lemma~\ref{lemma:lifting_subst_commute} obtain that 
 					$M \entails \lifdelta{s\sigma} = \lifdelta{t\sigma}$.
 					Thus
@@ -603,7 +601,7 @@ We employ the following additional notation: For a clause $C$, $C_\Phi$ denotes 
 	We proceed by induction on the strengthening
 	$\Gamma \entails \lifdelta{\PI(C) \lor\nolinebreak C_\Gamma}$.
 
-	If $C \in \Gamma\cup\Delta$, then by Lemma~\ref{lemma:gamma_entails_init} gives the result.
+	If $C \in \Gamma\cup\Delta$, then Lemma~\ref{lemma:gamma_entails_init} gives the result.
 
 	For the induction step, suppose the clause $C$ is the result of an inference $\inference$ using the clauses $C_1, \dots, C_n$.
 	By induction hypothesis, $\Gamma \entails \lifdelta{\PI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
