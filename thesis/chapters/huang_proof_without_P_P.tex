@@ -163,7 +163,7 @@ Let $\varphi$ a formula or a term and $\colterm{1}, \dotsc, \colterm{n}$ the $\P
 		\begin{cases}
 			\varphi & \text{if $Z = \emptyset$} \\
 			%\lifphi{\varphi\abstractionOp{\colterm{i}/z_{\colterm{i}}}, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.4\linewidth}{$\colterm{i} \in Z$ such that $\colterm{i}$ is not subterm of another term in $Z$} \\
-			\lifphi{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.622\linewidth}{if $\colterm{i} \in Z$  and $\psi$ is created from $\varphi$ by replacing every occurrence of $\colterm{i}$ by $z_{\expa(\colterm{i})}$} 
+			\lifphi{\psi, Z\setminus\{\colterm{i}\}} & \parbox[t]{0.622\linewidth}{if $\colterm{i} \in Z$ such that $s_i$ is not subterm of another term in $Z$ and $\psi$ is created from $\varphi$ by replacing every occurrence of $\colterm{i}$ by $z_{\expa(\colterm{i})}$} 
 		\end{cases}
 	\]
 	To simplify the syntax, we sometimes write $\lifphinovar{\varphi}$ or $\lifboth{\varphi}$ if the lifting variables or the lifting variables and the color of the terms to lift are clear from the context or not of essence.
@@ -897,7 +897,7 @@ it remains to lift all colored terms and quantify over the resulting lifting var
 	%Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
 
 	Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ and
-	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\lifdelta{\PI(\pi)}$.
+	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$ sorted according to the subterm order in a descending manner.
 	Furthermore let $Z^0 = \emptyset$ and $Z^i = \{r_1, \dots, r_i \}$ for $1\varleq i \varleq k$.
 	Finally for $0\varleq i \varleq k$, 
 	$t_1^i, \dots, t_{m+i}^i$ is arrangement of $Z^i \union \{ s_1, \dots, s_m \}$ according to subterm order and
@@ -912,43 +912,25 @@ it remains to lift all colored terms and quantify over the resulting lifting var
 	Now suppose that $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ for some $i < k$.
 	$\lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ differs from $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ insofar as $r_{i+1}$ is lifted as well.
 	However in the quantifier prefix 
-	$Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}}$, $Q z_{r_{i+1}}$
-	
-	$r_{i+1}$ witness for $z_{r_{i+1}}$.
+	$Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}}$, $\exists y_{r_{i+1}}$ is contained.
+	In order to show that 
+	$\Gamma \entails Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}} \lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ holds, we produce a witness term for $\exists y_{r_{i+1}}$. Let $\mathrm{Pos}$ be the set of positions in this formula where $y_{r_{i+1}}$ occurs.
 
-	$Z^{i+1} = Z^i \cup \{ r_{i+1} \}$
+	In $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$, 
+	the term $\lifdelta{ r_{i+1} }$ occurs at every position of $\mathrm{Pos}$.
+	Note that none of the $\Gamma$-terms in $\lifdelta{ r_{i+1} }$ are lifted as due to the ordering of the terms $r_1, \dots, r_k$, $Z_i$ does not contain a subterm of $r_{i+1}$.
+	$\lifdelta{ r_{i+1} }$ however in general contains $\Delta$-lifting variables. Let $x_s$ be one of these.
+	As then $s$ is a subterm of $r_{i+1}$, $\forall x_s$ precedes $\exists y_{r_{i+1}}$ in the quantifier prefix $Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}}$, hence $y_{r_{i+1}}$ is quantified in the scope of the quantification of $x_s$ for every lifting variable $x_s$ in $\lifdelta{ r_{i+1} }$.
+	Therefore $\lifdelta{ r_{i+1} }$ is a viable witness term.
 
-	quantifier prefix: $\exists z_{r_{i+1}}$ inserted somewhere
+	This induction shows that 
+$\Gamma \entails Q_1^k z_{t_1^k} \dots Q_{m+k}^k z_{t_{m+k}^k} \lifgamma{ \lifdelta{\PI(\pi) }, Z^k }$. 
+But as $Z^k$ includes all maximal colored $\Gamma$-terms of $\lifdelta{\PI(\pi)}$,
+this is nothing else than $\Gamma \entails Q_1 z_{t_1} \dots Q_n z_{t_n} \lifgamma{ \lifdelta{ \PI( \pi) } }$.
 
-
-
-	~
-
-
-
-	\mytodo{}
-\end{proof}
-\begin{proof}
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
-
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a grey term or a $\Gamma$-term.
-	Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
-	Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
-	Note that as all of ${r_1}, \dots, {r_k}$ are subterms of $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
-	%Note that all of $r_1, \dots, r_k$ are subterms of $t$.
-	%Note that the $\Delta$-terms, which are replaced by $x_{r_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
-
-	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are grey terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
-
-	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is lifted by $y_t$, which is existentially quantified.
-	Hence $t$ is a witness for $y_t$ as due to the quantifier ordering,
-	it is bound in the scope of the quantification of the lifting variables $x_{r_1}, \dots, x_{r_k}$.
-	Therefore $\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
-
-	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_{u_1} \dots \forall y_{u_{k'}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $u_1, \dots u_{k'}$ are the maximal colored $\Gamma$-terms in $\PI(\pi)$.
-
-	By a similar line of argumentation as above, we can replace the maximal $\Delta$-\nolinebreak{}terms by lifting variables which are then existentially quantified and arrive at
-	$\Delta \entails\nolinebreak{} \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
+	By Corollary \ref{cor:delta_entails_lifted_interpolant}, we get that $\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
+	By a similar induction argument as above, we can conclude from this that 
+	$\Delta \entails \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$, where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also
 	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
 	finally by Lemma \ref{lemma:lifting_order_not_relevant}, we obtain that 
@@ -956,7 +938,6 @@ it remains to lift all colored terms and quantify over the resulting lifting var
 
 	As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
 \end{proof}
-
 
 \begin{remark}
 	In this proof, we order the lifting variables in the interpolant according to the subterm relation of the terms they represent.
@@ -988,9 +969,7 @@ We conclude by presenting the execution of the algorithm on an example:
 	{ %\small
 
 		
-
-
-		\begin{adjustwidth}{7em}{0em}
+		\begin{adjustwidth}{6.2em}{0em}
 			\def\defaultHypSeparation{\hskip 1.4em}
 			\def\ScoreOverhang{-0em}
 			\begin{prooftree}

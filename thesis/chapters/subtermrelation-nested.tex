@@ -5,9 +5,9 @@
 In contrast to the approach described in chapter \ref{sec:two_phases}, where propositional interpolants are extracted first and colored terms lifted just in a second, separate phase, 
 we now present a method which is based on the former but merges the two phases.
 
-The motivation for the separation in two phases lies in the fact that just after the formation of the propositional interpolant, all terms and their logical relation can be known.
+The motivation for the separation in two phases lies in the fact that only after the formation of the propositional interpolant, all terms and their logical relation can be known.
 This however neglects the fact that proofs are frequently structured in a way such that the occurrence of certain symbols and variables are restricted to certain areas of the proof.
-By lifting these and prefixing the entire interpolant with their respective quantifier, the resulting formula is not optimal in the sense that the quantifier scope can be minimised.
+By lifting these and prefixing the entire interpolant with their respective quantifier, the resulting formula is not optimal in the sense that the quantifier scope can be minimized.
 
 Consider the following example:
 
@@ -28,7 +28,7 @@ Consider the following example:
 
 	Lifting and quantification of this propositional interpolant according to Theorem~\ref{thm:two_phases} gives the interpolant $\forall x_a (Q(x_a) \lor P(x_a))$.
 	Note however that the more general formula $(\forall x_a Q(x_a) ) \lor (\forall x_a P(x_a))$ is an interpolant as well, but can not be constructed by this method.
-	Consider yet that $\Delta$ entails the negated interpolant, so by generalising the interpolant, the formula entailed by $\Delta$ becomes more specialised.
+	Consider yet that $\Delta$ entails the negated interpolant, so by generalizing the interpolant, the formula entailed by $\Delta$ becomes more specialized.
 \end{exa}
 
 %Colored terms satisfying certain restrictions which allow for determining the order of the quantifier of the their corresponding lifting variables are lifted and bound during the extractions of the interpolants.
@@ -195,14 +195,14 @@ Now, we proceed to the main lemma:
 	\end{itemize}
 \end{proof}
 
-We now present an example which demonstrates that $\LI$ does produce formulas realising the idea presented in Example~\ref{exa:one_phase_motivation}.
+We now present an example which demonstrates that $\LI$ does produce formulas realizing the idea presented in Example~\ref{exa:one_phase_motivation}.
 
 \begin{exa}
 	\label{exa:lemma_part_renaming}
 	Let $\Gamma = \{ P(u, v) \lor Q(u) \lor R(v) \}$
 	and $\Delta = \{ \lnot P(w, z), \lnot Q(a), \lnot R(a)\}$.
 	We consider a resolution refutation of $\Gamma\cup\Delta$ combined with the interpolant extraction.
-	In order to emphasise the lifting steps,
+	In order to emphasize the lifting steps,
 	we do not just write $C\mid \LI(C)$ in the derivation as usual for a clause $C$ but $C\mid\LIpre(C)$ above $C\mid \LI(C)$ without a separating line 
 	in case $\LIpre(C)$ is different from $\LI(C)$.
 	The primed variables make the renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure explicit.
@@ -235,7 +235,7 @@ We now present an example which demonstrates that $\LI$ does produce formulas re
 
 	Note that without the renaming of the lifting variables, the result of the extraction would be
 	$\forall x_a \big( R(x_a) \lor  \forall x_a( Q(x_a) \lor P(x_a, x_a) ) \big) $.
-	In order to emphasise the binding, we alpha-rename this formula to
+	In order to emphasize the binding, we alpha-rename this formula to
 	$\forall x \big( R(x) \lor  \forall y( Q(y) \lor P(y, y) ) \big) $.
 	This is not an interpolant, as this formula is not entailed by $\Gamma$:
 
@@ -315,7 +315,7 @@ We finish this chapter by demonstrating the application of the interpolant extra
 	and $\Delta = \{ S(\var{8}) \lor \lnot P(\var{9}) \lor \lnot R(\var{5}), \lnot Q(g(a, \var{7})) \}$.
 	Hence $\Lang(\Gamma) \cap \Lang(\Delta) = \{ R, P, Q, S, g\}$, $\Lang(\Gamma) \setminus \Lang(\Delta) = \{f, b\}$ and $\Lang(\Delta)\setminus\Lang(\Gamma) = \{ a \}$.
 	We can produce an interpolant for $\Gamma$ and $\Delta$ using the following refutation and extraction in the same notation as Example~\ref{exa:lemma_part_renaming}.
-	We emphasise liftings of terms justified by being a ground term not occurring in the clause by \markA{}, and those justified by occurrences of variables which do not occur in the clause by \markB.
+	We emphasize liftings of terms justified by being a ground term not occurring in the clause by \markA{}, and those justified by occurrences of variables which do not occur in the clause by \markB.
 
 
 	%\tiny
