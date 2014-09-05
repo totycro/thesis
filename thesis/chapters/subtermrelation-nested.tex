@@ -15,7 +15,7 @@ Consider the following example:
 	\label{exa:one_phase_motivation}
 	Let $\Gamma = \{ P(x) \lor Q(y) \}$ and $\Delta = \{\lnot P(a), \lnot Q(a)\}$.
 	We consider the following refutation of $\Gamma \cup \Delta$, which we annotate by the interpolation extraction by appending $\PI(C)$ to each clause $C$, separated by ``$|$''.
-	For the sake of brevity, we sometimes give simplified by logically equivalent versions of $\PI(C)$.
+	For the sake of brevity, we sometimes give simplified but logically equivalent versions of $\PI(C)$.
 	This notational convention will be used throughout this thesis for examples of a similar form.
 
 	\begin{prooftree}
@@ -27,7 +27,7 @@ Consider the following example:
 	\end{prooftree}
 
 	Lifting and quantification of this propositional interpolant according to Theorem~\ref{thm:two_phases} gives the interpolant $\forall x_a (Q(x_a) \lor P(x_a))$.
-	Note however that the more general formula $(\forall x_a Q(x_a) ) \lor (\forall x_a P(x_a))$ is an interpolant as well, but can not be constructed by this method.
+	Note however that the stronger formula $(\forall x_a Q(x_a) ) \lor (\forall x_a P(x_a))$ is an interpolant as well, but can not be constructed by this method.
 	Consider yet that $\Delta$ entails the negated interpolant, so by generalizing the interpolant, the formula entailed by $\Delta$ becomes more specialized.
 \end{exa}
 
@@ -39,8 +39,8 @@ Consider the following example:
 
 \section{Interpolant extraction with simultaneous lifting}
 
-We now define the lifted interpolant $\LI$.
-Note that the structure of the resulting formula coincides the ones from $\PI$ as defined in Definition~\ref{def:PI} except for quantifiers and, of course, the colored terms.
+We now define the incrementally lifted interpolant $\LI$.
+Note that the structure of the resulting formula coincides with the ones from $\PI$ as defined in Definition~\ref{def:PI} except for quantifiers and, of course, the colored terms.
 
 \begin{defi}[Incrementally lifted interpolant $\LI$]
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
@@ -101,7 +101,7 @@ For ground terms $r$ however which occur in $\LI(C)$ but not in $C$,
 it is possible for them to cooccur in a subsequent clause. Let $p$ be the occurrence of $r$ in $\LI(C)$ and $q$ the occurrence of $r$ in a successor-clause of $C$.
 Then due to the fact that $p$ is not used in any unification, 
 $q$ must be created or originate from other occurrences of the same function and/or constant symbols.
-Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate to ensuring the logical validity of the interpolant, but despite the syntactic equality between $p$ and $q$, there is no logical relation between them.
+Note that the lifting conditions ensure that for these, the order of the quantifiers of their respective lifting variables is established in a fashion appropriate for ensuring the logical validity of the interpolant, but despite the syntactic equality between $p$ and $q$, there is no logical relation between them.
 
 We now show more formally that the lifting conditions ensure that if a term contains another term, the subterm is not lifted before the superterm:
 
@@ -116,6 +116,7 @@ We now show more formally that the lifting conditions ensure that if a term cont
 
 	For the sake of contradiction suppose that this is the case in the inference creating the clause $C'$.
 	Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
+	\mytodo{ $s'$, $t'$: wieso sind sie eindeutig bestimmt, wieso existieren sie? }
 
 	\begin{itemize}
 		\item Suppose that $s'$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C'$.
@@ -129,6 +130,32 @@ We now show more formally that the lifting conditions ensure that if a term cont
 \end{proof}
 
 Now, we proceed to the main lemma:
+
+
+\mytodo{\textsc{\LARGE Masterplan:} 
+
+	von $\LI(C_i)$ auf $\LIpre(C)$ normal argumentieren.
+
+	dann lemma dass von $\LIpre(C)$ auf $\LI(C)$ geht (weil das kommt im beweis im base case und im step vor)
+
+	dieses lemma muss induktion sein.
+	vllt invariante: wenn $t$ in $\LIpre(C)$ ODER $\LI(C)$, dann ist jeder subterm $s$ von $t$ nicht geliftet
+
+	beweis: 
+	\begin{itemize}
+		\item 
+			von $\LI(C_i)$ auf $\LIpre(C)$ wird nicht geliftet, da kann nichts schief gehen (was passiert bei substitution genau?)
+
+		\item
+			von $\LIpre(C)$ auf $\LI(C)$: 
+			sei $t$ ein term und $s$ ein subterm von $t$.
+			sei $t$ nicht geliftet in $\LI(C)$. dann zu zeigen dass $s$ auch nicht geliftet in $\LI(C)$.
+
+			Supp $s$ geliftet wegen lift cond $i$. dann entsprechender widerspruch mit der nicht-liftung von $t$.
+
+	\end{itemize}
+
+}
 
 \begin{lemma}
 	\label{lemma:gamma_entails_delta_lifted_invariant}
@@ -166,8 +193,8 @@ Now, we proceed to the main lemma:
 	If $t$ is $\Delta$-colored, then $\lifdeltanovar{\LIpre(C)}\atp = \LI(C)\atp = x_t$.
 	Note that as $t$ occurs at $p$ in $\LIpre(C)$, $x_t$ occurs free at $\lifdeltanovar{\LIpre(C)}\atp$.
 	The renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure
-	ensures that $x_t$ is a fresh lifting variable and hence is not bound by quantifiers introduced to to other occurrences of the term $t$, which would otherwise also be lifted by the same lifting variable and bound by the same quantifier\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.}.
-	Hence $x_t$ is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid with an arbitrarily placed universal quantifier. 
+	ensures that $x_t$ is a fresh lifting variable and hence is not bound by quantifiers introduced for other occurrences of the term $t$, which would otherwise also be lifted by the same lifting variable and bound by the same quantifier\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.}.
+	Hence by the semantics of free variables, $x_t$ is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid.
 
 	If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
 	Therefore $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
