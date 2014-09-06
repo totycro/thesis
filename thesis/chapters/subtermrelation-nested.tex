@@ -105,86 +105,54 @@ Note that the lifting conditions ensure that for these, the order of the quantif
 
 We now show more formally that the lifting conditions ensure that if a term contains another term, the subterm is not lifted before the superterm:
 
+
 \begin{lemma}
 	\label{lemma:lifting_conditions}
-	Let $C$ be a clause of a resolution refutation such that $\lifdeltanovar{\LIpre(C)}$ contains a maximal colored $\Gamma$-term $t$ which is lifted in $\lifdeltanovar{\LI(C)}$.
-	Suppose furthermore that $t$ contains a $\Delta$-lifting variable $x_s$.
-	Then $x_s$ occurs free as a subterm of $t$ in $\lifdeltanovar{\LIpre(C)}$.
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	Then if a term $t$ occurs in $\LIpre(C)$ or $\LI(C)$, no subterm $s$ of $t$ is lifted.
 \end{lemma}
 \begin{proof}
-	By the construction of $\LI$, the lemma is violated only if the term $s$ or a respective predecessor is lifted and bound due to fulfilling one of the lifting conditions.
+	We proceed by induction on the resolution refutation.
 
-	For the sake of contradiction suppose that this is the case in the inference creating the clause $C'$.
-	Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
-	\mytodo{ $s'$, $t'$: wieso sind sie eindeutig bestimmt, wieso existieren sie? }
+	For the base case, consider that if $C \in \Gamma \cup \Delta$, then $\LIpre(C)$ is either $\bot$ or $\top$ and consequently also $\LI(C)$.
 
+	Now suppose that the lemma holds for the clauses $C_1, \dots, C_n$ which are used in an inference $\inference$ to deduce the clause $C$ using the unifier $\sigma = \mgu(\inference)$.
+	Then if $t$ is a term in $\LIpre(C)$, no subterm $s$ of $t$ is lifted since either $t$ is present in $\LI(C_i) \lor C_i$ for some $i$, $1\varleq i \varleq n$, where the induction hypothesis applies,
+	or otherwise $t$ is introduced by means of $\sigma$. But as $\sigma$ is calculated only from the resolution inference, no lifting terms can occur in $\ran(\sigma)$.
+
+	Now let $t$ be a term in $\LI(C)$ which is not lifted. Let $s$ be a subterm of $t$ and for the sake of contradiction, suppose that $s$ is lifted in $\LI(C)$.
 	\begin{itemize}
-		\item Suppose that $s'$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C'$.
-			Then as $s'$ is a subterm of $t'$, $t'$ contains this variable as well and therefore is lifted in $\LI(C')$, contradicting the assumption.
+		\item Suppose that $s$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
+			Then as $s$ is a subterm of $t$, $t$ contains this variable as well and therefore is lifted in $\LI(C)$, contradicting the assumption.
 
-		\item Suppose that $s'$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C'$.
-			Then $t'$ does not occur in $C'$ either as any occurrence of $t'$ contains $s'$. 
-			Hence $t'$ is lifted in $\LI(C')$, contradicting the assumption.
+		\item Suppose that $s$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
+			Then $t$ does not occur in $C$ either as any occurrence of $t$ contains~$s$. 
+			Hence $t$ is lifted in $\LI(C)$, contradicting the assumption.
 			\qedhere
 	\end{itemize}
 \end{proof}
 
-Now, we proceed to the main lemma:
-
-
-\mytodo{\textsc{\LARGE Masterplan:} 
-
-	von $\LI(C_i)$ auf $\LIpre(C)$ normal argumentieren.
-
-	dann lemma dass von $\LIpre(C)$ auf $\LI(C)$ geht (weil das kommt im beweis im base case und im step vor)
-
-	dieses lemma muss induktion sein.
-	vllt invariante: wenn $t$ in $\LIpre(C)$ ODER $\LI(C)$, dann ist jeder subterm $s$ von $t$ nicht geliftet
-
-	beweis: 
-	\begin{itemize}
-		\item 
-			von $\LI(C_i)$ auf $\LIpre(C)$ wird nicht geliftet, da kann nichts schief gehen (was passiert bei substitution genau?)
-
-		\item
-			von $\LIpre(C)$ auf $\LI(C)$: 
-			sei $t$ ein term und $s$ ein subterm von $t$.
-			sei $t$ nicht geliftet in $\LI(C)$. dann zu zeigen dass $s$ auch nicht geliftet in $\LI(C)$.
-
-			Supp $s$ geliftet wegen lift cond $i$. dann entsprechender widerspruch mit der nicht-liftung von $t$.
-
-	\end{itemize}
-
-}
-
 \begin{lemma}
-	\label{lemma:gamma_entails_delta_lifted_invariant}
+	\label{lemma:successor_li}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	Then
-	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
+	Then for any successor $C'$ of $C$, $\lifgamma{\lifdelta{\LI(C)\tau, Z_\Delta}, Z_\Gamma}$ is contained in $\LI(C')$ for some substitution $\tau$ and sets of terms $Z_\Delta$ and $Z_\Gamma$.
 \end{lemma}
 \begin{proof}
-	We show the strengthening
-	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}.
+	Let $C_1, \dots, C_n$ be the clauses used in an inference $\inference$ to produce $C$.
+	Then clearly $\LI(C_i)\sigma$ occurs in $\LIpre(C)$ for some $i$ such that $1\varleq 1 \varleq n$.
+	Moreover, in $\LI(C)$, $\lifgamma{\lifdelta{\LI(C_i)\sigma, Z_\Delta}, Z_\Gamma}$ occurs where $Z_\Gamma$ and $Z_\Delta$ are the sets of maximal colored terms in $\LIpre(C)$ of the respective color which satisfy some lifting condition.
+\end{proof}
 
-	As a first step, 
-	we prove by induction that
-	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma}$.
+\begin{lemma}
+	\label{lemma:lipre_implies_li}
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	Then
+	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma}$
+	implies 
+	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$.
+\end{lemma}
 
-	If $C\in \Gamma\cup\Delta$, then Lemma~\ref{lemma:gamma_entails_init} shows that $\Gamma \entails \lifdeltanovar{\PIinit(C) \lor C_\Gamma}$, which is the unfolded definition of $\lifdeltanovar{\LIpre(C) \lor C_\Gamma}$.
-
-	For the induction step, suppose the clause $C$ is the result of an inference $\inference$ using the clauses $C_1, \dots, C_n$.
-	By induction hypothesis, $\Gamma \entails \lifdeltanovar{\PI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
-	by Lemma~\ref{lemma:gamma_entails_step}, we obtain that 
-	$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \bar I) \lor C_\Gamma}$.
-	This however is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C) \lor C_\Gamma}$.
-
-
-	As we have now established that
-	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma}$,
-	we show that also
-	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$ holds.
-
+	\begin{proof}
 
 	The difference between $\lifdeltanovar{\LIpre(C)}$ and $\lifdeltanovar{\LI(C)}$ lies only in certain maximal colored terms which are lifted and the resulting lifting variable bound in $\lifdeltanovar{\LI(C)}$, hence it suffices to consider these.
 	Let $t$ be a colored term in $\LIpre(C)$ at position $p$ such that $\LI(C)\atp = \lifboth{t}$.
@@ -195,6 +163,7 @@ Now, we proceed to the main lemma:
 	The renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure
 	ensures that $x_t$ is a fresh lifting variable and hence is not bound by quantifiers introduced for other occurrences of the term $t$, which would otherwise also be lifted by the same lifting variable and bound by the same quantifier\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.}.
 	Hence by the semantics of free variables, $x_t$ is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid.
+	\mytodo{das vllt noch genauer}
 
 	If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
 	Therefore $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
@@ -202,24 +171,46 @@ Now, we proceed to the main lemma:
 	Note that occurrences of colored terms which are not maximal colored terms are not lifted in $\LI$.
 
 	Let $x_s$ be a $\Delta$-lifting variable which occurs in $\lifdeltanovar{t}$. 
-	We show that $y_t$ is quantified in the scope of the quantification of $x_s$ by discussing the different possibilities for quantification of $x_s$:
+	Then by Lemma~\ref{lemma:lifting_conditions}, $x_s$ is not bound in $\LIpre(C)$.
+	We show that $y_t$ is quantified in the scope of the quantification of $x_s$ by discussing the different possibilities for quantification of~$x_s$:
 
 	\begin{itemize}
 		\item
-			Clearly if $s$ or a respective successor is never bound due to not occurring at a maximal colored position, it is implicitly universally quantified.
+			Suppose that $s$ is lifted in $\LI(C)$ as well.
+			Then by the definition of the quantifier prefix, the quantification of $x_s$ precedes the quantification for $x_t$ as $s$ is a subterm of $t$.
 
 		\item
-			If $s$ or a respective successor does occur at a maximal colored position but does not satisfy any of the lifting conditions up to the stage where $t$ is lifted, it is bound at some later stage of the interpolant extraction, but as for any successor $C'$ of $C$, $\LI(C)$ is contained in $\LI(C')$, 
-			the scope of its quantifier encompasses the quantifier for $y_t$.
+			Suppose that in some successor $C'$ of $C$, a successor $s'$ of $s$ is lifted.
+			By Lemma~\ref{lemma:successor_li}, any quantifier of  $\LI(C)$, in particular $\exists y_t$, occurs in $\LI(C')$.
+			As $s'$ is lifted in $\LI(C')$, the quantification $\forall x_{s'}$ is present in the quantifier prefix of $\LI(C')$. But then the quantifier for $y_t$ is in the scope of the quantifier of $x_{s'}$.
 
 		\item
-			In the case that $s$ and $t$ are lifted at the same stage of the interpolant extraction, by the definition of the quantifier prefix, the quantification of $x_s$ precedes the quantification for $x_t$ as $s$ is a subterm of $t$.
-
-
-		\item
-			It is furthermore essential to see that neither $s$ nor a respective predecessor is lifted in a previous step of the interpolant extraction, which is shown by Lemma~\ref{lemma:lifting_conditions}.
+			Otherwise there is no successor $C'$ of $C$ such that a successor $s'$ of $s$ is lifted in $\LI(C')$.
+			Then it is implicitly universally quantified.
 			\qedhere
 	\end{itemize}
+\end{proof}
+
+\begin{lemma}
+	\label{lemma:gamma_entails_delta_lifted_invariant}
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	Then
+	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C} $
+\end{lemma}
+\begin{proof}
+	We show the strengthening
+	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.} by induction on the resolution refutation.
+
+	If $C\in \Gamma\cup\Delta$, then Lemma~\ref{lemma:gamma_entails_init} shows that $\Gamma \entails \lifdeltanovar{\PIinit(C)} \lor \lifdeltanovar{C_\Gamma}$, which is the unfolded definition of $\lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
+	By Lemma~\ref{lemma:lipre_implies_li}, we immediately get that 
+	$\lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C_\Gamma}$.
+
+	For the induction step, suppose the clause $C$ is the result of an inference $\inference$ using the clauses $C_1, \dots, C_n$.
+	By induction hypothesis, $\Gamma \entails \lifdeltanovar{\LI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
+	by Lemma~\ref{lemma:gamma_entails_step}, we obtain that 
+	$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \LI(C_1), \dots, \LI(C_n)) \lor C_\Gamma}$.
+	This however is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C) \lor C_\Gamma}$.
+	Lemma~\ref{lemma:lipre_implies_li} gives the result.
 \end{proof}
 
 We now present an example which demonstrates that $\LI$ does produce formulas realizing the idea presented in Example~\ref{exa:one_phase_motivation}.
@@ -330,7 +321,7 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 	We obtain by Lemma~\ref{lemma:gamma_entails_delta_lifted_invariant} that  $\Gamma \entails \liftnovar{\Delta}{\LI(\pi)}$ and
 	by Lemma~\ref{lemma:delta_entails_li} that
 	$\Delta \entails \lnot\lifgammanovar{\LI(\pi)}$.
-	As the empty clause derived in $\pi$ trivially contains neither variables nor ground terms and as any colored term either contains variables or is ground, at least one lifting condition holds for any term in $\LIpre(\pi)$ and hence all colored terms are lifted in $\LI(\pi)$.
+	As the empty clause derived in $\pi$ trivially contains neither variables nor ground terms and as any colored term either contains variables or is ground, at least one lifting condition holds for any maximal colored term in $\LIpre(\pi)$. Hence all colored terms are lifted in $\LI(\pi)$.
 	Therefore $\lifdeltanovar{\LI(\pi)} = \LI(\pi)$ and $\lifgammanovar{\LI(\pi)} = \LI(\pi)$.
 \end{proof}
 
