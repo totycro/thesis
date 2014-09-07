@@ -2,9 +2,9 @@
 \chapter{The semantic perspective on interpolation}
 \label{chap:semantic}
 
-An interesting feature of the interpolant theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters, as it is a purely model-theoretic.
+An interesting feature of the interpolation theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters, as it is purely model-theoretic.
 It is based on the joint consistency theorem by Robinson (\cite{robinson1956result}), which we show to be equivalent to the interpolation theorem.
-The joint consistency theorem itself was originally presented as a proof of Beth's definability theorem, which is discuss in Section~\ref{sec:beth}.
+The joint consistency theorem itself was originally presented as a proof of Beth's definability theorem, which is discussed in Section~\ref{sec:beth}.
 
 \section{Joint consistency}
 \label{sec:joint_consistency}
@@ -68,10 +68,10 @@ The following proof essentially follows \cite{Henkin63} and \cite{chang1990model
 		\item Otherwise:
 			\label{theory_construction_2}
 			\begin{enumerate}[(2a)]
-			\label{theory_construction_2a}
 				\item If $\mathcal{A}_i$ is of the form $\exists x A$, then $T_{i+1} \defeq{}\, T_i \cup \{ \mathcal{A}_i, A\subst{x/c_i} \}$.
-			\label{theory_construction_2b}
+			\label{theory_construction_2a}
 				\item Otherwise $T_{i+1} \defeq{}\, T_i \cup \{ \mathcal{A}_i \}$.
+			\label{theory_construction_2b}
 			\end{enumerate}
 	\end{enumerate}
 
@@ -101,7 +101,28 @@ The following proof essentially follows \cite{Henkin63} and \cite{chang1990model
 			\label{enum:theories_insep}
 			$T_i$ and $T'_i$ are inseparable.
 
-			$\Gamma$ and $\Delta$ are inseparable by assumption and clearly the construction of the subsequent elements of the sequence do not violate this invariant.
+			Suppose to the contrary that $T_i$ and $T'_i$ are separable.
+			%Then there exists a formula $A$ in the language $\Lang(\Gamma) \cap \Lang(\Delta)$ such that $\Gamma \entails A$ and $\Delta \entails \lnot A$.
+			As $\Gamma$ and $\Delta$ are inseparable by assumption,
+			there must be a $j<i$ such that $T_{j}$ and $T'_{j}$ are not separable but $T_{j+1}$ and $T'_{j}$ are,
+			or $T_{j+1}$ and $T'_{j}$ are not separable but $T_{j+1}$ and $T'_{j+1}$ are.
+			Since these cases are analogous, we only consider the first. 
+
+			Note that by \ref{theory_construction_1} of the construction procedure, if $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$ are separable, then $T_{j+1} = T_{j}$. 
+			But as we have just witnessed that $T_{j}$ and $T_{j+1}$ must be different, $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$ must be inseparable.
+			This however also implies that in the construction procedure, \ref{theory_construction_2b} can not be the case as then, $T_{j+1} = T_{j} \cup \{ \mathcal{A}_{j} \}$ would hold, which contradicts the assumption that $T_{j+1}$ and $T'_j$ are separable.
+
+			Hence \ref{theory_construction_2a} must be the case. Therefore $A_j$ is of the form $\exists x A$ and $T_{j+1} = T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i} \}$.
+			As $T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i}  \}$ and $T'_j$ are separabe, there exists a formula $B$ in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i}  \}) \cap \Lang(T'_j)$
+			such that $ T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i} \} \entails B$ and $T'_j \entails \lnot B$.
+			Since $c_i$ is a fresh variable and therefore is not contained in $\Lang(T'_j)$, $c_i$ does not occur in $B$.
+			However $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i}  \}) = \Lang(T_{j} \cup \{ \mathcal{A}_{j}\}) \cup \{ c_i \}$
+
+			\largered{ICI}
+				
+			But then as $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_j$ are inseparable, there can not be such a formula $B$.
+
+
 
 			\item 
 			\label{enum:theories_consistent}
