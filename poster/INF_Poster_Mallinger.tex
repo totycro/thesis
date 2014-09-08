@@ -89,6 +89,16 @@
 }
 
 
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb} % the reals
+\usepackage{mathtools} % smashoperator
+\usepackage{thmtools} 
+
+
+  %\declaretheorem[title=Theorem]{thm}
+
+
 % for crop marks, uncomment the following line
 %\usepackage[cross,width=88truecm,height=123truecm,center]{crop}
 
@@ -106,8 +116,7 @@
 			\begin{block}{Interpolation}
 				\begin{itemize}
 
-					\item
-						The notion of interpolation has been introduced by Craig.
+					%\item The notion of interpolation has been introduced by Craig.
 
 					\item
 						Loosely speaking, given two formulas $A$ and $B$ such tht $A$ implies $B$, an interpolant $I$ is a formula which is implied by $A$ and which itself implies $B$.
@@ -136,20 +145,27 @@
 						\smallskip
 
 					\item
-						Hence it in some sense captures the logical content of $A$ which necessarily makes $B$ true and therefore acts as a link between these formulas.
+						Additionally, interpolants can only contains symbols which are common to both $A$ and $B$.
 
 					\item
-						Additionally, the language of an interpolant must be contained in the intersection of the langauges $A$ and $B$.
-
+						Hence interpolants succinctly capture the logical content which explains an implication.
+						%Hence interpolants capture the logical content of $A$ which necessarily makes $B$ true and therefore acts as a link between these formulas.
 				\end{itemize}
+
+				\textbf{Theorem} (Craig).
+				\emph{Let $A$ and $B$ be first-order formulas such that $A$ implies $B$.
+					Then there exists an interpolant for $A$ and $B$.}
+			
 
 			\end{block}
 
 
-			\begin{block}{Aim of thesis}
-				Give comprehensive account of existing proofs:
+			\begin{block}{Aim }
+				Give comprehensive account of existing proofs and techniques:
 				\begin{itemize}
-					\item foo
+					\item Reduction to first-order logic without equality
+					\item Interpolant extraction from resolution proofs
+					\item Model-theoretic proof 
 				\end{itemize}
 			\end{block}
 
@@ -184,15 +200,22 @@
 				\begin{thebibliography}{999}
 
 					\bibitem[1]{Craig57linear}
-						William Craig. Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
+						William Craig.
+						\newblock{
+						Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
+					}
 						\newblock {
 							\emph{Journal of Symbolic Logic}, 22(3):250--268, 1957.
 						}
 
 					\bibitem[2]{Huang95}
-						Guoxiang Huang. Constructing Craig Interpolation Formulas.
+						Guoxiang Huang.
+						\newblock{
+							Constructing Craig Interpolation Formulas.
+						}
 						\newblock {
-							\emph{Proceedings of the First Annual International Conference on Computing and Combinatorics}, COCOON ’95, p.\ 181--190, 1995. 
+							%\emph{Proceedings of the First Annual International Conference on Computing and Combinatorics}, COCOON ’95, p.\ 181--190, 1995. 
+							In \emph{Proc COCOON ’95}, p.\ 181--190, 1995. 
 						}
 
 						%  \newblock {On logical representations of hackerisms}.
