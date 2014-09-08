@@ -106,21 +106,19 @@ The following proof essentially follows \cite{Henkin63} and \cite{chang1990model
 			As $\Gamma$ and $\Delta$ are inseparable by assumption,
 			there must be a $j<i$ such that $T_{j}$ and $T'_{j}$ are not separable but $T_{j+1}$ and $T'_{j}$ are,
 			or $T_{j+1}$ and $T'_{j}$ are not separable but $T_{j+1}$ and $T'_{j+1}$ are.
-			Since these cases are analogous, we only consider the first. 
+			Since these two cases are analogous, we only consider the first. 
 
 			Note that by \ref{theory_construction_1} of the construction procedure, if $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$ are separable, then $T_{j+1} = T_{j}$. 
-			But as we have just witnessed that $T_{j}$ and $T_{j+1}$ must be different, $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$ must be inseparable.
+			But as we have just witnessed that $T_{j}$ and $T_{j+1}$ are different, $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$ must be inseparable.
 			This however also implies that in the construction procedure, \ref{theory_construction_2b} can not be the case as then, $T_{j+1} = T_{j} \cup \{ \mathcal{A}_{j} \}$ would hold, which contradicts the assumption that $T_{j+1}$ and $T'_j$ are separable.
 
-			Hence \ref{theory_construction_2a} must be the case. Therefore $A_j$ is of the form $\exists x A$ and $T_{j+1} = T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i} \}$.
-			As $T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i}  \}$ and $T'_j$ are separabe, there exists a formula $B$ in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i}  \}) \cap \Lang(T'_j)$
-			such that $ T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i} \} \entails B$ and $T'_j \entails \lnot B$.
-			Since $c_i$ is a fresh variable and therefore is not contained in $\Lang(T'_j)$, $c_i$ does not occur in $B$.
-			However $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_i}  \}) = \Lang(T_{j} \cup \{ \mathcal{A}_{j}\}) \cup \{ c_i \}$
-
-			\largered{ICI}
-				
-			But then as $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_j$ are inseparable, there can not be such a formula $B$.
+			Hence \ref{theory_construction_2a} must be the case. Therefore $A_j$ is of the form $\exists x A$ and $T_{j+1} = T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j} \}$.
+			As $T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}$ and $T'_j$ are separabe, there exists a formula $B$ in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}) \cap \Lang(T'_j)$
+			such that $ T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j} \} \entails B$ and $T'_j \entails \lnot B$.
+			Since $c_j$ is a fresh variable and therefore is not contained in $\Lang(T'_j)$, $c_j$ does not occur in $B$.
+			This implies that $T_j \cup \{\mathcal{A}_j\} \entails B$ and
+			that $B$ is in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}\}) \cap \Lang(T'_j)$,
+			Then however $B$ separates $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$, which is a contradiction to a previous assumption. 
 
 
 
