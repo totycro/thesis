@@ -5,7 +5,7 @@
 
 This section essentially presents the original proof of \cite{Huang95} in a modern format.
 It forms the base for our work in chapter~\ref{sec:two_phases} and \ref{sec:one_phase}, and we refer to these chapters for lemmas and definitions which also apply here.
-Section~\ref{sec:huang_commentary} features a commentary on the original publication. 
+Section~\ref{sec:huang_commentary} features comments on the original publication. 
 
 \section{Propositional interpolants}
 
@@ -255,7 +255,7 @@ This insight allows us to push substitutions of the variables upwards along this
 	By application of this procedure to all variable occurring in $\pi$, we obtain a desired resolution refutation.
 \end{proof}
 
-Even though propositional refutations have nice properties for theoretical analysis, their use in practice is not desired as its construction involves a considerable blowup of the refutation. 
+Even though propositional refutations have nice properties for theoretical analysis, their use in practise is not desired as its construction involves a considerable blowup of the refutation. 
 But its use is still justified in this instance as we can show for arbitrary refutations $\pi$
 that the algorithm stated in \ref{def:PI} gives closely related results for both $\pi$ and its corresponding propositional refutation.
 
@@ -480,7 +480,7 @@ From this, we can directly proof the theorem by relying on the notion of symmetr
 \begin{proof}
 	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
 
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-terms.
+	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-term.
 	Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
 	Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
 	Note that as all of ${r_1}, \dots, {r_k}$ due to being strict subterms of $t$ are of strictly smaller length than $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
@@ -509,11 +509,11 @@ From this, we can directly proof the theorem by relying on the notion of symmetr
 
 
 
-\section{Commentary on the original publication}
+\section{Comments on the original publication}
 \label{sec:huang_commentary} 
 
 
-In \cite[Definition 3]{Huang95}, a maximal occurrence of a $\Gamma$ ($\Delta$)-term is defined to be an occurrence of a $\Gamma$ ($\Delta$) term which is not a subterm of a larger $\Gamma$ ($\Delta$)-term.
+In \cite[Definition 3]{Huang95}, a maximal occurrence of a $\Gamma$ ($\Delta$)-term is defined to be an occurrence of a $\Gamma$ ($\Delta$)-term which is not a subterm of a larger $\Gamma$ ($\Delta$)-term.
 
 Furthermore, in the extension of the ``Interpolation Algorithm'' to include paramodulation inferences in \cite[p.~183]{Huang95}, this notion is used to distinguish between the respective cases.
 Translated into our notation in the context of our corresponding Definition~\ref{def:PI_paramod} for the case of paramodulation inferences, the conditions for the three cases can be stated as follows:
