@@ -113,13 +113,12 @@ The following proof essentially follows \cite{Henkin63} and \cite{chang1990model
 			This however also implies that in the construction procedure, \ref{theory_construction_2b} can not be the case as then, $T_{j+1} = T_{j} \cup \{ \mathcal{A}_{j} \}$ would hold, which contradicts the assumption that $T_{j+1}$ and $T'_j$ are separable.
 
 			Hence \ref{theory_construction_2a} must be the case. Therefore $A_j$ is of the form $\exists x A$ and $T_{j+1} = T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j} \}$.
-			As $T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}$ and $T'_j$ are separabe, there exists a formula $B$ in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}) \cap \Lang(T'_j)$
+			As $T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}$ and $T'_j$ are separable, there exists a formula $B$ in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}) \cap \Lang(T'_j)$
 			such that $ T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j} \} \entails B$ and $T'_j \entails \lnot B$.
 			Since $c_j$ is a fresh variable and therefore is not contained in $\Lang(T'_j)$, $c_j$ does not occur in $B$.
 			This implies that $T_j \cup \{\mathcal{A}_j\} \entails B$ and
 			that $B$ is in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}\}) \cap \Lang(T'_j)$,
 			Then however $B$ separates $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$, which is a contradiction to a previous assumption. 
-
 
 
 			\item 
@@ -134,13 +133,14 @@ The following proof essentially follows \cite{Henkin63} and \cite{chang1990model
 
 			We show the result for $T$.
 			By~\ref{enum:theories_consistent}, $T$ is consistent.
-			Suppose that for some $i$, $\mathcal{A}_i \not\in T$ and $\lnot\mathcal{A}_i \not\in T$.
-			Then by the construction of $T$, we can derive that
-			$T_i \cup \{\mathcal{A}_i\}$ and $T'_i$ are separable.
-			Hence also
-			$T \cup \{\mathcal{A}_i\}$ and $T'$ are, i.e.\ there exists a formula $B_1$ in the language $\Lang(T\cup\{\mathcal{A}_i\}) \cap \Lang(T') = (\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that
+			Suppose that for some~$i$, $\mathcal{A}_i \not\in T$ and $\lnot\mathcal{A}_i \not\in T$.
+
+			Then in the construction of $T$, case \ref{theory_construction_1} must apply for $\mathcal{A}_i$ as the cases \ref{theory_construction_2a} and \ref{theory_construction_2b} each would add $\mathcal{A}_i$ to $T_{i+1}$ and therefore also to $T$.
+			However as \ref{theory_construction_1} applies for $\mathcal{A}_i$, $T_i \cup \{\mathcal{A}_i\}$ and $T'_i$ must be separable.
+			As $T_i \subseteq T$, also
+			$T \cup \{\mathcal{A}_i\}$ and $T'$ are separable, i.e.\ there exists a formula $B_1$ in the language $\Lang(T\cup\{\mathcal{A}_i\}) \cap \Lang(T') = (\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that
 			$T \cup \{\mathcal{A}_i\} \entails B_1$ and $T' \entails \lnot B_1$.
-			By the deduction theorem, we also have that \markA{} $T \entails \mathcal{A}_i \limpl B_1$.
+			By the deduction theorem, we also have that \markA{}~$T \entails \mathcal{A}_i \limpl B_1$.
 
 			As we also assume that $\lnot \mathcal{A}_i \not\in T$, by a similar argument, there exists a formula $B_2$ in the language  $(\Lang(\Gamma) \cap \Lang(\Delta)) \cup C$ such that 
 			\markB{} $T \entails \lnot \mathcal{A}_i \limpl B_2$ and $T' \entails \lnot B_2$.
@@ -162,10 +162,10 @@ The following proof essentially follows \cite{Henkin63} and \cite{chang1990model
 
 	As $T$ is consistent, let $M$ be a model of $T$.
 	Due to~\ref{enum:each_max_consistent}, for each term $t$ in $\Lang(\Gamma)\cup C$, $\exists x\, (t = x) \in T$ and hence by~\ref{theory_construction_2a}, there is some $c_i \in C$ such that $t=c_i \in T$.
-	Therefore we can find a submodel of $N$ of $M$ which as $M$ is in the language $\Lang(\Gamma)\cup C$ such that
+	Therefore we can find a submodel $N$ of $M$ which as $M$ is in the language $\Lang(\Gamma)\cup C$ such that
 	every domain element in $N$ corresponds to a constant symbol in $C$.
 	%the domain of $N$ is $\{ \interpretation{M}(c) \mid c \in C\}$, where $\interpretation{M}$ is the interpretation of $M$.
-	Models $M'$ of $T'$ allow by a similar reasoning for finding submodels $N'$ of $M'$.
+	Models $M'$ of $T'$ allow by a similar reasoning for finding such submodels $N'$ of $M'$.
 
 	As by~\ref{enum:intersection_consistent}, $T$ and $T'$ agree on all formulas of $(\Lang(\Gamma) \cap \Lang(\Delta))\cup C$, 
 	we are able to find an isomorphism between the reducts $N$ and $N'$ to their common language.
