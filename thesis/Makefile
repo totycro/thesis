@@ -12,7 +12,8 @@ LANG="en" # of tex file
 
 first:
 	#make semantic >/dev/null &
-	make content >/dev/null &
+	#make content >/dev/null &
+	make pdf1now >/dev/null &
 
 all: everything
 
