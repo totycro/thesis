@@ -76,6 +76,9 @@
   \vspace{2cm}
 }
 
+
+
+
 % setup postit
 \setbeamercolor{postit}{fg=black,bg=yellow} 
 \newenvironment{postit}
@@ -98,6 +101,7 @@
 
   %\declaretheorem[title=Theorem]{thm}
 
+\newcommand{\contrib}[1]{{\color{TuWienBlue}\textbf{#1}}}
 
 % for crop marks, uncomment the following line
 %\usepackage[cross,width=88truecm,height=123truecm,center]{crop}
@@ -110,8 +114,9 @@
 \begin{frame}
 	\begin{columns}[t]
 
+		\newcommand{\mycolwidth}{.4\textwidth} % default: .45\textwidth
 
-		\begin{column}{.45\textwidth}
+		\begin{column}{\mycolwidth}
 
 			\begin{block}{Interpolation}
 				\begin{itemize}
@@ -119,8 +124,8 @@
 					%\item The notion of interpolation has been introduced by Craig.
 
 					\item
-						Loosely speaking, given two formulas $A$ and $B$ such tht $A$ implies $B$, an interpolant $I$ is a formula which is implied by $A$ and which itself implies $B$.
-						\bigskip
+						Given two formulas $A$ and $B$ such tht $A$ implies $B$, an interpolant $I$ is a formula which is implied by $A$ and which itself implies $B$. \\[.6\baselineskip] 
+
 
 
 						\begin{figure}[htbp]
@@ -154,14 +159,14 @@
 
 				\textbf{Theorem} (Craig).
 				\emph{Let $A$ and $B$ be first-order formulas such that $A$ implies $B$.
-					Then there exists an interpolant for $A$ and $B$.}
+					Then there is an interpolant for $A$ and~$B$.}
 			
 
 			\end{block}
 
 
-			\begin{block}{Aim }
-				Give comprehensive account of existing proofs and techniques:
+			\begin{block}{Aim and Scope}
+				Give comprehensive account of existing proofs and techniques and extend them:
 				\begin{itemize}
 					\item Reduction to first-order logic without equality
 					\item Interpolant extraction from resolution proofs
@@ -169,29 +174,51 @@
 				\end{itemize}
 			\end{block}
 
+			\begin{block}{Reduction to first-order logic without equality}
+				This is the approach used by Craig for inital proof.
+				\begin{itemize}
+					\item Express equality and function symbols by means of fresh predicates with appropriate axioms
+					\item Compute interpolants in first-order logic without equality and function symbols, for instance using Maehara's Lemma.
+				\end{itemize}
+			\end{block}
+
+			\begin{block}{Interpolant extraction from resolution proofs}
+				This constructive proof by Huang consists of two phases:
+
+				\begin{itemize}
+					\item From a resolution proof inductively construct a propositional interpolant, which may still contain non-common terms.
+					\item Replace non-common terms by variables and bind them in a quantifier prefix.
+				\end{itemize}
+
+				\contrib{Contributions:}
+				\begin{itemize}
+					\item We showed that the number of quantifier alternations in the interpolant corresponds directly to the number of nested alternations of symbols which only occur in $A$ or $B$ respectively.
+
+					\item We developed an improved version which combines these phases and produces non-prenex formulas.
+				\end{itemize}
+
+
+				%\begin{subblock} asdf a as
+%\end{subblock}
+				%x
+
+			\end{block}
 
 		\end{column}
+		\begin{column}{\mycolwidth}
 
-		% ---------------------------------------------------------%
-		% Set up a column
-		%\begin{column}{.45\textwidth}
-		%  \begin{block}{Block 1}
-		%    \lipsum[1-3]
-		%  \end{block}
+			\begin{block}{Model-theoretic proof}
+				The interpolation theorem can also be proven semantically:
+				\begin{itemize}
+					\item Suppose that there is no interpolant.
+					\item Then we can build a model in which $A$ holds, but $B$ does not.
 
-		%  \begin{block}{Block 2}
-		%    \lipsum[3-4]
-		%  \end{block}
-		%\end{column}
-		% ---------------------------------------------------------%
-		% end the column
+				\end{itemize}
 
-		% ---------------------------------------------------------%
-		% Set up a column 
-		\begin{column}{.45\textwidth}
-			\begin{block}{Yet another block}
-				\lipsum[5-7]
+				$\Rightarrow$ If there is no formula which explains the logical relation between $A$ and $B$ (=interpolant), then this is possible.
 			\end{block}
+
+
 
 
 
@@ -202,8 +229,8 @@
 					\bibitem[1]{Craig57linear}
 						William Craig.
 						\newblock{
-						Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
-					}
+							Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
+						}
 						\newblock {
 							\emph{Journal of Symbolic Logic}, 22(3):250--268, 1957.
 						}
