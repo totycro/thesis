@@ -473,38 +473,59 @@ From this, we can directly proof the theorem by relying on the notion of symmetr
 
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$t_1, \dots, t_n$ be the maximal colored terms in $\PI(\pi)$ in ascending order.
+	$t_1, \dots, t_n$ be the maximal colored terms in $\PI(\pi)$ in ascending order by their length.
 	Then
-	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_{t_i}$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant.
+	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if ${t_i}$ is a $\Delta$ $(\Gamma)$-term, is an interpolant.
 \end{thm}
 \begin{proof}
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
+	Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ and
+	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$.
+	Then by Lemma~\ref{lemma:gamma_entails_lifted_interpolantHuang}, we get that 
+	$\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$
+	and Corollary~\ref{cor:delta_entails_lifted_interpolant} shows that 
+	$\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
+	Note that as $t_1, \dots, t_n$ are ordered by length, they are also in subterm order as subterms are strictly smaller than the term they are part of.
 
-	A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-term.
-	Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
-	Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
-	Note that as all of ${r_1}, \dots, {r_k}$ due to being strict subterms of $t$ are of strictly smaller length than $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
-	%Note that all of $r_1, \dots, r_k$ are subterms of $t$.
-	%Note that the $\Delta$-terms, which are replaced by $x_{r_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
+	Therefore we can apply Lemma~\ref{lemma:thm_induction} to obtain 
+	$\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$ 
+	as well as 
+	$\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$,
 
-	%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are gray terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
-
-	In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is lifted by $y_t$, which is existentially quantified.
-	Hence $t$ is a witness for $y_j$ as due to the quantifier ordering,
-	it is bound in the scope of the quantification of the lifting variables $x_{r_1}, \dots, x_{r_k}$.
-	Therefore $\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
-
-	By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_{u_1} \dots \forall y_{u_{k'}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $u_1, \dots u_{k'}$ are the maximal colored $\Gamma$-terms in $\PI(\pi)$.
-
-	By a similar line of argumentation as above, we can replace the maximal $\Delta$-\nolinebreak{}terms by variables which are then existentially quantified and arrive at
-	$\Delta \entails\nolinebreak{} \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
-	Therefore also
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
-	finally by Lemma \ref{lemma:lifting_order_not_relevant},
-	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
-
-	As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
+	As clearly $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ does not contain colored symbols, this formula is an interpolant.
 \end{proof}
+
+\begin{comment}
+	~
+	\mytodo{remove huang orig:}
+	\begin{proof}
+		By Lemma \ref{lemma:gamma_entails_lifted_interpolantHuang}, $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, where $s_1, \dots s_m$ are the maximal colored $\Delta$-terms in $\PI(\pi)$.
+
+		A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-term.
+		Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
+		Then in $\lifdelta{\PI(\pi)}$, the terms ${r_1}, \dots, {r_k}$ are replaced by $x_{r_1}, \dots, x_{r_k}$ respectively.
+		Note that as all of ${r_1}, \dots, {r_k}$ due to being strict subterms of $t$ are of strictly smaller length than $t$, all of $x_{r_1}, \dots, x_{r_k}$ precede $y_t$ in the arrangement of the lifting variables.
+		%Note that all of $r_1, \dots, r_k$ are subterms of $t$.
+		%Note that the $\Delta$-terms, which are replaced by $x_{r_1}, \ldots, x_{i_{j_k}}$ respectively, are each of strictly smaller size than $t$ as they are strict subterms of $t$.
+
+		%Then it is of the form $f(x_{i_1}, \ldots, x_{i_{n_x}}, u_1, \ldots, u_{n_u}, v_1, \ldots, v_{n_v})$, where $f$ is $\Gamma$-colored, the $u_j$, $1\varleq j \varleq n_u$ are gray terms and the $v_j$, $1\varleq j\varleq n_v$ are $\Gamma$-terms.
+
+		In $\lifgamma{\lifdelta{\PI(\pi)}}$, $t$ is lifted by $y_t$, which is existentially quantified.
+		Hence $t$ is a witness for $y_j$ as due to the quantifier ordering,
+		it is bound in the scope of the quantification of the lifting variables $x_{r_1}, \dots, x_{r_k}$.
+		Therefore $\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_n\,\lifgamma{\lifdelta{\PI(\pi)}}$.
+
+		By Corollary \ref{cor:delta_entails_lifted_interpolant} $\Delta \entails \forall y_{u_1} \dots \forall y_{u_{k'}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$, where $u_1, \dots u_{k'}$ are the maximal colored $\Gamma$-terms in $\PI(\pi)$.
+
+		By a similar line of argumentation as above, we can replace the maximal $\Delta$-\nolinebreak{}terms by variables which are then existentially quantified and arrive at
+		$\Delta \entails\nolinebreak{} \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
+		Therefore also
+		$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
+		finally by Lemma \ref{lemma:lifting_order_not_relevant},
+		$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
+
+		As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
+	\end{proof}
+\end{comment}
 
 
 
@@ -550,29 +571,29 @@ We present the following example, which illustrates that the definition of the c
 		~
 
 		\begin{adjustwidth}{-1.5em}{0em}
-		\begin{prooftree}
-			\AxiomCm{{ \lnot R(g(d)) \mid \bot}}
-			\AxiomCm{{  R(u) \lor  Q(h(u)) \mid \top}}
+			\begin{prooftree}
+				\AxiomCm{{ \lnot R(g(d)) \mid \bot}}
+				\AxiomCm{{  R(u) \lor  Q(h(u)) \mid \top}}
 
-			%\RightLabelm{u\mapsto g(t)}
-			\RightLabelm{\resrule{\resruleres}{u\mapsto g(d)}}
-			%\RightLabelm{\resruleres}
-			\BinaryInfCm{ Q(h(g(d))) \mid \lnot R(g(d)) }
+				%\RightLabelm{u\mapsto g(t)}
+				\RightLabelm{\resrule{\resruleres}{u\mapsto g(d)}}
+				%\RightLabelm{\resruleres}
+				\BinaryInfCm{ Q(h(g(d))) \mid \lnot R(g(d)) }
 
-			\AxiomCm{P(x) \lor \lnot Q(x) \mid \bot}
+				\AxiomCm{P(x) \lor \lnot Q(x) \mid \bot}
 
-			\RightLabelm{\resrule{\resruleres}{x \mapsto h(g(d))}}
-			\BinaryInfCm{ P(h(g(d))) \mid \lnot R(g(d)) \land \lnot Q(h(g(d)))}
+				\RightLabelm{\resrule{\resruleres}{x \mapsto h(g(d))}}
+				\BinaryInfCm{ P(h(g(d))) \mid \lnot R(g(d)) \land \lnot Q(h(g(d)))}
 
-			\AxiomCm{c=d \mid \bot}
-			\RightLabelm{\resruleremark{\resrulepar}{\id}{\markC}}
-			\BinaryInfCm{P(h(g(c))) \mid (c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \lor (c\neq d \land g(c) = g(d))}
-		\end{prooftree}
-		\vspace{1em}
+				\AxiomCm{c=d \mid \bot}
+				\RightLabelm{\resruleremark{\resrulepar}{\id}{\markC}}
+				\BinaryInfCm{P(h(g(c))) \mid (c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \lor (c\neq d \land g(c) = g(d))}
+			\end{prooftree}
+			\vspace{1em}
 
-		\begin{prooftree}
-			\AxiomCm{ \lnot S(g(c)) \mid \bot}
-			\AxiomCm{  S(v) \lor \lnot Q(h(v)) \mid \top }
+			\begin{prooftree}
+				\AxiomCm{ \lnot S(g(c)) \mid \bot}
+				\AxiomCm{  S(v) \lor \lnot Q(h(v)) \mid \top }
 
 			\RightLabelm{\resrule{\resruleres}{v \mapsto g(c)}}
 			\BinaryInfCm{ \lnot Q(h(g(c))) \mid \lnot S(g(c)) }

@@ -891,23 +891,28 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 	A list of terms $s_1, \dots, s_n$ is in \emph{descending subterm order} if the list $s_n, \dots, s_1$ is in ascending subterm order.
 \end{defi}
 
-\begin{thm}
-	\label{thm:two_phases}
+
+\begin{lemma}
+	\label{lemma:thm_induction}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$t_1, \dots, t_n$ be an arrangement of the maximal colored terms in $\PI(\pi)$ in ascending subterm order.
+	$s_1, \dots, s_m$ the maximal colored $\Delta$-terms in $\PI(\pi)$ and
+	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$, both in descending subterm order.
+	Let $t_1, \dots, t_n$ be an arrangement of $\{ s_1, \dots, s_m, r_1, \dots r_k\}$ in ascending subterm order.
 	Then
-	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if $z_{t_i}$ replaces a $\Delta$ $(\Gamma)$-term, is an interpolant for $\Gamma$ and $\Delta$.
-\end{thm}
+	\begin{itemize}
+		\item
+			$\Gamma \entails \forall x_{s_1} \quantifierdots \forall x_{s_m} \lifdelta{\PI(\pi)}$ implies
+			$\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$ 
+			and
+		\item
+			$\Delta \entails \forall x_{r_1} \quantifierdots \forall x_{r_k} \lnot \lifgamma{\PI(\pi)}$ implies
+			$\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$,
+	\end{itemize}
+	where $Q_i$ is $\forall$ $(\exists)$ if ${t_i}$ is a $\Delta$ $(\Gamma)$-term.
+\end{lemma}
 \begin{proof}
-	\newcommand{\thmProofPositions}{\ensuremath{\mathcal{P}}}
-
-	%A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-term.
-	%Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
-
-	Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ in an arbitrary order and
-	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$ in descending subterm order.
-	Furthermore let $Z^0 = \emptyset$ and $Z^i = \{ \lifdelta{r_1}, \dots, \lifdelta{r_i} \}$ for $1\varleq i \varleq k$.
-	Finally for $0\varleq i \varleq k$, 
+	Let $Z^0 = \emptyset$ and $Z^i = \{ \lifdelta{r_1}, \dots, \lifdelta{r_i} \}$ for $1\varleq i \varleq k$.
+	For $0\varleq i \varleq k$, 
 	let $t_1^i, \dots, t_{m+i}^i$ be an arrangement of $Z^i \union \{ s_1, \dots, s_m \}$ in ascending subterm order and
 	let $Q_j^i$ be $\forall$~($\exists$) if $t_j^i$ is a $\Delta$ ($\Gamma$)-term for $1\varleq j \varleq m+i$.
 	We use $z_{t_j^i}$ to denote $x_{t_j^i}$ or $y_{t_j^i}$ depending on the color of $t_j^i$.
@@ -915,11 +920,11 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 	We now show by induction that by iteratively lifting and appropriately quantifying the maximal $\Gamma$-terms in $\lifdelta{\PI(\pi)}$, we obtain a formula which is entailed by $\Gamma$.
 	Formally, the induction operates over \[\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }\] for $0 \varleq i \varleq k$.
 
-	For $i=0$, $Z^i = \emptyset$, so $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ is nothing else than $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, which we get by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}.
+	For $i=0$, $Z^i = \emptyset$, so $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ is nothing else than $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, which holds by assumption.
 
 	Now suppose that $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ holds for $i$ with $i < k$.
 	We show that then, $\Gamma \entails Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}} \lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ holds as well.
-	
+
 	Note that $Z^{i+1} = Z^i \cup \{ \lifdelta{r_{i+1}} \}$. 
 	Hence $\lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ differs from $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ insofar as every occurrence of $\lifdelta{r_{i+1}}$ is replaced by the lifting variable $y_{\expa(\lifdelta{r_{i+1}})} = y_{r_{i+1}}$. 
 	%Let $\thmProofPositions$ be the set of positions of the occurrences of $r_{i+1}$ in $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$.
@@ -943,20 +948,106 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 	Therefore $\lifdelta{ r_{i+1} }$ is a viable witness term.
 
 	This induction shows that 
-$\Gamma \entails Q_1^k z_{t_1^k} \dots Q_{m+k}^k z_{t_{m+k}^k} \lifgamma{ \lifdelta{\PI(\pi) }, Z^k }$ holds. 
-But as $Z^k$ includes all maximal colored $\Gamma$-terms of $\lifdelta{\PI(\pi)}$,
-this is nothing else than $\Gamma \entails Q_1 z_{t_1} \dots Q_n z_{t_n} \lifgamma{ \lifdelta{ \PI( \pi) } }$.
+	$\Gamma \entails Q_1^k z_{t_1^k} \dots Q_{m+k}^k z_{t_{m+k}^k} \lifgamma{ \lifdelta{\PI(\pi) }, Z^k }$ holds. 
+	But as $Z^k$ includes all maximal colored $\Gamma$-terms of $\lifdelta{\PI(\pi)}$,
+	this is nothing else than $\Gamma \entails Q_1 z_{t_1} \dots Q_n z_{t_n} \lifgamma{ \lifdelta{ \PI( \pi) } }$.
 
-	By Corollary \ref{cor:delta_entails_lifted_interpolant}, we get that $\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
-	By a similar induction argument as above, we can conclude from this that 
+	%By Corollary \ref{cor:delta_entails_lifted_interpolant}, we get that $\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
+	By a similar induction argument as above, we can conclude from 
+	$\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$
+	that 
 	$\Delta \entails \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ holds, where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
 	Therefore also
 	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
 	finally by Lemma \ref{lemma:lifting_order_not_relevant}, we obtain that 
 	$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
-
-	As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
 \end{proof}
+
+
+\begin{thm}
+	\label{thm:two_phases}
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	$t_1, \dots, t_n$ be an arrangement of the maximal colored terms in $\PI(\pi)$ in ascending subterm order.
+	Then
+	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if ${t_i}$ is a $\Delta$ $(\Gamma)$-term, is an interpolant for $\Gamma$ and $\Delta$.
+\end{thm}
+\begin{proof}
+	Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ and
+	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$.
+	Then by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we get that 
+	$\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$
+	and Corollary~\ref{cor:delta_entails_lifted_interpolant} shows that 
+	$\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
+	Therefore we can apply Lemma~\ref{lemma:thm_induction} to obtain 
+	$\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$ 
+	as well as 
+	$\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$,
+
+	As clearly $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ does not contain colored symbols, this formula is an interpolant.
+\end{proof}
+\begin{comment}
+	~
+	\mytodo{remove:}
+	\begin{proof}
+		\newcommand{\thmProofPositions}{\ensuremath{\mathcal{P}}}
+
+		%A term in $\lifdelta{\PI(\pi)}$ is either $x_{s_i}$, $1 \varleq i \varleq m$, a gray term or a $\Gamma$-term.
+		%Let $t$ be a maximal $\Gamma$-term in $\PI(\pi)$ and ${r_1}, \dots, {r_k}$ the maximal $\Delta$-terms in\nolinebreak{} $t$.
+
+		Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ in an arbitrary order and
+		$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$ in descending subterm order.
+		Furthermore let $Z^0 = \emptyset$ and $Z^i = \{ \lifdelta{r_1}, \dots, \lifdelta{r_i} \}$ for $1\varleq i \varleq k$.
+		Finally for $0\varleq i \varleq k$, 
+		let $t_1^i, \dots, t_{m+i}^i$ be an arrangement of $Z^i \union \{ s_1, \dots, s_m \}$ in ascending subterm order and
+		let $Q_j^i$ be $\forall$~($\exists$) if $t_j^i$ is a $\Delta$ ($\Gamma$)-term for $1\varleq j \varleq m+i$.
+		We use $z_{t_j^i}$ to denote $x_{t_j^i}$ or $y_{t_j^i}$ depending on the color of $t_j^i$.
+
+		We now show by induction that by iteratively lifting and appropriately quantifying the maximal $\Gamma$-terms in $\lifdelta{\PI(\pi)}$, we obtain a formula which is entailed by $\Gamma$.
+		Formally, the induction operates over \[\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }\] for $0 \varleq i \varleq k$.
+
+		For $i=0$, $Z^i = \emptyset$, so $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ is nothing else than $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, which we get by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}.
+
+		Now suppose that $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ holds for $i$ with $i < k$.
+		We show that then, $\Gamma \entails Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}} \lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ holds as well.
+
+		Note that $Z^{i+1} = Z^i \cup \{ \lifdelta{r_{i+1}} \}$. 
+		Hence $\lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ differs from $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ insofar as every occurrence of $\lifdelta{r_{i+1}}$ is replaced by the lifting variable $y_{\expa(\lifdelta{r_{i+1}})} = y_{r_{i+1}}$. 
+		%Let $\thmProofPositions$ be the set of positions of the occurrences of $r_{i+1}$ in $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$.
+		%, i.e.~$r_{i+1}$ is the term being lifted in this step.
+		%Let $\thmProofPositions$ be the set of positions of the occurrences of $r_{i+1}$ in $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$.
+		%Note that $\lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ differs from that formulas insofar as every occurrence of $r_{i+1}$ is replaced by $y_{r_{i+1}}$.
+		Every occurrence of $y_{r_{i+1}}$ however is bound as 
+		in the quantifier prefix
+		$Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}}$, there is some $j$ such that $Q_j^{i+1} z_{t_j^{i+1}}$ is $\exists y_{r_{i+1}}$.
+		%Hence the occurrences of the lifting variable $y_{r_{i+1}}$ are bound.
+
+		In order to show the desired entailment, we %produce a witness term for $\exists y_{r_{i+1}}$. 
+		argue that $\lifdelta{ r_{i+1} }$ is a witness term for $\exists y_{r_{i+1}}$.
+		%Let $\thmProofPositions$ be the set of positions in this formula where $y_{r_{i+1}}$ occurs.
+		%^In $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$, 
+		%the term $\lifdelta{ r_{i+1} }$ occurs at every position of $\thmProofPositions$.
+		Note that none of the $\Gamma$-terms in $\lifdelta{ r_{i+1} }$ are lifted as due to the ordering by descending subterm order of the terms $r_1, \dots, r_k$, $Z_i$ does not contain a subterm of $r_{i+1}$.
+		However $\lifdelta{ r_{i+1} }$ in general does contain $\Delta$-lifting variables. Let $x_s$ be a $\Delta$-lifting variable in $\lifdelta{ r_{i+1} }$.
+		As $s$ is a subterm of $r_{i+1}$, $\forall x_s$ precedes $\exists y_{r_{i+1}}$ in the quantifier prefix $Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}}$.
+		Hence $y_{r_{i+1}}$ is quantified in the scope of the quantification of $x_s$ for every $\Delta$-lifting variable $x_s$ in $\lifdelta{ r_{i+1} }$.
+		Therefore $\lifdelta{ r_{i+1} }$ is a viable witness term.
+
+		This induction shows that 
+		$\Gamma \entails Q_1^k z_{t_1^k} \dots Q_{m+k}^k z_{t_{m+k}^k} \lifgamma{ \lifdelta{\PI(\pi) }, Z^k }$ holds. 
+		But as $Z^k$ includes all maximal colored $\Gamma$-terms of $\lifdelta{\PI(\pi)}$,
+		this is nothing else than $\Gamma \entails Q_1 z_{t_1} \dots Q_n z_{t_n} \lifgamma{ \lifdelta{ \PI( \pi) } }$.
+
+		By Corollary \ref{cor:delta_entails_lifted_interpolant}, we get that $\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
+		By a similar induction argument as above, we can conclude from this that 
+		$\Delta \entails \overline Q_1 z_{t_1} \dots \overline Q_n z_{t_n}\,\lnot \lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ holds, where $\overline Q_i = \exists$ ($\forall$) if $Q_i = \forall$ ($\exists$).
+		Therefore also
+		$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Delta}{x}{\lft{\Gamma}{y}{\PI(\pi)}}$ and
+		finally by Lemma \ref{lemma:lifting_order_not_relevant}, we obtain that 
+		$\Delta \entails\nolinebreak{} \lnot Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$.
+
+		As it is now easy to see that $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ contains no colored symbol, it is an interpolant.
+	\end{proof}
+\end{comment}
 
 \begin{remark}
 	In this proof, we order the lifting variables in the interpolant according to the subterm relation of the terms they represent.
