@@ -915,12 +915,12 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 	We now show by induction that by iteratively lifting and appropriately quantifying the maximal $\Gamma$-terms in $\lifdelta{\PI(\pi)}$, we obtain a formula which is entailed by $\Gamma$.
 	Formally, the induction operates over \[\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }\] for $0 \varleq i \varleq k$.
 
-	For $i=0$, $Z^0 = \emptyset$, so $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ is nothing else than $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, which we get by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}.
+	For $i=0$, $Z^i = \emptyset$, so $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ is nothing else than $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, which we get by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}.
 
 	Now suppose that $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ holds for $i$ with $i < k$.
 	We show that then, $\Gamma \entails Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}} \lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ holds as well.
 	
-	Note that $Z^{i+1} = Z^i \cup \{r_{i+1}\}$. 
+	Note that $Z^{i+1} = Z^i \cup \{ \lifdelta{r_{i+1}} \}$. 
 	Hence $\lifgamma{ \lifdelta{\PI(\pi) }, Z^{i+1} }$ differs from $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ insofar as every occurrence of $\lifdelta{r_{i+1}}$ is replaced by the lifting variable $y_{\expa(\lifdelta{r_{i+1}})} = y_{r_{i+1}}$. 
 	%Let $\thmProofPositions$ be the set of positions of the occurrences of $r_{i+1}$ in $\lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$.
 	%, i.e.~$r_{i+1}$ is the term being lifted in this step.
@@ -937,7 +937,7 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 	%^In $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$, 
 	%the term $\lifdelta{ r_{i+1} }$ occurs at every position of $\thmProofPositions$.
 	Note that none of the $\Gamma$-terms in $\lifdelta{ r_{i+1} }$ are lifted as due to the ordering by descending subterm order of the terms $r_1, \dots, r_k$, $Z_i$ does not contain a subterm of $r_{i+1}$.
-	However clearly $\lifdelta{ r_{i+1} }$ in general contains $\Delta$-lifting variables. Let $x_s$ be a $\Delta$-lifting variable in $\lifdelta{ r_{i+1} }$.
+	However $\lifdelta{ r_{i+1} }$ in general does contain $\Delta$-lifting variables. Let $x_s$ be a $\Delta$-lifting variable in $\lifdelta{ r_{i+1} }$.
 	As $s$ is a subterm of $r_{i+1}$, $\forall x_s$ precedes $\exists y_{r_{i+1}}$ in the quantifier prefix $Q_1^{i+1} z_{t_1^{i+1}} \dots Q_{m+{i+1}}^{i+1} z_{t_{m+{i+1}}^{i+1}}$.
 	Hence $y_{r_{i+1}}$ is quantified in the scope of the quantification of $x_s$ for every $\Delta$-lifting variable $x_s$ in $\lifdelta{ r_{i+1} }$.
 	Therefore $\lifdelta{ r_{i+1} }$ is a viable witness term.
