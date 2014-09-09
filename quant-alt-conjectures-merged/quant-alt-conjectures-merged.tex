@@ -642,6 +642,82 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
 \end{exa}
 
+\section{Upper bound}
+
+\begin{lemma}
+	Let $t$ be a term with the maximal number of color alternations in $\PI^*(C) \lor C$ for any clause $C$.
+	Then there is an arrangment of the quantifier prefix in Theorem~\ref{thm:two_phases} which gives rise to an interpolant 
+	with at most $\ca(t)+1$ quantifier alternations.
+\end{lemma}
+\begin{proof}
+	Let $T_i^\Phi$ be the set of maximal $\Phi$-colored terms in $\PI(\pi)$ with $i$ color alternations for $1\varleq i \varleq n$, where $n=\ca(t)$.
+	%We use $Q T_i^\Phi$ to denote $ Q_1 z_{t_1} \dots Q_n z_{t_n}$ where $t_1, \dots, t_n$ is an arrangement of the elements of $T_i^\Phi$ in ascending subterm order  and $Q_i z_{t_i}$ for $1\varleq i \varleq n$ is $\forall x_{t_i}$ or $\exists y_{t_i}$ depending on the color of $t_i$.
+	We use $\exists T_i^\Gamma$ $(\forall T_i^\Delta)$ to denote $ \exists y_{t_1} \dots \exists y_{t_m}$ $(\forall x_{t_1}\dots\forall x_{t_m})$ where $t_1, \dots, t_m$ is an arrangement of the elements of $T_i^\Gamma$ ($T_i^\Delta$) in ascending subterm order. 
+
+
+	Now, we construct the interpolant
+	\[
+		I \equiv 
+		\forall T_1^\Delta \exists T_1^\Gamma \;
+		\exists T_2^\Gamma \forall T_2^\Delta \;
+		\forall T_3^\Delta \exists T_3^\Gamma
+		\dots 
+		Q^\Phi T_n^\Phi \Q^\Psi T_n^\Psi
+		\;
+		\lifgamma{\lifdelta{\PI(\pi)}},
+	\]
+	where $ Q^\Phi T_n^\Phi \Q^\Psi T_n^\Psi $ is
+	$\forall T_n^\Delta \exists T_n^\Gamma $ if $n$ is odd and 
+	$\exists T_n^\Gamma \forall T_2^\Delta $ if $n$ is even.
+	Clearly, $I$ has at most $n+1$ color alternations.
+
+	In order to show the result, it remains to show that $I$ is a valid interpolant with respect to Theorem~\ref{thm:two_phases}. 
+	Note that the quantifier prefix binds all lifting variables occurring in  
+	$\lifgamma{\lifdelta{\PI(\pi)}}$.
+	We conclude by showing that the order of the quantifiers is admissible.
+
+	Let $t$ be a maximal colored term in $\lifgamma{\lifdelta{\PI(\pi)}}$. 
+	We prove that the quantifier for the lifting variable of every subterm $s$ of $t$ precedes the quantifier for the lifting variable for $t$ in $I$.
+	Suppose that $\ca(t) = k$. Note that then, $\ca(s) \varleq k$.
+	\begin{itemize}
+		\item
+			If $\ca(s) = k$, then $t$ and $s$ are of the same color and hence the quantifiers for their respective lifting variables are contained in the same block. 
+			However the quantifiers of each block are ordered as desired.
+			%their in the same quantifier block
+		\item
+			Otherwise $\ca(s) < k$.
+			Then by the arrangement of the quantifiers, clearly the quantifier for the lifting variable replacing $t$ is in the scope of the quantifier for the lifting variable replacing $s$.
+			\qedhere
+	\end{itemize}
+
+
+
+\end{proof}
+
+
+\mytodo{ PROPOSITION UNIFYING UPPER AND LOWER BOUND }
+
+\begin{comment}
+\begin{itemize}
+	\item Supp $n = 0$. then no quantifiers
+	\item Supp $n = 1$.
+		then every term has at most one color. 
+		Note that there are no subterm-relations between any two terms of different color.
+		Hence
+		$\forall x_{.} \quantifierdots \forall x_{.}
+		\exists y_{.} \quantifierdots \exists y_{.} \lifboth{\PI(\pi)}$ is a minimal arrangement of quantifiers and has either $\ca(I) = 2$ or $\ca(I) = 1$ if there are only terms of one color.
+
+	\item Supp works for $n$.
+
+		not sure..
+\end{itemize}
+
+%Let $T_i$ be the set of colored terms with $i$ color alternations.
+
+$ \forall x_{t^{\Delta_1}_1} \dots \forall x_{t^{\Delta_1}_{n_{|\Delta_1|}}} $
+\end{comment}
+
+
 
 \section{Quantifier alternations in $\LI$}
 
@@ -729,7 +805,7 @@ which we work out in detail in this section.
 	Then there exists a clause $C'$ which is a successor of $C$ such that respective successors of $t$ and $s$, which are not lifting variables, occur in $\LIpre(C') \lor C'$, and the successor of $t$ in $\LI(C) \lor C$ is a lifting variable.
 \end{lemma}
 \begin{proof}
-By Lemma~\ref{lemma:grey_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
+	By Lemma~\ref{lemma:grey_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
 	Let $C'$ be the successor of $C$ such that $\LIpre(C')$ contains a successor of $t$ which is not a lifting variable and $\LI(C')$ contains a successor of $t$ which is a lifting variable.
 	As all colored terms are lifted eventually, such a clause $C'$ must occur.
 
@@ -755,7 +831,7 @@ By Lemma~\ref{lemma:grey_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\
 	We now turn to the induction step and suppose that the lemma holds for $n-1$ for $n>1$.
 	By Lemma~\ref{lemma:subterm_of_multicol_term},
 	there exists a clause $C'$ which is a successor of $C$ such that respective successors of $t$ and $s$, which are not lifting variables, occur in $\LIpre(C') \lor C'$, and the successor of $t$ in $\LI(C) \lor C$ is a lifting variable.
-	
+
 	Note that as $s$ is a subterm of $t$, $s$ is only quantified after $t$ (either in this stage or some subsequent one) such that the quantifier for $t$ is in the scope of the quantifier for $s$. 
 
 	By the induction hypothesis, the quantifier for the lifting variable, which is the successor of $s$ in $\LI(\pi)$, is enclosed by $n-1$ alternating quantifiers in $\LI(\pi)$. 
@@ -795,7 +871,7 @@ By Lemma~\ref{lemma:grey_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\
 \vfill
 \begin{thm}
 	<Huang's thm> (this is here only to make the references to it in this document work)
-\label{thm:two_phases}
+	\label{thm:two_phases}
 \end{thm}
 
 \end{document}
