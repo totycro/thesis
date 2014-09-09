@@ -473,7 +473,7 @@ From this, we can directly proof the theorem by relying on the notion of symmetr
 
 \begin{thm}
 	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$t_1, \dots, t_n$ be the maximal colored terms in $\PI(\pi)$ in ascending order by their length.
+	$t_1, \dots, t_n$ be the maximal colored terms in $\PI(\pi)$ sorted in ascending order by their length.
 	Then
 	$Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$, where $Q_i$ is $\forall$ $(\exists)$ if ${t_i}$ is a $\Delta$ $(\Gamma)$-term, is an interpolant.
 \end{thm}
@@ -484,7 +484,7 @@ From this, we can directly proof the theorem by relying on the notion of symmetr
 	$\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$
 	and Corollary~\ref{cor:delta_entails_lifted_interpolant} shows that 
 	$\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
-	Note that as $t_1, \dots, t_n$ are ordered by length, they are also in subterm order as subterms are strictly smaller than the term they are part of.
+	Note that as $t_1, \dots, t_n$ are ordered by length, they are also in subterm order as subterms are strictly smaller in length than their respective superterms.
 
 	Therefore we can apply Lemma~\ref{lemma:thm_induction} to obtain 
 	$\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$ 
