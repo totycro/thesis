@@ -887,17 +887,18 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 
 \begin{defi}[Subterm order]
 	A list of terms $s_1, \dots, s_n$ is in \emph{ascending subterm order} if for any
-	$i$ and $j$ such that  $1\varleq i,j \varleq n$ it holds that if  $s_i$ is a subterm of $s_j$, then $i<j$.
+	$i$ and $j$ such that $1\varleq i,j \varleq n$ it holds that if $s_i$ is a subterm of $s_j$, then $i<j$.
 	A list of terms $s_1, \dots, s_n$ is in \emph{descending subterm order} if the list $s_n, \dots, s_1$ is in ascending subterm order.
 \end{defi}
 
 
 \begin{lemma}
 	\label{lemma:thm_induction}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$,
 	$s_1, \dots, s_m$ the maximal colored $\Delta$-terms in $\PI(\pi)$ and
 	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$, both in descending subterm order.
-	Let $t_1, \dots, t_n$ be an arrangement of $\{ s_1, \dots, s_m, r_1, \dots r_k\}$ in ascending subterm order.
+	Moreover, let $t_1, \dots, t_n$ be an arrangement of $\{ s_1, \dots, s_m, r_1, \dots r_k\}$ in ascending subterm order and
+	let $Q_i z_{t_i}$ for $1\varleq i \varleq n$ denote $\forall x_{t_i}$ or $\exists y_{t_i}$ depending on the color of $t_i$.
 	Then
 	\begin{itemize}
 		\item
@@ -906,16 +907,16 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 			and
 		\item
 			$\Delta \entails \forall x_{r_1} \quantifierdots \forall x_{r_k} \lnot \lifgamma{\PI(\pi)}$ implies
-			$\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$,
+			$\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}.$
 	\end{itemize}
-	where $Q_i$ is $\forall$ $(\exists)$ if ${t_i}$ is a $\Delta$ $(\Gamma)$-term.
 \end{lemma}
 \begin{proof}
-	Let $Z^0 = \emptyset$ and $Z^i = \{ \lifdelta{r_1}, \dots, \lifdelta{r_i} \}$ for $1\varleq i \varleq k$.
-	For $0\varleq i \varleq k$, 
-	let $t_1^i, \dots, t_{m+i}^i$ be an arrangement of $Z^i \union \{ s_1, \dots, s_m \}$ in ascending subterm order and
-	let $Q_j^i$ be $\forall$~($\exists$) if $t_j^i$ is a $\Delta$ ($\Gamma$)-term for $1\varleq j \varleq m+i$.
-	We use $z_{t_j^i}$ to denote $x_{t_j^i}$ or $y_{t_j^i}$ depending on the color of $t_j^i$.
+	For $0\varleq i \varleq k$,
+	let $Z^i = \{ \lifdelta{r_1}, \dots, \lifdelta{r_i} \}$,
+	and
+	$t_1^i, \dots, t_{m+i}^i$ be an arrangement of $Z^i \union \{ s_1, \dots, s_m \}$ in ascending subterm order.
+	%We use $Q_j^i $ be $\forall$~($\exists$) if $t_j^i$ is a $\Delta$ ($\Gamma$)-term for 
+	We use $Q_j^i z_{t_j^i}$ $1\varleq j \varleq m+i$ to denote $\forall x_{t_j^i}$ or $\exists y_{t_j^i}$ depending on the color of $t_j^i$.
 
 	We now show by induction that by iteratively lifting and appropriately quantifying the maximal $\Gamma$-terms in $\lifdelta{\PI(\pi)}$, we obtain a formula which is entailed by $\Gamma$.
 	Formally, the induction operates over \[\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }\] for $0 \varleq i \varleq k$.
