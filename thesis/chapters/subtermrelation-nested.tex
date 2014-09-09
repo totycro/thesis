@@ -109,14 +109,14 @@ We now show more formally that the lifting conditions ensure that if a term cont
 \begin{lemma}
 	\label{lemma:lifting_conditions}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	Then if a term $t$ occurs in $\LIpre(C)$ or $\LI(C)$, no subterm $s$ of $t$ is lifted.
+	Then if a term $t$ occurs in $\LIpre(C)$ or $\LI(C)$, no subterm $s$ of $t$ is lifted in $\LIpre(C)$ or $\LI(C)$ respectively.
 \end{lemma}
 \begin{proof}
 	We proceed by induction on the resolution refutation.
 
 	For the base case, consider that if $C \in \Gamma \cup \Delta$, then $\LIpre(C)$ is either $\bot$ or $\top$ and consequently also $\LI(C)$.
 
-	Now suppose that the lemma holds for the clauses $C_1, \dots, C_n$ which are used in an inference $\inference$ to deduce the clause $C$ using the unifier $\sigma = \mgu(\inference)$.
+	Now suppose that the lemma holds for the clauses $C_1, \dots, C_n$ which are used in an inference $\inference$ to derive the clause $C$ using the unifier $\sigma = \mgu(\inference)$.
 	Then if $t$ is a term in $\LIpre(C)$, no subterm $s$ of $t$ is lifted since either $t$ is present in $\LI(C_i) \lor C_i$ for some $i$, $1\varleq i \varleq n$, where the induction hypothesis applies,
 	or otherwise $t$ is introduced by means of $\sigma$. But as $\sigma$ is calculated only from the resolution inference, no lifting terms can occur in $\ran(\sigma)$.
 
@@ -141,49 +141,72 @@ We now show more formally that the lifting conditions ensure that if a term cont
 	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$.
 \end{lemma}
 \begin{proof}
-	Let $T = \{t_1, \dots, t_n\}$ be the set of maximal colored terms in $\LIpre(C)$ for which some lifting conditions applies in ascending subterm order.
-	We use $Q_i z_{t_i}$ to denote either $\exists y_{t_i}$ in case $t_i$ is $\Gamma$-colored or $\forall x_{t_i}$ in case $t_i$ is $\Delta$-colored.
-	Furthermore, we denote by $\lifpart^*(\LIpre(C), T_i)$ the result of lifting all terms of $T_i$ and replacing the lifting variables by fresh ones analogous to step~\ref{lemma_part_renaming} of the lifting procedure of $\LI$.
+	Let $T = \{t_1, \dots, t_n\}$ be the set of maximal colored terms in $\LIpre(C)$ for which some lifting conditions applies in ascending subterm order. The subset $\{t_{n-i+1}, \dots, t_n \}$ for $1\varleq i \varleq n$ is designated by $T_i$ and $T_0 = \emptyset$.
+	We denote by $\lifpart^*(\LIpre(C), T_i)$ the result of lifting all terms of $T_i$ and replacing the lifting variables by fresh ones analogous to step~\ref{lemma_part_renaming} of the lifting procedure of $\LI$.
+	The fresh lifting variables are highlighted by a prime.
+	We use $Q_i z'_{t_i}$ to denote either $\exists y'_{t_i}$ in case $t_i$ is $\Gamma$-colored or $\forall x'_{t_i}$ in case $t_i$ is $\Delta$-colored.
 
-	We show the result by an induction over \[\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_i z_{t_i} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}\] for $i\varleq n$.
+	We show the result by an induction over \[\Gamma \entails \lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}\] for $ 0 \varleq i\varleq n$.
 
 	Note that for $i=0$, 
-	$\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_i z_{t_i} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}$ is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$, which holds by assumption.
+	$\Gamma \entails \lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}$ is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$, which holds by assumption.
 
-	For the induction step, suppose that $\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_i z_{t_i} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}$ holds.
-	In $\lifpart^*( \LIpre(C), T_{i+1} )$, the term $t_{i+1}$ is lifted.
-	As some lifting condition holds for $t_{i+1}$, $C$ does not contain $t_{i+1}$.
-	%The quantifier prefix is extended by $Q_{i+1} z_{t_{i+1}}$, so the occurrences of $z_{t_{i+1}}$ are bound. \mytodo{vllt nicht benötigt?}
-	We distinguish based on the color of $t_{i+1}$:
+	%For the induction step, 
+	Now suppose that $\Gamma \entails \lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}$ holds for some $i$ such that $0\varleq i < n$.
+	In $\lifpart^*( \LIpre(C), T_{i+1} )$, the term $t_{n-i}$ is lifted.
+	We distinguish based on the color of $t_{n-i}$:
 	\begin{itemize}
 		\item
-			Suppose that $t_{i+1}$ is a $\Delta$-term.
-			Then the lifting variable $x_{t_{i+1}}$ occurs free in $\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_i z_{t_i} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}$.
-			Note that is possible that an occurrence of the term $t_{i+1}$ is lifted and quantified in $\LI(C')$ for some predecessor $C'$ of $C$ and the occurrence of $t_{i+1}$ in $\LIpre(C)$ may be in the scope of that quantifier\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.}. 
-			However due to the renaming of lifting variables of step~\ref{lemma_part_renaming} of the lifting procedure of $\LI$, the lifting variable replacing the occurrence of $t_{i+1}$ in $\LIpre(C)$ can not be bound by any quantifier in $\LIpre(C)$.
+			Suppose that $t_{n-i}$ is a $\Delta$-term.
+			Then the lifting variable $x'_{t_{n-i}}$ occurs free in $\lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )}$.
+			Note that it is possible that an occurrence of the term $t_{n-i}$ is lifted and quantified in $\LI(C')$ for some predecessor $C'$ of $C$ and the occurrence of $t_{n-i}$ in $\LIpre(C)$ may be in the scope of that quantifier\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.}. 
+			However as the lifting variable replacing the occurrence of $t_{n-i}$ in $\LIpre(C)$ is renamed to the fresh variable $z'_{t_{n-i}}$, it is not bound by any quantifier present in $\LIpre(C)$.
 			%However $x_{t_{i+1}}$ is prevented from being bound by that quantifier due 
 			%$x_{t_{i+1}}$ is not bound by quantifiers binding other occurrences of this lifting variable due to the renaming 
 
-			As $C$ does not contain $t_{i+1}$, $\lifdeltanovar{C_\Gamma}$ does not contain $x_{t_{i+1}}$.
-			Hence we may quantify $x_{t_{i+1}}$ universally as follows:
-			\[\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_i z_{t_i} \forall x_{t_{i+1}} \lifpart^*( \LIpre(C), T_{i+1} )} \lor \lifdeltanovar{C_\Gamma}.\]
+
+			As some lifting condition holds for $t_{n-i}$, $C$ does not contain $t_{n-i}$ and hence
+			$\lifdeltanovar{C_\Gamma}$ does not contain $x'_{t_{n-i}}$. Therefore $\lifdeltanovar{C_\Gamma}$ does not need to be included in the scope of the quantification of $x'_{t_{n-i}}$.
+
+			Note that we must ensure that we quantify $x'_{t_{n-i}}$ such that every existential quantifier, whose witness term contains $x'_{t_{n-i}}$, is in the scope of the quantification of $x'_{t_{n-i}}$. 
+			The terms in question are maximal colored $\Gamma$-colored superterms of $t$.
+
+			By the contraposition of Lemma~\ref{lemma:lifting_conditions}, since $t_{n-i}$ is lifted, every maximal colored superterm $s$ of $t_{n-i}$ must be lifted and quantified either in $\LIpre(C)$, or some lifting condition must apply for $s$ in $\LIpre(C)$.
+			In the latter case, $s$ is contained in $\{t_{n-i+1},\dots, t_n\}$.
+			In any case, the quantifier for the lifting variable replacing $s$ is contained in $\lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^* ( \LIpre(C), T_i )}$.                                 
+
+			%Note that the $\Gamma$-colored superterms $s$ of $t$ are the only ones where the lifting variable replacing $t_{n-i}$ occurs in the witness term. 
+			%Hence we must ensure that the lifting variable replacing $t_{n-i}$ is quantified such that the quantification of the lifting variable replacing $s$ is in its scope.
+
+			Hence we may quantify $x'_{t_{n-i}}$ universally as follows:
+			\[\Gamma \entails \lifdeltanovar{ \forall x'_{t_{n-i}} Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n x'_{t_{n}} \lifpart^*( \LIpre(C), T_{i+1} )} \lor \lifdeltanovar{C_\Gamma}.\]
 			%This however is nothing else than 
 			%$\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_{i+1} z_{t_{i+1}} \lifpart^*( \LIpre(C), T_{i+1} )} \lor \lifdeltanovar{C_\Gamma}$.
 
 		\item
-			Otherwise $t_{i+1}$ is a $\Gamma$-term and the term $\lifdeltanovar{t_{i+1}}$ occurs in $\lifdeltanovar{\lifpart^*(  \LIpre(C), T_i )}$.
-			By Lemma~\ref{lemma:lifting_conditions}, no subterm of $t_{i+1}$ is lifted and quantified in $\LIpre(C)$.
-			Hence all $\Delta$-lifting variables in $\lifdeltanovar{t_{i+1}}$ either occur free 
-			or replace terms contained in $\{t_{1}, \dots, t_i\}$ due to satisfying some lifting condition.
-			However in
-			\[\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_i z_{t_i} \exists y_{t_{i+1}} \lifpart^*( \LIpre(C), T_{i+1} )} \lor \lifdeltanovar{C_\Gamma},\]
-			the quantifier for $y_{t+1}$ is in the scope of the quantification of these.
-			Therefore $\lifdelta{t_{i+1}}$ is a valid witness term for the existential quantification of $y_{t+1}$.
+			Otherwise $t_{n-i}$ is a $\Gamma$-term.
+			By Lemma~\ref{lemma:lifting_conditions}, no subterm of $t_{n-i}$ is lifted and quantified in $\LIpre(C)$.
+			Moreover, all subterms of $t_{n-i}$ which satisfy some lifting condition are contained in $\{t_{1}, \dots, t_{n-i-1}\}$
+			and hence not lifted in
+			$\lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )}$.
+			Therefore $\lifdelta{t_{n-i}}$ is a valid witness term for the existential quantification of $y'_{t_{n-i}}$ in
+			\[\Gamma \entails \lifdeltanovar{ \exists y'_{t_{n-i}} Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n}  \lifpart^*( \LIpre(C), T_{i+1} )} \lor \lifdeltanovar{C_\Gamma}.\]
+
+
+			%$\lifdeltanovar{t_{n-i}}$ occurs in 
+			%$\lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )}$.
+			%Hence all $\Delta$-lifting variables in $\lifdeltanovar{t_{n-i}}$ either occur free 
+			%or replace terms contained in $\{t_{1}, \dots, t_i\}$ due to satisfying some lifting condition.
+			%However in
+			%\[\Gamma \entails \lifdeltanovar{ Q_1 z'_{t_1} \dots Q_i z'_{t_i} \exists y'_{t_{i+1}} \lifpart^*( \LIpre(C), T_{i+1} )} \lor \lifdeltanovar{C_\Gamma},\]
+			%the quantifier for $y'_{t+1}$ is in the scope of the quantification of these.
+			%Therefore $\lifdelta{t_{i+1}}$ is a valid witness term for the existential quantification of $y'_{t+1}$.
 			%$\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_i z_{t_i} \exists y_{t_{i+1}} \lifpart^*( \LIpre(C), T_{i+1} )} \lor \lifdeltanovar{C_\Gamma}$. 
+
 	\end{itemize}
 
 	By this induction, we obtain that
-	$\Gamma \entails \lifdeltanovar{ Q_1 z_{t_1} \dots Q_n z_{t_n} \lifpart^*( \LIpre(C), T_n )} \lor \lifdeltanovar{C_\Gamma}$, which is the same as
+	$\Gamma \entails \lifdeltanovar{ Q_1 z'_{t_1} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_n )} \lor \lifdeltanovar{C_\Gamma}$, which is the same as
 	$\Gamma \entails \lifdeltanovar{ \LI(C)} \lor \lifdeltanovar{C_\Gamma}$.
 \end{proof}
 
