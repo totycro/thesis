@@ -1,6 +1,14 @@
 \thesistitle{Interpolation in First-Order Logic with Equality}
 %\thesissubtitle{Optional Subtitle} % optional
-\thesisdate{TT.MM.JJJJ}
+%\thesisdate{TT.MM.JJJJ}
+
+
+
+%\usepackage[ddmmyyyy]{datetime}
+
+\newcommand{\leadingzero}[1]{\ifnum #1<10 0\the#1\else\the#1\fi}   
+
+\thesisdate{\leadingzero{\day}.\leadingzero\month.\the\year}
 
 % all titles and designations have to be gender-related!
 \thesisdegree{Diplom-Ingenieur}{Diplom-Ingenieur}
