@@ -246,11 +246,14 @@ However Lemma~\ref{lemma:gray_lits_of_pi_star_in_pi} allows us to transfer resul
 \begin{lemma}
 	\label{lemma:gray_lits_of_pi_star_in_pi}
 	For every clause $C$ of a resolution refutation,
-	every gray literal and equality which occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
+	the literals and equalities of $\PI(C)$ are exactly the gray literals and equalities of $\PI^*(C)$.
 \end{lemma}
 \begin{proof}
 	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
-	More specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no gray literals are removed but only colored ones.
+	More specifically, they only differ on resolution inferences, where the resolved literal is colored.
+	%However here, no gray literals are removed but only colored ones.
+	Hence $\PI(C)$ and $\PI^*(C)$ contain the same grey literals and equalities.
+	The colored resolved literals however are not added to $\PI(C)$ as desired.
 \end{proof}
 
 
@@ -580,14 +583,26 @@ Note that if we are able to show that the application of a substitution $\sigma_
 \end{proof}
 
 \begin{lemma}
-	%\label{prop:color_alt_eq_quant_alt}
 	\label{lemma:quant_alt_lower_bound}
+	If a term with $n$ color alternations occurs in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
+\end{lemma}
+\begin{proof}
+	Let $t$ be a term in $\PI(C) \lor C$ with $\ca(t) = n$.
+	Then by Lemma~\ref{lemma:gray_lits_of_pi_star_in_pi}, $t$ occurs grey in a grey literal or grey in an equality in $\PI^*(C)$.
+	Lemma~\ref{lemma:col_alt_in_gray_lit_then_quant_alt} gives the result.
+\end{proof}
+
+\begin{comment}
+\begin{lemma}
+	%\label{prop:color_alt_eq_quant_alt}
+	\label{lemma:quant_alt_lower_bound_old}
 	If a term with $n$ color alternations occurs in $\PI^*(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n-1$ quantifier alternations.
 \end{lemma}
 \begin{proof}
 	By Lemma~\ref{lemma:subterm_in_gray_lit}, a term with $n-1$ color alternations occurs in a gray literal or an equality in $\PI(C) \lor C$.
 	Lemma~\ref{lemma:col_alt_in_gray_lit_then_quant_alt} gives the result.
 \end{proof}
+\end{comment}
 
 
 We present an example which illustrates that the occurrence of a term with $n$ color alternations in $\PI(C) \lor C$ for a clause $C$ can lead to an interpolant with $n-1$ quantifier alternations (but no less as Lemma~\ref{lemma:quant_alt_lower_bound} shows).
@@ -610,7 +625,6 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
 \end{exa}
 
-\mytodo{ transportierfähig machen; $\PI^*$ entfernen wo geht }
 \section{Upper bound}
 
 \begin{lemma}
@@ -669,8 +683,8 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 \end{proof}
 
 \begin{thm}
-	Let $n$ be the maximal number of color alternations of any term in $\PI^*(C) \lor C$ for any clause $C$ of a resolution refutation of $\Gamma \cup \Delta$.
-	Then by arranging the quantifiers in a quantifier alternation minimizing fashion, the interpolant of Theorem~\ref{thm:two_phases} has at least $n-1$ and at most $n+1$ quantifier alternations.
+	Let $n$ be the maximal number of color alternations of any term in $\PI(C) \lor C$ for any clause $C$ of a resolution refutation of $\Gamma \cup \Delta$.
+	Then by arranging the quantifiers in a quantifier alternation minimizing fashion the interpolant of Theorem~\ref{thm:two_phases} has at least $n$ and at most $n+1$ quantifier alternations.
 \end{thm}
 \begin{proof}
 	Immediate by Lemma~\ref{lemma:quant_alt_lower_bound} and Lemma~\ref{lemma:quant_alt_upper_bound}.
