@@ -270,7 +270,8 @@ For the proof of the interpolation theorem by reduction we require an algorithm 
 \begin{proof}
 	By the soundness of sequent calculus, we obtain that $\Gamma \entails A$ for some $A \in \Delta$.
 	But as sequent calculus without equality rules is complete for first-order logic without equality, there is a proof $\pi$ of $\Gamma \proves A$ in this calculus.
-	However $\pi$ is obviously also a proof in sequent calculus with equality rules.
+	We extend $\pi$ by a series of weakenings to a proof $\pi'$ of $\Gamma \proves \Delta$.
+	However $\pi'$ is obviously also a proof in sequent calculus with equality rules.
 \end{proof}
 
 \begin{comment}

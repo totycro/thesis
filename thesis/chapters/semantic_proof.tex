@@ -4,7 +4,7 @@
 
 An interesting feature of the interpolation theorem is that it admits a proof, which is distinct from the proof-theoretic ones discussed in the foregoing chapters, as it is purely model-theoretic.
 It is based on the joint consistency theorem by Robinson (\cite{robinson1956result}), which we show to be equivalent to the interpolation theorem.
-The joint consistency theorem itself was originally presented as a proof of Beth's definability theorem, which is discussed in Section~\ref{sec:beth}.
+The joint consistency theorem itself was originally presented in \cite{robinson1956result} as a proof of Beth's definability theorem, which is discussed in Section~\ref{sec:beth}.
 
 \section{Joint consistency}
 \label{sec:joint_consistency}
@@ -116,9 +116,26 @@ The following proof essentially follows \cite{Henkin63} and \cite{chang1990model
 			As $T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}$ and $T'_j$ are separable, there exists a formula $B$ in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j}  \}) \cap \Lang(T'_j)$
 			such that $ T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j} \} \entails B$ and $T'_j \entails \lnot B$.
 			Since $c_j$ is a fresh variable and therefore is not contained in $\Lang(T'_j)$, $c_j$ does not occur in $B$.
-			This implies that $T_j \cup \{\mathcal{A}_j\} \entails B$ and
-			that $B$ is in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}\}) \cap \Lang(T'_j)$,
-			Then however $B$ separates $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$, which is a contradiction to a previous assumption. 
+			Hence $B$ is in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j} \}) \cap \Lang(T'_j)$.
+			We conclude by showing that $B$ separates $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$, which is a contradiction to a previous assumption. 
+			In order to do so, it only remains to show that 
+			$T_{j} \cup \{ \mathcal{A}_{j} \} \entails B$.
+
+
+			Let $M$ be a model of $T_{j} \cup \{ \mathcal{A}_{j} \}$ in the language
+			$\Lang(T_{j} \cup \{ \mathcal{A}_{j} \})$. Note that $c_j$ is not included in this language as $c_j$ is a fresh variable.
+			Since $M\entails \exists x A$, let $d$ be such that $M\entails A\subst{x/d}$.
+			Let $M'$ be a model which extends $M$ by interpreting $c_j$ as $d$.
+			Then $M' \entails T_{j} \cup \{ \mathcal{A}_{j}, A\subst{x/c_j} \}$. But then $M' \entails B$.
+			However as $M$ and $M'$ coincide on the interpretation of the symbols of $\Lang(T_{j} \cup \{ \mathcal{A}_{j} \})$
+			and $B$ is in this language, $M\entails B$.
+
+
+			%we show that $T_{j} \cup \{ \mathcal{A}_{j} \} \entails B$
+
+			%This implies that $T_j \cup \{\mathcal{A}_j\} \entails B$ and
+			%that $B$ is in the language $\Lang(T_{j} \cup \{ \mathcal{A}_{j}\}) \cap \Lang(T'_j)$,
+			%Then however $B$ separates $T_{j} \cup \{ \mathcal{A}_{j} \}$ and $T'_{j}$, which is a contradiction to a previous assumption. 
 
 
 			\item 
