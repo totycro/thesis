@@ -1,169 +1,10 @@
-\documentclass[%fontsize=11pt,%
-	%landscape,
-	%DIV8, % mehr text pro seite als defaultyyp
-	%DIV10,
-	%DIV=calc,%
-	%article,
-	draft=false,% final|draft % draft ist platzsparender (kein code, bilder..)
-	%titlepage,
-	numbers=noendperiod,%
-	11pt,%
-	a4paper,%
-	oneside,% apparently, this should stay below some other parameter to have an effect
-	openany,%
-	%]{scrartcl}
-]{memoir}
 
+\section{Number of quantifier alternations in the extracted interpolant}
 
+In this section, we examine interpolants produced in Theorem~\ref{thm:two_phases} with respect to the number of quantifier alternations.
+We arrive at the conclusion that there is a tight connection between the number of color alternations in the terms produced by the substitutions of the resolution refutations and the number of quantifier alternations in the resulting interpolant.  
 
-
-
-%\usepackage[bitstream-charter]{mathdesign}
-\usepackage{amssymb}
-
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[english]{babel}
-
-\input{../latex_header.tex}
-
-
-
-%\renewcommand{\familydefault}{ \sfdefault }
-%\renewcommand{\rmdefault}{ppl}
-
-
-%\usepackage[urw-garamond]{mathdesign}
-
-
-
-
-
-% subsections also in toc
-\setcounter{tocdepth}{2}
-\setsecnumdepth{subsection}
-
-
-\definethms
-
-\def\proofSkipAmount{ \vskip -0.1em }
-
-
-%\usepackage{bussproof}
-
-%\usepackage{vaucanson-g}
-%\usepackage{amsmath}
-\usepackage{latexsym}
-
-% for color-highlighted code
-%\usepackage{color} % for gray comments
-%\usepackage{alltt}
-
-%\usepackage[doublespacing]{setspace}
-%\usepackage[onehalfspacing]{setspace}
-%\usepackage[singlespacing]{setspace}
-
-
-\usepackage{amsthm}
-
-
-\chapterstyle{madsen}
-
-
-% define page numbering styles
-\makepagestyle{numberCorner}
-\makeevenfoot{numberCorner}{\thepage}{}{}
-\makeoddfoot{numberCorner}{}{}{\thepage}
-
-\makepagestyle{numberCenter}
-%\makeevenfoot{numberCenter}{}{\thepage}{}
-%\makeoddfoot{numberCenter}{}{\thepage}{}
-%
-%\makeevenhead{numberCenter}{\thechapter}{}{\thesection}
-%\makeoddhead{numberCenter}{\thesection }{}{\thechapter}
-\makeheadrule{numberCenter}{\textwidth}{1pt}
-
-\makeevenhead{numberCenter}{\thepage}{}{\leftmark}
-\makeoddhead{numberCenter}{\rightmark}{}{\thepage}
-
-
-\makeatletter
-\makepsmarks{numberCenter}{
-	\def\chaptermark##1{\markboth{%
-			\ifnum \value{secnumdepth} > -1
-			\if@mainmatter
-			\chaptername\ \thechapter\ --- %
-			\fi
-			\fi
-	##1}{}}
-	\def\sectionmark##1{\markright{%
-			\ifnum \value{secnumdepth} > 0
-			\thesection. \ %
-			\fi
-	##1}}
-}
-\makeatother
-\newcommand{\mysetpagestyle}{
-	%\pagestyle{numberCorner}
-	\pagestyle{numberCenter}
-}
-\mysetpagestyle
-
-
-
-
-
-\usepackage{refcheck}
-
-%\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
-%\setlrmargins{*}{*}{1.2}
-%\setulmargins{*}{*}{1.4}
-%\checkandfixthelayout[nearest]
-
-%% somewhat of a compromise, still long lines:
-%\settypeblocksize{0.67\stockheight}{0.67\stockwidth}{*}
-%%\settypeblocksize{0.65\stockheight}{0.65\stockwidth}{*}
-%%\settypeblocksize{0.64\stockheight}{0.64\stockwidth}{*}
-%%\settypeblocksize{0.63\stockheight}{0.63\stockwidth}{*}
-%\setlrmargins{*}{*}{1.2}
-%\setulmargins{*}{*}{1.4}
-%\checkandfixthelayout[nearest]
-
-
-\counterwithout{section}{chapter}
-
-
-
-
-\begin{document}
-
-
-
-\chapter{ Number of quantifier alternations of extracted interpolants }
-
-In this chapter, we derive lower bounds for the number of quantifier alternations for the extraction procedure in two phases as well as the one in one phase.
-We arrive at the conclusion that both procedures are equal with respect to this measure and that there is a tight connection between color alternations in terms and quantifier alternations in the interpolant.
-\mytodo{ THIS CONCLUSION HAS NOT YET BEEN REACHED}
-
-%Quantifier alternations in $I$ usually assumes the quantifier-alternation-minimizing arrangement of quantifiers in $I$. The lemma statements hence talk about the \emph{minimal} number of quantifier alternations, which is indeed easily obtainable, i.e.\ it's a lower and upper bound at the same time.
-
-
-\section{Additional notation and definitions}
-
-A literal is called a $\Phi$-literal if its predicate symbol is $\Phi$-colored.
-
-In a literal or term $\phi$ containing a subterm $t$, $t$ is said to occur \defiemph{below} a $\Phi$-symbol $s$ if in the syntax tree representation of $\phi$, there is a node labeled $s$ on the path from the root to $t$. Note that the colored symbol may also be the predicate symbol.
-Moreover, $t$ is said to occur \defiemph{directly below} the $\Phi$-symbol $s$ if it occurs below the $\Phi$-symbol $s$ and in the syntax tree representation of $\phi$ on the path from $s$ to $t$, no nodes with labels with colored symbol occur.
-
-
-\subsection{Unification}
-
-Let $\varphi$ and $\psi$ be two terms or literals.
-For $\sigma = \mgu(\varphi, \psi)$, we denote by $\sigma_i$ for $1\varleq i \varleq |\dom(\sigma)|$ the $i$th substitution which is added to $\sigma$ by the unification algorithm.
-We define $\sigma_0 \defeq \id$.
-
-We furthermore denote the composition $\sigma_i \quantifierdots \sigma_j$ by $\sigmarange{i}{j}$.
-Hence $\sigma = \sigmarange{1}{|\dom(\sigma)|} = \sigmarange{0}{|\dom(\sigma)|}$.
+We first formally define these notions:
 
 \subsection{Color and quantifier alternations}
 
@@ -217,9 +58,13 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 
 	\qedhere
 \end{defi}
-Note that this definition of quantifier alternations handles formulas in prenex and non-prenex form.
+%Note that this definition of quantifier alternations handles formulas in prenex and non-prenex form.
 
-\section{Quantifier alternations in $\PI$}
+
+\subsection{Preliminary considerations}
+
+
+First, we define the auxiliary procedure $\PI^*$:
 
 
 \begin{defi}[$\PI^*$]
@@ -278,9 +123,19 @@ However Lemma~\ref{lemma:gray_lits_of_pi_star_in_pi} allows us to transfer resul
 \end{proof}
 
 
+\subsection{Analysis of the occurrences of crucial terms in $\PI$}
 
-We now make some considerations in the form of four lemmata about the construction of certain terms in the context of interpolant extraction.
-In order to do so, we frequently reason over the stepwise application of the respective unifiers, for which we employ the following definition:
+We now make some considerations about the construction of certain terms in the context of interpolant extraction.
+Thereby we employ the following definition:
+
+\begin{defi}
+In a literal or term $\varphi$ containing a subterm $t$, $t$ is said to occur \defiemph{below} a $\Phi$-symbol $s$ if in the syntax tree representation of $\varphi$, there is a node labeled $s$ on the path from the root to $t$. Note that the colored symbol may also be the predicate symbol.
+Moreover, $t$ is said to occur \defiemph{directly below} the $\Phi$-symbol $s$ if it occurs below the $\Phi$-symbol $s$ and in the syntax tree representation of $\varphi$ on the path from $s$ to $t$, no nodes with labels with colored symbol occur.
+\end{defi}
+
+
+
+Moreover, we frequently reason over the stepwise application of the respective unifiers, for which we make use of the following definition:
 
 \begin{defi}
 	We define $\PIstepstarnosigma$ to coincide with $\PIstep^*$ but without applying the substitution $\sigma$ in each of the cases.
@@ -562,6 +417,8 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 \subsection{Lower bound}
 
+The lemmas of the previous section are now employed to derive a lower bound on the number of quantifier alternations in the interpolant:
+
 \begin{lemma}
 	%\label{lemma:col_alt_in_gray_lit_then_quant_alt}
 	\label{lemma:quant_alt_lower_bound}
@@ -586,7 +443,6 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	Hence the quantification of the lifting variable for $t$ requires $n$ quantifier alternations.
 \end{proof}
 
-
 \begin{comment}
 \begin{lemma}
 	%\label{prop:color_alt_eq_quant_alt}
@@ -599,11 +455,16 @@ Note that if we are able to show that the application of a substitution $\sigma_
 \end{proof}
 \end{comment}
 
+We present an example which illustrates that terms in colored literals may contain more color alternations than the term with the maximal number of color alternations in gray literals or equalities.
+Still, the latter determines the minimum number of quantifier alternations in the interpolant.
+Note that it is a consequence of Lemma~\ref{lemma:subterm_in_gray_lit} that if for some clause $C$ a term with $n$ color alternations occurs in a colored literal in $\PI^*(C) \lor C$ (which contains all literals, i.e.\ also the colored ones), then $\PI(C)\lor C$ contains a term with at least $n-1$ color alternations.
 
-We present an example which illustrates that the occurrence of a term with $n$ color alternations in $\PI(C) \lor C$ for a clause $C$ can lead to an interpolant with $n-1$ quantifier alternations (but no less as Lemma~\ref{lemma:quant_alt_lower_bound} shows).
+%We present an example which illustrates that the occurrence of a term with $n$ color alternations in $\PI(C) \lor C$ for a clause $C$ can lead to an interpolant with $n-1$ quantifier alternations (but no less as Lemma~\ref{lemma:quant_alt_lower_bound} shows).
 \begin{exa}
 	Let $\Gamma = \{ \lnot P(a) \}$ and $\Delta = \{ P(x) \lor Q(f(x)), \lnot Q(y) \}$.
-	Consider the following refutation of $\Gamma \cup \Delta$:
+	We consider the following refutation of $\Gamma \cup \Delta$, which we annotate by the interpolation extraction by appending $\PI(C)$ to each clause $C$, separated by ``$|$''.
+	For the sake of brevity, we sometimes give simplified but logically equivalent versions of $\PI(C)$.
+	This notational convention will be used throughout this thesis for examples of a similar form.
 	\begin{prooftree}
 		\AxiomCm{ \lnot P(a) \mid \bot }
 		\AxiomCm{ P(x) \lor Q(f(x)) \mid \top }
@@ -617,16 +478,46 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	\end{prooftree}
 
 	In this example, Theorem~\ref{thm:two_phases} yields the interpolant $I \equiv \exists y_a \lnot P(y_a)$ with $\qa(I) =\nolinebreak 1$.
-	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
+	The existence of the term $a$ with $\ca(a) = 1$ in a clause of the refutation by Lemma~\ref{lemma:quant_alt_lower_bound} implies that $\qa(I) \vargeq 1$.
+	The occurrence of the term $f(a)$ with $\ca(f(a)) = 2$ in the colored literal $Q(f(a))$ is not relevant.
 \end{exa}
 
-\subsection{Upper bound}
+\subsection{Upper bound and conclusion}
+
+We now also determine an upper bound for the number of quantifier alternations in the interpolant.
+
+Note that as the following example shows, 
+an upper bound of $n$ quantifier alternations in the interpolant is not sufficient even if $n$ is the maximal number of color alternations for any term in $\PI(C) \lor C$ for any clause $C$:
+
+\begin{exa}
+	Let $\Gamma = \{ P(a) \lor Q(u) \}$ and $\Delta = \{ \lnot P(v), \lnot Q(b) \}$.
+	Consider the following refutation of $\Gamma \cup \Delta$:
+	\begin{prooftree}
+		\AxiomCm{ P(a) \lor Q(u) \mid \bot }
+		\AxiomCm{ \lnot P(v) \mid \top }
+
+		\RightLabelm{\resrule{\resruleres}{v\mapsto a}}
+		\BinaryInfCm{ Q(u) \mid P(a) }
+
+		\AxiomCm{ \lnot Q(b) \mid \top }
+		\RightLabelm{\resrule{\resruleres}{u\mapsto b}}
+		\BinaryInfCm{ \square \mid Q(b) \lor P(a) }
+	\end{prooftree}
+
+	Given this refutation, Theorem~\ref{thm:two_phases} produces either the interpolant
+	$I_1 \equiv \exists y_a \forall x_b ( Q(x_b) \lor P(y_a) )$
+	or 
+	$I_2 \equiv \forall x_b \exists y_a ( Q(x_b) \lor P(y_a) )$.
+	Note that the maximal number of color alternations of a term in $\PI(C) \lor C$ for any clause $C$ is $1$, but the number of quantifier alternations is $2$ for both $I_1$ and $I_2$.
+\end{exa}
+
+However the following bound holds in general:
 
 \begin{lemma}
 	\label{lemma:quant_alt_upper_bound}
 	Let $t$ be a term with the maximal number of color alternations in $\PI(C) \lor C$ for any clause $C$.
 	Then there is an arrangement of the quantifier prefix in Theorem~\ref{thm:two_phases} which gives rise to an interpolant 
-	with at most $\ca(t)+1$ quantifier alternations.
+	with at most $\ca(t)+\nolinebreak{}1$ quantifier alternations.
 \end{lemma}
 \begin{proof}
 	Let $T_i^\Phi$ be the set of maximal $\Phi$-colored terms in $\PI(\pi)$ with $i$ color alternations for $1\varleq i \varleq n$, where $n=\ca(t)$.
@@ -677,6 +568,8 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	\end{itemize}
 \end{proof}
 
+The previous results can be summarized by the following theorem:\nopagebreak
+
 \begin{thm}
 	Let $n$ be the maximal number of color alternations of any term in $\PI(C) \lor C$ for any clause $C$ of a resolution refutation of $\Gamma \cup \Delta$.
 	Then by arranging the quantifiers in a quantifier alternation minimizing fashion the interpolant of Theorem~\ref{thm:two_phases} has at least $n$ and at most $n+1$ quantifier alternations.
@@ -686,181 +579,4 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 \end{proof}
 
 
-\begin{comment}
-\begin{itemize}
-	\item Supp $n = 0$. then no quantifiers
-	\item Supp $n = 1$.
-		then every term has at most one color. 
-		Note that there are no subterm-relations between any two terms of different color.
-		Hence
-		$\forall x_{.} \quantifierdots \forall x_{.}
-		\exists y_{.} \quantifierdots \exists y_{.} \lifboth{\PI(\pi)}$ is a minimal arrangement of quantifiers and has either $\ca(I) = 2$ or $\ca(I) = 1$ if there are only terms of one color.
 
-	\item Supp works for $n$.
-
-		not sure..
-\end{itemize}
-
-%Let $T_i$ be the set of colored terms with $i$ color alternations.
-
-$ \forall x_{t^{\Delta_1}_1} \dots \forall x_{t^{\Delta_1}_{n_{|\Delta_1|}}} $
-\end{comment}
-
-
-
-\section{Quantifier alternations in $\LI$}
-
-We now show that the result of Lemma~\ref{prop:color_alt_eq_quant_alt} holds in a very similar way also for $\LI$,
-which we work out in detail in this section.
-
-\begin{clemma}
-	\label{lemma:pi_li_1}
-	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	If a maximal colored term $t$ occurs in $\LIpre(C)$ in a literal $\lambda$ at position $p$, 
-	then $t$ also occurs in a corresponding literal at position $p$ in $\PI(C)$.
-\end{clemma}
-\begin{proof}
-	Note that $\PI$ and $\LI$ differ only in the lifting conditions of $\LI$.
-	As $t$ however is a colored term and not a lifting variable, and it also occurs in $\LIpre(C)$, the lifting conditions are not true for any predecessor of $t$ in $\LIpre(C)$.
-\end{proof}
-
-\begin{clemma}
-	\label{lemma:pi_li_2}
-	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	If a maximal colored term $t$ occurs in $\PI(C)$ in a literal $\lambda$ at position $p$, 
-	then either $t$ or $z_{t'}$, where $t'$ is an abstraction of $t$, occurs in a corresponding literal at position $p$ in $\LIpre(C)$.
-\end{clemma}
-\begin{proof}
-	As pointed out previously, $\PI$ and $\LI$ differ only in the lifting conditions of $\LI$.
-	Suppose that no predecessor of the term in $\LI(C)$ which corresponds to $t$  fulfills a lifting condition.
-	Then $t$ occurs at position $p$ in $\LIpre(C)$.
-	Otherwise $z_{t'}$ occurs at the position $p$ in $\LIpre(C)$, where $t'\tau = t$ for some substitution\nolinebreak{} $\tau$.
-\end{proof}
-
-\begin{clemma}
-	\mytodo{merge with 5.3. of thesis (lemma:lifting\_conditions)}
-	\label{lemma:pi_li_3}
-	Let $C$ be a clause of a resolution refutation such that $\LIpre(C)$ contains a maximal colored $\Phi$-term $t$ which is lifted in $\LI(C)$. 
-	Suppose that $t$ contains a $\Psi$-colored subterm $s$.
-	Then $s$ occurs as a subterm of $t$ in $\LIpre(C)$.
-\end{clemma}
-\begin{proof}
-	By the construction of $\LI$, this lemma is only violated if the term $s$ or a respective predecessor is lifted due to fulfilling one of the lifting conditions.
-
-	For the sake of contradiction, suppose that this is the case in the inference creating the clause $C'$. Let $s'$ and $t'$ be the respective predecessors of $s$ and $t$ in $C'$.
-	\begin{itemize}
-		\item 
-			Suppose that $s'$ is lifted due to containing a variable which does not occur in $C'$.
-			Then as $s'$ is a subterm of $t'$ , $t'$ contains this variable as well and therefore is lifted in $\LI(C')$, contradicting the assumption. 
-
-		\item
-			Suppose that $s'$ is lifted due to being a ground term which does not occur in $C$.
-			Then $t'$ does not occur in $C'$ either as any occurrence of $t'$ would contain $s'$.
-			Hence $t'$ is lifted in $\LI(C')$, contradicting the assumption.
-			\qedhere
-	\end{itemize}
-
-\end{proof}
-
-\begin{defi}
-	Alternative, equivalent definition of $\LI$.
-
-	<insert def for base case>
-
-	Let $\LIpre_0(C) = \LIpre(C)$ and
-	$Z_0$ be the set of terms in $\LIpre_i(C)$ for which some lifting conditions holds.
-
-	We now define $\LI(C)$ and $\LIpre_i(C)$ for $i\vargeq 1$:
-	\begin{enumerate}
-		\item
-			Let $r \in Z_i$ be such that $r$ is not subterm of any other term in $Z_i$.
-			If no such $r$ exists, let $\LI(C) = \LIpre_i(C)$.
-
-		\item
-			Let $Z_{i+1} = Z_i \setminus \{ r\}$.
-
-		\item
-			Let $\LIpre_{i+1}(C)$ be built from $\LIpre{_i}(C)$ such that $r$ is lifted by a fresh lifting variable $z_r'$ and the formula is prefixed by $\forall x_r $ if $r$ is a $\Delta$-term and $\exists y_r$ if $r$ is a $\Gamma$ term.
-			\qedhere
-
-	\end{enumerate}
-
-\end{defi}
-
-\cbstart
-\begin{lemma}
-	\label{lemma:subterm_of_multicol_term}
-	Let $t$ be a term with $\ca(t)=n$ which occurs gray in a gray literal or gray in an equality $\LIpre(C) \lor C$ for some clause $C$ and let $s$ be a subterm of $t$ with $\ca(s) = n-1$.
-	Then there exists a clause $C'$ which is a successor of $C$ such that respective successors of $t$ and $s$, which are not lifting variables, occur in $\LIpre(C') \lor C'$, and the successor of $t$ in $\LI(C) \lor C$ is a lifting variable.
-\end{lemma}
-\begin{proof}
-	By Lemma~\ref{lemma:gray_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
-	Let $C'$ be the successor of $C$ such that $\LIpre(C')$ contains a successor of $t$ which is not a lifting variable and $\LI(C')$ contains a successor of $t$ which is a lifting variable.
-	As all colored terms are lifted eventually, such a clause $C'$ must occur.
-
-	By Lemma~\ref{lemma:pi_li_1}, $t$ occurs at the same position in $\PI(C')$.
-	We assume without loss of generality that $t$ is a $\Phi$-term.
-	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$.
-	By Lemma~\ref{lemma:subterm_in_gray_lit}, $s$ occurs gray in a gray literal or gray in an equality in $\PI(C')\lor C'$.
-
-	By Lemma~\ref{lemma:pi_li_2}, then either $s$ or $z_{s'}$, where $s'$ is an abstraction of $s$, occurs in $\LIpre(C')$ at a corresponding literal and position. 
-	As $t$ is not lifted in $\LIpre(C') \lor C'$ and $s$ is a subterm of $t$, Lemma~\ref{lemma:pi_li_3} proves that $s$ is also not lifted in $\LIpre(C') \lor C'$. Hence the case of $z_{s'}$ is excluded.
-\end{proof}
-
-
-\begin{clemma}
-	If a term $t$ with $\ca(t)=n$ occurs gray in a gray literal or gray in an equality $\LIpre(C) \lor C$ for some $C$, then $\LI(\pi)$ has at least $n$ quantifier alternations.
-\end{clemma}
-\begin{proof}
-	We proceed by induction over $n$ to show that the lifting variable, which replace the successor of $t$ in $\LI(\pi)$, is enclosed by $n$ alternating quantifiers.
-
-	For $n=0$, no colored terms occur and hence no lifting variables which induce quantifiers.
-	Moreover, for $n=1$, the interpolant clearly must have at least one quantifier.
-
-	We now turn to the induction step and suppose that the lemma holds for $n-1$ for $n>1$.
-	By Lemma~\ref{lemma:subterm_of_multicol_term},
-	there exists a clause $C'$ which is a successor of $C$ such that respective successors of $t$ and $s$, which are not lifting variables, occur in $\LIpre(C') \lor C'$, and the successor of $t$ in $\LI(C) \lor C$ is a lifting variable.
-
-	Note that as $s$ is a subterm of $t$, $s$ is only quantified after $t$ (either in this stage or some subsequent one) such that the quantifier for $t$ is in the scope of the quantifier for $s$. 
-
-	By the induction hypothesis, the quantifier for the lifting variable, which is the successor of $s$ in $\LI(\pi)$, is enclosed by $n-1$ alternating quantifiers in $\LI(\pi)$. 
-	As $s$ and $t$ are of different colors, their quantifier type is different.
-	Since the quantifier for $t$ occurs in the scope of the quantifier for $s$, we get that the lifting variable replacing the successor of $t$ in $\LI(\pi)$ is enclosed by $n$ alternating quantifiers.
-	%The lifting and quantification of $t$ adds one quantifier to $\LIpre(C)$.
-	%Let $i$ be the step where the lifted term in  $\LIpre_i(C)$ is $t$.
-	%In $\LIpre_{i+1}(C)$, one quantifier is added in order to quantify the lifting variable for $t$.
-	%As $s$ can only be lifted after $t$, $s$ does occur in $\LIpre_{i+1}(C)$ and by the induction hypothesis, $n-1$ alternated quantifiers are still added to $\LIpre_{i+1}(C)$.
-	%As $t$ adds another one, we can infer that $t$ causes $\LI(\pi)$ to contain at least $n$ quantifier alternations.
-\end{proof}
-\cbend
-
-
-\mytodo{conclude by explaining two main results ; describe how to apply result (term $t$ occs in ??)} 
-
-\begin{clemma}
-	need term which exist initially, and with all subsets applied has max color alternations
-
-	note that there is no term in PI, LI, or anywhere, with more alternations
-
-	this term does occur in $\PI^*$
-
-	hence a term with one less col alt occs gray in $\PI^*$, hence also in $\PI$. (then the usual)
-
-	however this term may not actually occur in $\LI$ (cf.\ 703)
-
-	POSSIBLY: do apply subsets to lft vars. then show that you can jump back and forth from li to pi (basically not $z_{s'}$ but $z_s$ in that lemma above).
-
-	Then lemmas for $\PI$ could suffice
-
-	possible lemma statement:
-
-	IF $t$ WITH $\ca(t) = n$ OR $z_t$ OCCURS, THEN $n$ QUANT ALT
-\end{clemma}
-
-\vfill
-\begin{thm}
-	<Huang's thm> (this is here only to make the references to it in this document work)
-	\label{thm:two_phases}
-\end{thm}
-
-\end{document}

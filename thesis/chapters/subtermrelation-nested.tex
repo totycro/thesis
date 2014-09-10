@@ -14,10 +14,8 @@ Consider the following example:
 \begin{exa}
 	\label{exa:one_phase_motivation}
 	Let $\Gamma = \{ P(x) \lor Q(y) \}$ and $\Delta = \{\lnot P(a), \lnot Q(a)\}$.
-	We consider the following refutation of $\Gamma \cup \Delta$, which we annotate by the interpolation extraction by appending $\PI(C)$ to each clause $C$, separated by ``$|$''.
-	For the sake of brevity, we sometimes give simplified but logically equivalent versions of $\PI(C)$.
-	This notational convention will be used throughout this thesis for examples of a similar form.
-
+	Consider the follwing refutation of $\Gamma \cup \Delta$:
+	
 	\begin{prooftree}
 		\AxiomCm{ P(x) \lor Q(y) \mid \bot}
 		\AxiomCm{ \lnot P(a)  \mid \top}

@@ -845,13 +845,13 @@ The propositional structure is considered to be fixed at this point and
 it remains to lift all colored terms and quantify over the resulting lifting variables in a viable order.
 
 
+\begin{samepage}
 \begin{lemma}
 	%Let $\{z_1,\ldots, z_n\}$ be the maximal colored terms of a clause $C$.
 	%Then 
 	%$ Q_1 z_1 \ldots Q_n z_n \lft{\Gamma}{y}{ \lft{\Delta}{x}{ C}  }
 	%\;\liff\;
 	%Q_1 z_1 \ldots Q_n z_n \lft{\Delta}{x'}{ \lft{\Gamma}{y'}{ C}  }$ for $Q_i \in \{\forall, \exists\}$ for $1\varleq i\varleq n$.
-
 	For a formula or term $\varphi$,
 	$ \lft{\Gamma}{y}{ \lft{\Delta}{x}{ \varphi}  } =
 	\lft{\Delta}{x}{ \lft{\Gamma}{y}{ \varphi }  }$.
@@ -882,6 +882,7 @@ it remains to lift all colored terms and quantify over the resulting lifting var
 	%		Hence exactly the terms at positions $\Phi$ are replaced by the same variable $x'_j$ for some $j$.
 	%	\end{comment}
 \end{proof}
+\end{samepage}
 
 In order to quantify terms in the propositional interpolant appropriately, we need to sort them according to a particular order:
 

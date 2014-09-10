@@ -15,13 +15,13 @@ Let $s$ and $t$ denote terms and $x$ a variable.
 
 \begin{defi}[Most general unifier]
 
-The most general unifier $\mgu$ of two literals $l = A(s_1,\dotsc, s_n)$ and $l' = A(t_1,\dots, t_n)$ is defined to be $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
+The most general unifier $\mgu$ of two literals $A(s_1,\dotsc, s_n)$ and $A(t_1,\dots, t_n)$ is defined as $\mgu(\{ (s_1, t_1), \dotsc, (s_n, t_n)\})$.
 
 
 The $\mgu$ for a set of pairs of terms $T$ is defined as follows:
 \medskip
 
-\begin{adjustwidth}{-1.85em}{0em}
+\begin{adjustwidth}{-1.80em}{0em}
 \noindent
 $
 \mgu(\emptyset) \defeq \id
@@ -40,11 +40,20 @@ $
 	\mgu(T) 							& \text{if $t=(s, s)$} \\
 \end{cases}
 $
+\medskip
 \end{adjustwidth}
+
+For a most general unifier $\sigma$, we denote by $\sigma_i$ for $1\varleq i \varleq |\dom(\sigma)|$ the $i$th substitution which is added to $\sigma$ by the unification algorithm.
+We define $\sigma_0 \defeq \id$.
+Moreover, we denote the composition $\sigma_i \quantifierdots \sigma_j$ by $\sigmarange{i}{j}$.
+Hence $\sigma = \sigmarange{1}{|\dom(\sigma)|} = \sigmarange{0}{|\dom(\sigma)|}$.
 \end{defi}
 
 Note that despite the nondeterminism inherent in this definition, it is unique up to renaming of variables.
 See \cite{BaaderSnyderHandbook00} for a detailed discussion of unification.
+
+
+
 
 \subsection{Definition of the calculus}
 
