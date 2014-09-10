@@ -82,3 +82,7 @@ clean:
 
 spell:
 	./spell.sh
+
+count_words:
+	find . -type f -iname "*.tex" -exec cat "{}" \; |  tr  ".:,\t" "    "  | tr "[:upper:]" "[:lower:]" | tr '{}' '\n\n' | tr ' ' '\n' | sort | uniq -c | sort -nr | tac 
+

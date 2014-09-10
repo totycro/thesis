@@ -56,7 +56,7 @@
 \usepackage{latexsym}
 
 % for color-highlighted code
-%\usepackage{color} % for grey comments
+%\usepackage{color} % for gray comments
 %\usepackage{alltt}
 
 %\usepackage[doublespacing]{setspace}
@@ -151,7 +151,7 @@ We arrive at the conclusion that both procedures are equal with respect to this 
 
 A literal is called a $\Phi$-literal if its predicate symbol is $\Phi$-colored.
 
-In a literal or term $\phi$ containing a subterm $t$, $t$ is said to occur \defiemph{below} a $\Phi$-symbol $s$ if in the syntax tree representation of $\phi$, there is a node labelled $s$ on the path from the root to $t$. Note that the colored symbol may also be the predicate symbol.
+In a literal or term $\phi$ containing a subterm $t$, $t$ is said to occur \defiemph{below} a $\Phi$-symbol $s$ if in the syntax tree representation of $\phi$, there is a node labeled $s$ on the path from the root to $t$. Note that the colored symbol may also be the predicate symbol.
 Moreover, $t$ is said to occur \defiemph{directly below} the $\Phi$-symbol $s$ if it occurs below the $\Phi$-symbol $s$ and in the syntax tree representation of $\phi$ on the path from $s$ to $t$, no nodes with labels with colored symbol occur.
 
 
@@ -183,7 +183,7 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 	\ca_\Phi(t) \defeq 
 	\begin{cases}
 		0 & \text{if $t$ is a variable} \\
-		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{if $t = f(t_1, \dots, t_n)$ is grey} \\
+		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{if $t = f(t_1, \dots, t_n)$ is gray} \\
 		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \parbox[t]{0.4\textwidth}{if $t = f(t_1, \dots, t_n)$ is of color $\Phi$} \\
 		1 + \max(\ca_\Psi(t_1), \dots, \ca_\Psi(t_n)) & \parbox[t]{0.38\textwidth}{if $t = f(t_1, \dots, t_n)$ is of color $\Psi$, $\Phi \neq \Psi$} \\
 	\end{cases}
@@ -222,12 +222,12 @@ Note that this definition of quantifier alternations handles formulas in prenex 
 
 
 \begin{defi}[$\PI^*$]
-	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be grey.
+	$\PI^*$ is defined as $\PI$ with the difference that in $\PI^*$, all literals are considered to be gray.
 	$\PIinit^*$ and $\PIstep^*$ are defined analogously.
 \end{defi}
 
 Hence $\PIinit^*$ coincides with $\PIinit$.
-$\PIstep^*$ coincides with $\PIstep$ in case of factorisation and paramodulation inferences.
+$\PIstep^*$ coincides with $\PIstep$ in case of factorization and paramodulation inferences.
 For resolution inferences, the first two cases in the definition of $\PIstep$ do not occur for $\PIstep^*$.
 
 $\PI^*$ enjoys the convenient property that it absorbs every literal which occurs in some clause:
@@ -241,23 +241,23 @@ $\PI^*$ enjoys the convenient property that it absorbs every literal which occur
 \end{proof}
 
 Note that in $\PI^*$, we can conveniently reason about the occurrence of terms as no terms are lost throughout the extraction.
-However Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi} allows us to transfer results about grey literals to $\PI$:
+However Lemma~\ref{lemma:gray_lits_of_pi_star_in_pi} allows us to transfer results about gray literals to $\PI$:
 
 \begin{lemma}
-	\label{lemma:grey_lits_of_pi_star_in_pi}
+	\label{lemma:gray_lits_of_pi_star_in_pi}
 	For every clause $C$ of a resolution refutation,
-	every grey literal and equality which occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
+	every gray literal and equality which occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
 \end{lemma}
 \begin{proof}
 	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
-	More specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no grey literals are removed but only colored ones.
+	More specifically, they only differ on resolution inferences, where the resolved literal is colored. However here, no gray literals are removed but only colored ones.
 \end{proof}
 
 
 \begin{lemma}
 	\label{lemma:Ot8Gie7y}
 	Let $\inference$ be an inference of a resolution refutation using the clauses $C_1, \dots, C_n$ which creates the clause $C$.
-	If there is a grey literal $\lambda$ or an equality $s=t$ in $\PI(C_i) \lor C_i$ for $1 \varleq i \varleq n$, 
+	If there is a gray literal $\lambda$ or an equality $s=t$ in $\PI(C_i) \lor C_i$ for $1 \varleq i \varleq n$, 
 	then a successor of $\lambda$ or $s=t$ respectively occurs in $\PIstep(\inference, \PI(C_1), \dots, \PI(C_n)) \lor C$.
 \end{lemma}
 \begin{proof}
@@ -265,8 +265,8 @@ However Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi} allows us to transfer resul
 \end{proof}
 
 \begin{corr}
-	\label{lemma:grey_lits_and_eq_all_in_PI}
-	If there is a grey literal $\lambda$ or an equality $s=t$ in $\PI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
+	\label{lemma:gray_lits_and_eq_all_in_PI}
+	If there is a gray literal $\lambda$ or an equality $s=t$ in $\PI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
 	then a successor of $\lambda$ or $s=t$ respectively occurs in $\PI(\pi)$.
 \end{corr}
 \begin{proof}
@@ -312,19 +312,22 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	\begin{enumerate}
 		\item
 			\label{14_1}
+			\label{15_1}
 			The variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$.
 
 		\item
 			\label{14_5}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\invp\sigmazi$.
+			\label{15_5}
+			The variable $u$ occurs at a gray position in a gray literal or at a gray position in an equality in $\invp\sigmazi$.
 
 		\item 
 			\label{14_2}
+			\label{15_2}
 			There is a variable $v$ such that 
 			{
 				\renewcommand{\labelitemi}{\textendash}
 				\begin{itemize}
-					\item $u$ occurs grey in $v\sigma_i$ and
+					\item $u$ occurs gray in $v\sigma_i$ and
 					\item $v$ occurs in $\invp\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
 				\end{itemize}
 			}
@@ -332,8 +335,8 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	We consider the different situations under which the situation in question arises.
-	First, suppose that $\inference$ is a resolution or factorisation inference.
+	We consider all different situations under which the situation in question arises.
+	Irrespective of the type of the inference $\inference$, one of these cases can apply:
 
 	\begin{itemize}
 		\item
@@ -344,10 +347,18 @@ Note that if we are able to show that the application of a substitution $\sigma_
 			There is a variable $v$ in $\invp\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
 			As $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{14_1} is the case.
 
-		\item
-			There is a variable $v$ which occurs directly below a $\Phi$-symbol such that $u$ occurs grey in $v\sigma_i$.
+	\end{itemize}
 
-			Hence in the resolved or factorised literals $\lambda$ and $\lambda'$ in $\invp\sigmazmi$, there is a position $p$ such that without loss of generality $\lambda\atp = v$ and $u$ occurs grey in $\lambda'\atp$. 
+
+	\noindent
+	In the case that $\inference$ is a resolution or factorization inference, 
+	the following situations can apply:
+
+	\begin{itemize}
+		\item
+			There is a variable $v$ which occurs directly below a $\Phi$-symbol such that $u$ occurs gray in $v\sigma_i$.
+
+			Hence in the resolved or factorized literals $\lambda$ and $\lambda'$ in $\invp\sigmazmi$, there is a position $p$ such that without loss of generality $\lambda\atp = v$ and $u$ occurs gray in $\lambda'\atp$. 
 			Note that due to the definition of the unification algorithm, $\lambda$ and $\lambda'$ must coincide on the path to $p$.
 
 			By Proposition \ref{prop:every_lit_in_pi_star}, $\lambda$ and $\lambda'$ occur in $\inv$ irrespective of their coloring.
@@ -356,70 +367,31 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 			\begin{itemize}
 				\item Suppose that $p$ occurs directly below a $\Phi$-symbol.
-					Then as $u$ occurs grey in  $\lambda'\atp$, $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ and \ref{14_1} is the case.
+					Then as $u$ occurs gray in  $\lambda'\atp$, $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ and \ref{14_1} is the case.
 
 				\item Suppose that $p$ occurs directly below a $\Psi$-symbol.
 					Then $v$ occurs directly below a $\Psi$-symbol in $\lambda\atp$ and  \ref{14_2} holds.
 
 				\item
 					Suppose that $p$ does not occur directly below a colored symbol.
-					Then $p$ does not occur below any colored symbol, hence $u$ is contained in a grey literal in a grey position in $\invp\sigmazmi$. 
+					Then $p$ does not occur below any colored symbol, hence $u$ is contained in a gray literal in a gray position in $\invp\sigmazmi$. 
 					As $\sigma_i$ is trivial on $u$, this occurrence of $u$ also is present in $\invp\sigmazi$ and hence \ref{14_5} is the case.
-					\qedhere
 
 			\end{itemize}
 	\end{itemize}
 
-\end{proof}
-
-\begin{lemma}
-	\label{lemma:var_below_phi_symbol_paramod}
-	Let $\inference$ be a paramodulation inference in a refutation of $\Gamma\cup\Delta$.
-	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazi$ for $i\vargeq 1$.
-	Then at least one of the following statements holds:
-	\begin{enumerate}
-		\item
-			\label{15_1}
-			The variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$.
-
-		\item
-			\label{15_5}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\invp\sigmazi$.
-
-		\item 
-			\label{15_2}
-			There is a variable $v$ such that 
-			{
-				\renewcommand{\labelitemi}{\textendash}
-				\begin{itemize}
-					\item $u$ occurs grey in $v\sigma_i$ and
-					\item $v$ occurs in $\invp\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
-				\end{itemize}
-			}
-
-
-	\end{enumerate}
-\end{lemma}
-\begin{proof}
-	Let  $\inference$ be a paramodulation inference  of the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yielding $C: (D\lor E\occatp{r_2})\sigma$.
-	We consider the different situations under which the situation in question arises:
+	Now we consider the case that $\inference$ is a paramodulation inference of the clauses $C_1: r_1=r_2 \lor D$ and $C_2: E\occatp{r}$ with $\sigma=\mgu(\inference)=\mgu(r_1, r)$ yielding $C: (D\lor E\occatp{r_2})\sigma$.
+	We again consider the different situations under which the situation in question arises:
 
 	\begin{itemize}
-		\item
-			There is already a literal in $\invp\sigmazmi$ where $u$ occurs directly below a $\Phi$-symbol and $\sigma_i$ does not change this.
-			Then \ref{15_1} is the case.
 
 		\item
-			There is a variable $v$ in $\invp\sigmazmi$ such that $v\sigma_i$ contains $u$ directly below a $\Phi$-symbol.
-			As $v$ is unified with the term $v\sigma_i$, $v\sigma_i$ must occur in $\invp\sigmazmi$, which implies that \ref{15_1} is the case.
+			The variable $u$ occurs gray in $r_2$ and $p$ in $E$ is directly below a $\Phi$-symbol. 
+			But then $u$ occurs gray in an equality in $\invp\sigmazmi$ and as $\sigma_i$ is trivial on $u$ also in $\invp\sigmazi$, hence \ref{15_5} holds.
 
 		\item
-			The variable $u$ occurs grey in $r_2$ and $p$ in $E$ is directly below a $\Phi$-symbol. 
-			But then $u$ occurs grey in an equality in $\invp\sigmazmi$ and as $\sigma_i$ is trivial on $u$ also in $\invp\sigmazi$, hence \ref{15_5} holds.
-
-		\item
-			Suppose that some variable $v$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ such that $u$ occurs grey in $v\sigma_i$.
-			Then by the definition of the unification algorithm, there exists a position $q$ such that one of $r_1\atq$ and $r\atq$ is $v$ and the other one contains a grey occurrence of $u$.
+			Suppose that some variable $v$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$ such that $u$ occurs gray in $v\sigma_i$.
+			Then by the definition of the unification algorithm, there exists a position $q$ such that one of $r_1\atq$ and $r\atq$ is $v$ and the other one contains a gray occurrence of $u$.
 
 			We distinguish cases based on the position $q$:
 
@@ -428,13 +400,13 @@ Note that if we are able to show that the application of a substitution $\sigma_
 					Suppose that $q$ occurs directly below a $\Phi$-symbol. Then clearly \ref{15_1} is the case.
 
 				\item
-					Suppose that $q$ occurs directly below a $\Psi$-symbol. Then as the variable $v$ also occurs directly below a $\Phi$-symbol and $u$ occurs grey in $v\sigma_i$, \ref{15_2} is the case.
+					Suppose that $q$ occurs directly below a $\Psi$-symbol. Then as the variable $v$ also occurs directly below a $\Phi$-symbol and $u$ occurs gray in $v\sigma_i$, \ref{15_2} is the case.
 
 				\item
-					Suppose that $q$ is a grey position.
+					Suppose that $q$ is a gray position.
 					Then \ref{15_5} is the case: 
-					Either $u$ occurs grey in $r_1$ in $\invp\sigmazmi$ and then also in $\invp\sigmazi$, 
-					or otherwise $v$ occurs grey in $r_1$ in $\invp\sigmazmi$, but as $v\sigma_i$ contains $u$ grey, $u$ occurs grey in of $r_1\sigma_i$ in $\invp\sigmazi$.
+					Either $u$ occurs gray in $r_1$ in $\invp\sigmazmi$ and then also in $\invp\sigmazi$, 
+					or otherwise $v$ occurs gray in $r_1$ in $\invp\sigmazmi$, but as $v\sigma_i$ contains $u$ gray, $u$ occurs gray in of $r_1\sigma_i$ in $\invp\sigmazi$.
 					\qedhere
 			\end{itemize}
 
@@ -447,7 +419,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	\label{lemma:col_change}
 	Let $\inference$ be an inference of a resolution refutation of $\Gamma \cup \Delta$.
 	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol in $\invp\sigmazi$.
-	Then $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazi$.
+	Then $u$ occurs gray in a gray literal or gray in an equality in $\invp\sigmazi$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction over the refutation.
@@ -464,16 +436,16 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	Hence it remains to show that the lemma holds for $\invp\sigma = \invp\sigma_0\quantifierdots\sigma_m$, which we do by induction over $i$ for $1\varleq i \varleq m$.
 	Suppose that the lemma holds for $\invp\sigmazmi$ and in $\invp\sigmazi$, the variable $u$ occurs directly below a $\Phi$-symbol as well as directly below a $\Psi$-term.
 
-	Then by the lemmata~\ref{lemma:var_below_phi_symbol} and \ref{lemma:var_below_phi_symbol_paramod}, we can deduce that one of the following statements holds for $\Omega = \Phi$ as well as $\Omega = \Psi$. We denote case $j$ for $\Omega = \Phi$ by $j^\Phi$ and for $\Omega = \Psi$ by $j^\Psi$.
+	Then by Lemma~\ref{lemma:var_below_phi_symbol}, we can deduce that one of the following statements holds for $\Phi = \Gamma$ as well as $\Phi = \Delta$. We denote case $j$ for $\Phi = \Gamma$ by $j^\Gamma$ and for $\Phi = \Delta$ by $j^\Delta$.
 
 	\begin{enumerate}
 		\item
 			\label{16_1}
-			The variable $u$ occurs directly below a $\Omega$-symbol in $\invp\sigmazmi$.
+			The variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazmi$.
 
 		\item
 			\label{16_4}
-			The variable $u$ occurs at a grey position in a grey literal or at a grey position in an equality in $\invp\sigmazi$.
+			The variable $u$ occurs at a gray position in a gray literal or at a gray position in an equality in $\invp\sigmazi$.
 
 		\item 
 			\label{16_2}
@@ -481,31 +453,31 @@ Note that if we are able to show that the application of a substitution $\sigma_
 			{
 				\renewcommand{\labelitemi}{\textendash}
 				\begin{itemize}
-					\item $u$ occurs grey in $v\sigma_i$ and
+					\item $u$ occurs gray in $v\sigma_i$ and
 					\item $v$ occurs in $\invp\sigmazmi$ directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol
 				\end{itemize}
 			}
 	\end{enumerate}
 
-	If \ref{16_4}$^\Phi$ or \ref{16_4}$^\Psi$ is the case, we clearly are done.
-	On the other hand if \ref{16_2}$^\Phi$ or \ref{16_2}$^\Psi$ is the case, then by the induction hypothesis, $v$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$. 
-	As $u$ occurs grey in $v\sigma_i$, we obtain that then, $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazi$.
+	If \ref{16_4}$^\Gamma$ or \ref{16_4}$^\Delta$ is the case, we clearly are done.
+	On the other hand if \ref{16_2}$^\Gamma$ or \ref{16_2}$^\Delta$ is the case, then by the induction hypothesis, $v$ occurs gray in a gray literal or gray in an equality in $\invp\sigmazmi$. 
+	As $u$ occurs gray in $v\sigma_i$, we obtain that then, $u$ occurs gray in a gray literal or gray in an equality in $\invp\sigmazi$.
 
-	Hence the only remaining possibility is that both \ref{16_1}$^\Phi$
-	and \ref{16_1}$^\Psi$ hold.
-	But then $u$ occurs directly below a $\Phi$-symbol as well as below a $\Psi$-symbol in $\invp\sigmazmi$ and again by the induction hypothesis, we obtain that $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$, and as $\sigma_i$ is trivial on $u$, the same occurrence of $u$ is present in $\invp\sigmazi$.
+	Hence the only remaining possibility is that both \ref{16_1}$^\Gamma$
+	and \ref{16_1}$^\Delta$ hold.
+	But then $u$ occurs directly below a $\Phi$-symbol as well as below a $\Psi$-symbol in $\invp\sigmazmi$ and again by the induction hypothesis, we obtain that $u$ occurs gray in a gray literal or gray in an equality in $\invp\sigmazmi$, and as $\sigma_i$ is trivial on $u$, the same occurrence of $u$ is present in $\invp\sigmazi$.
 \end{proof}
 
 
 
 \begin{lemma}
-	\label{lemma:subterm_in_grey_lit}
+	\label{lemma:subterm_in_gray_lit}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs grey in a grey literal or grey in an equality in $\PI(C) \lor C$.
+	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs gray in a gray literal or gray in an equality in $\PI(C) \lor C$.
 \end{lemma}
 \begin{proof}
-	Note that it suffices to show that the desired term occurs in a grey literal or equality in $\PI^*(C) \lor C$
-	since by Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi}, all grey literals and equalities of $\PI^*(C)$ also occur in $\PI(C)$.
+	Note that it suffices to show that the desired term occurs in a gray literal or equality in $\PI^*(C) \lor C$
+	since by Lemma~\ref{lemma:gray_lits_of_pi_star_in_pi}, all gray literals and equalities of $\PI^*(C)$ also occur in $\PI(C)$.
 	We do so by induction over the resolution refutation.
 	
 	As the original clauses each contain symbols of at most one color, the base case is vacuously true.
@@ -521,23 +493,23 @@ Note that if we are able to show that the application of a substitution $\sigma_
 		\item 
 			Suppose for some variable $u$ that $u\sigma_i$ contains $t\occ{s}$. 
 			Then $u$ is unified with a term which contains $t\occ{s}$ and which occurs in $\invp\sigmazmi$.
-			Hence by the induction hypothesis, $s$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$ and, as $\sigma_i$ does not change this, also in $\invp\sigmazi$.
+			Hence by the induction hypothesis, $s$ occurs gray in a gray literal or gray in an equality in $\invp\sigmazmi$ and, as $\sigma_i$ does not change this, also in $\invp\sigmazi$.
 
 		\item 
-			Otherwise there is a variable $u$ which occurs directly below a $\Phi$-symbol and $v\sigma_i$ contains a grey occurrence of $s$.
+			Otherwise there is a variable $u$ which occurs directly below a $\Phi$-symbol and $v\sigma_i$ contains a gray occurrence of $s$.
 			We distinguish based on the occurrences of $u$ in $\invp\sigmazmi$:
 
 			\begin{itemize}
-				\item Suppose that $u$ occurs somewhere in $\invp\sigmazmi$ grey in a grey literal or grey in an equality. Then clearly we are done.
+				\item Suppose that $u$ occurs somewhere in $\invp\sigmazmi$ gray in a gray literal or gray in an equality. Then clearly we are done.
 				\item Suppose that $u$ occurs somewhere in $\invp\sigmazmi$ directly below a $\Psi$-symbol.
-					Then by Lemma~\ref{lemma:col_change}, $u$ occurs grey in a grey literal or grey in an equality in $\invp\sigmazmi$, whose successor in $\invp\sigmazi$ is an occurrence of $s$ of the same coloring. Hence we are done a well.
+					Then by Lemma~\ref{lemma:col_change}, $u$ occurs gray in a gray literal or gray in an equality in $\invp\sigmazmi$, whose successor in $\invp\sigmazi$ is an occurrence of $s$ of the same coloring. Hence we are done a well.
 				\item Suppose that $u$ occurs in $\invp\sigmazmi$ only directly below a $\Psi$-symbol.
 					Here, we differentiate between the types of inference of the current induction step:
 
 					\begin{itemize}
 						\item
-							Suppose that the inference of the current induction step is a resolution or a factorisation inference.
-							As $u$ occurs grey in $v\sigma_i$, there is a position $p$ such that for the resolved or factorised literals $\lambda$ and $\lambda'$ it holds without loss of generality that $\lambda\atp = u$ and $s$ occurs grey in $\lambda'\atp$.
+							Suppose that the inference of the current induction step is a resolution or a factorization inference.
+							As $u$ occurs gray in $v\sigma_i$, there is a position $p$ such that for the resolved or factorized literals $\lambda$ and $\lambda'$ it holds without loss of generality that $\lambda\atp = u$ and $s$ occurs gray in $\lambda'\atp$.
 							Note that $\lambda$ and $\lambda'$ agree on the path to $p$, including the predicate symbol..
 
 							Now as by assumption $u$ only occurs directly below a $\Phi$-symbol, so must $s$.
@@ -560,14 +532,14 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 									Either $\bhat u$ occurs in a $\Phi$-colored function symbol in $r$. Then $s$ occurs in a $\Phi$-colored function symbol in $r_1$ and we get the result by the induction hypothesis.
 
-									Otherwise $\bhat u$ occurs grey in $r$, but $r$ occurs directly below a $\Phi$-colored function symbol in $E$.
-									Then however, as $r$ and $r_1$ are unifiable, $s$ must occur grey in $r_1$ and hence grey in an equality.
+									Otherwise $\bhat u$ occurs gray in $r$, but $r$ occurs directly below a $\Phi$-colored function symbol in $E$.
+									Then however, as $r$ and $r_1$ are unifiable, $s$ must occur gray in $r_1$ and hence gray in an equality.
 
 								\item
 									Suppose that $\bhat u$ occurs directly below a $\Phi$-colored predicate symbol. 
 
-									Then as the equality predicate is not considered to be colored, $u$ must occur grey in $r$.
-									But then as $r_1$ and $r$ are unifiable, $s$ must occur grey in $r_1$ and hence grey in an equality.
+									Then as the equality predicate is not considered to be colored, $u$ must occur gray in $r$.
+									But then as $r_1$ and $r$ are unifiable, $s$ must occur gray in $r_1$ and hence gray in an equality.
 									\qedhere
 							\end{itemize}
 
@@ -580,13 +552,13 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 	%Let $C$ be a clause of a resolution refutation of $\Gamma \cup \Delta$.
 	%As the literals occurring in $\PI(C)$ are a subset of the literals occurring in $\PI^*(C)$, the lemma prerequisites hold true only for terms for which they also hold in $\PI^*(C)$.
-	%Therefore we can deduce that if a maximal colored $\Phi$-term $t\occ{s}$ containing a maximal $\Psi$-colored term $s$ occurs in $\PI(C)\lor C$, then $t\occ{s}$ also occurs in $\PI^*(C) \lor C$ and by Lemma~\ref{lemma:subterm_in_grey_lit_star},
-	%the term $s$ occurs grey in a grey literal or grey in an equality in $\PI^*(C) \lor C$.
+	%Therefore we can deduce that if a maximal colored $\Phi$-term $t\occ{s}$ containing a maximal $\Psi$-colored term $s$ occurs in $\PI(C)\lor C$, then $t\occ{s}$ also occurs in $\PI^*(C) \lor C$ and by Lemma~\ref{lemma:subterm_in_gray_lit_star},
+	%the term $s$ occurs gray in a gray literal or gray in an equality in $\PI^*(C) \lor C$.
 \end{proof}
 
 \begin{lemma}
-	\label{lemma:col_alt_in_grey_lit_then_quant_alt}
-	If a term with $n$ color alternations occurs in a grey literal or in an equality in $\PI^*(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
+	\label{lemma:col_alt_in_gray_lit_then_quant_alt}
+	If a term with $n$ color alternations occurs in a gray literal or in an equality in $\PI^*(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
 \end{lemma}
 \begin{proof}
 	We perform an induction on $n$
@@ -599,8 +571,8 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI^*(C) \lor C$.
 	We assume without loss of generality that $t$ is a $\Phi$-term.
 	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$ and
-	by Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or an equality in $\PI(C) \lor C$.
-	By Lemma~\ref{lemma:grey_lits_and_eq_all_in_PI}, a successor of $s$ occurs in $\PI(\pi)$. Note that as $s$ occurs in a grey position, any successor of $s$ also occurs in a grey position.
+	by Lemma~\ref{lemma:subterm_in_gray_lit}, $s$ occurs gray in a gray literal or an equality in $\PI(C) \lor C$.
+	By Lemma~\ref{lemma:gray_lits_and_eq_all_in_PI}, a successor of $s$ occurs in $\PI(\pi)$. Note that as $s$ occurs in a gray position, any successor of $s$ also occurs in a gray position.
 
 	By the induction hypothesis, the quantification of the lifting variable for $s$ requires $n-1$ alternated quantifiers.
 	As $s$ is a subterm of $t$ and $t$ is lifted, $t$ must be quantified in the scope of the quantification of $s$, and as $t$ and $s$ are of different color, their quantifier type is different. 
@@ -613,8 +585,8 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	If a term with $n$ color alternations occurs in $\PI^*(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n-1$ quantifier alternations.
 \end{lemma}
 \begin{proof}
-	By Lemma~\ref{lemma:subterm_in_grey_lit}, a term with $n-1$ color alternations occurs in a grey literal or an equality in $\PI(C) \lor C$.
-	Lemma~\ref{lemma:col_alt_in_grey_lit_then_quant_alt} gives the result.
+	By Lemma~\ref{lemma:subterm_in_gray_lit}, a term with $n-1$ color alternations occurs in a gray literal or an equality in $\PI(C) \lor C$.
+	Lemma~\ref{lemma:col_alt_in_gray_lit_then_quant_alt} gives the result.
 \end{proof}
 
 
@@ -638,12 +610,13 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
 \end{exa}
 
+\mytodo{ transportierfähig machen; $\PI^*$ entfernen wo geht }
 \section{Upper bound}
 
 \begin{lemma}
 	\label{lemma:quant_alt_upper_bound}
-	Let $t$ be a term with the maximal number of color alternations in $\PI^*(C) \lor C$ for any clause $C$.
-	Then there is an arrangment of the quantifier prefix in Theorem~\ref{thm:two_phases} which gives rise to an interpolant 
+	Let $t$ be a term with the maximal number of color alternations in $\PI(C) \lor C$ for any clause $C$.
+	Then there is an arrangement of the quantifier prefix in Theorem~\ref{thm:two_phases} which gives rise to an interpolant 
 	with at most $\ca(t)+1$ quantifier alternations.
 \end{lemma}
 \begin{proof}
@@ -695,10 +668,10 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	\end{itemize}
 \end{proof}
 
-\begin{prop}
+\begin{thm}
 	Let $n$ be the maximal number of color alternations of any term in $\PI^*(C) \lor C$ for any clause $C$ of a resolution refutation of $\Gamma \cup \Delta$.
 	Then by arranging the quantifiers in a quantifier alternation minimizing fashion, the interpolant of Theorem~\ref{thm:two_phases} has at least $n-1$ and at most $n+1$ quantifier alternations.
-\end{prop}
+\end{thm}
 \begin{proof}
 	Immediate by Lemma~\ref{lemma:quant_alt_lower_bound} and Lemma~\ref{lemma:quant_alt_upper_bound}.
 \end{proof}
@@ -808,18 +781,18 @@ which we work out in detail in this section.
 \cbstart
 \begin{lemma}
 	\label{lemma:subterm_of_multicol_term}
-	Let $t$ be a term with $\ca(t)=n$ which occurs grey in a grey literal or grey in an equality $\LIpre(C) \lor C$ for some clause $C$ and let $s$ be a subterm of $t$ with $\ca(s) = n-1$.
+	Let $t$ be a term with $\ca(t)=n$ which occurs gray in a gray literal or gray in an equality $\LIpre(C) \lor C$ for some clause $C$ and let $s$ be a subterm of $t$ with $\ca(s) = n-1$.
 	Then there exists a clause $C'$ which is a successor of $C$ such that respective successors of $t$ and $s$, which are not lifting variables, occur in $\LIpre(C') \lor C'$, and the successor of $t$ in $\LI(C) \lor C$ is a lifting variable.
 \end{lemma}
 \begin{proof}
-	By Lemma~\ref{lemma:grey_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
+	By Lemma~\ref{lemma:gray_lits_and_eq_all_in_LI}, a successor of $t$ occurs in $\LIpre(C') \lor C'$ for any successor $C'$ of $C$.
 	Let $C'$ be the successor of $C$ such that $\LIpre(C')$ contains a successor of $t$ which is not a lifting variable and $\LI(C')$ contains a successor of $t$ which is a lifting variable.
 	As all colored terms are lifted eventually, such a clause $C'$ must occur.
 
 	By Lemma~\ref{lemma:pi_li_1}, $t$ occurs at the same position in $\PI(C')$.
 	We assume without loss of generality that $t$ is a $\Phi$-term.
 	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$.
-	By Lemma~\ref{lemma:subterm_in_grey_lit}, $s$ occurs grey in a grey literal or grey in an equality in $\PI(C')\lor C'$.
+	By Lemma~\ref{lemma:subterm_in_gray_lit}, $s$ occurs gray in a gray literal or gray in an equality in $\PI(C')\lor C'$.
 
 	By Lemma~\ref{lemma:pi_li_2}, then either $s$ or $z_{s'}$, where $s'$ is an abstraction of $s$, occurs in $\LIpre(C')$ at a corresponding literal and position. 
 	As $t$ is not lifted in $\LIpre(C') \lor C'$ and $s$ is a subterm of $t$, Lemma~\ref{lemma:pi_li_3} proves that $s$ is also not lifted in $\LIpre(C') \lor C'$. Hence the case of $z_{s'}$ is excluded.
@@ -827,7 +800,7 @@ which we work out in detail in this section.
 
 
 \begin{clemma}
-	If a term $t$ with $\ca(t)=n$ occurs grey in a grey literal or grey in an equality $\LIpre(C) \lor C$ for some $C$, then $\LI(\pi)$ has at least $n$ quantifier alternations.
+	If a term $t$ with $\ca(t)=n$ occurs gray in a gray literal or gray in an equality $\LIpre(C) \lor C$ for some $C$, then $\LI(\pi)$ has at least $n$ quantifier alternations.
 \end{clemma}
 \begin{proof}
 	We proceed by induction over $n$ to show that the lifting variable, which replace the successor of $t$ in $\LI(\pi)$, is enclosed by $n$ alternating quantifiers.
@@ -856,21 +829,21 @@ which we work out in detail in this section.
 \mytodo{conclude by explaining two main results ; describe how to apply result (term $t$ occs in ??)} 
 
 \begin{clemma}
-	need term which exist initially, and with all substs applied has max color alternations
+	need term which exist initially, and with all subsets applied has max color alternations
 
 	note that there is no term in PI, LI, or anywhere, with more alternations
 
 	this term does occur in $\PI^*$
 
-	hence a term with one less col alt occs grey in $\PI^*$, hence also in $\PI$. (then the usual)
+	hence a term with one less col alt occs gray in $\PI^*$, hence also in $\PI$. (then the usual)
 
 	however this term may not actually occur in $\LI$ (cf.\ 703)
 
-	POSSIBLY: do apply substs to lft vars. then show that you can jump back and forth from li to pi (basically not $z_{s'}$ but $z_s$ in that lemma above).
+	POSSIBLY: do apply subsets to lft vars. then show that you can jump back and forth from li to pi (basically not $z_{s'}$ but $z_s$ in that lemma above).
 
 	Then lemmas for $\PI$ could suffice
 
-	possibla lemma statement:
+	possible lemma statement:
 
 	IF $t$ WITH $\ca(t) = n$ OR $z_t$ OCCURS, THEN $n$ QUANT ALT
 \end{clemma}
