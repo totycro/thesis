@@ -141,7 +141,7 @@ We now show more formally that the lifting conditions ensure that if a term cont
 	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$.
 \end{lemma}
 \begin{proof}
-	Let $T = \{t_1, \dots, t_n\}$ be the set of maximal colored terms in $\LIpre(C)$ for which some lifting conditions applies in ascending subterm order. The subset $\{t_{n-i+1}, \dots, t_n \}$ for $1\varleq i \varleq n$ is designated by $T_i$ and $T_0 = \emptyset$.
+	Let $t_1, \dots, t_n$ be the maximal colored terms in $\LIpre(C)$ for which some lifting conditions applies in ascending subterm order. The set $\{t_{n-i+1}, \dots, t_n \}$  for $0\varleq i \varleq n$ is designated by $T_i$.
 	We denote by $\lifpart^*(\LIpre(C), T_i)$ the result of lifting all terms of $T_i$ and replacing the lifting variables by fresh ones analogous to step~\ref{lemma_part_renaming} of the lifting procedure of $\LI$.
 	The fresh lifting variables are highlighted by a prime.
 	We use $Q_i z'_{t_i}$ to denote either $\exists y'_{t_i}$ in case $t_i$ is $\Gamma$-colored or $\forall x'_{t_i}$ in case $t_i$ is $\Delta$-colored.
