@@ -476,7 +476,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 \begin{lemma}
 	\label{lemma:subterm_in_gray_lit}
 	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
-	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs gray in a gray literal or gray in an equality in $\PI(C) \lor C$.
+	If $\PI^*(C) \lor C$ contains a maximal colored occurrence of a $\Phi$-term $t\occ{s}$, which contains a maximal $\Psi$-colored term $s$, then $s$ occurs gray in $\PI(C) \lor C$.
 \end{lemma}
 \begin{proof}
 	Note that it suffices to show that the desired term occurs in a gray literal or equality in $\PI^*(C) \lor C$
@@ -559,9 +559,12 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	%the term $s$ occurs gray in a gray literal or gray in an equality in $\PI^*(C) \lor C$.
 \end{proof}
 
+\subsection{Lower bound}
+
 \begin{lemma}
-	\label{lemma:col_alt_in_gray_lit_then_quant_alt}
-	If a term with $n$ color alternations occurs in a gray literal or in an equality in $\PI^*(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
+	%\label{lemma:col_alt_in_gray_lit_then_quant_alt}
+	\label{lemma:quant_alt_lower_bound}
+	If a term with $n$ color alternations occurs in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
 \end{lemma}
 \begin{proof}
 	We perform an induction on $n$
@@ -571,10 +574,10 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	For $n=0$, no colored terms occur in $I$ and hence also no quantifiers.
 	Moreover for $n=1$, there are terms of one color which evidently require at least one quantifier.
 
-	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI^*(C) \lor C$.
+	Suppose that the statement holds for $n-1$ for $n>1$ and that a term $t$ with $\ca(t) = n$ occurs in $\PI(C) \lor C$.
 	We assume without loss of generality that $t$ is a $\Phi$-term.
 	Then $t$ contains some $\Psi$-colored term $s$ with $\ca(s) = n-1$ and
-	by Lemma~\ref{lemma:subterm_in_gray_lit}, $s$ occurs gray in a gray literal or an equality in $\PI(C) \lor C$.
+	by Lemma~\ref{lemma:subterm_in_gray_lit}, $s$ occurs gray in $\PI(C) \lor C$.
 	By Lemma~\ref{lemma:gray_lits_and_eq_all_in_PI}, a successor of $s$ occurs in $\PI(\pi)$. Note that as $s$ occurs in a gray position, any successor of $s$ also occurs in a gray position.
 
 	By the induction hypothesis, the quantification of the lifting variable for $s$ requires $n-1$ alternated quantifiers.
@@ -582,15 +585,6 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	Hence the quantification of the lifting variable for $t$ requires $n$ quantifier alternations.
 \end{proof}
 
-\begin{lemma}
-	\label{lemma:quant_alt_lower_bound}
-	If a term with $n$ color alternations occurs in $\PI(C) \lor C$ for a clause $C$, then the interpolant $I$ produced in Theorem~\ref{thm:two_phases} contains at least $n$ quantifier alternations.
-\end{lemma}
-\begin{proof}
-	Let $t$ be a term in $\PI(C) \lor C$ with $\ca(t) = n$.
-	Then by Lemma~\ref{lemma:gray_lits_of_pi_star_in_pi}, $t$ occurs grey in a grey literal or grey in an equality in $\PI^*(C)$.
-	Lemma~\ref{lemma:col_alt_in_gray_lit_then_quant_alt} gives the result.
-\end{proof}
 
 \begin{comment}
 \begin{lemma}
@@ -625,7 +619,7 @@ We present an example which illustrates that the occurrence of a term with $n$ c
 	The existence of the term $f(a)$ with $\ca(f(a)) = 2$ in a clause of the refutation implies that $\qa(I) \vargeq 1$.
 \end{exa}
 
-\section{Upper bound}
+\subsection{Upper bound}
 
 \begin{lemma}
 	\label{lemma:quant_alt_upper_bound}
