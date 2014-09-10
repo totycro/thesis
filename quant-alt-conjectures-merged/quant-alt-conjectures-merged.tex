@@ -149,10 +149,10 @@ We arrive at the conclusion that both procedures are equal with respect to this 
 
 \section{Additional notation and definitions}
 
-A literal $l$ is called a $\Phi$-literal if its predicate symbol is $\Phi$-colored.
+A literal is called a $\Phi$-literal if its predicate symbol is $\Phi$-colored.
 
 In a literal or term $\phi$ containing a subterm $t$, $t$ is said to occur \defiemph{below} a $\Phi$-symbol $s$ if in the syntax tree representation of $\phi$, there is a node labelled $s$ on the path from the root to $t$. Note that the colored symbol may also be the predicate symbol.
-Moreover, $t$ is said to occur \defiemph{directly below} a $\Phi$-symbol if it occurs below the $\Phi$-symbol $s$ and in the syntax tree representation of $\phi$ on the path from $s$ to $t$, no nodes with labels with colored symbol occur.
+Moreover, $t$ is said to occur \defiemph{directly below} the $\Phi$-symbol $s$ if it occurs below the $\Phi$-symbol $s$ and in the syntax tree representation of $\phi$ on the path from $s$ to $t$, no nodes with labels with colored symbol occur.
 
 
 \subsection{Unification}
@@ -177,16 +177,18 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 	$\ca(t) \defeq \ca_\bot(t)$
 	\medskip
 
+	\begin{adjustwidth}{-1.7em}{}
 	\noindent
 	$
 	\ca_\Phi(t) \defeq 
 	\begin{cases}
-		0 & \text{$t$ is a variable} \\
-		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{$t = f(t_1, \dots, t_n)$ is grey} \\
-		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \parbox[t]{0.4\textwidth}{$t = f(t_1, \dots, t_n)$ is of color $\Phi$} \\
-		1 + \max(\ca_\Psi(t_1), \dots, \ca_\Psi(t_n)) & \parbox[t]{0.38\textwidth}{$t = f(t_1, \dots, t_n)$ is of color $\Psi$, $\Phi \neq \Psi$} \\
+		0 & \text{if $t$ is a variable} \\
+		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \text{if $t = f(t_1, \dots, t_n)$ is grey} \\
+		\max(\ca_\Phi(t_1), \dots, \ca_\Phi(t_n)) & \parbox[t]{0.4\textwidth}{if $t = f(t_1, \dots, t_n)$ is of color $\Phi$} \\
+		1 + \max(\ca_\Psi(t_1), \dots, \ca_\Psi(t_n)) & \parbox[t]{0.38\textwidth}{if $t = f(t_1, \dots, t_n)$ is of color $\Psi$, $\Phi \neq \Psi$} \\
 	\end{cases}
 	$
+\end{adjustwidth}
 \end{defi}
 
 
@@ -203,11 +205,11 @@ Furthermore $\bot$ is used to denote a color which is not possessed by any symbo
 	$
 	\qa_Q(A) \defeq 
 	\begin{cases}
-		0 & \text{$A$ is an atom} \\
-		\qa_Q(B) & \text{$A \equiv \lnot B$} \\
-		\max(\parbox[t]{0.2\textwidth}{$\qa_Q(B),$\newline$ \qa_Q(C))$} & \text{$A \equiv B \circ C$, $\circ \in \{\land, \lor, \limpl\}$} \\
-		\qa_Q(B) & \text{$A \equiv Q x B$} \\
-		1+\qa_{Q'}(B) & \text{$A \equiv Q' x B$, $Q \neq Q'$}  \\
+		0 & \text{if $A$ is an atom} \\
+		\qa_Q(B) & \text{if $A \equiv \lnot B$} \\
+		\max(\parbox[t]{0.22\textwidth}{$\qa_Q(B),$\newline$ \qa_Q(C))$} & \text{if $A \equiv B \circ C$, $\circ \in \{\land, \lor, \limpl\}$} \\
+		\qa_Q(B) & \text{if $A \equiv Q x B$} \\
+		1+\qa_{Q'}(B) & \text{if $A \equiv Q' x B$, $Q \neq Q'$}  \\
 	\end{cases}
 	$
 	\nopagebreak
@@ -228,7 +230,7 @@ Hence $\PIinit^*$ coincides with $\PIinit$.
 $\PIstep^*$ coincides with $\PIstep$ in case of factorisation and paramodulation inferences.
 For resolution inferences, the first two cases in the definition of $\PIstep$ do not occur for $\PIstep^*$.
 
-$\PI^*$ enjoys the convenient property that it absorbs every literal which occurs some clause:
+$\PI^*$ enjoys the convenient property that it absorbs every literal which occurs in some clause:
 
 \begin{prop}
 	\label{prop:every_lit_in_pi_star}
@@ -244,7 +246,7 @@ However Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi} allows us to transfer resul
 \begin{lemma}
 	\label{lemma:grey_lits_of_pi_star_in_pi}
 	For every clause $C$ of a resolution refutation,
-	every grey literal and equality, which occurs in $\PI^*(C)$, also occurs in $\PI(C)$.
+	every grey literal and equality which occurs in $\PI^*(C)$ also occurs in $\PI(C)$.
 \end{lemma}
 \begin{proof}
 	Note that $\PIinit$ and $\PIinit^*$ coincide and $\PIstep$ and $\PIstep^*$ only differ for resolution inferences.
@@ -264,22 +266,12 @@ However Lemma~\ref{lemma:grey_lits_of_pi_star_in_pi} allows us to transfer resul
 
 \begin{corr}
 	\label{lemma:grey_lits_and_eq_all_in_PI}
-	If there is a grey literal $\lambda$ or an equality $s=t$ in $\PI(C) \lor C$ or $\LI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
-	then a successor of $\lambda$ or $s=t$ respectively occurs in $\PI(\pi)$ 
+	If there is a grey literal $\lambda$ or an equality $s=t$ in $\PI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
+	then a successor of $\lambda$ or $s=t$ respectively occurs in $\PI(\pi)$.
 \end{corr}
 \begin{proof}
 	This is a direct consequence of Lemma~\ref{lemma:Ot8Gie7y}.
 \end{proof}
-
-\begin{corr}
-	\label{lemma:grey_lits_and_eq_all_in_LI}
-	If there is a grey literal $\lambda$ or an equality $s=t$ in $\LI(C) \lor C$ or $\LI(C) \lor C$ for a clause $C$ of a resolution refutation $\pi$,
-	then a successor of $\lambda$ or $s=t$ respectively occurs in $\LI(\pi)$ 
-\end{corr}
-\begin{proof}
-	This is a direct consequence of Lemma~\ref{lemma:Ot8Gie7y}.
-\end{proof}
-
 
 
 
@@ -287,20 +279,22 @@ We now make some considerations in the form of four lemmata about the constructi
 In order to do so, we frequently reason over the stepwise application of the respective unifiers, for which we employ the following definition:
 
 \begin{defi}
-	We define $\PIstepnosigma$ to coincide with $\PIstep$ but without applying the substitution $\sigma$ in each of the cases.
-	Furthermore, $\PIstarnosigma(C)$ is an abbreviation of $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m))$.
+	We define $\PIstepstarnosigma$ to coincide with $\PIstep^*$ but without applying the substitution $\sigma$ in each of the cases.
+	Furthermore, $\PIstarnosigma(C)$ is an abbreviation of $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m))$ if $C$ is created by an inference $\inference$ from the clauses $C_1, \dots, C_n$,
+	and $\PIstarnosigma(C)$ coincides with $\PI^*(C)$ if $C\in \Gamma\cup\Delta$.
 
 	Analogously, if $C \equiv D\sigma$, we use $\nosigma{C}$ to denote\nolinebreak{} $D$.
 \end{defi}
 
 In the context of an inference $\inference$ using the clauses $C_1, \dots, C_m$ to infer $C$, it holds that:
 \begin{align*}
-	& \PI^*(C) \lor C = \\
-	& \Big(\PIstep^*(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C = \\
-	& \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor \nosigma{C} \Big) \sigma = \\
-	& \Big(\PIstarnosigma(C)\lor \nosigma{C} \Big) \sigma = \\
-	& \Big(\PIstarnosigma(C)\lor \nosigma{C} \Big) \sigmarange{0}{|\dom(\sigma)|}
+	 \PI^*(C) \lor C 
+	 =\,& \PIstep^*(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor C  \\
+	=\, & \Big(\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_m)) \lor \nosigma{C} \Big) \sigma  \\
+	=\, & \Big(\PIstarnosigma(C)\lor \nosigma{C} \Big) \sigma  \\
+	=\,& \Big(\PIstarnosigma(C)\lor \nosigma{C} \Big) \sigmarange{0}{|\dom(\sigma)|}
 \end{align*}
+
 
 \newcommand{\inv}{\ensuremath{\PIstarnosigma(C)\lor \nosigma{C}}}
 \newcommand{\invp}{\ensuremath{(\inv)}}
@@ -312,7 +306,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 \begin{lemma}
 	\label{lemma:var_below_phi_symbol}
-	Let $\inference$ be a resolution or factorisation inference in a refutation of $\Gamma\cup\Delta$.
+	Let $\inference$ be an inference in a refutation of $\Gamma\cup\Delta$.
 	Suppose that a variable $u$ occurs directly below a $\Phi$-symbol in $\invp\sigmazi$ for $i\vargeq 1$.
 	Then at least one of the following statements holds:
 	\begin{enumerate}
@@ -338,7 +332,8 @@ Note that if we are able to show that the application of a substitution $\sigma_
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	We consider the different situations under which the situation in question arises:
+	We consider the different situations under which the situation in question arises.
+	First, suppose that $\inference$ is a resolution or factorisation inference.
 
 	\begin{itemize}
 		\item
@@ -460,7 +455,7 @@ Note that if we are able to show that the application of a substitution $\sigma_
 
 	For the induction step, suppose that an inference makes use of the clauses $C_1, \dots, C_n$ and that the lemma holds for $\PI^*(C_j) \lor C_j$ for $1\varleq j \varleq n$. 
 
-	Note that then, the lemma holds for $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor \nosigma{C}) = \inv$.
+	Note that then, the lemma holds for $\PIstepstarnosigma(\inference, \PI^*(C_1), \dots, \PI^*(C_n)) \lor \nosigma{C} = \inv$.
 	This is because as all clauses are variable-disjoint, 
 	if a variable occurs in $\inv$ both directly below a $\Phi$-symbol as well as directly below a $\Psi$-symbol, then this must be the case also in 
 	$\PI^*(C_j) \lor C_j$ for some $j$, for which the lemma by assumption holds.
