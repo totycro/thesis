@@ -1,11 +1,32 @@
 \chapter{Conclusion}
 
-This thesis gives a comprehensive account of results and techniques with respect to interpolation in full first-order logic with equality since this area has received only relatively little attention so far. 
+This thesis gives a comprehensive account of results and techniques with respect to interpolation in full first-order logic with equality which has received only relatively little attention so far. 
+%even though a 
+%a multitude of applications both as a theoretical and practical in this logic.
+Note that even though the interpolation theorem holds in this logic, % full first-order with equality, 
+many applications are in fact mostly occupied only with weaker logics such as propositional logic or equational logic with uninterpreted function symbols.
 
-In order to assist potential application
+Among the most notable practical uses of interpolation we can cerainly count the use in model checking introduced in \cite{McMillan03}.
+Here, interpolants give concise formulas describing an overapproximation of the set of reachable states, which can then be used to prove the unreachability of error states.
+Moreover, interpolants can be employed to detect loop invariants (\cite{weissenbacher2010}) which is a major challenge for program verification.
+In the realm of theory, for instance Beth's definabilty theorem can very easily be proven using the interpolation theorem.
 
+In order to facilitate future applications in full first-order logic with equality, the focus of this work is geared towards constructive proofs which give rise to concrete algorithms for calculating interpolants.
+We present the first in Chapter~\ref{chap:reduction}, which is also historically the first one.
+In \cite{Craig57linear,Craig57three}, Craig introduces the notion of interpolation and accompanies it with an algorithm which however is not intended for practical use.
+By a reduction to first-order logic without equality and function symbols which allows for a simpler constructive proof, interpolants can effectively be calculated but only at the cost of dealing with additional axioms for equality and for every function symbol.
 
+Arguably the most significant subsequent contribution for interpolation in the logic at hand is due to Huang.
+In \cite{Huang95}, a two-phase approach is introduced which is capable of efficiently extracting interpolants from resolution refutations which include paramodulation inferences.
+Here, a preliminary structure in the form of a propositional interpolant is extracted directly from the refutation, where non-common symbols are then in the second stage replaced by lifting variables and which are appropriately quantified.
+This leads to interpolants in prenex form.
+We present this algorithm in detail is in Chapter~\ref{chap:two_phases} in a slightly improved form and in Appendix~\ref{chap:huang} in a version following \cite{Huang95} more closely.
 
+As a variations of Huang's work, we propose a novel approach which combines the two phases by detecting terms which can already be lifted and quantified during the extraction phase.
+Consequently, the resulting interpolants are not in prenex form but the scope of quantifiers is limited to the subformula where the lifted term is of relevance.
+This algorithm is dealt with in Chapter~\ref{chap:one_phase}.
+
+todo: semantic, abschluss
 
 
 % was gelernt
