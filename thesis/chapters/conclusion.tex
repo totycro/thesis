@@ -6,10 +6,10 @@ This thesis gives a comprehensive account of results and techniques with respect
 Note that even though the interpolation theorem holds in this logic, % full first-order with equality, 
 many applications are in fact mostly occupied only with weaker logics such as propositional logic or equational logic with uninterpreted function symbols.
 
-Among the most notable practical uses of interpolation we can cerainly count the use in model checking introduced in \cite{McMillan03}.
+Among the most notable practical uses of interpolation we can certainly count the use in model checking introduced in \cite{McMillan03}.
 Here, interpolants give concise formulas describing an overapproximation of the set of reachable states, which can then be used to prove the unreachability of error states.
 Moreover, interpolants can be employed to detect loop invariants (\cite{weissenbacher2010}) which is a major challenge for program verification.
-In the realm of theory, for instance Beth's definabilty theorem can very easily be proven using the interpolation theorem.
+In the realm of theory, for instance Beth's definability theorem can very easily be proven using the interpolation theorem.
 
 In order to facilitate future applications in full first-order logic with equality, the focus of this work is geared towards constructive proofs which give rise to concrete algorithms for calculating interpolants.
 We present the first in Chapter~\ref{chap:reduction}, which is also historically the first one.
@@ -20,23 +20,16 @@ Arguably the most significant subsequent contribution for interpolation in the l
 In \cite{Huang95}, a two-phase approach is introduced which is capable of efficiently extracting interpolants from resolution refutations which include paramodulation inferences.
 Here, a preliminary structure in the form of a propositional interpolant is extracted directly from the refutation, where non-common symbols are then in the second stage replaced by lifting variables and which are appropriately quantified.
 This leads to interpolants in prenex form.
-We present this algorithm in detail is in Chapter~\ref{chap:two_phases} in a slightly improved form and in Appendix~\ref{chap:huang} in a version following \cite{Huang95} more closely.
+We present this algorithm in detail is in Chapter~\ref{chap:two_phases} in a slightly improved form and in Appendix~\ref{chap:huang} in a version following \cite{Huang95} more closely. 
+An analysis of the construction of colored terms lead us to a result on the number of quantifier alternations in the interpolants created by this algorithm. We show that they are very closely related to the number of color alternations which are created by the substitutions of the resolution refutation. 
+
 
 As a variations of Huang's work, we propose a novel approach which combines the two phases by detecting terms which can already be lifted and quantified during the extraction phase.
 Consequently, the resulting interpolants are not in prenex form but the scope of quantifiers is limited to the subformula where the lifted term is of relevance.
 This algorithm is dealt with in Chapter~\ref{chap:one_phase}.
 
-todo: semantic, abschluss
+Complementary to these algorithms, we also present a non-constructive, model-theoretic approach to interpolation.
+Assuming the non-existence of an interpolant, we build a maximal consistent intersection of two theories which are each based on the sets of formulas to interpolate. The details of this method are layed out in Chapter~\ref{chap:semantic}.
 
 
-% was gelernt
-% nochmal anwendungen
 
-% const/ nicht const, algo
-
-% unterschiedliche algos
-
-% craig: einfach
-% huang: wichtig
-% prenex
-% quant alt

@@ -14,7 +14,7 @@ Consider the following example:
 \begin{exa}
 	\label{exa:one_phase_motivation}
 	Let $\Gamma = \{ P(x) \lor Q(y) \}$ and $\Delta = \{\lnot P(a), \lnot Q(a)\}$.
-	Consider the follwing refutation of $\Gamma \cup \Delta$:
+	Consider the following refutation of $\Gamma \cup \Delta$:
 	
 	\begin{prooftree}
 		\AxiomCm{ P(x) \lor Q(y) \mid \bot}
@@ -232,7 +232,7 @@ We now show more formally that the lifting conditions ensure that if a term cont
 		The renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure
 		ensures that $x_t$ is a fresh lifting variable and hence is not bound by quantifiers introduced for other occurrences of the term $t$, which would otherwise also be lifted by the same lifting variable and bound by the same quantifier\footnote{See Example~\ref{exa:lemma_part_renaming} for an illustration.}.
 		Hence by the semantics of free variables, $x_t$ is implicitly universally quantified and therefore entails that an explicit universal quantification in $\LI(C)$ is valid.
-		\mytodo{das vllt noch genauer}
+		%\mytodo{das vllt noch genauer}
 
 		If otherwise $t$ is a $\Gamma$-term, then $\lifdeltanovar{\LIpre(C)}\atp = \lifdeltanovar{t}$.
 		Therefore $\lifdeltanovar{t}$ represents a witness term for the existentially quantified lifting variable $y_t$ at $\LI(C)\atp$.
