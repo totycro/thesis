@@ -244,6 +244,8 @@
 
 	\semanticcontent
 
+	\input{chapters/conclusion}
+
 }
 
 \newcommand{\semanticcontent}{
@@ -307,34 +309,35 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%   PARTIAL COMPILATION OPTIONS    %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifdefined\secproofsonly 
 
-\selectlanguage{english}
-\proofcontent
-
-
-\else
-\ifdefined\semanticonly 
-
-\selectlanguage{english}
-\semanticcontent
-
-\else
-
-%\pagenumbering{arabic}
-\mysetpagestyle
-
-\ifdefined\contentonly 
-\selectlanguage{english}
-
-
-\tableofcontents
-
-\content
-
-\appendixcontent 
-
-\else 
+%\ifdefined\secproofsonly 
+%
+%\selectlanguage{english}
+%\proofcontent
+%
+%
+%\else
+%\ifdefined\semanticonly 
+%
+%\selectlanguage{english}
+%\semanticcontent
+%
+%\else
+%
+%%\pagenumbering{arabic}
+%\mysetpagestyle
+%
+%\ifdefined\contentonly 
+%\selectlanguage{english}
+%
+%
+%\tableofcontents
+%
+%\content
+%
+%\appendixcontent 
+%
+%\else 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -407,8 +410,8 @@
 \appendixcontent
 
 
-\fi
-\fi
-\fi
+%\fi
+%\fi
+%\fi
 
 \end{document}
