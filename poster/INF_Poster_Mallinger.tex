@@ -17,28 +17,32 @@
 \usepackage{TUINFPST}
 
 \usepackage{lipsum}
- 
+\usepackage{graphicx, array, blindtext}
+
+
+
+
 %\title[Computational Intelligence]{Interactive Computer Generated Architecture}
 % if you have a long title looking squeezed on the poster, just force
 % some distance:
 \title[Computational Intelligence]{%
-  Interpolation in First-Order Logic
+	Interpolation in First-Order Logic
 	\\[0.2\baselineskip]%
 	with Equality
-  %\\[0.2\baselineskip]%
+	%\\[0.2\baselineskip]%
 }
 %\author[b.mallinger@gmx.at]{Bernhard Mallinger}
 \author[b.mallinger@gmx.at]{Bernhard Mallinger}
 \institute[]{%
-  Technische Universit{\"a}t Wien\\[0.25\baselineskip]
-  Institut f{\"u}r diskrete Mathematik und Geometrie\\[0.25\baselineskip]
-  Arbeitsbereich: Computational Logic\\[0.25\baselineskip]
-  Betreuer: Ass.Prof.~Stefan Hetzl
+	Technische Universit{\"a}t Wien\\[0.25\baselineskip]
+	Institut f{\"u}r diskrete Mathematik und Geometrie\\[0.25\baselineskip]
+	Forschungsgruppe: Computational Logic\\[0.25\baselineskip]
+	Betreuer: Ass.Prof.\ Stefan Hetzl
 }
 %\titlegraphic{ {\Huge \color{red} TODO:~LOGO}\includegraphics[height=52mm]{logo_KBS_2_CMYK}}
 \date[\today]{\today}
 \subject{epilog}
-\keywords{my kwd1, my kwd2}
+%\keywords{my kwd1, my kwd2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -53,27 +57,37 @@
 %   \includegraphics[width=\paperwidth]{logo_KBS_2_CMYK}
 % }
 
+\newcommand{\colOne}[1]{ {\color{TuInfRed}#1}}
+\newcommand{\colTwo}[1]{ {\color{TuWienBlue}#1}}
+
+\newcommand{\colA}[1]{ \colOne{#1} }
+\newcommand{\colB}[1]{ \colTwo{#1} }
+
+
+\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
+\newcommand{\gray}[1]{ {\color{darkgray}#1}}
+
 % play around with block colors
 \setbeamercolor{block body}{fg=black,bg=white}
 \setbeamercolor{block title}{fg=TuWienBlue,bg=white}
 
 \setbeamertemplate{block begin}{
-  \begin{beamercolorbox}{block title}%
-    \begin{tikzpicture}%
-      \node[draw,rectangle,line width=3pt,rounded corners=0pt,inner sep=0pt]{%
-        \begin{minipage}[c][2cm]{\linewidth}
-          \centering\textbf{\insertblocktitle}
-        \end{minipage}
-      };
-    \end{tikzpicture}%
-  \end{beamercolorbox}
-  \vspace*{1cm}
-  \begin{beamercolorbox}{block body}%
-}
+	\begin{beamercolorbox}{block title}%
+		\begin{tikzpicture}%
+			\node[draw,rectangle,line width=3pt,rounded corners=0pt,inner sep=0pt]{%
+				\begin{minipage}[c][2cm]{\linewidth}
+					\centering\textbf{\insertblocktitle}
+				\end{minipage}
+			};
+		\end{tikzpicture}%
+	\end{beamercolorbox}
+	\vspace*{1cm}
+	\begin{beamercolorbox}{block body}%
+	}
 
-\setbeamertemplate{block end}{
-  \end{beamercolorbox}
-  \vspace{2cm}
+	\setbeamertemplate{block end}{
+	\end{beamercolorbox}
+	\vspace{2cm}
 }
 
 
@@ -92,14 +106,36 @@
 }
 
 
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{amssymb} % the reals
-\usepackage{mathtools} % smashoperator
-\usepackage{thmtools} 
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{amssymb} % the reals
+%\usepackage{mathtools} % smashoperator
+%\usepackage{thmtools} 
+
+%\usepackage{MnSymbol} % again other symbols
 
 
-  %\declaretheorem[title=Theorem]{thm}
+
+\newcommand{\entails}{\vDash}
+\newcommand{\notentails}{\nvDash}
+\newcommand{\proves}{\vdash}
+
+\DeclareMathOperator{\limpl}{\supset}
+\DeclareMathOperator{\liff}{\lra}
+\DeclareMathOperator{\semiff}{\Lra}
+\newcommand{\syneq}{\equiv}
+\newcommand{\union}{\cup}
+\newcommand{\bigunion}{\bigcup}
+\newcommand{\intersection}{\cap}
+\newcommand{\bigintersection}{\bigcap}
+\newcommand{\intersect}{\intersection}
+\newcommand{\bigintersect}{\bigintersection}
+
+
+
+
+
+%\declaretheorem[title=Theorem]{thm}
 
 \newcommand{\contrib}[1]{{\color{TuWienBlue}\textbf{#1}}}
 
@@ -114,118 +150,176 @@
 \begin{frame}
 	\begin{columns}[t]
 
-		\newcommand{\mycolwidth}{.4\textwidth} % default: .45\textwidth
+		%\newcommand{\mycolwidth}{.4\textwidth} % default: .45\textwidth
+		\newcommand{\mycolwidth}{.45\textwidth} 
 
 		\begin{column}{\mycolwidth}
 
-			\begin{block}{Interpolation}
-				\begin{itemize}
-
-					%\item The notion of interpolation has been introduced by Craig.
-
-					\item
-						Given two formulas $A$ and $B$ such tht $A$ implies $B$, an interpolant $I$ is a formula which is implied by $A$ and which itself implies $B$. \\[.6\baselineskip] 
-
-
-
-						\begin{figure}[htbp]
-							\centering
-							\begin{tikzpicture}[
-									implies/.style={double,double equal sign distance,-implies},
-									mynode/.style={circle,outer sep=3pt}
-								]
-								\node[mynode] (A) at (0,0) {$A$};
-								\node[mynode] (B) at (16,0) {$B$};
-								\node[mynode] (I) at (8,-6) {$I$};
-
-								%\draw[->,implies] (A) to (B);
-								\draw (A) edge[implies]  (B);
-								\draw (A) edge[implies]  (I);
-								\draw (I) edge[implies]  (B);
-
-							\end{tikzpicture}
-							\label{fig:interpol}
-							%\caption{Given two formulas $A$ and $B$ such that $A$ implies $B$, an interpolant is a formula $I$ which is implied by $A$ and which implies $B$.}
-						\end{figure}
-						\smallskip
-
-					\item
-						Additionally, interpolants can only contains symbols which are common to both $A$ and $B$.
-
-					\item
-						Hence interpolants succinctly capture the logical content which explains an implication.
-						%Hence interpolants capture the logical content of $A$ which necessarily makes $B$ true and therefore acts as a link between these formulas.
-				\end{itemize}
+			\begin{block}{Craig Interpolation}
 
 				\textbf{Theorem} (Craig).
-				\emph{Let $A$ and $B$ be first-order formulas such that $A$ implies $B$.
-					Then there is an interpolant for $A$ and~$B$.}
-			
+				\emph{Let $\colA A$ and $\colB B$ be first-order formulas such that $\entails \colA A\supset \colB B$.
+					Then there is an interpolant $\gray I$ for $\colA A$ and~$\colB B$ such that:
+					\begin{itemize}
+						\item $\entails \colA A \limpl \gray I$
+						\item $\entails \gray I \limpl \colB B$
+						\item $\operatorname{Lang}(\gray I) \subseteq
+							\operatorname{Lang}(\colA A) \cap \operatorname{Lang}(\colB B)$
+					\end{itemize}
+				}
+				\vspace{1em}
+
+
+				\begin{figure}[htbp]
+					\centering
+					\begin{tikzpicture}[
+							implies/.style={double,double equal sign distance,-implies},
+							mynode/.style={circle,outer sep=3pt}
+						]
+						\node[mynode] (A) at (0,0) {$\colA A$};
+						\node[mynode] (B) at (16,0) {$\colB B$};
+						\node[mynode] (I) at (8,-6) {$\gray I$};
+
+						%\draw[->,implies] (A) to (B);
+						\draw (A) edge[implies]  (B);
+						\draw (A) edge[implies]  (I);
+						\draw (I) edge[implies]  (B);
+
+					\end{tikzpicture}
+					\label{fig:interpol}
+					%\caption{Given two formulas $A$ and $B$ such that $A$ implies $B$, an interpolant is a formula $I$ which is implied by $A$ and which implies $B$.}
+				\end{figure}
+				\vspace{1em}
+
+				$\Rightarrow$ Interpolants give a concise logical summary of the implication
 
 			\end{block}
 
-
-			\begin{block}{Aim and Scope}
-				Give comprehensive account of existing proofs and techniques and extend them:
+			\begin{block}{Applications of Craig Interpolation} 
+				Theoretical:
 				\begin{itemize}
+					\item Proof of Beth's definability theorem
+				\end{itemize}
+				Practical:
+				\begin{itemize}
+					\item Program analysis: Detect loop invariants
+					\item Model checking: Overapproximate set of reachable states of program
+				\end{itemize}
+			\end{block}
+
+
+			\begin{block}{Aim and Scope of the Thesis}
+				Give comprehensive account of existing techniques and extend them:
+				\begin{itemize}
+					\item Model-theoretic proof 
 					\item Reduction to first-order logic without equality
 					\item Interpolant extraction from resolution proofs
-					\item Model-theoretic proof 
 				\end{itemize}
 			\end{block}
 
-			\begin{block}{Reduction to first-order logic without equality}
-				This is the approach used by Craig for inital proof.
+			\begin{block}{Model-theoretic proof}
+				\vspace*{-0.8em}
+
 				\begin{itemize}
-					\item Express equality and function symbols by means of fresh predicates with appropriate axioms
-					\item Compute interpolants in first-order logic without equality and function symbols, for instance using Maehara's Lemma.
+					\item Non-constructive proof
+					\item Let $T_\colA{A}$ and $T_\colB{B}$ be theories extending $\colA A$ and $\colB B$
+					\item Build model from maximal consistent intersection of $T_\colA{A}$ and $T_\colB{B}$
 				\end{itemize}
+
 			\end{block}
 
-			\begin{block}{Interpolant extraction from resolution proofs}
-				This constructive proof by Huang consists of two phases:
 
-				\begin{itemize}
-					\item From a resolution proof inductively construct a propositional interpolant, which may still contain non-common terms.
-					\item Replace non-common terms by variables and bind them in a quantifier prefix.
-				\end{itemize}
+			\begin{block}{Reduction to first-order logic without equality \cite{Craig57linear}} 
+				\vspace*{-0.8em}
+				%Approach by Craig in \cite{Craig57linear}, 
+				\newcommand{\transformsep}{\;\to\;}
+				\begin{align*}
+					\intertext{Translate equality and function symbols:}
+					P(\colA c) & \transformsep \exists \gray x (\colA C(\gray x) \land P(\gray x)) \\
+					P(\colB f( \colA c)) & \transformsep  \exists \gray x (  \exists \gray y( \colA C(\gray y) \land \colB F(\gray y, \gray x)) \land P(\gray x)) \\
+					\gray s = \gray t & \transformsep E(\gray s, \gray t) \\
+					\intertext{Add theory of equality:} 
+					\varphi & \transformsep T_E \limpl \varphi^*
+				\end{align*}
 
-				\contrib{Contributions:}
-				\begin{itemize}
-					\item We showed that the number of quantifier alternations in the interpolant corresponds directly to the number of nested alternations of symbols which only occur in $A$ or $B$ respectively.
-
-					\item We developed an improved version which combines these phases and produces non-prenex formulas.
-				\end{itemize}
-
-
-				%\begin{subblock} asdf a as
-%\end{subblock}
-				%x
+				$\Rightarrow$ Then calculate interpolant in reduced logic
 
 			\end{block}
 
 		\end{column}
 		\begin{column}{\mycolwidth}
 
-			\begin{block}{Model-theoretic proof}
-				The interpolation theorem can also be proven semantically:
+
+			\begin{block}{Interpolant extraction from proofs in two phases \cite{Huang95}}
+				\vspace*{-0.8em}
 				\begin{itemize}
-					\item Suppose that there is no interpolant.
-					\item Then we can build a model in which $A$ holds, but $B$ does not.
-
+					\item Extract structure from proof 
+					\item Replace colored terms by quantified variables 
 				\end{itemize}
+				\begin{tabular}{*{2}{m{0.48\textwidth}}}
+				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					&
+					\\
 
-				$\Rightarrow$ If there is no formula which explains the logical relation between $A$ and $B$ (=interpolant), then this is possible.
+				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					&
+					$\dots Q(\colA f(\colB c), \colB c) \dots$
+					\\
+
+				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					&
+					$\exists \gray{x_3} \forall \gray{x_5} \dots Q(\gray{x_5}, \gray{x_3}) \dots$
+					\\
+
+				\end{tabular}
+			\end{block}
+
+			\begin{block}{Interpolant extraction from proofs in one phase}
+				\vspace*{-0.7em}
+				\begin{itemize}
+					\item Replace colored terms during extraction
+				\end{itemize}
+				\begin{tabular}{*{2}{m{0.48\textwidth}}}
+				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					&
+					\\
+
+				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					&
+					$\dots Q(\colA f(\colB c), \colB c) \dots$
+					\\
+
+				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					&
+					$\dots \forall \gray{x_5} \dots Q(\gray{x_5}, \colB c) \dots$
+					\\
+
+				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					&
+					$\exists \gray{x_3} \dots \forall \gray{x_5} \dots Q(\gray{x_5}, \gray{x_3}) \dots$
+					\\
+
+				\end{tabular}
 			\end{block}
 
 
+			\begin{block}{Contributions}
+				\vspace*{-0.7em}
+				\begin{itemize}
+					\item We introduced the one phase-approach.
+					\item We showed that the number of quantifier alternations in the interpolant essentially corresponds to the number of color alternations in terms.
 
-			TODO: applications of interpolation? 
+				\end{itemize}
 
+			\end{block}
+
+			\setbeamertemplate{bibliography item}{\insertbiblabel}
 
 			\begin{block}{References}
+				\vspace*{-0.7em}
 				% this is just an example, use BibTeX!
 				\begin{thebibliography}{999}
+						%\setbeamertemplate{bibliography item}{[1]}
 
 					\bibitem[1]{Craig57linear}
 						William Craig.

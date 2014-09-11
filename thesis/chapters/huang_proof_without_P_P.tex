@@ -915,11 +915,11 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 	For $0\varleq i \varleq k$,
 	let $Z^i = \{ \lifdelta{r_1}, \dots, \lifdelta{r_i} \}$,
 	and
-	$t_1^i, \dots, t_{m+i}^i$ be an arrangement of $Z^i \union \{ s_1, \dots, s_m \}$ in ascending subterm order.
+	$t_1^i, \dots, t_{m+i}^i$ be an arrangement of $ \{ s_1, \dots, s_m, r_1, \dots, r_i,  \}$ in ascending subterm order.
 	%We use $Q_j^i $ be $\forall$~($\exists$) if $t_j^i$ is a $\Delta$ ($\Gamma$)-term for 
-	We use $Q_j^i z_{t_j^i}$ $1\varleq j \varleq m+i$ to denote $\forall x_{t_j^i}$ or $\exists y_{t_j^i}$ depending on the color of $t_j^i$.
+	We use $Q_j^i z_{t_j^i}$ for $1\varleq j \varleq m+i$ to denote $\forall x_{t_j^i}$ or $\exists y_{t_j^i}$ depending on the color of $t_j^i$.
 
-	We now show by induction that by iteratively lifting and appropriately quantifying the maximal $\Gamma$-terms in $\lifdelta{\PI(\pi)}$, we obtain a formula which is entailed by $\Gamma$.
+	Now, we show by induction that by iteratively lifting and appropriately quantifying the maximal $\Gamma$-terms in $\lifdelta{\PI(\pi)}$, we obtain a formula which is entailed by $\Gamma$.
 	Formally, the induction operates over \[\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }\] for $0 \varleq i \varleq k$.
 
 	For $i=0$, $Z^i = \emptyset$, so $\Gamma \entails Q_1^i z_{t_1^i} \dots Q_{m+i}^i z_{t_{m+i}^i} \lifgamma{ \lifdelta{\PI(\pi) }, Z^i }$ is nothing else than $\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$, which holds by assumption.
