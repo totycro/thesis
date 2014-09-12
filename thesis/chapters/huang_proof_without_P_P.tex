@@ -623,7 +623,7 @@ We develop it starting from $\PIinit$ and $\PIstep$ in order to then state it fo
 
 In the following, additionally to $\Gamma$ and $\Delta$, we consider the sets $\primex{\Gamma}$ and $\primex{\Delta}$ such that $\primex{\Gamma}$ comprises the clauses of $\Delta$ and $\primex{\Gamma}$ comprises the clauses of $\Delta$. 
 Then for a clause $C$ in $\Gamma$ or $\Delta$, we denote by $\primex C$ the corresponding clause in $\primex \Delta$ or $\primex \Gamma$ respectively.
-For proofs $\pi$, we then also consider proofs $\primex \pi$ where every clause $C$ in $\pi$ has a corresponding clause $\primex C$ in $\primex \pi$. The clauses $C$ and $\primex C$ coincide except for the coloring, i.e.\ if a symbol in $C$ is $\Phi$-colored, then the symbol in $\primex C$ is $\primex \Phi$-colored.
+For refutations $\pi$ of $\Gamma\cup\Delta$, we then also consider refutations $\primex \pi$ of $\primex\Gamma \cup \primex\Delta$ where every clause $C$ in $\pi$ has a corresponding clause $\primex C$ in $\primex \pi$. The clauses $C$ and $\primex C$ coincide except for the coloring, i.e.\ if a symbol in $C$ is $\Phi$-colored, then the symbol in $\primex C$ is $\primex \Phi$-colored.
 
 In the context of $\primex \Gamma$ and $\primex \Delta$, the procedures $\PI$, $\PIinit$ and $\PIstep$ are to be read as being defined with respect to $\primex \Gamma$ and $\primex \Delta$ instead of $\Gamma$ and $\Delta$.
 
@@ -983,14 +983,14 @@ In order to quantify terms in the propositional interpolant appropriately, we ne
 \begin{proof}
 	Let $s_1, \dots, s_m$ be the maximal colored $\Delta$-terms in $\PI(\pi)$ and
 	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$.
-	Then by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, we get that 
+	Then by Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, it holds that 
 	$\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$
-	and Corollary~\ref{cor:delta_entails_lifted_interpolant} shows that 
+	and by Corollary~\ref{cor:delta_entails_lifted_interpolant}, we get that 
 	$\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
 	Therefore we can apply Lemma~\ref{lemma:thm_induction} to obtain 
-	$\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$ 
+	\[\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}\]
 	as well as 
-	$\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$,
+	\[\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}.\]
 
 	As clearly $Q_1 z_{t_1} \dots Q_n z_{t_n}\,\lft{\Gamma}{y}{\lft{\Delta}{x}{\PI(\pi)}}$ does not contain colored symbols, this formula is an interpolant.
 \end{proof}
@@ -1068,12 +1068,12 @@ We conclude by presenting the execution of the algorithm on an example:
 
 \begin{exa}
 	\label{exa:two_phase}
-	In order to facilitate the reading of the formulas in this example, we borrow to notions from the natural numbers.
+	In order to facilitate the reading of the formulas in this example, we borrow notions from the natural numbers.
 	In the following, 
-	the intended interpretation for the predicate $G$ is the $>$-relation, for $L$, it is the $<$-relation and for $Z$, it is the predicate indicating whether the argument is zero.
+	the intended interpretation for the predicate $G$ is the $>$-relation, for $L$ the $<$-relation and for $Z$ the predicate indicating whether the argument is zero.
 	Hence for instance the clause $G(x, y) \lor L(x, y) \lor x = y$ expresses that for any two numbers $x$ and $y$, either $x>y$, $x<y$ or $x=t$ is the case.
 	In order to produce a contradiction, it is necessary to also include a clause which expresses a false statement under this interpretation, which here is $\lnot Z(z) \lor \lnot L(z, u)$. 
-	This clause can be read as follows: If $z$ is zero, then $z$ is not less than any number $u$.
+	This clause can be read as follows: If $z$ is zero, then $z$ is not less than any number~$u$.
 
 	The complete initial clause sets for this example are defined as follows:
 	$\Gamma = \{ G(x, y) \lor L(x, y) \lor x = y, \lnot G(v, f(v)), \lnot Z(w) \lor \lnot Z(f(w)) \}$
