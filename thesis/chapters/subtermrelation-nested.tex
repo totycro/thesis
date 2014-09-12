@@ -352,8 +352,8 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 
 \begin{lemma}
 	\label{lemma:li_symmetry}
-	Let $\pi$ be a refutation of $\Gamma\cup\Delta$ and $\bhat \pi$ be $\pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$.
-	Then for a clause $C$ in $\pi$ and its corresponding clause $\bhat C$ in $\bhat \pi$, $\LI(C) \spas\semiff \lnot \LI(\bhat C)$.
+	Let $C$ a clause in a refutation of $\Gamma\cup\Delta$.
+	Then $\LI(C) \spas\semiff \lnot \LI(\bhat C)$\footnote{This notation is defined in Section~\ref{sec:symmetry}.}.
 \end{lemma}
 \begin{proof}
 	We proceed by induction to show that $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$:
@@ -386,9 +386,11 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 	$\Delta \entails \lnot\lifgammanovar{\LI(C)} \lor \lifgammanovar{C}$.
 \end{lemma}
 \begin{proof}
-	Construct $\bhat \pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$. 
-	Then by Lemma~\ref{lemma:gamma_entails_delta_lifted_invariant}, $\bhat \Gamma \entails \liftnovar{\bhat \Delta}{\LI(\bhat C)} \lor \liftnovar{\bhat \Delta}{\bhat C}$, 
+	%Construct $\bhat \pi$ with $\bhat \Gamma = \Delta$ and $\bhat \Delta = \Gamma$. 
+	By Lemma~\ref{lemma:gamma_entails_delta_lifted_invariant}, we obtain that $\bhat \Gamma \entails \liftnovar{\bhat \Delta}{\LI(\bhat C)} \lor \liftnovar{\bhat \Delta}{\bhat C}$, 
 	which by Lemma~\ref{lemma:li_symmetry} is nothing else than
+	$\bhat \Gamma \entails \liftnovar{\bhat \Delta}{\lnot \LI(C)} \lor \liftnovar{\bhat \Delta}{\bhat C}$.
+	This however is the same as
 	$\Delta \entails \lnot \liftnovar{\Gamma}{\LI(C)} \lor \liftnovar{\Gamma}{C}$.
 \end{proof}
 
