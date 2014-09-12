@@ -118,17 +118,21 @@ We now show more formally that the lifting conditions ensure that if a term cont
 	Then if $t$ is a term in $\LIpre(C)$, no subterm $s$ of $t$ is lifted since either $t$ is present in $\LI(C_i) \lor C_i$ for some $i$, $1\varleq i \varleq n$, where the induction hypothesis applies,
 	or otherwise $t$ is introduced by means of $\sigma$. But as $\sigma$ is calculated only from the resolution inference, no lifting terms can occur in $\ran(\sigma)$.
 
-	Now let $t$ be a term in $\LI(C)$ which is not lifted. Let $s$ be a subterm of $t$ and for the sake of contradiction, suppose that $s$ is lifted in $\LI(C)$.
+	Now let $t$ be a term in $\LI(C)$ which is not lifted. Let $s$ be a subterm of $t$ and for the sake of contradiction, suppose that $s$ is lifted in $\LI(C)$. We distinguish cases based on which lifting conditions applies for $s$:
 	\begin{itemize}
 		\item Suppose that $s$ is lifted due to containing a variable which does not occur in\nolinebreak{} $C$.
 			Then as $s$ is a subterm of $t$, $t$ contains this variable as well and therefore is lifted in $\LI(C)$, contradicting the assumption.
 
 		\item Suppose that $s$ is lifted due to being a ground term which does not occur in\nolinebreak{} $C$.
-			Then $t$ does not occur in $C$ either as any occurrence of $t$ contains~$s$. 
+			Then $t$ does not occur in $C$ either as any occurrence of $t$ would contains~$s$ and $s$ does not occur in $C$.
 			Hence $t$ is lifted in $\LI(C)$, contradicting the assumption.
 			\qedhere
 	\end{itemize}
 \end{proof}
+
+We now use this lemma in order to 
+show that the lifting step in $\LI$ possesses the desired logical properties:
+%show that the lifting in $\LI$ works as desired:
 
 \begin{lemma}
 	\label{lemma:lipre_implies_li}
@@ -136,7 +140,7 @@ We now show more formally that the lifting conditions ensure that if a term cont
 	Then
 	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma}$
 	implies 
-	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$.
+	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}.
 \end{lemma}
 \begin{proof}
 	Let $t_1, \dots, t_n$ be the maximal colored terms in $\LIpre(C)$ for which some lifting conditions applies in ascending subterm order. The set $\{t_{n-i+1}, \dots, t_n \}$  for $0\varleq i \varleq n$ is designated by $T_i$.
@@ -146,12 +150,13 @@ We now show more formally that the lifting conditions ensure that if a term cont
 
 	We show the result by an induction over \[\Gamma \entails \lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}\] for $ 0 \varleq i\varleq n$.
 
-	Note that for $i=0$, 
+	Consider that 
+	for $i=0$, we obtain that  $T_i = \emptyset$ and therefore
 	$\Gamma \entails \lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}$ is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$, which holds by assumption.
 
 	%For the induction step, 
 	Now suppose that $\Gamma \entails \lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^*( \LIpre(C), T_i )} \lor \lifdeltanovar{C_\Gamma}$ holds for some $i$ such that $0\varleq i < n$.
-	In $\lifpart^*( \LIpre(C), T_{i+1} )$, the term $t_{n-i}$ is lifted.
+	Then in $\lifpart^*( \LIpre(C), T_{i+1} )$, the term $t_{n-i}$ is lifted.
 	We distinguish based on the color of $t_{n-i}$:
 	\begin{itemize}
 		\item
@@ -167,7 +172,7 @@ We now show more formally that the lifting conditions ensure that if a term cont
 			$\lifdeltanovar{C_\Gamma}$ does not contain $x'_{t_{n-i}}$. Therefore $\lifdeltanovar{C_\Gamma}$ does not need to be included in the scope of the quantification of $x'_{t_{n-i}}$.
 
 			Note that we must ensure that we quantify $x'_{t_{n-i}}$ such that every existential quantifier, whose witness term contains $x'_{t_{n-i}}$, is in the scope of the quantification of $x'_{t_{n-i}}$. 
-			The terms in question are maximal colored $\Gamma$-colored superterms of $t$.
+			The terms in question are the maximal colored $\Gamma$-colored superterms of $t$.
 
 			By the contraposition of Lemma~\ref{lemma:lifting_conditions}, since $t_{n-i}$ is lifted, every maximal colored superterm $s$ of $t_{n-i}$ must be lifted and quantified either in $\LIpre(C)$, or some lifting condition must apply for $s$ in $\LIpre(C)$.
 			In the latter case, $s$ is contained in $\{t_{n-i+1},\dots, t_n\}$.
@@ -269,15 +274,15 @@ We now show more formally that the lifting conditions ensure that if a term cont
 \end{lemma}
 \begin{proof}
 	We show the strengthening
-	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.} by induction on the resolution refutation.
+	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$ by induction on the resolution refutation.
 
 	If $C\in \Gamma\cup\Delta$, then Lemma~\ref{lemma:gamma_entails_init} shows that $\Gamma \entails \lifdeltanovar{\PIinit(C)} \lor \lifdeltanovar{C_\Gamma}$, which is the unfolded definition of $\lifdeltanovar{\LIpre(C)} \lor \lifdeltanovar{C_\Gamma}$.
 	By Lemma~\ref{lemma:lipre_implies_li}, we immediately get that 
 	$\lifdeltanovar{\LI(C)} \lor \lifdeltanovar{C_\Gamma}$.
 
 	For the induction step, suppose the clause $C$ is the result of an inference $\inference$ using the clauses $C_1, \dots, C_n$.
-	By induction hypothesis, $\Gamma \entails \lifdeltanovar{\LI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$, hence
-	by Lemma~\ref{lemma:gamma_entails_step}, we obtain that 
+	By the induction hypothesis, it holds that $\Gamma \entails \lifdeltanovar{\LI(C_i) \lor\nolinebreak (C_i)_\Gamma}$ for $1\varleq i\varleq n$. Hence
+	we can deduce by Lemma~\ref{lemma:gamma_entails_step} that
 	$\Gamma \entails \lifdeltanovar{\PIstep(\inference, \LI(C_1), \dots, \LI(C_n)) \lor C_\Gamma}$.
 	This however is nothing else than $\Gamma \entails \lifdeltanovar{\LIpre(C) \lor C_\Gamma}$.
 	Lemma~\ref{lemma:lipre_implies_li} gives the result.
@@ -287,37 +292,41 @@ We now present an example which demonstrates that $\LI$ does produce formulas re
 
 \begin{exa}
 	\label{exa:lemma_part_renaming}
-	Let $\Gamma = \{ P(u, v) \lor Q(u) \lor R(v) \}$
+	In this example,
+	let $\Gamma = \{ P(u, v) \lor Q(u) \lor R(v) \}$
 	and $\Delta = \{ \lnot P(w, z), \lnot Q(a), \lnot R(a)\}$.
 	We consider a resolution refutation of $\Gamma\cup\Delta$ combined with the interpolant extraction.
 	In order to emphasize the lifting steps,
 	we do not just write $C\mid \LI(C)$ in the derivation as usual for a clause $C$ but $C\mid\LIpre(C)$ above $C\mid \LI(C)$ without a separating line 
 	in case $\LIpre(C)$ is different from $\LI(C)$.
 	The primed variables make the renaming of lifting variables in step \ref{lemma_part_renaming} of the lifting procedure explicit.
-	\begin{prooftree}
-		\AxiomCm{ P(u, v) \lor Q(u) \lor R(v) \mid \bot}
-		\AxiomCm{ \lnot P(w, z) \mid \top }
+	\begin{adjustwidth}{-0.8em}{}
+		\begin{prooftree}
+			\AxiomCm{ P(u, v) \lor Q(u) \lor R(v) \mid \bot}
+			\AxiomCm{ \lnot P(w, z) \mid \top }
 
-		\RightLabelm{\resrule{\resruleres}{w\mapsto u, v\mapsto z}}
-		\BinaryInfCm{ Q(u) \lor R(v) \mid P(u, v) }
+			\RightLabelm{\resrule{\resruleres}{w\mapsto u, v\mapsto z}}
+			\BinaryInfCm{ Q(u) \lor R(v) \mid P(u, v) }
 
-		\AxiomCm{ \lnot Q(a) \mid \top }
+			\AxiomCm{ \lnot Q(a) \mid \top }
 
-		\RightLabelm{\resrule{\resruleres}{u\mapsto a}}
-		\BinaryInfCm{ R(v) \mid Q(a) \lor P(a, v) }
-		\noLine
-		\UnaryInfCm{ R(v) \mid \forall x_a( Q(x_a) \lor P(x_a, v) ) }
+			\RightLabelm{\resrule{\resruleres}{u\mapsto a}}
+			\BinaryInfCm{ R(v) \mid Q(a) \lor P(a, v) }
+			\noLine
+			\UnaryInfCm{ R(v) \mid \forall x_a( Q(x_a) \lor P(x_a, v) ) }
 
-		\AxiomCm{ \lnot R(a) \mid \top }
+			\AxiomCm{ \lnot R(a) \mid \top }
 
-		\insertBetweenHyps{\hskip -1cm}
-		\RightLabelm{\resrule{\resruleres}{v\mapsto a}}
-		\BinaryInfCm{ \square \mid R(a) \lor  \forall x_a( Q(x_a) \lor P(x_a, a) ) }
-		\noLine
-		\UnaryInfCm{ \square \mid \forall x'_a \big( R(x'_a) \lor  \forall x_a( Q(x_a) \lor P(x_a, x'_a) ) \big) }
-	\end{prooftree}
+			\insertBetweenHyps{\hskip -1cm}
+			\RightLabelm{\resrule{\resruleres}{v\mapsto a}}
+			\BinaryInfCm{ \square \mid R(a) \lor  \forall x_a( Q(x_a) \lor P(x_a, a) ) }
+			\noLine
+			\UnaryInfCm{ \square \mid \forall x'_a \big( R(x'_a) \lor  \forall x_a( Q(x_a) \lor P(x_a, x'_a) ) \big) }
+		\end{prooftree}
+		\medskip
+	\end{adjustwidth}
 
-	Hence we obtain here a non-prenex interpolant which reflects the logical expressiveness of $\Gamma$, in contrast to 
+	Hence we obtain a non-prenex interpolant which reflects the logical expressiveness of $\Gamma$, in contrast to 
 	the interpolant which is produced by the two phase approach described in chapter~\ref{sec:two_phases}, which in fact is
 	$\forall x_a \big( R(x_a) \lor Q(x_a) \lor P(x_a, x_a) \big)$.
 

@@ -647,10 +647,12 @@ In the context of clauses of $\primex \Gamma$ and $\primex \Delta$, the procedur
 	\end{adjustwidth}
 \end{proof}
 
+In the following, we also apply this notation to proofs, inferences, literals and terms.
+
 \begin{lemma}
 	\label{lemma:symmetry_step}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primex\pi$ be $\pi$ with opposite coloring, i.e.\ $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
+	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$.
+	%and $\primex\pi$ be $\pi$ with opposite coloring, i.e.\ $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
 	If $\inference$ is an inference of $\pi$ using the clauses $C_1, \dots, C_n$,
 	and
 	$I_1, \dots, I_n$ and 
@@ -659,17 +661,20 @@ In the context of clauses of $\primex \Gamma$ and $\primex \Delta$, the procedur
 	$\PIstep(\inference, I_1, \dots, I_n) \spas\semiff \PIstep(\primex\inference, \primex I_1, \dots, \primex I_n)$.
 \end{lemma}
 \begin{proof}
-	Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
+	%Let $\primex\varphi$ denote the clause/formula/literal/term in $\primex\pi$ corresponding to the clause/formula/literal/term $\varphi$ in $\pi$.
 
 	We distinguish cases based on the type of the inference $\inference$:
 
 	\begin{indproof}
 		\indproofitem{Resolution}
 			\newcommand{\p}[1]{\primex{#1}}
+			\nopagebreak
 
 			Suppose that $\inference$ is a resolution inference of $C_1: D \lor l$ and $C_2: E \lor \lnot l'$ with $\sigma = \mgu(\inference)$.
+			\nopagebreak
 
 			We distinguish the following cases:
+			\nopagebreak
 			\begin{enumerate}
 				\item $l$ is $\Gamma$-colored. Then $\primex l$ is $\Delta$-colored.
 					\begin{align*}
@@ -738,9 +743,9 @@ In the context of clauses of $\primex \Gamma$ and $\primex \Delta$, the procedur
 
 \begin{lemma}
 	\label{lemma:symmetry}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$ and
-	$\primex\pi$ be $\pi$ with $\primex\Gamma = \Delta$ and $\primex\Delta = \Gamma$.
-	Then for a clause $C$ and its corresponding clause $\primex C$ in $\primex \pi$, $\PI(C) \semiff \lnot \PI(\primex C)$.
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$.
+	Then
+	$\PI(C) \semiff \lnot \PI(\primex C)$.
 \end{lemma}
 \begin{proof}
 	We prove this lemma by induction.
@@ -756,14 +761,14 @@ In the context of clauses of $\primex \Gamma$ and $\primex \Delta$, the procedur
 
 \begin{corr}
 	\label{cor:delta_entails_lifted_interpolant}
-	Let $\pi$ be a resolution refutation of $\Gamma \cup \Delta$. 
-	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$ for $C$ in $\pi$.
+	Let $C$ be a clause in a resolution refutation of $\Gamma \cup \Delta$. 
+	Then $\Delta \entails \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 \end{corr}
 \begin{proof}
-	Form $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
-	By Lemma \ref{lemma:gamma_entails_lifted_interpolant}, it holds that $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$ for $\primex C$ in $\primex \pi$ and 
-	by Lemma \ref{lemma:symmetry}, we obtain that 
-	$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$ for the clause $C$ in $\pi$ corresponding to $\primex C$ in $\primex \pi$. 
+	%Form $\primex \pi$ from $\pi$ using $\primex \Gamma = \Delta$ and $\primex \Delta = \Gamma$ as initial clause sets.
+	By Lemma~\ref{lemma:gamma_entails_lifted_interpolant}, it holds that $\primex \Gamma \entails \lft{\primex\Delta}{x}{ \PI(\primex C) \lor \primex C }$  and 
+	by Lemma~\ref{lemma:symmetry}, we then obtain that 
+	$\primex \Gamma \entails \lft{\primex\Delta}{x}{ \lnot \PI(C) \lor \primex C }$.
 	This however is nothing else than 
 	$\Delta \entails\nolinebreak \lft{\Gamma}{x}{ \lnot \PI(C) \lor C }$.
 \end{proof}
