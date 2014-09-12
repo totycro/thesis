@@ -1,27 +1,29 @@
 \chapter{Conclusion}
 
 This thesis gives a comprehensive account of results and techniques with respect to interpolation in full first-order logic with equality.
-%even though a 
-Even though the interpolation theorem holds in this logic, % full first-order with equality, 
-a multitude of applications in fact mostly deal only with weaker logics such as propositional logic or equational logic with uninterpreted function symbols.
+The notion of interpolation enjoys applicability in many areas:
 
 Among the most notable practical uses of interpolation we can certainly count the application in model checking introduced in \cite{McMillan03}.
 Here, interpolants represent concise formulas describing an overapproximation of the set of reachable states of a program, which can then be used to prove the unreachability of error states.
-Moreover, interpolants can be employed to detect loop invariants (\cite{weissenbacher2010}) which is a major challenge for program verification.
+Moreover, interpolants can be employed to construct loop invariants (\cite{weissenbacher2010}) which is a major challenge for program verification.
 In the realm of theory, for instance Beth's definability theorem can very easily be proven using the interpolation theorem.
+
+Even though the interpolation theorem holds in first-order logic with equality, % full first-order with equality, 
+a multitude of applications in fact mostly deal only with weaker logics such as propositional logic or equational logic with uninterpreted function symbols.
 
 In order to facilitate future applications in full first-order logic with equality, the focus of this work is geared towards constructive proofs which give rise to concrete algorithms for calculating interpolants.
 We present the first such in Chapter~\ref{chap:reduction}, which is also historically the first one:
 In \cite{Craig57linear,Craig57three}, where Craig introduces the notion of interpolation, he already accompanies it with an algorithm which however is not intended for practical use.
 By a reduction to first-order logic without equality and function symbols, which allows for a simpler constructive proof, interpolants can effectively be calculated, but only at the cost of dealing with additional axioms for equality and for every function symbol.
 
-Arguably the most significant subsequent contribution for interpolation in the logic at hand is due to Huang.
+Arguably the most significant subsequent contribution for interpolant construction in the logic at hand is due to Huang.
 In \cite{Huang95}, a two-phase approach is introduced which is capable of efficiently extracting interpolants from resolution refutations which include paramodulation inferences.
-Here, a preliminary structure in the form of a propositional interpolant is extracted directly from the refutation, where colored symbols are then in the second stage replaced by lifting variables and which are appropriately quantified.
+Here, a preliminary structure in the form of a propositional interpolant is extracted directly from the refutation, where colored constant and function symbols are then in the second stage replaced by appropriately quantified lifting variables.
 This leads to interpolants in prenex form.
 We present this algorithm in detail is in Chapter~\ref{chap:two_phases} in a slightly improved form and in Appendix~\ref{chap:huang} in a version following \cite{Huang95} more closely. 
-An analysis of the construction of terms with color-alternations lead us to a result on the number of quantifier alternations in the interpolants created by this algorithm.
-We show that the number of color alternations in terms essentially coincides with the number of quantifier alternations in the corresponding interpolant.
+An analysis of the construction of terms with color alternations lead us to a result on quantifier alternations:
+%on the number of quantifier alternations in the interpolants created by this algorithm%.
+We show that the number of color alternations in terms of the resolution essentially coincides with the number of quantifier alternations in the interpolant created by this algorithm.
 
 %We show that they are very closely related to the number of color alternations which are created by the substitutions of the resolution refutation. 
 
@@ -32,7 +34,7 @@ Consequently, the resulting interpolants are not in prenex form but the scope of
 This algorithm is dealt with in Chapter~\ref{chap:one_phase}.
 
 Complementary to these algorithms, we also present a non-constructive, model-theoretic approach to interpolation.
-Assuming the non-existence of an interpolant, we build a maximal consistent intersection of two theories which are each based on the sets of formulas to interpolate. The details of this method are laid out in Chapter~\ref{chap:semantic}.
+Assuming the non-existence of an interpolant, a maximal consistent intersection of two theories is constructed, where the theories are each based on the sets of formulas to interpolate. The details of this method are laid out in Chapter~\ref{chap:semantic}.
 
 
 
