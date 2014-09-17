@@ -482,11 +482,10 @@ From this, we can directly proof the theorem by relying on the notion of symmetr
 	$r_1, \dots, r_k$ the maximal colored $\Gamma$-terms in $\PI(\pi)$.
 	Then by Lemma~\ref{lemma:gamma_entails_lifted_interpolantHuang}, we get that 
 	$\Gamma \entails \forall x_{s_1} \ldots \forall x_{s_m}\,\lifdelta{\PI(\pi)}$
-	and Corollary~\ref{cor:delta_entails_lifted_interpolant} shows that 
+	and by Corollary~\ref{cor:delta_entails_lifted_interpolant}, we obtain that 
 	$\Delta \entails \forall y_{r_1} \dots \forall y_{r_{k}}\,\lnot \lift{\Gamma}{\PI(\pi)}{y}$.
 	Note that as $t_1, \dots, t_n$ are ordered by length, they are also in subterm order as subterms are strictly smaller in length than their respective superterms.
-
-	Therefore we can apply Lemma~\ref{lemma:thm_induction} to obtain 
+	Therefore we can apply Lemma~\ref{lemma:thm_induction} to obtain both
 	$\Gamma \entails Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$ 
 	as well as 
 	$\Delta \entails \lnot Q_1 z_{t_1} \ldots Q_n z_{t_n}\,\lifgamma{\lifdelta{\PI(\pi)}}$,
@@ -553,8 +552,9 @@ Then the term $h(g(c))$ contains the maximal $\Delta$-term $h(g(c))$ as well as 
 We present the following example, which illustrates that the definition of the conditions for the cases above is to be read as ``maximal colored term, which is $\Phi$-colored'' (or more concisely: ``maximal colored $\Phi$-term'') in place of ``maximal $\Phi$-term''.
 
 \begin{exa}
-	Let 
-	$\Gamma = \{ P(x) \lor \lnot Q(x), \lnot P(y) \lor Q(y), c=d, \lnot R(g(d)), \lnot S(g(c))  \}$
+	In this example, 
+	let 
+	$\Gamma = \{ P(x) \lor \lnot Q(x), \lnot P(y) \lor Q(y),\allowbreak c=d,\allowbreak \lnot R(g(d)), \lnot S(g(c))  \}$
 	and
 	$\Delta = \{ S(v) \lor \lnot Q(h(v)), R(u) \lor  Q(h(u)), T(c, d)\}$.
 	Hence $h$ is a $\Delta$-colored function symbol and $g$ a $\Gamma$-colored function symbol, while the constant symbols $c$ and $d$ are gray.
@@ -570,7 +570,7 @@ We present the following example, which illustrates that the definition of the c
 	{ \small
 		~
 
-		\begin{adjustwidth}{-3em}{0em}
+		\begin{adjustwidth}{-3.5em}{0em}
 			\begin{prooftree}
 				\AxiomCm{{ \lnot R(g(d)) \mid \bot}}
 				\AxiomCm{{  R(u) \lor  Q(h(u)) \mid \top}}
@@ -610,9 +610,17 @@ We present the following example, which illustrates that the definition of the c
 		~
 
 	By combining these two derivation by means of a final resolution inference on the last remaining literal employing a trivial substitution, we obtain the empty clause and the corresponding interpolant $\PI(\square)$:
-	\[
+	\medskip
+
+	\begin{adjustwidth}{-1em}{}
+		\noindent
+		$
 	(c=d \land \lnot R(g(d)) \land \lnot Q(h(g(d)))) \spam\lor (c\neq d \land g(c) = g(d))  \spam\lor\allowbreak
-{\lnot S(g(c)) \land Q(h(g(c)))}\]
+{\lnot S(g(c)) \land Q(h(g(c)))}
+$
+	\end{adjustwidth}
+	\medskip
+
 	Lifting $\PI(\square)$ and adding appropriate quantifiers gives the final result $I$ of the interpolant extraction:
 	\begin{gather*}
 		\exists y_{g(c)} \exists y_{g(d)} \forall x_{h(g(c))} \forall x_{h(g(d))} 

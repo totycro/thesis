@@ -174,7 +174,7 @@ show that the lifting step in $\LI$ possesses the desired logical properties:
 			Note that we must ensure that we quantify $x'_{t_{n-i}}$ such that every existential quantifier, whose witness term contains $x'_{t_{n-i}}$, is in the scope of the quantification of $x'_{t_{n-i}}$. 
 			The terms in question are the maximal colored $\Gamma$-colored superterms of $t$.
 
-			By the contraposition of Lemma~\ref{lemma:lifting_conditions}, since $t_{n-i}$ is lifted, every maximal colored superterm $s$ of $t_{n-i}$ must be lifted and quantified either in $\LIpre(C)$, or some lifting condition must apply for $s$ in $\LIpre(C)$.
+			By the contraposition of Lemma~\ref{lemma:lifting_conditions}, we obtain that since $t_{n-i}$ is lifted, every maximal colored superterm $s$ of $t_{n-i}$ must be lifted and quantified either in $\LIpre(C)$ or some lifting condition must apply for $s$ in $\LIpre(C)$.
 			In the latter case, $s$ is contained in $\{t_{n-i+1},\dots, t_n\}$.
 			In any case, the quantifier for the lifting variable replacing $s$ is contained in $\lifdeltanovar{ Q_{n-i+1} z'_{t_{n-i+1}} \dots Q_n z'_{t_n} \lifpart^* ( \LIpre(C), T_i )}$.                                 
 
@@ -368,7 +368,7 @@ In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also sho
 
 	We conclude by showing that 
 	$\LIpre(C) \semiff \lnot \LIpre(\bhat C)$ 
-	implies that 
+	implies 
 	$\LI(C) \semiff \lnot \LI(\bhat C)$:
 	Clearly the terms to be lifted in $\LIpre(C)$ and $\LIpre(\bhat C)$ are the same and differ only in their color.
 	Even though this results in different lifting variables, that is of no relevance as all lifted variables are bound, which makes the formulas alpha-equivalent.

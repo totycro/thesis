@@ -95,18 +95,18 @@ We continue by defining the translation procedure for formulas:
 	Moreover, let the inverse operation $\TransInv(B)$ for formulas $B$ in the language $\Trans(L(A))$ be defined as the result of applying the following algorithm to $B$:
 	\begin{compactenum}
 	\item Replace every occurrence of $E(s, t)$ in $B$ by $s=t$.
-	\item For every $f \in FS(A)$, replace every occurrence of 
-		$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, s_{j-1},\allowbreak y,\allowbreak s_{j+1}, \ldots s_m))$
-		in $B$ by $P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$ 
+	\item For every $f \in \FS(A)$, replace every occurrence of 
+		$\exists y (F_f(\bar t, y) \land P(s_1, \ldots, \allowbreak s_{j-1},\allowbreak y,\allowbreak s_{j+1}, \ldots s_m))$
+		in $B$ by $P(s_1, \ldots, s_{j-1},\allowbreak f(\bar t),\allowbreak s_{j+1}, \ldots s_m)$.
 		\label{t_inverse_2}
 
 	\item 
 		\label{t_inverse_3}
-		For every $f \in FS(A)$, replace every occurrence of 
+		For every $f \in \FS(A)$, replace every occurrence of 
 		$F_f(\bar t, s)$ by $f(\bar t) = s$.
 	\end{compactenum}
 
-	For sets of first-order formulas $\Phi$, let $\Trans(\Phi) \defeq \bigcup_{A\in\Phi} \Trans(A)$ and 
+	For sets of first-order formulas $\Phi$, we define $\Trans(\Phi) \defeq \bigcup_{A\in\Phi} \Trans(A)$ and 
 $\TransInv(\Phi) \defeq \bigcup_{A\in\Phi} \TransInv(A)$.
 \end{defi}
 
@@ -432,18 +432,21 @@ This allows us to state the central theorem of this section:
 			For $\Delta$, an analogous argument goes through and so from $\TransAll(\Gamma) \entails \lnot I$ we can deduce that $\Delta \entails \lnot \Trans^{-1}(I)$.
 
 			By item \ref{proof:interpolation1_3}, $I$ is in the language $\Lang(\TransAll(\Gamma)) \cap \Lang(\TransAll(\Delta))$, which by Lemma \refsub{lemma:transLang}{lemma:transLang1} is $\Trans(\Lang(\Gamma)) \cap\nolinebreak \Trans(\Lang(\Delta))$. 
+			\vspace{-\baselineskip}
 				\newcommand{\somespace}{\;}
 				\newcommand{\impconn}[1]{\somespace#1\somespace}
 				%\medskip
 				%\begin{figure}[H]
+				\begin{adjustwidth}{-3em}{}
 			\begin{align*}
-				\noalign{$\Trans(\Lang(\Gamma))\cap\nolinebreak \Trans(\Lang(\Delta)) =$} 
+				\noalign{\hspace{-4em} $\Trans(\Lang(\Gamma))\cap\nolinebreak \Trans(\Lang(\Delta)) =$ } 
 				& \Big(\Lang(\Gamma)\impconn\cup \{E\}\impconn\cup\{F_f\mid f \in \FS(\Gamma)\}\Big) \impconn\setminus\Big(\{=\nolinebreak \} \impconn\cup \FS(\Gamma)\Big)\,\impconn\cap \\
 				& \Big(\Lang(\Delta)\impconn\cup \{E\}\impconn\cup\{F_f\mid f \in \FS(\Delta)\}\Big) \impconn\setminus\Big(\{=\nolinebreak \} \impconn\cup \FS(\Delta)\Big)\\
 				=\,& \Big((\Lang(\Gamma) \cap \Lang(\Delta)) \impconn\cup \{E\} \impconn\cup\{F_f\mid f \in \FS(\Gamma)\cap\FS(\Delta)\}\Big)  \impconn\setminus\Big(\{=\} \impconn\cup \FS(\Gamma) \impconn\cup \FS(\Delta)\Big) \\
 				=\,& \Big((\Lang(\Gamma) \cap \Lang(\Delta)) \impconn\cup \{E\} \impconn\cup \{F_f\mid f\in \FS( \Lang(\Gamma) \cap \Lang(\Delta))\} \Big) \impconn\setminus \Big( \{=\} \impconn\cup \FS(\Lang(\Gamma) \cap \Lang(\Delta)) \Big)  \\ 
 				=\,& \Trans(\Lang(\Gamma) \cap \Lang(\Delta))
 			\end{align*}
+		\end{adjustwidth}
 				%\end{figure}
 				%\vspace{-1em}
 			As $I$ is in the language $\Trans(\Lang(\Gamma) \cap \Lang(\Delta))$, by Lemma \refsub{lemma:transLang}{lemma:transLang2}, $\TransInv(I)$ is in the language $\Lang(\Gamma) \cap \Lang(\Delta)$.
