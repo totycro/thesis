@@ -114,9 +114,9 @@
        \end{scope}
      }}}
 
-%\newcommand{\myA}{ \tikzset{letter left=TuInfRed,letter right=InfosysDarkGrey} \bicolorletter{A} }
+%\newcommand{\myA}{ \tikzset{letter left=TuInfRed,letter right=InfosysDarkgray} \bicolorletter{A} }
 \newcommand{\myA}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuInfRed} \bicolorletter{A} }
-%\newcommand{\myB}{ \tikzset{letter left=TuWienBlue,letter right=InfosysDarkGrey} \bicolorletter{B} }
+%\newcommand{\myB}{ \tikzset{letter left=TuWienBlue,letter right=InfosysDarkgrey} \bicolorletter{B} }
 \newcommand{\myB}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuWienBlue} \bicolorletter{B} }
 
 
@@ -190,13 +190,19 @@
 
 
 				\textbf{Theorem} (Craig).
-				\emph{Let \myA{} and \myB{} be first-order formulas such that $\entails \myA\supset \myB$.
-					Then there is an interpolant $\gray I$ for $\myA$ and~$\myB$ such that:
+				\emph{
+					Let \myA{} 
+					and \myB{} be first-order formulas 
+					such that $\entails \myA\supset \myB$ where \myA{} contains \colA{red} and \gray{gray} symbols and \myB{} contains of \colB{blue} and \gray{gray} symbols.
+					%Let \myA{} be a first-order formula consisting of \colA{red} and \gray{gray} symbols 
+					%and \myB{} a first-order formula consisting of \colB{blue} and \gray{gray} symbols 
+					%such that $\entails \myA\supset \myB$.
+					Then there is an interpolant $\gray I$ containing of \gray{gray} symbols  for $\myA$ and~$\myB$ such that:
 					\begin{itemize}
 						\item $\entails \myA \limpl \gray I$
 						\item $\entails \gray I \limpl \myB$
-						\item $\operatorname{Lang}(\gray I) \subseteq
-							\operatorname{Lang}(\myA) \cap \operatorname{Lang}(\myB)$
+						%\item $\operatorname{Lang}(\gray I) \subseteq
+						%	\operatorname{Lang}(\myA) \cap \operatorname{Lang}(\myB)$
 					\end{itemize}
 				}
 				\vspace{1em}
@@ -381,24 +387,69 @@
 			\end{block}
 
 			\begin{block}{Interpolant extraction from proofs in one phase}
-				\begin{tabular}{*{2}{m{0.48\textwidth}}}
-				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+
+				%\begin{tabular}{*{4}{m{0.48\textwidth}}}
+					\newcommand{\fakemulticolwidth}{0.28\textwidth}
+					%\begin{tabularx}{\textwidth}{p{0.25\textwidth}p{0.2\textwidth}l}
+					%\begin{tabular}{p{0.25\textwidth}p{0.35\textwidth}c}
+					\begin{tabular}{p{0.25\textwidth}ll}
+
+					Proof: 
 					&
+					%\begin{center}
+
+					\multicolumn{1}{m{\fakemulticolwidth}}{
+						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+					}
+					%\rule{0.4\textwidth}{0.1\textwidth}
+					%\end{center}
+					&
+						\vspace*{0.5em}
 					\\
 
+				%& \begin{center} \large$\Downarrow$ \end{center} & 
+					%\multicolumn{2}{c}{\emph{Extract structure from proof}}
+					\multicolumn{2}{l}{
+						\hspace*{10.35em}{$\Downarrow$} ~\parbox[c]{12em}{\emph{ Extract propositional interpolant structure from proof}}
+						\vspace*{0.5em}
+				}
+				 \\
+			 
+					%&  \Huge$\Downarrow$}   \\
 
-				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+				%\begin{tabular}[x]{@{}l@{}}Propositional\\Interpolant:\end{tabular} 
+					%	Propositional \newline interpolant: 
 					&
+					%\begin{center} \end{center}
+					%\rule{0.4\textwidth}{0.1\textwidth}
+					\multicolumn{1}{m{\fakemulticolwidth}}{
+						%\includegraphics[width=0.2\textwidth]{figures/one_phase_draft_intermediate}
+					}
 					$\dots \forall {x_5} \dots \gray Q({x_5}, \colB c) \dots$
+						\vspace*{0.5em}
 					\\
 
-				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					\multicolumn{2}{l}{
+						\hspace*{10.35em}{$\Downarrow$} ~\parbox[t]{11em}{\emph{ Replace colored function and constant symbols } }
+						\vspace*{0.5em}
+				}
+				\\
+
+				\begin{tabular}[x]{@{}l@{}}Prenex\\First-Order\\Interpolant:\end{tabular} 
 					&
+					\multicolumn{1}{m{\fakemulticolwidth}}{
+						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_fo_interpolant}
+					}
 					$\exists {x_3} \dots \forall {x_5} \dots \gray Q({x_5}, {x_3}) \dots$
 					\\
 
-				\end{tabular}
+
+
+					\end{tabular}
 			\end{block}
+
+
+				
 
 
 			\begin{block}{Contributions}
