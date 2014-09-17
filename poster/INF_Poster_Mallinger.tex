@@ -15,10 +15,15 @@
 \documentclass[final,hyperref={pdfpagelabels=true}]{beamer}
 
 \usepackage{TUINFPST}
+\usepackage{comment}
+\usepackage{tabularx}
 
 \usepackage{lipsum}
 \usepackage{graphicx, array, blindtext}
 
+
+\newcommand*{\tabbox}[2][t]{%
+	    \vspace{0pt}\parbox[#1][3.7\baselineskip]{1cm}{\strut#2\strut}}
 
 
 
@@ -250,12 +255,12 @@
 				\begin{itemize}
 					\item Non-constructive proof:
 						\begin{itemize}
-							\item Let $T_\colA{A}$ and $T_{\lnot \colB{B}}$ be theories extending $\colA A$ and $\lnot \colB{B}$
-							\item Build model from maximal consistent intersection of $T_\colA{A}$ and $T_{\lnot \colB{B}}$
+							\item Let $T_{\myA}$ and $T_{\lnot \myB}$ be theories extending $\myA$ and $\lnot \myB$
+							\item Build model from maximal consistent intersection of $T_{\myA}$ and $T_{\lnot \myB}$
 
-								(feasible assuming the non-existence of interpolants)
+								(assuming the non-existence of interpolants)
 
-								$\Rightarrow$ $\colA A \land \lnot \colB B$ satisfiable
+								$\Rightarrow$ $\myA \land \lnot \myB$ satisfiable
 						\end{itemize}
 					\item Related to Robinson's Joint Consistency Theorem
 				\end{itemize}
@@ -269,12 +274,27 @@
 				\newcommand{\transformsep}{\;\to\;}
 				\begin{align*}
 					\intertext{Translate equality and function symbols:}
-					P(\colA c) & \transformsep \exists \gray x (\colA C(\gray x) \land P(\gray x)) \\
-					P(\colB f( \colA c)) & \transformsep  \exists \gray x (  \exists \gray y( \colA C(\gray y) \land \colB F(\gray y, \gray x)) \land P(\gray x)) \\
-					\gray s = \gray t & \transformsep E(\gray s, \gray t) \\
+					%\gray P(\colA c) & \transformsep \exists x (\colA C(x) \land \gray P(x)) \\
+					\Big(\gray P(\colA c)\Big)^*  & \, \equiv \, \exists x (\colA C(x) \land \gray P(x)) \\
+					%\gray P(\colB f( \colA c)) & \transformsep  \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \gray P(x)) \\
+					\Big( \gray P(\colB f( \colA c)) \Big)^* & \, \equiv \, \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \gray P(x)) \\
+					%\gray s = \gray t & \transformsep \gray E(\gray s, \gray t) \\
+					\Big( \gray s = \gray t \Big)^* & \, \equiv \, \gray E(\gray s, \gray t) \\
 					\intertext{Add theory of equality:} 
 					\varphi & \transformsep T_E \limpl \varphi^*
 				\end{align*}
+			%\begin{align*}
+			%		\intertext{Translate equality and function symbols:}
+			%		%\gray P(\colA c) & \transformsep \exists x (\colA C(x) \land \gray P(x)) \\
+			%		(\gray P(\colA c))^*  & \, \equiv \, \exists x (\colA C(x) \land \gray P(x)) \\
+			%		%\gray P(\colB f( \colA c)) & \transformsep  \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \gray P(x)) \\
+			%		( \gray P(\colB f( \colA c)) )^* & \, \equiv \, \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \gray P(x)) \\
+			%		%\gray s = \gray t & \transformsep \gray E(\gray s, \gray t) \\
+			%		( \gray s = \gray t )^* & \, \equiv \, \gray E(\gray s, \gray t) \\
+			%		\intertext{Add theory of equality:} 
+			%		\varphi & \transformsep T_E \limpl \varphi^*
+			%	\end{align*}
+
 
 				$\Rightarrow$ Then calculate interpolant in reduced logic
 
@@ -285,55 +305,96 @@
 
 
 			\begin{block}{Interpolant extraction from proofs in two phases \cite{Huang95}}
-				\itemizeOnBlockStart
-				\begin{itemize}
-					\item Extract structure from proof 
-					\item Replace colored terms by quantified variables 
-				\end{itemize}
-				\begin{tabular}{*{2}{m{0.48\textwidth}}}
-				\begin{center}
-					\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
-				%\rule{0.4\textwidth}{0.1\textwidth}
-			\end{center}
+				%\itemizeOnBlockStart
+				%\begin{itemize}
+				%	\item Extract structure from proof 
+				%	\item Replace colored terms by quantified variables 
+				%\end{itemize}
+
+				%\begin{tabular}{*{2}{m{0.48\textwidth}}}
+				%	\begin{center}
+				%		Proof: 
+				%		&
+				%		\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+				%		%\rule{0.4\textwidth}{0.1\textwidth}
+				%	\end{center}
+				%	&
+
+				%\begin{tabular}{*{4}{m{0.48\textwidth}}}
+					\newcommand{\fakemulticolwidth}{0.28\textwidth}
+					%\begin{tabularx}{\textwidth}{p{0.25\textwidth}p{0.2\textwidth}l}
+					%\begin{tabular}{p{0.25\textwidth}p{0.35\textwidth}c}
+					\begin{tabular}{p{0.25\textwidth}ll}
+
+					Proof: 
 					&
+					%\begin{center}
+
+					\multicolumn{1}{m{\fakemulticolwidth}}{
+						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+					}
+					%\rule{0.4\textwidth}{0.1\textwidth}
+					%\end{center}
+					&
+						\vspace*{0.5em}
 					\\
 
-				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+				%& \begin{center} \large$\Downarrow$ \end{center} & 
+					%\multicolumn{2}{c}{\emph{Extract structure from proof}}
+					\multicolumn{2}{l}{
+						\hspace*{10.35em}{$\Downarrow$} ~\parbox[c]{12em}{\emph{ Extract propositional interpolant structure from proof}}
+						\vspace*{0.5em}
+				}
+				 \\
+			 
+					%&  \Huge$\Downarrow$}   \\
+
+				\begin{tabular}[x]{@{}l@{}}Propositional\\Interpolant:\end{tabular} 
+					%	Propositional \newline interpolant: 
 					&
-					$\dots Q(\colA f(\colB c), \colB c) \dots$
+					%\begin{center} \end{center}
+					%\rule{0.4\textwidth}{0.1\textwidth}
+					\multicolumn{1}{m{\fakemulticolwidth}}{
+						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+					}
+					$\dots \gray Q(\colA f(\colB c), \colB c) \dots$
+						\vspace*{0.5em}
 					\\
 
-				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+					\multicolumn{2}{l}{
+						\hspace*{10.35em}{$\Downarrow$} ~\parbox[t]{11em}{\emph{ Replace colored function and constant symbols } }
+						\vspace*{0.5em}
+				}
+				\\
+
+				\begin{tabular}[x]{@{}l@{}}Prenex\\First-Order\\Interpolant:\end{tabular} 
 					&
-					$\exists \gray{x_3} \forall \gray{x_5} \dots Q(\gray{x_5}, \gray{x_3}) \dots$
+					\multicolumn{1}{m{\fakemulticolwidth}}{
+						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_fo_interpolant}
+					}
+					$\exists {x_3} \forall {x_5} \dots \gray Q({x_5}, {x_3}) \dots$
 					\\
 
-				\end{tabular}
+
+
+					\end{tabular}
 			\end{block}
 
 			\begin{block}{Interpolant extraction from proofs in one phase}
-				\itemizeOnBlockStart
-				\begin{itemize}
-					\item Replace colored terms during extraction
-				\end{itemize}
 				\begin{tabular}{*{2}{m{0.48\textwidth}}}
 				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
 					&
 					\\
 
+
 				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
 					&
-					$\dots Q(\colA f(\colB c), \colB c) \dots$
+					$\dots \forall {x_5} \dots \gray Q({x_5}, \colB c) \dots$
 					\\
 
 				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
 					&
-					$\dots \forall \gray{x_5} \dots Q(\gray{x_5}, \colB c) \dots$
-					\\
-
-				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
-					&
-					$\exists \gray{x_3} \dots \forall \gray{x_5} \dots Q(\gray{x_5}, \gray{x_3}) \dots$
+					$\exists {x_3} \dots \forall {x_5} \dots \gray Q({x_5}, {x_3}) \dots$
 					\\
 
 				\end{tabular}
@@ -341,7 +402,7 @@
 
 
 			\begin{block}{Contributions}
-				\itemizeOnBlockStart
+			\itemizeOnBlockStart
 				\begin{itemize}
 					\item We introduced the one phase-approach.
 					\item We showed that the number of quantifier alternations in the interpolant essentially corresponds to the number of color alternations in terms.
@@ -353,7 +414,8 @@
 			\setbeamertemplate{bibliography item}{\insertbiblabel}
 
 			\begin{block}{References}
-				\itemizeOnBlockStart
+			\itemizeOnBlockStart
+				\definecolor{lightviolet}{cmyk}{0.19,0.21,0,0.31}
 
 				% this is just an example, use BibTeX!
 				\begin{thebibliography}{999}
@@ -367,6 +429,16 @@
 						\newblock {
 							\emph{Journal of Symbolic Logic}, 22(3):250--268, 1957.
 						}
+						%William Craig.
+						%{
+						%	\color{black}
+						%	Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
+						%}
+						%{
+						%	\color{lightviolet}
+						%	\emph{Journal of Symbolic Logic}, 22(3):250--268, 1957.
+						%}
+
 
 					\bibitem[2]{Huang95}
 						Guoxiang Huang.
@@ -377,6 +449,16 @@
 							%\emph{Proceedings of the First Annual International Conference on Computing and Combinatorics}, COCOON ’95, p.\ 181--190, 1995. 
 							In \emph{Proc COCOON ’95}, p.\ 181--190, 1995. 
 						}
+						%Guoxiang Huang.
+						%{
+						%	\color{black}
+						%	Constructing Craig Interpolation Formulas.
+						%	%\emph{Proceedings of the First Annual International Conference on Computing and Combinatorics}, COCOON ’95, p.\ 181--190, 1995. 
+						%	\color{lightviolet}
+						%	In \emph{Proc COCOON ’95}, p.\ 181--190, 1995. 
+						%}
+
+
 
 						%  \newblock {On logical representations of hackerisms}.
 						%  {\em J.~Log.~Hack.} 1:1--2.
