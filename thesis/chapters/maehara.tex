@@ -141,7 +141,9 @@
 									\Lang(I_1) &\subseteq \Lang(\Gamma_1, \Delta_1, A) \cap \Lang(\Gamma_2, \Delta_2) \\
 									\Lang(I_2) &\subseteq \Lang(\Sigma_1, B, \Pi_1) \cap \Lang(\Sigma_2, \Pi_2)
 								\end{align*}\nopagebreak
-								Therefore
+								Therefore:
+								\vspace{-\baselineskip}
+								\begin{adjustwidth}{-4em}{}
 								\begin{align*}
 									\Lang(I_1) \cup \Lang(I_2) &\subseteq
 									(\Lang(\Gamma_1, \Delta_1, A) \cap \Lang(\Gamma_2, \Delta_2)) \cup ( \Lang(\Sigma_1, B, \Pi_1) \cap \Lang(\Sigma_2, \Pi_2))  \\
@@ -151,6 +153,8 @@
 									&\Updownarrow \\
 									\Lang(I_1 \lor I_2) &\subseteq \Lang(\Gamma_1, \Sigma_1, A\limpl B, \Delta_1, \Pi_1) \cap \Lang(\Gamma_2, \Sigma_2, \Delta_2, \Pi_2)
 								\end{align*}
+							\end{adjustwidth}
+							\medskip
 
 							}
 
@@ -186,9 +190,8 @@
 							$I, \Gamma_2 \fCenter \Delta_2$ are provable.
 							By an application of $\lkrule{\forall}{l}$ to the first sequent we get $\Gamma_1, \forall x A\fCenter \Delta_1, I$, so $I$ satisfies conditions \ref{maehcond1} and \ref{maehcond2} of being an interpolant for $\partisym$.
 
-							In order to show that also $\Lang(I) \subseteq \Lang(\Gamma_1, \forall x A, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$, consider that by the induction hypothesis, 
+							In order to show that also $\Lang(I) \subseteq \Lang(\Gamma_1, \forall x A, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$, consider that by the induction hypothesis, it holds that
 							$\Lang(I) \subseteq \Lang(\Gamma_1, A\subst{x/y}, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$.
-
 							As free variables are not considered to be part of the language, $L(\forall x A) = L(A\subst{x/y})$.
 
 

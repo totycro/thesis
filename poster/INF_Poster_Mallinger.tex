@@ -114,6 +114,9 @@
 
 %\usepackage{MnSymbol} % again other symbols
 
+\newcommand{\itemizeOnBlockStart}{
+		\vspace*{-0.5em}
+	}
 
 
 \newcommand{\entails}{\vDash}
@@ -198,12 +201,12 @@
 			\begin{block}{Applications of Craig Interpolation} 
 				Theoretical:
 				\begin{itemize}
-					\item Proof of Beth's definability theorem
+					\item Proof of Beth's Definability Theorem
 				\end{itemize}
 				Practical:
 				\begin{itemize}
 					\item Program analysis: Detect loop invariants
-					\item Model checking: Overapproximate set of reachable states of program
+					\item Model checking: Overapproximate set of reachable states %of program % saves 1 line
 				\end{itemize}
 			\end{block}
 
@@ -218,19 +221,26 @@
 			\end{block}
 
 			\begin{block}{Model-theoretic proof}
-				\vspace*{-0.8em}
+				\itemizeOnBlockStart
 
 				\begin{itemize}
-					\item Non-constructive proof
-					\item Let $T_\colA{A}$ and $T_\colB{B}$ be theories extending $\colA A$ and $\colB B$
-					\item Build model from maximal consistent intersection of $T_\colA{A}$ and $T_\colB{B}$
+					\item Non-constructive proof:
+						\begin{itemize}
+							\item Let $T_\colA{A}$ and $T_{\lnot \colB{B}}$ be theories extending $\colA A$ and $\lnot \colB{B}$
+							\item Build model from maximal consistent intersection of $T_\colA{A}$ and $T_{\lnot \colB{B}}$
+
+								(feasible assuming the non-existence of interpolants)
+
+								$\Rightarrow$ $\colA A \land \lnot \colB B$ satisfiable
+						\end{itemize}
+					\item Related to Robinson's Joint Consistency Theorem
 				\end{itemize}
 
 			\end{block}
 
 
 			\begin{block}{Reduction to first-order logic without equality \cite{Craig57linear}} 
-				\vspace*{-0.8em}
+				\itemizeOnBlockStart
 				%Approach by Craig in \cite{Craig57linear}, 
 				\newcommand{\transformsep}{\;\to\;}
 				\begin{align*}
@@ -251,13 +261,16 @@
 
 
 			\begin{block}{Interpolant extraction from proofs in two phases \cite{Huang95}}
-				\vspace*{-0.8em}
+				\itemizeOnBlockStart
 				\begin{itemize}
 					\item Extract structure from proof 
 					\item Replace colored terms by quantified variables 
 				\end{itemize}
 				\begin{tabular}{*{2}{m{0.48\textwidth}}}
-				\begin{center}\rule{0.4\textwidth}{0.1\textwidth}\end{center}
+				\begin{center}
+					\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+				%\rule{0.4\textwidth}{0.1\textwidth}
+			\end{center}
 					&
 					\\
 
@@ -275,7 +288,7 @@
 			\end{block}
 
 			\begin{block}{Interpolant extraction from proofs in one phase}
-				\vspace*{-0.7em}
+				\itemizeOnBlockStart
 				\begin{itemize}
 					\item Replace colored terms during extraction
 				\end{itemize}
@@ -304,7 +317,7 @@
 
 
 			\begin{block}{Contributions}
-				\vspace*{-0.7em}
+				\itemizeOnBlockStart
 				\begin{itemize}
 					\item We introduced the one phase-approach.
 					\item We showed that the number of quantifier alternations in the interpolant essentially corresponds to the number of color alternations in terms.
@@ -316,7 +329,8 @@
 			\setbeamertemplate{bibliography item}{\insertbiblabel}
 
 			\begin{block}{References}
-				\vspace*{-0.7em}
+				\itemizeOnBlockStart
+
 				% this is just an example, use BibTeX!
 				\begin{thebibliography}{999}
 						%\setbeamertemplate{bibliography item}{[1]}
