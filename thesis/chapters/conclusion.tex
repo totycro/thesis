@@ -13,14 +13,16 @@ a multitude of applications in fact mostly deal only with weaker logics such as 
 
 In order to facilitate future applications in full first-order logic with equality, the focus of this work is geared towards constructive proofs which give rise to concrete algorithms for calculating interpolants.
 We present the first such in Chapter~\ref{chap:reduction}, which is also historically the first one:
-In \cite{Craig57linear,Craig57three}, where Craig introduces the notion of interpolation, he already accompanies it with an algorithm which however is not intended for practical use.
+In \cite{Craig57linear,Craig57three}, where Craig introduces the notion of interpolation, he already gives a constructive proof 
+%accompanies it with an algorithm 
+which however is not intended for practical use.
 By a reduction to first-order logic without equality and function symbols, which allows for a simpler constructive proof, interpolants can effectively be calculated, but only at the cost of dealing with additional axioms for equality and for every function symbol.
 
 Arguably the most significant subsequent contribution for interpolant construction in the logic at hand is due to Huang.
 In \cite{Huang95}, a two-phase approach is introduced which is capable of efficiently extracting interpolants from resolution refutations which include paramodulation inferences.
 Here, a preliminary structure in the form of a propositional interpolant is extracted directly from the refutation, where colored constant and function symbols are then in the second stage replaced by appropriately quantified lifting variables.
 This leads to interpolants in prenex form.
-We present this algorithm in detail is in Chapter~\ref{chap:two_phases} in a slightly improved form and in Appendix~\ref{chap:huang} in a version following \cite{Huang95} more closely. 
+We present this algorithm in detail in Chapter~\ref{chap:two_phases} in a slightly improved form and in Appendix~\ref{chap:huang} in a version following \cite{Huang95} more closely. 
 An analysis of the construction of terms with color alternations lead us to a result on quantifier alternations:
 %on the number of quantifier alternations in the interpolants created by this algorithm%.
 We show that the number of color alternations in terms of the resolution essentially coincides with the number of quantifier alternations in the interpolant created by this algorithm.
@@ -38,3 +40,12 @@ Assuming the non-existence of an interpolant, a maximal consistent intersection 
 
 
 
+\vfill
+
+constructive/non-constructive
+
+craig is an algorithm, but huang is an actual algorithm
+
+-> unterschiedlicher syntaktischer overhead
+
+interpolant extraction with equality works similar as without equality

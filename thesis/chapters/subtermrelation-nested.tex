@@ -131,8 +131,9 @@ We now show more formally that the lifting conditions ensure that if a term cont
 \end{proof}
 
 We now use this lemma in order to 
-show that the lifting step in $\LI$ possesses the desired logical properties:
-%show that the lifting in $\LI$ works as desired:
+show that the lifting step in $\LI$ possesses the desired logical properties.
+Recall that the notation $D_\Phi$ for a clause $D$ denotes the clause created from $D$ by removing all literals which are not contained $\Lang(\Phi)$.
+
 
 \begin{lemma}
 	\label{lemma:lipre_implies_li}
@@ -140,7 +141,7 @@ show that the lifting step in $\LI$ possesses the desired logical properties:
 	Then
 	$\Gamma \entails \lifdeltanovar{ \LIpre(C) } \lor \lifdeltanovar{C_\Gamma}$
 	implies 
-	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$\footnote{Recall that $D_\Phi$ denotes the clause created from the clause $D$ by removing all literals which are not contained $\Lang(\Phi)$.}.
+	$\Gamma \entails \lifdeltanovar{ \LI(C) } \lor \lifdeltanovar{C_\Gamma}$.
 \end{lemma}
 \begin{proof}
 	Let $t_1, \dots, t_n$ be the maximal colored terms in $\LIpre(C)$ for which some lifting conditions applies in ascending subterm order. The set $\{t_{n-i+1}, \dots, t_n \}$  for $0\varleq i \varleq n$ is designated by $T_i$.
@@ -348,12 +349,13 @@ We now present an example which demonstrates that $\LI$ does produce formulas re
 
 \section{Towards an interpolant}
 
-In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also show a symmetry-property for $\LI$:
+In a similar fashion as in Lemma~\ref{lemma:symmetry} for $\PI$, we can also show a symmetry-property for $\LI$.
+Note that the notation employed in this lemma is defined in Section~\ref{sec:symmetry}.
 
 \begin{lemma}
 	\label{lemma:li_symmetry}
 	Let $C$ a clause in a refutation of $\Gamma\cup\Delta$.
-	Then $\LI(C) \spas\semiff \lnot \LI(\bhat C)$\footnote{This notation is defined in Section~\ref{sec:symmetry}.}.
+	Then $\LI(C) \spas\semiff \lnot \LI(\bhat C)$.
 \end{lemma}
 \begin{proof}
 	We proceed by induction to show that $\LIpre(C) \semiff \lnot \LIpre(\bhat C)$:

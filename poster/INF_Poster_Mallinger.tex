@@ -115,10 +115,22 @@
        \end{scope}
      }}}
 
-%\newcommand{\myA}{ \tikzset{letter left=TuInfRed,letter right=InfosysDarkgray} \bicolorletter{A} }
 \newcommand{\myA}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuInfRed} \bicolorletter{A} }
-%\newcommand{\myB}{ \tikzset{letter left=TuWienBlue,letter right=InfosysDarkgrey} \bicolorletter{B} }
 \newcommand{\myB}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuWienBlue} \bicolorletter{B} }
+
+\usepackage{trimclip,xcolor}
+
+\newcommand{\Atwo}{%
+  \mbox{%
+    \def\Ahalf##1{\dimexpr.5\width ##1 -0.065em\relax}
+   	\textcolor{InfosysDarkGrey}{\clipbox{0 0 {\Ahalf+} 0}{$A$}}%
+    \textcolor{TuInfRed}{\clipbox{{\Ahalf-} 0 0 0}{$A$}}%
+   	%\textcolor{TuInfRed}{\clipbox{0 0 {\Ahalf+} 0}{$A$}}%
+    %\textcolor{InfosysDarkGrey}{\clipbox{{\Ahalf-} 0 0 0}{$A$}}%
+  }%
+}
+%\newcommand{\myA}{ \Atwo }
+
 
 
 % setup postit
