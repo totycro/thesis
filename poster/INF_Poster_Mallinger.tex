@@ -64,8 +64,8 @@
 \newcommand{\colB}[1]{ \colTwo{#1} }
 
 
-\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
-\newcommand{\gray}[1]{ {\color{darkgray}#1}}
+%\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
+\newcommand{\gray}[1]{ {\color{InfosysDarkGrey}#1}}
 
 % play around with block colors
 \setbeamercolor{block body}{fg=black,bg=white}
@@ -91,6 +91,28 @@
 }
 
 
+% http://tikz.de/zweifarbige-buchstaben/
+\tikzset{
+   bclleft/.style={.},
+   letter left/.style={bclleft/.append style={#1}},
+   bclright/.style={.},
+   letter right/.style={bclright/.append style={#1}},
+}
+\newcommand\bicolorletter[2][]{%
+   \tikz[baseline=(n.base),inner sep=0pt,outer xsep=0pt,#1]{
+     \node(n){\phantom{#2}};
+     \foreach \a/\c in {west/bclleft,east/bclright}{
+       \begin{scope}
+         \clip(n.south)rectangle(n.north \a);
+				 \node[\c]at(n){${#2}$};
+				 %\node[\c]at(n){\textrm{#2}};
+       \end{scope}
+     }}}
+
+%\newcommand{\myA}{ \tikzset{letter left=TuInfRed,letter right=InfosysDarkGrey} \bicolorletter{A} }
+\newcommand{\myA}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuInfRed} \bicolorletter{A} }
+%\newcommand{\myB}{ \tikzset{letter left=TuWienBlue,letter right=InfosysDarkGrey} \bicolorletter{B} }
+\newcommand{\myB}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuWienBlue} \bicolorletter{B} }
 
 
 % setup postit
@@ -160,14 +182,16 @@
 
 			\begin{block}{Craig Interpolation}
 
+
+
 				\textbf{Theorem} (Craig).
-				\emph{Let $\colA A$ and $\colB B$ be first-order formulas such that $\entails \colA A\supset \colB B$.
-					Then there is an interpolant $\gray I$ for $\colA A$ and~$\colB B$ such that:
+				\emph{Let \myA{} and \myB{} be first-order formulas such that $\entails \myA\supset \myB$.
+					Then there is an interpolant $\gray I$ for $\myA$ and~$\myB$ such that:
 					\begin{itemize}
-						\item $\entails \colA A \limpl \gray I$
-						\item $\entails \gray I \limpl \colB B$
+						\item $\entails \myA \limpl \gray I$
+						\item $\entails \gray I \limpl \myB$
 						\item $\operatorname{Lang}(\gray I) \subseteq
-							\operatorname{Lang}(\colA A) \cap \operatorname{Lang}(\colB B)$
+							\operatorname{Lang}(\myA) \cap \operatorname{Lang}(\myB)$
 					\end{itemize}
 				}
 				\vspace{1em}
@@ -179,8 +203,8 @@
 							implies/.style={double,double equal sign distance,-implies},
 							mynode/.style={circle,outer sep=3pt}
 						]
-						\node[mynode] (A) at (0,0) {$\colA A$};
-						\node[mynode] (B) at (16,0) {$\colB B$};
+						\node[mynode] (A) at (0,0) {$\myA$};
+						\node[mynode] (B) at (16,0) {$\myB$};
 						\node[mynode] (I) at (8,-6) {$\gray I$};
 
 						%\draw[->,implies] (A) to (B);
