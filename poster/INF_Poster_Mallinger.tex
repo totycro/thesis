@@ -17,6 +17,7 @@
 \usepackage{TUINFPST}
 \usepackage{comment}
 \usepackage{tabularx}
+\usepackage{mathdots} % makes vdots scale properly
 
 \usepackage{lipsum}
 \usepackage{graphicx, array, blindtext}
@@ -309,6 +310,16 @@
 		\end{column}
 		\begin{column}{\mycolwidth}
 
+			% for 0.2\textwidth need 10.35 em
+			% 0.18 -> 10.0
+
+					\newcommand{\proofwidth}{0.2\textwidth}
+					\newcommand{\proofindent}{\hspace*{10.21em}}
+					%\newcommand{\proofwidth}{0.18\textwidth}
+					%\newcommand{\proofindent}{\hspace*{10em}}
+
+					%\newcommand{\stagearrow}{{\Large$\Downarrow$}}
+					\newcommand{\stagearrow}{{\Large$\Downarrow$}}
 
 			\begin{block}{Interpolant extraction from proofs in two phases \cite{Huang95}}
 				%\itemizeOnBlockStart
@@ -326,6 +337,7 @@
 				%	\end{center}
 				%	&
 
+
 				%\begin{tabular}{*{4}{m{0.48\textwidth}}}
 					\newcommand{\fakemulticolwidth}{0.28\textwidth}
 					%\begin{tabularx}{\textwidth}{p{0.25\textwidth}p{0.2\textwidth}l}
@@ -337,7 +349,7 @@
 					%\begin{center}
 
 					\multicolumn{1}{m{\fakemulticolwidth}}{
-						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+						\includegraphics[width=\proofwidth]{figures/two_phase_draft_proof}
 					}
 					%\rule{0.4\textwidth}{0.1\textwidth}
 					%\end{center}
@@ -345,15 +357,15 @@
 						\vspace*{0.5em}
 					\\
 
-				%& \begin{center} \large$\Downarrow$ \end{center} & 
+				%& \begin{center} \large\stagearrow \end{center} & 
 					%\multicolumn{2}{c}{\emph{Extract structure from proof}}
 					\multicolumn{2}{l}{
-						\hspace*{10.35em}{$\Downarrow$} ~\parbox[c]{12em}{\emph{ Extract propositional interpolant structure from proof}}
+						\proofindent{\stagearrow} ~\parbox[c]{12em}{\emph{ Extract propositional interpolant structure from proof}}
 						\vspace*{0.5em}
 				}
 				 \\
 			 
-					%&  \Huge$\Downarrow$}   \\
+					%&  \Huge\stagearrow}   \\
 
 				\begin{tabular}[x]{@{}l@{}}Propositional\\Interpolant:\end{tabular} 
 					%	Propositional \newline interpolant: 
@@ -361,22 +373,22 @@
 					%\begin{center} \end{center}
 					%\rule{0.4\textwidth}{0.1\textwidth}
 					\multicolumn{1}{m{\fakemulticolwidth}}{
-						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+						\includegraphics[width=\proofwidth]{figures/two_phase_draft_proof}
 					}
 					$\dots \gray Q(\colA f(\colB c), \colB c) \dots$
 						\vspace*{0.5em}
 					\\
 
-					\multicolumn{2}{l}{
-						\hspace*{10.35em}{$\Downarrow$} ~\parbox[t]{11em}{\emph{ Replace colored function and constant symbols } }
+	\multicolumn{2}{l}{
+						\proofindent{\stagearrow} ~\parbox[c]{12em}{\emph{ Replace colored function and constant symbols }}
 						\vspace*{0.5em}
 				}
-				\\
+				 \\
 
 				\begin{tabular}[x]{@{}l@{}}Prenex\\First-Order\\Interpolant:\end{tabular} 
 					&
 					\multicolumn{1}{m{\fakemulticolwidth}}{
-						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_fo_interpolant}
+						\includegraphics[width=\proofwidth]{figures/two_phase_draft_fo_interpolant}
 					}
 					$\exists {x_3} \forall {x_5} \dots \gray Q({x_5}, {x_3}) \dots$
 					\\
@@ -399,7 +411,7 @@
 					%\begin{center}
 
 					\multicolumn{1}{m{\fakemulticolwidth}}{
-						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_proof}
+						\includegraphics[width=\proofwidth]{figures/two_phase_draft_proof}
 					}
 					%\rule{0.4\textwidth}{0.1\textwidth}
 					%\end{center}
@@ -407,38 +419,55 @@
 						\vspace*{0.5em}
 					\\
 
-				%& \begin{center} \large$\Downarrow$ \end{center} & 
+				%& \begin{center} \large\stagearrow \end{center} & 
 					%\multicolumn{2}{c}{\emph{Extract structure from proof}}
 					\multicolumn{2}{l}{
-						\hspace*{10.35em}{$\Downarrow$} ~\parbox[c]{12em}{\emph{ Extract propositional interpolant structure from proof}}
+						\proofindent
+						$\left.
+						\parbox[c]{2em}{
+							\stagearrow\\
+							\hspace*{0.318em}$\vdots$ \\[0.27\baselineskip]
+							\stagearrow
+						}
+					\right\} 
+					\parbox[t]{11em}{\emph{Combined extraction and replacing phases}}
+					$
 						\vspace*{0.5em}
-				}
+					} 
 				 \\
 			 
-					%&  \Huge$\Downarrow$}   \\
+					%&  \Huge\stagearrow}   \\
 
-				%\begin{tabular}[x]{@{}l@{}}Propositional\\Interpolant:\end{tabular} 
+				%\begin{tabular}[x]{@{}l@{}}Intermediate\\Formula:\end{tabular} 
 					%	Propositional \newline interpolant: 
 					&
 					%\begin{center} \end{center}
 					%\rule{0.4\textwidth}{0.1\textwidth}
 					\multicolumn{1}{m{\fakemulticolwidth}}{
-						%\includegraphics[width=0.2\textwidth]{figures/one_phase_draft_intermediate}
+						\includegraphics[width=\proofwidth]{figures/one_phase_draft_intermediate}
 					}
 					$\dots \forall {x_5} \dots \gray Q({x_5}, \colB c) \dots$
 						\vspace*{0.5em}
 					\\
-
 					\multicolumn{2}{l}{
-						\hspace*{10.35em}{$\Downarrow$} ~\parbox[t]{11em}{\emph{ Replace colored function and constant symbols } }
+						\proofindent
+						$\left.
+						\parbox[c]{2em}{
+							\stagearrow\\
+							\hspace*{0.318em}$\vdots$ \\[0.27\baselineskip]
+							\stagearrow
+						}
+					\right\} 
+					\parbox[t]{11em}{\emph{Combined extraction and replacing phases}}
+					$
 						\vspace*{0.5em}
-				}
-				\\
+					} 
+				 \\
 
-				\begin{tabular}[x]{@{}l@{}}Prenex\\First-Order\\Interpolant:\end{tabular} 
+				\begin{tabular}[x]{@{}l@{}}Non-Prenex\\First-Order\\Interpolant:\end{tabular} 
 					&
 					\multicolumn{1}{m{\fakemulticolwidth}}{
-						\includegraphics[width=0.2\textwidth]{figures/two_phase_draft_fo_interpolant}
+						\includegraphics[width=\proofwidth]{figures/two_phase_draft_fo_interpolant}
 					}
 					$\exists {x_3} \dots \forall {x_5} \dots \gray Q({x_5}, {x_3}) \dots$
 					\\
@@ -455,8 +484,8 @@
 			\begin{block}{Contributions}
 			\itemizeOnBlockStart
 				\begin{itemize}
-					\item We introduced the one phase-approach.
-					\item We showed that the number of quantifier alternations in the interpolant essentially corresponds to the number of color alternations in terms.
+					\item We introduced the one phase extraction approach.
+					\item We showed that the number of quantifier alternations in the interpolant corresponds to the number of color alternations in terms.
 
 				\end{itemize}
 
@@ -473,41 +502,43 @@
 						%\setbeamertemplate{bibliography item}{[1]}
 
 					\bibitem[1]{Craig57linear}
-						William Craig.
-						\newblock{
-							Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
-						}
-						\newblock {
-							\emph{Journal of Symbolic Logic}, 22(3):250--268, 1957.
-						}
 						%William Craig.
-						%{
-						%	\color{black}
+						%\newblock{
 						%	Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
 						%}
-						%{
-						%	\color{lightviolet}
+						%\newblock {
 						%	\emph{Journal of Symbolic Logic}, 22(3):250--268, 1957.
 						%}
+						William Craig.
+						{
+							\color{black}
+							Linear Reasoning. A New Form of the Herbrand-Gentzen Theorem.
+						}
+						{
+							%\color{lightviolet}
+							\emph{Journal of Symbolic Logic}, 22(3):250--268, 1957.
+						}
 
 
 					\bibitem[2]{Huang95}
-						Guoxiang Huang.
-						\newblock{
-							Constructing Craig Interpolation Formulas.
-						}
-						\newblock {
-							%\emph{Proceedings of the First Annual International Conference on Computing and Combinatorics}, COCOON ’95, p.\ 181--190, 1995. 
-							In \emph{Proc COCOON ’95}, p.\ 181--190, 1995. 
-						}
 						%Guoxiang Huang.
-						%{
-						%	\color{black}
+						%\newblock{
 						%	Constructing Craig Interpolation Formulas.
+						%}
+						%\newblock {
 						%	%\emph{Proceedings of the First Annual International Conference on Computing and Combinatorics}, COCOON ’95, p.\ 181--190, 1995. 
-						%	\color{lightviolet}
 						%	In \emph{Proc COCOON ’95}, p.\ 181--190, 1995. 
 						%}
+						Guoxiang Huang.
+						{
+							\color{black}
+							Constructing Craig Interpolation Formulas.
+							%\emph{Proceedings of the First Annual International Conference on Computing and Combinatorics}, COCOON ’95, p.\ 181--190, 1995. 
+						}
+						{
+							%\color{lightviolet}
+							In \emph{Proc COCOON ’95}, p.\ 181--190, 1995. 
+						}
 
 
 
