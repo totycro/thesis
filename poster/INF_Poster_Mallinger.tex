@@ -63,15 +63,15 @@
 %   \includegraphics[width=\paperwidth]{logo_KBS_2_CMYK}
 % }
 
-\newcommand{\colOne}[1]{ {\color{TuInfRed}#1}}
-\newcommand{\colTwo}[1]{ {\color{TuWienBlue}#1}}
+\newcommand{\colOne}[1]{{\color{TuInfRed}#1}}
+\newcommand{\colTwo}[1]{{\color{TuWienBlue}#1}}
 
-\newcommand{\colA}[1]{ \colOne{#1} }
-\newcommand{\colB}[1]{ \colTwo{#1} }
+\newcommand{\colA}[1]{\colOne{#1}}
+\newcommand{\colB}[1]{\colTwo{#1}}
 
 
 %\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
-\newcommand{\gray}[1]{ {\color{InfosysDarkGrey}#1}}
+\newcommand{\gray}[1]{{\color{InfosysDarkGrey}#1}}
 
 % play around with block colors
 \setbeamercolor{block body}{fg=black,bg=white}
@@ -115,8 +115,8 @@
        \end{scope}
      }}}
 
-\newcommand{\myA}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuInfRed} \bicolorletter{A} }
-\newcommand{\myB}{ \tikzset{letter left=InfosysDarkGrey,letter right=TuWienBlue} \bicolorletter{B} }
+\newcommand{\myA}{\tikzset{letter left=InfosysDarkGrey,letter right=TuInfRed}\bicolorletter{A}}
+\newcommand{\myB}{\tikzset{letter left=InfosysDarkGrey,letter right=TuWienBlue}\bicolorletter{B}}
 
 \usepackage{trimclip,xcolor}
 
@@ -201,16 +201,31 @@
 			\begin{block}{Craig Interpolation}
 
 
-
 				\textbf{Theorem} (Craig).
 				\emph{
+					%Let \myA{} 
+					%and \myB{} be first-order formulas such that
+					%\begin{itemize}
+					%	\item \myA{} contains \colA{red} and \gray{gray} symbols 
+					%	\item \myB{} contains of \colB{blue} and \gray{gray} symbols
+					%	\item $\entails \myA\supset \myB$ 
+					%\end{itemize}
+
+					%\raggedright
 					Let \myA{} 
-					and \myB{} be first-order formulas 
-					such that $\entails \myA\supset \myB$ where \myA{} contains \colA{red} and \gray{gray} symbols and \myB{} contains of \colB{blue} and \gray{gray} symbols.
+					and \myB{} be first-order formulas where
+					\begin{itemize}
+						\item \myA{} contains \colA{red} and \gray{gray} symbols and
+						\item \myB{} contains \colB{blue} and \gray{gray} symbols
+					\end{itemize}
+					such that 
+					\begin{itemize}
+						\item $\entails \myA\supset \myB$.
+					\end{itemize}
 					%Let \myA{} be a first-order formula consisting of \colA{red} and \gray{gray} symbols 
 					%and \myB{} a first-order formula consisting of \colB{blue} and \gray{gray} symbols 
 					%such that $\entails \myA\supset \myB$.
-					Then there is an interpolant $\gray I$ containing of \gray{gray} symbols  for $\myA$ and~$\myB$ such that:
+					Then there is an interpolant $\gray I$ containing only \gray{gray} symbols such that:
 					\begin{itemize}
 						\item $\entails \myA \limpl \gray I$
 						\item $\entails \gray I \limpl \myB$
@@ -218,7 +233,7 @@
 						%	\operatorname{Lang}(\myA) \cap \operatorname{Lang}(\myB)$
 					\end{itemize}
 				}
-				\vspace{1em}
+				%\vspace{0.5em}
 
 
 				\begin{figure}[htbp]
@@ -240,7 +255,7 @@
 					\label{fig:interpol}
 					%\caption{Given two formulas $A$ and $B$ such that $A$ implies $B$, an interpolant is a formula $I$ which is implied by $A$ and which implies $B$.}
 				\end{figure}
-				\vspace{1em}
+				%\vspace{0.5em}
 
 				$\Rightarrow$ Interpolants give a concise logical summary of the implication
 
@@ -260,7 +275,7 @@
 
 
 			\begin{block}{Aim and Scope of the Thesis}
-				Give comprehensive account of existing techniques and extend them:
+				Provide overview of existing techniques and extend them:
 				\begin{itemize}
 					\item Model-theoretic proof 
 					\item Reduction to first-order logic without equality
@@ -288,7 +303,8 @@
 
 
 			\begin{block}{Reduction to first-order logic without equality \cite{Craig57linear}} 
-				\itemizeOnBlockStart
+				%\itemizeOnBlockStart
+				\vspace*{-1em}
 				%Approach by Craig in \cite{Craig57linear}, 
 				\newcommand{\transformsep}{\;\to\;}
 				\begin{align*}
@@ -372,7 +388,7 @@
 				%& \begin{center} \large\stagearrow \end{center} & 
 					%\multicolumn{2}{c}{\emph{Extract structure from proof}}
 					\multicolumn{2}{l}{
-						\proofindent{\stagearrow} ~\parbox[c]{12em}{\emph{ Extract propositional interpolant structure from proof}}
+						\proofindent{\stagearrow} ~\parbox[c]{14em}{\raggedright \emph{ Extract propositional interpolant structure from proof}}
 						\vspace*{0.5em}
 				}
 				 \\
@@ -392,7 +408,7 @@
 					\\
 
 	\multicolumn{2}{l}{
-						\proofindent{\stagearrow} ~\parbox[c]{12em}{\emph{ Replace colored function and constant symbols }}
+						\proofindent{\stagearrow} ~\parbox[c]{12em}{\raggedright \emph{ Replace colored function and constant symbols }}
 						\vspace*{0.5em}
 				}
 				 \\
@@ -410,6 +426,7 @@
 					\end{tabular}
 			\end{block}
 
+			\newcommand{\onePhaseArrowLabel}{Combined structure extraction and replacing of colored symbols}
 			\begin{block}{Interpolant extraction from proofs in one phase}
 
 				%\begin{tabular}{*{4}{m{0.48\textwidth}}}
@@ -431,22 +448,30 @@
 						\vspace*{0.5em}
 					\\
 
-				%& \begin{center} \large\stagearrow \end{center} & 
-					%\multicolumn{2}{c}{\emph{Extract structure from proof}}
-					\multicolumn{2}{l}{
-						\proofindent
-						$\left.
-						\parbox[c]{2em}{
-							\stagearrow\\
-							\hspace*{0.318em}$\vdots$ \\[0.27\baselineskip]
-							\stagearrow
-						}
-					\right\} 
-					\parbox[t]{11em}{\emph{Combined extraction and replacing phases}}
-					$
+
+
+	\multicolumn{2}{l}{
+		\proofindent{\stagearrow} ~\parbox[c]{15em}{\raggedright\emph{ \onePhaseArrowLabel } }
 						\vspace*{0.5em}
-					} 
+				}
 				 \\
+
+
+					% multiple arrows with dots:
+			%		\multicolumn{2}{l}{
+			%			\proofindent
+			%			$\left.
+			%			\parbox[c]{2em}{
+			%				\stagearrow\\
+			%				\hspace*{0.318em}$\vdots$ \\[0.27\baselineskip]
+			%				\stagearrow
+			%			}
+			%		\right\} 
+			%		\parbox[t]{11em}{\emph{Combined extraction and replacing phases}}
+			%		$
+			%			\vspace*{0.5em}
+			%		} 
+			%	 \\
 			 
 					%&  \Huge\stagearrow}   \\
 
@@ -461,20 +486,28 @@
 					$\dots \forall {x_5} \dots \gray Q({x_5}, \colB c) \dots$
 						\vspace*{0.5em}
 					\\
-					\multicolumn{2}{l}{
-						\proofindent
-						$\left.
-						\parbox[c]{2em}{
-							\stagearrow\\
-							\hspace*{0.318em}$\vdots$ \\[0.27\baselineskip]
-							\stagearrow
-						}
-					\right\} 
-					\parbox[t]{11em}{\emph{Combined extraction and replacing phases}}
-					$
+
+	\multicolumn{2}{l}{
+		\proofindent{\stagearrow} ~\parbox[c]{15em}{\raggedright\emph{ \onePhaseArrowLabel } }
 						\vspace*{0.5em}
-					} 
+				}
 				 \\
+
+
+		%			\multicolumn{2}{l}{
+		%				\proofindent
+		%				$\left.
+		%				\parbox[c]{2em}{
+		%					\stagearrow\\
+		%					\hspace*{0.318em}$\vdots$ \\[0.27\baselineskip]
+		%					\stagearrow
+		%				}
+		%			\right\} 
+		%			\parbox[t]{11em}{\emph{Combined extraction and replacing phases}}
+		%			$
+		%				\vspace*{0.5em}
+		%			} 
+		%		 \\
 
 				\begin{tabular}[x]{@{}l@{}}Non-Prenex\\First-Order\\Interpolant:\end{tabular} 
 					&
@@ -497,7 +530,7 @@
 			\itemizeOnBlockStart
 				\begin{itemize}
 					\item We introduced the one phase extraction approach.
-					\item We showed that the number of quantifier alternations in the interpolant corresponds to the number of color alternations in terms.
+					\item We showed that the number of \emph{quantifier alternations} in the extracted interpolant essentially corresponds to the number of \emph{color alternations} in terms of the proof.
 
 				\end{itemize}
 

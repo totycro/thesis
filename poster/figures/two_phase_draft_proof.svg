@@ -13,7 +13,7 @@
    width="200"
    height="180"
    id="svg2"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="two_phase_draft_proof.svg">
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -24,16 +24,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1436"
-     inkscape:window-height="849"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
      id="namedview11"
      showgrid="false"
-     inkscape:zoom="41.955556"
-     inkscape:cx="90.073352"
-     inkscape:cy="170.89781"
-     inkscape:window-x="482"
-     inkscape:window-y="30"
-     inkscape:window-maximized="0"
+     inkscape:zoom="29.667058"
+     inkscape:cx="88.553309"
+     inkscape:cy="179.11377"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <defs
      id="defs4" />
@@ -70,4 +70,9 @@
      id="path3762"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="ccccssscccccsscccccsscc" />
+  <path
+     style="fill:#999999;fill-opacity:1;stroke:#999999;stroke-width:0.09533899000000000;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+     d="M 99.334445,2.0874316 C 99.210364,1.7750407 98.852763,1.6343821 97.941201,1.5394132 c -0.133478,-0.013906 0.08553,-0.020816 0.730088,-0.023036 l 0.920766,-0.00317 -0.08392,0.3396452 c -0.04615,0.1868048 -0.09138,0.3480693 -0.100503,0.3583655 -0.0091,0.010296 -0.04206,-0.045408 -0.07319,-0.1237861 l 0,0 z"
+     id="path2986"
+     inkscape:connector-curvature="0" />
 </svg>
