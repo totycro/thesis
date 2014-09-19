@@ -39,8 +39,38 @@ Complementary to these algorithms, we also present a non-constructive, model-the
 Assuming the non-existence of an interpolant, a maximal consistent intersection of two theories is constructed, where the theories are each based on the sets of formulas to interpolate. The details of this method are laid out in Chapter~\ref{chap:semantic}.
 
 
+~
 
-\vfill
+~
+
+The two main algorithmic approaches towards interpolant calculation which we present in this thesis differ in their practical applicability. 
+Craig's proof in \cite{Craig57linear,Craig57three} gives rise to a procedure which in its run introduces next to basic axioms for the equality predicate also congruence axioms for every predicate symbol and functional axioms for every function symbol.
+Furthermore, the complexity of nested terms in the initial formulas is translated into a formula structure without nested terms.
+Once this translation is established, the actual interpolant calculation in first-order logic without equality and function symbols can be done in a straightforward manner by a direct extraction from a proof.
+
+Hence the question of whether it is possible to perfom an interpolant extraction from a proof of formulas in full first-order logic with equality arises naturally, and as Huang has shown in \cite{Huang95}, the answer is positive if we consider proofs in resolution calculus.
+
+The first phase of Huang's approach is similar to other approaches for propositional logic (\cite{krajivcek1997interpolation,Pudlak97,McMillan03}),
+but after fixing the propositional structure, he introduces a lifting phase in order to handle colored function and constant symbols.
+It is interesting to see that despite that resolution in first-order logic has the with respect to resolution in propositional calculus additional rule of paramodulation, the same strategy of inductive propositional interpolant extraction can be applied as for resolution and factorization.
+
+Our analysis of the number of quantifier alternations in interpolants produced by this procedure is based on an analysis of the lifting phase of Huang's proof.
+We show that a $\Phi$-colored term $t$ with color-alternations can only occur if every maximal $\Psi$-colored subterm $s$ of $t$ occurs in a grey literal and therefore $s$ is contained in the final interpolant.
+Hence underlying resolution refutation also shapes the lifting variables and their quantifiers in a somewhat immediate manner.
+
+Our one-phase approach for interpolant extraction can be seen as a variation of especially the lifting procecure of Huang's algorithm, which so far has only received relatively little attention.
+
+
+
+
+
+
+
+
+
+
+
+\clearpage
 
 constructive/non-constructive
 
@@ -49,3 +79,7 @@ craig is an algorithm, but huang is an actual algorithm
 -> unterschiedlicher syntaktischer overhead
 
 interpolant extraction with equality works similar as without equality
+
+quantifiers are introduced in a ``deterministic'' way with respect to the resolution refutation
+
+
