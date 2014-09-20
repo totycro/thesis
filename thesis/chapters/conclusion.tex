@@ -30,8 +30,10 @@ We present this algorithm in detail in Chapter~\ref{chap:two_phases} in a slight
 %We show that they are very closely related to the number of color alternations which are created by the substitutions of the resolution refutation. 
 
 Our analysis of the number of quantifier alternations in interpolants produced by this procedure is based on an analysis of the lifting phase of Huang's proof.
-We show that the resolution refutation directly shapes the quantifier in the resulting interpolant 
-and that the number of color alternations in terms of the resolution essentially coincides with the number of quantifier alternations in the interpolant created by this algorithm.
+We show that the resolution refutation directly shapes the quantifiers in the resulting interpolant 
+in the sense that only inferences affecting both $\Gamma$-and $\Delta$-terms are capable of necessitating quantiier alternations.
+This leads us to the result that 
+the number of color alternations in terms of the resolution essentially coincides with the number of quantifier alternations in the interpolant created by this algorithm.
 
 
 %We show that a $\Phi$-colored term $s$ can only become a subterm of a $\Psi$-colored term $t$ if $s$ occurs in a grey literal.
@@ -56,14 +58,14 @@ Assuming the non-existence of an interpolant, a maximal consistent intersection 
 \section{Discussion and comparison of the approaches}
 
 The proofs of the interpolation theorem by Craig and Huang are based on an analysis of formal proofs and directly extract concrete interpolants.
-In our presentation, they do so in different calculi but are still based on the idea of forming the interpolant according to the single calculus rule applications of the proof.
+In our presentation, they do so in different calculi but are nontheless based on the idea of forming the interpolant according to the single calculus rule applications of the proof.
 
-These approaches however differ in their practical applicability. 
+These two approaches however differ in their practical applicability. 
 Craig's proof gives rise to a procedure which in its run introduces next to basic axioms for the equality predicate also congruence axioms for every predicate symbol and functional axioms for every function symbol.
 Furthermore, the complexity of nested terms in the initial formulas is translated into a formula structure without nested terms.
 Once this translation is established, the actual interpolant calculation in first-order logic without equality and function symbols can be done in a straightforward manner by a direct extraction from a proof.
 
-Hence the question of whether it is possible to perfom an interpolant extraction from a proof of formulas in full first-order logic with equality arises naturally, and as Huang has shown in \cite{Huang95}, the answer is positive if we consider proofs in resolution calculus.
+Hence the question of whether it is possible to perform an interpolant extraction from a proof of formulas in full first-order logic with equality arises naturally, and as Huang has shown in \cite{Huang95}, the answer is positive if we consider proofs in resolution calculus.
 To the best of our knowledge, there is no comparable approach for sequent calculus.
 
 The first phase of Huang's approach is similar to other approaches for propositional logic (\cite{krajivcek1997interpolation,Pudlak97,McMillan03}),
@@ -78,7 +80,8 @@ Hence the expressive power gained by adding equality does not require a structur
 The model theoretic proof based on Robinson's joint consistency theorem however fundamentally differs from the previous proofs in its approach.
 Instead of an analysis of syntactic proofs, it is based on an indirect and semantic argument.
 This is inherently non-constructive and hence does not allow for extraction of an algorithm.
-This approach also differs from the other insofar as equality does not require explicit handling. This is due to the fact that equality is defined naturally in the constructed models.
+Moreover, this approach also differs from the other insofar as equality does not require explicit handling
+as naturally, equality is defined in the constructed models.
 
 
 
