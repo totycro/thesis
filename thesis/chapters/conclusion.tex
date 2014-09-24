@@ -33,7 +33,7 @@ Our analysis of the number of quantifier alternations in interpolants produced b
 We show that the resolution refutation directly shapes the quantifiers in the resulting interpolant 
 in the sense that only inferences of the refutation affecting both $\Gamma$-and $\Delta$-terms are capable of necessitating quantifier alternations in the interpolant.
 This leads us to the result that 
-the number of color alternations in terms of the resolution essentially coincides with the number of quantifier alternations in the interpolant created by this algorithm.
+the number of color alternations in the terms of the refutation essentially coincides with the number of quantifier alternations in the interpolant created by this algorithm.
 
 
 %We show that a $\Phi$-colored term $s$ can only become a subterm of a $\Psi$-colored term $t$ if $s$ occurs in a grey literal.
@@ -46,31 +46,35 @@ the number of color alternations in terms of the resolution essentially coincide
 
 %We show that a $\Phi$-colored term $t$ with color-alternations can only occur if every maximal $\Psi$-colored subterm $s$ of $t$ occurs in a grey literal and therefore $s$ is contained in the final interpolant.
 
-As a variations of Huang's work, we propose an approach which combines the two phases into one 
+As a variation of Huang's work, we propose an approach which combines the two phases into one 
 by lifting and quantifying colored terms during the extraction phase. 
 Consequently, the resulting interpolants are not in prenex form but the scope of quantifiers is limited to the subformula where the lifted term is of relevance.
 This algorithm is dealt with in Chapter~\ref{chap:one_phase}.
 
 Complementary to these algorithms, we also present a non-constructive, model-theoretic approach to interpolation.
-Assuming the non-existence of an interpolant, a maximal consistent intersection of two theories is constructed, where the theories are each based on the sets of formulas to interpolate. The details of this method are laid out in Chapter~\ref{chap:semantic}.
+Assuming the non-existence of an interpolant, a maximal consistent intersection of two theories is constructed, where the theories are each based on the sets of formulas to interpolate. The details of this proof are laid out in Chapter~\ref{chap:semantic}.
 
 
-\section{Discussion and comparison of the approaches}
+%\section{Discussion and comparison of the approaches}
 
 The proofs of the interpolation theorem by Craig and Huang are based on an analysis of formal proofs and directly extract concrete interpolants.
-In our presentation, they do so in different calculi but are nonetheless based on the idea of forming the interpolant according to the single calculus rule applications of the proof.
+In our presentation, they do so in different calculi but nonetheless share the idea of recursively defining an interpolant based on a case distinction on the type of the current inference.
+%forming the interpolant according to the single calculus rule applications of the proof.
 
 These two approaches however differ in their practical applicability. 
-Craig's proof gives rise to a procedure which in its run introduces next to basic axioms for the equality predicate also congruence axioms for every predicate symbol and functional axioms for every function symbol.
+Craig's proof gives rise to a procedure which in its run introduces in addition to basic axioms for the equality predicate also congruence axioms for every predicate symbol and functional axioms for every function symbol.
 Furthermore, the complexity of nested terms in the initial formulas is translated into a formula structure without nested terms.
 Once this translation is established, the actual interpolant calculation in first-order logic without equality and function symbols can be done in a straightforward manner by a direct extraction from a proof.
 
-Hence the question of whether it is possible to perform an interpolant extraction from a proof of formulas in full first-order logic with equality arises naturally, and as Huang has shown in \cite{Huang95}, the answer is positive if we consider proofs in resolution calculus.
-To the best of our knowledge, there is no comparable approach for sequent calculus.
+Hence the question of whether it is possible to perform interpolant extraction from a proof of formulas in full first-order logic with equality arises naturally.
+For sequent calculus, Baaz and Leitsch present a method for first-order logic without equality in \cite{baaz2011methods}, but to the best of our knowledge, there is no comparable approach for sequent calculus which includes equality.
+As Huang has shown in \cite{Huang95}, a method for full first-order logic with equality exists for the resolution calculus.
+%the answer is positive if we consider proofs in resolution calculus.
 
 The first phase of Huang's approach is similar to other approaches for propositional logic (\cite{krajivcek1997interpolation,Pudlak97,McMillan03}),
 but after fixing the propositional structure, a lifting phase is introduced in order to handle colored function and constant symbols.
-It is interesting to see that even though resolution in first-order logic has the with respect to resolution in propositional calculus additional rule of paramodulation, the same strategy of inductive propositional interpolant extraction can be applied as for resolution and factorization.
+It is interesting to see that even though the additional rule of paramodulation is necessary in resolution calculus in order to handle equality,
+the same strategy of inductive propositional interpolant extraction as for the resolution and factorization rule can be applied.
 Hence the expressive power gained by adding equality does not require a structurally different approach for interpolant calculation.
 
 %Our one-phase approach for interpolant extraction can be seen as a variation of Huang's algorithm and its lifting phase in particular, which so far has only received relatively little attention.

@@ -474,6 +474,7 @@
 			 
 					%&  \Huge\stagearrow}   \\
 
+				\begin{tabular}[x]{@{}l@{}}Interpolant\\modulo\\current clause:\end{tabular} 
 				%\begin{tabular}[x]{@{}l@{}}Intermediate\\Formula:\end{tabular} 
 					%	Propositional \newline interpolant: 
 					&
@@ -486,9 +487,12 @@
 						\vspace*{0.5em}
 					\\
 
-	\multicolumn{2}{l}{
-		\proofindent{\stagearrow} ~\parbox[c]{15em}{\raggedright\emph{ \onePhaseArrowLabel } }
-						\vspace*{0.5em}
+	\multicolumn{3}{l}{
+		\hspace*{5em}
+		\parbox[c]{13.3em}{\emph{Recursively applied to all inferences of the proof results in:}}
+		%\proofindent{\stagearrow} ~\parbox[c]{15em}{\raggedright\emph{ \onePhaseArrowLabel } }
+		%				\vspace*{0.5em}
+						\vspace*{0.8em}
 				}
 				 \\
 
@@ -529,7 +533,7 @@
 			\itemizeOnBlockStart
 				\begin{itemize}
 					\item We introduced the one phase extraction approach.
-					\item We showed that the number of \emph{quantifier alternations} in the extracted interpolant essentially corresponds to the number of \emph{color alternations} in terms of the proof.
+					\item We showed that the number of \emph{quantifier alternations} in the extracted interpolant essentially corresponds to the number of \emph{color alternations} in the terms of the proof.
 
 				\end{itemize}
 
