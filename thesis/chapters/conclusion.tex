@@ -31,7 +31,7 @@ We present this algorithm in detail in Chapter~\ref{chap:two_phases} in a slight
 
 Our analysis of the number of quantifier alternations in interpolants produced by this procedure is based on an analysis of the lifting phase of Huang's proof.
 We show that the resolution refutation directly shapes the quantifiers in the resulting interpolant 
-in the sense that only inferences affecting both $\Gamma$-and $\Delta$-terms are capable of necessitating quantiier alternations.
+in the sense that only inferences of the refutation affecting both $\Gamma$-and $\Delta$-terms are capable of necessitating quantifier alternations in the interpolant.
 This leads us to the result that 
 the number of color alternations in terms of the resolution essentially coincides with the number of quantifier alternations in the interpolant created by this algorithm.
 
@@ -58,7 +58,7 @@ Assuming the non-existence of an interpolant, a maximal consistent intersection 
 \section{Discussion and comparison of the approaches}
 
 The proofs of the interpolation theorem by Craig and Huang are based on an analysis of formal proofs and directly extract concrete interpolants.
-In our presentation, they do so in different calculi but are nontheless based on the idea of forming the interpolant according to the single calculus rule applications of the proof.
+In our presentation, they do so in different calculi but are nonetheless based on the idea of forming the interpolant according to the single calculus rule applications of the proof.
 
 These two approaches however differ in their practical applicability. 
 Craig's proof gives rise to a procedure which in its run introduces next to basic axioms for the equality predicate also congruence axioms for every predicate symbol and functional axioms for every function symbol.
