@@ -200,32 +200,31 @@
 
 			\begin{block}{Craig Interpolation}
 
-
-				\textbf{Theorem} (Craig).
-				\emph{
-					%Let \myA{} 
+%Let \myA{} 
 					%and \myB{} be first-order formulas such that
 					%\begin{itemize}
 					%	\item \myA{} contains \colA{red} and \gray{gray} symbols 
 					%	\item \myB{} contains of \colB{blue} and \gray{gray} symbols
 					%	\item $\entails \myA\supset \myB$ 
 					%\end{itemize}
-
 					%\raggedright
-					Let \myA{} 
+
+				\textbf{Theorem} (Craig).
+				\emph{Let \myA{} 
 					and \myB{} be first-order formulas where
 					\begin{itemize}
 						\item \myA{} contains \colA{red} and \gray{gray} symbols and
 						\item \myB{} contains \colB{blue} and \gray{gray} symbols
 					\end{itemize}
-					such that 
+					such that:
 					\begin{itemize}
-						\item $\entails \myA\supset \myB$.
+						\item $\entails \myA\supset \myB$
 					\end{itemize}
+					%\[ \entails \myA\supset \myB\]
 					%Let \myA{} be a first-order formula consisting of \colA{red} and \gray{gray} symbols 
 					%and \myB{} a first-order formula consisting of \colB{blue} and \gray{gray} symbols 
 					%such that $\entails \myA\supset \myB$.
-					Then there is an interpolant $\gray I$ containing only \gray{gray} symbols such that:
+					Then there is a interpolant $\gray I$ containing only \gray{gray} symbols such that:
 					\begin{itemize}
 						\item $\entails \myA \limpl \gray I$
 						\item $\entails \gray I \limpl \myB$
@@ -287,10 +286,10 @@
 				\itemizeOnBlockStart
 
 				\begin{itemize}
-					\item Non-constructive proof:
+					\item Non-constructive proof by contradiction:
 						\begin{itemize}
-							\item Let $T_{\myA}$ and $T_{\lnot \myB}$ be theories extending $\myA$ and $\lnot \myB$
-							\item Build model from maximal consistent intersection of $T_{\myA}$ and $T_{\lnot \myB}$
+							\item Let $T_{\myA}$ and $T_{\lnot \myB}$ be theories extending $\myA$ and $\lnot \myB$ respectively
+							\item Build a model from maximal consistent intersection of $T_{\myA}$ and $T_{\lnot \myB}$
 
 								(assuming the non-existence of interpolants)
 
@@ -312,11 +311,11 @@
 					%\gray P(\colA c) & \transformsep \exists x (\colA C(x) \land \gray P(x)) \\
 					\Big(\gray P(\colA c)\Big)^*  & \, \equiv \, \exists x (\colA C(x) \land \gray P(x)) \\
 					%\gray P(\colB f( \colA c)) & \transformsep  \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \gray P(x)) \\
-					\Big( \gray P(\colB f( \colA c)) \Big)^* & \, \equiv \, \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \gray P(x)) \\
+					\Big( \gray P(\colB f( \colA c)) \Big)^* & \, \equiv \, \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \gray P(x))  \\
 					%\gray s = \gray t & \transformsep \gray E(\gray s, \gray t) \\
 					\Big( \gray s = \gray t \Big)^* & \, \equiv \, \gray E(\gray s, \gray t) \\
 					\intertext{Add theory of equality:} 
-					\varphi & \transformsep T_E \limpl \varphi^*
+					\varphi & \transformsep T_{\gray E} \limpl \varphi^*
 				\end{align*}
 			%\begin{align*}
 			%		\intertext{Translate equality and function symbols:}
@@ -483,7 +482,7 @@
 					\multicolumn{1}{m{\fakemulticolwidth}}{
 						\includegraphics[width=\proofwidth]{figures/one_phase_draft_intermediate}
 					}
-					$\dots \forall {x_5} \dots \gray Q({x_5}, \colB c) \dots$
+					$\forall {x_5} \dots \gray Q({x_5}, \colB c) \dots$
 						\vspace*{0.5em}
 					\\
 
