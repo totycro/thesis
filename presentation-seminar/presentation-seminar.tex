@@ -1,0 +1,240 @@
+\documentclass[final,compress]{beamer}
+%\documentclass[draft,compress]{beamer}
+% handout for no pauses
+\usepackage{etex}
+\usepackage{multicol}
+
+\mode<presentation>{
+%\usetheme{Dresden}
+\usetheme{Ilmenau}
+%\setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}
+%\usepackage{beamerthemeshadow}
+}
+%\usetheme{bars}
+
+\setbeamercovered{transparent}
+
+% setup colors
+%\RequirePackage{xcolor}
+%\selectcolormodel{cmyk}
+
+\definecolor{DbaiDarkGreen}{cmyk}{0,0,0.2,0.4}
+\definecolor{DbaiBrightGreen}{cmyk}{0.22,0.18,0.36,0}
+\definecolor{ForsyteDarkYellow}{cmyk}{0,0.27,0.94,0.28}
+\definecolor{ForsyteBrightYellow}{cmyk}{0,0.27,0.94,0.28}
+\definecolor{KbsDarkBlue}{cmyk}{0.6,0.4,0,0.4}
+\definecolor{KbsBrightBlue}{cmyk}{0.45,0.28,0,0.28}
+\definecolor{InfosysDarkGrey}{gray}{0.4}
+\definecolor{InfosysLightGrey}{gray}{0.6}
+\definecolor{TuWienBlue}{cmyk}{1,0.38,0,0.15}
+\definecolor{TuInfRed}{cmyk}{0,1,1,0}
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\input{/home/totycro/stud/latex-common/latex_header.tex}
+
+\newcommand{\colOne}[1]{{\color{TuInfRed}#1}}
+\newcommand{\colTwo}[1]{{\color{TuWienBlue}#1}}
+
+\newcommand{\colA}[1]{\colOne{#1}}
+\newcommand{\colB}[1]{\colTwo{#1}}
+
+
+%\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
+\newcommand{\gray}[1]{{\color{InfosysDarkGrey}#1}}
+
+
+% http://tikz.de/zweifarbige-buchstaben/
+\tikzset{
+   bclleft/.style={.},
+   letter left/.style={bclleft/.append style={#1}},
+   bclright/.style={.},
+   letter right/.style={bclright/.append style={#1}},
+}
+\newcommand\bicolorletter[2][]{%
+   \tikz[baseline=(n.base),inner sep=0pt,outer xsep=0pt,#1]{
+     \node(n){\phantom{#2}};
+     \foreach \a/\c in {west/bclleft,east/bclright}{
+       \begin{scope}
+         \clip(n.south)rectangle(n.north \a);
+         \node[\c]at(n){${#2}$};
+         %\node[\c]at(n){\textrm{#2}};
+       \end{scope}
+     }}}
+
+\newcommand{\myA}{\tikzset{letter left=InfosysDarkGrey,letter right=TuInfRed}\bicolorletter{A}}
+\newcommand{\myB}{\tikzset{letter left=InfosysDarkGrey,letter right=TuWienBlue}\bicolorletter{B}}
+
+
+
+
+% outline at begin of section:
+%\AtBeginSection[] {
+%  \begin{frame}
+%    \frametitle{Überblick}
+%    \tableofcontents[currentsection]
+%  \end{frame}
+%  \addtocounter{framenumber}{-1}
+%}
+
+
+\usepackage{float}
+
+\author{Bernhard Mallinger}
+\title{Interpolation in First-Order Logic with Equality}
+\subtitle{Master Thesis Presentation}
+\institute{Advisor: Stefan Hetzl\medskip \\ Institute of
+Discrete Mathematics and Geometry \\ TU Wien}
+%\date{17. Dezember 2013}
+
+
+\newcommand{\imgframe}[2]{ 
+\imgframeWparams{#1}{#2}{width=1\textwidth}
+}
+
+\newcommand{\imgframeWparams}[3] {
+\begin{frame}
+	\frametitle{#1}
+	\begin{center}
+		\begin{figure}
+			\includegraphics[#3]{#2}
+		\end{figure}
+	\end{center}
+\end{frame}
+}
+
+\begin{document}
+% for overlay
+% \begin{frame}[<+->]
+
+\frame{\titlepage}
+
+
+\begin{frame}{Agenda}
+	\tableofcontents
+\end{frame}
+
+\section{Introduction}
+\begin{frame}{Introduction}
+	\color{green}
+	\begin{itemize}
+		\item Want concrete algorithms for FOL/EQ
+
+			$\Rightarrow$ Little attention so far
+		\item Present different constructive proofs
+	\end{itemize}
+	
+\end{frame}
+
+\section{Craig Interpolation (10 min)}
+
+\begin{frame}{Craig Interpolation}
+	\textbf{Theorem} (Craig).
+	\emph{Let \myA{}
+		and \myB{} be first-order formulas where
+		\begin{itemize}
+			\item \myA{} contains \colA{red} and \gray{gray} symbols and
+			\item \myB{} contains \colB{blue} and \gray{gray} symbols
+		\end{itemize}
+		such that:
+		\begin{itemize}
+			\item $\entails \myA\supset \myB$
+		\end{itemize}
+
+		~
+
+
+		\begin{tabular}{p{.5\textwidth}p{.5\textwidth}}
+			\mbox{Then there is a interpolant $\gray I$ containing only \gray{gray} symbols such that:}
+			\begin{itemize}
+				\item $\entails \myA \limpl \gray I$
+				\item $\entails \gray I \limpl \myB$
+			\end{itemize}
+			&
+			\begin{figure}
+				\begin{tikzpicture}[
+						implies/.style={double,double equal sign distance,-implies},
+						mynode/.style={circle,outer sep=3pt}
+					]
+					\node[mynode] (A) at (0,0) {$\myA$};
+					\node[mynode] (B) at (3,0) {$\myB$};
+					\node[mynode] (I) at (1.5,-1.5) {$\gray I$};
+
+					%\draw[->,implies] (A) to (B);
+					\draw (A) edge[implies]  (B);
+					\draw (A) edge[implies]  (I);
+					\draw (I) edge[implies]  (B);
+				\end{tikzpicture}
+			\end{figure}
+		\end{tabular}
+	}
+\end{frame}
+
+\subsection{Interpolation and Equality}
+\begin{frame}
+\end{frame}
+
+\subsection{Applications (include Beth proof?)}
+\begin{frame}
+\end{frame}
+
+\section{Craig's Proof (6 min)}
+
+\subsection{Translation (brief, by example)}
+\begin{frame}
+\end{frame}
+
+\subsection{Maehara/BL (mention lifting?)}
+\begin{frame}
+\end{frame}
+
+
+\section{Huang's Proof (10 min)}
+
+\subsection{Phase one (propositional, inductive)}
+\begin{frame}
+\end{frame}
+
+\subsection{Phase two (lifting, ordering)}
+\begin{frame}
+\end{frame}
+
+\subsection{Optional: Number of quantifier alternations}
+\begin{frame}
+\end{frame}
+
+
+\subsection{Proof with one phase: Can lift earlier.}
+\begin{frame}
+\end{frame}
+
+\section{Semantic Proof (6 min)}
+\begin{frame}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}{Conclusion}
+	\begin{itemize}
+		\item Craig's and Huang's proof based interpolant extraction from proofs
+
+			$\Rightarrow$ differ in applicability 
+
+		\item Craig shows that the interpolation theorem holds also in FOL/EQ
+		\item Huang shows that interpolants can efficiently be extracted in FOL/EQ
+
+			\begin{itemize}
+				\item Does not require different methods
+				\item Little attention so far in research
+			\end{itemize}
+
+		\item Interpolation also allows for a model theoretic approach
+
+	\end{itemize}
+\end{frame}
+
+\end{document}
