@@ -127,12 +127,6 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \frame{\titlepage}
 
-\begin{frame}{Notes (cover this somewhere)}
-	\begin{itemize}
-		\item  interpolants can be extracted from resolution proofs since skolemisation and the cnf transformation doesn't change the set of interpolants
-	\end{itemize}
-\end{frame}
-
 \begin{frame}{Agenda}
 	\tableofcontents
 \end{frame}
@@ -152,8 +146,8 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \section{Craig Interpolation (10 min)}
 
 \subsection{}
-\begin{frame}{Craig Interpolation}
-	\textbf{Theorem} (Craig).
+\begin{frame}{Craig Interpolation (1/2)}
+	\textbf{Theorem} (\cite{Craig57linear}).
 	\emph{Let \myA{}
 		and \myB{} be sets of first-order formulas where
 		\begin{itemize}
@@ -195,17 +189,35 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \subsection{}
-\begin{frame}{Interpolation and Equality}
+\begin{frame}{Craig Interpolation (2/2)}
+	\begin{example}
+		\begin{itemize}
+			\item Let $\Gamma = \{\gray P(\colA a)) \}$ and $\Delta = \{ \forall x (\gray P(x) \limpl \colB Q(x)), \exists y \colB Q(y) \}$.
+				\pause
+			\item Interpolant: $\exists z \,\gray P(z)$
+		\end{itemize}
+	\end{example}
+
+	\pause
+
 	\begin{example}
 		\begin{itemize}
 			\item Let $\Gamma = \{\colA P(\gray a), \lnot \colA P(\gray b)\}$ and $\Delta = \{ \gray a \neq \gray b \}$.
-
-			\item Clearly $\Gamma \entails \Delta$.
-				
 				\pause 
 			\item Only possible interpolant: $\gray a \neq \gray b$
-			\end{itemize}
+		\end{itemize}
 	\end{example}
+
+	\pause
+
+	\begin{example}
+		\begin{itemize}
+			\item Let $\Gamma = \{\colA P(\colA a), \lnot \colA P(\colA a) \}$, $\Delta = \emptyset$.
+				\pause 
+			\item Only possible interpolant: $\bot$
+		\end{itemize}
+	\end{example}
+
 \end{frame}
 
 \subsection{}
@@ -214,6 +226,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 		\item Proof of Beth's Definability Theorem
 		\item Model checking
 		\item Detecting loop invariants
+		\item Reasoning with large knowledge bases
 	\end{itemize}
 \end{frame}
 
@@ -271,7 +284,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\textbf{Open question:} Can it be extended to include equality?
 \end{frame}
 
-\section{Interpolant extraction from resolution proofs (10 min)}
+\section{Interpolant extraction from resolution proofs (12 min)}
 
 \subsection{}
 \begin{frame}{Interpolant extraction}
@@ -371,10 +384,11 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \subsection{}
 \begin{frame}{Huang's algorithm (2/2)}
 	\begin{itemize}
-		%\item Outline of the proof? (
 		\item Propositional interpolant is interpolant modulo function and constant symbols
 		\item For the lifting phase, the ordering of the lifting variables is crucial
 		\item The type of the quantifier is determined by the coloring of the symbol
+
+			\pause
 
 			\begin{theorem}
 				The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
@@ -455,7 +469,10 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \section{Semantic Proof (6 min)}
-\begin{frame}
+\begin{frame}{Semantic Proof}
+
+	TODO
+
 \end{frame}
 
 \section{Conclusion}
