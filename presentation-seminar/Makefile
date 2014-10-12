@@ -9,13 +9,13 @@ all:
 
 
 everything:
-	make pdfnow
+	make pdf1now
 	make bib
-	make pdfnow
-	make pdfnow
+	make pdf1now
+	make pdf1now
 
 bib:
-	bibtex presentation-seminar
+	bibtex tmp
 
 
 pdf:
