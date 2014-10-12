@@ -151,6 +151,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \section{Craig Interpolation (10 min)}
 
+\subsection{}
 \begin{frame}{Craig Interpolation}
 	\textbf{Theorem} (Craig).
 	\emph{Let \myA{}
@@ -193,7 +194,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	}
 \end{frame}
 
-\subsection{Interpolation and Equality (1 slide)}
+\subsection{}
 \begin{frame}{Interpolation and Equality}
 	\begin{example}
 		\begin{itemize}
@@ -207,7 +208,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\end{example}
 \end{frame}
 
-\subsection{Applications (1 slide)}
+\subsection{}
 \begin{frame}{Applications}
 	\begin{itemize}
 		\item Proof of Beth's Definability Theorem
@@ -217,7 +218,6 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \section{Proof by reduction (6 min)}
-
 \newenvironment{myindentpar}[1]%
 {\begin{list}{}%
 		{\setlength{\leftmargin}{#1}}%
@@ -225,6 +225,8 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	}
 {\end{list}}
 
+
+\subsection{}
 \begin{frame}{Proof by reduction}
 		Reduction to FOL without equality and function symbols:
 		\vspace*{-2em}
@@ -246,6 +248,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\vspace*{1.5em}
 \end{frame}
 
+\subsection{}
 \begin{frame}{Proof in FOL without equality and $\operatorname{FS}$}
 	%\newcommand{\parti}[4]{\ensuremath{ \langle (#1; #2),\allowbreak (#3; #4)\rangle  }}
 
@@ -270,7 +273,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \section{Interpolant extraction from resolution proofs (10 min)}
 
-\subsection{Introduction}
+\subsection{}
 \begin{frame}{Interpolant extraction}
 	\begin{block}{Motivation}
 		\begin{itemize}
@@ -288,17 +291,8 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\end{block}
 
 \end{frame}
-
-\subsection{Phase one (propositional, inductive)}
-\begin{frame}{Huang's algorithm}
-	\small
-	%Approach:
-	%\begin{enumerate}
-	%	\item Inductively compute propositional interpolant for every clause of the refutation
-	%	\item 
-	%\end{enumerate}
-	\newcommand{\fakemulticolwidth}{0.28\textwidth}
-	\newcommand{\proofwidth}{0.17\textwidth}
+\newcommand{\fakemulticolwidth}{0.28\textwidth}
+	\newcommand{\proofwidth}{0.18\textwidth}
 	%\newcommand{\proofindent}{\hspace*{10.21em}}
 	\newcommand{\proofindent}{\hspace*{11.21em}}
 	%\newcommand{\proofwidth}{0.18\textwidth}
@@ -307,6 +301,15 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	%\newcommand{\stagearrow}{{\Large$\Downarrow$}}
 	\newcommand{\stagearrow}{{\Large$\Downarrow$}}
 
+\subsection{}
+\begin{frame}{Huang's algorithm (1/2) (6 min)}
+	\small
+	%Approach:
+	%\begin{enumerate}
+	%	\item Inductively compute propositional interpolant for every clause of the refutation
+	%	\item 
+	%\end{enumerate}
+	
 	%\begin{tabularx}{\textwidth}{p{0.25\textwidth}p{0.2\textwidth}l}
 	%\begin{tabular}{p{0.25\textwidth}p{0.35\textwidth}c}
 	%\begin{tabular}{p{0.25\textwidth}ll}
@@ -322,14 +325,14 @@ Discrete Mathematics and Geometry \\ TU Wien}
 		%\rule{0.4\textwidth}{0.1\textwidth}
 		%\end{center}
 		&
-		\vspace*{0.5em}
+		\vspace*{0.2em}
 		\\
 
 		%& \begin{center} \large\stagearrow \end{center} & 
 		%\multicolumn{2}{c}{\emph{Extract structure from proof}}
 		\multicolumn{2}{l}{
 			\proofindent{\stagearrow} ~\parbox[c]{14em}{\raggedright \emph{ Extract propositional interpolant structure from proof}}
-			\vspace*{0.5em}
+			\vspace*{0.2em}
 		}
 		\\
 
@@ -344,12 +347,11 @@ Discrete Mathematics and Geometry \\ TU Wien}
 			\includegraphics[width=\proofwidth]{figures/two_phase_draft_proof}
 		}
 		$\dots \gray Q(\colA f(\colB c), \colB c) \dots$
-		\vspace*{0.5em}
+		\vspace*{0.2em}
 		\\
-
 		\multicolumn{2}{l}{
 			\proofindent{\stagearrow} ~\parbox[c]{12em}{\raggedright \emph{ Replace colored function and constant symbols }}
-			\vspace*{0.5em}
+			\vspace*{0.2em}
 		}
 		\\
 
@@ -366,17 +368,90 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \end{frame}
 
-\subsection{Phase two (lifting, ordering)}
-\begin{frame}
+\subsection{}
+\begin{frame}{Huang's algorithm (2/2)}
+	\begin{itemize}
+		%\item Outline of the proof? (
+		\item Propositional interpolant is interpolant modulo function and constant symbols
+		\item For the lifting phase, the ordering of the lifting variables is crucial
+		\item The type of the quantifier is determined by the coloring of the symbol
+
+			\begin{theorem}
+				The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
+			\end{theorem}
+	\end{itemize}
 \end{frame}
 
-\subsection{Optional: Number of quantifier alternations}
-\begin{frame}
-\end{frame}
+
+\newcommand{\onePhaseArrowLabel}{Combined structure extraction and replacing of colored symbols}
+
+\subsection{}
+\begin{frame}{Interpolation extraction in one phase}
+	\small
+	\begin{tabular}{p{0.25\textwidth}ll}
+
+		Proof: 
+		&
+
+		\multicolumn{1}{m{\fakemulticolwidth}}{
+			\includegraphics[width=\proofwidth]{figures/two_phase_draft_proof}
+		}
+		&
+		\vspace*{0.2em}
+		\\
+
+		\multicolumn{2}{l}{
+			\proofindent{\stagearrow} ~\parbox[c]{15em}{\raggedright\emph{ \onePhaseArrowLabel } }
+			\vspace*{0.2em}
+		}
+		\\
+
+	\begin{tabular}[x]{@{}l@{}}Interpolant\\modulo\\current clause:\end{tabular} 
+		&
+		\multicolumn{1}{m{\fakemulticolwidth}}{
+			\includegraphics[width=\proofwidth]{figures/one_phase_draft_intermediate}
+		}
+		$\forall {x_5} \dots \gray Q({x_5}, \colB c) \dots$
+		\vspace*{0.2em}
+		\\
+
+		\multicolumn{3}{l}{
+			\hspace*{5em}
+			\parbox[c]{13.3em}{\emph{Recursively applied to all inferences of the proof results in:}}
+			%\proofindent{\stagearrow} ~\parbox[c]{15em}{\raggedright\emph{ \onePhaseArrowLabel } }
+			%				\vspace*{0.5em}
+			\vspace*{0.5em}
+		}
+		\\
 
 
-\subsection{Proof with one phase: Can lift earlier.}
-\begin{frame}
+		%			\multicolumn{2}{l}{
+		%				\proofindent
+		%				$\left.
+		%				\parbox[c]{2em}{
+		%					\stagearrow\\
+		%					\hspace*{0.318em}$\vdots$ \\[0.27\baselineskip]
+		%					\stagearrow
+		%				}
+		%			\right\} 
+		%			\parbox[t]{11em}{\emph{Combined extraction and replacing phases}}
+		%			$
+		%				\vspace*{0.5em}
+		%			} 
+		%		 \\
+
+	\begin{tabular}[x]{@{}l@{}}Non-Prenex\\First-Order\\Interpolant:\end{tabular} 
+		&
+		\multicolumn{1}{m{\fakemulticolwidth}}{
+			\includegraphics[width=\proofwidth]{figures/two_phase_draft_fo_interpolant}
+		}
+		$\exists {x_3} \dots \forall {x_5} \dots \gray Q({x_5}, {x_3}) \dots$
+		\\
+
+
+
+	\end{tabular}
+
 \end{frame}
 
 \section{Semantic Proof (6 min)}
@@ -405,7 +480,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \subsection{References}
 \begin{frame}
-	  \bibliography{bib}
+	\bibliography{bib}
 \end{frame}
 
 \end{document}
