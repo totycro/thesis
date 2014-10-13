@@ -3,7 +3,7 @@ PDFFILE="presentation-seminar.pdf"
 
 fst: pdf
 
-all:
+ref:
 	make pdf1now
 	make pdf1now
 

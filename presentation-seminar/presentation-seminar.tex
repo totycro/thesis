@@ -19,6 +19,14 @@
 \setbeamercovered{transparent}
 \usepackage{tabularx}
 
+\newenvironment{myindentpar}[1]%
+{\begin{list}{}%
+		{\setlength{\leftmargin}{#1}}%
+	\item[]%
+	}
+{\end{list}}
+
+
 
 % setup colors
 %\RequirePackage{xcolor}
@@ -83,6 +91,8 @@
 \newcommand{\myA}{\tikzset{letter left=InfosysDarkGrey,letter right=TuInfRed}\bicolorletter{\ensuremath{\Gamma}}}
 \newcommand{\myB}{\tikzset{letter left=InfosysDarkGrey,letter right=TuWienBlue}\bicolorletter{\ensuremath{\Delta}}}
 
+\newcommand{\myAB}[1]{\tikzset{letter left=TuInfRed,letter right=TuWienBlue}\bicolorletter{\ensuremath{#1}}}
+
 
 
 
@@ -131,19 +141,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\tableofcontents
 \end{frame}
 
-\section{Introduction}
-\begin{frame}{Introduction}
-	\color{green}
-	\begin{itemize}
-		\item Want concrete algorithms for FOL/EQ
-
-			$\Rightarrow$ Little attention so far
-		\item Present different constructive proofs
-	\end{itemize}
-	
-\end{frame}
-
-\section{Craig Interpolation (10 min)}
+\section{Introduction (10 min)}
 
 \subsection{}
 \begin{frame}{Craig Interpolation (1/2)}
@@ -221,26 +219,30 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \subsection{}
-\begin{frame}{Applications}
-	\begin{itemize}
-		\item Proof of Beth's Definability Theorem
-		\item Model checking
-		\item Detecting loop invariants
-		\item Reasoning with large knowledge bases
-	\end{itemize}
+\begin{frame}{Applications and Motivation}
+	\begin{block}{Applications}
+		\begin{itemize}
+			\item Proof of Beth's Definability Theorem
+			\item Model checking
+			\item Detecting loop invariants
+			\item Reasoning with large knowledge bases
+		\end{itemize}
+	\end{block}
+	\pause
+	\begin{block}{Motivation}
+		\begin{itemize}
+			\item Craig interpolation in full first-order logic with equality has received little attention so far
+			\item Interest for constructive proofs giving rise to interpolant extraction algorithms
+		\end{itemize}
+	\end{block}
+
 \end{frame}
 
-\section{Proof by reduction (6 min)}
-\newenvironment{myindentpar}[1]%
-{\begin{list}{}%
-		{\setlength{\leftmargin}{#1}}%
-	\item[]%
-	}
-{\end{list}}
 
 
+\section{Proof by Reduction (6 min)}
 \subsection{}
-\begin{frame}{Proof by reduction}
+\begin{frame}{Proof by Reduction}
 		Reduction to FOL without equality and function symbols:
 		\vspace*{-2em}
 		\begin{myindentpar}{1cm}
@@ -254,7 +256,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 				%\gray s = \gray t & \transformsep \gray E(\gray s, \gray t) \\
 				\Big( \gray s = \gray t \Big)^* & \, \equiv \, \gray E(\gray s, \gray t) \\
 				\intertext{Add axioms for equality and new predicate symbols:}
-				\varphi & ~\transformsep ~ \Big( \operatorname{T}_{\gray E} \land \bigwedge_{f \in \operatorname{FS}} \operatorname{T}_{\gray f} \Big) \limpl \varphi^*
+				\Big( \varphi \Big)^* & ~\equiv~ \Big( \operatorname{T}_{\gray E} \land \bigwedge_{f \in \operatorname{FS}} \operatorname{T}_{\myAB{F}} \Big) \limpl \varphi^*
 			\end{align*}
 	\end{myindentpar}
 	Clearly $\varphi$ and $\varphi^*$ are equisatisfiable.
@@ -262,7 +264,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \subsection{}
-\begin{frame}{Proof in FOL without equality and $\operatorname{FS}$}
+\begin{frame}{Proof in FOL without Equality and Function Symbols}
 	%\newcommand{\parti}[4]{\ensuremath{ \langle (#1; #2),\allowbreak (#3; #4)\rangle  }}
 
 	%\newcommand{\partisym}{\ensuremath{\chi}}
@@ -284,10 +286,10 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\textbf{Open question:} Can it be extended to include equality?
 \end{frame}
 
-\section{Interpolant extraction from resolution proofs (12 min)}
+\section{Interpolant Extraction from Resolution Proofs (12 min)}
 
 \subsection{}
-\begin{frame}{Interpolant extraction}
+\begin{frame}{Interpolant Extraction}
 	\begin{block}{Motivation}
 		\begin{itemize}
 			\item Proof by reduction is impractical
@@ -315,7 +317,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\newcommand{\stagearrow}{{\Large$\Downarrow$}}
 
 \subsection{}
-\begin{frame}{Huang's algorithm (1/2) (6 min)}
+\begin{frame}{Huang's Algorithm (1/2) (6 min)}
 	\small
 	%Approach:
 	%\begin{enumerate}
@@ -382,7 +384,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \subsection{}
-\begin{frame}{Huang's algorithm (2/2)}
+\begin{frame}{Huang's Algorithm (2/2)}
 	\begin{itemize}
 		\item Propositional interpolant is interpolant modulo function and constant symbols
 		\item For the lifting phase, the ordering of the lifting variables is crucial
@@ -400,7 +402,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \newcommand{\onePhaseArrowLabel}{Combined structure extraction and replacing of colored symbols}
 
 \subsection{}
-\begin{frame}{Interpolation extraction in one phase}
+\begin{frame}{Interpolation Extraction in one Phase}
 	\small
 	\begin{tabular}{p{0.25\textwidth}ll}
 
