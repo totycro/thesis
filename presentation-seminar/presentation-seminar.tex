@@ -141,14 +141,14 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\tableofcontents
 \end{frame}
 
-\section{Introduction (10 min)}
+\section{Introduction}
 
 \subsection{}
 \begin{frame}{Craig Interpolation (1/2)}
 	\textbf{Theorem} (\cite{Craig57linear}).
 
 	\emph{Let \myA{}
-		and \myB{} be sets of first-order formulas where
+		and \myB{} be finite sets of first-order formulas where
 		\begin{itemize}
 			\item \myA{} contains \colA{red} and \mygray{gray} symbols and
 			\item \myB{} contains \colB{blue} and \mygray{gray} symbols
@@ -203,7 +203,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 		\begin{itemize}
 			\item Let $\Gamma = \{\colA P(\mygray a), \lnot \colA P(\mygray b)\}$ and $\Delta = \{ \mygray a \neq \mygray b \}$.
 				\pause 
-			\item Only possible interpolant: $\mygray a \neq \mygray b$
+			\item Interpolant: $\mygray a \neq \mygray b$
 		\end{itemize}
 	\end{example}
 
@@ -213,7 +213,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 		\begin{itemize}
 			\item Let $\Gamma = \{\colA P(\colA a), \lnot \colA P(\colA a) \}$, $\Delta = \emptyset$.
 				\pause 
-			\item Only possible interpolant: $\bot$
+			\item Interpolant: $\bot$
 		\end{itemize}
 	\end{example}
 
@@ -225,7 +225,6 @@ Discrete Mathematics and Geometry \\ TU Wien}
 		\begin{itemize}
 			\item Proof of Beth's Definability Theorem
 			\item Model checking
-			\item Detecting loop invariants
 			\item Reasoning with large knowledge bases
 		\end{itemize}
 	\end{block}
@@ -241,23 +240,25 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 
 
-\section{Proof by Reduction (6 min)}
+\section{Proof by Reduction}
 \subsection{}
-\begin{frame}{Proof by Reduction}
+\begin{frame}{Proof by Reduction due to Craig}
 		Reduction to FOL without equality and function symbols:
 		\vspace*{-2em}
 		\begin{myindentpar}{1cm}
 			\newcommand{\transformsep}{\;\to\;}
 			\begin{align*}
-				\intertext{Translate equality and function symbols:}
+				%\intertext{Translate equality and function symbols:}
 				%\mygray P(\colA c) & \transformsep \exists x (\colA C(x) \land \mygray P(x)) \\
 				\Big(\mygray P(\colA c)\Big)^*  & \, \equiv \, \exists x (\colA C(x) \land \mygray P(x)) \\
 				%\mygray P(\colB f( \colA c)) & \transformsep  \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \mygray P(x)) \\
 				\Big( \mygray P(\colB f( \colA c)) \Big)^* & \, \equiv \, \exists x (  \exists y( \colA C(y) \land \colB F(y, x)) \land \mygray P(x))  \\
 				%\mygray s = \mygray t & \transformsep \mygray E(\mygray s, \mygray t) \\
 				\Big( \mygray s = \mygray t \Big)^* & \, \equiv \, \mygray E(\mygray s, \mygray t) \\
-				\intertext{Add axioms for equality and new predicate symbols:}
-				\Big( \varphi \Big)^* & ~\equiv~ \Big( \operatorname{T}_{\mygray E} \land \bigwedge_{f \in \operatorname{FS}} \operatorname{T}_{\myAB{F}} \Big) \limpl \varphi^*
+				\intertext{}
+				%\vspace*{3em}
+				%\intertext{Add axioms for equality and new predicate symbols:}
+				\Big( \varphi \Big)^* & \, \equiv \, \Big( \operatorname{T}_{\mygray E} \land \bigwedge_{f \in \operatorname{FS}} \operatorname{T}_{\myAB{F}} \Big) \limpl \varphi^*
 			\end{align*}
 	\end{myindentpar}
 	Clearly $\varphi$ and $\varphi^*$ are equisatisfiable.
@@ -272,7 +273,8 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 	\begin{lemma}[Maehara]
 		Let $\Gamma$ and $\Delta$ be sets of first-order formulas without equality and function symbols such that $\Gamma \vdash \Delta$ is provable in \textbf{sequent calculus}.
-		Then for any partition $\langle(\Gamma_1;\Delta_1),(\Gamma_2;\Delta_2)\rangle$
+		Then for any partition $\langle(\Gamma_1;\Delta_1),(\Gamma_2;\Delta_2)\rangle$ with
+		$\Gamma_1 \uplus \Gamma_2 = \Gamma$ and $\Delta_1 \uplus \Delta_2 = \Delta$
 		there is an interpolant $I$ such that
 		\begin{enumerate}
 			\item $\Gamma_1 \proves \Delta_1, I$ is provable
@@ -284,13 +286,13 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\pause
 	\cite{baaz2011methods} presents a strengthening which includes function symbols.
 
-	\textbf{Open question:} Can it be extended to include equality?
+	\mbox{\textbf{Open question:} Can it be extended to include equality rules for LK?}
 \end{frame}
 
-\section{Interpolant Extraction from Resolution Proofs (15 min)}
+\section{Interpolant Extraction} 
 
 \subsection{}
-\begin{frame}{Interpolant Extraction}
+\begin{frame}{Interpolant Extraction from Resolution Proofs}
 	\begin{block}{Motivation}
 		\begin{itemize}
 			\item Proof by reduction is impractical
@@ -305,8 +307,37 @@ Discrete Mathematics and Geometry \\ TU Wien}
 			\item Have to use ``reverse'' (but equivalent) formulation of interpolation
 		\end{itemize}
 	\end{block}
+\end{frame}
+
+
+\subsection{}
+\begin{frame}{The Resolution Calculus}
+	\begin{prooftree}
+		\LeftLabel{\textit{Resolution:}\quad}
+		\AxiomCm{ C \lor l }
+		\AxiomCm{ D \lor \lnot l' }
+		\RightLabelm{\resruleres \quad \sigma = \mgu(l, l')}
+		\BinaryInfCm{ (C \lor D)\sigma }
+	\end{prooftree}
+
+	\begin{prooftree}
+		\LeftLabel{\textit{Factorization:}\quad}
+		\AxiomCm{ C \lor l \lor l' }
+		\RightLabelm{\resrulefac \quad \sigma = \mgu(l, l')}
+		\UnaryInfCm{ (C \lor l)\sigma }
+	\end{prooftree}
+
+	\begin{prooftree}
+		\LeftLabel{\textit{Paramodulation:}\quad}
+		\AxiomCm{ D \lor s=t }
+		\AxiomCm{ E\occurat{r}{p} }
+		\RightLabelm{\resrulepar \quad \sigma = \mgu(s, r)}
+		\BinaryInfCm{ (D \lor E\occurat{t}{p})\sigma }
+	\end{prooftree}
 
 \end{frame}
+
+
 \newcommand{\fakemulticolwidth}{0.28\textwidth}
 	\newcommand{\proofwidth}{0.18\textwidth}
 	%\newcommand{\proofindent}{\hspace*{10.21em}}
@@ -385,7 +416,30 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \subsection{}
+\begin{frame}{Propositional Interpolant Extraction Example}
+	Paramodulation rule:
+	\begin{prooftree}
+		%\LeftLabel{\textit{Paramodulation:}\quad}
+		\AxiomCm{ C_1 : D \lor s=t }
+		\AxiomCm{ C_2 : E\occurat{r}{p} }
+		\RightLabelm{\resrulepar \quad \sigma = \mgu(s, r)}
+		\BinaryInfCm{ C : (D \lor E\occurat{t}{p})\sigma }
+	\end{prooftree}
+
+	~
+
+	~
+
+	Propositional interpolant\footnote{Provided that $r$ is not contained in a colored term}:
+	\[
+		\PI(C) \defeqBeamer{} [ ( s=t \land \PI(C_2)) \lor (s\neq t \land \PI(C_1)) ]\sigma
+	\]
+\end{frame}
+
+
+\subsection{}
 \begin{frame}{Huang's Algorithm (2/3)}
+	TODO: remove from here as soon as it's clear if it's being said at the image slide
 	\begin{block}{First phase}
 		\begin{itemize}
 			\item Propositional interpolant is extracted inductively, is boolean combination of PIs of clauses and resolved literals or equations of paramodulation inferences.
@@ -397,6 +451,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \subsection{}
 \begin{frame}{Huang's Algorithm (3/3)}
+	TODO: remove from here as soon as it's clear if it's being said at the image slide
 	\begin{block}{Second phase}
 		\begin{itemize}
 			\item The second phase replaces the remaining colored terms by quantified variables
@@ -407,9 +462,15 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 	\pause
 
-	\begin{theorem}
-		The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
-	\end{theorem}
+	KEEP THIS:
+
+	\begin{itemize}
+			\item Number of quantifier alternations $\sim$ number of color alternations in terms of the resolution proof
+	\end{itemize}
+
+	%\begin{theorem}
+	%	The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
+	%\end{theorem}
 \end{frame}
 
 
@@ -484,51 +545,57 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \end{frame}
 
-\section{Semantic Proof (6 min)}
+\section{Semantic Proof}
 \begin{frame}{Semantic Proof}
-	Indirect and model-theoretic proof of the interpolation theorem
+	\begin{itemize}
+		\item Indirect and model-theoretic proof of the interpolation theorem
 
-	$\Rightarrow$ non-constructive 
+		\item Inherently non-constructive 
 
-	\pause
+		\item Equality does not require explicit handling
 
-	\begin{definition}[Separation]
-		A formula $A$ in the language $\Lang(\Gamma) \cap \Lang(\Delta)$ separates $\Gamma$ and $\Delta$ if
-		\begin{itemize}
-			\item $\Gamma \entails A$
-			\item $\Delta \entails \lnot A$.
-		\end{itemize}
-	\end{definition}
+		\item Interpolation in FOL with equality equivalent to Robinson's joint consistency theorem
 
-	\begin{theorem}[Robinson's joint consistency theorem]
-		$\Gamma \cup \Delta$ is consistent iff there is no formula which separates $\Gamma$ and $\Delta$.
-	\end{theorem}
-
-	$\Rightarrow$ Separating formula corresponds to interpolant.
-\end{frame}
-
-\begin{frame}{Semantic Proof}
-	\begin{proof}[Proof (sketch, $\Leftarrow$ direction)]
-		\begin{itemize}
-			\item Suppose $\Gamma$ and $\Delta$ inseparable.
-			\item Set $T_0 = \Gamma$ and $T'_0 = \Delta$.
-			\item Add to $T_i$ the $i$th formula of $\Lang(\Gamma)$ if this does not make $T_i$ and $T'_i$ separable
-				(similar for $T'_i$).
-			\item Let
-				$T = \bigcup_{i\varleq 0} T_i$ and
-				$T' = \bigcup_{i\varleq 0} T'_i$.
-			\item Can show that:
-				\begin{itemize}
-					\item $T$ and $T'$ inseparable
-					\item $T$ and $T'$ each consistent
-					\item $T$ and $T'$ each maximal consistent w.r.t.\ to $\Lang(\Gamma)$ and $\Lang(\Delta)$ respectively
-					\item $T \cap T'$ maximal consistent w.r.t.\ to $\Lang(\Gamma) \cap \Lang(\Delta)$ 
-				\end{itemize}
-			\item Hence $T \cup T'$ is satisfiable.
-				\qedhere
 	\end{itemize}
-	\end{proof}
+
+
+	%\begin{definition}[Separation]
+	%	A formula $A$ in the language $\Lang(\Gamma) \cap \Lang(\Delta)$ separates $\Gamma$ and $\Delta$ if
+	%	\begin{itemize}
+	%		\item $\Gamma \entails A$
+	%		\item $\Delta \entails \lnot A$.
+	%	\end{itemize}
+	%\end{definition}
+
+	%\begin{theorem}[Robinson's joint consistency theorem]
+	%	$\Gamma \cup \Delta$ is consistent iff there is no formula which separates $\Gamma$ and $\Delta$.
+	%\end{theorem}
+
+	%$\Rightarrow$ Separating formula corresponds to interpolant.
 \end{frame}
+
+%\begin{frame}{Semantic Proof}
+%	\begin{proof}[Proof (sketch, $\Leftarrow$ direction)]
+%		\begin{itemize}
+%			\item Suppose $\Gamma$ and $\Delta$ inseparable.
+%			\item Set $T_0 = \Gamma$ and $T'_0 = \Delta$.
+%			\item Add to $T_i$ the $i$th formula of $\Lang(\Gamma)$ if this does not make $T_i$ and $T'_i$ separable
+%				(similar for $T'_i$).
+%			\item Let
+%				$T = \bigcup_{i\varleq 0} T_i$ and
+%				$T' = \bigcup_{i\varleq 0} T'_i$.
+%			\item Can show that:
+%				\begin{itemize}
+%					\item $T$ and $T'$ inseparable
+%					\item $T$ and $T'$ each consistent
+%					\item $T$ and $T'$ each maximal consistent w.r.t.\ to $\Lang(\Gamma)$ and $\Lang(\Delta)$ respectively
+%					\item $T \cap T'$ maximal consistent w.r.t.\ to $\Lang(\Gamma) \cap \Lang(\Delta)$ 
+%				\end{itemize}
+%			\item Hence $T \cup T'$ is satisfiable.
+%				\qedhere
+%	\end{itemize}
+%	\end{proof}
+%\end{frame}
 
 \section{Conclusion}
 \subsection{}
