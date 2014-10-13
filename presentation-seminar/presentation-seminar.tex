@@ -55,7 +55,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[ngerman]{babel}
+\usepackage[english]{babel}
 
 \input{../latex_header.tex}
 
@@ -146,11 +146,12 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \subsection{}
 \begin{frame}{Craig Interpolation (1/2)}
 	\textbf{Theorem} (\cite{Craig57linear}).
+
 	\emph{Let \myA{}
 		and \myB{} be sets of first-order formulas where
 		\begin{itemize}
-			\item \myA{} contains \colA{red} and \mygray{mygray} symbols and
-			\item \myB{} contains \colB{blue} and \mygray{mygray} symbols
+			\item \myA{} contains \colA{red} and \mygray{gray} symbols and
+			\item \myB{} contains \colB{blue} and \mygray{gray} symbols
 		\end{itemize}
 		such that:
 		\begin{itemize}
@@ -161,7 +162,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 
 		\begin{tabular}{p{.4\textwidth}p{.5\textwidth}}
-			\mbox{Then there is a interpolant $\mygray I$ containing only \mygray{mygray} symbols such that:}
+			\mbox{Then there is a interpolant $\mygray I$ containing only \mygray{gray} symbols such that:}
 			\begin{itemize}
 				\item $\myA \entails \mygray I$
 				\item $\mygray I \entails \myB$
@@ -270,7 +271,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	%\newcommand{\partisym}{\ensuremath{\chi}}
 
 	\begin{lemma}[Maehara]
-		Let $\Gamma$ and $\Delta$ be sets of first-order formulas without equality and function symbols   such that $\Gamma \vdash \Delta$ is provable in \textbf{sequent calculus}.
+		Let $\Gamma$ and $\Delta$ be sets of first-order formulas without equality and function symbols such that $\Gamma \vdash \Delta$ is provable in \textbf{sequent calculus}.
 		Then for any partition $\langle(\Gamma_1;\Delta_1),(\Gamma_2;\Delta_2)\rangle$
 		there is an interpolant $I$ such that
 		\begin{enumerate}
@@ -286,7 +287,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\textbf{Open question:} Can it be extended to include equality?
 \end{frame}
 
-\section{Interpolant Extraction from Resolution Proofs (12 min)}
+\section{Interpolant Extraction from Resolution Proofs (15 min)}
 
 \subsection{}
 \begin{frame}{Interpolant Extraction}
@@ -401,14 +402,14 @@ Discrete Mathematics and Geometry \\ TU Wien}
 			\item The second phase replaces the remaining colored terms by quantified variables
 			\item The ordering of the lifting variables is crucial
 			\item The type of the quantifier is determined by the coloring of the symbol
-
-				\pause
-
-				\begin{theorem}
-					The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
-				\end{theorem}
 		\end{itemize}
 	\end{block}
+
+	\pause
+
+	\begin{theorem}
+		The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
+	\end{theorem}
 \end{frame}
 
 
@@ -485,9 +486,48 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \section{Semantic Proof (6 min)}
 \begin{frame}{Semantic Proof}
+	Indirect and model-theoretic proof of the interpolation theorem
 
-	TODO
+	$\Rightarrow$ non-constructive 
 
+	\pause
+
+	\begin{definition}[Separation]
+		A formula $A$ in the language $\Lang(\Gamma) \cap \Lang(\Delta)$ separates $\Gamma$ and $\Delta$ if
+		\begin{itemize}
+			\item $\Gamma \entails A$
+			\item $\Delta \entails \lnot A$.
+		\end{itemize}
+	\end{definition}
+
+	\begin{theorem}[Robinson's joint consistency theorem]
+		$\Gamma \cup \Delta$ is consistent iff there is no formula which separates $\Gamma$ and $\Delta$.
+	\end{theorem}
+
+	$\Rightarrow$ Separating formula corresponds to interpolant.
+\end{frame}
+
+\begin{frame}{Semantic Proof}
+	\begin{proof}[Proof (sketch, $\Leftarrow$ direction)]
+		\begin{itemize}
+			\item Suppose $\Gamma$ and $\Delta$ inseparable.
+			\item Set $T_0 = \Gamma$ and $T'_0 = \Delta$.
+			\item Add to $T_i$ the $i$th formula of $\Lang(\Gamma)$ if this does not make $T_i$ and $T'_i$ separable
+				(similar for $T'_i$).
+			\item Let
+				$T = \bigcup_{i\varleq 0} T_i$ and
+				$T' = \bigcup_{i\varleq 0} T'_i$.
+			\item Can show that:
+				\begin{itemize}
+					\item $T$ and $T'$ inseparable
+					\item $T$ and $T'$ each consistent
+					\item $T$ and $T'$ each maximal consistent w.r.t.\ to $\Lang(\Gamma)$ and $\Lang(\Delta)$ respectively
+					\item $T \cap T'$ maximal consistent w.r.t.\ to $\Lang(\Gamma) \cap \Lang(\Delta)$ 
+				\end{itemize}
+			\item Hence $T \cup T'$ is satisfiable.
+				\qedhere
+	\end{itemize}
+	\end{proof}
 \end{frame}
 
 \section{Conclusion}
@@ -495,13 +535,13 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\begin{itemize}
 		\item Craig's and Huang's proof based interpolant extraction from proofs
 
-			$\Rightarrow$ differ in applicability 
+			$\Rightarrow$ but differ in practical applicability 
 
-		\item Craig shows that the interpolation theorem holds also in FOL/EQ
-		\item Huang shows that interpolants can efficiently be extracted in FOL/EQ
+		\item Craig shows that the interpolation theorem holds also in FOL with equality
+		\item Huang shows that interpolants can efficiently be extracted in FOL with equality
 
 			\begin{itemize}
-				\item Does not require different methods
+				\item Handling of equality does not require a different approach
 				\item Little attention so far in research
 			\end{itemize}
 
