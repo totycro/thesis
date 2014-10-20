@@ -1,0 +1,5 @@
+Title: Interpolation in First-Order Logic with Equality
+
+Craig's interpolation theorem is a long known basic result of mathematical logic. Interpolant extraction is crucial for practical applications but has received relatively little attention in full first-order logic with equality. In this talk, we present different proofs of the interpolation theorem in this logic with a focus on constructive proofs which give rise to interpolation extraction algorithms.
+
+
