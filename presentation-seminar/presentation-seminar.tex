@@ -258,10 +258,12 @@ Discrete Mathematics and Geometry \\ TU Wien}
 				%\intertext{}
 				%\vspace*{3em}
 				%\intertext{Add axioms for equality and new predicate symbols:}
-				\Big( \varphi \Big)^* & \, \equiv \, \Big( \operatorname{T}_{\mygray E} \land \bigwedge_{f \in \operatorname{FS}} \operatorname{T}_{\myAB{F}} \Big) \limpl \varphi^*
+				\Big( \varphi \Big)^{\bm *} & \, \equiv \, \Big( \operatorname{T}_{\mygray E} \land \bigwedge_{f \in \operatorname{FS}} \operatorname{T}_{\myAB{F}} \Big) \limpl \varphi^*
+				%\varphi  \; & \, \Ra \, \Big( \operatorname{T}_{\mygray E} \land \bigwedge_{f \in \operatorname{FS}} \operatorname{T}_{\myAB{F}} \Big) \limpl \varphi^*
 			\end{align*}
 	\end{myindentpar}
-	Clearly $\varphi$ and $\varphi^*$ are equisatisfiable.
+	Clearly $\varphi$ and $\varphi^{\bm *}$ are equisatisfiable.
+	%The original and the resulting formulas are equisatisfiable
 	\vspace*{1.5em}
 \end{frame}
 
@@ -438,41 +440,41 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 
-\subsection{}
-\begin{frame}{Huang's Algorithm (2/3)}
-	TODO: remove from here as soon as it's clear if it's being said at the image slide
-	\begin{block}{First phase}
-		\begin{itemize}
-			\item Propositional interpolant is extracted inductively, is boolean combination of PIs of clauses and resolved literals or equations of paramodulation inferences.
-			\item Propositional interpolant is interpolant modulo function and constant symbols (only grey predicate symbols) (this strategy already gives rise to a complete procedure for propositional logic)
-			\item Rule for paramodulation somewhat more complex but still same approach as for resolution and factorisation
-		\end{itemize}
-	\end{block}
-\end{frame}
+%\subsection{}
+%\begin{frame}{Huang's Algorithm (2/3)}
+%	TODO: remove from here as soon as it's clear if it's being said at the image slide
+%	\begin{block}{First phase}
+%		\begin{itemize}
+%			\item Propositional interpolant is extracted inductively, is boolean combination of PIs of clauses and resolved literals or equations of paramodulation inferences.
+%			\item Propositional interpolant is interpolant modulo function and constant symbols (only grey predicate symbols) (this strategy already gives rise to a complete procedure for propositional logic)
+%			\item Rule for paramodulation somewhat more complex but still same approach as for resolution and factorisation
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
 
-\subsection{}
-\begin{frame}{Huang's Algorithm (3/3)}
-	TODO: remove from here as soon as it's clear if it's being said at the image slide
-	\begin{block}{Second phase}
-		\begin{itemize}
-			\item The second phase replaces the remaining colored terms by quantified variables
-			\item The ordering of the lifting variables is crucial
-			\item The type of the quantifier is determined by the coloring of the symbol
-		\end{itemize}
-	\end{block}
-
-	\pause
-
-	KEEP THIS:
-
-	\begin{itemize}
-			\item Number of quantifier alternations $\sim$ number of color alternations in terms of the resolution proof
-	\end{itemize}
-
-	%\begin{theorem}
-	%	The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
-	%\end{theorem}
-\end{frame}
+%\subsection{}
+%\begin{frame}{Huang's Algorithm (3/3)}
+%	TODO: remove from here as soon as it's clear if it's being said at the image slide
+%	\begin{block}{Second phase}
+%		\begin{itemize}
+%			\item The second phase replaces the remaining colored terms by quantified variables
+%			\item The ordering of the lifting variables is crucial
+%			\item The type of the quantifier is determined by the coloring of the symbol
+%		\end{itemize}
+%	\end{block}
+%
+%	\pause
+%
+%	KEEP THIS:
+%
+%	\begin{itemize}
+%			\item Number of quantifier alternations $\sim$ number of color alternations in terms of the resolution proof
+%	\end{itemize}
+%
+%	%\begin{theorem}
+%	%	The number of quantifier alternations in the resulting interpolant directly corresponds to the number of color alternations of terms in the resolution proof.
+%	%\end{theorem}
+%\end{frame}
 
 
 \newcommand{\onePhaseArrowLabel}{Combined structure extraction and replacing of colored symbols}
@@ -547,9 +549,10 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \end{frame}
 
 \section{Semantic Proof}
+\subsection{}
 \begin{frame}{Semantic Proof}
 	\begin{itemize}
-		\item Indirect and model-theoretic proof of the interpolation theorem
+		\item Indirect proof of the interpolation theorem
 
 		\item Inherently non-constructive 
 

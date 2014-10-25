@@ -3,6 +3,8 @@ PDFFILE="presentation-seminar.pdf"
 
 fst: pdf
 
+all: pdf
+
 ref:
 	make pdf1now
 	make pdf1now
@@ -58,4 +60,6 @@ view:
 #view:
 #	okular presentation-seminar.ps 2>/dev/null 1>&2 &
 
-2: all
+2:
+	make
+	make
