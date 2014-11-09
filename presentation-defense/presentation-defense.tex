@@ -141,7 +141,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\tableofcontents
 \end{frame}
 
-\section{Introduction}
+\section{Craig Interpolation}
 
 \subsection{}
 \begin{frame}{Craig Interpolation (1/2)}
@@ -278,22 +278,31 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 	%\newcommand{\partisym}{\ensuremath{\chi}}
 
-	\begin{lemma}[Maehara]
-		Let $\Gamma$ and $\Delta$ be sets of first-order formulas without equality and function symbols such that $\Gamma \vdash \Delta$ is provable in \textbf{sequent calculus}.
-		Then for any partition $\langle(\Gamma_1;\Delta_1),(\Gamma_2;\Delta_2)\rangle$ with
-		$\Gamma_1 \uplus \Gamma_2 = \Gamma$ and $\Delta_1 \uplus \Delta_2 = \Delta$
-		there is a formula $I$ such that
-		\begin{enumerate}
-			\item $\Gamma_1 \proves \Delta_1, I$ is provable
-			\item $\Gamma_2, I \proves \Delta_2$ is provable
-			\item $\Lang(I) \subseteq \Lang(\Gamma_1, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$
-		\end{enumerate}
-	\end{lemma}
+	\begin{itemize}
+		\item Use Maehara's Lemma for reduced logic.
 
-	\pause
-	\cite{baaz2011methods} presents a strengthening which includes function symbols.
+		\item \cite{baaz2011methods} presents a strengthening which handles function symbols.
 
-	\mbox{\textbf{Open question:} Can it be extended to include equality rules for LK?}
+		\item \textbf{Open question:} Can it be extended to include equality?
+	\end{itemize}
+
+
+	%\begin{lemma}[Maehara]
+	%	Let $\Gamma$ and $\Delta$ be sets of first-order formulas without equality and function symbols such that $\Gamma \vdash \Delta$ is provable in \textbf{sequent calculus}.
+	%	Then for any partition $\langle(\Gamma_1;\Delta_1),(\Gamma_2;\Delta_2)\rangle$ with
+	%	$\Gamma_1 \uplus \Gamma_2 = \Gamma$ and $\Delta_1 \uplus \Delta_2 = \Delta$
+	%	there is a formula $I$ such that
+	%	\begin{enumerate}
+	%		\item $\Gamma_1 \proves \Delta_1, I$ is provable
+	%		\item $\Gamma_2, I \proves \Delta_2$ is provable
+	%		\item $\Lang(I) \subseteq \Lang(\Gamma_1, \Delta_1) \cap \Lang(\Gamma_2, \Delta_2)$
+	%	\end{enumerate}
+	%\end{lemma}
+
+	%\pause
+	%\cite{baaz2011methods} presents a strengthening which includes function symbols.
+
+	%\mbox{\textbf{Open question:} Can it be extended to include equality rules for LK?}
 \end{frame}
 
 \section{Interpolant Extraction} 
@@ -560,13 +569,11 @@ Discrete Mathematics and Geometry \\ TU Wien}
 \subsection{}
 \begin{frame}{Semantic Proof}
 	\begin{itemize}
-		\item Indirect proof of the interpolation theorem
+		\item Indirect proof of the interpolation theorem 
 
 		\item Builds a model non-constructively 
 
 		\item Equality does not require explicit handling
-
-		\item Interpolation in FOL with equality equivalent to Robinson's joint consistency theorem
 
 	\end{itemize}
 
