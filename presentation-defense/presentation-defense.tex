@@ -145,46 +145,42 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \subsection{}
 \begin{frame}{Craig Interpolation (1/2)}
-	\textbf{Theorem} (\cite{Craig57linear}).
 
-	\emph{Let \myA{}
-		and \myB{} be finite sets of first-order formulas where
-		\begin{itemize}
-			\item \myA{} contains \colA{red} and \mygray{gray} symbols and
-			\item \myB{} contains \colB{blue} and \mygray{gray} symbols
-		\end{itemize}
+	\vfill
+	\begin{theorem}[\cite{Craig57linear}]
+
+		Let \myA{}
+		and \myB{} be finite sets of first-order formulas 
+		%where
+		%\begin{itemize}
+		%	\item \myA{} contains \colA{red} and \mygray{gray} symbols and
+		%	\item \myB{} contains \colB{blue} and \mygray{gray} symbols
+		%\end{itemize}
 		such that:
 		\begin{itemize}
 			\item $\myA\entails \myB$
 		\end{itemize}
+		Then there is a interpolant $\mygray I$ such that: 
+		\begin{itemize}
+			\item $\myA \entails \mygray I$
+			\item $\mygray I \entails \myB$
+		\end{itemize}
+	\end{theorem}
+	\begin{figure}
+		\begin{tikzpicture}[
+				implies/.style={double,double equal sign distance,-implies},
+				mynode/.style={circle,outer sep=3pt}
+			]
+			\node[mynode] (A) at (0,0) {$\myA$};
+			\node[mynode] (B) at (3,0) {$\myB$};
+			\node[mynode] (I) at (1.5,-1.2) {$\mygray I$};
 
-		~
-
-
-		\begin{tabular}{p{.4\textwidth}p{.5\textwidth}}
-			\mbox{Then there is a interpolant $\mygray I$ containing only \mygray{gray} symbols such that:}
-			\begin{itemize}
-				\item $\myA \entails \mygray I$
-				\item $\mygray I \entails \myB$
-			\end{itemize}
-			&
-			\begin{figure}
-				\begin{tikzpicture}[
-						implies/.style={double,double equal sign distance,-implies},
-						mynode/.style={circle,outer sep=3pt}
-					]
-					\node[mynode] (A) at (0,0) {$\myA$};
-					\node[mynode] (B) at (3,0) {$\myB$};
-					\node[mynode] (I) at (1.5,-1.2) {$\mygray I$};
-
-					%\draw[->,implies] (A) to (B);
-					\draw (A) edge[->,thick]  (B);
-					\draw (A) edge[->,thick]  (I);
-					\draw (I) edge[->,thick]  (B);
-				\end{tikzpicture}
-			\end{figure}
-		\end{tabular}
-	}
+			%\draw[->,implies] (A) to (B);
+			\draw (A) edge[->,thick]  (B);
+			\draw (A) edge[->,thick]  (I);
+			\draw (I) edge[->,thick]  (B);
+		\end{tikzpicture}
+	\end{figure}
 \end{frame}
 
 \subsection{}
@@ -212,7 +208,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 		\end{itemize}
 	\end{example}
 
-	\pause
+	%\pause
 
 	%\begin{example}
 	%	\begin{itemize}
@@ -231,12 +227,13 @@ Discrete Mathematics and Geometry \\ TU Wien}
 			\item Proof of Beth's Definability Theorem
 			\item Model checking
 			\item Reasoning with large knowledge bases
+			\item \dots
 		\end{itemize}
 	\end{block}
 	\pause
 	\begin{block}{Motivation}
 		\begin{itemize}
-			\item Craig interpolation in full first-order logic with equality has received little attention so far
+			\item Little attention for interpolation in first-order logic with equality 
 			\item Interest for constructive proofs 
 		\end{itemize}
 	\end{block}
@@ -279,9 +276,9 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	%\newcommand{\partisym}{\ensuremath{\chi}}
 
 	\begin{itemize}
-		\item Use Maehara's Lemma for reduced logic.
+		\item Use Maehara's Lemma for reduced logic
 
-		\item \cite{baaz2011methods} presents a strengthening which handles function symbols.
+		\item \cite{baaz2011methods} presents a strengthening which handles function symbols
 
 		\item \textbf{Open question:} Can it be extended to include equality?
 	\end{itemize}
@@ -307,16 +304,16 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 \section{Interpolant Extraction} 
 
-\subsection{}
-\begin{frame}{Interpolant Extraction from Resolution Proofs}
-	\begin{block}{Motivation}
-		\begin{itemize}
-			\item Proof by reduction is impractical
-			\item Goal: Compute interpolants directly from proof
-			\item The following is based on \cite{Huang95}
-		\end{itemize}
-	\end{block}
-\end{frame}
+%\subsection{}
+%\begin{frame}{Interpolant Extraction from Resolution Proofs}
+%	\begin{block}{Motivation}
+%		\begin{itemize}
+%			\item Proof by reduction is impractical
+%			\item Goal: Compute interpolants directly from proof
+%			\item The following is based on \cite{Huang95}
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
 
 
 \begin{comment}
@@ -380,7 +377,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	%\begin{tabular}{p{0.25\textwidth}ll}
 	\begin{tabular}{p{0.25\textwidth}ll}
 
-		Proof: 
+		Resolution proof: 
 		&
 		%\begin{center}
 
@@ -501,7 +498,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 	\small
 	\begin{tabular}{p{0.25\textwidth}ll}
 
-		Proof: 
+		Resolution proof:
 		&
 
 		\multicolumn{1}{m{\fakemulticolwidth}}{
@@ -629,7 +626,7 @@ Discrete Mathematics and Geometry \\ TU Wien}
 
 			\begin{itemize}
 				\item Handling of equality does not require a different approach
-				\item Little attention so far in research
+				%\item Little attention so far in research
 			\end{itemize}
 
 		\item Huang's two-stage approach can be adapted to a one-stage approach yielding non-prenex interpolants
